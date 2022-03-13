@@ -1,0 +1,21 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.mixin.common",
+  "compatibilityLevel": "JAVA_17",
+  "mixinPriority": 9001,
+  "client": [
+    "ClientPacketListenerMixin",
+    "ExplosionMixin",
+    "LivingEntityMixin",
+
+
+
+    "BlockMixin",
+    "ChunkMapMixin",
+    "EntityMixin",
+    "ItemEntityMixin",
+    "PlayerMixin"
+  ],
+
+  "mixins": []
+}

@@ -1,0 +1,47 @@
+modLoader = "javafml"
+loaderVersion = "[38,)"
+issueTrackerURL = "https://github.com/Adrenix/Nostalgic-Tweaks/issues"
+license = "https://github.com/Adrenix/Nostalgic-Tweaks/blob/master/LICENSE"
+
+[[mods]]
+modId = "nostalgic_tweaks"
+version = "${version}"
+displayName = "Nostalgic Tweaks"
+authors = "Adrenix"
+description = '''
+Brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.
+
+Donations: https://ko-fi.com/adrenix
+Discord: https://discord.gg/jWdfVh3
+'''
+credits = "https://github.com/Adrenix/Nostalgic-Tweaks/blob/main/contributors.md"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/nostalgic-tweaks"
+logoFile = "logo.png"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "forge"
+mandatory = true
+versionRange = "[38,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId="cloth_config"
+mandatory=true
+versionRange="[6.2.57,)"
+ordering="NONE"
+side="CLIENT"
+
+#[[dependencies.oseca]]
+#modId = "architectury"
+#mandatory = true
+#versionRange = "[3.1.44,)"
+#ordering = "AFTER"
+#side = "BOTH"
