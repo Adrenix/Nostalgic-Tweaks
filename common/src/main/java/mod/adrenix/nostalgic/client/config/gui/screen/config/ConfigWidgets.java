@@ -59,7 +59,7 @@ public class ConfigWidgets
     public Button getSearch() { return this.search; }
     public Button getSave() { return this.save; }
     public Button getCancel() { return this.cancel; }
-    public EditBox getInput() { return this.input; }
+    public EditBox getSearchInput() { return this.input; }
     public TextGroup getSwingSpeedPrefix() { return this.swingSpeedPrefix; }
     public ConfigRowList getConfigRowList() { return this.configRowList; }
 
@@ -258,7 +258,7 @@ public class ConfigWidgets
 
         search = search.toLowerCase();
         ConfigScreen.SearchTag tag = null;
-        String input = this.parent.getWidgets().getInput().getValue().replaceAll("@", "").toLowerCase();
+        String input = this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "").toLowerCase();
         HashMap<String, EntryCache<?>> entries = EntryCache.all();
 
         for (ConfigScreen.SearchTag searchTag : ConfigScreen.SearchTag.values())

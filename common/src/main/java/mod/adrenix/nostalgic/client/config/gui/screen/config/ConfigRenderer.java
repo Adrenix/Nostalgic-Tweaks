@@ -8,8 +8,10 @@ import mod.adrenix.nostalgic.client.config.feature.GuiFeature;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.reflect.*;
+import mod.adrenix.nostalgic.util.KeyUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -54,59 +56,23 @@ public record ConfigRenderer(ConfigScreen parent)
         EntryCache<Boolean> isModEnabled = EntryCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
         list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getEntryKey(), isModEnabled.getCurrent()).add());
 
-        /* Override Config */
+        /* Key Bindings */
 
-        Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () -> {
-            TextGroup help = new TextGroup(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_HELP));
+        Supplier<ArrayList<ConfigRowList.Row>> bindings = () -> {
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
 
-            ConfigRowList.SingleCenteredRow disable = new ConfigRowList.SingleCenteredRow(
-                this.parent,
-                new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_DISABLE),
-                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                    if (!GroupType.isManual(group))
-                    {
-                        ConfigReflect.getGroup(group).forEach((key, value) -> {
-                            EntryCache<Boolean> entry = EntryCache.get(group, key);
+            KeyMapping openConfig = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
+            KeyMapping toggleFog = KeyUtil.find(NostalgicLang.Key.TOGGLE_FOG);
 
-                            boolean isDisableIgnored = ConfigReflect.getAnnotation(
-                                entry.getGroup(),
-                                entry.getEntryKey(),
-                                NostalgicEntry.Gui.IgnoreDisable.class
-                            ) != null;
-
-                            if (value instanceof Boolean && !isDisableIgnored)
-                            {
-                                entry.reset();
-                                entry.setCurrent(!entry.getCurrent());
-                            }
-
-                            if (value instanceof DefaultConfig.VERSION && !isDisableIgnored)
-                            {
-                                EntryCache<DefaultConfig.VERSION> version = EntryCache.get(group, key);
-                                version.setCurrent(DefaultConfig.VERSION.MODERN);
-                            }
-                        });
-                    }
-                })
-            );
-
-            ConfigRowList.SingleCenteredRow enable = new ConfigRowList.SingleCenteredRow(
-                this.parent,
-                new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE),
-                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                    if (!GroupType.isManual(group))
-                        ConfigReflect.getGroup(group).forEach((key, value) -> EntryCache.get(group, key).reset());
-                })
-            );
-
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
-            rows.add(disable.add());
-            rows.add(enable.add());
+            if (openConfig != null)
+                rows.add(new ConfigRowList.BindingRow(openConfig).add());
+            if (toggleFog != null)
+                rows.add(new ConfigRowList.BindingRow(toggleFog).add());
 
             return rows;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_TITLE), globalOptions).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_BINDINGS), bindings).add());
 
         /* Menu Settings */
 
@@ -195,6 +161,60 @@ public record ConfigRenderer(ConfigScreen parent)
 
         list.addRow(new ConfigRowList.CategoryRow(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_CONFIG_TITLE), settings).add());
 
+        /* Override Config */
+
+        Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () -> {
+            TextGroup help = new TextGroup(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_HELP));
+
+            ConfigRowList.SingleCenteredRow disable = new ConfigRowList.SingleCenteredRow(
+                this.parent,
+                new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_DISABLE),
+                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
+                    if (!GroupType.isManual(group))
+                    {
+                        ConfigReflect.getGroup(group).forEach((key, value) -> {
+                            EntryCache<Boolean> entry = EntryCache.get(group, key);
+
+                            boolean isDisableIgnored = ConfigReflect.getAnnotation(
+                                entry.getGroup(),
+                                entry.getEntryKey(),
+                                NostalgicEntry.Gui.IgnoreDisable.class
+                            ) != null;
+
+                            if (value instanceof Boolean && !isDisableIgnored)
+                            {
+                                entry.reset();
+                                entry.setCurrent(!entry.getCurrent());
+                            }
+
+                            if (value instanceof DefaultConfig.VERSION && !isDisableIgnored)
+                            {
+                                EntryCache<DefaultConfig.VERSION> version = EntryCache.get(group, key);
+                                version.setCurrent(DefaultConfig.VERSION.MODERN);
+                            }
+                        });
+                    }
+                })
+            );
+
+            ConfigRowList.SingleCenteredRow enable = new ConfigRowList.SingleCenteredRow(
+                this.parent,
+                new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE),
+                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
+                    if (!GroupType.isManual(group))
+                        ConfigReflect.getGroup(group).forEach((key, value) -> EntryCache.get(group, key).reset());
+                })
+            );
+
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
+            rows.add(disable.add());
+            rows.add(enable.add());
+
+            return rows;
+        };
+
+        list.addRow(new ConfigRowList.CategoryRow(list, new TranslatableComponent(NostalgicLang.Gui.GENERAL_OVERRIDE_TITLE), globalOptions).add());
+
         /* Notifications */
 
         Supplier<ArrayList<ConfigRowList.Row>> notifications = () ->
@@ -216,7 +236,7 @@ public record ConfigRenderer(ConfigScreen parent)
             Component serverTag = new TranslatableComponent(NostalgicLang.Gui.GENERAL_SEARCH_SERVER);
 
             return new TextGroup(list, NostalgicUtil.Text.combine(new Component[] {
-                    help, newTag, conflictTag, resetTag, clientTag, serverTag
+                help, newTag, conflictTag, resetTag, clientTag, serverTag
             })).getRows();
         };
 
@@ -243,10 +263,10 @@ public record ConfigRenderer(ConfigScreen parent)
             this.parent.getWidgets().getSwingSpeedPrefix().render(poseStack, mouseX, mouseY, partialTick);
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
-            boolean isInvalidTag = this.parent.getWidgets().getInput().getValue().startsWith("@");
+            boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("@");
             for (ConfigScreen.SearchTag tag : ConfigScreen.SearchTag.values())
             {
-                if (tag.toString().equals(this.parent.getWidgets().getInput().getValue().replaceAll("@", "")))
+                if (tag.toString().equals(this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "")))
                     isInvalidTag = false;
             }
 
@@ -254,7 +274,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 this.parent.renderLast.add(() -> Screen.drawCenteredString(
                     poseStack,
                     this.parent.getFont(),
-                    new TranslatableComponent(NostalgicLang.Gui.SEARCH_INVALID, this.parent.getWidgets().getInput().getValue()),
+                    new TranslatableComponent(NostalgicLang.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
                     this.parent.width / 2,
                     this.parent.height / 2,
                     0xFFFFFF

@@ -11,10 +11,12 @@ public abstract class NostalgicLang
         public static final String READ_WORLD_DATA = "selectWorld.data_read";
     }
 
-    public static class Config
+    public static class Key
     {
         public static final String OPEN_CONFIG = "key.nostalgic_tweaks.open_config";
-        public static final String NAME = "category.nostalgic_tweaks.name";
+        public static final String TOGGLE_FOG = "key.nostalgic_tweaks.toggle_fog";
+        public static final String UNBOUND = "key.nostalgic_tweaks.unbound";
+        public static final String CATEGORY_NAME = "category.nostalgic_tweaks.name";
     }
 
     public static class Gui
@@ -70,9 +72,14 @@ public abstract class NostalgicLang
         public static final String TAG_RELOAD_TOOLTIP = "gui.nostalgic_tweaks.config.tag.reload.@Tooltip";
         public static final String TAG_RESTART = "gui.nostalgic_tweaks.config.tag.restart";
         public static final String TAG_RESTART_TOOLTIP = "gui.nostalgic_tweaks.config.tag.restart.@Tooltip";
+        public static final String TAG_SYNC = "gui.nostalgic_tweaks.config.tag.sync";
+        public static final String TAG_SYNC_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sync.@Tooltip";
+        public static final String TAG_AUTO = "gui.nostalgic_tweaks.config.tag.auto";
+        public static final String TAG_AUTO_TOOLTIP = "gui.nostalgic_tweaks.config.tag.auto.@Tooltip";
         public static final String SEARCH_EMPTY = "gui.nostalgic_tweaks.config.search.empty";
         public static final String SEARCH_INVALID = "gui.nostalgic_tweaks.config.search.invalidTag";
 
+        public static final String GENERAL_BINDINGS = "gui.nostalgic_tweaks.config.general.bindings.title";
         public static final String GENERAL_OVERRIDE_TITLE = "gui.nostalgic_tweaks.config.general.override.title";
         public static final String GENERAL_OVERRIDE_HELP = "gui.nostalgic_tweaks.config.general.override.help";
         public static final String GENERAL_OVERRIDE_DISABLE = "gui.nostalgic_tweaks.config.general.override.disable";

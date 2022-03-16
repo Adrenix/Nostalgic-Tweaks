@@ -1,5 +1,7 @@
 {
   "key.nostalgic_tweaks.open_config": "Open Config",
+  "key.nostalgic_tweaks.toggle_fog": "Toggle Fog",
+  "key.nostalgic_tweaks.unbound": "Unbound",
   "category.nostalgic_tweaks.name": "Nostalgic Tweaks",
 
   "gui.nostalgic_tweaks.settings.title": "Nostalgic Tweaks",
@@ -53,8 +55,13 @@
   "gui.nostalgic_tweaks.config.tag.reload.@Tooltip": "If you change this option, then the tweak needs§6 reloaded§r using§e F3 + T§r.",
   "gui.nostalgic_tweaks.config.tag.restart": "Restart",
   "gui.nostalgic_tweaks.config.tag.restart.@Tooltip": "Some changes from this tweak§c cannot§r update unless the game is§4 restarted§r.",
+  "gui.nostalgic_tweaks.config.tag.sync": "Synced",
+  "gui.nostalgic_tweaks.config.tag.sync.@Tooltip": "This binding is§d synced§r with the vanilla controls.",
+  "gui.nostalgic_tweaks.config.tag.auto": "Auto Saved",
+  "gui.nostalgic_tweaks.config.tag.auto.@Tooltip": "This binding is§a automatically saved§r when changed.",
   "gui.nostalgic_tweaks.config.search.empty": "No configuration entries found.",
   "gui.nostalgic_tweaks.config.search.invalidTag": "The search tag§9 %s§r is not valid.",
+  "gui.nostalgic_tweaks.config.general.bindings.title": "Key Bindings",
   "gui.nostalgic_tweaks.config.general.override.title": "Override Options",
   "gui.nostalgic_tweaks.config.general.override.help": "This section will make§e changes§r to§a all§r configuration values. Use the§3 Disable All§r button to turn§4 off§r all mod tweaks. Use the§3 Enable All§r button to turn§2 on§r all mod tweaks.\n\nYou can§c cancel§r to§a undo§r any accidental edits.",
   "gui.nostalgic_tweaks.config.general.override.disable": "Disable All",
