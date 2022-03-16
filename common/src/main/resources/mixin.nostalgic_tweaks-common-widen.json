@@ -1,0 +1,13 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.mixin.widen",
+  "compatibilityLevel": "JAVA_17",
+  "mixinPriority": 9001,
+  "client": [
+    "IMixinAbstractSelectionList",
+    "IMixinEntity",
+    "IMixinProgressScreen",
+    "IMixinScreen",
+    "IMixinTitleScreen"
+  ]
+}

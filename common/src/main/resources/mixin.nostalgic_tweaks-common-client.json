@@ -1,0 +1,31 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "mixinPriority": 9001,
+  "client": [
+    "AbstractWidgetMixin",
+    "AbstractZombieModelMixin",
+    "AnimationUtilsMixin",
+    "BiomeMixin",
+    "CameraMixin",
+    "ClientLevelMixin",
+    "DimensionTypeMixin",
+    "ExperienceOrbRendererMixin",
+    "FogRendererMixin",
+    "GameRendererMixin",
+    "GuiMixin",
+    "ItemEntityRendererMixin",
+    "ItemFrameRendererMixin",
+    "ItemInHandRendererMixin",
+    "ItemModelGeneratorMixin",
+    "ItemRendererMixin",
+    "LevelRendererMixin",
+    "LightTextureMixin",
+    "MinecraftMixin",
+    "ScreenMixin",
+    "SkeletonModelMixin",
+    "ThrownItemRendererMixin",
+    "WorldListEntryMixin"
+  ]
+}
