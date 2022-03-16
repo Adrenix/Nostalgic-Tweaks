@@ -8,14 +8,16 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.TranslatableComponent;
+import org.jetbrains.annotations.Nullable;
 
 public class ResetButton extends Button
 {
     protected static final TranslatableComponent TITLE = new TranslatableComponent(NostalgicLang.Cloth.RESET);
+    @Nullable
     protected final EntryCache<?> cache;
     protected final AbstractWidget anchor;
 
-    public ResetButton(EntryCache<?> cache, AbstractWidget anchor)
+    public ResetButton(@Nullable EntryCache<?> cache, AbstractWidget anchor)
     {
         super(
             0,
@@ -24,9 +26,14 @@ public class ResetButton extends Button
             ConfigRowList.BUTTON_HEIGHT,
             TITLE,
             (button) -> {
-                cache.reset();
-                if (anchor instanceof EditBox && cache.getCurrent() instanceof String)
-                    ((EditBox) anchor).setValue((String) cache.getCurrent());
+                if (cache != null)
+                {
+                    cache.reset();
+                    if (anchor instanceof EditBox && cache.getCurrent() instanceof String)
+                        ((EditBox) anchor).setValue((String) cache.getCurrent());
+                }
+                else if (anchor instanceof KeyBindButton)
+                    ((KeyBindButton) anchor).reset();
             }
         );
 
@@ -43,7 +50,12 @@ public class ResetButton extends Button
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         setStartX();
-        this.active = this.cache.isResettable();
+
+        if (this.cache != null)
+            this.active = this.cache.isResettable();
+        else if (this.anchor instanceof KeyBindButton)
+            this.active = ((KeyBindButton) this.anchor).isResettable();
+
         super.render(poseStack, mouseX, mouseY, partialTick);
     }
 }

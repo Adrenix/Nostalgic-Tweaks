@@ -122,7 +122,7 @@ public class ConfigScreen extends Screen
         this.getWidgets().addWidgets();
     }
 
-    @Override public void tick() { this.getWidgets().getInput().tick(); }
+    @Override public void tick() { this.getWidgets().getSearchInput().tick(); }
 
     @Override
     public void onClose()
@@ -135,9 +135,9 @@ public class ConfigScreen extends Screen
     @Override
     public boolean charTyped(char code, int modifiers)
     {
-        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getInput().isFocused())
+        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused())
         {
-            boolean isCharTyped = this.getWidgets().getInput().charTyped(code, modifiers);
+            boolean isCharTyped = this.getWidgets().getSearchInput().charTyped(code, modifiers);
 
             if (isCharTyped && !isModifierDown())
                 this.getWidgets().getConfigRowList().children().clear();
@@ -156,6 +156,19 @@ public class ConfigScreen extends Screen
         return false;
     }
 
+    private KeyBindButton getMappingInput()
+    {
+        ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+        if (focused != null)
+        {
+            for (AbstractWidget widget : focused.children)
+                if (widget instanceof KeyBindButton && ((KeyBindButton) widget).isModifying())
+                    return (KeyBindButton) widget;
+        }
+
+        return null;
+    }
+
     private boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
     private boolean isEscaping(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
     private boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
@@ -165,14 +178,21 @@ public class ConfigScreen extends Screen
     private boolean isTabbing(int key) { return key == GLFW.GLFW_KEY_TAB; }
 
     @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers)
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (this.isSaving(key))
+        KeyBindButton mappingInput = this.getMappingInput();
+
+        if (mappingInput != null)
+        {
+            mappingInput.setKey(keyCode, scanCode);
+            return true;
+        }
+        else if (this.isSaving(keyCode))
         {
             this.onClose();
             return true;
         }
-        else if (this.configTab != ConfigTab.SEARCH && (this.isGoingLeft(key) || this.isGoingRight(key)))
+        else if (this.configTab != ConfigTab.SEARCH && (this.isGoingLeft(keyCode) || this.isGoingRight(keyCode)))
         {
             ConfigTab[] tabs = ConfigTab.values();
             ConfigTab last = ConfigTab.GENERAL;
@@ -183,12 +203,12 @@ public class ConfigScreen extends Screen
 
                 if (tab == ConfigTab.SEARCH)
                     continue;
-                if (this.isGoingLeft(key) && this.configTab == tab)
+                if (this.isGoingLeft(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(this.configTab != last ? last : tabs[tabs.length - 2]);
                     break;
                 }
-                else if (this.isGoingRight(key) && this.configTab == tab)
+                else if (this.isGoingRight(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[0]);
                     break;
@@ -201,14 +221,14 @@ public class ConfigScreen extends Screen
                 this.getWidgets().focusInput = true;
         }
 
-        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getInput().isFocused() && !isEscaping(key))
+        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEscaping(keyCode))
         {
-            boolean isInputChanged = this.getWidgets().getInput().keyPressed(key, scanCode, modifiers);
-            if (key != GLFW.GLFW_KEY_LEFT && key != GLFW.GLFW_KEY_RIGHT)
+            boolean isInputChanged = this.getWidgets().getSearchInput().keyPressed(keyCode, scanCode, modifiers);
+            if (keyCode != GLFW.GLFW_KEY_LEFT && keyCode != GLFW.GLFW_KEY_RIGHT)
             {
-                if (isSearching(key))
+                if (isSearching(keyCode))
                 {
-                    this.getWidgets().getInput().setValue("");
+                    this.getWidgets().getSearchInput().setValue("");
                     this.getWidgets().getConfigRowList().setScrollAmount(0);
                 }
                 else if (isModifierDown() || isInputChanged)
@@ -216,7 +236,7 @@ public class ConfigScreen extends Screen
                     if (isInputChanged)
                     {
                         this.getWidgets().getConfigRowList().children().clear();
-                        this.getWidgets().checkSearch(this.getWidgets().getInput().getValue());
+                        this.getWidgets().checkSearch(this.getWidgets().getSearchInput().getValue());
                     }
 
                     return true;
@@ -226,15 +246,15 @@ public class ConfigScreen extends Screen
             return isInputChanged;
         }
 
-        if (isEscaping(key) && this.shouldCloseOnEsc())
+        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
         {
-            if (this.getWidgets().getInput().isFocused())
-                this.getWidgets().getInput().setFocus(false);
+            if (this.getWidgets().getSearchInput().isFocused())
+                this.getWidgets().getSearchInput().setFocus(false);
             else
                 this.onCancel();
             return true;
         }
-        else if (isSearching(key))
+        else if (isSearching(keyCode))
         {
             this.setConfigTab(ConfigTab.SEARCH);
             this.getWidgets().focusInput = true;
@@ -242,31 +262,31 @@ public class ConfigScreen extends Screen
         }
         else
         {
-            if (!this.isTabbing(key) && super.keyPressed(key, scanCode, modifiers))
+            if (!this.isTabbing(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
                 return true;
-            return key == 257 || key == 335;
+            return keyCode == 257 || keyCode == 335;
         }
     }
 
     @Override
     public void resize(Minecraft minecraft, int width, int height)
     {
-        String searching = this.getWidgets().getInput().getValue();
+        String searching = this.getWidgets().getSearchInput().getValue();
 
         super.resize(minecraft, width, height);
 
         if (this.configTab == ConfigTab.SEARCH)
         {
             this.getWidgets().focusInput = true;
-            this.getWidgets().getInput().setValue(searching);
+            this.getWidgets().getSearchInput().setValue(searching);
         }
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        if (this.getWidgets().getInput().isFocused())
-            this.getWidgets().getInput().mouseClicked(mouseX, mouseY, button);
+        if (this.getWidgets().getSearchInput().isFocused())
+            this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
@@ -387,18 +407,18 @@ public class ConfigScreen extends Screen
 
         if (this.configTab != ConfigTab.SEARCH)
         {
-            this.getWidgets().getInput().setVisible(false);
+            this.getWidgets().getSearchInput().setVisible(false);
             ConfigScreen.drawCenteredString(poseStack, this.font, title, this.width / 2, 7, 0xFFFFFF);
         }
         else if (this.getWidgets().focusInput)
         {
-            this.getWidgets().getInput().setVisible(true);
-            this.getWidgets().getInput().setFocus(true);
-            this.getWidgets().getInput().setEditable(true);
+            this.getWidgets().getSearchInput().setVisible(true);
+            this.getWidgets().getSearchInput().setFocus(true);
+            this.getWidgets().getSearchInput().setEditable(true);
             this.getWidgets().focusInput = false;
         }
 
-        this.getWidgets().getInput().render(poseStack, mouseX, mouseY, partialTick);
+        this.getWidgets().getSearchInput().render(poseStack, mouseX, mouseY, partialTick);
 
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);

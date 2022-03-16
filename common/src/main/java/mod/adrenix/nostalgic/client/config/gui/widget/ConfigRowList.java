@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
 import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.*;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +67,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         boolean clicked = super.mouseClicked(mouseX, mouseY, button);
 
         if (this.screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && clicked)
-            this.screen.getWidgets().getInput().setFocus(false);
+            this.screen.getWidgets().getSearchInput().setFocus(false);
         return clicked;
     }
 
@@ -174,6 +176,21 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     }
 
     /* Manual Custom Row Builders */
+
+    // Key Binding Row
+    public record BindingRow(KeyMapping mapping)
+    {
+        public ConfigRowList.Row add()
+        {
+            List<AbstractWidget> widgets = new ArrayList<>();
+            KeyBindButton controller = new KeyBindButton(this.mapping);
+
+            widgets.add(controller);
+            widgets.add(new ResetButton(null, controller));
+
+            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), null);
+        }
+    }
 
     // Single Button Entry
     public record SingleCenteredRow(Screen screen, Component title, Button.OnPress onPress)
@@ -295,9 +312,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
         /* Overrides & Rendering */
 
+        private boolean isBindingRow()
+        {
+            for (AbstractWidget widget : this.children)
+                if (widget instanceof KeyBindButton)
+                    return true;
+            return false;
+        }
+
         private void renderOnHover(PoseStack poseStack, Screen screen, int top, int height)
         {
-            if (this.cache == null) return;
+            if (this.cache == null && !this.isBindingRow()) return;
 
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder buffer = tesselator.getBuilder();
@@ -363,12 +388,21 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             for (AbstractWidget widget : this.children)
             {
+                Component title = TextComponent.EMPTY;
+
                 if (this.cache != null)
                 {
                     TranslatableComponent translation = new TranslatableComponent(this.cache.getLangKey());
-                    Component title = this.cache.isSavable() ? translation.withStyle(ChatFormatting.ITALIC) : translation.withStyle(ChatFormatting.RESET);
-                    Screen.drawString(poseStack, font, title, TEXT_START, top + 6, 0xFFFFFF);
+                    title = this.cache.isSavable() ? translation.withStyle(ChatFormatting.ITALIC) : translation.withStyle(ChatFormatting.RESET);
+
                 }
+                else if (widget instanceof KeyBindButton)
+                {
+                    TranslatableComponent translation = new TranslatableComponent(((KeyBindButton) widget).getMapping().getName());
+                    title = KeyBindButton.isMappingConflicted(((KeyBindButton) widget).getMapping()) ? translation.withStyle(ChatFormatting.RED) : translation.withStyle(ChatFormatting.RESET);
+                }
+
+                Screen.drawString(poseStack, font, title, TEXT_START, top + 6, 0xFFFFFF);
 
                 widget.y = top;
                 int cacheX = widget.x;

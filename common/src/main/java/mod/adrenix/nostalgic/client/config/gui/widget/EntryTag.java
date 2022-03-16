@@ -22,15 +22,17 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class EntryTag extends AbstractWidget
 {
-    private static final int U_NEW_OFFSET = 66;
-    private static final int U_CLIENT_OFFSET = 69;
-    private static final int U_SERVER_OFFSET = 72;
-    private static final int U_RELOAD_OFFSET = 75;
-    private static final int U_RESTART_OFFSET = 78;
-    private static final int V_GLOBAL_OFFSET = 0;
-    private static final int U_GLOBAL_WIDTH = 1;
-    private static final int V_GLOBAL_HEIGHT = 11;
-    private static final int TAG_MARGIN = 5;
+    public static final int U_NEW_OFFSET = 66;
+    public static final int U_CLIENT_OFFSET = 69;
+    public static final int U_SERVER_OFFSET = 72;
+    public static final int U_RELOAD_OFFSET = 75;
+    public static final int U_RESTART_OFFSET = 78;
+    public static final int U_KEY_OFFSET = 81;
+    public static final int U_SYNC_OFFSET = 84;
+    public static final int V_GLOBAL_OFFSET = 0;
+    public static final int U_GLOBAL_WIDTH = 1;
+    public static final int V_GLOBAL_HEIGHT = 11;
+    public static final int TAG_MARGIN = 5;
 
     protected final EntryCache<?> cache;
     protected final AbstractWidget anchor;
@@ -45,18 +47,18 @@ public class EntryTag extends AbstractWidget
         this.isTooltip = isTooltip;
     }
 
-    private int getTagWidth(Component tag, int startX)
+    private static int getTagWidth(Component tag, int startX)
     {
         return startX + U_GLOBAL_WIDTH + Minecraft.getInstance().font.width(tag) + TAG_MARGIN;
     }
 
-    private int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
+    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
     {
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
         Font font = Minecraft.getInstance().font;
 
         int tagWidth = font.width(tag);
-        int endX = this.getTagWidth(tag, startX);
+        int endX = getTagWidth(tag, startX);
 
         screen.blit(poseStack, startX, startY, uOffset, V_GLOBAL_OFFSET, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
 
@@ -69,14 +71,14 @@ public class EntryTag extends AbstractWidget
         return endX + TAG_MARGIN;
     }
 
-    private void renderTooltip(Screen screen, PoseStack poseStack, Component title, Component tooltip, int startX, int startY, int mouseX, int mouseY)
+    public static void renderTooltip(Screen screen, PoseStack poseStack, Component title, Component tooltip, int startX, int startY, int mouseX, int mouseY)
     {
-        int endX = this.getTagWidth(title, startX);
+        int endX = getTagWidth(title, startX);
         boolean isMouseOver = (mouseX >= startX && mouseX <= endX) && (mouseY >= startY && mouseY <= startY + V_GLOBAL_HEIGHT);
 
         if (isMouseOver && screen instanceof ConfigScreen)
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(tooltip, 38), mouseX, mouseY));
+                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(tooltip, 38), mouseX, mouseY));
     }
 
     @Override
@@ -104,7 +106,6 @@ public class EntryTag extends AbstractWidget
         Component reloadTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_RELOAD_TOOLTIP);
         Component restartTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
 
-
         boolean isNewRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_NEW_TAGS.getKey()).getCurrent();
         boolean isSidedRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
         boolean isTooltipRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
@@ -116,34 +117,34 @@ public class EntryTag extends AbstractWidget
         if (isNew != null && isNewRenderable)
         {
             if (isTooltipRenderable)
-                this.renderTooltip(screen, poseStack, newTag, newTooltip, lastX, startY, mouseX, mouseY);
-            lastX = this.renderTag(screen, poseStack, newTag, lastX, startY, U_NEW_OFFSET);
+                renderTooltip(screen, poseStack, newTag, newTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, newTag, lastX, startY, U_NEW_OFFSET);
         }
 
         if (isClient != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
-                this.renderTooltip(screen, poseStack, clientTag, clientTooltip, lastX, startY, mouseX, mouseY);
-            lastX = this.renderTag(screen, poseStack, clientTag, lastX, startY, U_CLIENT_OFFSET);
+                renderTooltip(screen, poseStack, clientTag, clientTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, clientTag, lastX, startY, U_CLIENT_OFFSET);
         }
 
         if (isServer != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
-                this.renderTooltip(screen, poseStack, serverTag, serverTooltip, lastX, startY, mouseX, mouseY);
-            this.renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET);
+                renderTooltip(screen, poseStack, serverTag, serverTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET);
         }
 
         if (isReload != null)
         {
-            this.renderTooltip(screen, poseStack, reloadTag, reloadTooltip, lastX, startY, mouseX, mouseY);
-            this.renderTag(screen, poseStack, reloadTag, lastX, startY, U_RELOAD_OFFSET);
+            renderTooltip(screen, poseStack, reloadTag, reloadTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, reloadTag, lastX, startY, U_RELOAD_OFFSET);
         }
 
         if (isRestart != null)
         {
-            this.renderTooltip(screen, poseStack, restartTag, restartTooltip, lastX, startY, mouseX, mouseY);
-            this.renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET);
+            renderTooltip(screen, poseStack, restartTag, restartTooltip, lastX, startY, mouseX, mouseY);
+            renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET);
         }
     }
 

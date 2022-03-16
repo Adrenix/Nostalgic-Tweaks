@@ -33,25 +33,21 @@ public class ClientConfig implements ConfigData
         public boolean oldAttack = DefaultConfig.Sound.OLD_ATTACK;
         static { SoundFeature.OLD_ATTACK.setKey("oldAttack"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldHurt = DefaultConfig.Sound.OLD_HURT;
         static { SoundFeature.OLD_HURT.setKey("oldHurt"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldFall = DefaultConfig.Sound.OLD_FALL;
         static { SoundFeature.OLD_FALL.setKey("oldFall"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
         static { SoundFeature.OLD_STEP.setKey("oldStep"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldXP = DefaultConfig.Sound.OLD_XP;
@@ -62,7 +58,6 @@ public class ClientConfig implements ConfigData
     public EyeCandy eyeCandy = new EyeCandy();
     public static class EyeCandy
     {
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
@@ -116,28 +111,24 @@ public class ClientConfig implements ConfigData
         public boolean old2dItems = DefaultConfig.Candy.OLD_2D_ITEMS;
         static { CandyFeature.FLAT_ITEMS.setKey("old2dItems"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
         public boolean old2dFrames = DefaultConfig.Candy.OLD_2D_FRAMES;
         static { CandyFeature.FLAT_FRAMES.setKey("old2dFrames"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
         public boolean old2dThrownItems = DefaultConfig.Candy.OLD_2D_THROWN_ITEMS;
         static { CandyFeature.FLAT_THROWN_ITEMS.setKey("old2dThrownItems"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
         static { CandyFeature.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Reload
@@ -145,49 +136,42 @@ public class ClientConfig implements ConfigData
         public boolean fixItemModelGap = DefaultConfig.Candy.FIX_ITEM_MODEL_GAP;
         static { CandyFeature.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public boolean oldTitleScreen = DefaultConfig.Candy.OLD_TITLE_SCREEN;
         static { CandyFeature.TITLE_SCREEN.setKey("oldTitleScreen"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
         static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
         static { CandyFeature.LOADING_SCREENS.setKey("oldLoadingScreens"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
         static { CandyFeature.LIGHTING.setKey("oldLighting"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldFog = DefaultConfig.Candy.OLD_FOG;
         static { CandyFeature.FOG.setKey("oldFog"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldNetherFog = DefaultConfig.Candy.OLD_NETHER_FOG;
         static { CandyFeature.NETHER_FOG.setKey("oldNetherFog"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
@@ -200,84 +184,72 @@ public class ClientConfig implements ConfigData
         public boolean oldSweepParticles = DefaultConfig.Candy.OLD_SWEEP_PARTICLES;
         static { CandyFeature.SWEEP.setKey("oldSweepParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldExplosionParticles = DefaultConfig.Candy.OLD_EXPLOSION_PARTICLES;
         static { CandyFeature.EXPLOSION_PARTICLES.setKey("oldExplosionParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
         static { CandyFeature.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldSunriseAtNorth = DefaultConfig.Candy.OLD_SUNRISE_AT_NORTH;
         static { CandyFeature.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
         public boolean oldOpaqueExperience = DefaultConfig.Candy.OLD_OPAQUE_EXPERIENCE;
         static { CandyFeature.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
         static { CandyFeature.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
         static { CandyFeature.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
         public boolean oldNoDamageParticles = DefaultConfig.Candy.OLD_NO_DAMAGE_PARTICLES;
         static { CandyFeature.NO_DAMAGE_PARTICLES.setKey("oldNoDamageParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
         public boolean oldNoCritParticles = DefaultConfig.Candy.OLD_NO_CRIT_PARTICLES;
         static { CandyFeature.NO_CRIT_PARTICLES.setKey("oldNoCritParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
         public boolean oldNoMagicHitParticles = DefaultConfig.Candy.OLD_NO_MAGIC_HIT_PARTICLES;
         static { CandyFeature.NO_MAGIC_HIT_PARTICLES.setKey("oldNoMagicHitParticles"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public DefaultConfig.VERSION oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
         static { CandyFeature.SKY_COLOR.setKey("oldSkyColor"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public DefaultConfig.VERSION oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
         static { CandyFeature.FOG_COLOR.setKey("oldFogColor"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.Restart
         @NostalgicEntry.Gui.EntryStatus
@@ -285,21 +257,18 @@ public class ClientConfig implements ConfigData
         public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
         static { CandyFeature.BLUE_VOID.setKey("oldBlueVoid"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldBlueVoidOverride = DefaultConfig.Candy.OLD_BLUE_VOID_OVERRIDE;
         static { CandyFeature.BLUE_VOID_OVERRIDE.setKey("oldBlueVoidOverride"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
         static { CandyFeature.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
@@ -311,7 +280,6 @@ public class ClientConfig implements ConfigData
     public Animation animation = new Animation();
     public static class Animation
     {
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
@@ -332,14 +300,12 @@ public class ClientConfig implements ConfigData
         public boolean oldArmSway = DefaultConfig.Animation.OLD_ARM_SWAY;
         static { AnimationFeature.ARM_SWAY.setKey("oldArmSway"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.IgnoreDisable
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         public boolean armSwayMirror = DefaultConfig.Animation.ARM_SWAY_MIRROR;
         static { AnimationFeature.ARM_SWAY_MIRROR.setKey("armSwayMirror"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.SliderType(slider = NostalgicEntry.Gui.Slider.INTENSITY_SLIDER)
@@ -372,13 +338,11 @@ public class ClientConfig implements ConfigData
         public boolean oldToolExplosion = DefaultConfig.Animation.OLD_TOOL_EXPLOSION;
         static { AnimationFeature.TOOL_EXPLODE.setKey("oldToolExplosion"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldZombieArms = DefaultConfig.Animation.OLD_ZOMBIE_ARMS;
         static { AnimationFeature.ZOMBIE_ARMS.setKey("oldZombieArms"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean oldSkeletonArms = DefaultConfig.Animation.OLD_SKELETON_ARMS;
@@ -389,7 +353,6 @@ public class ClientConfig implements ConfigData
     public Swing swing = new Swing();
     public static class Swing
     {
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         public boolean overrideSpeeds = DefaultConfig.Swing.OVERRIDE_SPEEDS;

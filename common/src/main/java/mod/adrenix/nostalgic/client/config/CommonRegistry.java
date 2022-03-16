@@ -12,15 +12,25 @@ import org.lwjgl.glfw.GLFW;
 
 public abstract class CommonRegistry
 {
-    /* Configuration Key */
+    /* Configuration & Fog Key */
 
     public static KeyMapping getConfigurationKey()
     {
         return new KeyMapping(
-            NostalgicLang.Config.OPEN_CONFIG,
+            NostalgicLang.Key.OPEN_CONFIG,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_O,
-            NostalgicLang.Config.NAME
+            NostalgicLang.Key.CATEGORY_NAME
+        );
+    }
+
+    public static KeyMapping getFogKey()
+    {
+        return new KeyMapping(
+            NostalgicLang.Key.TOGGLE_FOG,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_UNKNOWN,
+            NostalgicLang.Key.CATEGORY_NAME
         );
     }
 
