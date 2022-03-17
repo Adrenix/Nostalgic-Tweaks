@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(ItemRenderer.class)
+@Mixin(value = ItemRenderer.class, priority = MixinInjector.PRIORITY)
 public abstract class ItemRendererMixin
 {
     @Shadow protected abstract void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer);
