@@ -160,7 +160,7 @@ public abstract class MixinInjector
             RenderSystem.setShaderFogEnd(distance * 0.8F);
         }
 
-        private static void setDistanceFog(FogRenderer.FogMode fogType)
+        private static void setHorizonFog(FogRenderer.FogMode fogType)
         {
             if (fogType != FogRenderer.FogMode.FOG_SKY)
                 return;
@@ -170,14 +170,20 @@ public abstract class MixinInjector
             RenderSystem.setShaderFogEnd(distance);
         }
 
+        private static void renderFog(FogRenderer.FogMode fogType)
+        {
+            if (MixinConfig.Candy.oldTerrainFog())
+                setTerrainFog(fogType);
+            if (MixinConfig.Candy.oldHorizonFog())
+                setHorizonFog(fogType);
+        }
+
         // Overrides fog in the overworld
         public static void setupFog(Camera camera, FogRenderer.FogMode fogType)
         {
-            if (!MixinConfig.Candy.oldFog() || isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera))
+            if (isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera))
                 return;
-
-            setTerrainFog(fogType);
-            setDistanceFog(fogType);
+            renderFog(fogType);
         }
 
         // Overrides fog in the nether
@@ -186,8 +192,7 @@ public abstract class MixinInjector
             if (!MixinConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
                 return;
 
-            setTerrainFog(fogType);
-            setDistanceFog(fogType);
+            renderFog(fogType);
             RenderSystem.setShaderFogStart(0.0F);
         }
     }

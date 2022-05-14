@@ -186,14 +186,20 @@ public class ClientConfig implements ConfigData
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_BRIGHTNESS;
+        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
         static { CandyFeature.NETHER_LIGHTING.setKey("oldNetherLighting"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldFog = DefaultConfig.Candy.OLD_FOG;
-        static { CandyFeature.FOG.setKey("oldFog"); }
+        public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
+        static { CandyFeature.TERRAIN_FOG.setKey("oldTerrainFog"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldHorizonFog = DefaultConfig.Candy.OLD_HORIZON_FOG;
+        static { CandyFeature.HORIZON_FOG.setKey("oldHorizonFog"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
