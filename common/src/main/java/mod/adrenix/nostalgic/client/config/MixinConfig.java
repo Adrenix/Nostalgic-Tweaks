@@ -114,11 +114,12 @@ public abstract class MixinConfig
         public static boolean oldTitleScreen() { return isModEnabled(CandyFeature.TITLE_SCREEN) && CANDY.oldTitleScreen; }
         public static boolean oldCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) && CANDY.oldCloudHeight; }
         public static boolean oldFlatFrames() { return isModEnabled(CandyFeature.FLAT_FRAMES) && CANDY.old2dFrames; }
+        public static boolean oldTerrainFog() { return isModEnabled(CandyFeature.TERRAIN_FOG) && CANDY.oldTerrainFog; }
+        public static boolean oldHorizonFog() { return isModEnabled(CandyFeature.HORIZON_FOG) && CANDY.oldHorizonFog; }
         public static boolean oldAlphaLogo() { return isModEnabled(CandyFeature.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
         public static boolean oldNetherFog() { return isModEnabled(CandyFeature.NETHER_FOG) && CANDY.oldNetherFog; }
         public static boolean oldTooltips() { return !isModEnabled(CandyFeature.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
         public static boolean oldLighting() { return isModEnabled(CandyFeature.LIGHTING) && CANDY.oldLighting; }
-        public static boolean oldFog() { return isModEnabled(CandyFeature.FOG) && CANDY.oldFog; }
 
         public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyFeature.SKY_COLOR, CANDY.oldSkyColor); }
         public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyFeature.FOG_COLOR, CANDY.oldFogColor); }
