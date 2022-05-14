@@ -25,6 +25,7 @@ public enum CandyFeature implements IFeature
     LIGHTING,
     FOG,
     NETHER_FOG,
+    NETHER_LIGHTING,
     SUNRISE_SUNSET_FOG,
     FOG_COLOR,
     SKY_COLOR,

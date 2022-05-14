@@ -19,7 +19,7 @@ public abstract class ClientLevelMixin
     @Redirect(method = "getShade", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;constantAmbientLight()Z"))
     protected boolean onGetNetherShade(DimensionSpecialEffects instance)
     {
-        if (MixinConfig.Candy.oldLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
+        if (MixinConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;
         return instance.constantAmbientLight();
     }

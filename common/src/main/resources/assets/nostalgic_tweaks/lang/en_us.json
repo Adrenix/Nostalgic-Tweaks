@@ -128,6 +128,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingScreens.@Tooltip": "Bring back the old world loading screens.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLighting": "Old Light Rendering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLighting.@Tooltip": "Bring back the old lighting rendering from alpha/beta.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNetherLighting": "Old Nether Lighting",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNetherLighting.@Tooltip": "Bring back the old Nether lighting. This tweak changes the brightness and light shading directions in the Nether.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldFog": "Old Fog Rendering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldFog.@Tooltip": "Bring back the old fog rendering from alpha/beta.\n\nHere are the old render distance types and their values,§a far§r:§2 16§r,§e normal§r:§6 8§r,§3 short§r:§b 4§r, and §5tiny: §d2§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNetherFog": "Old Nether Fog",
