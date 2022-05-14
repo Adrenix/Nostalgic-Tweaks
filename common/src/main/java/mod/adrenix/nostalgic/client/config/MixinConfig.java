@@ -84,11 +84,11 @@ public abstract class MixinConfig
     public static class Candy
     {
         public static boolean fixItemModelGaps() { return isModEnabled(CandyFeature.FIX_ITEM_MODEL_GAP) && CANDY.fixItemModelGap; }
+        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
         public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyFeature.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
         public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyFeature.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
         public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyFeature.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyFeature.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
-        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
         public static boolean oldNoSelectedItemName() { return isModEnabled(CandyFeature.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
         public static boolean oldExplosionParticles() { return isModEnabled(CandyFeature.EXPLOSION_PARTICLES) && CANDY.oldExplosionParticles; }
         public static boolean oldNoDamageParticles() { return isModEnabled(CandyFeature.NO_DAMAGE_PARTICLES) && CANDY.oldNoDamageParticles; }
@@ -98,6 +98,7 @@ public abstract class MixinConfig
         public static boolean oldBlueVoidOverride() { return isModEnabled(CandyFeature.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
         public static boolean oldFlatEnchantment() { return isModEnabled(CandyFeature.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
         public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
+        public static boolean oldNetherLighting() { return isModEnabled(CandyFeature.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
         public static boolean oldSunriseAtNorth() { return isModEnabled(CandyFeature.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
         public static boolean oldVersionOverlay() { return isModEnabled(CandyFeature.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
         public static boolean oldLoadingScreens() { return isModEnabled(CandyFeature.LOADING_SCREENS) && CANDY.oldLoadingScreens; }

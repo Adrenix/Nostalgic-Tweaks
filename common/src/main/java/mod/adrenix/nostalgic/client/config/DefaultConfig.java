@@ -37,6 +37,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_ALPHA_LOGO = true;
         public static final boolean OLD_LOGO_OUTLINE = true;
         public static final boolean OLD_LOADING_SCREENS = true;
+        public static final boolean OLD_NETHER_BRIGHTNESS = true;
         public static final boolean OLD_LIGHTING = true;
         public static final boolean OLD_FOG = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
