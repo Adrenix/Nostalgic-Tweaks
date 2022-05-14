@@ -1,6 +1,8 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;

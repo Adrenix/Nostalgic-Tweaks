@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
 import net.minecraft.client.gui.components.Button;
