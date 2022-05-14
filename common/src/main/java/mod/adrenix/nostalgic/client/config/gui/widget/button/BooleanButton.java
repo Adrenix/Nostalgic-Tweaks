@@ -1,5 +1,6 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
+import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.gui.components.Button;

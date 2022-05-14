@@ -8,6 +8,8 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
+import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
 import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;

@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
@@ -71,7 +71,7 @@ public class GenericSlider extends AbstractSliderButton
 
     @Override protected void applyValue() { this.setCurrent.accept((int) (this.min + Math.abs(this.max - this.min) * this.value)); }
     @Override
-    protected void updateMessage()
+    public void updateMessage()
     {
         ChatFormatting color = this.getColorFromSpeed();
         String header = "";
