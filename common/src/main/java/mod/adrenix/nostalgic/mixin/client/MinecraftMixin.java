@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client;
 
+import mod.adrenix.nostalgic.client.config.CommonRegistry;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
@@ -25,6 +26,13 @@ public abstract class MinecraftMixin
 {
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
+
+    static
+    {
+        // Loading the config as early as possible to prevent NPEs during mixin applications.
+        if (CommonRegistry.cache == null)
+            CommonRegistry.preloadConfiguration();
+    }
 
     /**
      * Prevents the hand swing animation when dropping an item.
