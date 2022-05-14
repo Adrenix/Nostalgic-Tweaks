@@ -17,7 +17,9 @@ public abstract class DefaultConfig
 
     public static class Candy
     {
+        public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
+        public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
         public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;
@@ -31,7 +33,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_2D_THROWN_ITEMS = true;
         public static final boolean OLD_2D_ENCHANTED_ITEMS = false;
         public static final boolean OLD_TITLE_SCREEN = true;
+        public static final boolean OLD_TITLE_BACKGROUND = true;
         public static final boolean OLD_ALPHA_LOGO = true;
+        public static final boolean OLD_LOGO_OUTLINE = true;
         public static final boolean OLD_LOADING_SCREENS = true;
         public static final boolean OLD_LIGHTING = true;
         public static final boolean OLD_FOG = true;

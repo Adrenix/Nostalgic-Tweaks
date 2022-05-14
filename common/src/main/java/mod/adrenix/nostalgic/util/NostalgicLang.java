@@ -115,6 +115,7 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_WORLD = "gui.nostalgic_tweaks.config.candy.category.world";
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";
+        public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
     }
 
     public static class Cloth
