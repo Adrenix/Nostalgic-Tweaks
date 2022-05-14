@@ -88,6 +88,7 @@ public abstract class MixinConfig
         public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyFeature.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
         public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyFeature.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyFeature.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
+        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
         public static boolean oldNoSelectedItemName() { return isModEnabled(CandyFeature.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
         public static boolean oldExplosionParticles() { return isModEnabled(CandyFeature.EXPLOSION_PARTICLES) && CANDY.oldExplosionParticles; }
         public static boolean oldNoDamageParticles() { return isModEnabled(CandyFeature.NO_DAMAGE_PARTICLES) && CANDY.oldNoDamageParticles; }
@@ -96,6 +97,7 @@ public abstract class MixinConfig
         public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyFeature.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }
         public static boolean oldBlueVoidOverride() { return isModEnabled(CandyFeature.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
         public static boolean oldFlatEnchantment() { return isModEnabled(CandyFeature.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
+        public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
         public static boolean oldSunriseAtNorth() { return isModEnabled(CandyFeature.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
         public static boolean oldVersionOverlay() { return isModEnabled(CandyFeature.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
         public static boolean oldLoadingScreens() { return isModEnabled(CandyFeature.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
@@ -104,6 +106,7 @@ public abstract class MixinConfig
         public static boolean oldFlatThrowing() { return isModEnabled(CandyFeature.FLAT_THROWN_ITEMS) && CANDY.old2dThrownItems; }
         public static boolean oldLightFlicker() { return isModEnabled(CandyFeature.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
         public static boolean oldSquareBorder() { return isModEnabled(CandyFeature.SQUARE_BORDER) && CANDY.oldSquareBorder; }
+        public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
         public static boolean oldButtonHover() { return isModEnabled(CandyFeature.BUTTON_HOVER) && CANDY.oldButtonHover; }
         public static boolean oldItemHolding() { return isModEnabled(CandyFeature.ITEM_HOLDING) && CANDY.oldItemHolding; }
         public static boolean oldItemMerging() { return isModEnabled(CandyFeature.ITEM_MERGING) && CANDY.oldItemMerging; }
@@ -120,14 +123,15 @@ public abstract class MixinConfig
         public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyFeature.FOG_COLOR, CANDY.oldFogColor); }
         public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyFeature.BLUE_VOID, CANDY.oldBlueVoid); }
 
-        public static String getOverlayText()
+        private static String parseColor(String text)
         {
-            String overlay = CANDY.oldOverlayText;
-            overlay = overlay.replaceAll("%v", SharedConstants.getCurrentVersion().getName());
-            overlay = overlay.replaceAll("%", "§");
-
-            return overlay;
+            text = text.replaceAll("%v", SharedConstants.getCurrentVersion().getName());
+            text = text.replaceAll("%", "§");
+            return text;
         }
+
+        public static String getOverlayText() { return parseColor(CANDY.oldOverlayText); }
+        public static String getVersionText() { return parseColor(CANDY.titleVersionText); }
     }
 
     /* Animation Injection Helpers */

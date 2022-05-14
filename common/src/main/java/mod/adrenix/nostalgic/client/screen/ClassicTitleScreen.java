@@ -10,7 +10,6 @@ import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
-import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.language.I18n;
@@ -27,6 +27,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -50,6 +51,7 @@ public class ClassicTitleScreen extends TitleScreen
     protected long updateLogoDelay;
     protected float updateCounter;
     protected static final Random RANDOM = new Random();
+    private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
 
     /* Constructor */
 
@@ -60,6 +62,14 @@ public class ClassicTitleScreen extends TitleScreen
     }
 
     /* Overrides */
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    {
+        if (keyCode == GLFW.GLFW_KEY_M && this.minecraft != null)
+            this.minecraft.setScreen(new ClassicTitleScreen());
+        return true;
+    }
 
     @Override
     public void tick()
@@ -74,7 +84,10 @@ public class ClassicTitleScreen extends TitleScreen
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        this.renderDirtBackground(0);
+        if (MixinConfig.Candy.oldTitleBackground())
+            this.renderDirtBackground(0);
+        else
+            this.panorama.render(partialTick, 1.0F);
 
         if (this.updateLogoDelay == 0L)
             this.updateLogoDelay = Util.getMillis();
@@ -89,10 +102,22 @@ public class ClassicTitleScreen extends TitleScreen
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.MINECRAFT_LOGO);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            this.blitOutlineBlack(this.width / 2 - 137, 30, (x, y) -> {
-                this.blit(poseStack, x, y, 0, 0, 155, 44);
-                this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
-            });
+
+            int width = this.width / 2 - 137;
+            int height = 30;
+
+            if (MixinConfig.Candy.oldLogoOutline())
+            {
+                this.blit(poseStack, width, height, 0, 0, 155, 44);
+                this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+            }
+            else
+            {
+                this.blitOutlineBlack(width, height, (x, y) -> {
+                    this.blit(poseStack, x, y, 0, 0, 155, 44);
+                    this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                });
+            }
         }
 
         ClassicTitleScreen.isGameReady = true;
@@ -115,13 +140,13 @@ public class ClassicTitleScreen extends TitleScreen
             poseStack.popPose();
         }
 
-        String minecraft = "Minecraft " + SharedConstants.getCurrentVersion().getName();
-        minecraft = this.minecraft.isDemo() ? minecraft + " Demo" : minecraft + ("release".equalsIgnoreCase(this.minecraft.getVersionType()) ? "" : "/" + this.minecraft.getVersionType());
+        String minecraft = MixinConfig.Candy.getVersionText();
 
-        if (Minecraft.checkModStatus().shouldReportAsModified())
-            minecraft = minecraft + I18n.get("menu.modded");
+        if (Minecraft.checkModStatus().shouldReportAsModified() && !MixinConfig.Candy.removeTitleModLoaderText())
+            minecraft = minecraft + "/" + this.minecraft.getVersionType() + I18n.get("menu.modded");
 
-        TitleScreen.drawString(poseStack, this.font, minecraft, 2, 2, 5263440);
+        int versionColor = MixinConfig.Candy.oldTitleBackground() && !minecraft.contains("§") ? 5263440 : 0xFFFFFF;
+        TitleScreen.drawString(poseStack, this.font, minecraft, 2, 2, versionColor);
         TitleScreen.drawString(poseStack, this.font, COPYRIGHT_TEXT, this.width - this.font.width(COPYRIGHT_TEXT) - 2, this.height - 10, 0xFFFFFF);
 
         for (GuiEventListener child : this.children())

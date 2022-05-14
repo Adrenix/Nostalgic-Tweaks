@@ -60,6 +60,11 @@ public class ClientConfig implements ConfigData
     {
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
 
@@ -138,15 +143,33 @@ public class ClientConfig implements ConfigData
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         public boolean oldTitleScreen = DefaultConfig.Candy.OLD_TITLE_SCREEN;
         static { CandyFeature.TITLE_SCREEN.setKey("oldTitleScreen"); }
 
         @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
+        static { CandyFeature.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
         static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
+        static { CandyFeature.LOGO_OUTLINE.setKey("oldLogoOutline"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
