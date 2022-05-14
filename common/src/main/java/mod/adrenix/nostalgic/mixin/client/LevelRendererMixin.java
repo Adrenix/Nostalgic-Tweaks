@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.CommonRegistry;
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.util.MixinInjector;
@@ -42,10 +41,6 @@ public abstract class LevelRendererMixin
     @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/renderer/RenderBuffers;)V", at = @At(value = "TAIL"))
     protected void onInitLevelRenderer(Minecraft minecraft, RenderBuffers renderBuffers, CallbackInfo callback)
     {
-        // This class gets initialized before the config is loaded on Forge, so we have to initialize the config earlier than usual.
-        if (CommonRegistry.cache == null)
-            CommonRegistry.preloadConfiguration();
-
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.getBuilder();
 
