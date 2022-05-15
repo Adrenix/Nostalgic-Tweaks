@@ -112,7 +112,6 @@ public abstract class MixinConfig
         public static boolean oldItemHolding() { return isModEnabled(CandyFeature.ITEM_HOLDING) && CANDY.oldItemHolding; }
         public static boolean oldItemMerging() { return isModEnabled(CandyFeature.ITEM_MERGING) && CANDY.oldItemMerging; }
         public static boolean oldTitleScreen() { return isModEnabled(CandyFeature.TITLE_SCREEN) && CANDY.oldTitleScreen; }
-        public static boolean oldCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) && CANDY.oldCloudHeight; }
         public static boolean oldFlatFrames() { return isModEnabled(CandyFeature.FLAT_FRAMES) && CANDY.old2dFrames; }
         public static boolean oldTerrainFog() { return isModEnabled(CandyFeature.TERRAIN_FOG) && CANDY.oldTerrainFog; }
         public static boolean oldHorizonFog() { return isModEnabled(CandyFeature.HORIZON_FOG) && CANDY.oldHorizonFog; }
@@ -134,6 +133,8 @@ public abstract class MixinConfig
 
         public static String getOverlayText() { return parseColor(CANDY.oldOverlayText); }
         public static String getVersionText() { return parseColor(CANDY.titleVersionText); }
+
+        public static int getCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
     }
 
     /* Animation Injection Helpers */

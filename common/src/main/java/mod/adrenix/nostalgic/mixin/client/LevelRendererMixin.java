@@ -119,8 +119,8 @@ public abstract class LevelRendererMixin
     @Redirect(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;getCloudHeight()F"))
     protected float onGetCloudHeight(DimensionSpecialEffects instance)
     {
-        if (MixinConfig.Candy.oldCloudHeight() && this.minecraft.level != null && this.minecraft.level.dimension() == Level.OVERWORLD)
-            return 108F;
+        if (this.minecraft.level != null && this.minecraft.level.dimension() == Level.OVERWORLD)
+            return MixinConfig.Candy.getCloudHeight();
         return instance.getCloudHeight();
     }
 
