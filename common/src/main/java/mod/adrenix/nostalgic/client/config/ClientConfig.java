@@ -210,7 +210,10 @@ public class ClientConfig implements ConfigData
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
+        @NostalgicEntry.Gui.SliderType(slider = NostalgicEntry.Gui.Slider.CLOUD_SLIDER)
+        @NostalgicEntry.Gui.DisabledInteger(disabled = 192)
+        @ConfigEntry.BoundedDiscrete(min = 108, max = 192)
+        public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
         static { CandyFeature.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
 
         @NostalgicEntry.Gui.Server

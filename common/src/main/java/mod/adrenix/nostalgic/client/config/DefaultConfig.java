@@ -17,6 +17,7 @@ public abstract class DefaultConfig
 
     public static class Candy
     {
+        public static final int OLD_CLOUD_HEIGHT = 108;
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
@@ -43,7 +44,6 @@ public abstract class DefaultConfig
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
-        public static final boolean OLD_CLOUD_HEIGHT = true;
         public static final boolean OLD_SWEEP_PARTICLES = true;
         public static final boolean OLD_EXPLOSION_PARTICLES = true;
         public static final boolean OLD_SUNRISE_AT_NORTH = true;

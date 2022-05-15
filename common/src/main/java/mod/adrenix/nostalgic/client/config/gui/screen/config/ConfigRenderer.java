@@ -187,6 +187,16 @@ public record ConfigRenderer(ConfigScreen parent)
                                 entry.setCurrent(!entry.getCurrent());
                             }
 
+                            if (value instanceof Integer && !isDisableIgnored)
+                            {
+                                NostalgicEntry.Gui.DisabledInteger disabledInteger = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.DisabledInteger.class);
+                                if (disabledInteger != null)
+                                {
+                                    EntryCache<Integer> entryInteger = EntryCache.get(group, key);
+                                    entryInteger.setCurrent(disabledInteger.disabled());
+                                }
+                            }
+
                             if (value instanceof DefaultConfig.VERSION && !isDisableIgnored)
                             {
                                 EntryCache<DefaultConfig.VERSION> version = EntryCache.get(group, key);

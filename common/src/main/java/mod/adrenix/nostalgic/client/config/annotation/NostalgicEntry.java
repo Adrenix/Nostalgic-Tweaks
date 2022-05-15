@@ -59,6 +59,13 @@ public abstract class NostalgicEntry
 
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
+        public @interface DisabledInteger
+        {
+            int disabled();
+        }
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
         public @interface Sub
         {
             Category group();
@@ -74,6 +81,7 @@ public abstract class NostalgicEntry
         public enum Slider
         {
             SWING_SLIDER,
+            CLOUD_SLIDER,
             INTENSITY_SLIDER
         }
     }

@@ -48,22 +48,28 @@ public class GenericSlider extends AbstractSliderButton
         this.setValue(this.current.get());
     }
 
-    protected ChatFormatting getColorFromSpeed()
+    protected ChatFormatting getColorFromInt()
     {
         ChatFormatting color = ChatFormatting.GREEN;
-        int speed = this.current.get();
+        int integer = this.current.get();
 
         if (this.slider == NostalgicEntry.Gui.Slider.SWING_SLIDER)
         {
-            if (speed == DefaultConfig.Swing.DISABLED) color = ChatFormatting.RED;
-            else if (speed == DefaultConfig.Swing.PHOTOSENSITIVE) color = ChatFormatting.YELLOW;
-            else if (speed <= DefaultConfig.Swing.NEW_SPEED) color = ChatFormatting.GOLD;
+            if (integer == DefaultConfig.Swing.DISABLED) color = ChatFormatting.RED;
+            else if (integer == DefaultConfig.Swing.PHOTOSENSITIVE) color = ChatFormatting.YELLOW;
+            else if (integer <= DefaultConfig.Swing.NEW_SPEED) color = ChatFormatting.GOLD;
         }
         else if (this.slider == NostalgicEntry.Gui.Slider.INTENSITY_SLIDER)
         {
-            if (speed == 0) color = ChatFormatting.RED;
-            else if (speed <= 50) color = ChatFormatting.GOLD;
-            else if (speed > 100) color = ChatFormatting.AQUA;
+            if (integer == 0) color = ChatFormatting.RED;
+            else if (integer <= 50) color = ChatFormatting.GOLD;
+            else if (integer > 100) color = ChatFormatting.AQUA;
+        }
+        else if (this.slider == NostalgicEntry.Gui.Slider.CLOUD_SLIDER)
+        {
+            if (integer == 128) color = ChatFormatting.YELLOW;
+            else if (integer == 192) color = ChatFormatting.GOLD;
+            else color = ChatFormatting.LIGHT_PURPLE;
         }
 
         return color;
@@ -73,7 +79,7 @@ public class GenericSlider extends AbstractSliderButton
     @Override
     public void updateMessage()
     {
-        ChatFormatting color = this.getColorFromSpeed();
+        ChatFormatting color = this.getColorFromInt();
         String header = "";
         String suffix = "";
 
@@ -85,6 +91,14 @@ public class GenericSlider extends AbstractSliderButton
         {
             header = new TranslatableComponent(NostalgicLang.Gui.SETTINGS_INTENSITY).getString();
             suffix = "%";
+        }
+        else if (this.slider == NostalgicEntry.Gui.Slider.CLOUD_SLIDER)
+        {
+            int height = this.current.get();
+            if (height == 108) header = new TranslatableComponent(NostalgicLang.Gui.SETTINGS_ALPHA).getString();
+            else if (height == 128) header = new TranslatableComponent(NostalgicLang.Gui.SETTINGS_BETA).getString();
+            else if (height == 192) header = new TranslatableComponent(NostalgicLang.Gui.SETTINGS_MODERN).getString();
+            else header = new TranslatableComponent(NostalgicLang.Gui.SETTINGS_CUSTOM).getString();
         }
 
         String text = header + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;
