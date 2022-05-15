@@ -189,7 +189,12 @@ public record ConfigRenderer(ConfigScreen parent)
 
                             if (value instanceof Integer && !isDisableIgnored)
                             {
-                                NostalgicEntry.Gui.DisabledInteger disabledInteger = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.DisabledInteger.class);
+                                NostalgicEntry.Gui.DisabledInteger disabledInteger = ConfigReflect.getAnnotation(
+                                    entry.getGroup(),
+                                    entry.getEntryKey(),
+                                    NostalgicEntry.Gui.DisabledInteger.class
+                                );
+
                                 if (disabledInteger != null)
                                 {
                                     EntryCache<Integer> entryInteger = EntryCache.get(group, key);
