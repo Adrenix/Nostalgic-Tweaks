@@ -129,14 +129,17 @@ public abstract class NostalgicEntry
                     Gui.Sub sub = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Sub.class);
                     Gui.Placement placement = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Placement.class);
 
-                    if (placement == null && sub != null && sub.group() == this && entry.getGroup() == this.groupType)
-                        translated.put(new TranslatableComponent(entry.getLangKey()).getString(), entry);
-                    else if (placement != null)
+                    if (sub != null && sub.group() == this && entry.getGroup() == this.groupType)
                     {
-                        if (entry.getPosition() == Gui.Position.TOP)
-                            top.put(entry.getOrder(), entry);
-                        else if (entry.getPosition() == Gui.Position.BOTTOM)
-                            bottom.put(entry.getOrder(), entry);
+                        if (placement == null)
+                            translated.put(new TranslatableComponent(entry.getLangKey()).getString(), entry);
+                        else
+                        {
+                            if (entry.getPosition() == Gui.Position.TOP)
+                                top.put(entry.getOrder(), entry);
+                            else if (entry.getPosition() == Gui.Position.BOTTOM)
+                                bottom.put(entry.getOrder(), entry);
+                        }
                     }
                 }));
 

@@ -21,12 +21,6 @@ import java.util.function.Supplier;
 
 public record ConfigRenderer(ConfigScreen parent)
 {
-    private void generateRow(GroupType group, String key, Object value)
-    {
-        if (ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Sub.class) == null)
-            this.parent.getWidgets().getConfigRowList().addRow(group, key, value);
-    }
-
     private void addRows(GroupType group)
     {
         NostalgicEntry.Category.getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
@@ -42,12 +36,15 @@ public record ConfigRenderer(ConfigScreen parent)
         all.forEach((key, value) -> {
             NostalgicEntry.Gui.Placement placement = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Placement.class);
 
-            if (placement == null)
-                middle.put(key, value);
-            else if (placement.pos() == NostalgicEntry.Gui.Position.TOP)
-                top.put(key, value);
-            else if (placement.pos() == NostalgicEntry.Gui.Position.BOTTOM)
-                bottom.put(key, value);
+            if (ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Sub.class) == null)
+            {
+                if (placement == null)
+                    middle.put(key, value);
+                else if (placement.pos() == NostalgicEntry.Gui.Position.TOP)
+                    top.put(key, value);
+                else if (placement.pos() == NostalgicEntry.Gui.Position.BOTTOM)
+                    bottom.put(key, value);
+            }
         });
 
         SortedMap<String, Object> sortTop = new TreeMap<>(orderComparator);
@@ -58,9 +55,9 @@ public record ConfigRenderer(ConfigScreen parent)
         sortMiddle.putAll(middle);
         sortBottom.putAll(bottom);
 
-        sortTop.forEach((key, value) -> this.generateRow(group, key, value));
-        sortMiddle.forEach((key, value) -> this.generateRow(group, key, value));
-        sortBottom.forEach((key, value) -> this.generateRow(group, key, value));
+        sortTop.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
+        sortMiddle.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
+        sortBottom.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
     }
 
     private void addFound()
