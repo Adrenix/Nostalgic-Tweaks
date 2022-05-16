@@ -83,47 +83,62 @@ public abstract class MixinConfig
 
     public static class Candy
     {
-        public static boolean fixItemModelGaps() { return isModEnabled(CandyFeature.FIX_ITEM_MODEL_GAP) && CANDY.fixItemModelGap; }
+        /* Boolean Tweaks */
+
+        // Title Screen Candy
         public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
         public static boolean titleBottomLeftText() { return isModEnabled(CandyFeature.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
-        public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyFeature.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
-        public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyFeature.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
-        public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyFeature.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
+        public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
+        public static boolean oldTitleScreen() { return isModEnabled(CandyFeature.TITLE_SCREEN) && CANDY.oldTitleScreen; }
+        public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
+        public static boolean oldAlphaLogo() { return isModEnabled(CandyFeature.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
+
+        // Interface Candy
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyFeature.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
         public static boolean oldNoSelectedItemName() { return isModEnabled(CandyFeature.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
+        public static boolean oldDurabilityColors() { return isModEnabled(CandyFeature.DURABILITY_COLORS) && CANDY.oldDurabilityColors; }
+        public static boolean oldVersionOverlay() { return isModEnabled(CandyFeature.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
+        public static boolean oldLoadingScreens() { return isModEnabled(CandyFeature.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
+        public static boolean oldButtonHover() { return isModEnabled(CandyFeature.BUTTON_HOVER) && CANDY.oldButtonHover; }
+        public static boolean oldTooltips() { return !isModEnabled(CandyFeature.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
+
+        // Item Candy
+        public static boolean fixItemModelGaps() { return isModEnabled(CandyFeature.FIX_ITEM_MODEL_GAP) && CANDY.fixItemModelGap; }
+        public static boolean oldFloatingItems() { return isModEnabled(CandyFeature.FLAT_ITEMS) && CANDY.old2dItems; }
+        public static boolean oldFlatEnchantment() { return isModEnabled(CandyFeature.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
+        public static boolean oldFlatThrowing() { return isModEnabled(CandyFeature.FLAT_THROWN_ITEMS) && CANDY.old2dThrownItems; }
+        public static boolean oldItemHolding() { return isModEnabled(CandyFeature.ITEM_HOLDING) && CANDY.oldItemHolding; }
+        public static boolean oldItemMerging() { return isModEnabled(CandyFeature.ITEM_MERGING) && CANDY.oldItemMerging; }
+        public static boolean oldFlatFrames() { return isModEnabled(CandyFeature.FLAT_FRAMES) && CANDY.old2dFrames; }
+
+        // Particle Candy
+        public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyFeature.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
+        public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyFeature.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
+        public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyFeature.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
         public static boolean oldExplosionParticles() { return isModEnabled(CandyFeature.EXPLOSION_PARTICLES) && CANDY.oldExplosionParticles; }
         public static boolean oldNoDamageParticles() { return isModEnabled(CandyFeature.NO_DAMAGE_PARTICLES) && CANDY.oldNoDamageParticles; }
         public static boolean oldOpaqueExperience() { return isModEnabled(CandyFeature.OPAQUE_EXPERIENCE) && CANDY.oldOpaqueExperience; }
-        public static boolean oldDurabilityColors() { return isModEnabled(CandyFeature.DURABILITY_COLORS) && CANDY.oldDurabilityColors; }
+        public static boolean oldSweepParticles() { return isModEnabled(CandyFeature.SWEEP) && CANDY.oldSweepParticles; }
+
+        // World Candy
         public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyFeature.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }
         public static boolean oldBlueVoidOverride() { return isModEnabled(CandyFeature.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
-        public static boolean oldFlatEnchantment() { return isModEnabled(CandyFeature.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
-        public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
         public static boolean oldNetherLighting() { return isModEnabled(CandyFeature.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
         public static boolean oldSunriseAtNorth() { return isModEnabled(CandyFeature.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
-        public static boolean oldVersionOverlay() { return isModEnabled(CandyFeature.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
-        public static boolean oldLoadingScreens() { return isModEnabled(CandyFeature.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
-        public static boolean oldSweepParticles() { return isModEnabled(CandyFeature.SWEEP) && CANDY.oldSweepParticles; }
-        public static boolean oldFloatingItems() { return isModEnabled(CandyFeature.FLAT_ITEMS) && CANDY.old2dItems; }
-        public static boolean oldFlatThrowing() { return isModEnabled(CandyFeature.FLAT_THROWN_ITEMS) && CANDY.old2dThrownItems; }
         public static boolean oldLightFlicker() { return isModEnabled(CandyFeature.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
         public static boolean oldSquareBorder() { return isModEnabled(CandyFeature.SQUARE_BORDER) && CANDY.oldSquareBorder; }
-        public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
-        public static boolean oldButtonHover() { return isModEnabled(CandyFeature.BUTTON_HOVER) && CANDY.oldButtonHover; }
-        public static boolean oldItemHolding() { return isModEnabled(CandyFeature.ITEM_HOLDING) && CANDY.oldItemHolding; }
-        public static boolean oldItemMerging() { return isModEnabled(CandyFeature.ITEM_MERGING) && CANDY.oldItemMerging; }
-        public static boolean oldTitleScreen() { return isModEnabled(CandyFeature.TITLE_SCREEN) && CANDY.oldTitleScreen; }
-        public static boolean oldFlatFrames() { return isModEnabled(CandyFeature.FLAT_FRAMES) && CANDY.old2dFrames; }
         public static boolean oldTerrainFog() { return isModEnabled(CandyFeature.TERRAIN_FOG) && CANDY.oldTerrainFog; }
         public static boolean oldHorizonFog() { return isModEnabled(CandyFeature.HORIZON_FOG) && CANDY.oldHorizonFog; }
-        public static boolean oldAlphaLogo() { return isModEnabled(CandyFeature.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
         public static boolean oldNetherFog() { return isModEnabled(CandyFeature.NETHER_FOG) && CANDY.oldNetherFog; }
-        public static boolean oldTooltips() { return !isModEnabled(CandyFeature.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
         public static boolean oldLighting() { return isModEnabled(CandyFeature.LIGHTING) && CANDY.oldLighting; }
+
+        /* Version Tweaks */
 
         public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyFeature.SKY_COLOR, CANDY.oldSkyColor); }
         public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyFeature.FOG_COLOR, CANDY.oldFogColor); }
         public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyFeature.BLUE_VOID, CANDY.oldBlueVoid); }
+
+        /* String Tweaks */
 
         private static String parseColor(String text)
         {
@@ -134,6 +149,8 @@ public abstract class MixinConfig
 
         public static String getOverlayText() { return parseColor(CANDY.oldOverlayText); }
         public static String getVersionText() { return parseColor(CANDY.titleVersionText); }
+
+        /* Integer Tweaks */
 
         public static int getCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
     }

@@ -17,46 +17,55 @@ public abstract class DefaultConfig
 
     public static class Candy
     {
-        public static final int OLD_CLOUD_HEIGHT = 108;
+        // Title Screen Candy
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
-        public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
-        public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
-        public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
+        public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
+        public static final boolean OLD_TITLE_SCREEN = true;
+        public static final boolean OLD_TITLE_BACKGROUND = true;
+        public static final boolean OLD_ALPHA_LOGO = true;
+        public static final boolean OLD_LOGO_OUTLINE = true;
+
+        // Interface Candy
+        public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;
         public static final boolean OLD_TOOLTIP_BOXES = true;
-        public static final boolean OLD_LIGHT_FLICKER = true;
         public static final boolean OLD_DURABILITY_COLORS = true;
+        public static final boolean OLD_LOADING_SCREENS = true;
+        public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
+        public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
+
+        // Item Candy
+        public static final boolean FIX_ITEM_MODEL_GAP = true;
         public static final boolean OLD_ITEM_HOLDING = true;
         public static final boolean OLD_ITEM_MERGING = true;
         public static final boolean OLD_2D_ITEMS = true;
         public static final boolean OLD_2D_FRAMES = true;
         public static final boolean OLD_2D_THROWN_ITEMS = true;
         public static final boolean OLD_2D_ENCHANTED_ITEMS = false;
-        public static final boolean OLD_TITLE_SCREEN = true;
-        public static final boolean OLD_TITLE_BACKGROUND = true;
-        public static final boolean OLD_ALPHA_LOGO = true;
-        public static final boolean OLD_LOGO_OUTLINE = true;
-        public static final boolean OLD_LOADING_SCREENS = true;
+
+        // Particle Candy
+        public static final boolean OLD_SWEEP_PARTICLES = true;
+        public static final boolean OLD_OPAQUE_EXPERIENCE = true;
+        public static final boolean OLD_NO_DAMAGE_PARTICLES = true;
+        public static final boolean OLD_NO_CRIT_PARTICLES = true;
+        public static final boolean OLD_NO_MAGIC_HIT_PARTICLES = true;
+        public static final boolean OLD_EXPLOSION_PARTICLES = true;
+        public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
+
+        // World Candy
+        public static final int OLD_CLOUD_HEIGHT = 108;
+        public static final boolean OLD_LIGHT_FLICKER = true;
         public static final boolean OLD_NETHER_LIGHTING = true;
         public static final boolean OLD_LIGHTING = true;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
-        public static final boolean OLD_SWEEP_PARTICLES = true;
-        public static final boolean OLD_EXPLOSION_PARTICLES = true;
         public static final boolean OLD_SUNRISE_AT_NORTH = true;
-        public static final boolean OLD_OPAQUE_EXPERIENCE = true;
-        public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
-        public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
-        public static final boolean OLD_NO_DAMAGE_PARTICLES = true;
-        public static final boolean OLD_NO_CRIT_PARTICLES = true;
-        public static final boolean OLD_NO_MAGIC_HIT_PARTICLES = true;
         public static final boolean OLD_SQUARE_BORDER = true;
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
-        public static final boolean FIX_ITEM_MODEL_GAP = true;
 
         public static final VERSION OLD_SKY_COLOR = VERSION.ALPHA;
         public static final VERSION OLD_FOG_COLOR = VERSION.ALPHA;
