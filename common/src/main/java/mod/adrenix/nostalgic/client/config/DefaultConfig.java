@@ -21,6 +21,7 @@ public abstract class DefaultConfig
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
+        public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
         public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;

@@ -157,7 +157,9 @@ public class ClassicTitleScreen extends TitleScreen
             minecraft = minecraft + "/" + this.minecraft.getVersionType() + I18n.get("menu.modded");
 
         int versionColor = MixinConfig.Candy.oldTitleBackground() && !minecraft.contains("§") ? 5263440 : 0xFFFFFF;
-        TitleScreen.drawString(poseStack, this.font, minecraft, 2, 2, versionColor);
+        int height = MixinConfig.Candy.titleBottomLeftText() ? this.height - 10 : 2;
+
+        TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, COPYRIGHT_TEXT, this.width - this.font.width(COPYRIGHT_TEXT) - 2, this.height - 10, 0xFFFFFF);
 
         for (GuiEventListener child : this.children())

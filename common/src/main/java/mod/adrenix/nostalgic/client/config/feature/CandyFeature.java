@@ -19,6 +19,7 @@ public enum CandyFeature implements IFeature
     TITLE_SCREEN,
     TITLE_BACKGROUND,
     TITLE_MOD_LOADER_TEXT,
+    TITLE_BOTTOM_LEFT_TEXT,
     ALPHA_LOGO,
     LOGO_OUTLINE,
     LOADING_SCREENS,
