@@ -21,21 +21,46 @@ import java.util.function.Supplier;
 
 public record ConfigRenderer(ConfigScreen parent)
 {
+    private void generateRow(GroupType group, String key, Object value)
+    {
+        if (ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Sub.class) == null)
+            this.parent.getWidgets().getConfigRowList().addRow(group, key, value);
+    }
+
     private void addRows(GroupType group)
     {
         NostalgicEntry.Category.getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
 
-        Comparator<String> comparator = Comparator.comparing((String key) -> new TranslatableComponent(EntryCache.get(group, key)
-            .getLangKey())
-            .getString()
-        );
+        Comparator<String> translationComparator = Comparator.comparing((String key) -> new TranslatableComponent(EntryCache.get(group, key).getLangKey()).getString());
+        Comparator<String> orderComparator = Comparator.comparing((String key) -> EntryCache.get(group, key).getOrder());
 
-        SortedMap<String, Object> sorted = new TreeMap<>(comparator);
-        sorted.putAll(ConfigReflect.getGroup(group));
-        sorted.forEach((key, value) -> {
-            if (ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Sub.class) == null)
-                this.parent.getWidgets().getConfigRowList().addRow(group, key, value);
+        HashMap<String, Object> top = new HashMap<>();
+        HashMap<String, Object> middle = new HashMap<>();
+        HashMap<String, Object> bottom = new HashMap<>();
+        HashMap<String, Object> all = new HashMap<>(ConfigReflect.getGroup(group));
+
+        all.forEach((key, value) -> {
+            NostalgicEntry.Gui.Placement placement = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Placement.class);
+
+            if (placement == null)
+                middle.put(key, value);
+            else if (placement.pos() == NostalgicEntry.Gui.Position.TOP)
+                top.put(key, value);
+            else if (placement.pos() == NostalgicEntry.Gui.Position.BOTTOM)
+                bottom.put(key, value);
         });
+
+        SortedMap<String, Object> sortTop = new TreeMap<>(orderComparator);
+        SortedMap<String, Object> sortMiddle = new TreeMap<>(translationComparator);
+        SortedMap<String, Object> sortBottom = new TreeMap<>(orderComparator);
+
+        sortTop.putAll(top);
+        sortMiddle.putAll(middle);
+        sortBottom.putAll(bottom);
+
+        sortTop.forEach((key, value) -> this.generateRow(group, key, value));
+        sortMiddle.forEach((key, value) -> this.generateRow(group, key, value));
+        sortBottom.forEach((key, value) -> this.generateRow(group, key, value));
     }
 
     private void addFound()

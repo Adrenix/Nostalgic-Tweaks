@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.config.reflect;
 
 import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,10 +10,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EntryCache<T>
 {
     private static final HashMap<String, EntryCache<?>> cache = new HashMap<>();
-    private final GroupType group;
     private final String key;
-    private T value;
+    private final GroupType group;
     private StatusType status;
+    private T value;
+    private int order;
+    private NostalgicEntry.Gui.Position position;
 
     private static String generateKey(GroupType group, String key) { return group.toString() + "@" + key; }
     static
@@ -38,9 +41,16 @@ public class EntryCache<T>
         this.value = value;
         this.status = StatusType.FAIL;
 
-        NostalgicEntry.Gui.EntryStatus annotation = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.EntryStatus.class);
-        if (annotation != null)
-            this.status = annotation.status();
+        NostalgicEntry.Gui.EntryStatus status = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.EntryStatus.class);
+        if (status != null)
+            this.status = status.status();
+
+        NostalgicEntry.Gui.Placement placement = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Placement.class);
+        if (placement != null)
+        {
+            this.position = placement.pos();
+            this.order = placement.order();
+        }
     }
 
     public static HashMap<String, EntryCache<?>> all() { return cache; }
@@ -54,6 +64,9 @@ public class EntryCache<T>
 
         return found.get();
     }
+
+    @Nullable public int getOrder() { return this.order; }
+    @Nullable public NostalgicEntry.Gui.Position getPosition() { return this.position; }
 
     public T getDefault() { return ConfigReflect.getDefault(this.group, this.key); }
     public T getCurrent() { return this.value; }

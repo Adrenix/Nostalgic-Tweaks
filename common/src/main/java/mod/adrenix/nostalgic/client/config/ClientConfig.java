@@ -63,33 +63,11 @@ public class ClientConfig implements ConfigData
          */
 
         @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
-
-        @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean oldTitleScreen = DefaultConfig.Candy.OLD_TITLE_SCREEN;
-        static { CandyFeature.TITLE_SCREEN.setKey("oldTitleScreen"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
-        static { CandyFeature.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
-        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
-        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.TOP, order = 1)
+        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
+        static { CandyFeature.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
@@ -102,6 +80,32 @@ public class ClientConfig implements ConfigData
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
         static { CandyFeature.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
+        static { CandyFeature.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 1)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 2)
+        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
+        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 3)
+        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
 
         /**
          * Interface Candy

@@ -34,12 +34,12 @@ public abstract class EventHelper
 
         if (screen.getClass() == TitleScreen.class)
         {
-            if (MixinConfig.Candy.oldTitleScreen())
+            if (MixinConfig.Candy.overrideTitleScreen())
                 setScreen.set(new ClassicTitleScreen());
             else
                 ClassicTitleScreen.isGameReady = true;
         }
-        else if (!MixinConfig.Candy.oldTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
+        else if (!MixinConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
             setScreen.set(new TitleScreen());
     }
 

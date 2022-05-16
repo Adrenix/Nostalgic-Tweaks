@@ -86,10 +86,10 @@ public abstract class MixinConfig
         /* Boolean Tweaks */
 
         // Title Screen Candy
+        public static boolean overrideTitleScreen() { return isModEnabled(CandyFeature.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
         public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
         public static boolean titleBottomLeftText() { return isModEnabled(CandyFeature.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
         public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
-        public static boolean oldTitleScreen() { return isModEnabled(CandyFeature.TITLE_SCREEN) && CANDY.oldTitleScreen; }
         public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
         public static boolean oldAlphaLogo() { return isModEnabled(CandyFeature.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
 

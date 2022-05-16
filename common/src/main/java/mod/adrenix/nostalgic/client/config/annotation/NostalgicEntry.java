@@ -57,6 +57,20 @@ public abstract class NostalgicEntry
         @Target({ElementType.FIELD})
         public @interface Restart {}
 
+        public enum Position
+        {
+            TOP,
+            BOTTOM
+        }
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface Placement
+        {
+            Position pos();
+            int order();
+        }
+
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
         public @interface DisabledInteger
@@ -71,18 +85,18 @@ public abstract class NostalgicEntry
             Category group();
         }
 
-        @Retention(RetentionPolicy.RUNTIME)
-        @Target({ElementType.FIELD})
-        public @interface SliderType
-        {
-            Slider slider() default Slider.SWING_SLIDER;
-        }
-
         public enum Slider
         {
             SWING_SLIDER,
             CLOUD_SLIDER,
             INTENSITY_SLIDER
+        }
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface SliderType
+        {
+            Slider slider() default Slider.SWING_SLIDER;
         }
     }
 
@@ -103,20 +117,36 @@ public abstract class NostalgicEntry
             this.langKey = langKey;
         }
 
-        public ConfigRowList.CategoryRow getCategory(ConfigRowList list)
+        private ConfigRowList.CategoryRow getCategory(ConfigRowList list)
         {
             return new ConfigRowList.CategoryRow(list, new TranslatableComponent(this.langKey), () -> {
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
                 HashMap<String, EntryCache<?>> translated = new HashMap<>();
+                HashMap<Integer, EntryCache<?>> bottom = new HashMap<>();
+                HashMap<Integer, EntryCache<?>> top = new HashMap<>();
 
                 EntryCache.all().forEach(((key, entry) -> {
                     Gui.Sub sub = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Sub.class);
-                    if (sub != null && sub.group() == this && entry.getGroup() == this.groupType)
+                    Gui.Placement placement = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Placement.class);
+
+                    if (placement == null && sub != null && sub.group() == this && entry.getGroup() == this.groupType)
                         translated.put(new TranslatableComponent(entry.getLangKey()).getString(), entry);
+                    else if (placement != null)
+                    {
+                        if (entry.getPosition() == Gui.Position.TOP)
+                            top.put(entry.getOrder(), entry);
+                        else if (entry.getPosition() == Gui.Position.BOTTOM)
+                            bottom.put(entry.getOrder(), entry);
+                    }
                 }));
 
-                SortedMap<String, EntryCache<?>> sorted = new TreeMap<>(translated);
-                sorted.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
+                SortedMap<Integer, EntryCache<?>> sortTop = new TreeMap<>(top);
+                SortedMap<String, EntryCache<?>> sortMiddle = new TreeMap<>(translated);
+                SortedMap<Integer, EntryCache<?>> sortBottom = new TreeMap<>(bottom);
+
+                sortTop.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
+                sortMiddle.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
+                sortBottom.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
 
                 return rows;
             });
