@@ -198,14 +198,9 @@ public abstract class ItemInHandRendererMixin
     @Inject(method = "renderItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V"))
     protected void onRenderItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldItemHolding() && leftHand == true)
+        if (MixinConfig.Candy.oldItemHolding())
         {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(-5F));
-            poseStack.translate(0.01F, -0.01F, -0.015F);
-        }
-        else if (MixinConfig.Candy.oldItemHolding()) 
-        {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(5F));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);
         }
     }
