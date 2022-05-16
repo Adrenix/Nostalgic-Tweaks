@@ -10,6 +10,7 @@ This update is focused on fixing reported crashes and compatibility issues, squa
 - Added a new tweak: "Old Logo Outline" (Title Screen Candy) - Removes the black outline around static logos on the title screen.
 - Added a new tweak: "Remove Mod Loader Text" (Title Screen Candy) - Removes mod loader related text from the title screen.
 - Added a new tweak: "Title Version Text" (Title Screen Candy) - Add custom text to the title screen, comes with color support.
+- Added a new tweak: "Bottom Left Title Text" (Title Screen Candy) - Move the title text from the top-left to bottom-left.
 - Added a new tweak: "Old Nether Lighting" (World Candy) - Changes brightness and light shading directions in the Nether.
 - Added a new tweak: "Old Fog Terrain" (World Candy) - Brings back the old terrain fog from alpha/beta.
 - Added a new tweak: "Old Fog Horizon" (World Candy) - Brings back the old horizon fog from alpha.
