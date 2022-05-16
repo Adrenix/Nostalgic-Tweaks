@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.screen;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -24,6 +25,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
@@ -51,6 +53,7 @@ public class ClassicTitleScreen extends TitleScreen
     protected long updateLogoDelay;
     protected float updateCounter;
     protected static final Random RANDOM = new Random();
+    public static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
 
     /* Constructor */
@@ -87,7 +90,15 @@ public class ClassicTitleScreen extends TitleScreen
         if (MixinConfig.Candy.oldTitleBackground())
             this.renderDirtBackground(0);
         else
+        {
             this.panorama.render(partialTick, 1.0F);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, OVERLAY);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            TitleScreen.blit(poseStack, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
+        }
 
         if (this.updateLogoDelay == 0L)
             this.updateLogoDelay = Util.getMillis();
