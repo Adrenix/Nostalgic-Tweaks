@@ -1,6 +1,9 @@
-# Nostalgic Tweaks - 1.18.2 (v1.0.3) Development Branch
+# Nostalgic Tweaks - 1.18.2 Development Branch
 ### Forge & Fabric
-This is the 1.18.2 (v1.0.3) development branch for N.T.
+This is the 1.18.2 development branch for N.T.
+
+### Current Version
+v1.0.3
 
 ### Related Development Branches
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
