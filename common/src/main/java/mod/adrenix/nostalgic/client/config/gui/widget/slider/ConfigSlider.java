@@ -1,8 +1,9 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
 import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
 

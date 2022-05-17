@@ -25,17 +25,39 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         NostalgicEntry.Category.getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
 
-        Comparator<String> comparator = Comparator.comparing((String key) -> new TranslatableComponent(EntryCache.get(group, key)
-            .getLangKey())
-            .getString()
-        );
+        Comparator<String> translationComparator = Comparator.comparing((String key) -> new TranslatableComponent(EntryCache.get(group, key).getLangKey()).getString());
+        Comparator<String> orderComparator = Comparator.comparing((String key) -> EntryCache.get(group, key).getOrder());
 
-        SortedMap<String, Object> sorted = new TreeMap<>(comparator);
-        sorted.putAll(ConfigReflect.getGroup(group));
-        sorted.forEach((key, value) -> {
+        HashMap<String, Object> top = new HashMap<>();
+        HashMap<String, Object> middle = new HashMap<>();
+        HashMap<String, Object> bottom = new HashMap<>();
+        HashMap<String, Object> all = new HashMap<>(ConfigReflect.getGroup(group));
+
+        all.forEach((key, value) -> {
+            NostalgicEntry.Gui.Placement placement = ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Placement.class);
+
             if (ConfigReflect.getAnnotation(group, key, NostalgicEntry.Gui.Sub.class) == null)
-                this.parent.getWidgets().getConfigRowList().addRow(group, key, value);
+            {
+                if (placement == null)
+                    middle.put(key, value);
+                else if (placement.pos() == NostalgicEntry.Gui.Position.TOP)
+                    top.put(key, value);
+                else if (placement.pos() == NostalgicEntry.Gui.Position.BOTTOM)
+                    bottom.put(key, value);
+            }
         });
+
+        SortedMap<String, Object> sortTop = new TreeMap<>(orderComparator);
+        SortedMap<String, Object> sortMiddle = new TreeMap<>(translationComparator);
+        SortedMap<String, Object> sortBottom = new TreeMap<>(orderComparator);
+
+        sortTop.putAll(top);
+        sortMiddle.putAll(middle);
+        sortBottom.putAll(bottom);
+
+        sortTop.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
+        sortMiddle.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
+        sortBottom.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
     }
 
     private void addFound()
@@ -176,15 +198,30 @@ public record ConfigRenderer(ConfigScreen parent)
                             EntryCache<Boolean> entry = EntryCache.get(group, key);
 
                             boolean isDisableIgnored = ConfigReflect.getAnnotation(
-                                    entry.getGroup(),
-                                    entry.getEntryKey(),
-                                    NostalgicEntry.Gui.IgnoreDisable.class
+                                entry.getGroup(),
+                                entry.getEntryKey(),
+                                NostalgicEntry.Gui.IgnoreDisable.class
                             ) != null;
 
                             if (value instanceof Boolean && !isDisableIgnored)
                             {
                                 entry.reset();
                                 entry.setCurrent(!entry.getCurrent());
+                            }
+
+                            if (value instanceof Integer && !isDisableIgnored)
+                            {
+                                NostalgicEntry.Gui.DisabledInteger disabledInteger = ConfigReflect.getAnnotation(
+                                    entry.getGroup(),
+                                    entry.getEntryKey(),
+                                    NostalgicEntry.Gui.DisabledInteger.class
+                                );
+
+                                if (disabledInteger != null)
+                                {
+                                    EntryCache<Integer> entryInteger = EntryCache.get(group, key);
+                                    entryInteger.setCurrent(disabledInteger.disabled());
+                                }
                             }
 
                             if (value instanceof DefaultConfig.VERSION && !isDisableIgnored)
@@ -236,7 +273,7 @@ public record ConfigRenderer(ConfigScreen parent)
             Component serverTag = new TranslatableComponent(NostalgicLang.Gui.GENERAL_SEARCH_SERVER);
 
             return new TextGroup(list, NostalgicUtil.Text.combine(new Component[] {
-                    help, newTag, conflictTag, resetTag, clientTag, serverTag
+                help, newTag, conflictTag, resetTag, clientTag, serverTag
             })).getRows();
         };
 

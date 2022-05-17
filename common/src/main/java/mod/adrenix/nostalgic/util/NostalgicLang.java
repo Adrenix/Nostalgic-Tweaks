@@ -56,6 +56,7 @@ public abstract class NostalgicLang
         public static final String SETTINGS_SPEED = "gui.nostalgic_tweaks.config.speed";
         public static final String SETTINGS_SPEED_HELP = "gui.nostalgic_tweaks.config.speed.@PrefixText";
         public static final String SETTINGS_INTENSITY = "gui.nostalgic_tweaks.config.intensity";
+        public static final String SETTINGS_CUSTOM = "gui.nostalgic_tweaks.config.custom";
         public static final String SETTINGS_ALPHA = "gui.nostalgic_tweaks.config.alpha";
         public static final String SETTINGS_BETA = "gui.nostalgic_tweaks.config.beta";
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
@@ -115,6 +116,7 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_WORLD = "gui.nostalgic_tweaks.config.candy.category.world";
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";
+        public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
     }
 
     public static class Cloth

@@ -32,6 +32,7 @@ public class NostalgicForge
 
             // Register sounds
             ForgeSoundInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+            ForgeSoundInit.register();
         }
     }
 }

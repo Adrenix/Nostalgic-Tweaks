@@ -200,7 +200,7 @@ public abstract class ItemInHandRendererMixin
     {
         if (MixinConfig.Candy.oldItemHolding())
         {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(5F));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);
         }
     }

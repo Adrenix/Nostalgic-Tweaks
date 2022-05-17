@@ -58,6 +58,65 @@ public class ClientConfig implements ConfigData
     public EyeCandy eyeCandy = new EyeCandy();
     public static class EyeCandy
     {
+        /**
+         * Title Screen Candy
+         */
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.TOP, order = 1)
+        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
+        static { CandyFeature.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
+        static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
+        static { CandyFeature.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
+        static { CandyFeature.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 1)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 2)
+        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
+        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 3)
+        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
+
+        /**
+         * Interface Candy
+         */
+
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
@@ -83,15 +142,31 @@ public class ClientConfig implements ConfigData
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
-        static { CandyFeature.LIGHT_FLICKER.setKey("oldLightFlicker"); }
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        public boolean oldDurabilityColors = DefaultConfig.Candy.OLD_DURABILITY_COLORS;
+        static { CandyFeature.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
+        static { CandyFeature.LOADING_SCREENS.setKey("oldLoadingScreens"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldDurabilityColors = DefaultConfig.Candy.OLD_DURABILITY_COLORS;
-        static { CandyFeature.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
+        public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
+        static { CandyFeature.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
+        static { CandyFeature.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
+
+        /**
+         * Item Candy
+         */
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
@@ -136,47 +211,9 @@ public class ClientConfig implements ConfigData
         public boolean fixItemModelGap = DefaultConfig.Candy.FIX_ITEM_MODEL_GAP;
         static { CandyFeature.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldTitleScreen = DefaultConfig.Candy.OLD_TITLE_SCREEN;
-        static { CandyFeature.TITLE_SCREEN.setKey("oldTitleScreen"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
-        static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
-        static { CandyFeature.LOADING_SCREENS.setKey("oldLoadingScreens"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
-        static { CandyFeature.LIGHTING.setKey("oldLighting"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldFog = DefaultConfig.Candy.OLD_FOG;
-        static { CandyFeature.FOG.setKey("oldFog"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldNetherFog = DefaultConfig.Candy.OLD_NETHER_FOG;
-        static { CandyFeature.NETHER_FOG.setKey("oldNetherFog"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
-        static { CandyFeature.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
+        /**
+         * Particle Candy
+         */
 
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
@@ -186,39 +223,9 @@ public class ClientConfig implements ConfigData
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldExplosionParticles = DefaultConfig.Candy.OLD_EXPLOSION_PARTICLES;
-        static { CandyFeature.EXPLOSION_PARTICLES.setKey("oldExplosionParticles"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
-        static { CandyFeature.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldSunriseAtNorth = DefaultConfig.Candy.OLD_SUNRISE_AT_NORTH;
-        static { CandyFeature.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
         public boolean oldOpaqueExperience = DefaultConfig.Candy.OLD_OPAQUE_EXPERIENCE;
         static { CandyFeature.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
-        static { CandyFeature.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
-        public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
-        static { CandyFeature.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
         @NostalgicEntry.Gui.Server
         @NostalgicEntry.Gui.EntryStatus
@@ -240,22 +247,64 @@ public class ClientConfig implements ConfigData
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
-        static { CandyFeature.SKY_COLOR.setKey("oldSkyColor"); }
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        public boolean oldExplosionParticles = DefaultConfig.Candy.OLD_EXPLOSION_PARTICLES;
+        static { CandyFeature.EXPLOSION_PARTICLES.setKey("oldExplosionParticles"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
+        static { CandyFeature.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
+
+        /**
+         * World Candy
+         */
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
-        static { CandyFeature.FOG_COLOR.setKey("oldFogColor"); }
+        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
+        static { CandyFeature.LIGHT_FLICKER.setKey("oldLightFlicker"); }
 
         @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.Restart
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
-        static { CandyFeature.BLUE_VOID.setKey("oldBlueVoid"); }
+        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
+        static { CandyFeature.LIGHTING.setKey("oldLighting"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
+        static { CandyFeature.NETHER_LIGHTING.setKey("oldNetherLighting"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
+        static { CandyFeature.TERRAIN_FOG.setKey("oldTerrainFog"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldHorizonFog = DefaultConfig.Candy.OLD_HORIZON_FOG;
+        static { CandyFeature.HORIZON_FOG.setKey("oldHorizonFog"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldNetherFog = DefaultConfig.Candy.OLD_NETHER_FOG;
+        static { CandyFeature.NETHER_FOG.setKey("oldNetherFog"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldSunriseAtNorth = DefaultConfig.Candy.OLD_SUNRISE_AT_NORTH;
+        static { CandyFeature.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
 
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
@@ -274,6 +323,35 @@ public class ClientConfig implements ConfigData
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
         static { CandyFeature.SQUARE_BORDER.setKey("oldSquareBorder"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public DefaultConfig.VERSION oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
+        static { CandyFeature.SKY_COLOR.setKey("oldSkyColor"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public DefaultConfig.VERSION oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
+        static { CandyFeature.FOG_COLOR.setKey("oldFogColor"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.Restart
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
+        static { CandyFeature.BLUE_VOID.setKey("oldBlueVoid"); }
+
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @NostalgicEntry.Gui.SliderType(slider = NostalgicEntry.Gui.Slider.CLOUD_SLIDER)
+        @NostalgicEntry.Gui.DisabledInteger(disabled = 192)
+        @ConfigEntry.BoundedDiscrete(min = 108, max = 192)
+        public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
+        static { CandyFeature.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
     }
 
     @NostalgicEntry.Gui.Ignore

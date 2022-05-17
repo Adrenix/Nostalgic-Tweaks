@@ -31,8 +31,7 @@ public abstract class ItemInHandRendererForgeMixin
         remap = false,
         method = "renderHandsWithItems",
         index = 8,
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             ordinal = 0,
             target = "Lnet/minecraftforge/client/ForgeHooksClient;renderSpecificFirstPersonHand(Lnet/minecraft/world/InteractionHand;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFLnet/minecraft/world/item/ItemStack;)Z"
@@ -57,8 +56,7 @@ public abstract class ItemInHandRendererForgeMixin
     @Redirect(
         remap = false,
         method = "tick",
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             ordinal = 0,
             target = "Lnet/minecraftforge/client/ForgeHooksClient;shouldCauseReequipAnimation(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;I)Z"

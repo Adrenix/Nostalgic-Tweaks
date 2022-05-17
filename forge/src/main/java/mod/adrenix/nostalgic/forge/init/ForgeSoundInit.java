@@ -20,7 +20,7 @@ public abstract class ForgeSoundInit
         new SoundEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
     );
 
-    static
+    public static void register()
     {
         SoundUtil.Event.BLANK = BLANK;
         SoundUtil.Event.PLAYER_HURT = PLAYER_HURT;

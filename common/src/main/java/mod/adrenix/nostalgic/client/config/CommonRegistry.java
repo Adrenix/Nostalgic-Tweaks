@@ -59,7 +59,7 @@ public abstract class CommonRegistry
 
     public static void preloadConfiguration()
     {
-        NostalgicTweaks.LOGGER.info("Initializing config prematurely for mod loader compatibility");
+        NostalgicTweaks.LOGGER.info("Initializing config prematurely for mixin compatibility");
         initializeConfiguration();
     }
 

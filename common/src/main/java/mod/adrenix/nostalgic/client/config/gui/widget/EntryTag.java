@@ -78,7 +78,7 @@ public class EntryTag extends AbstractWidget
 
         if (isMouseOver && screen instanceof ConfigScreen)
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(tooltip, 38), mouseX, mouseY));
+                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(tooltip, 38), mouseX, mouseY));
     }
 
     @Override
