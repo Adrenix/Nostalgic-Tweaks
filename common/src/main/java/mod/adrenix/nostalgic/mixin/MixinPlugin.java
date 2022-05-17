@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic;
+package mod.adrenix.nostalgic.mixin;
 
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
