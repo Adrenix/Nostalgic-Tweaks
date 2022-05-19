@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public abstract class MixinInjector
+public abstract class MixinUtil
 {
     /* Mixin Constants */
     public static final int PRIORITY = 1001;

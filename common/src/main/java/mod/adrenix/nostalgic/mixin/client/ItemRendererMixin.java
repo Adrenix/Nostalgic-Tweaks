@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(value = ItemRenderer.class, priority = MixinInjector.PRIORITY)
+@Mixin(value = ItemRenderer.class, priority = MixinUtil.PRIORITY)
 public abstract class ItemRendererMixin
 {
     @Shadow protected abstract void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer);
@@ -40,8 +40,8 @@ public abstract class ItemRendererMixin
     @Redirect(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BakedQuad;getTintIndex()I"))
     protected int onRenderQuad(BakedQuad instance, PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay)
     {
-        if (MixinInjector.Item.isLightingFlat())
-            MixinInjector.Item.setNormalQuad(poseStack.last(), instance);
+        if (MixinUtil.Item.isLightingFlat())
+            MixinUtil.Item.setNormalQuad(poseStack.last(), instance);
         return instance.getTintIndex();
     }
 
@@ -52,7 +52,7 @@ public abstract class ItemRendererMixin
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
     protected void onGetGlint(ItemRenderer renderer, BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, ItemStack unused1, ItemTransforms.TransformType transformer, boolean leftHand, PoseStack unused2, MultiBufferSource buffer)
     {
-        boolean noGlobalGlint = MixinConfig.Candy.oldFlatEnchantment() && MixinInjector.Item.isLightingFlat();
+        boolean noGlobalGlint = MixinConfig.Candy.oldFlatEnchantment() && MixinUtil.Item.isLightingFlat();
         boolean noEntityGlint = MixinConfig.Candy.oldFloatingItems() && transformer == ItemTransforms.TransformType.GROUND;
         boolean noFrameGlint = MixinConfig.Candy.oldFlatFrames() && transformer == ItemTransforms.TransformType.FIXED;
 

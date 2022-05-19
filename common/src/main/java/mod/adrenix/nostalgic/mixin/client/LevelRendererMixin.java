@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -54,7 +54,7 @@ public abstract class LevelRendererMixin
             case BETA, MODERN -> -48.0F;
         };
 
-        MixinInjector.World.buildSkyDisc(builder, height);
+        MixinUtil.World.buildSkyDisc(builder, height);
         this.blueBuffer.upload(builder);
     }
 
@@ -65,8 +65,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderSky", at = @At(value = "HEAD"))
     protected void onCacheSkyPose(PoseStack poseStack, Matrix4f matrix4f, float f, Camera camera, boolean bl, Runnable runnable, CallbackInfo callback)
     {
-        MixinInjector.World.blueModelView = poseStack.last().pose().copy();
-        MixinInjector.World.blueProjection = matrix4f.copy();
+        MixinUtil.World.blueModelView = poseStack.last().pose().copy();
+        MixinUtil.World.blueProjection = matrix4f.copy();
     }
 
     /**
@@ -79,11 +79,11 @@ public abstract class LevelRendererMixin
     {
         if (MixinConfig.Candy.getBlueVoid() != DefaultConfig.VERSION.MODERN)
         {
-            MixinInjector.World.setBlueVoidColor();
+            MixinUtil.World.setBlueVoidColor();
             ShaderInstance shader = RenderSystem.getShader();
 
             if (this.blueBuffer != null && shader != null)
-                this.blueBuffer.drawWithShader(MixinInjector.World.blueModelView, MixinInjector.World.blueProjection, shader);
+                this.blueBuffer.drawWithShader(MixinUtil.World.blueModelView, MixinUtil.World.blueProjection, shader);
         }
     }
 
@@ -108,8 +108,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderLevel", at = @At(value = "HEAD"))
     protected void onStartLevelRendering(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        MixinInjector.Item.levelPoseStack = poseStack.last();
-        MixinInjector.Item.levelBufferSource = this.renderBuffers.bufferSource();
+        MixinUtil.Item.levelPoseStack = poseStack.last();
+        MixinUtil.Item.levelBufferSource = this.renderBuffers.bufferSource();
     }
 
     /**
@@ -129,12 +129,12 @@ public abstract class LevelRendererMixin
      * Controlled by the old at north sunrise toggle.
      */
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 2, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
-    protected float onRenderSkyDiscColor(float vanilla) { return MixinInjector.World.getSunriseRotation(vanilla); }
+    protected float onRenderSkyDiscColor(float vanilla) { return MixinUtil.World.getSunriseRotation(vanilla); }
 
     /**
      * Change the rotation of the sun/moon renderer on YP by 90 degrees.
      * Controlled by the old at north sunrise toggle.
      */
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
-    protected float onRenderSun(float vanilla) { return MixinInjector.World.getSunriseRotation(vanilla); }
+    protected float onRenderSun(float vanilla) { return MixinUtil.World.getSunriseRotation(vanilla); }
 }

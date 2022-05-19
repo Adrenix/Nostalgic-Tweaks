@@ -6,7 +6,7 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -72,7 +72,7 @@ public abstract class ItemInHandRendererMixin
     @ModifyArg(method = "renderHandsWithItems", index = 5, at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
     protected ItemStack onRenderItem(AbstractClientPlayer player, float f1, float f2, InteractionHand hand, float f3, ItemStack itemStack, float f4, PoseStack matrix, MultiBufferSource buffer, int i)
     {
-        return MixinInjector.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return MixinUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
     }
 
     /**

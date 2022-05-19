@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
@@ -23,8 +23,8 @@ public abstract class ThrownItemRendererMixin
     {
         if (MixinConfig.Candy.oldFlatThrowing())
         {
-            MixinInjector.Item.flatten(poseStack);
-            MixinInjector.Item.disableDiffusedLighting();
+            MixinUtil.Item.flatten(poseStack);
+            MixinUtil.Item.disableDiffusedLighting();
         }
     }
 
@@ -35,6 +35,6 @@ public abstract class ThrownItemRendererMixin
     @Inject(method = "render", at = @At(shift = At.Shift.AFTER, value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderStatic(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;IILcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
     protected <T extends Entity> void onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        MixinInjector.Item.enableDiffusedLighting();
+        MixinUtil.Item.enableDiffusedLighting();
     }
 }

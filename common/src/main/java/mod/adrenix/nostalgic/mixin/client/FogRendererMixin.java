@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client;
 
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = FogRenderer.class, priority = MixinInjector.PRIORITY)
+@Mixin(value = FogRenderer.class, priority = MixinUtil.PRIORITY)
 public abstract class FogRendererMixin
 {
     /**
