@@ -62,7 +62,6 @@ public class ClientConfig implements ConfigData
          * Title Screen Candy
          */
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
@@ -76,20 +75,19 @@ public class ClientConfig implements ConfigData
         public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
         static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
 
+        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         public DefaultConfig.VERSION oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
         static { CandyFeature.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
         static { CandyFeature.LOGO_OUTLINE.setKey("oldLogoOutline"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
@@ -101,22 +99,35 @@ public class ClientConfig implements ConfigData
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 1)
-        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
-        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+        public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
+        static { CandyFeature.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
 
         @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 2)
-        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
-        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+        public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
+        static { CandyFeature.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
         @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 3)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 4)
+        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
+        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 5)
         public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
 
         /**
@@ -279,21 +290,18 @@ public class ClientConfig implements ConfigData
         public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
         static { CandyFeature.LIGHTING.setKey("oldLighting"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
         static { CandyFeature.NETHER_LIGHTING.setKey("oldNetherLighting"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
         static { CandyFeature.TERRAIN_FOG.setKey("oldTerrainFog"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
@@ -349,7 +357,6 @@ public class ClientConfig implements ConfigData
         public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
         static { CandyFeature.BLUE_VOID.setKey("oldBlueVoid"); }
 
-        @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)

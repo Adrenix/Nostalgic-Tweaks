@@ -87,7 +87,9 @@ public abstract class MixinConfig
 
         // Title Screen Candy
         public static boolean overrideTitleScreen() { return isModEnabled(CandyFeature.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
+        public static boolean removeAccessibilityButton() { return isModEnabled(CandyFeature.TITLE_ACCESSIBILITY) && CANDY.removeTitleAccessibilityButton; }
         public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
+        public static boolean removeLanguageButton() { return isModEnabled(CandyFeature.TITLE_LANGUAGE) && CANDY.removeTitleLanguageButton; }
         public static boolean titleBottomLeftText() { return isModEnabled(CandyFeature.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
         public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
         public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }

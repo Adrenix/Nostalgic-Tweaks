@@ -22,6 +22,8 @@ public abstract class DefaultConfig
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
+        public static final boolean REMOVE_TITLE_ACCESSIBILITY = false;
+        public static final boolean REMOVE_TITLE_LANGUAGE = false;
         public static final boolean OVERRIDE_TITLE_SCREEN = true;
         public static final boolean OLD_TITLE_BACKGROUND = true;
         public static final boolean OLD_ALPHA_LOGO = true;

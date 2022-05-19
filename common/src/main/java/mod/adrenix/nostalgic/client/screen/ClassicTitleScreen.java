@@ -22,6 +22,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsScreen;
@@ -69,6 +70,7 @@ public class ClassicTitleScreen extends TitleScreen
         " *   * * *   * *** *** * * * * *    * "
     };
 
+    private final boolean isEasterEgged;
     private final float updateCounter;
     private long updateScreenDelay;
     private LogoEffectRandomizer[][] logoEffects;
@@ -87,8 +89,14 @@ public class ClassicTitleScreen extends TitleScreen
 
     public ClassicTitleScreen()
     {
+        this.isEasterEgged = (double) this.getRand().nextFloat() < 1.0E-4;
         this.updateCounter = this.getRand().nextFloat();
         this.updateScreenDelay = 0L;
+
+        if (this.isEasterEgged)
+            MINECRAFT[2] = " * * * * * * * *   **  **  *** **   * ";
+        else
+            MINECRAFT[2] = " * * * * * * * **  *   **  *** **   * ";
     }
 
     /* Overrides */
@@ -166,15 +174,39 @@ public class ClassicTitleScreen extends TitleScreen
 
             if (MixinConfig.Candy.oldLogoOutline())
             {
-                this.blit(poseStack, width, height, 0, 0, 155, 44);
-                this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                if (this.isEasterEgged)
+                {
+                    this.blit(poseStack, width, height, 0, 0, 99, 44);
+                    this.blit(poseStack, width + 99, height, 129, 0, 27, 44);
+                    this.blit(poseStack, width + 99 + 26, height, 126, 0, 3, 44);
+                    this.blit(poseStack, width + 99 + 26 + 3, height, 99, 0, 26, 44);
+                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                }
+                else
+                {
+                    this.blit(poseStack, width, height, 0, 0, 155, 44);
+                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                }
             }
             else
             {
-                this.blitOutlineBlack(width, height, (x, y) -> {
-                    this.blit(poseStack, x, y, 0, 0, 155, 44);
-                    this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
-                });
+                if (this.isEasterEgged)
+                {
+                    this.blitOutlineBlack(width, height, (x, y) -> {
+                        this.blit(poseStack, x, y, 0, 0, 99, 44);
+                        this.blit(poseStack, x + 99, y, 129, 0, 27, 44);
+                        this.blit(poseStack, x + 99 + 26, y, 126, 0, 3, 44);
+                        this.blit(poseStack, x + 99 + 26 + 3, y, 99, 0, 26, 44);
+                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                    });
+                }
+                else
+                {
+                    this.blitOutlineBlack(width, height, (x, y) -> {
+                        this.blit(poseStack, x, y, 0, 0, 155, 44);
+                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                    });
+                }
             }
         }
 
@@ -216,9 +248,9 @@ public class ClassicTitleScreen extends TitleScreen
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
 
-        setVisibility(this.alpha, layout == DefaultConfig.VERSION.ALPHA);
-        setVisibility(this.beta, layout == DefaultConfig.VERSION.BETA);
-        setVisibility(screen.getRenderables(), layout == DefaultConfig.VERSION.MODERN);
+        setLayoutVisibility(this.alpha, layout == DefaultConfig.VERSION.ALPHA);
+        setLayoutVisibility(this.beta, layout == DefaultConfig.VERSION.BETA);
+        setLayoutVisibility(screen.getRenderables(), layout == DefaultConfig.VERSION.MODERN);
 
         switch (layout)
         {
@@ -229,6 +261,8 @@ public class ClassicTitleScreen extends TitleScreen
                     if (child instanceof AbstractWidget)
                         ((AbstractWidget) child).setAlpha(1.0F);
                 }
+
+                this.setImageButtonVisibility();
 
                 for (Widget widget : screen.getRenderables())
                     widget.render(poseStack, mouseX, mouseY, partialTick);
@@ -254,7 +288,19 @@ public class ClassicTitleScreen extends TitleScreen
 
     /* Methods */
 
-    private void setVisibility(List<Widget> widgets, boolean visible)
+    private void setImageButtonVisibility()
+    {
+        IMixinScreen screen = (IMixinScreen) this;
+        for (Widget widget : screen.getRenderables())
+        {
+            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
+                ((ImageButton) widget).visible = !MixinConfig.Candy.removeLanguageButton();
+            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
+                ((ImageButton) widget).visible = !MixinConfig.Candy.removeAccessibilityButton();
+        }
+    }
+
+    private void setLayoutVisibility(List<Widget> widgets, boolean visible)
     {
         for (Widget widget : widgets)
         {
