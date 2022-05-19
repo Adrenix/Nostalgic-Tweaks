@@ -26,8 +26,9 @@ import java.util.function.Consumer;
 
 public abstract class MixinUtil
 {
-    /* Mixin Constants */
-    public static final int PRIORITY = 1001;
+    /* Mixin Utility Constants */
+
+    public static final int PRIORITY = 999;
 
     /* World Candy Injection Helpers */
 

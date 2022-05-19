@@ -1,12 +1,13 @@
 package mod.adrenix.nostalgic.mixin.client;
 
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.renderer.entity.ExperienceOrbRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(ExperienceOrbRenderer.class)
+@Mixin(value = ExperienceOrbRenderer.class, priority = MixinUtil.PRIORITY)
 public abstract class ExperienceOrbRendererMixin
 {
     /**
