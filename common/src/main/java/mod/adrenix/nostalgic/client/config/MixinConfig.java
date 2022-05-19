@@ -134,6 +134,7 @@ public abstract class MixinConfig
 
         /* Version Tweaks */
 
+        public static DefaultConfig.VERSION getButtonLayout() { return getVersion(CandyFeature.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
         public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyFeature.SKY_COLOR, CANDY.oldSkyColor); }
         public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyFeature.FOG_COLOR, CANDY.oldFogColor); }
         public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyFeature.BLUE_VOID, CANDY.oldBlueVoid); }

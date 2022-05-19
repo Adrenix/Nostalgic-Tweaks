@@ -76,6 +76,12 @@ public class ClientConfig implements ConfigData
         public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
         static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
 
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
+        public DefaultConfig.VERSION oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        static { CandyFeature.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
+
         @NostalgicEntry.Gui.New
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)

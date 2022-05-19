@@ -18,6 +18,7 @@ public abstract class DefaultConfig
     public static class Candy
     {
         // Title Screen Candy
+        public static final VERSION TITLE_BUTTON_LAYOUT = VERSION.MODERN;
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;

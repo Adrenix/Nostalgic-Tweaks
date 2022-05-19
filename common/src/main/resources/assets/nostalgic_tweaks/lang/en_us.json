@@ -43,9 +43,11 @@
   "gui.nostalgic_tweaks.config.alpha": "§aAlpha",
   "gui.nostalgic_tweaks.config.beta": "§eBeta",
   "gui.nostalgic_tweaks.config.modern": "§cModern",
+
   "gui.nostalgic_tweaks.config.status.wait": "This tweak has§c not§r been§e loaded§r yet. It is§4 impossible§r to detect if a mod conflict has occurred at this time.\n\n§eLoad a world and check again.",
   "gui.nostalgic_tweaks.config.status.warn": "This tweak is still in§6 development§r. It is possible you might run into§c bugs§r when this tweak is§a enabled§r.",
   "gui.nostalgic_tweaks.config.status.fail": "This tweak has encountered a mod§4 conflict§r or has§c not loaded§r.\n\nFor example, to§a load§e 2D floating items§r there§6 must§r be an§e item entity§r somewhere within the world.\n\n§eNote:§c It is§4 impossible§c for this mod to automatically find conflicting mods.",
+
   "gui.nostalgic_tweaks.config.tag.new": "New",
   "gui.nostalgic_tweaks.config.tag.new.@Tooltip": "This is a§c new§r tweak in this update.",
   "gui.nostalgic_tweaks.config.tag.client": "Client",
@@ -60,8 +62,10 @@
   "gui.nostalgic_tweaks.config.tag.sync.@Tooltip": "This binding is§d synced§r with the vanilla controls.",
   "gui.nostalgic_tweaks.config.tag.auto": "Auto Saved",
   "gui.nostalgic_tweaks.config.tag.auto.@Tooltip": "This binding is§a automatically saved§r when changed.",
+
   "gui.nostalgic_tweaks.config.search.empty": "No configuration entries found.",
   "gui.nostalgic_tweaks.config.search.invalidTag": "The search tag§9 %s§r is not valid.",
+
   "gui.nostalgic_tweaks.config.general.bindings.title": "Key Bindings",
   "gui.nostalgic_tweaks.config.general.override.title": "Override Options",
   "gui.nostalgic_tweaks.config.general.override.help": "This section will make§e changes§r to§a all§r configuration values. Use the§3 Disable All§r button to turn§4 off§r all mod tweaks. Use the§3 Enable All§r button to turn§2 on§r all mod tweaks.\n\nYou can§c cancel§r to§a undo§r any accidental edits.",
@@ -93,11 +97,17 @@
   "gui.nostalgic_tweaks.config.general.shortcut.save": "§aSave§r:§2 §lCtrl + S §r- Saves and exits the config menu.",
   "gui.nostalgic_tweaks.config.general.shortcut.exit": "§cExit§r:§4 §lEsc §r- Exit the config menu.",
   "gui.nostalgic_tweaks.config.general.shortcut.group": "§bChange Group§r:§3 §lCtrl + Left or Right§r or§3 §lAlt + Left or Right §r\nThis will change which config group you are in.",
+
   "gui.nostalgic_tweaks.config.candy.category.title": "Title Screen Candy",
   "gui.nostalgic_tweaks.config.candy.category.interface": "Interface Candy",
   "gui.nostalgic_tweaks.config.candy.category.item": "Item Candy",
   "gui.nostalgic_tweaks.config.candy.category.particle": "Particle Candy",
   "gui.nostalgic_tweaks.config.candy.category.world": "World Candy",
+
+  "gui.nostalgic_tweaks.config.candy.title.mods": "Mods and Texture Packs",
+  "gui.nostalgic_tweaks.config.candy.title.tutorial": "Play tutorial level",
+  "gui.nostalgic_tweaks.config.candy.title.copyright.alpha": "Copyright Mojang Specifications. Do not distribute.",
+  "gui.nostalgic_tweaks.config.candy.title.copyright.beta": "Copyright Mojang AB. Do not distribute.",
 
   "text.autoconfig.nostalgic_tweaks.title": "Settings",
   "text.autoconfig.nostalgic_tweaks.option.isModEnabled": "Mod Enabled",
@@ -129,6 +139,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldAlphaLogo.@Tooltip": "Bring back the old§a alpha§r animated Minecraft logo on the title screen. If§c disabled§r, the resource pack logo will be used.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLogoOutline": "Old Logo Outline",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLogoOutline.@Tooltip": "Remove the black outline around the static Minecraft logo.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldButtonLayout": "Old Button Layout",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldButtonLayout.@Tooltip": "Change the layout of the buttons on the title screen.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldOverlayText": "Old Version Text",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldOverlayText.@Tooltip": "Customize the overlay text that appears on the HUD when the§e old version overlay§r is§a enabled§r. Use §b%v§r to insert the current game version. Use §b%§r followed by a Minecraft color code to get formatting. For example, §b%4§r will make §4red§r.",

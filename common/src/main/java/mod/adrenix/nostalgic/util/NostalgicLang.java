@@ -9,6 +9,9 @@ public abstract class NostalgicLang
         public static final String GUI_CANCEL = "gui.cancel";
         public static final String GUI_DONE = "gui.done";
         public static final String READ_WORLD_DATA = "selectWorld.data_read";
+        public static final String MENU_SINGLEPLAYER = "menu.singleplayer";
+        public static final String MENU_MULTIPLAYER = "menu.multiplayer";
+        public static final String MENU_OPTIONS = "menu.options";
     }
 
     public static class Key
@@ -60,9 +63,11 @@ public abstract class NostalgicLang
         public static final String SETTINGS_ALPHA = "gui.nostalgic_tweaks.config.alpha";
         public static final String SETTINGS_BETA = "gui.nostalgic_tweaks.config.beta";
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
+
         public static final String STATUS_WAIT = "gui.nostalgic_tweaks.config.status.wait";
         public static final String STATUS_WARN = "gui.nostalgic_tweaks.config.status.warn";
         public static final String STATUS_FAIL = "gui.nostalgic_tweaks.config.status.fail";
+
         public static final String TAG_NEW = "gui.nostalgic_tweaks.config.tag.new";
         public static final String TAG_NEW_TOOLTIP = "gui.nostalgic_tweaks.config.tag.new.@Tooltip";
         public static final String TAG_CLIENT = "gui.nostalgic_tweaks.config.tag.client";
@@ -77,6 +82,7 @@ public abstract class NostalgicLang
         public static final String TAG_SYNC_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sync.@Tooltip";
         public static final String TAG_AUTO = "gui.nostalgic_tweaks.config.tag.auto";
         public static final String TAG_AUTO_TOOLTIP = "gui.nostalgic_tweaks.config.tag.auto.@Tooltip";
+
         public static final String SEARCH_EMPTY = "gui.nostalgic_tweaks.config.search.empty";
         public static final String SEARCH_INVALID = "gui.nostalgic_tweaks.config.search.invalidTag";
 
@@ -117,6 +123,11 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";
         public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
+
+        public static final String CANDY_TITLE_MODS = "gui.nostalgic_tweaks.config.candy.title.mods";
+        public static final String CANDY_TITLE_TUTORIAL = "gui.nostalgic_tweaks.config.candy.title.tutorial";
+        public static final String CANDY_TITLE_COPYRIGHT_ALPHA = "gui.nostalgic_tweaks.config.candy.title.copyright.alpha";
+        public static final String CANDY_TITLE_COPYRIGHT_BETA = "gui.nostalgic_tweaks.config.candy.title.copyright.beta";
     }
 
     public static class Cloth
