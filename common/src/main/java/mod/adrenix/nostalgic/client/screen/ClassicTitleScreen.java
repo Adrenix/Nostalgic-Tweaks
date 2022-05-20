@@ -80,7 +80,7 @@ public class ClassicTitleScreen extends TitleScreen
     private static final Random RANDOM = new Random();
     private static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
-    private final KeyMapping options = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
+    private final KeyMapping optionsKey = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
 
     private final List<Widget> alpha = new ArrayList<>();
     private final List<Widget> beta = new ArrayList<>();
@@ -124,7 +124,7 @@ public class ClassicTitleScreen extends TitleScreen
             return false;
         else if (keyCode == GLFW.GLFW_KEY_M)
             this.minecraft.setScreen(new ClassicTitleScreen());
-        else if (this.options != null && this.options.matches(keyCode, scanCode))
+        else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
             this.minecraft.setScreen(new SettingsScreen(this, false));
         return true;
     }
