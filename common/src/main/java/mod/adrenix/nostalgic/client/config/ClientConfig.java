@@ -338,6 +338,13 @@ public class ClientConfig implements ConfigData
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
         static { CandyFeature.SQUARE_BORDER.setKey("oldSquareBorder"); }
 
+        @NostalgicEntry.Gui.New
+        @NostalgicEntry.Gui.Client
+        @NostalgicEntry.Gui.EntryStatus
+        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        public boolean oldStars = DefaultConfig.Candy.OLD_STARS;
+        static { CandyFeature.STARS.setKey("oldStars"); }
+
         @NostalgicEntry.Gui.Client
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
@@ -351,7 +358,6 @@ public class ClientConfig implements ConfigData
         static { CandyFeature.FOG_COLOR.setKey("oldFogColor"); }
 
         @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.Restart
         @NostalgicEntry.Gui.EntryStatus
         @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
         public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;

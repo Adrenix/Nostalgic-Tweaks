@@ -11,7 +11,7 @@ import java.util.Map;
 
 public abstract class MixinConfig
 {
-    /* Configuration Injection References */
+    /* Configuration Mixin References */
 
     private static final ClientConfig.Animation ANIMATION = CommonRegistry.getAnimation();
     private static final ClientConfig.EyeCandy CANDY = CommonRegistry.getCandy();
@@ -30,7 +30,7 @@ public abstract class MixinConfig
         return CONFIG.isModEnabled;
     }
 
-    /* Swing Speed Injection Helpers */
+    /* Swing Speed Mixin Options */
 
     public static class Swing
     {
@@ -68,7 +68,7 @@ public abstract class MixinConfig
         public static int getGlobalSpeed() { return SWING.global; }
     }
 
-    /* Sound Injection Helpers */
+    /* Sound Mixin Options */
 
     public static class Sound
     {
@@ -79,7 +79,7 @@ public abstract class MixinConfig
         public static boolean oldXP() { return isModEnabled(SoundFeature.OLD_XP) && SOUND.oldXP; }
     }
 
-    /* Eye Candy Injection Helpers */
+    /* Eye Candy Mixin Options */
 
     public static class Candy
     {
@@ -133,6 +133,7 @@ public abstract class MixinConfig
         public static boolean oldHorizonFog() { return isModEnabled(CandyFeature.HORIZON_FOG) && CANDY.oldHorizonFog; }
         public static boolean oldNetherFog() { return isModEnabled(CandyFeature.NETHER_FOG) && CANDY.oldNetherFog; }
         public static boolean oldLighting() { return isModEnabled(CandyFeature.LIGHTING) && CANDY.oldLighting; }
+        public static boolean oldStars() { return isModEnabled(CandyFeature.STARS) && CANDY.oldStars; }
 
         /* Version Tweaks */
 
@@ -158,7 +159,7 @@ public abstract class MixinConfig
         public static int getCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
     }
 
-    /* Animation Injection Helpers */
+    /* Animation Mixin Options */
 
     public static class Animation
     {

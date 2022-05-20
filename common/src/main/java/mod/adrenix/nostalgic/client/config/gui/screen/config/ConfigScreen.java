@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.*;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
@@ -36,9 +37,17 @@ public class ConfigScreen extends Screen
         SWING(NostalgicLang.Cloth.SWING_TITLE),
         SEARCH(NostalgicLang.Vanilla.SEARCH);
 
-        ConfigTab(String langKey) { this.langKey = langKey; }
+        ConfigTab(String langKey)
+        {
+            this.langKey = langKey;
+        }
 
-        private final String langKey; String getLangKey() { return this.langKey; }
+        private final String langKey;
+
+        String getLangKey()
+        {
+            return this.langKey;
+        }
     }
 
     /* Search Tags */
@@ -51,7 +60,11 @@ public class ConfigScreen extends Screen
         CLIENT,
         SERVER;
 
-        @Override public String toString() { return super.toString().toLowerCase(); }
+        @Override
+        public String toString()
+        {
+            return super.toString().toLowerCase();
+        }
     }
 
     /* Instance Fields */
@@ -123,7 +136,11 @@ public class ConfigScreen extends Screen
         this.getWidgets().addWidgets();
     }
 
-    @Override public void tick() { this.getWidgets().getSearchInput().tick(); }
+    @Override
+    public void tick()
+    {
+        this.getWidgets().getSearchInput().tick();
+    }
 
     @Override
     public void onClose()
@@ -366,6 +383,8 @@ public class ConfigScreen extends Screen
             if (cache.isSavable())
                 cache.save();
         }
+
+        MixinUtil.Cache.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */

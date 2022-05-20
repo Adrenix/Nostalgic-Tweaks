@@ -18,10 +18,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
@@ -29,17 +26,17 @@ public abstract class LevelRendererMixin
 {
     /* Shadows & Helpers */
 
+    private static boolean isStarRunnableSaved = false;
+    private static boolean isBlueRunnableSaved = false;
+
+    @Shadow protected abstract void createStars();
+
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private RenderBuffers renderBuffers;
     @Unique @Nullable private VertexBuffer blueBuffer;
 
-    /* Injections */
-
-    /**
-     * Used to instantiate the vertex buffer for the old blue void color.
-     */
-    @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/renderer/RenderBuffers;)V", at = @At(value = "TAIL"))
-    protected void onInitLevelRenderer(Minecraft minecraft, RenderBuffers renderBuffers, CallbackInfo callback)
+    @Unique
+    private void createBlueBuffer()
     {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.getBuilder();
@@ -49,13 +46,36 @@ public abstract class LevelRendererMixin
         this.blueBuffer = new VertexBuffer();
 
         float height = switch(MixinConfig.Candy.getBlueVoid())
-        {
-            case ALPHA -> -32.0F;
-            case BETA, MODERN -> -48.0F;
-        };
+                {
+                    case ALPHA -> -32.0F;
+                    case BETA, MODERN -> -48.0F;
+                };
 
         MixinUtil.World.buildSkyDisc(builder, height);
         this.blueBuffer.upload(builder);
+    }
+
+    /* Injections */
+
+    /**
+     * Used to instantiate the vertex buffer for the old blue void color.
+     */
+    @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/renderer/RenderBuffers;)V", at = @At(value = "TAIL"))
+    protected void onInitLevelRenderer(Minecraft minecraft, RenderBuffers renderBuffers, CallbackInfo callback)
+    {
+        this.createBlueBuffer();
+
+        if (!isStarRunnableSaved)
+        {
+            isStarRunnableSaved = true;
+            MixinUtil.Cache.onSave.add(this::createStars);
+        }
+
+        if (!isBlueRunnableSaved)
+        {
+            isBlueRunnableSaved = true;
+            MixinUtil.Cache.onSave.add(this::createBlueBuffer);
+        }
     }
 
     /**
@@ -137,4 +157,20 @@ public abstract class LevelRendererMixin
      */
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
     protected float onRenderSun(float vanilla) { return MixinUtil.World.getSunriseRotation(vanilla); }
+
+    /**
+     * Renders the old big stars in the skybox.
+     * Controlled by the old stars toggle.
+     */
+    @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.15F))
+    private float onDrawStarsWidth(float vanilla)
+    {
+        return MixinConfig.Candy.oldStars() ? 0.25F : 0.15F;
+    }
+
+    @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.1F))
+    private float onDrawStarsHeight(float vanilla)
+    {
+        return MixinConfig.Candy.oldStars() ? 0.25F : vanilla;
+    }
 }

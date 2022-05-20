@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public abstract class MixinUtil
@@ -30,6 +31,22 @@ public abstract class MixinUtil
 
     public static final int APPLY_FIRST = 999;
     public static final int APPLY_LAST = 1001;
+
+    /**
+     * Mixin Caching
+     *
+     * Some tweaks require more work for a change to take place.
+     * For example, the star buffer needs to be redone if the old stars tweak is toggled.
+     *
+     * A runnable is defined in the LevelRendererMixin class that provides instructions on what to do when a change is
+     * made to the tweak.
+     */
+
+    public static class Cache
+    {
+        // On-save Runnables
+        public static final ArrayList<Runnable> onSave = new ArrayList<>();
+    }
 
     /* World Candy Injection Helpers */
 

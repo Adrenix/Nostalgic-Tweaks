@@ -37,6 +37,7 @@ public enum CandyFeature implements IFeature
     BLUE_VOID,
     BLUE_VOID_OVERRIDE,
     SQUARE_BORDER,
+    STARS,
     SWEEP,
     MIXED_EXPLOSION_PARTICLES,
     EXPLOSION_PARTICLES,

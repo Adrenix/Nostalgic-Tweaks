@@ -69,6 +69,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_SUNRISE_AT_NORTH = true;
         public static final boolean OLD_SQUARE_BORDER = true;
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
+        public static final boolean OLD_STARS = true;
 
         public static final VERSION OLD_SKY_COLOR = VERSION.ALPHA;
         public static final VERSION OLD_FOG_COLOR = VERSION.ALPHA;
