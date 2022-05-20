@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = FogRenderer.class, priority = MixinUtil.PRIORITY)
+@Mixin(value = FogRenderer.class, priority = MixinUtil.APPLY_FIRST)
 public abstract class FogRendererMixin
 {
     /**

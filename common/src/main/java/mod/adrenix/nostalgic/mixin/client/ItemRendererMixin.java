@@ -21,12 +21,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
-@Mixin(value = ItemRenderer.class, priority = MixinUtil.PRIORITY)
+@Mixin(value = ItemRenderer.class, priority = MixinUtil.APPLY_LAST)
 public abstract class ItemRendererMixin
 {
     @Shadow protected abstract void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer);
@@ -37,12 +36,12 @@ public abstract class ItemRendererMixin
      * Used to change the normal matrix on the pose stack depending on the quad we're rendering.
      * Controlled by flat rendering state in the mixin injector helper class.
      */
-    @Redirect(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BakedQuad;getTintIndex()I"))
-    protected int onRenderQuad(BakedQuad instance, PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay)
+    @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
+    private BakedQuad onRenderQuad(BakedQuad quad, PoseStack poseStack)
     {
         if (MixinUtil.Item.isLightingFlat())
-            MixinUtil.Item.setNormalQuad(poseStack.last(), instance);
-        return instance.getTintIndex();
+            MixinUtil.Item.setNormalQuad(poseStack.last(), quad);
+        return quad;
     }
 
     /**

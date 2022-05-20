@@ -28,7 +28,8 @@ public abstract class MixinUtil
 {
     /* Mixin Utility Constants */
 
-    public static final int PRIORITY = 999;
+    public static final int APPLY_FIRST = 999;
+    public static final int APPLY_LAST = 1001;
 
     /* World Candy Injection Helpers */
 
