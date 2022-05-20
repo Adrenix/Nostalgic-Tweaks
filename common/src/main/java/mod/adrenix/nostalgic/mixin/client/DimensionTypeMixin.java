@@ -23,9 +23,6 @@ public abstract class DimensionTypeMixin
     /**
      * Brings back the old brightness table for old lighting.
      * Controlled by the old lighting toggle.
-     *
-     * NOTE: This injection will happen before our configuration classes are ready.
-     * Therefore, it is important to check for null config values that normally wouldn't be null.
      */
 
     @Inject(method = "<init>(Ljava/util/OptionalLong;ZZZZDZZZZZIIILnet/minecraft/tags/TagKey;Lnet/minecraft/resources/ResourceLocation;F)V", at = @At(value = "RETURN"))

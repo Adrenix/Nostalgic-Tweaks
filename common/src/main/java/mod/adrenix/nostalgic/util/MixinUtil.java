@@ -36,8 +36,8 @@ public abstract class MixinUtil
      * Mixin Caching
      *
      * Some tweaks require more work for a change to take place.
-     * For example, the star buffer needs to be redone if the old stars tweak is toggled.
      *
+     * For example, the star buffer needs to be redone if the old stars tweak is toggled.
      * A runnable is defined in the LevelRendererMixin class that provides instructions on what to do when a change is
      * made to the tweak.
      */

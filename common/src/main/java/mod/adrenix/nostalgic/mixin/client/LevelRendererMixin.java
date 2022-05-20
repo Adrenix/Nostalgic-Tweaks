@@ -46,10 +46,10 @@ public abstract class LevelRendererMixin
         this.blueBuffer = new VertexBuffer();
 
         float height = switch(MixinConfig.Candy.getBlueVoid())
-                {
-                    case ALPHA -> -32.0F;
-                    case BETA, MODERN -> -48.0F;
-                };
+        {
+            case ALPHA -> -32.0F;
+            case BETA, MODERN -> -48.0F;
+        };
 
         MixinUtil.World.buildSkyDisc(builder, height);
         this.blueBuffer.upload(builder);
