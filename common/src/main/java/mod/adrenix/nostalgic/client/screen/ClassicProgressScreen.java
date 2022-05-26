@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.widen.IMixinProgressScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -103,7 +104,6 @@ public class ClassicProgressScreen extends Screen implements ProgressListener
 
     /* Helpers */
 
-    private static void doNothing() {}
     public void renderProgress()
     {
         Minecraft minecraft = Minecraft.getInstance();
@@ -116,7 +116,10 @@ public class ClassicProgressScreen extends Screen implements ProgressListener
             long start = Util.getMillis();
             double pause = Math.random();
             double wait = (long) ((Math.random()) + (pause > pauseTicking ? Math.random() * 1000 : 0));
-            while (Util.getMillis() - start < wait) { ClassicProgressScreen.doNothing(); }
+
+            while (Util.getMillis() - start < wait)
+                NostalgicUtil.Run.nothing();
+
             this.progress++;
             minecraft.forceSetScreen(this);
         }

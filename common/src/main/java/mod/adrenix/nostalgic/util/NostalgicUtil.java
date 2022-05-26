@@ -12,6 +12,11 @@ import java.util.regex.Pattern;
 
 public abstract class NostalgicUtil
 {
+    public static class Run
+    {
+        public static void nothing() {}
+    }
+
     public static class Resource
     {
         public static final ResourceLocation BLACK_RESOURCE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/black.png");
