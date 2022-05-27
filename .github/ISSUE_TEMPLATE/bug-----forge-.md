@@ -13,14 +13,14 @@ assignees: ''
 [  WRITE DESCRIPTION HERE  ]
 
 ## Crash Report
-> Please include a link to a complete crash report. You can use Gist (https://gist.github.com) to create this link. These reports can be found in `.minecraft/crash-reports`.
+> If applicable, please include a link to a complete crash report. You can use Gist (https://gist.github.com) to create this link. These reports can be found in `.minecraft/crash-reports`.
 
-[  PASTE CRASH LINK HERE  ]
+[  PASTE CRASH LINK HERE  ] or [ N/a ]
 
 ## Bug Context
 > If applicable, add some context to the bug. If a crash occurred while you were in-game, what happened before the crash? For example, "I fell from a high place and before the hurt sound could play the game crashed."
 
-[  N/a  ]
+[  WRITE CONTEXT HERE  ] or [  N/a  ]
 
 ## Screenshots
 > If applicable, add screenshots to help explain your problem.
