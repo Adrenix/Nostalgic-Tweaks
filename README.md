@@ -2,7 +2,10 @@
 ### Forge & Fabric
 This is the 1.18.2 development branch for N.T.
 
-### Current Version
+### Current In-Development Version
+v1.0.4
+
+### Current Released Version
 v1.0.3
 
 ### Related Development Branches
