@@ -68,13 +68,13 @@ public abstract class LevelRendererMixin
         if (!isStarRunnableSaved)
         {
             isStarRunnableSaved = true;
-            MixinUtil.Cache.onSave.add(this::createStars);
+            MixinUtil.Run.onSave.add(this::createStars);
         }
 
         if (!isBlueRunnableSaved)
         {
             isBlueRunnableSaved = true;
-            MixinUtil.Cache.onSave.add(this::createBlueBuffer);
+            MixinUtil.Run.onSave.add(this::createBlueBuffer);
         }
     }
 
@@ -171,6 +171,6 @@ public abstract class LevelRendererMixin
     @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.1F))
     private float onDrawStarsHeight(float vanilla)
     {
-        return MixinConfig.Candy.oldStars() ? 0.25F : vanilla;
+        return MixinConfig.Candy.oldStars() ? 0.25F : 0.1F;
     }
 }

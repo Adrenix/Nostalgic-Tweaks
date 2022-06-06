@@ -29,6 +29,7 @@ public class EntryTag extends AbstractWidget
     public static final int U_RESTART_OFFSET = 78;
     public static final int U_KEY_OFFSET = 81;
     public static final int U_SYNC_OFFSET = 84;
+    public static final int U_WARNING_OFFSET = 87;
     public static final int V_GLOBAL_OFFSET = 0;
     public static final int U_GLOBAL_WIDTH = 1;
     public static final int V_GLOBAL_HEIGHT = 11;
@@ -93,6 +94,7 @@ public class EntryTag extends AbstractWidget
         NostalgicEntry.Gui.Server isServer = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Server.class);
         NostalgicEntry.Gui.Reload isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Reload.class);
         NostalgicEntry.Gui.Restart isRestart = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Restart.class);
+        NostalgicEntry.Gui.Warning isWarning = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Warning.class);
 
         Component title = new TranslatableComponent(this.cache.getLangKey());
         Component newTag = new TranslatableComponent(NostalgicLang.Gui.TAG_NEW);
@@ -100,11 +102,13 @@ public class EntryTag extends AbstractWidget
         Component serverTag = new TranslatableComponent(NostalgicLang.Gui.TAG_SERVER);
         Component reloadTag = new TranslatableComponent(NostalgicLang.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
         Component restartTag = new TranslatableComponent(NostalgicLang.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
+        Component warningTag = new TranslatableComponent(NostalgicLang.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
         Component newTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_NEW_TOOLTIP);
         Component clientTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_CLIENT_TOOLTIP);
         Component serverTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_SERVER_TOOLTIP);
         Component reloadTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_RELOAD_TOOLTIP);
         Component restartTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
+        Component warningTooltip = new TranslatableComponent(this.cache.getWarningKey());
 
         boolean isNewRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_NEW_TAGS.getKey()).getCurrent();
         boolean isSidedRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
@@ -145,6 +149,12 @@ public class EntryTag extends AbstractWidget
         {
             renderTooltip(screen, poseStack, restartTag, restartTooltip, lastX, startY, mouseX, mouseY);
             renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET);
+        }
+
+        if (isWarning != null)
+        {
+            renderTooltip(screen, poseStack, warningTag, warningTooltip, lastX, startY, mouseX, mouseY);
+            renderTag(screen, poseStack, warningTag, lastX, startY, U_WARNING_OFFSET);
         }
     }
 

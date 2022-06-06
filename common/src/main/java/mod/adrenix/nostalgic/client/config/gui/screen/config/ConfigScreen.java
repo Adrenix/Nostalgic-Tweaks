@@ -384,7 +384,7 @@ public class ConfigScreen extends Screen
                 cache.save();
         }
 
-        MixinUtil.Cache.onSave.forEach(Runnable::run);
+        MixinUtil.Run.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */

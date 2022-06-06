@@ -78,6 +78,7 @@ public abstract class NostalgicLang
         public static final String TAG_RELOAD_TOOLTIP = "gui.nostalgic_tweaks.config.tag.reload.@Tooltip";
         public static final String TAG_RESTART = "gui.nostalgic_tweaks.config.tag.restart";
         public static final String TAG_RESTART_TOOLTIP = "gui.nostalgic_tweaks.config.tag.restart.@Tooltip";
+        public static final String TAG_WARNING = "gui.nostalgic_tweaks.config.tag.warning";
         public static final String TAG_SYNC = "gui.nostalgic_tweaks.config.tag.sync";
         public static final String TAG_SYNC_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sync.@Tooltip";
         public static final String TAG_AUTO = "gui.nostalgic_tweaks.config.tag.auto";
@@ -119,6 +120,7 @@ public abstract class NostalgicLang
         public static final String GENERAL_SHORTCUT_GROUP = "gui.nostalgic_tweaks.config.general.shortcut.group";
 
         public static final String CANDY_CATEGORY_PARTICLE = "gui.nostalgic_tweaks.config.candy.category.particle";
+        public static final String CANDY_CATEGORY_LIGHTING = "gui.nostalgic_tweaks.config.candy.category.lighting";
         public static final String CANDY_CATEGORY_WORLD = "gui.nostalgic_tweaks.config.candy.category.world";
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";

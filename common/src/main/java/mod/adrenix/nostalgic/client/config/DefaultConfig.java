@@ -57,11 +57,16 @@ public abstract class DefaultConfig
         public static final boolean OLD_EXPLOSION_PARTICLES = true;
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
 
-        // World Candy
-        public static final int OLD_CLOUD_HEIGHT = 108;
+        // Lighting Candy
+        public static final boolean OLD_LIGHTING = true;
         public static final boolean OLD_LIGHT_FLICKER = true;
         public static final boolean OLD_NETHER_LIGHTING = true;
-        public static final boolean OLD_LIGHTING = true;
+        public static final boolean OLD_LEAVES_LIGHTING = true;
+        public static final boolean OLD_SMOOTH_LIGHTING = true;
+        public static final boolean OLD_WATER_LIGHTING = false;
+
+        // World Candy
+        public static final int OLD_CLOUD_HEIGHT = 108;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;

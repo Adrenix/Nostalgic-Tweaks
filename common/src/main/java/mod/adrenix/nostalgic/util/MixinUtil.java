@@ -33,7 +33,7 @@ public abstract class MixinUtil
     public static final int APPLY_LAST = 1001;
 
     /**
-     * Mixin Caching
+     * Mixin Runnables
      *
      * Some tweaks require more work for a change to take place.
      *
@@ -42,10 +42,25 @@ public abstract class MixinUtil
      * made to the tweak.
      */
 
-    public static class Cache
+    public static class Run
     {
         // On-save Runnables
         public static final ArrayList<Runnable> onSave = new ArrayList<>();
+
+        // Reload Chunks Runnable
+        public static boolean reloadChunks = false;
+
+        static
+        {
+            onSave.add(() -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (reloadChunks && minecraft != null)
+                {
+                    reloadChunks = false;
+                    minecraft.levelRenderer.allChanged();
+                }
+            });
+        }
     }
 
     /* World Candy Injection Helpers */

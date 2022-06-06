@@ -51,6 +51,10 @@ public abstract class NostalgicEntry
 
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
+        public @interface Warning {}
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
         public @interface Reload {}
 
         @Retention(RetentionPolicy.RUNTIME)
@@ -100,12 +104,20 @@ public abstract class NostalgicEntry
         }
     }
 
+    public abstract static class Run
+    {
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface ReloadChunks {}
+    }
+
     public enum Category
     {
         TITLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_TITLE),
         INTERFACE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_GUI),
         ITEM_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_ITEM),
         PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
+        LIGHTING_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_LIGHTING),
         WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD);
 
         private final String langKey;

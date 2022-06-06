@@ -9,7 +9,9 @@
     "ExplosionMixin",
     "LivingEntityMixin",
 
+    "BlockBehaviourMixin",
     "BlockMixin",
+    "BlockStateBaseMixin",
     "ChunkMapMixin",
     "EntityMixin",
     "ItemEntityMixin",

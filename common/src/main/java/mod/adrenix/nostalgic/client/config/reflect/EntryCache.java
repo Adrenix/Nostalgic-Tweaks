@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.config.reflect;
 
 import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -78,7 +79,17 @@ public class EntryCache<T>
 
     public void reset() { this.value = getDefault(); }
     public void undo() { this.value = ConfigReflect.getCurrent(this.group, this.key); }
-    public void save() { ConfigReflect.setConfig(this.group, this.key, this.value); }
+    public void save()
+    {
+        if (this.isSavable())
+        {
+            NostalgicEntry.Run.ReloadChunks chunks = ConfigReflect.getAnnotation(this.group, this.key, NostalgicEntry.Run.ReloadChunks.class);
+            if (chunks != null)
+                MixinUtil.Run.reloadChunks = true;
+        }
+
+        ConfigReflect.setConfig(this.group, this.key, this.value);
+    }
 
     public boolean isResettable()
     {
@@ -106,4 +117,5 @@ public class EntryCache<T>
     public String getEntryKey() { return this.key; }
     public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
     public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
+    public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
 }
