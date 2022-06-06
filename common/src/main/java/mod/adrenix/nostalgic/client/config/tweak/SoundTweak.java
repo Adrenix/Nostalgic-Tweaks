@@ -1,22 +1,14 @@
-package mod.adrenix.nostalgic.client.config.feature;
+package mod.adrenix.nostalgic.client.config.tweak;
 
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 
-public enum AnimationFeature implements IFeature
+public enum SoundTweak implements ITweak
 {
-    ITEM_SWING,
-    COOLDOWN,
-    REEQUIP,
-    ARM_SWAY,
-    ARM_SWAY_MIRROR,
-    ARM_SWAY_INTENSITY,
-    COLLIDE_BOB,
-    BOB_VERTICAL,
-    SNEAK_SMOOTH,
-    SWING_DROP,
-    ZOMBIE_ARMS,
-    SKELETON_ARMS,
-    TOOL_EXPLODE;
+    OLD_ATTACK,
+    OLD_HURT,
+    OLD_FALL,
+    OLD_STEP,
+    OLD_XP;
 
     /* Implementation */
 
@@ -24,7 +16,7 @@ public enum AnimationFeature implements IFeature
     private boolean loaded = false;
 
     @Override public String getKey() { return this.key; }
-    @Override public GroupType getGroup() { return GroupType.ANIMATION; }
+    @Override public GroupType getGroup() { return GroupType.SOUND; }
 
     @Override public boolean isLoaded() { return this.loaded; }
     @Override public void setLoaded(boolean state) { this.loaded = state; }

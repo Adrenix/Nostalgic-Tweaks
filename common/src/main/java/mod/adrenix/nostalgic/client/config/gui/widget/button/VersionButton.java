@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -11,9 +11,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class VersionButton extends Button
 {
-    protected final EntryCache<DefaultConfig.VERSION> cache;
+    protected final TweakCache<DefaultConfig.VERSION> cache;
 
-    public VersionButton(EntryCache<DefaultConfig.VERSION> cache, OnPress onPress)
+    public VersionButton(TweakCache<DefaultConfig.VERSION> cache, OnPress onPress)
     {
         super(ConfigRowList.getControlStartX(), 0, ConfigRowList.CONTROL_BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT, TextComponent.EMPTY, onPress);
         this.cache = cache;

@@ -1,8 +1,8 @@
-package mod.adrenix.nostalgic.client.config.feature;
+package mod.adrenix.nostalgic.client.config.tweak;
 
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 
-public enum CandyFeature implements IFeature
+public enum CandyTweak implements ITweak
 {
     FIX_ITEM_MODEL_GAP,
     VERSION_OVERLAY,

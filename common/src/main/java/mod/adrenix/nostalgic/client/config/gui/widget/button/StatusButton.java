@@ -2,10 +2,10 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.feature.GuiFeature;
+import mod.adrenix.nostalgic.client.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.StatusType;
 import mod.adrenix.nostalgic.util.NostalgicLang;
@@ -22,10 +22,10 @@ public class StatusButton extends Button
 {
     protected static boolean flipState = false;
     protected static long currentTime = 0L;
-    protected final EntryCache<?> cache;
+    protected final TweakCache<?> cache;
     protected final AbstractWidget anchor;
 
-    public StatusButton(EntryCache<?> cache, AbstractWidget anchor)
+    public StatusButton(TweakCache<?> cache, AbstractWidget anchor)
     {
         super(0, 0, 0, 0, TextComponent.EMPTY, (ignored) -> {});
         this.cache = cache;
@@ -37,7 +37,7 @@ public class StatusButton extends Button
     {
         if (this.cache.getStatus() == StatusType.OKAY) return;
 
-        boolean isRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_FEATURE_STATUS.getKey()).getCurrent();
+        boolean isRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_FEATURE_STATUS.getKey()).getCurrent();
         if (!isRenderable && this.cache.getStatus() != StatusType.WARN)
             return;
 

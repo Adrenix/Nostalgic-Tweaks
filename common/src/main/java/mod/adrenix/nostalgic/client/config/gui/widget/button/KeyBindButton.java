@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.gui.widget.EntryTag;
+import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -85,11 +85,11 @@ public class KeyBindButton extends Button
         int startY = this.y + 4;
         int lastX = startX;
 
-        EntryTag.renderTooltip(screen, poseStack, syncTag, syncTooltip, lastX, startY, mouseX, mouseY);
-        lastX = EntryTag.renderTag(screen, poseStack, syncTag, lastX, startY, EntryTag.U_KEY_OFFSET);
+        TweakTag.renderTooltip(screen, poseStack, syncTag, syncTooltip, lastX, startY, mouseX, mouseY);
+        lastX = TweakTag.renderTag(screen, poseStack, syncTag, lastX, startY, TweakTag.U_KEY_OFFSET);
 
-        EntryTag.renderTooltip(screen, poseStack, autoTag, autoTooltip, lastX, startY, mouseX, mouseY);
-        EntryTag.renderTag(screen, poseStack, autoTag, lastX, startY, EntryTag.U_SYNC_OFFSET);
+        TweakTag.renderTooltip(screen, poseStack, autoTag, autoTooltip, lastX, startY, mouseX, mouseY);
+        TweakTag.renderTag(screen, poseStack, autoTag, lastX, startY, TweakTag.U_SYNC_OFFSET);
     }
 
     @Override

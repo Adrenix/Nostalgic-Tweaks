@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config;
 
-import mod.adrenix.nostalgic.client.config.feature.*;
+import mod.adrenix.nostalgic.client.config.tweak.*;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,15 +18,15 @@ public abstract class MixinConfig
     private static final ClientConfig.Sound SOUND = CommonRegistry.getSound();
     private static final ClientConfig.Swing SWING = CommonRegistry.getSwing();
     private static final ClientConfig CONFIG = CommonRegistry.getRoot();
-    private static DefaultConfig.VERSION getVersion(@Nullable IFeature feature, DefaultConfig.VERSION current)
+    private static DefaultConfig.VERSION getVersion(@Nullable ITweak tweak, DefaultConfig.VERSION current)
     {
-        return !isModEnabled(feature) ? DefaultConfig.VERSION.MODERN : current;
+        return !isModEnabled(tweak) ? DefaultConfig.VERSION.MODERN : current;
     }
 
-    public static boolean isModEnabled(@Nullable IFeature feature)
+    public static boolean isModEnabled(@Nullable ITweak tweak)
     {
-        if (feature != null)
-            feature.setEnabled();
+        if (tweak != null)
+            tweak.setEnabled();
         return CONFIG.isModEnabled;
     }
 
@@ -59,7 +59,7 @@ public abstract class MixinConfig
         }
 
         public static boolean isOverridingFatigue() { return isModEnabled(null) && SWING.fatigue != DefaultConfig.Swing.GLOBAL; }
-        public static boolean isOverridingSpeeds() { return !isModEnabled(SwingFeature.OVERRIDE_SPEEDS) || SWING.overrideSpeeds; }
+        public static boolean isOverridingSpeeds() { return !isModEnabled(SwingTweak.OVERRIDE_SPEEDS) || SWING.overrideSpeeds; }
         public static boolean isOverridingHaste() { return isModEnabled(null) && SWING.haste != DefaultConfig.Swing.GLOBAL; }
         public static boolean isSpeedGlobal() { return SWING.global != DefaultConfig.Swing.GLOBAL; }
         public static int getFatigueSpeed() { return isSpeedGlobal() ? SWING.global : SWING.fatigue; }
@@ -72,11 +72,11 @@ public abstract class MixinConfig
 
     public static class Sound
     {
-        public static boolean oldAttack() { return isModEnabled(SoundFeature.OLD_ATTACK) && SOUND.oldAttack; }
-        public static boolean oldDamage() { return isModEnabled(SoundFeature.OLD_HURT) && SOUND.oldHurt; }
-        public static boolean oldFall() { return isModEnabled(SoundFeature.OLD_FALL) && SOUND.oldFall; }
-        public static boolean oldStep() { return isModEnabled(SoundFeature.OLD_STEP) && SOUND.oldStep; }
-        public static boolean oldXP() { return isModEnabled(SoundFeature.OLD_XP) && SOUND.oldXP; }
+        public static boolean oldAttack() { return isModEnabled(SoundTweak.OLD_ATTACK) && SOUND.oldAttack; }
+        public static boolean oldDamage() { return isModEnabled(SoundTweak.OLD_HURT) && SOUND.oldHurt; }
+        public static boolean oldFall() { return isModEnabled(SoundTweak.OLD_FALL) && SOUND.oldFall; }
+        public static boolean oldStep() { return isModEnabled(SoundTweak.OLD_STEP) && SOUND.oldStep; }
+        public static boolean oldXP() { return isModEnabled(SoundTweak.OLD_XP) && SOUND.oldXP; }
     }
 
     /* Eye Candy Mixin Options */
@@ -86,66 +86,66 @@ public abstract class MixinConfig
         /* Boolean Tweaks */
 
         // Title Screen Candy
-        public static boolean overrideTitleScreen() { return isModEnabled(CandyFeature.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
-        public static boolean removeAccessibilityButton() { return isModEnabled(CandyFeature.TITLE_ACCESSIBILITY) && CANDY.removeTitleAccessibilityButton; }
-        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyFeature.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
-        public static boolean removeLanguageButton() { return isModEnabled(CandyFeature.TITLE_LANGUAGE) && CANDY.removeTitleLanguageButton; }
-        public static boolean titleBottomLeftText() { return isModEnabled(CandyFeature.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
-        public static boolean oldTitleBackground() { return isModEnabled(CandyFeature.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
-        public static boolean oldLogoOutline() { return isModEnabled(CandyFeature.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
-        public static boolean oldAlphaLogo() { return isModEnabled(CandyFeature.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
+        public static boolean overrideTitleScreen() { return isModEnabled(CandyTweak.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
+        public static boolean removeAccessibilityButton() { return isModEnabled(CandyTweak.TITLE_ACCESSIBILITY) && CANDY.removeTitleAccessibilityButton; }
+        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyTweak.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
+        public static boolean removeLanguageButton() { return isModEnabled(CandyTweak.TITLE_LANGUAGE) && CANDY.removeTitleLanguageButton; }
+        public static boolean titleBottomLeftText() { return isModEnabled(CandyTweak.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
+        public static boolean oldTitleBackground() { return isModEnabled(CandyTweak.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
+        public static boolean oldLogoOutline() { return isModEnabled(CandyTweak.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
+        public static boolean oldAlphaLogo() { return isModEnabled(CandyTweak.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
 
         // Interface Candy
-        public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyFeature.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
-        public static boolean oldNoSelectedItemName() { return isModEnabled(CandyFeature.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
-        public static boolean oldDurabilityColors() { return isModEnabled(CandyFeature.DURABILITY_COLORS) && CANDY.oldDurabilityColors; }
-        public static boolean oldVersionOverlay() { return isModEnabled(CandyFeature.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
-        public static boolean oldLoadingScreens() { return isModEnabled(CandyFeature.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
-        public static boolean oldButtonHover() { return isModEnabled(CandyFeature.BUTTON_HOVER) && CANDY.oldButtonHover; }
-        public static boolean oldTooltips() { return !isModEnabled(CandyFeature.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
+        public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyTweak.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
+        public static boolean oldNoSelectedItemName() { return isModEnabled(CandyTweak.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
+        public static boolean oldDurabilityColors() { return isModEnabled(CandyTweak.DURABILITY_COLORS) && CANDY.oldDurabilityColors; }
+        public static boolean oldVersionOverlay() { return isModEnabled(CandyTweak.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
+        public static boolean oldLoadingScreens() { return isModEnabled(CandyTweak.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
+        public static boolean oldButtonHover() { return isModEnabled(CandyTweak.BUTTON_HOVER) && CANDY.oldButtonHover; }
+        public static boolean oldTooltips() { return !isModEnabled(CandyTweak.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
 
         // Item Candy
-        public static boolean fixItemModelGaps() { return isModEnabled(CandyFeature.FIX_ITEM_MODEL_GAP) && CANDY.fixItemModelGap; }
-        public static boolean oldFloatingItems() { return isModEnabled(CandyFeature.FLAT_ITEMS) && CANDY.old2dItems; }
-        public static boolean oldFlatEnchantment() { return isModEnabled(CandyFeature.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
-        public static boolean oldFlatThrowing() { return isModEnabled(CandyFeature.FLAT_THROW_ITEMS) && CANDY.old2dThrownItems; }
-        public static boolean oldItemHolding() { return isModEnabled(CandyFeature.ITEM_HOLDING) && CANDY.oldItemHolding; }
-        public static boolean oldItemMerging() { return isModEnabled(CandyFeature.ITEM_MERGING) && CANDY.oldItemMerging; }
-        public static boolean oldFlatFrames() { return isModEnabled(CandyFeature.FLAT_FRAMES) && CANDY.old2dFrames; }
+        public static boolean fixItemModelGaps() { return isModEnabled(CandyTweak.FIX_ITEM_MODEL_GAP) && CANDY.fixItemModelGap; }
+        public static boolean oldFloatingItems() { return isModEnabled(CandyTweak.FLAT_ITEMS) && CANDY.old2dItems; }
+        public static boolean oldFlatEnchantment() { return isModEnabled(CandyTweak.FLAT_ENCHANTED_ITEMS) && oldFloatingItems() && CANDY.old2dEnchantedItems; }
+        public static boolean oldFlatThrowing() { return isModEnabled(CandyTweak.FLAT_THROW_ITEMS) && CANDY.old2dThrownItems; }
+        public static boolean oldItemHolding() { return isModEnabled(CandyTweak.ITEM_HOLDING) && CANDY.oldItemHolding; }
+        public static boolean oldItemMerging() { return isModEnabled(CandyTweak.ITEM_MERGING) && CANDY.oldItemMerging; }
+        public static boolean oldFlatFrames() { return isModEnabled(CandyTweak.FLAT_FRAMES) && CANDY.old2dFrames; }
 
         // Particle Candy
-        public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyFeature.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
-        public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyFeature.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
-        public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyFeature.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
-        public static boolean oldExplosionParticles() { return isModEnabled(CandyFeature.EXPLOSION_PARTICLES) && CANDY.oldExplosionParticles; }
-        public static boolean oldNoDamageParticles() { return isModEnabled(CandyFeature.NO_DAMAGE_PARTICLES) && CANDY.oldNoDamageParticles; }
-        public static boolean oldOpaqueExperience() { return isModEnabled(CandyFeature.OPAQUE_EXPERIENCE) && CANDY.oldOpaqueExperience; }
-        public static boolean oldSweepParticles() { return isModEnabled(CandyFeature.SWEEP) && CANDY.oldSweepParticles; }
+        public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyTweak.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
+        public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyTweak.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
+        public static boolean oldNoEnchantHitParticles() { return isModEnabled(CandyTweak.NO_MAGIC_HIT_PARTICLES) && CANDY.oldNoMagicHitParticles; }
+        public static boolean oldExplosionParticles() { return isModEnabled(CandyTweak.EXPLOSION_PARTICLES) && CANDY.oldExplosionParticles; }
+        public static boolean oldNoDamageParticles() { return isModEnabled(CandyTweak.NO_DAMAGE_PARTICLES) && CANDY.oldNoDamageParticles; }
+        public static boolean oldOpaqueExperience() { return isModEnabled(CandyTweak.OPAQUE_EXPERIENCE) && CANDY.oldOpaqueExperience; }
+        public static boolean oldSweepParticles() { return isModEnabled(CandyTweak.SWEEP) && CANDY.oldSweepParticles; }
 
         // Lighting Candy
-        public static boolean oldSmoothLighting() { return isModEnabled(CandyFeature.SMOOTH_LIGHTING) && CANDY.oldSmoothLighting; }
-        public static boolean oldNetherLighting() { return isModEnabled(CandyFeature.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
-        public static boolean oldLeavesLighting() { return isModEnabled(CandyFeature.LEAVES_LIGHTING) && CANDY.oldLeavesLighting; }
-        public static boolean oldWaterLighting() { return isModEnabled(CandyFeature.WATER_LIGHTING) && CANDY.oldWaterLighting; }
-        public static boolean oldLightFlicker() { return isModEnabled(CandyFeature.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
-        public static boolean oldLighting() { return isModEnabled(CandyFeature.LIGHTING) && CANDY.oldLighting; }
+        public static boolean oldSmoothLighting() { return isModEnabled(CandyTweak.SMOOTH_LIGHTING) && CANDY.oldSmoothLighting; }
+        public static boolean oldNetherLighting() { return isModEnabled(CandyTweak.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
+        public static boolean oldLeavesLighting() { return isModEnabled(CandyTweak.LEAVES_LIGHTING) && CANDY.oldLeavesLighting; }
+        public static boolean oldWaterLighting() { return isModEnabled(CandyTweak.WATER_LIGHTING) && CANDY.oldWaterLighting; }
+        public static boolean oldLightFlicker() { return isModEnabled(CandyTweak.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
+        public static boolean oldLighting() { return isModEnabled(CandyTweak.LIGHTING) && CANDY.oldLighting; }
 
         // World Candy
-        public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyFeature.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }
-        public static boolean oldBlueVoidOverride() { return isModEnabled(CandyFeature.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
-        public static boolean oldSunriseAtNorth() { return isModEnabled(CandyFeature.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
-        public static boolean oldSquareBorder() { return isModEnabled(CandyFeature.SQUARE_BORDER) && CANDY.oldSquareBorder; }
-        public static boolean oldTerrainFog() { return isModEnabled(CandyFeature.TERRAIN_FOG) && CANDY.oldTerrainFog; }
-        public static boolean oldHorizonFog() { return isModEnabled(CandyFeature.HORIZON_FOG) && CANDY.oldHorizonFog; }
-        public static boolean oldNetherFog() { return isModEnabled(CandyFeature.NETHER_FOG) && CANDY.oldNetherFog; }
-        public static boolean oldStars() { return isModEnabled(CandyFeature.STARS) && CANDY.oldStars; }
+        public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyTweak.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }
+        public static boolean oldBlueVoidOverride() { return isModEnabled(CandyTweak.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
+        public static boolean oldSunriseAtNorth() { return isModEnabled(CandyTweak.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
+        public static boolean oldSquareBorder() { return isModEnabled(CandyTweak.SQUARE_BORDER) && CANDY.oldSquareBorder; }
+        public static boolean oldTerrainFog() { return isModEnabled(CandyTweak.TERRAIN_FOG) && CANDY.oldTerrainFog; }
+        public static boolean oldHorizonFog() { return isModEnabled(CandyTweak.HORIZON_FOG) && CANDY.oldHorizonFog; }
+        public static boolean oldNetherFog() { return isModEnabled(CandyTweak.NETHER_FOG) && CANDY.oldNetherFog; }
+        public static boolean oldStars() { return isModEnabled(CandyTweak.STARS) && CANDY.oldStars; }
 
         /* Version Tweaks */
 
-        public static DefaultConfig.VERSION getButtonLayout() { return getVersion(CandyFeature.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
-        public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyFeature.SKY_COLOR, CANDY.oldSkyColor); }
-        public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyFeature.FOG_COLOR, CANDY.oldFogColor); }
-        public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyFeature.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static DefaultConfig.VERSION getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
+        public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
+        public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
 
         /* String Tweaks */
 
@@ -161,7 +161,7 @@ public abstract class MixinConfig
 
         /* Integer Tweaks */
 
-        public static int getCloudHeight() { return isModEnabled(CandyFeature.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
+        public static int getCloudHeight() { return isModEnabled(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
     }
 
     /* Animation Mixin Options */
@@ -175,16 +175,16 @@ public abstract class MixinConfig
         }
 
         public static boolean shouldMirrorArmSway() { return isModEnabled(null) && ANIMATION.armSwayMirror; }
-        public static boolean oldVerticalBobbing() { return isModEnabled(AnimationFeature.BOB_VERTICAL) && ANIMATION.oldVerticalBobbing; }
-        public static boolean oldCollideBobbing() { return isModEnabled(AnimationFeature.COLLIDE_BOB) && ANIMATION.oldCollideBobbing; }
-        public static boolean oldToolExplosion() { return isModEnabled(AnimationFeature.TOOL_EXPLODE) && ANIMATION.oldToolExplosion; }
-        public static boolean oldSwingDropping() { return isModEnabled(AnimationFeature.SWING_DROP) && ANIMATION.oldSwingDropping; }
-        public static boolean oldSkeletonArms() { return isModEnabled(AnimationFeature.SKELETON_ARMS) && ANIMATION.oldSkeletonArms; }
-        public static boolean oldItemCooldown() { return isModEnabled(AnimationFeature.COOLDOWN) && ANIMATION.oldItemCooldown; }
-        public static boolean oldItemReequip() { return isModEnabled(AnimationFeature.REEQUIP) && ANIMATION.oldItemReequip; }
-        public static boolean oldZombieArms() { return isModEnabled(AnimationFeature.ZOMBIE_ARMS) && ANIMATION.oldZombieArms; }
-        public static boolean oldSneaking() { return isModEnabled(AnimationFeature.SNEAK_SMOOTH) && ANIMATION.oldSneaking; }
-        public static boolean oldArmSway() { return isModEnabled(AnimationFeature.ARM_SWAY) && ANIMATION.oldArmSway; }
-        public static boolean oldSwing() { return isModEnabled(AnimationFeature.ITEM_SWING) && ANIMATION.oldSwing; }
+        public static boolean oldVerticalBobbing() { return isModEnabled(AnimationTweak.BOB_VERTICAL) && ANIMATION.oldVerticalBobbing; }
+        public static boolean oldCollideBobbing() { return isModEnabled(AnimationTweak.COLLIDE_BOB) && ANIMATION.oldCollideBobbing; }
+        public static boolean oldToolExplosion() { return isModEnabled(AnimationTweak.TOOL_EXPLODE) && ANIMATION.oldToolExplosion; }
+        public static boolean oldSwingDropping() { return isModEnabled(AnimationTweak.SWING_DROP) && ANIMATION.oldSwingDropping; }
+        public static boolean oldSkeletonArms() { return isModEnabled(AnimationTweak.SKELETON_ARMS) && ANIMATION.oldSkeletonArms; }
+        public static boolean oldItemCooldown() { return isModEnabled(AnimationTweak.COOLDOWN) && ANIMATION.oldItemCooldown; }
+        public static boolean oldItemReequip() { return isModEnabled(AnimationTweak.REEQUIP) && ANIMATION.oldItemReequip; }
+        public static boolean oldZombieArms() { return isModEnabled(AnimationTweak.ZOMBIE_ARMS) && ANIMATION.oldZombieArms; }
+        public static boolean oldSneaking() { return isModEnabled(AnimationTweak.SNEAK_SMOOTH) && ANIMATION.oldSneaking; }
+        public static boolean oldArmSway() { return isModEnabled(AnimationTweak.ARM_SWAY) && ANIMATION.oldArmSway; }
+        public static boolean oldSwing() { return isModEnabled(AnimationTweak.ITEM_SWING) && ANIMATION.oldSwing; }
     }
 }

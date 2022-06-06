@@ -2,11 +2,11 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
-import mod.adrenix.nostalgic.client.config.feature.GuiFeature;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.client.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
-public class EntryTag extends AbstractWidget
+public class TweakTag extends AbstractWidget
 {
     public static final int U_NEW_OFFSET = 66;
     public static final int U_CLIENT_OFFSET = 69;
@@ -35,11 +35,11 @@ public class EntryTag extends AbstractWidget
     public static final int V_GLOBAL_HEIGHT = 11;
     public static final int TAG_MARGIN = 5;
 
-    protected final EntryCache<?> cache;
+    protected final TweakCache<?> cache;
     protected final AbstractWidget anchor;
     protected final boolean isTooltip;
 
-    public EntryTag(EntryCache<?> cache, AbstractWidget anchor, boolean isTooltip)
+    public TweakTag(TweakCache<?> cache, AbstractWidget anchor, boolean isTooltip)
     {
         super(0, 0, 0, 0, TextComponent.EMPTY);
 
@@ -89,12 +89,12 @@ public class EntryTag extends AbstractWidget
         Screen screen = minecraft.screen;
         if (screen == null) return;
 
-        NostalgicEntry.Gui.New isNew = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.New.class);
-        NostalgicEntry.Gui.Client isClient = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Client.class);
-        NostalgicEntry.Gui.Server isServer = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Server.class);
-        NostalgicEntry.Gui.Reload isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Reload.class);
-        NostalgicEntry.Gui.Restart isRestart = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Restart.class);
-        NostalgicEntry.Gui.Warning isWarning = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.Warning.class);
+        TweakEntry.Gui.New isNew = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.New.class);
+        TweakEntry.Gui.Client isClient = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Client.class);
+        TweakEntry.Gui.Server isServer = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Server.class);
+        TweakEntry.Gui.Reload isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Reload.class);
+        TweakEntry.Gui.Restart isRestart = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Restart.class);
+        TweakEntry.Gui.Warning isWarning = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Warning.class);
 
         Component title = new TranslatableComponent(this.cache.getLangKey());
         Component newTag = new TranslatableComponent(NostalgicLang.Gui.TAG_NEW);
@@ -110,9 +110,9 @@ public class EntryTag extends AbstractWidget
         Component restartTooltip = new TranslatableComponent(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
         Component warningTooltip = new TranslatableComponent(this.cache.getWarningKey());
 
-        boolean isNewRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_NEW_TAGS.getKey()).getCurrent();
-        boolean isSidedRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
-        boolean isTooltipRenderable = (Boolean) EntryCache.get(GroupType.GUI, GuiFeature.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
+        boolean isNewRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey()).getCurrent();
+        boolean isSidedRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
+        boolean isTooltipRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
 
         int startX = ConfigRowList.TEXT_START + minecraft.font.width(title) + (isTooltip ? 20 : 4);
         int startY = this.anchor.y + 4;

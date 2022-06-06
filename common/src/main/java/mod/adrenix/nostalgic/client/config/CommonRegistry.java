@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.world.InteractionResult;
@@ -78,7 +78,7 @@ public abstract class CommonRegistry
         reloadConfiguration();
 
         // List loaded features
-        NostalgicTweaks.LOGGER.info(String.format("Loaded %d mod features", EntryCache.all().size()));
+        NostalgicTweaks.LOGGER.info(String.format("Loaded %d mod features", TweakCache.all().size()));
 
         // Let debugger screens know what happened
         NostalgicTweaks.LOGGER.info(String.format("Registered %d customized swing speeds", cache.custom.size()));

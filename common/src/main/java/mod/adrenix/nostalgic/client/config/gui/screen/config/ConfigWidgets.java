@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.TextGroup;
 import mod.adrenix.nostalgic.client.config.reflect.*;
@@ -259,7 +259,7 @@ public class ConfigWidgets
         search = search.toLowerCase();
         ConfigScreen.SearchTag tag = null;
         String input = this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "").toLowerCase();
-        HashMap<String, EntryCache<?>> entries = EntryCache.all();
+        HashMap<String, TweakCache<?>> entries = TweakCache.all();
 
         for (ConfigScreen.SearchTag searchTag : ConfigScreen.SearchTag.values())
         {
@@ -267,9 +267,9 @@ public class ConfigWidgets
                 tag = searchTag;
         }
 
-        for (EntryCache<?> entry : entries.values())
+        for (TweakCache<?> tweak : entries.values())
         {
-            if (GroupType.isManual(entry.getGroup()))
+            if (GroupType.isManual(tweak.getGroup()))
                 continue;
 
             if (tag != null)
@@ -277,31 +277,31 @@ public class ConfigWidgets
                 switch (tag)
                 {
                     case NEW -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.New.class) != null)
-                            this.parent.search.add(entry);
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.New.class) != null)
+                            this.parent.search.add(tweak);
                     }
                     case CONFLICT -> {
-                        if (entry.getStatus() != StatusType.OKAY)
-                            this.parent.search.add(entry);
+                        if (tweak.getStatus() != StatusType.OKAY)
+                            this.parent.search.add(tweak);
                     }
                     case RESET -> {
-                        if (entry.isResettable())
-                            this.parent.search.add(entry);
+                        if (tweak.isResettable())
+                            this.parent.search.add(tweak);
                     }
                     case CLIENT -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.Client.class) != null)
-                            this.parent.search.add(entry);
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Client.class) != null)
+                            this.parent.search.add(tweak);
                     }
                     case SERVER -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.Server.class) != null)
-                            this.parent.search.add(entry);
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Server.class) != null)
+                            this.parent.search.add(tweak);
                     }
                 }
             }
             else
             {
-                if (new TranslatableComponent(entry.getLangKey()).getString().toLowerCase().contains(search))
-                    this.parent.search.add(entry);
+                if (new TranslatableComponent(tweak.getLangKey()).getString().toLowerCase().contains(search))
+                    this.parent.search.add(tweak);
             }
         }
     }

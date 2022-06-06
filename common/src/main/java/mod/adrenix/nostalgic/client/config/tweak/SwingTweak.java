@@ -1,8 +1,8 @@
-package mod.adrenix.nostalgic.client.config.feature;
+package mod.adrenix.nostalgic.client.config.tweak;
 
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 
-public enum SwingFeature implements IFeature
+public enum SwingTweak implements ITweak
 {
     OVERRIDE_SPEEDS;
 

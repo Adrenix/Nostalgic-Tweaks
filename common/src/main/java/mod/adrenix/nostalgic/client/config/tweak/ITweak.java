@@ -1,7 +1,7 @@
-package mod.adrenix.nostalgic.client.config.feature;
+package mod.adrenix.nostalgic.client.config.tweak;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.StatusType;
 
@@ -13,7 +13,7 @@ import mod.adrenix.nostalgic.client.config.reflect.StatusType;
  * within game. For example, 2D items will not be considered "loaded" until an item entity enters the world.
  */
 
-public interface IFeature
+public interface ITweak
 {
     String getKey();
     GroupType getGroup();
@@ -27,12 +27,12 @@ public interface IFeature
         if (this.isLoaded())
             return;
 
-        EntryCache<Object> entryCache = EntryCache.get(this.getGroup(), this.getKey());
-        if (entryCache != null)
-            entryCache.setStatus(StatusType.OKAY);
+        TweakCache<Object> tweakCache = TweakCache.get(this.getGroup(), this.getKey());
+        if (tweakCache != null)
+            tweakCache.setStatus(StatusType.OKAY);
         else
         {
-            NostalgicTweaks.LOGGER.warn(String.format("Unable to set status of feature '%s' in feature group '%s'", this.getKey(), this.getGroup()));
+            NostalgicTweaks.LOGGER.warn(String.format("Unable to set status of tweak '%s' in tweak group '%s'", this.getKey(), this.getGroup()));
             NostalgicTweaks.LOGGER.warn("This is a fault of the mod dev. Please report this key mismatch!");
         }
 

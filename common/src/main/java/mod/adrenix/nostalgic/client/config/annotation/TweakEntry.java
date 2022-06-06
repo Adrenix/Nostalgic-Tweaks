@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.annotation;
 
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.StatusType;
 import mod.adrenix.nostalgic.util.NostalgicLang;
@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.*;
 
-public abstract class NostalgicEntry
+public abstract class TweakEntry
 {
     public abstract static class Gui
     {
@@ -133,13 +133,13 @@ public abstract class NostalgicEntry
         {
             return new ConfigRowList.CategoryRow(list, new TranslatableComponent(this.langKey), () -> {
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
-                HashMap<String, EntryCache<?>> translated = new HashMap<>();
-                HashMap<Integer, EntryCache<?>> bottom = new HashMap<>();
-                HashMap<Integer, EntryCache<?>> top = new HashMap<>();
+                HashMap<String, TweakCache<?>> translated = new HashMap<>();
+                HashMap<Integer, TweakCache<?>> bottom = new HashMap<>();
+                HashMap<Integer, TweakCache<?>> top = new HashMap<>();
 
-                EntryCache.all().forEach(((key, entry) -> {
-                    Gui.Sub sub = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Sub.class);
-                    Gui.Placement placement = ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), Gui.Placement.class);
+                TweakCache.all().forEach(((key, entry) -> {
+                    Gui.Sub sub = ConfigReflect.getAnnotation(entry.getGroup(), entry.getKey(), Gui.Sub.class);
+                    Gui.Placement placement = ConfigReflect.getAnnotation(entry.getGroup(), entry.getKey(), Gui.Placement.class);
 
                     if (sub != null && sub.group() == this && entry.getGroup() == this.groupType)
                     {
@@ -155,13 +155,13 @@ public abstract class NostalgicEntry
                     }
                 }));
 
-                SortedMap<Integer, EntryCache<?>> sortTop = new TreeMap<>(top);
-                SortedMap<String, EntryCache<?>> sortMiddle = new TreeMap<>(translated);
-                SortedMap<Integer, EntryCache<?>> sortBottom = new TreeMap<>(bottom);
+                SortedMap<Integer, TweakCache<?>> sortTop = new TreeMap<>(top);
+                SortedMap<String, TweakCache<?>> sortMiddle = new TreeMap<>(translated);
+                SortedMap<Integer, TweakCache<?>> sortBottom = new TreeMap<>(bottom);
 
-                sortTop.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
-                sortMiddle.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
-                sortBottom.forEach((key, entry) -> rows.add(list.getRow(entry.getGroup(), entry.getEntryKey(), entry.getCurrent())));
+                sortTop.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+                sortMiddle.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+                sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
 
                 return rows;
             });

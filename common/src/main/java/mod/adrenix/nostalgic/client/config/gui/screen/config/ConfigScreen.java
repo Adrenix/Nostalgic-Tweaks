@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.*;
@@ -69,7 +69,7 @@ public class ConfigScreen extends Screen
 
     /* Instance Fields */
 
-    final Set<EntryCache<?>> search = new HashSet<>();
+    final Set<TweakCache<?>> search = new HashSet<>();
     public final ArrayList<Runnable> renderLast = new ArrayList<>();
     private final Minecraft minecraft;
     private final Screen parentScreen;
@@ -113,15 +113,15 @@ public class ConfigScreen extends Screen
 
         if (Minecraft.getInstance().level != null)
         {
-            EntryCache.all().forEach((key, entry) -> {
-                NostalgicEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
-                    entry.getGroup(),
-                    entry.getEntryKey(),
-                    NostalgicEntry.Gui.EntryStatus.class
+            TweakCache.all().forEach((key, tweak) -> {
+                TweakEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
+                    tweak.getGroup(),
+                    tweak.getKey(),
+                    TweakEntry.Gui.EntryStatus.class
                 );
 
-                if (entryStatus != null && entry.getStatus() == StatusType.WAIT)
-                    entry.setStatus(StatusType.FAIL);
+                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
+                    tweak.setStatus(StatusType.FAIL);
             });
         }
     }
@@ -350,7 +350,7 @@ public class ConfigScreen extends Screen
     {
         if (isCancelled)
         {
-            for (EntryCache<?> cache : EntryCache.all().values())
+            for (TweakCache<?> cache : TweakCache.all().values())
             {
                 if (cache.isSavable())
                     cache.undo();
@@ -366,7 +366,7 @@ public class ConfigScreen extends Screen
     {
         boolean isCacheDifferent = false;
 
-        for (EntryCache<?> cache : EntryCache.all().values())
+        for (TweakCache<?> cache : TweakCache.all().values())
         {
             if (isCacheDifferent) break;
             if (cache.isSavable())
@@ -378,7 +378,7 @@ public class ConfigScreen extends Screen
 
     private void save()
     {
-        for (EntryCache<?> cache : EntryCache.all().values())
+        for (TweakCache<?> cache : TweakCache.all().values())
         {
             if (cache.isSavable())
                 cache.save();

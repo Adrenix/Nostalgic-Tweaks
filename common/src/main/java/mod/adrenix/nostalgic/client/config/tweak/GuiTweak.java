@@ -1,14 +1,14 @@
-package mod.adrenix.nostalgic.client.config.feature;
+package mod.adrenix.nostalgic.client.config.tweak;
 
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 
-public enum SoundFeature implements IFeature
+public enum GuiTweak implements ITweak
 {
-    OLD_ATTACK,
-    OLD_HURT,
-    OLD_FALL,
-    OLD_STEP,
-    OLD_XP;
+    DEFAULT_SCREEN,
+    DISPLAY_NEW_TAGS,
+    DISPLAY_SIDED_TAGS,
+    DISPLAY_TAG_TOOLTIPS,
+    DISPLAY_FEATURE_STATUS;
 
     /* Implementation */
 
@@ -16,7 +16,7 @@ public enum SoundFeature implements IFeature
     private boolean loaded = false;
 
     @Override public String getKey() { return this.key; }
-    @Override public GroupType getGroup() { return GroupType.SOUND; }
+    @Override public GroupType getGroup() { return GroupType.GUI; }
 
     @Override public boolean isLoaded() { return this.loaded; }
     @Override public void setLoaded(boolean state) { this.loaded = state; }
