@@ -6,10 +6,10 @@ import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.StatusType;
 
 /**
- * The feature package assists the configuration menu by indicating to the user that something might be wrong if a
- * mod feature's mixin code has not yet been executed.
+ * The tweak package assists the configuration menu by indicating to the user that something might be wrong if a
+ * tweak's mixin code has not yet been executed.
  *
- * This method of feature tracking is not always accurate. Most mod features do not execute until the action occurs
+ * This method of tweak tracking is not always accurate. Most tweaks do not execute code until the action occurs
  * within game. For example, 2D items will not be considered "loaded" until an item entity enters the world.
  */
 
