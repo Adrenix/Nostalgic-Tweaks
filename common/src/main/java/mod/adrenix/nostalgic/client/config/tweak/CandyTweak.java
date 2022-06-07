@@ -8,6 +8,7 @@ public enum CandyTweak implements ITweak
     VERSION_OVERLAY,
     BUTTON_HOVER,
     TOOLTIP_BOXES,
+    NO_ITEM_TOOLTIPS,
     LIGHT_FLICKER,
     DURABILITY_COLORS,
     ITEM_HOLDING,

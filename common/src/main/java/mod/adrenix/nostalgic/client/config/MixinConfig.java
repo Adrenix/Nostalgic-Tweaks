@@ -99,6 +99,7 @@ public abstract class MixinConfig
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyTweak.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
         public static boolean oldNoSelectedItemName() { return isModEnabled(CandyTweak.NO_SELECTED_ITEM_NAME) && CANDY.oldNoSelectedItemName; }
         public static boolean oldDurabilityColors() { return isModEnabled(CandyTweak.DURABILITY_COLORS) && CANDY.oldDurabilityColors; }
+        public static boolean oldNoItemTooltips() { return isModEnabled(CandyTweak.NO_ITEM_TOOLTIPS) && CANDY.oldNoItemTooltips; }
         public static boolean oldVersionOverlay() { return isModEnabled(CandyTweak.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
         public static boolean oldLoadingScreens() { return isModEnabled(CandyTweak.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
         public static boolean oldButtonHover() { return isModEnabled(CandyTweak.BUTTON_HOVER) && CANDY.oldButtonHover; }

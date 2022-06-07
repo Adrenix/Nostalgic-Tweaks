@@ -161,6 +161,13 @@ public class ClientConfig implements ConfigData
         public boolean oldTooltipBoxes = DefaultConfig.Candy.OLD_TOOLTIP_BOXES;
         static { CandyTweak.TOOLTIP_BOXES.setKey("oldTooltipBoxes"); }
 
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldNoItemTooltips = DefaultConfig.Candy.OLD_NO_ITEM_TOOLTIPS;
+        static { CandyTweak.NO_ITEM_TOOLTIPS.setKey("oldNoItemTooltips"); }
+
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)

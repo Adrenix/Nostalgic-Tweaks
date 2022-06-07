@@ -34,6 +34,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;
         public static final boolean OLD_TOOLTIP_BOXES = true;
+        public static final boolean OLD_NO_ITEM_TOOLTIPS = false;
         public static final boolean OLD_DURABILITY_COLORS = true;
         public static final boolean OLD_LOADING_SCREENS = true;
         public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
