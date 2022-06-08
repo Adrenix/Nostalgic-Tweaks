@@ -76,6 +76,7 @@ public class ConfigScreen extends Screen
     private ConfigWidgets widgetProvider;
     private ConfigRenderer rendererProvider;
     private ConfigTab configTab = ConfigTab.GENERAL;
+    private static boolean isCacheReflected = false;
 
     /* Getters */
 
@@ -111,8 +112,9 @@ public class ConfigScreen extends Screen
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
 
-        if (Minecraft.getInstance().level != null)
+        if (Minecraft.getInstance().level != null && !ConfigScreen.isCacheReflected)
         {
+            ConfigScreen.isCacheReflected = true;
             TweakCache.all().forEach((key, tweak) -> {
                 TweakEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
                     tweak.getGroup(),
@@ -174,6 +176,19 @@ public class ConfigScreen extends Screen
         return false;
     }
 
+    private EditBox getEditBox()
+    {
+        ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+        if (focused != null)
+        {
+            for (AbstractWidget widget : focused.children)
+                if (widget instanceof EditBox && ((EditBox) widget).canConsumeInput())
+                    return (EditBox) widget;
+        }
+
+        return null;
+    }
+
     private KeyBindButton getMappingInput()
     {
         ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
@@ -199,6 +214,21 @@ public class ConfigScreen extends Screen
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
         KeyBindButton mappingInput = this.getMappingInput();
+        EditBox editBox = this.getEditBox();
+
+        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
+        {
+            if (this.getWidgets().getSearchInput().isFocused())
+                this.getWidgets().getSearchInput().setFocus(false);
+            else if (editBox != null && editBox.isFocused())
+                editBox.setFocus(false);
+            else
+                this.onCancel();
+            return true;
+        }
+
+        if (editBox != null)
+            return editBox.keyPressed(keyCode, scanCode, modifiers);
 
         if (mappingInput != null)
         {
@@ -264,15 +294,7 @@ public class ConfigScreen extends Screen
             return isInputChanged;
         }
 
-        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
-        {
-            if (this.getWidgets().getSearchInput().isFocused())
-                this.getWidgets().getSearchInput().setFocus(false);
-            else
-                this.onCancel();
-            return true;
-        }
-        else if (isSearching(keyCode))
+        if (isSearching(keyCode))
         {
             this.setConfigTab(ConfigTab.SEARCH);
             this.getWidgets().focusInput = true;
