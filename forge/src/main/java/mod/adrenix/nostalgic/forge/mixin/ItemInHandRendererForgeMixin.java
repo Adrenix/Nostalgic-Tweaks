@@ -27,12 +27,13 @@ public abstract class ItemInHandRendererForgeMixin
      * Prevents visual bug from flashing the previously held item when pulling an item out of the main hand.
      * Controlled by reequip toggle.
      */
-    @ModifyArg(
-        remap = false,
+    @ModifyArg
+    (
         method = "renderHandsWithItems",
         index = 8,
         at = @At(
             value = "INVOKE",
+            remap = false,
             ordinal = 0,
             target = "Lnet/minecraftforge/client/ForgeHooksClient;renderSpecificFirstPersonHand(Lnet/minecraft/world/InteractionHand;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFLnet/minecraft/world/item/ItemStack;)Z"
         )
@@ -53,12 +54,13 @@ public abstract class ItemInHandRendererForgeMixin
      * This prevents reequip animation issues when going from an item in the main hand to air.
      * Controlled by reequip toggle.
      */
-    @Redirect(
-        remap = false,
+    @Redirect
+    (
         method = "tick",
         at = @At(
             value = "INVOKE",
             ordinal = 0,
+            remap = false,
             target = "Lnet/minecraftforge/client/ForgeHooksClient;shouldCauseReequipAnimation(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;I)Z"
         )
     )
