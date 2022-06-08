@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client;
 
+import com.mojang.blaze3d.platform.Window;
 import mod.adrenix.nostalgic.client.config.CommonRegistry;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
@@ -20,12 +21,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin
 {
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
+    @Shadow public abstract Window getWindow();
 
     static
     {
@@ -84,5 +87,12 @@ public abstract class MinecraftMixin
     {
         ClassicProgressScreen.setCurrentDimension(null);
         ClassicProgressScreen.setPreviousDimension(null);
+    }
+
+    @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)
+    protected void onGetFramerateLimit(CallbackInfoReturnable<Integer> callback)
+    {
+        if (MixinConfig.Candy.uncapTitleFPS())
+            callback.setReturnValue(this.getWindow().getFramerateLimit());
     }
 }

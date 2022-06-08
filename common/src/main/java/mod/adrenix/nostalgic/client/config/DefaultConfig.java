@@ -28,6 +28,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_TITLE_BACKGROUND = true;
         public static final boolean OLD_ALPHA_LOGO = true;
         public static final boolean OLD_LOGO_OUTLINE = true;
+        public static final boolean UNCAP_TITLE_FPS = true;
 
         // Interface Candy
         public static final VERSION OLD_LOADING_OVERLAY = VERSION.ALPHA;

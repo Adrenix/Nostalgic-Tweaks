@@ -26,6 +26,7 @@ public enum CandyTweak implements ITweak
     TITLE_BOTTOM_LEFT_TEXT,
     LOADING_OVERLAY,
     REMOVE_LOADING_BAR,
+    UNCAP_TITLE_FPS,
     ALPHA_LOGO,
     LOGO_OUTLINE,
     LOADING_SCREENS,

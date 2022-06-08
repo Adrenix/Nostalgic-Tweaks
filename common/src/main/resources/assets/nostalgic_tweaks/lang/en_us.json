@@ -129,6 +129,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy": "Eye Candy",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.overrideTitleScreen": "Override Title Screen",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.overrideTitleScreen.@Tooltip": "This option will apply the tweaks listed in this subcategory to the title screen.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.uncapTitleFPS": "Uncap Title FPS",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.uncapTitleFPS.@Tooltip": "Removes the 60 FPS cap enforced on the main menu. The FPS defined in the user settings will be used.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.titleVersionText": "Title Version Text",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.titleVersionText.@Tooltip": "Change the version text that appears in the top left of the title screen.\n\nUse §b%v§r to insert the current game version. Use §b%§r followed by a Minecraft color code to get formatting. For example, §b%4§r will make §4red§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeTitleAccessibilityButton": "Remove Accessibility Button",

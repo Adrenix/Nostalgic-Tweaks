@@ -94,6 +94,7 @@ public abstract class MixinConfig
         public static boolean oldTitleBackground() { return isModEnabled(CandyTweak.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
         public static boolean oldLogoOutline() { return isModEnabled(CandyTweak.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
         public static boolean oldAlphaLogo() { return isModEnabled(CandyTweak.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
+        public static boolean uncapTitleFPS() { return isModEnabled(CandyTweak.UNCAP_TITLE_FPS) && CANDY.uncapTitleFPS; }
 
         // Interface Candy
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyTweak.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }

@@ -97,6 +97,12 @@ public class ClientConfig implements ConfigData
 
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
+        static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
         @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
