@@ -177,6 +177,13 @@ public class ClientConfig implements ConfigData
         public boolean oldChatInput = DefaultConfig.Candy.OLD_CHAT_INPUT;
         static { CandyTweak.CHAT_INPUT.setKey("oldChatInput"); }
 
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldChatBox = DefaultConfig.Candy.OLD_CHAT_BOX;
+        static { CandyTweak.CHAT_BOX.setKey("oldChatBox"); }
+
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)

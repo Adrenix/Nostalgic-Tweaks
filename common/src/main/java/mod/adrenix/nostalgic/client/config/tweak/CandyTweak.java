@@ -31,6 +31,7 @@ public enum CandyTweak implements ITweak
     LOGO_OUTLINE,
     LOADING_SCREENS,
     CHAT_INPUT,
+    CHAT_BOX,
     LIGHTING,
     SMOOTH_LIGHTING,
     LEAVES_LIGHTING,

@@ -106,6 +106,7 @@ public abstract class MixinConfig
         public static boolean removeLoadingBar() { return isModEnabled(CandyTweak.REMOVE_LOADING_BAR) && CANDY.removeLoadingBar; }
         public static boolean oldButtonHover() { return isModEnabled(CandyTweak.BUTTON_HOVER) && CANDY.oldButtonHover; }
         public static boolean oldChatInput() { return isModEnabled(CandyTweak.CHAT_INPUT) && CANDY.oldChatInput; }
+        public static boolean oldChatBox() { return isModEnabled(CandyTweak.CHAT_BOX) && CANDY.oldChatBox; }
         public static boolean oldTooltips() { return !isModEnabled(CandyTweak.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
 
         // Item Candy
