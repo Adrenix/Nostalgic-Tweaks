@@ -159,6 +159,7 @@ public class ClientConfig implements ConfigData
 
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 2)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean removeLoadingBar = DefaultConfig.Candy.REMOVE_LOADING_BAR;

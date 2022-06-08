@@ -33,7 +33,7 @@ public abstract class DefaultConfig
         // Interface Candy
         public static final VERSION OLD_LOADING_OVERLAY = VERSION.ALPHA;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
-        public static final boolean REMOVE_LOADING_BAR = true;
+        public static final boolean REMOVE_LOADING_BAR = false;
         public static final boolean OLD_CHAT_INPUT = true;
         public static final boolean OLD_CHAT_BOX = true;
         public static final boolean OLD_VERSION_OVERLAY = true;
