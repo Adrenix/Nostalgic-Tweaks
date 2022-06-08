@@ -1,0 +1,52 @@
+package mod.adrenix.nostalgic.mixin.client;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.MixinConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(ChatScreen.class)
+public abstract class ChatScreenMixin extends Screen
+{
+    /* Shadows & Helpers */
+
+    @Shadow protected EditBox input;
+
+    /* Dummy Constructor */
+
+    private ChatScreenMixin(Component ignored)
+    {
+        super(ignored);
+    }
+
+    /**
+     * Moves the input position further to the right to account for the new '>' symbol.
+     * Controlled by the old chat input tweak.
+     */
+    @Inject(method = "init", at = @At("RETURN"))
+    protected void onInitInput(CallbackInfo callback)
+    {
+        this.input.setX(MixinConfig.Candy.oldChatInput() ? 12 : 4);
+        this.input.setWidth(MixinConfig.Candy.oldChatInput() ? this.width - 21 : this.width - 4);
+    }
+
+    /**
+     * Adds a '>' to the beginning of the chat input box.
+     * Controlled by the old chat input tweak.
+     */
+    @Inject(method = "render", at = @At("RETURN"))
+    protected void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
+    {
+        if (!MixinConfig.Candy.oldChatInput())
+            return;
+        ChatScreen.drawString(poseStack, Minecraft.getInstance().font, ">", 4, this.height - 12, 0xFFFFFF);
+    }
+}

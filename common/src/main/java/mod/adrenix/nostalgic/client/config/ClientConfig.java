@@ -170,6 +170,13 @@ public class ClientConfig implements ConfigData
         public boolean oldVersionOverlay = DefaultConfig.Candy.OLD_VERSION_OVERLAY;
         static { CandyTweak.VERSION_OVERLAY.setKey("oldVersionOverlay"); }
 
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldChatInput = DefaultConfig.Candy.OLD_CHAT_INPUT;
+        static { CandyTweak.CHAT_INPUT.setKey("oldChatInput"); }
+
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)

@@ -10,6 +10,7 @@
     "AnimationUtilsMixin",
     "BiomeMixin",
     "CameraMixin",
+    "ChatScreenMixin",
     "ClientLevelMixin",
     "DimensionTypeMixin",
     "ExperienceOrbRendererMixin",

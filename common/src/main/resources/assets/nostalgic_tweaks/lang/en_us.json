@@ -160,6 +160,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingScreens.@Tooltip": "Bring back the old world loading screens.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeLoadingBar": "Remove Loading Bar",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeLoadingBar.@Tooltip": "Remove the loading bar from the game loading overlay. This tweak only works with alpha/beta overlays.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChatInput": "Old Chat Input",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChatInput.@Tooltip": "Bring back the old chat input box. Adds a > at the beginning of the box.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldButtonHover": "Old Button Hover",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldButtonHover.@Tooltip": "Bring back the old button look. Text on buttons will have a slight§7 gray§r color. When hovering, the text turns §e yellow§r.\n\n§bTo get the old §9 blue§b button background and§c removal§b of the§r white§b border around buttons, use a resource pack.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTooltipBoxes": "Old Tooltip Boxes",
