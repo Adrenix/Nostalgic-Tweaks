@@ -102,6 +102,7 @@ public abstract class MixinConfig
         public static boolean oldNoItemTooltips() { return isModEnabled(CandyTweak.NO_ITEM_TOOLTIPS) && CANDY.oldNoItemTooltips; }
         public static boolean oldVersionOverlay() { return isModEnabled(CandyTweak.VERSION_OVERLAY) && CANDY.oldVersionOverlay; }
         public static boolean oldLoadingScreens() { return isModEnabled(CandyTweak.LOADING_SCREENS) && CANDY.oldLoadingScreens; }
+        public static boolean removeLoadingBar() { return isModEnabled(CandyTweak.REMOVE_LOADING_BAR) && CANDY.removeLoadingBar; }
         public static boolean oldButtonHover() { return isModEnabled(CandyTweak.BUTTON_HOVER) && CANDY.oldButtonHover; }
         public static boolean oldTooltips() { return !isModEnabled(CandyTweak.TOOLTIP_BOXES) || !CANDY.oldTooltipBoxes; }
 
@@ -143,6 +144,7 @@ public abstract class MixinConfig
 
         /* Version Tweaks */
 
+        public static DefaultConfig.VERSION getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
         public static DefaultConfig.VERSION getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
         public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
         public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }

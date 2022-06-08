@@ -23,6 +23,7 @@
     "ItemRendererMixin",
     "LevelRendererMixin",
     "LightTextureMixin",
+    "LoadingOverlayMixin",
     "MinecraftMixin",
     "ScreenMixin",
     "SkeletonModelMixin",

@@ -143,6 +143,21 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
 
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public DefaultConfig.VERSION oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
+        static { CandyTweak.VERSION_OVERLAY.setKey("oldLoadingOverlay"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 2)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean removeLoadingBar = DefaultConfig.Candy.REMOVE_LOADING_BAR;
+        static { CandyTweak.REMOVE_LOADING_BAR.setKey("removeLoadingBar"); }
+
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)

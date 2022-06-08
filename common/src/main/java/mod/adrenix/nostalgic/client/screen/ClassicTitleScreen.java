@@ -158,7 +158,9 @@ public class ClassicTitleScreen extends TitleScreen
         if (this.updateScreenDelay == 0L)
             this.updateScreenDelay = Util.getMillis();
 
-        if (this.minecraft == null || !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200)
+        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == DefaultConfig.VERSION.MODERN;
+        boolean isDelayed = !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
+        if (this.minecraft == null || (isModern && isDelayed))
             return;
 
         if (MixinConfig.Candy.oldAlphaLogo())
