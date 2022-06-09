@@ -125,7 +125,7 @@ public class ClassicTitleScreen extends TitleScreen
         else if (keyCode == GLFW.GLFW_KEY_M)
             this.minecraft.setScreen(new ClassicTitleScreen());
         else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
-            this.minecraft.setScreen(new SettingsScreen(this, false));
+            this.minecraft.setScreen(new SettingsScreen(this, true));
         return true;
     }
 
