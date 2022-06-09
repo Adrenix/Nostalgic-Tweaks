@@ -156,7 +156,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldVersionOverlay": "Old Version Overlay",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldVersionOverlay.@Tooltip": "Bring back the old Minecraft version overlay on the HUD.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingOverlay": "Old Game Loading Overlay",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingOverlay.@Tooltip": "Bring back the an alpha or a beta game loading overlay.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingOverlay.@Tooltip": "Bring back the alpha or beta game loading overlay.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingScreens": "Old Level Loading Screens",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLoadingScreens.@Tooltip": "Bring back the old world loading screens.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeLoadingBar": "Remove Loading Bar",
