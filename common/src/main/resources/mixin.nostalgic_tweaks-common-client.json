@@ -8,6 +8,7 @@
     "AbstractWidgetMixin",
     "AbstractZombieModelMixin",
     "AnimationUtilsMixin",
+    "BackupConfirmScreenMixin",
     "BiomeMixin",
     "CameraMixin",
     "ChatComponentMixin",
