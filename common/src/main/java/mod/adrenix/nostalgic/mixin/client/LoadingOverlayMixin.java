@@ -99,7 +99,7 @@ public abstract class LoadingOverlayMixin
         float actualProgress = this.reload.getActualProgress();
         this.currentProgress = Mth.clamp(this.currentProgress * 0.95F + actualProgress * 0.050000012F, 0.0F, 1.0F);
 
-        if (!MixinConfig.Candy.removeLoadingBar() || this.fadeIn)
+        if (!MixinConfig.Candy.removeLoadingBar())
             this.drawProgressBar(poseStack, width / 2 - scaleW, barHeight - 5, width / 2 + scaleW, barHeight + 5, 1.0F);
 
         if (fadeOut >= 2.0F)
