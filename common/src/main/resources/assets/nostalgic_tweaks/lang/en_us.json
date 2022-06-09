@@ -40,6 +40,7 @@
   "gui.nostalgic_tweaks.config.speed.@PrefixText": "\nThe higher the swing number is the slower the swinging animation will be.\n\n§aAlpha/Beta Minecraft§f: §b8\n§6Modern Minecraft§f: §b6\n\n§rIf you are§e photosensitive§r, it is recommended to set speeds to§e 0§r.\nTo set§d customized§r speeds for individual items, click the§d Custom Speed§r button at the mod's settings homepage.\n§r",
   "gui.nostalgic_tweaks.config.intensity": "Intensity",
   "gui.nostalgic_tweaks.config.custom": "Custom",
+  "gui.nostalgic_tweaks.config.default": "§eDefault§r",
   "gui.nostalgic_tweaks.config.alpha": "§aAlpha",
   "gui.nostalgic_tweaks.config.beta": "§eBeta",
   "gui.nostalgic_tweaks.config.modern": "§cModern",

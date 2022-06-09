@@ -63,6 +63,7 @@ public abstract class NostalgicLang
         public static final String SETTINGS_ALPHA = "gui.nostalgic_tweaks.config.alpha";
         public static final String SETTINGS_BETA = "gui.nostalgic_tweaks.config.beta";
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
+        public static final String DEFAULT = "gui.nostalgic_tweaks.config.default";
 
         public static final String STATUS_WAIT = "gui.nostalgic_tweaks.config.status.wait";
         public static final String STATUS_WARN = "gui.nostalgic_tweaks.config.status.warn";
