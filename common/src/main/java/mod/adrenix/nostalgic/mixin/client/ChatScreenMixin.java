@@ -36,6 +36,7 @@ public abstract class ChatScreenMixin extends Screen
     {
         this.input.setX(MixinConfig.Candy.oldChatInput() ? 12 : 4);
         this.input.setWidth(MixinConfig.Candy.oldChatInput() ? this.width - 21 : this.width - 4);
+        this.input.setTextColor(0xFFFFFF);
     }
 
     /**
