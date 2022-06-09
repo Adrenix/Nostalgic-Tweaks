@@ -69,7 +69,7 @@ public abstract class ExplosionMixin
         double dy = randY - this.y;
         double dz = randZ - this.z;
 
-        double magnitude = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
+        double magnitude = Mth.length(dx, dy, dz);
         dx /= magnitude;
         dy /= magnitude;
         dz /= magnitude;
