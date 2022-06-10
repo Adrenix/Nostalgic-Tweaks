@@ -44,7 +44,8 @@ public abstract class ScreenMixin extends GuiComponent
     private void NT$renderTooltipProxy(Matrix4f matrix, BufferBuilder buffer, int x1, int y1, int x2, int y2, int blitOffset, int colorA, int colorB)
     {
         if (MixinConfig.Candy.oldTooltips())
-            fillGradient(matrix, buffer, x1, y1, x2, y2, blitOffset, colorA, colorB);
+            return;
+        fillGradient(matrix, buffer, x1, y1, x2, y2, blitOffset, colorA, colorB);
     }
 
     /**
@@ -54,7 +55,7 @@ public abstract class ScreenMixin extends GuiComponent
     @Inject(method = "renderTooltipInternal", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack$Pose;pose()Lcom/mojang/math/Matrix4f;"))
     private void NT$onRenderTooltipInternal(PoseStack matrices, List<ClientTooltipComponent> clientTooltip, int x0, int y0, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldTooltips())
+        if (!MixinConfig.Candy.oldTooltips())
             return;
 
         int maxWidth = 0;

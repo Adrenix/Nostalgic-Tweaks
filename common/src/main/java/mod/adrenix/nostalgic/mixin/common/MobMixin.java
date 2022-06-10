@@ -44,10 +44,7 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
     @Inject(method = "tick", at = @At("TAIL"))
     protected void NT$onTick(CallbackInfo callback)
     {
-        if (!MixinConfig.Animation.oldGhastCharging())
-            return;
-
-        if (this.getType() == EntityType.GHAST)
+        if (MixinConfig.Animation.oldGhastCharging() && this.getType() == EntityType.GHAST)
         {
             Ghast ghast = (Ghast) this.getType().tryCast(this);
             if (ghast != null && ghast.isCharging() && ghast.isAlive())
