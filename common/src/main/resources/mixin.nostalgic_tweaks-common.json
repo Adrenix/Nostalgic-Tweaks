@@ -6,18 +6,17 @@
   "priority": 1001,
   "client": [
     "ClientPacketListenerMixin",
-    "ExplosionMixin",
-    "LivingEntityMixin",
-    "MobMixin",
-
-    "BlockBehaviourMixin",
-    "BlockMixin",
-    "BlockStateBaseMixin",
-    "ChunkMapMixin",
-    "EntityMixin",
-    "ItemEntityMixin",
-    "LeavesBlockMixin",
-    "PlayerMixin"
+    "world.entity.EntityMixin",
+    "world.entity.ItemEntityMixin",
+    "world.entity.LivingEntityMixin",
+    "world.entity.MobMixin",
+    "world.entity.PlayerMixin",
+    "world.level.ExplosionMixin",
+    "world.level.block.BlockBehaviourMixin",
+    "world.level.block.BlockMixin",
+    "world.level.block.BlockStateBaseMixin",
+    "world.level.block.LeavesBlockMixin",
+    "server.ChunkMapMixin"
   ],
 
   "mixins": []
