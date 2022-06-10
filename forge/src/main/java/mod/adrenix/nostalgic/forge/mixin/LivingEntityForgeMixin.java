@@ -14,10 +14,10 @@ public abstract class LivingEntityForgeMixin
 {
     /**
      * Separates items from a clumped item entity into multiple item entities when a mob is killed.
-     * Controlled by the item merging toggle.
+     * Controlled by the item merging tweak.
      */
     @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V"))
-    protected Consumer<ItemStack> onDropFromLootTable(Consumer<ItemStack> consumer)
+    private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
         return MixinUtil.Item.explodeStack(consumer);
     }

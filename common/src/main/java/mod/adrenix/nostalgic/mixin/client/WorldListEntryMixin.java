@@ -16,10 +16,18 @@ public abstract class WorldListEntryMixin
 {
     /**
      * Redirects the "Reading world data..." generic screen to static classic progress level loading screen.
-     * Controlled by the old loading screen toggle.
+     * Controlled by the old loading screen tweak.
      */
-    @ModifyArg(method = "queueLoadScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;forceSetScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    protected Screen onQueueLoadScreen(Screen genericScreen)
+    @ModifyArg
+    (
+        method = "queueLoadScreen",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/Minecraft;forceSetScreen(Lnet/minecraft/client/gui/screens/Screen;)V"
+        )
+    )
+    private Screen NT$onQueueLoadScreen(Screen genericScreen)
     {
         if (!MixinConfig.Candy.oldLoadingScreens())
             return genericScreen;

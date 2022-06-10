@@ -20,25 +20,26 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererForgeMixin
 {
-    @Shadow
-    private ItemStack mainHandItem;
+    /* Shadows */
+
+    @Shadow private ItemStack mainHandItem;
 
     /**
      * Prevents visual bug from flashing the previously held item when pulling an item out of the main hand.
-     * Controlled by reequip toggle.
+     * Controlled by reequip tweak.
      */
     @ModifyArg
     (
         method = "renderHandsWithItems",
         index = 8,
         at = @At(
-            value = "INVOKE",
             remap = false,
             ordinal = 0,
+            value = "INVOKE",
             target = "Lnet/minecraftforge/client/ForgeHooksClient;renderSpecificFirstPersonHand(Lnet/minecraft/world/InteractionHand;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFLnet/minecraft/world/item/ItemStack;)Z"
         )
     )
-    protected ItemStack onRenderItem(InteractionHand hand, PoseStack matrix, MultiBufferSource buffer, int packedLight, float partialTick, float interpolPitch, float swingProgress, float equipProgress, ItemStack itemStack)
+    private ItemStack NT$onRenderItem(InteractionHand hand, PoseStack matrix, MultiBufferSource buffer, int packedLight, float partialTick, float interpolPitch, float swingProgress, float equipProgress, ItemStack itemStack)
     {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null)
@@ -52,19 +53,19 @@ public abstract class ItemInHandRendererForgeMixin
      * so we can track what the last held item was.
      *
      * This prevents reequip animation issues when going from an item in the main hand to air.
-     * Controlled by reequip toggle.
+     * Controlled by reequip tweak.
      */
     @Redirect
     (
         method = "tick",
         at = @At(
-            value = "INVOKE",
-            ordinal = 0,
             remap = false,
+            ordinal = 0,
+            value = "INVOKE",
             target = "Lnet/minecraftforge/client/ForgeHooksClient;shouldCauseReequipAnimation(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;I)Z"
         )
     )
-    protected boolean onMainItemTick(ItemStack from, ItemStack to, int slot)
+    private boolean NT$onMainItemTick(ItemStack from, ItemStack to, int slot)
     {
         if (!MixinConfig.Animation.oldItemReequip())
             return ForgeHooksClient.shouldCauseReequipAnimation(from, to, slot);

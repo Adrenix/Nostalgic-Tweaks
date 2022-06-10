@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 @Mixin(LoadingOverlay.class)
 public abstract class LoadingOverlayMixin
 {
-    /* Shadow & Helpers */
+    /* Shadows */
 
     @Shadow @Final static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
     @Shadow @Final private Consumer<Optional<Throwable>> onFinish;
@@ -43,10 +43,10 @@ public abstract class LoadingOverlayMixin
 
     /**
      * Overrides the overlay renderer, so we can display a retro loading screen.
-     * Controlled by various interface toggles.
+     * Controlled by various interface tweaks.
      */
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    protected void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
+    private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
         DefaultConfig.VERSION overlay = MixinConfig.Candy.getLoadingOverlay();
         if (overlay == DefaultConfig.VERSION.MODERN)
@@ -128,10 +128,10 @@ public abstract class LoadingOverlayMixin
 
     /**
      * Changes the color and position of the progress bar when using the beta style overlay.
-     * Controlled by various toggles.
+     * Controlled by various tweaks.
      */
     @Redirect(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FastColor$ARGB32;color(IIII)I"))
-    protected int onDrawProgressBar(int alpha, int red, int green, int blue)
+    private int NT$onDrawProgressBar(int alpha, int red, int green, int blue)
     {
         if (MixinConfig.Candy.getLoadingOverlay() != DefaultConfig.VERSION.BETA)
             return FastColor.ARGB32.color(255, 255, 255, 255);

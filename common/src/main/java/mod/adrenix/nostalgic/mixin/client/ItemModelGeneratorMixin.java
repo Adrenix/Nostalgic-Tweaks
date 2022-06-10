@@ -41,11 +41,11 @@ public abstract class ItemModelGeneratorMixin
 
     /**
      * Fixes the transparent gaps seen in held item models.
-     * Controlled by the fix item gap toggle.
+     * Controlled by the fix item gap tweak.
      */
 
     @Inject(method = "processFrames", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
-    protected void onProcessFrames
+    private void NT$onProcessFrames
     (
         int tintIndex,
         String texture,
@@ -60,7 +60,7 @@ public abstract class ItemModelGeneratorMixin
             if (!MixinConfig.Candy.fixItemModelGaps())
                 return;
         }
-        // Captures NoClassDefFoundError if config dependency is missing which allows forge to finish loading
+        // Captures NoClassDefFoundError if config dependency is missing which allows forge to reach missing dependency screen
         catch (Error ignored) {}
 
 

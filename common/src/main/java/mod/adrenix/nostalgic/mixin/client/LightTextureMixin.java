@@ -19,13 +19,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LightTexture.class)
 public abstract class LightTextureMixin
 {
-    /* Shadows & Helpers */
+    /* Shadows */
 
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private NativeImage lightPixels;
     @Shadow @Final private DynamicTexture lightTexture;
     @Shadow private boolean updateLightTexture;
     @Shadow protected abstract float getBrightness(Level level, int lightLevel);
+
+    /* Static Helpers */
 
     private static int calculateSkylightSubtracted(ClientLevel clientLevel)
     {
@@ -43,10 +45,10 @@ public abstract class LightTextureMixin
 
     /**
      * Disables the light flickering from light emitting sources.
-     * Controlled by the old light flicker toggle.
+     * Controlled by the old light flicker tweak.
      */
     @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
-    protected void onTick(CallbackInfo callback)
+    private void NT$onTick(CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldLightFlicker())
         {
@@ -57,10 +59,10 @@ public abstract class LightTextureMixin
 
     /**
      * Brings back the old lighting colors along with using the old brightness table.
-     * Controlled by the old lighting toggle.
+     * Controlled by the old lighting tweak.
      */
     @Inject(method = "updateLightTexture", at = @At(value = "HEAD"), cancellable = true)
-    protected void onUpdateLightTexture(float partialTicks, CallbackInfo callback)
+    private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
         if (!MixinConfig.Candy.oldLighting() || !this.updateLightTexture)
             return;

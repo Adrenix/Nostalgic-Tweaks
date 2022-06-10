@@ -21,7 +21,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
 
     /**
      * Disables skeleton arm positioning when the mob becomes aggressive.
-     * Controlled by the old skeleton arms toggle.
+     * Controlled by the old skeleton arms tweak.
      */
     @Inject
     (
@@ -34,7 +34,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
             target = "Lnet/minecraft/world/entity/Mob;getMainArm()Lnet/minecraft/world/entity/HumanoidArm;"
         )
     )
-    protected void onPrepareAggressiveMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo callback)
+    private void NT$onPrepareAggressiveMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo callback)
     {
         if (MixinConfig.Animation.oldSkeletonArms())
             callback.cancel();
@@ -42,7 +42,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
 
     /**
      * Prevents the modern animation for default skeleton arm position and firing.
-     * Controlled by the old skeleton arms toggle.
+     * Controlled by the old skeleton arms tweak.
      */
     @Inject
     (
@@ -55,7 +55,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
             target = "Lnet/minecraft/world/entity/Mob;getMainHandItem()Lnet/minecraft/world/item/ItemStack;"
         )
     )
-    protected void onSetupSkeletonArms(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
+    private void NT$onSetupSkeletonArms(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
         if (!MixinConfig.Animation.oldSkeletonArms())
             return;

@@ -24,7 +24,7 @@ public abstract class GhastRendererMixin
         at = @At("HEAD"),
         cancellable = true
     )
-    protected void onScale(Ghast ghast, PoseStack poseStack, float partialTickTime, CallbackInfo callback)
+    private void NT$onScale(Ghast ghast, PoseStack poseStack, float partialTickTime, CallbackInfo callback)
     {
         if (!MixinConfig.Animation.oldGhastCharging() || !ghast.isCharging())
             return;

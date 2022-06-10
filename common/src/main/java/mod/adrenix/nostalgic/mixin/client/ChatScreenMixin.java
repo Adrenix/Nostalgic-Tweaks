@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen
 {
-    /* Shadows & Helpers */
+    /* Shadows */
 
     @Shadow protected EditBox input;
 
@@ -32,7 +32,7 @@ public abstract class ChatScreenMixin extends Screen
      * Controlled by the old chat input tweak.
      */
     @Inject(method = "init", at = @At("RETURN"))
-    protected void onInitInput(CallbackInfo callback)
+    private void NT$onInitInput(CallbackInfo callback)
     {
         this.input.setX(MixinConfig.Candy.oldChatInput() ? 12 : 4);
         this.input.setWidth(MixinConfig.Candy.oldChatInput() ? this.width - 21 : this.width - 4);
@@ -44,7 +44,7 @@ public abstract class ChatScreenMixin extends Screen
      * Controlled by the old chat input tweak.
      */
     @Inject(method = "render", at = @At("RETURN"))
-    protected void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
+    private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
         if (!MixinConfig.Candy.oldChatInput())
             return;

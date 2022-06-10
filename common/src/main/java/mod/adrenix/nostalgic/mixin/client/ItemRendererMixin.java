@@ -25,9 +25,16 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * To help with mod compatibility, the mixins defined in this class will be applied last.
+ * Mixin injections here will occur after all other mods have finished their required modifications.
+ */
+
 @Mixin(value = ItemRenderer.class, priority = MixinUtil.APPLY_LAST)
 public abstract class ItemRendererMixin
 {
+    /* Shadows */
+
     @Shadow protected abstract void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer);
     @Shadow protected abstract void fillRect(BufferBuilder builder, int x, int y, int w, int h, int r, int g, int b, int alpha);
     @Shadow public abstract void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model);
@@ -37,7 +44,7 @@ public abstract class ItemRendererMixin
      * Controlled by flat rendering state in the mixin injector helper class.
      */
     @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
-    private BakedQuad onRenderQuad(BakedQuad quad, PoseStack poseStack)
+    private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
     {
         if (MixinUtil.Item.isLightingFlat())
             MixinUtil.Item.setNormalQuad(poseStack.last(), quad);
@@ -46,10 +53,18 @@ public abstract class ItemRendererMixin
 
     /**
      * Disables the enchantment glint on floating items.
-     * Controlled by the old 2d enchantment toggle.
+     * Controlled by the old 2d enchantment tweak.
      */
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
-    protected void onGetGlint(ItemRenderer renderer, BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, ItemStack unused1, ItemTransforms.TransformType transformer, boolean leftHand, PoseStack unused2, MultiBufferSource buffer)
+    @Redirect
+    (
+        method = "render",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"
+        )
+    )
+    private void NT$onGetGlint(ItemRenderer renderer, BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, ItemStack unused1, ItemTransforms.TransformType transformer, boolean leftHand, PoseStack unused2, MultiBufferSource buffer)
     {
         boolean noGlobalGlint = MixinConfig.Candy.oldFlatEnchantment() && MixinUtil.Item.isLightingFlat();
         boolean noEntityGlint = MixinConfig.Candy.oldFloatingItems() && transformer == ItemTransforms.TransformType.GROUND;
@@ -68,10 +83,14 @@ public abstract class ItemRendererMixin
 
     /**
      * Simulates the old durability bar colors.
-     * Controlled by the old damage colors toggle.
+     * Controlled by the old damage colors tweak.
      */
-    @Inject(method = "renderGuiItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "RETURN"))
-    protected void onRenderGuiItemDecorations(Font font, ItemStack stack, int x, int y, String s, CallbackInfo callback)
+    @Inject
+    (
+        method = "renderGuiItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
+        at = @At(value = "RETURN")
+    )
+    private void NT$onRenderGuiItemDecorations(Font font, ItemStack stack, int x, int y, String text, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldDurabilityColors() && stack.isDamaged())
         {

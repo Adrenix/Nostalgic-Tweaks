@@ -14,10 +14,18 @@ public abstract class ClientLevelMixin
 {
     /**
      * Brings back the old nether shading.
-     * Controlled by the old lighting toggle.
+     * Controlled by the old lighting tweak.
      */
-    @Redirect(method = "getShade", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;constantAmbientLight()Z"))
-    protected boolean onGetNetherShade(DimensionSpecialEffects instance)
+    @Redirect
+    (
+        method = "getShade",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;constantAmbientLight()Z"
+        )
+    )
+    private boolean NT$onGetNetherShade(DimensionSpecialEffects instance)
     {
         if (MixinConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;

@@ -26,23 +26,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin
 {
+    /* Shadows */
+
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
     @Shadow public abstract Window getWindow();
 
+    // Loading the config as early as possible to prevent NPEs during mixin applications.
     static
     {
-        // Loading the config as early as possible to prevent NPEs during mixin applications.
         if (CommonRegistry.cache == null)
             CommonRegistry.preloadConfiguration();
     }
 
     /**
      * Prevents the hand swing animation when dropping an item.
-     * Controlled the swing drop toggle.
+     * Controlled the swing drop tweak.
      */
     @Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
-    protected void itemDroppingProxy(LocalPlayer player, InteractionHand hand)
+    private void NT$itemDroppingProxy(LocalPlayer player, InteractionHand hand)
     {
         if (MixinConfig.Animation.oldSwingDropping())
             return;
@@ -51,10 +53,18 @@ public abstract class MinecraftMixin
 
     /**
      * Redirects the "Saving world" generic screen to static classic progress saving screen.
-     * Controlled by the old loading screen toggle.
+     * Controlled by the old loading screen tweak.
      */
-    @ModifyArg(method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;updateScreenAndTick(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    protected Screen onSaveScreen(Screen genericScreen)
+    @ModifyArg
+    (
+        method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/Minecraft;updateScreenAndTick(Lnet/minecraft/client/gui/screens/Screen;)V"
+        )
+    )
+    private Screen NT$onSaveScreen(Screen genericScreen)
     {
         if (!MixinConfig.Candy.oldLoadingScreens())
             return genericScreen;
@@ -71,11 +81,13 @@ public abstract class MinecraftMixin
     }
 
     /**
-     * Injects dimension trackers in these two level methods so the classic loading screens can properly display dimension info.
-     * Not controlled by any toggle since this injection is used for level tracking.
+     * The following injections insert dimension trackers in these two level methods so the classic loading screens can
+     * properly display dimension info.
+     *
+     * Not controlled by any tweak since this injection is used for level tracking.
      */
     @Inject(method = "setLevel", at = @At(value = "HEAD"))
-    protected void onSetLevel(ClientLevel levelClient, CallbackInfo callback)
+    private void NT$onSetLevel(ClientLevel levelClient, CallbackInfo callback)
     {
         if (this.level != null)
             ClassicProgressScreen.setPreviousDimension(this.level.dimension());
@@ -83,14 +95,18 @@ public abstract class MinecraftMixin
     }
 
     @Inject(method = "clearLevel()V", at = @At(value = "TAIL"))
-    protected void onClearLevel(CallbackInfo callback)
+    private void NT$onClearLevel(CallbackInfo callback)
     {
         ClassicProgressScreen.setCurrentDimension(null);
         ClassicProgressScreen.setPreviousDimension(null);
     }
 
+    /**
+     * Uncaps the framerate limit imposed on the title screen.
+     * Controlled by the unlimited title FPS tweak.
+     */
     @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)
-    protected void onGetFramerateLimit(CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetFramerateLimit(CallbackInfoReturnable<Integer> callback)
     {
         if (MixinConfig.Candy.uncapTitleFPS())
             callback.setReturnValue(this.getWindow().getFramerateLimit());

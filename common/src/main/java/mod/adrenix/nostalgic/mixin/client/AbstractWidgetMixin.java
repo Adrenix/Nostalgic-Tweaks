@@ -10,14 +10,26 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(AbstractWidget.class)
 public abstract class AbstractWidgetMixin
 {
+    /* Shadows */
+
     @Shadow protected boolean isHovered;
     @Shadow public abstract boolean isActive();
 
     /**
      * Renders old school style buttons by rendering yellow text on hover and slightly gray text off hover.
+     * Controlled by the old button hover tweak.
      */
-    @ModifyArg(method = "renderButton", index = 5, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractWidget;drawCenteredString(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-    protected int onRenderButton(int current)
+    @ModifyArg
+    (
+        method = "renderButton",
+        index = 5,
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/components/AbstractWidget;drawCenteredString(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"
+        )
+    )
+    private int NT$onRenderButton(int current)
     {
         if (!MixinConfig.Candy.oldButtonHover())
             return current;

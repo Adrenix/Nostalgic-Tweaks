@@ -20,7 +20,7 @@ public abstract class BiomeMixin
 
     @Shadow @Final private BiomeSpecialEffects specialEffects;
 
-    /* Color Helpers */
+    /* Helpers */
 
     private static boolean isNether()
     {
@@ -34,10 +34,10 @@ public abstract class BiomeMixin
 
     /**
      * Brings back the old fog universal fog colors in the overworld and the nether.
-     * Controlled by the old biome colors toggle.
+     * Controlled by the old biome colors tweak.
      */
     @Inject(method = "getFogColor", at = @At(value = "HEAD"), cancellable = true)
-    protected void onGetFogColor(CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetFogColor(CallbackInfoReturnable<Integer> callback)
     {
         DefaultConfig.VERSION fog = MixinConfig.Candy.getFogColor();
 
@@ -57,10 +57,10 @@ public abstract class BiomeMixin
 
     /**
      * Brings back the old universal sky color in the overworld.
-     * Controlled by the old biome colors toggle.
+     * Controlled by the old biome colors tweak.
      */
     @Inject(method = "getSkyColor", at = @At(value = "HEAD"), cancellable = true)
-    protected void onGetSkyColor(CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetSkyColor(CallbackInfoReturnable<Integer> callback)
     {
         DefaultConfig.VERSION sky = MixinConfig.Candy.getSkyColor();
 

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -29,21 +30,23 @@ import java.util.Objects;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ICameraPitch
 {
-    public LivingEntityMixin(EntityType<?> entityType, Level level)
+    /* Dummy Constructor */
+
+    private LivingEntityMixin(EntityType<?> entityType, Level level)
     {
         super(entityType, level);
     }
 
-    /* Camera Pitching Injections */
+    /* Camera Pitching Ducking */
 
-    public float cameraPitch = 0.0F;
-    public float prevCameraPitch = 0.0F;
+    @Unique private float NT$cameraPitch = 0.0F;
+    @Unique public float NT$prevCameraPitch = 0.0F;
 
-    public void setCameraPitch(float cameraPitch) { this.cameraPitch = cameraPitch; }
-    public void setPrevCameraPitch(float prevCameraPitch) { this.prevCameraPitch = prevCameraPitch; }
+    @Override public void setCameraPitch(float cameraPitch) { this.NT$cameraPitch = cameraPitch; }
+    @Override public void setPrevCameraPitch(float prevCameraPitch) { this.NT$prevCameraPitch = prevCameraPitch; }
 
-    public float getCameraPitch() { return cameraPitch; }
-    public float getPrevCameraPitch() { return prevCameraPitch; }
+    @Override public float getCameraPitch() { return NT$cameraPitch; }
+    @Override public float getPrevCameraPitch() { return NT$prevCameraPitch; }
 
     /* Mixin Injections */
 
@@ -52,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
      * Modified by numerous swing speed parameters controlled within the config.
      */
     @Inject(method = "getCurrentSwingDuration", at = @At(value = "HEAD"), cancellable = true)
-    protected void onGetCurrentSwingDuration(CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetCurrentSwingDuration(CallbackInfoReturnable<Integer> callback)
     {
         AbstractClientPlayer player = Minecraft.getInstance().player;
 
@@ -87,10 +90,10 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
 
     /**
      * Prevents the breaking animation and breaking sound when a tool runs out of durability.
-     * Controlled by the tool disintegration toggle.
+     * Controlled by the tool disintegration tweak.
      */
     @Inject(method = "breakItem", at = @At(value = "HEAD"), cancellable = true)
-    protected void onBreakItem(ItemStack itemStack, CallbackInfo callback)
+    private void NT$onBreakItem(ItemStack itemStack, CallbackInfo callback)
     {
         if (MixinConfig.Animation.oldToolExplosion())
             callback.cancel();
@@ -99,18 +102,18 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     /**
      * Updates the previous camera pitching.
      */
-    @Inject(method = "baseTick", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;hurtTime:I", ordinal = 0))
-    protected void onBaseTick(CallbackInfo callback)
+    @Inject(method = "baseTick", at = @At(value = "FIELD", ordinal = 0, target = "Lnet/minecraft/world/entity/LivingEntity;hurtTime:I"))
+    private void NT$onBaseTick(CallbackInfo callback)
     {
         this.setPrevCameraPitch(this.getCameraPitch());
     }
 
     /**
      * Redirects the vanilla falling sounds to a blank sound.
-     * Controlled by the old fall sounds toggle.
+     * Controlled by the old fall sounds tweak.
      */
     @Inject(method = "getFallDamageSound", at = @At(value = "HEAD"), cancellable = true)
-    protected void onGetFallDamageSound(int height, CallbackInfoReturnable<SoundEvent> callback)
+    private void NT$onGetFallDamageSound(int height, CallbackInfoReturnable<SoundEvent> callback)
     {
         if (MixinConfig.Sound.oldFall())
             callback.setReturnValue(SoundUtil.Event.BLANK.get());

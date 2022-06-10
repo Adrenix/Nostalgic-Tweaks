@@ -22,20 +22,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemEntityRenderer.class)
 public abstract class ItemEntityRendererMixin
 {
+    /* Shadows */
+
     @Shadow @Final private ItemRenderer itemRenderer;
 
     /**
      * Forces the item entity's rotation to always face the player.
-     * Controlled by the old floating item toggle.
+     * Controlled by the old floating item tweak.
      */
-    @Redirect(
+    @Redirect
+    (
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
+        at = @At
+        (
             value = "INVOKE",
             target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lcom/mojang/math/Quaternion;)V"
         )
     )
-    protected void rotationProxy(PoseStack poseStack, Quaternion quaternion, ItemEntity itemEntity, float entityYaw, float partialTicks)
+    private void NT$rotationProxy(PoseStack poseStack, Quaternion quaternion, ItemEntity itemEntity, float entityYaw, float partialTicks)
     {
         if (MixinConfig.Candy.oldFloatingItems())
         {
@@ -52,17 +56,19 @@ public abstract class ItemEntityRendererMixin
 
     /**
      * Renders floating item entities as 2D.
-     * Controlled by the old floating items toggle.
+     * Controlled by the old floating items tweak.
      */
-    @Inject(
+    @Inject
+    (
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.BEFORE,
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
         )
     )
-    protected void onRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
+    private void NT$onRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldFloatingItems())
         {
@@ -75,15 +81,21 @@ public abstract class ItemEntityRendererMixin
         }
     }
 
-    @Inject(
+    /**
+     * Enables diffused lighting after it has been disabled before rendering the item entity.
+     * Not controlled by any tweak.
+     */
+    @Inject
+    (
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
         )
     )
-    protected void onFinishRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
+    private void NT$onFinishRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
         MixinUtil.Item.enableDiffusedLighting();
     }

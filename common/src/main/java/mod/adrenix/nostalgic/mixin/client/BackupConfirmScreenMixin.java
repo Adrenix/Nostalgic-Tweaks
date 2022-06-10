@@ -23,7 +23,7 @@ public abstract class BackupConfirmScreenMixin
      * This mixin is not controlled by any tweaks.
      */
     @Inject(method = "init", at = @At("RETURN"))
-    protected void onInit(CallbackInfo callback)
+    private void NT$onInit(CallbackInfo callback)
     {
         if (!this.eraseCache.selected())
             this.eraseCache.onPress();

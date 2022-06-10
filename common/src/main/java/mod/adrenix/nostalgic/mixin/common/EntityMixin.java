@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Entity.class)
 public abstract class EntityMixin
 {
+    /* Shadow */
+
     @Shadow public Level level;
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
 
@@ -25,10 +27,18 @@ public abstract class EntityMixin
      * Multiplayer:
      *
      * Prevents any unique mob stepping sounds from playing.
-     * Controlled by the old step sounds toggle.
+     * Controlled by the old step sounds tweak.
      */
-    @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;playStepSound(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"))
-    protected void onMoveSound(Entity instance, BlockPos pos, BlockState state)
+    @Redirect
+    (
+        method = "move",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/Entity;playStepSound(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"
+        )
+    )
+    private void NT$onMoveSound(Entity instance, BlockPos pos, BlockState state)
     {
         if (MixinConfig.Sound.oldStep())
         {

@@ -16,11 +16,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class BlockStateBaseMixin
 {
+    /* Shadows */
+
     @Shadow public abstract Block getBlock();
 
     /**
      * Changes the amount of light blocked by water related blocks from 1 level to 3.
-     * Controlled by the old water lighting toggle.
+     * Controlled by the old water lighting tweak.
      *
      * This tweak makes changes to the world. When this tweak is toggled the vanilla
      * optimized world feature in the world edit menu will need to be used.
@@ -29,7 +31,7 @@ public abstract class BlockStateBaseMixin
      */
 
     @Inject(method = "getLightBlock", at = @At("HEAD"), cancellable = true)
-    protected void onGetLightBlock(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetLightBlock(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Integer> callback)
     {
         if (!MixinConfig.Candy.oldWaterLighting() || !Minecraft.getInstance().hasSingleplayerServer())
             return;

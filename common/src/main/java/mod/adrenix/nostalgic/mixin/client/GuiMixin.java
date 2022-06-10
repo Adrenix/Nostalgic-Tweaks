@@ -16,10 +16,10 @@ public abstract class GuiMixin
 {
     /**
      * Disables the rendering of the selected item name above the hotbar.
-     * Controlled by the old selected item name toggle.
+     * Controlled by the old selected item name tweak.
      */
     @Inject(method = "renderSelectedItemName", at = @At(value = "HEAD"), cancellable = true)
-    protected void onRenderSelectedItemName(PoseStack poseStack, CallbackInfo callback)
+    private void NT$onRenderSelectedItemName(PoseStack poseStack, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldNoSelectedItemName())
             callback.cancel();
@@ -27,18 +27,20 @@ public abstract class GuiMixin
 
     /**
      * Removes the chat formatting of the selected item above the hotbar.
-     * Controlled by the old plain selected item name toggle.
+     * Controlled by the old plain selected item name tweak.
      */
-    @Inject(
+    @Inject
+    (
         method = "renderSelectedItemName",
         locals = LocalCapture.CAPTURE_FAILSOFT,
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/Gui;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"
         )
     )
-    protected void onDrawSelectedItemName(PoseStack poseStack, CallbackInfo callback, MutableComponent mutableComponent)
+    private void NT$onDrawSelectedItemName(PoseStack poseStack, CallbackInfo callback, MutableComponent mutableComponent)
     {
         if (MixinConfig.Candy.oldPlainSelectedItemName())
             mutableComponent.withStyle(ChatFormatting.RESET);

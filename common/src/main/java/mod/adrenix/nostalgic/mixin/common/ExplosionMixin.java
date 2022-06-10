@@ -22,6 +22,8 @@ import java.util.Iterator;
 @Mixin(Explosion.class)
 public abstract class ExplosionMixin
 {
+    /* Shadows */
+
     @Shadow @Final private Level level;
     @Shadow @Final private float radius;
     @Shadow @Final private double x;
@@ -32,10 +34,18 @@ public abstract class ExplosionMixin
      * Client:
      *
      * Prevent the creation of modern explosion particles.
-     * Controlled by the old explosion particles toggle.
+     * Controlled by the old explosion particles tweak.
      */
-    @Redirect(method = "finalizeExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
-    protected void onFinalizeExplosion(Level instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+    @Redirect
+    (
+        method = "finalizeExplosion",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+        )
+    )
+    private void NT$onFinalizeExplosion(Level instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
         if (MixinConfig.Candy.oldExplosionParticles() && !MixinConfig.Candy.oldMixedExplosionParticles())
             return;
@@ -46,18 +56,20 @@ public abstract class ExplosionMixin
      * Client:
      *
      * Brings back the classic generic explosion particles.
-     * Controlled by the old explosion particles toggle.
+     * Controlled by the old explosion particles tweak.
      */
-    @Inject(
+    @Inject
+    (
         method = "finalizeExplosion",
         locals = LocalCapture.CAPTURE_FAILSOFT,
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;"
         )
     )
-    protected void onSpawnParticles(boolean spawnParticles, CallbackInfo callback, boolean damageTerrain, ObjectArrayList<?> oal, Iterator<BlockPos> iterator, BlockPos blockPos)
+    private void NT$onSpawnParticles(boolean spawnParticles, CallbackInfo callback, boolean damageTerrain, ObjectArrayList<?> list, Iterator<BlockPos> iterator, BlockPos blockPos)
     {
         if (!MixinConfig.Candy.oldExplosionParticles() || !spawnParticles)
             return;

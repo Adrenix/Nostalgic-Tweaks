@@ -22,14 +22,15 @@ public abstract class BlockMixin
      * Multiplayer:
      *
      * Splits up the item stack that comes from mining blocks.
-     * Controlled by the old item merging toggle.
+     * Controlled by the old item merging tweak.
      */
-    @Inject(
+    @Inject
+    (
+        cancellable = true,
         method = "popResource(Lnet/minecraft/world/level/Level;Ljava/util/function/Supplier;Lnet/minecraft/world/item/ItemStack;)V",
-        at = @At(value = "INVOKE", target = "Ljava/util/function/Supplier;get()Ljava/lang/Object;"),
-        cancellable = true
+        at = @At(value = "INVOKE", target = "Ljava/util/function/Supplier;get()Ljava/lang/Object;")
     )
-    private static void onPopResource(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback)
+    private static void NT$onPopResource(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback)
     {
         if (!MixinConfig.Candy.oldItemMerging())
             return;

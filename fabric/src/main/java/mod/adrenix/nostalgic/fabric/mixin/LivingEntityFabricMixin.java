@@ -14,10 +14,18 @@ public abstract class LivingEntityFabricMixin
 {
     /**
      * Separates items from a clumped item entity into multiple item entities when a mob is killed.
-     * Controlled by the item merging toggle.
+     * Controlled by the item merging tweak.
      */
-    @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"))
-    protected Consumer<ItemStack> onDropFromLootTable(Consumer<ItemStack> consumer)
+    @ModifyArg
+    (
+        method = "dropFromLootTable",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"
+        )
+    )
+    private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
         return MixinUtil.Item.explodeStack(consumer);
     }

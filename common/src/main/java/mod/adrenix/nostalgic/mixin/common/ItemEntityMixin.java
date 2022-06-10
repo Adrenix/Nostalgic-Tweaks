@@ -14,10 +14,10 @@ public abstract class ItemEntityMixin
      * Multiplayer:
      *
      * Splits up the item stacks dropped by entities.
-     * Controlled by the old item merging toggle.
+     * Controlled by the old item merging tweak.
      */
     @Inject(method = "isMergable", at = @At(value = "HEAD"), cancellable = true)
-    protected void onIsMergable(CallbackInfoReturnable<Boolean> callback)
+    private void NT$onIsMergable(CallbackInfoReturnable<Boolean> callback)
     {
         if (MixinConfig.Candy.oldItemMerging())
             callback.setReturnValue(false);

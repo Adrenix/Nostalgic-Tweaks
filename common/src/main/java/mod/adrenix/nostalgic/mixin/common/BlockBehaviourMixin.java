@@ -11,10 +11,10 @@ public abstract class BlockBehaviourMixin
 {
     /**
      * Changes the darkness of the shade that forms on the corner of blocks.
-     * Controlled by the old smooth lighting toggle.
+     * Controlled by the old smooth lighting tweak.
      */
     @ModifyConstant(method = "getShadeBrightness", constant = @Constant(floatValue = 0.2F))
-    private float onGetShadeBrightness(float vanilla)
+    private float NT$onGetShadeBrightness(float vanilla)
     {
         return MixinConfig.Candy.oldSmoothLighting() ? 0.0F : 0.2F;
     }

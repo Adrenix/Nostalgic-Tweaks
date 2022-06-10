@@ -18,14 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin
 {
+    /* Shadows */
+
     @Shadow @Final private Minecraft minecraft;
 
     /**
      * Brings back the vertical bobbing. Camera pitching data is injected into the player class.
-     * Controlled by vertical bobbing toggle.
+     * Controlled by vertical bobbing tweak.
      */
     @Inject(method = "bobView", at = @At(value = "HEAD"), cancellable = true)
-    protected void onBobView(PoseStack mStack, float partialTicks, CallbackInfo callback)
+    private void NT$onBobView(PoseStack mStack, float partialTicks, CallbackInfo callback)
     {
         if (MixinConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
         {

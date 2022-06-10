@@ -22,24 +22,37 @@ import java.util.List;
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends GuiComponent
 {
+    /* Shadows */
+
     @Shadow protected Font font;
     @Shadow public int width;
     @Shadow public int height;
 
-    /* Don't call the 9 fill gradient methods. Instead, just call the one in the injection below this redirect. */
-    @Redirect(method = "renderTooltipInternal", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;fillGradient(Lcom/mojang/math/Matrix4f;Lcom/mojang/blaze3d/vertex/BufferBuilder;IIIIIII)V"))
-    protected void renderTooltipProxy(Matrix4f matrix, BufferBuilder buffer, int i1, int i2, int i3, int i4, int i5, int i6, int i7)
+    /**
+     * Don't call the 9 fill gradient methods.
+     * Instead, just call the one in the injection below this redirect.
+     */
+    @Redirect
+    (
+        method = "renderTooltipInternal",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/screens/Screen;fillGradient(Lcom/mojang/math/Matrix4f;Lcom/mojang/blaze3d/vertex/BufferBuilder;IIIIIII)V"
+        )
+    )
+    private void NT$renderTooltipProxy(Matrix4f matrix, BufferBuilder buffer, int x1, int y1, int x2, int y2, int blitOffset, int colorA, int colorB)
     {
         if (MixinConfig.Candy.oldTooltips())
-            fillGradient(matrix, buffer, i1, i2, i3, i4, i5, i6, i7);
+            fillGradient(matrix, buffer, x1, y1, x2, y2, blitOffset, colorA, colorB);
     }
 
     /**
      * Renders the old school tooltips from Minecraft Beta 1.7 and before.
-     * Controlled by the old tooltips toggle.
+     * Controlled by the old tooltips tweak.
      */
     @Inject(method = "renderTooltipInternal", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack$Pose;pose()Lcom/mojang/math/Matrix4f;"))
-    protected void onRenderTooltipInternal(PoseStack matrices, List<ClientTooltipComponent> clientTooltip, int x0, int y0, CallbackInfo callback)
+    private void NT$onRenderTooltipInternal(PoseStack matrices, List<ClientTooltipComponent> clientTooltip, int x0, int y0, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldTooltips())
             return;
@@ -79,10 +92,10 @@ public abstract class ScreenMixin extends GuiComponent
 
     /**
      * Disables tooltips from appearing when hovering items within an inventory.
-     * Controlled by the old no item tooltip boxes toggle.
+     * Controlled by the old no item tooltip boxes tweak.
      */
     @Inject(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("HEAD"), cancellable = true)
-    protected void onRenderItemTooltip(PoseStack poseStack, ItemStack itemStack, int mouseX, int mouseY, CallbackInfo callback)
+    private void NT$onRenderItemTooltip(PoseStack poseStack, ItemStack itemStack, int mouseX, int mouseY, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldNoItemTooltips())
             callback.cancel();

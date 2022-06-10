@@ -12,15 +12,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Camera.class)
 public abstract class CameraMixin
 {
+    /* Shadows */
+
     @Shadow private Entity entity;
     @Shadow private float eyeHeightOld;
     @Shadow private float eyeHeight;
 
     /**
      * Disables the smooth sneaking.
+     * Controlled by the old sneaking tweak.
      */
     @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
-    protected void onTick(CallbackInfo callback)
+    private void NT$onTick(CallbackInfo callback)
     {
         if (!MixinConfig.Animation.oldSneaking())
             return;

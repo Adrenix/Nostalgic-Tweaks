@@ -23,13 +23,17 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
         super(entity, leve);
     }
 
-    /* Unique Properties */
+    /* Unique Fields */
 
-    @Unique private int attackCounter = 0;
+    @Unique private int NT$attackCounter = 0;
 
     /* Overrides */
 
-    @Override public int getAttackCounter() { return this.attackCounter; }
+    @Override
+    public int getAttackCounter()
+    {
+        return this.NT$attackCounter;
+    }
 
     /**
      * Brings back the old ghast charging animation that was removed when singleplayer was turned into an internal server.
@@ -38,7 +42,7 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
      * Controlled by the old ghast charging tweak.
      */
     @Inject(method = "tick", at = @At("TAIL"))
-    protected void onTick(CallbackInfo callback)
+    protected void NT$onTick(CallbackInfo callback)
     {
         if (!MixinConfig.Animation.oldGhastCharging())
             return;
@@ -47,9 +51,9 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
         {
             Ghast ghast = (Ghast) this.getType().tryCast(this);
             if (ghast != null && ghast.isCharging() && ghast.isAlive())
-                this.attackCounter++;
+                this.NT$attackCounter++;
             else if (ghast != null)
-                this.attackCounter = 0;
+                this.NT$attackCounter = 0;
         }
     }
 }

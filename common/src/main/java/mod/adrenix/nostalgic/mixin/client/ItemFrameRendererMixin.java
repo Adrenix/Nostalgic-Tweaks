@@ -16,24 +16,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemFrameRenderer.class)
-public abstract class ItemFrameRendererMixin
+public abstract class ItemFrameRendererMixin <T extends ItemFrame>
 {
+    /* Shadows */
+
     @Shadow @Final private ItemRenderer itemRenderer;
 
     /**
-     * Renders items in item frames as flat if the entity does not use block light.
-     * Controlled by the old 2D item frames toggle.
+     * The following injections renders items in item frames as flat if the entity does not use block light.
+     * Controlled by the old 2D item frames tweak.
      */
 
-    @Inject(
+    @Inject
+    (
         method = "render(Lnet/minecraft/world/entity/decoration/ItemFrame;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.BEFORE,
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderStatic(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;IILcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
         )
     )
-    protected <T extends ItemFrame> void onRenderStart(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
+    private void NT$onRenderStart(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldFlatFrames())
         {
@@ -46,15 +50,17 @@ public abstract class ItemFrameRendererMixin
         }
     }
 
-    @Inject(
+    @Inject
+    (
         method = "render(Lnet/minecraft/world/entity/decoration/ItemFrame;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
+        at = @At
+        (
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderStatic(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;IILcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
         )
     )
-    protected <T extends ItemFrame> void onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
+    private void NT$onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
         MixinUtil.Item.enableDiffusedLighting();
     }
