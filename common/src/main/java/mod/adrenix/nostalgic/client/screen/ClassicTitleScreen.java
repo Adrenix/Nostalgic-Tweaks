@@ -126,7 +126,7 @@ public class ClassicTitleScreen extends TitleScreen
             this.minecraft.setScreen(new ClassicTitleScreen());
         else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
             this.minecraft.setScreen(new SettingsScreen(this, true));
-        return true;
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -319,6 +319,7 @@ public class ClassicTitleScreen extends TitleScreen
         {
             if (widget instanceof AbstractWidget)
                 isClicked = ((AbstractWidget) widget).mouseClicked(mouseX, mouseY, button);
+
             if (isClicked)
                 break;
         }
