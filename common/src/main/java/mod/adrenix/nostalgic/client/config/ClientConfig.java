@@ -155,7 +155,7 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public DefaultConfig.VERSION oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
-        static { CandyTweak.VERSION_OVERLAY.setKey("oldLoadingOverlay"); }
+        static { CandyTweak.LOADING_OVERLAY.setKey("oldLoadingOverlay"); }
 
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
@@ -523,6 +523,12 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.EntryStatus
         public boolean oldSkeletonArms = DefaultConfig.Animation.OLD_SKELETON_ARMS;
         static { AnimationTweak.SKELETON_ARMS.setKey("oldSkeletonArms"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldGhastCharging = DefaultConfig.Animation.OLD_GHAST_CHARGING;
+        static { AnimationTweak.GHAST_CHARGING.setKey("oldGhastCharging"); }
     }
 
     @TweakEntry.Gui.Ignore

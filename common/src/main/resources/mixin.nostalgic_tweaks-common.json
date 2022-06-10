@@ -8,6 +8,7 @@
     "ClientPacketListenerMixin",
     "ExplosionMixin",
     "LivingEntityMixin",
+    "MobMixin",
 
     "BlockBehaviourMixin",
     "BlockMixin",

@@ -274,6 +274,8 @@
   "text.autoconfig.nostalgic_tweaks.option.animation.oldZombieArms.@Tooltip": "Disable the animation that occurs on a zombie's arms when the zombie becomes aggressive or attacks.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSkeletonArms": "Old Skeleton Arms",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSkeletonArms.@Tooltip": "Disable the neutral skeleton arm positions and the animation that occurs when the skeleton becomes aggressive.",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldGhastCharging": "Old Ghast Charging",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldGhastCharging.@Tooltip": "Bring back the old 'squishy' ghast charging animation.",
 
   "text.autoconfig.nostalgic_tweaks.option.swing": "Swing",
   "text.autoconfig.nostalgic_tweaks.option.swing.overrideSpeeds": "§rOverride Speeds",

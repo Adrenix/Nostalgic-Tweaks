@@ -183,6 +183,7 @@ public abstract class MixinConfig
         public static boolean shouldMirrorArmSway() { return isModEnabled(null) && ANIMATION.armSwayMirror; }
         public static boolean oldVerticalBobbing() { return isModEnabled(AnimationTweak.BOB_VERTICAL) && ANIMATION.oldVerticalBobbing; }
         public static boolean oldCollideBobbing() { return isModEnabled(AnimationTweak.COLLIDE_BOB) && ANIMATION.oldCollideBobbing; }
+        public static boolean oldGhastCharging() { return isModEnabled(AnimationTweak.GHAST_CHARGING) && ANIMATION.oldGhastCharging; }
         public static boolean oldToolExplosion() { return isModEnabled(AnimationTweak.TOOL_EXPLODE) && ANIMATION.oldToolExplosion; }
         public static boolean oldSwingDropping() { return isModEnabled(AnimationTweak.SWING_DROP) && ANIMATION.oldSwingDropping; }
         public static boolean oldSkeletonArms() { return isModEnabled(AnimationTweak.SKELETON_ARMS) && ANIMATION.oldSkeletonArms; }

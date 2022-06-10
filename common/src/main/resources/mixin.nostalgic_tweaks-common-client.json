@@ -18,6 +18,7 @@
     "ExperienceOrbRendererMixin",
     "FogRendererMixin",
     "GameRendererMixin",
+    "GhastRendererMixin",
     "GuiMixin",
     "ItemEntityRendererMixin",
     "ItemFrameRendererMixin",

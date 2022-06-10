@@ -16,6 +16,7 @@ public enum AnimationTweak implements ITweak
     SWING_DROP,
     ZOMBIE_ARMS,
     SKELETON_ARMS,
+    GHAST_CHARGING,
     TOOL_EXPLODE;
 
     /* Implementation */

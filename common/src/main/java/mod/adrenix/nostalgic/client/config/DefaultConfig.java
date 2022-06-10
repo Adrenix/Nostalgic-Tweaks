@@ -102,6 +102,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_TOOL_EXPLOSION = true;
         public static final boolean OLD_ZOMBIE_ARMS = true;
         public static final boolean OLD_SKELETON_ARMS = true;
+        public static final boolean OLD_GHAST_CHARGING = true;
     }
 
     public static class Swing
