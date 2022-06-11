@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -39,9 +39,9 @@ public abstract class BiomeMixin
     @Inject(method = "getFogColor", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetFogColor(CallbackInfoReturnable<Integer> callback)
     {
-        DefaultConfig.VERSION fog = MixinConfig.Candy.getFogColor();
+        TweakVersion.GENERIC fog = MixinConfig.Candy.getFogColor();
 
-        if (fog == DefaultConfig.VERSION.MODERN)
+        if (fog == TweakVersion.GENERIC.MODERN)
             callback.setReturnValue(this.specialEffects.getFogColor());
         else if (isNether())
             callback.setReturnValue(0x100400);
@@ -62,9 +62,9 @@ public abstract class BiomeMixin
     @Inject(method = "getSkyColor", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetSkyColor(CallbackInfoReturnable<Integer> callback)
     {
-        DefaultConfig.VERSION sky = MixinConfig.Candy.getSkyColor();
+        TweakVersion.GENERIC sky = MixinConfig.Candy.getSkyColor();
 
-        if (sky == DefaultConfig.VERSION.MODERN)
+        if (sky == TweakVersion.GENERIC.MODERN)
             callback.setReturnValue(this.specialEffects.getSkyColor());
         else if (isNether())
             callback.setReturnValue(0x100400);

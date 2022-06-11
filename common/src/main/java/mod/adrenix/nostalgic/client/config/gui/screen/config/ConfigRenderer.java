@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.client.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.reflect.*;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.KeyUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
@@ -224,10 +225,10 @@ public record ConfigRenderer(ConfigScreen parent)
                                 }
                             }
 
-                            if (value instanceof DefaultConfig.VERSION && !isDisableIgnored)
+                            if (value instanceof TweakVersion.GENERIC && !isDisableIgnored)
                             {
-                                TweakCache<DefaultConfig.VERSION> version = TweakCache.get(group, key);
-                                version.setCurrent(DefaultConfig.VERSION.MODERN);
+                                TweakCache<TweakVersion.GENERIC> version = TweakCache.get(group, key);
+                                version.setCurrent(TweakVersion.GENERIC.MODERN);
                             }
                         });
                     }

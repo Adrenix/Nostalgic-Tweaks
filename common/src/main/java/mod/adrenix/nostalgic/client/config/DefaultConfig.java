@@ -1,11 +1,10 @@
 package mod.adrenix.nostalgic.client.config;
 
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 
 public abstract class DefaultConfig
 {
-    public enum VERSION { ALPHA, BETA, MODERN }
-
     public static class Sound
     {
         public static final boolean OLD_ATTACK = true;
@@ -18,7 +17,7 @@ public abstract class DefaultConfig
     public static class Candy
     {
         // Title Screen Candy
-        public static final VERSION TITLE_BUTTON_LAYOUT = VERSION.MODERN;
+        public static final TweakVersion.GENERIC TITLE_BUTTON_LAYOUT = TweakVersion.GENERIC.MODERN;
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
@@ -31,7 +30,7 @@ public abstract class DefaultConfig
         public static final boolean UNCAP_TITLE_FPS = true;
 
         // Interface Candy
-        public static final VERSION OLD_LOADING_OVERLAY = VERSION.ALPHA;
+        public static final TweakVersion.OVERLAY OLD_LOADING_OVERLAY = TweakVersion.OVERLAY.ALPHA;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_LOADING_BAR = false;
         public static final boolean OLD_CHAT_INPUT = true;
@@ -82,9 +81,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
         public static final boolean OLD_STARS = true;
 
-        public static final VERSION OLD_SKY_COLOR = VERSION.ALPHA;
-        public static final VERSION OLD_FOG_COLOR = VERSION.ALPHA;
-        public static final VERSION OLD_BLUE_VOID = VERSION.ALPHA;
+        public static final TweakVersion.GENERIC OLD_SKY_COLOR = TweakVersion.GENERIC.ALPHA;
+        public static final TweakVersion.GENERIC OLD_FOG_COLOR = TweakVersion.GENERIC.ALPHA;
+        public static final TweakVersion.GENERIC OLD_BLUE_VOID = TweakVersion.GENERIC.ALPHA;
     }
 
     public static class Animation

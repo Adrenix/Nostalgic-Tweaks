@@ -80,7 +80,7 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public DefaultConfig.VERSION oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        public TweakVersion.GENERIC oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
         static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
         @TweakEntry.Gui.Client
@@ -154,7 +154,7 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
-        public DefaultConfig.VERSION oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
+        public TweakVersion.OVERLAY oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
         static { CandyTweak.LOADING_OVERLAY.setKey("oldLoadingOverlay"); }
 
         @TweakEntry.Gui.New
@@ -427,19 +427,19 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
+        public TweakVersion.GENERIC oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
         static { CandyTweak.SKY_COLOR.setKey("oldSkyColor"); }
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
+        public TweakVersion.GENERIC oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
         static { CandyTweak.FOG_COLOR.setKey("oldFogColor"); }
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
+        public TweakVersion.GENERIC oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
         static { CandyTweak.BLUE_VOID.setKey("oldBlueVoid"); }
 
         @TweakEntry.Gui.Client

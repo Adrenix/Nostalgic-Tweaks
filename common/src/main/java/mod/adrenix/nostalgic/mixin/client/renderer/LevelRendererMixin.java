@@ -6,8 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -111,7 +111,7 @@ public abstract class LevelRendererMixin
     )
     private void NT$onDrawSkyBuffer(PoseStack poseStack, Matrix4f matrix4f, float f, Camera camera, boolean bl, Runnable runnable, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.getBlueVoid() != DefaultConfig.VERSION.MODERN)
+        if (MixinConfig.Candy.getBlueVoid() != TweakVersion.GENERIC.MODERN)
         {
             MixinUtil.World.setBlueVoidColor();
             ShaderInstance shader = RenderSystem.getShader();
@@ -137,8 +137,8 @@ public abstract class LevelRendererMixin
     )
     private void NT$onRenderDarkVoid(VertexBuffer instance, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, ShaderInstance shaderInstance)
     {
-        DefaultConfig.VERSION voidState = MixinConfig.Candy.getBlueVoid();
-        boolean isBlueRendered = voidState == DefaultConfig.VERSION.ALPHA || voidState == DefaultConfig.VERSION.BETA;
+        TweakVersion.GENERIC voidState = MixinConfig.Candy.getBlueVoid();
+        boolean isBlueRendered = voidState == TweakVersion.GENERIC.ALPHA || voidState == TweakVersion.GENERIC.BETA;
         boolean isDarkOverride = MixinConfig.Candy.oldBlueVoidOverride();
 
         if (!isBlueRendered || !isDarkOverride)

@@ -5,10 +5,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.CycleButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
@@ -75,7 +75,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
     /* Config Row Providers */
 
-    public Row getRow(GroupType group, String key, Object value)
+    public <E extends Enum<E>> Row getRow(GroupType group, String key, Object value)
     {
         if (value instanceof Boolean)
             return new BooleanRow(group, key, (Boolean) value).add();
@@ -83,8 +83,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             return new IntSliderRow(group, key, (Integer) value).add();
         else if (value instanceof String)
             return new StringRow(group, key, (String) value).add();
-        else if (value instanceof DefaultConfig.VERSION)
-            return new VersionRow(group, key, (DefaultConfig.VERSION) value).add();
+        else if (value instanceof Enum)
+            return new EnumRow<E>(group, key, value).add();
         else
             return new InvalidRow(group, key, value).add();
     }
@@ -169,12 +169,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         @Override public ConfigRowList.Row add() { return this.create(new StringInput(this.cache).getWidget()); }
     }
 
-    // Enum Version Entry
-    public static class VersionRow extends AbstractRow<DefaultConfig.VERSION>
+    // Enum Cycle Entry
+    public static class EnumRow<E extends Enum<E>> extends AbstractRow<E>
     {
-        public VersionRow(GroupType group, String key, DefaultConfig.VERSION value) { super(group, key, value); }
+        @SuppressWarnings("unchecked")
+        public EnumRow(GroupType group, String key, Object value) { super(group, key, (E) value); }
 
-        @Override public ConfigRowList.Row add() { return this.create(new VersionButton(this.cache, (button) -> ((VersionButton) button).toggle())); }
+        @Override
+        public ConfigRowList.Row add()
+        {
+            return this.create(new CycleButton<>(this.cache, this.cache.getCurrent().getDeclaringClass(), (button) -> ((CycleButton<?>) button).toggle()));
+        }
     }
 
     /* Manual Custom Row Builders */

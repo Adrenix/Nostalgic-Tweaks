@@ -7,9 +7,9 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinOptionsScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
@@ -158,7 +158,7 @@ public class ClassicTitleScreen extends TitleScreen
         if (this.updateScreenDelay == 0L)
             this.updateScreenDelay = Util.getMillis();
 
-        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == DefaultConfig.VERSION.MODERN;
+        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == TweakVersion.OVERLAY.MODERN;
         boolean isDelayed = !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
         if (this.minecraft == null || (isModern && isDelayed))
             return;
@@ -212,7 +212,7 @@ public class ClassicTitleScreen extends TitleScreen
             }
         }
 
-        DefaultConfig.VERSION layout = MixinConfig.Candy.getButtonLayout();
+        TweakVersion.GENERIC layout = MixinConfig.Candy.getButtonLayout();
         ClassicTitleScreen.isGameReady = true;
         IMixinTitleScreen accessor = (IMixinTitleScreen) this;
         IMixinScreen screen = (IMixinScreen) this;
@@ -250,9 +250,9 @@ public class ClassicTitleScreen extends TitleScreen
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
 
-        setLayoutVisibility(this.alpha, layout == DefaultConfig.VERSION.ALPHA);
-        setLayoutVisibility(this.beta, layout == DefaultConfig.VERSION.BETA);
-        setLayoutVisibility(screen.getRenderables(), layout == DefaultConfig.VERSION.MODERN);
+        setLayoutVisibility(this.alpha, layout == TweakVersion.GENERIC.ALPHA);
+        setLayoutVisibility(this.beta, layout == TweakVersion.GENERIC.BETA);
+        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.GENERIC.MODERN);
 
         switch (layout)
         {

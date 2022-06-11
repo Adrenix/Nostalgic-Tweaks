@@ -18,9 +18,9 @@ public abstract class MixinConfig
     private static final ClientConfig.Sound SOUND = CommonRegistry.getSound();
     private static final ClientConfig.Swing SWING = CommonRegistry.getSwing();
     private static final ClientConfig CONFIG = CommonRegistry.getRoot();
-    private static DefaultConfig.VERSION getVersion(@Nullable ITweak tweak, DefaultConfig.VERSION current)
+    private static <E extends Enum<E> & TweakVersion.IDefault<E>> E getVersion(@Nullable ITweak tweak, E current)
     {
-        return !isModEnabled(tweak) ? DefaultConfig.VERSION.MODERN : current;
+        return !isModEnabled(tweak) ? current.getDefault() : current;
     }
 
     public static boolean isModEnabled(@Nullable ITweak tweak)
@@ -147,11 +147,11 @@ public abstract class MixinConfig
 
         /* Version Tweaks */
 
-        public static DefaultConfig.VERSION getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
-        public static DefaultConfig.VERSION getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
-        public static DefaultConfig.VERSION getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
-        public static DefaultConfig.VERSION getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
-        public static DefaultConfig.VERSION getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static TweakVersion.OVERLAY getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
+        public static TweakVersion.GENERIC getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static TweakVersion.GENERIC getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
+        public static TweakVersion.GENERIC getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
+        public static TweakVersion.GENERIC getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
 
         /* String Tweaks */
 

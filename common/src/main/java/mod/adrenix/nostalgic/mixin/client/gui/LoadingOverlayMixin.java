@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -48,8 +49,8 @@ public abstract class LoadingOverlayMixin
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        DefaultConfig.VERSION overlay = MixinConfig.Candy.getLoadingOverlay();
-        if (overlay == DefaultConfig.VERSION.MODERN)
+        TweakVersion.OVERLAY overlay = MixinConfig.Candy.getLoadingOverlay();
+        if (overlay == TweakVersion.OVERLAY.MODERN)
             return;
 
         long millis = Util.getMillis();
@@ -61,26 +62,25 @@ public abstract class LoadingOverlayMixin
 
         float fadeOut = this.fadeOutStart > -1L ? (float)(millis - this.fadeOutStart) / 1000.0F : -1.0F;
         float fadeIn = this.fadeInStart > -1L ? (float)(millis - this.fadeInStart) / 500.0F : -1.0F;
-
-        final int BACKGROUND_COLOR = switch (overlay)
-        {
-            case ALPHA -> FastColor.ARGB32.color(255, 55, 51, 99);
-            case BETA -> FastColor.ARGB32.color(255, 255, 255, 255);
-            default -> 0;
-        };
+        int color = overlay == TweakVersion.OVERLAY.ALPHA ?
+            FastColor.ARGB32.color(255, 55, 51, 99) :
+            FastColor.ARGB32.color(255, 255, 255, 255)
+        ;
 
         final ResourceLocation BACKGROUND = switch (overlay)
         {
             case ALPHA -> NostalgicUtil.Resource.MOJANG_ALPHA;
             case BETA -> NostalgicUtil.Resource.MOJANG_BETA;
+            case RELEASE_1 -> NostalgicUtil.Resource.MOJANG_RELEASE_1;
+            case RELEASE_2 -> NostalgicUtil.Resource.MOJANG_RELEASE_2;
             default -> MOJANG_STUDIOS_LOGO_LOCATION;
         };
 
-        float r = (float) (BACKGROUND_COLOR >> 16 & 0xFF) / 255.0F;
-        float g = (float) (BACKGROUND_COLOR >> 8 & 0xFF) / 255.0F;
-        float b = (float) (BACKGROUND_COLOR & 0xFF) / 255.0F;
+        float r = (float) (color >> 16 & 0xFF) / 255.0F;
+        float g = (float) (color >> 8 & 0xFF) / 255.0F;
+        float b = (float) (color & 0xFF) / 255.0F;
 
-        LoadingOverlay.fill(poseStack, 0, 0, width, height, BACKGROUND_COLOR);
+        LoadingOverlay.fill(poseStack, 0, 0, width, height, color);
         GlStateManager._clearColor(r, g, b, 1.0F);
         GlStateManager._clear(16384, Minecraft.ON_OSX);
 
@@ -95,7 +95,13 @@ public abstract class LoadingOverlayMixin
         LoadingOverlay.blit(poseStack, (int) ((width / 4.0) - (128 / 2)), (int) ((height / 4.0) - (128 / 2)), 0, 0, 128, 128, 128, 128);
         poseStack.popPose();
 
-        int barHeight = MixinConfig.Candy.getLoadingOverlay() == DefaultConfig.VERSION.BETA ? (int) (height * 0.95) : (int) (height * 0.85);
+        int barHeight = switch (overlay)
+        {
+            case ALPHA -> (int) (height * 0.85);
+            case BETA -> (int) (height * 0.95);
+            default -> (int) (height * 0.69);
+        };
+
         float actualProgress = this.reload.getActualProgress();
         this.currentProgress = Mth.clamp(this.currentProgress * 0.95F + actualProgress * 0.050000012F, 0.0F, 1.0F);
 
@@ -127,14 +133,45 @@ public abstract class LoadingOverlayMixin
     }
 
     /**
-     * Changes the color and position of the progress bar when using the beta style overlay.
-     * Controlled by various tweaks.
+     * Changes the color of the entire progress bar.
+     * Inner rectangle is color is changed below this redirect.
+     *
+     * Controlled by various states of the old overlay tweak.
      */
     @Redirect(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FastColor$ARGB32;color(IIII)I"))
-    private int NT$onDrawProgressBar(int alpha, int red, int green, int blue)
+    private int NT$onSetProgressBarColor(int alpha, int red, int green, int blue)
     {
-        if (MixinConfig.Candy.getLoadingOverlay() != DefaultConfig.VERSION.BETA)
-            return FastColor.ARGB32.color(255, 255, 255, 255);
-        return FastColor.ARGB32.color(255, 221, 79, 59);
+        return switch(MixinConfig.Candy.getLoadingOverlay())
+        {
+            case ALPHA -> FastColor.ARGB32.color(255, 142, 132, 255);
+            case BETA, RELEASE_1 -> FastColor.ARGB32.color(255, 221, 79, 59);
+            case RELEASE_2 -> FastColor.ARGB32.color(255, 4, 7, 7);
+            case MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
+        };
+    }
+
+    /**
+     * Changes the color of the inner rectangle inside the progress bar.
+     * Controlled by various states of the old overlay tweak.
+     */
+    @ModifyArg
+    (
+        method = "drawProgressBar",
+        index = 5,
+        at = @At
+        (
+            ordinal = 0,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/screens/LoadingOverlay;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"
+        )
+    )
+    private int NT$onFillInnerProgressBar(int vanilla)
+    {
+        return switch (MixinConfig.Candy.getLoadingOverlay())
+        {
+            case ALPHA, MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
+            case BETA, RELEASE_1 -> FastColor.ARGB32.color(255, 246, 136, 62);
+            case RELEASE_2 -> FastColor.ARGB32.color(255, 221, 31, 42);
+        };
     }
 }
