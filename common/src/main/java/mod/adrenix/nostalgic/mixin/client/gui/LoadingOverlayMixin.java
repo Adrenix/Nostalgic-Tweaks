@@ -71,8 +71,8 @@ public abstract class LoadingOverlayMixin
         {
             case ALPHA -> NostalgicUtil.Resource.MOJANG_ALPHA;
             case BETA -> NostalgicUtil.Resource.MOJANG_BETA;
-            case RELEASE_1 -> NostalgicUtil.Resource.MOJANG_RELEASE_1;
-            case RELEASE_2 -> NostalgicUtil.Resource.MOJANG_RELEASE_2;
+            case RELEASE_ORANGE -> NostalgicUtil.Resource.MOJANG_RELEASE_ORANGE;
+            case RELEASE_BLACK -> NostalgicUtil.Resource.MOJANG_RELEASE_BLACK;
             default -> MOJANG_STUDIOS_LOGO_LOCATION;
         };
 
@@ -144,8 +144,8 @@ public abstract class LoadingOverlayMixin
         return switch(MixinConfig.Candy.getLoadingOverlay())
         {
             case ALPHA -> FastColor.ARGB32.color(255, 142, 132, 255);
-            case BETA, RELEASE_1 -> FastColor.ARGB32.color(255, 221, 79, 59);
-            case RELEASE_2 -> FastColor.ARGB32.color(255, 4, 7, 7);
+            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
+            case RELEASE_BLACK -> FastColor.ARGB32.color(255, 4, 7, 7);
             case MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
         };
     }
@@ -170,8 +170,8 @@ public abstract class LoadingOverlayMixin
         return switch (MixinConfig.Candy.getLoadingOverlay())
         {
             case ALPHA, MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
-            case BETA, RELEASE_1 -> FastColor.ARGB32.color(255, 246, 136, 62);
-            case RELEASE_2 -> FastColor.ARGB32.color(255, 221, 31, 42);
+            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 246, 136, 62);
+            case RELEASE_BLACK -> FastColor.ARGB32.color(255, 221, 31, 42);
         };
     }
 }

@@ -12,6 +12,7 @@ public abstract class NostalgicLang
         public static final String MENU_SINGLEPLAYER = "menu.singleplayer";
         public static final String MENU_MULTIPLAYER = "menu.multiplayer";
         public static final String MENU_OPTIONS = "menu.options";
+        public static final String MENU_QUIT = "menu.quit";
     }
 
     public static class Key
@@ -128,6 +129,7 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
 
         public static final String CANDY_TITLE_MODS = "gui.nostalgic_tweaks.config.candy.title.mods";
+        public static final String CANDY_TITLE_TEXTURE_PACK = "gui.nostalgic_tweaks.config.candy.title.texture_pack";
         public static final String CANDY_TITLE_TUTORIAL = "gui.nostalgic_tweaks.config.candy.title.tutorial";
         public static final String CANDY_TITLE_COPYRIGHT_ALPHA = "gui.nostalgic_tweaks.config.candy.title.copyright.alpha";
         public static final String CANDY_TITLE_COPYRIGHT_BETA = "gui.nostalgic_tweaks.config.candy.title.copyright.beta";

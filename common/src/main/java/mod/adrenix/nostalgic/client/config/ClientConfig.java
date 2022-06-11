@@ -80,7 +80,7 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public TweakVersion.GENERIC oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        public TweakVersion.BUTTON_LAYOUT oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
         static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
         @TweakEntry.Gui.Client

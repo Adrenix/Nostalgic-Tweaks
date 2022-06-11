@@ -25,6 +25,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
 import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
@@ -84,6 +85,7 @@ public class ClassicTitleScreen extends TitleScreen
 
     private final List<Widget> alpha = new ArrayList<>();
     private final List<Widget> beta = new ArrayList<>();
+    private final List<Widget> release = new ArrayList<>();
 
     /* Constructor */
 
@@ -110,9 +112,11 @@ public class ClassicTitleScreen extends TitleScreen
 
         this.alpha.clear();
         this.beta.clear();
+        this.release.clear();
 
         this.createAlphaOptions(x, y, rowHeight);
         this.createBetaOptions(x, y, rowHeight);
+        this.createReleaseOptions(x, y, rowHeight);
 
         super.init();
     }
@@ -212,7 +216,7 @@ public class ClassicTitleScreen extends TitleScreen
             }
         }
 
-        TweakVersion.GENERIC layout = MixinConfig.Candy.getButtonLayout();
+        TweakVersion.BUTTON_LAYOUT layout = MixinConfig.Candy.getButtonLayout();
         ClassicTitleScreen.isGameReady = true;
         IMixinTitleScreen accessor = (IMixinTitleScreen) this;
         IMixinScreen screen = (IMixinScreen) this;
@@ -236,9 +240,9 @@ public class ClassicTitleScreen extends TitleScreen
         String minecraft = MixinConfig.Candy.getVersionText();
         Component copyright = switch (layout)
         {
-            case MODERN -> COPYRIGHT_TEXT;
             case ALPHA -> new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_COPYRIGHT_ALPHA);
             case BETA -> new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_COPYRIGHT_BETA);
+            default -> COPYRIGHT_TEXT;
         };
 
         if (Minecraft.checkModStatus().shouldReportAsModified() && !MixinConfig.Candy.removeTitleModLoaderText())
@@ -250,9 +254,12 @@ public class ClassicTitleScreen extends TitleScreen
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
 
-        setLayoutVisibility(this.alpha, layout == TweakVersion.GENERIC.ALPHA);
-        setLayoutVisibility(this.beta, layout == TweakVersion.GENERIC.BETA);
-        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.GENERIC.MODERN);
+        boolean isRelease = layout == TweakVersion.BUTTON_LAYOUT.RELEASE_TEXTURE_PACK || layout == TweakVersion.BUTTON_LAYOUT.RELEASE_NO_TEXTURE_PACK;
+
+        setLayoutVisibility(this.alpha, layout == TweakVersion.BUTTON_LAYOUT.ALPHA);
+        setLayoutVisibility(this.beta, layout == TweakVersion.BUTTON_LAYOUT.BETA);
+        setLayoutVisibility(this.release, isRelease);
+        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.BUTTON_LAYOUT.MODERN);
 
         switch (layout)
         {
@@ -274,6 +281,7 @@ public class ClassicTitleScreen extends TitleScreen
             }
             case ALPHA -> this.alpha.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
             case BETA -> this.beta.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
+            default -> this.release.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
         }
     }
 
@@ -284,6 +292,7 @@ public class ClassicTitleScreen extends TitleScreen
         {
             case ALPHA -> getClicked(this.alpha, mouseX, mouseY, button);
             case BETA -> getClicked(this.beta, mouseX, mouseY, button);
+            case RELEASE_TEXTURE_PACK, RELEASE_NO_TEXTURE_PACK -> getClicked(this.release, mouseX, mouseY, button);
             case MODERN -> super.mouseClicked(mouseX, mouseY, button);
         };
     }
@@ -386,6 +395,31 @@ public class ClassicTitleScreen extends TitleScreen
 
         // Options
         this.beta.add(new Button(x, y + rowHeight * 3, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
+    }
+
+    private void createReleaseOptions(int x, int y, int rowHeight)
+    {
+        // Singleplayer
+        this.release.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+
+        // Multiplayer
+        this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+
+        // Texture Packs
+        if (MixinConfig.Candy.getButtonLayout() == TweakVersion.BUTTON_LAYOUT.RELEASE_TEXTURE_PACK)
+            this.release.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onMods));
+
+        int lastRow = this.height / 4 + 48;
+
+        // Language
+        if (this.minecraft != null && !MixinConfig.Candy.removeLanguageButton())
+            this.release.add(new ImageButton(this.width / 2 - 124, lastRow + 72 + 12, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), new TranslatableComponent("narrator.button.language")));
+
+        // Options
+        this.release.add(new Button(this.width / 2 - 100, lastRow + 72 + 12, 98, 20, new TranslatableComponent(NostalgicLang.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
+
+        // Quit
+        this.release.add(new Button(this.width / 2 + 2, lastRow + 72 + 12, 98, 20, new TranslatableComponent(NostalgicLang.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
     }
 
     private void renderClassicLogo(float partialTick)
