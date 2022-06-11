@@ -2,12 +2,12 @@ package mod.adrenix.nostalgic.client.config.tweak;
 
 public abstract class TweakVersion
 {
-    public interface IDefault<E extends Enum<E>>
+    public interface IDisabled<E extends Enum<E>>
     {
-        E getDefault();
+        E getDisabled();
     }
 
-    public enum GENERIC implements IDefault<GENERIC>
+    public enum GENERIC implements IDisabled<GENERIC>
     {
         ALPHA("§aAlpha"),
         BETA("§eBeta"),
@@ -18,10 +18,10 @@ public abstract class TweakVersion
         GENERIC(String display) { this.display = display; }
 
         public String toString() { return this.display; }
-        public GENERIC getDefault() { return MODERN; }
+        public GENERIC getDisabled() { return MODERN; }
     }
 
-    public enum OVERLAY implements IDefault<OVERLAY>
+    public enum OVERLAY implements IDisabled<OVERLAY>
     {
         ALPHA(GENERIC.ALPHA.toString()),
         BETA(GENERIC.BETA.toString()),
@@ -34,6 +34,6 @@ public abstract class TweakVersion
         OVERLAY(String display) { this.display = display; }
 
         public String toString() { return this.display; }
-        public OVERLAY getDefault() { return MODERN; }
+        public OVERLAY getDisabled() { return MODERN; }
     }
 }

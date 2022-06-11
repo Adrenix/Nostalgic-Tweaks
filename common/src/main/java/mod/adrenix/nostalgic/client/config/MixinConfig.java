@@ -18,9 +18,9 @@ public abstract class MixinConfig
     private static final ClientConfig.Sound SOUND = CommonRegistry.getSound();
     private static final ClientConfig.Swing SWING = CommonRegistry.getSwing();
     private static final ClientConfig CONFIG = CommonRegistry.getRoot();
-    private static <E extends Enum<E> & TweakVersion.IDefault<E>> E getVersion(@Nullable ITweak tweak, E current)
+    private static <E extends Enum<E> & TweakVersion.IDisabled<E>> E getVersion(@Nullable ITweak tweak, E current)
     {
-        return !isModEnabled(tweak) ? current.getDefault() : current;
+        return !isModEnabled(tweak) ? current.getDisabled() : current;
     }
 
     public static boolean isModEnabled(@Nullable ITweak tweak)
