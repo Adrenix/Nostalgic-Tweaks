@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
@@ -34,28 +35,54 @@ public class CycleButton<E extends Enum<E>> extends Button
         Optional<E> firstSearch = Arrays.stream(enums).findFirst();
         E firstConstant = firstSearch.orElse(this.cache.getCurrent());
         E nextConstant = firstConstant;
+        E lastConstant = enums[enums.length - 1];
         E currentConstant = this.cache.getCurrent();
-        boolean isCurrent = false;
 
-        if (enums[enums.length - 1] == currentConstant)
+        if (Screen.hasShiftDown())
         {
-            this.cache.setCurrent(firstConstant);
-            return;
-        }
-
-        for (E next : enums)
-        {
-            if (isCurrent)
+            if (firstConstant == currentConstant)
             {
-                nextConstant = next;
-                break;
+                this.cache.setCurrent(lastConstant);
+                return;
             }
 
-            if (next == currentConstant)
-                isCurrent = true;
-        }
+            E previousConstant = currentConstant;
 
-        this.cache.setCurrent(nextConstant);
+            for (E next : enums)
+            {
+                if (next == currentConstant)
+                {
+                    this.cache.setCurrent(previousConstant);
+                    return;
+                }
+
+                previousConstant = next;
+            }
+        }
+        else
+        {
+            if (lastConstant == currentConstant)
+            {
+                this.cache.setCurrent(firstConstant);
+                return;
+            }
+
+            boolean isCurrent = false;
+
+            for (E next : enums)
+            {
+                if (isCurrent)
+                {
+                    nextConstant = next;
+                    break;
+                }
+
+                if (next == currentConstant)
+                    isCurrent = true;
+            }
+
+            this.cache.setCurrent(nextConstant);
+        }
     }
 
     @Override
