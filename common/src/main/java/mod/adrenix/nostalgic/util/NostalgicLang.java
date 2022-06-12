@@ -61,6 +61,7 @@ public abstract class NostalgicLang
         public static final String SETTINGS_SPEED_HELP = "gui.nostalgic_tweaks.config.speed.@PrefixText";
         public static final String SETTINGS_INTENSITY = "gui.nostalgic_tweaks.config.intensity";
         public static final String SETTINGS_CUSTOM = "gui.nostalgic_tweaks.config.custom";
+        public static final String SETTINGS_CLASSIC = "gui.nostalgic_tweaks.config.classic";
         public static final String SETTINGS_ALPHA = "gui.nostalgic_tweaks.config.alpha";
         public static final String SETTINGS_BETA = "gui.nostalgic_tweaks.config.beta";
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";

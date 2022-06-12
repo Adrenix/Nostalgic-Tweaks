@@ -152,6 +152,7 @@ public abstract class MixinConfig
         public static TweakVersion.GENERIC getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
         public static TweakVersion.GENERIC getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
         public static TweakVersion.GENERIC getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static TweakVersion.HOTBAR getHotbar() { return getVersion(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar); }
 
         /* String Tweaks */
 

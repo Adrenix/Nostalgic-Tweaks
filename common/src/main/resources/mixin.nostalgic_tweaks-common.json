@@ -16,7 +16,8 @@
     "world.level.block.BlockMixin",
     "world.level.block.BlockStateBaseMixin",
     "world.level.block.LeavesBlockMixin",
-    "server.ChunkMapMixin"
+    "server.ChunkMapMixin",
+    "server.PlayerListMixin"
   ],
 
   "mixins": []

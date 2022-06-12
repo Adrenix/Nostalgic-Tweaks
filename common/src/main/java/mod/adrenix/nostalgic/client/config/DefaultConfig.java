@@ -31,6 +31,7 @@ public abstract class DefaultConfig
 
         // Interface Candy
         public static final TweakVersion.OVERLAY OLD_LOADING_OVERLAY = TweakVersion.OVERLAY.ALPHA;
+        public static final TweakVersion.HOTBAR OLD_CREATIVE_HOTBAR = TweakVersion.HOTBAR.CLASSIC;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_LOADING_BAR = false;
         public static final boolean OLD_CHAT_INPUT = true;

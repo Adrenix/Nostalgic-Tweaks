@@ -158,6 +158,12 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.LOADING_OVERLAY.setKey("oldLoadingOverlay"); }
 
         @TweakEntry.Gui.New
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public TweakVersion.HOTBAR oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
+        static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
+
+        @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 2)

@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 public enum CandyTweak implements ITweak
 {
     FIX_ITEM_MODEL_GAP,
+    CREATIVE_HOTBAR,
     VERSION_OVERLAY,
     BUTTON_HOVER,
     TOOLTIP_BOXES,

@@ -41,6 +41,7 @@
   "gui.nostalgic_tweaks.config.intensity": "Intensity",
   "gui.nostalgic_tweaks.config.custom": "Custom",
   "gui.nostalgic_tweaks.config.default": "§eDefault§r",
+  "gui.nostalgic_tweaks.config.classic": "§aClassic",
   "gui.nostalgic_tweaks.config.alpha": "§aAlpha",
   "gui.nostalgic_tweaks.config.beta": "§eBeta",
   "gui.nostalgic_tweaks.config.modern": "§cModern",
@@ -178,6 +179,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNoSelectedItemName.@Tooltip": "Disable the item name that appears above the hotbar when selecting an item.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPlainSelectedItemName": "Old Selected Plain Item Name",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPlainSelectedItemName.@Tooltip": "Remove all text formatting from the item name that appears above the hotbar when selecting an item.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCreativeHotbar": "Old Creative Hotbar",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCreativeHotbar.@Tooltip": "Start with a filled hotbar when joining a world with an empty inventory in creative mode.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding": "Old Item Holding",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding.@Tooltip": "Bring back the old item holding and swinging position.",
