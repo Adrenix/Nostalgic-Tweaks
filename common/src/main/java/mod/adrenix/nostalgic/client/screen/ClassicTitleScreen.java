@@ -118,6 +118,16 @@ public class ClassicTitleScreen extends TitleScreen
         this.createBetaOptions(x, y, rowHeight);
         this.createReleaseOptions(x, y, rowHeight);
 
+        List<Widget> widgets = switch (MixinConfig.Candy.getButtonLayout())
+        {
+            case ALPHA -> this.alpha;
+            case BETA -> this.beta;
+            default -> this.release;
+        };
+
+        if (MixinConfig.Candy.getButtonLayout() != TweakVersion.BUTTON_LAYOUT.MODERN)
+            widgets.forEach((widget) -> super.addRenderableWidget((AbstractWidget) widget));
+
         super.init();
     }
 
@@ -256,10 +266,10 @@ public class ClassicTitleScreen extends TitleScreen
 
         boolean isRelease = layout == TweakVersion.BUTTON_LAYOUT.RELEASE_TEXTURE_PACK || layout == TweakVersion.BUTTON_LAYOUT.RELEASE_NO_TEXTURE_PACK;
 
+        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.BUTTON_LAYOUT.MODERN);
         setLayoutVisibility(this.alpha, layout == TweakVersion.BUTTON_LAYOUT.ALPHA);
         setLayoutVisibility(this.beta, layout == TweakVersion.BUTTON_LAYOUT.BETA);
         setLayoutVisibility(this.release, isRelease);
-        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.BUTTON_LAYOUT.MODERN);
 
         switch (layout)
         {
