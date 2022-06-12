@@ -197,6 +197,7 @@ public record ConfigRenderer(ConfigScreen parent)
                     {
                         ConfigReflect.getGroup(group).forEach((key, value) -> {
                             TweakCache<Boolean> entry = TweakCache.get(group, key);
+                            entry.reset();
 
                             boolean isDisableIgnored = ConfigReflect.getAnnotation(
                                 entry.getGroup(),
@@ -225,10 +226,10 @@ public record ConfigRenderer(ConfigScreen parent)
                                 }
                             }
 
-                            if (value instanceof TweakVersion.GENERIC && !isDisableIgnored)
+                            if (value instanceof TweakVersion.IDisabled<?> && !isDisableIgnored)
                             {
-                                TweakCache<TweakVersion.GENERIC> version = TweakCache.get(group, key);
-                                version.setCurrent(TweakVersion.GENERIC.MODERN);
+                                TweakCache<Enum<?>> version = TweakCache.get(group, key);
+                                version.setCurrent(((TweakVersion.IDisabled<?>) value).getDisabled());
                             }
                         });
                     }
