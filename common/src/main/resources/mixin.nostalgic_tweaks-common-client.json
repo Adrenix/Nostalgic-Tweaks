@@ -32,6 +32,7 @@
     "world.ClientLevelMixin",
     "world.DimensionTypeMixin",
     "CameraMixin",
-    "MinecraftMixin"
+    "MinecraftMixin",
+    "ParticleEngineMixin"
   ]
 }

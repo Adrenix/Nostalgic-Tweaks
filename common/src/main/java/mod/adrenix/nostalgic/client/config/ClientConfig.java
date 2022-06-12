@@ -281,7 +281,7 @@ public class ClientConfig implements ConfigData
          * Particle Candy
          */
 
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldSweepParticles = DefaultConfig.Candy.OLD_SWEEP_PARTICLES;
@@ -293,19 +293,19 @@ public class ClientConfig implements ConfigData
         public boolean oldOpaqueExperience = DefaultConfig.Candy.OLD_OPAQUE_EXPERIENCE;
         static { CandyTweak.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
 
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoDamageParticles = DefaultConfig.Candy.OLD_NO_DAMAGE_PARTICLES;
         static { CandyTweak.NO_DAMAGE_PARTICLES.setKey("oldNoDamageParticles"); }
 
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoCritParticles = DefaultConfig.Candy.OLD_NO_CRIT_PARTICLES;
         static { CandyTweak.NO_CRIT_PARTICLES.setKey("oldNoCritParticles"); }
 
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoMagicHitParticles = DefaultConfig.Candy.OLD_NO_MAGIC_HIT_PARTICLES;

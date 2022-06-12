@@ -3,8 +3,6 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import mod.adrenix.nostalgic.util.SoundUtil;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -13,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -88,19 +85,6 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     }
 
     /**
-     * Multiplayer:
-     *
-     * Disables the sweep attack particles that appear when attacking multiple entities at once.
-     * Controlled by the sweep attack tweak.
-     */
-    @Inject(method = "sweepAttack", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onSweepAttack(CallbackInfo callback)
-    {
-        if (MixinConfig.Candy.oldSweepParticles() && EnchantmentHelper.getSweepingDamageRatio(this) <= 0.0F)
-            callback.cancel();
-    }
-
-    /**
      * Client:
      *
      * Updates the camera pitching when the player moves up and down.
@@ -156,27 +140,5 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
         if (MixinConfig.Animation.oldSwingDropping())
             return;
         player.swing(InteractionHand.MAIN_HAND);
-    }
-
-    /**
-     * Multiplayer:
-     *
-     * Prevents the damage indicator particles from appearing on entities attacked by the player.
-     * Controlled by the old no damage indicator tweak.
-     */
-    @Redirect
-    (
-        method = "attack",
-        at = @At
-        (
-            value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"
-        )
-    )
-    private <T extends ParticleOptions> int NT$onDamageParticles(ServerLevel instance, T particleOptions, double posX, double posY, double posZ, int particleCount, double xOffset, double yOffset, double zOffset, double speed)
-    {
-        if (MixinConfig.Candy.oldNoDamageParticles())
-            return 0;
-        return instance.sendParticles(particleOptions, posX, posY, posZ, particleCount, xOffset, yOffset, zOffset, speed);
     }
 }
