@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.screen;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -10,7 +11,6 @@ import com.mojang.math.Vector4f;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.widen.IMixinOptionsScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
 import mod.adrenix.nostalgic.util.KeyUtil;
@@ -20,6 +20,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -43,6 +44,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
@@ -232,17 +235,17 @@ public class ClassicTitleScreen extends TitleScreen
         IMixinScreen screen = (IMixinScreen) this;
         int color = Mth.ceil(255.0F) << 24;
 
-        if (accessor.getSplash() != null)
+        if (accessor.NT$getSplash() != null)
         {
             poseStack.pushPose();
             poseStack.translate((float) this.width / 2 + 90, 70.0, 0.0);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
 
             float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
-            scale = scale * 100.0F / (float) (this.font.width(accessor.getSplash()) + 32);
+            scale = scale * 100.0F / (float) (this.font.width(accessor.NT$getSplash()) + 32);
             poseStack.scale(scale, scale, scale);
 
-            TitleScreen.drawCenteredString(poseStack, this.font, accessor.getSplash(), 0, -8, 0xFFFF00 | color);
+            TitleScreen.drawCenteredString(poseStack, this.font, accessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
 
             poseStack.popPose();
         }
@@ -266,7 +269,7 @@ public class ClassicTitleScreen extends TitleScreen
 
         boolean isRelease = layout == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK || layout == TweakVersion.ButtonLayout.RELEASE_NO_TEXTURE_PACK;
 
-        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.ButtonLayout.MODERN);
+        setLayoutVisibility(screen.NT$getRenderables(), layout == TweakVersion.ButtonLayout.MODERN);
         setLayoutVisibility(this.alpha, layout == TweakVersion.ButtonLayout.ALPHA);
         setLayoutVisibility(this.beta, layout == TweakVersion.ButtonLayout.BETA);
         setLayoutVisibility(this.release, isRelease);
@@ -283,11 +286,11 @@ public class ClassicTitleScreen extends TitleScreen
 
                 this.setImageButtonVisibility();
 
-                for (Widget widget : screen.getRenderables())
+                for (Widget widget : screen.NT$getRenderables())
                     widget.render(poseStack, mouseX, mouseY, partialTick);
 
-                if (accessor.getRealmsNotificationsEnabled())
-                    accessor.getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
+                if (accessor.NT$getRealmsNotificationsEnabled())
+                    accessor.NT$getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
             }
             case ALPHA -> this.alpha.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
             case BETA -> this.beta.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
@@ -312,7 +315,7 @@ public class ClassicTitleScreen extends TitleScreen
     private void setImageButtonVisibility()
     {
         IMixinScreen screen = (IMixinScreen) this;
-        for (Widget widget : screen.getRenderables())
+        for (Widget widget : screen.NT$getRenderables())
         {
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
                 ((ImageButton) widget).visible = !MixinConfig.Candy.removeLanguageButton();
@@ -364,13 +367,41 @@ public class ClassicTitleScreen extends TitleScreen
             this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
     }
 
+    private void updatePackList(PackRepository repository)
+    {
+        if (this.minecraft == null)
+            return;
+
+        Options options = this.minecraft.options;
+        ImmutableList<String> before = ImmutableList.copyOf(options.resourcePacks);
+
+        options.resourcePacks.clear();
+        options.incompatibleResourcePacks.clear();
+
+        for (Pack pack : repository.getSelectedPacks())
+        {
+            if (pack.isFixedPosition())
+                continue;
+
+            options.resourcePacks.add(pack.getId());
+
+            if (pack.getCompatibility().isCompatible())
+                continue;
+
+            options.incompatibleResourcePacks.add(pack.getId());
+        }
+
+        options.save();
+
+        ImmutableList<String> after = ImmutableList.copyOf(options.resourcePacks);
+        if (!after.equals(before))
+            this.minecraft.reloadResourcePacks();
+    }
+
     private void onMods(Button ignored)
     {
         if (this.minecraft != null)
-        {
-            IMixinOptionsScreen accessor = (IMixinOptionsScreen) new OptionsScreen(this, this.minecraft.options);
-            this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), accessor::invokeUpdatePackList, this.minecraft.getResourcePackDirectory(), new TranslatableComponent("resourcePack.title")));
-        }
+            this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), new TranslatableComponent("resourcePack.title")));
     }
 
     private void createAlphaOptions(int x, int y, int rowHeight)

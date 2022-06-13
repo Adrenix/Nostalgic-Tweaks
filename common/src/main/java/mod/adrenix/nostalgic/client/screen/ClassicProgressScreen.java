@@ -97,7 +97,7 @@ public class ClassicProgressScreen extends Screen implements ProgressListener
 
         if (this.stop)
         {
-            if (this.progressScreen.getClearScreenAfterStop())
+            if (this.progressScreen.NT$getClearScreenAfterStop())
                 this.minecraft.setScreen(null);
         }
     }

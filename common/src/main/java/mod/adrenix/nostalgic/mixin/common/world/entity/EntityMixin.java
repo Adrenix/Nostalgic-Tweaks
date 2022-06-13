@@ -55,7 +55,7 @@ public abstract class EntityMixin
         else
         {
             IMixinEntity accessor = (IMixinEntity) instance;
-            accessor.invokeStepSound(pos, state);
+            accessor.NT$invokeStepSound(pos, state);
         }
     }
 }
