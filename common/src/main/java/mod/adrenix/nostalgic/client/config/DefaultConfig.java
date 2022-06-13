@@ -75,6 +75,7 @@ public abstract class DefaultConfig
         public static final int OLD_CLOUD_HEIGHT = 108;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
+        public static final boolean OLD_DARK_VOID_HEIGHT = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
         public static final boolean OLD_SUNRISE_AT_NORTH = true;

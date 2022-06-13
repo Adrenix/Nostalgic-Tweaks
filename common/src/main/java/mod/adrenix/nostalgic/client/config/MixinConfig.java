@@ -138,6 +138,7 @@ public abstract class MixinConfig
         // World Candy
         public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyTweak.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }
         public static boolean oldBlueVoidOverride() { return isModEnabled(CandyTweak.BLUE_VOID_OVERRIDE) && CANDY.oldBlueVoidOverride; }
+        public static boolean oldDarkVoidHeight() { return isModEnabled(CandyTweak.DARK_VOID_HEIGHT) && CANDY.oldDarkVoidHeight; }
         public static boolean oldSunriseAtNorth() { return isModEnabled(CandyTweak.SUNRISE_AT_NORTH) && CANDY.oldSunriseAtNorth; }
         public static boolean oldSquareBorder() { return isModEnabled(CandyTweak.SQUARE_BORDER) && CANDY.oldSquareBorder; }
         public static boolean oldTerrainFog() { return isModEnabled(CandyTweak.TERRAIN_FOG) && CANDY.oldTerrainFog; }

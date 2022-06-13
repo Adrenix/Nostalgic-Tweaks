@@ -414,6 +414,12 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
+        static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
         static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 

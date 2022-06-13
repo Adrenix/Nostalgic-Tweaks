@@ -122,6 +122,20 @@ public abstract class LevelRendererMixin
     }
 
     /**
+     * Allows the dark void to follow the camera's height.
+     * Controlled by the old dynamic void height tweak.
+     */
+    @ModifyArg(method = "renderSky", index = 1, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
+    private double NT$onTranslateDarkSkyBuffer(double y)
+    {
+        if (!MixinConfig.Candy.oldDarkVoidHeight())
+            return y;
+        y = 0.0D;
+
+        return y - Math.max(this.minecraft.gameRenderer.getMainCamera().getPosition().y - 65.0D, 0.0D);
+    }
+
+    /**
      * Disables the rendering of the dark void if the blue void is enabled and its respective override is enabled.
      * Controlled by both old blue void and old blue void override tweaks.
      */

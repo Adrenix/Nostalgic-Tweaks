@@ -46,6 +46,7 @@ public enum CandyTweak implements ITweak
     SKY_COLOR,
     BLUE_VOID,
     BLUE_VOID_OVERRIDE,
+    DARK_VOID_HEIGHT,
     SQUARE_BORDER,
     STARS,
     SWEEP,

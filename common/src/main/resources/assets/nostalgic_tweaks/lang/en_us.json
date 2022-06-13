@@ -246,6 +246,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid.@Tooltip": "Bring back the old§1 blue§r void color in the far plane.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride": "Old Blue Void Override",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride.@Tooltip": "Overrides the dark void color when the player goes beneath the level's defined horizon height.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight": "Old Dark Void Height",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight.@Tooltip": "Changes the dark void's height position based on the player's y-level so the dark void will always start at the horizon.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight": "Old Cloud Height",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight.@Tooltip": "Change the cloud height (y-level). The old heights are;§a alpha§r y-§a108§r,§e beta§r y-§e128§r, and§6 modern§r y-§6192§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars": "Old Stars",
