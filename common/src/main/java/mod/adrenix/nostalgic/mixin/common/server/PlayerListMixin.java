@@ -41,16 +41,16 @@ public abstract class PlayerListMixin
     )
     private void NT$onPlayerJoinWorld(Connection netManager, ServerPlayer player, CallbackInfo callback)
     {
-        TweakVersion.HOTBAR hotbar = MixinConfig.Candy.getHotbar();
+        TweakVersion.Hotbar hotbar = MixinConfig.Candy.getHotbar();
 
         boolean isCreative = player.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
-        boolean isOldHotbar = hotbar != TweakVersion.HOTBAR.MODERN;
+        boolean isOldHotbar = hotbar != TweakVersion.Hotbar.MODERN;
 
         if (player.getInventory().isEmpty() && isCreative && isOldHotbar)
         {
             add(player, 0, Blocks.STONE);
 
-            if (hotbar == TweakVersion.HOTBAR.BETA)
+            if (hotbar == TweakVersion.Hotbar.BETA)
             {
                 add(player, 1, Blocks.COBBLESTONE);
                 add(player, 2, Blocks.BRICKS);

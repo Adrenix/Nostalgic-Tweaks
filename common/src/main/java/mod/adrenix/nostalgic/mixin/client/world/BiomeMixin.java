@@ -39,9 +39,9 @@ public abstract class BiomeMixin
     @Inject(method = "getFogColor", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetFogColor(CallbackInfoReturnable<Integer> callback)
     {
-        TweakVersion.GENERIC fog = MixinConfig.Candy.getFogColor();
+        TweakVersion.Generic fog = MixinConfig.Candy.getFogColor();
 
-        if (fog == TweakVersion.GENERIC.MODERN)
+        if (fog == TweakVersion.Generic.MODERN)
             callback.setReturnValue(this.specialEffects.getFogColor());
         else if (isNether())
             callback.setReturnValue(0x100400);
@@ -62,9 +62,9 @@ public abstract class BiomeMixin
     @Inject(method = "getSkyColor", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetSkyColor(CallbackInfoReturnable<Integer> callback)
     {
-        TweakVersion.GENERIC sky = MixinConfig.Candy.getSkyColor();
+        TweakVersion.Generic sky = MixinConfig.Candy.getSkyColor();
 
-        if (sky == TweakVersion.GENERIC.MODERN)
+        if (sky == TweakVersion.Generic.MODERN)
             callback.setReturnValue(this.specialEffects.getSkyColor());
         else if (isNether())
             callback.setReturnValue(0x100400);

@@ -49,8 +49,8 @@ public abstract class LoadingOverlayMixin
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        TweakVersion.OVERLAY overlay = MixinConfig.Candy.getLoadingOverlay();
-        if (overlay == TweakVersion.OVERLAY.MODERN)
+        TweakVersion.Overlay overlay = MixinConfig.Candy.getLoadingOverlay();
+        if (overlay == TweakVersion.Overlay.MODERN)
             return;
 
         long millis = Util.getMillis();
@@ -62,7 +62,7 @@ public abstract class LoadingOverlayMixin
 
         float fadeOut = this.fadeOutStart > -1L ? (float)(millis - this.fadeOutStart) / 1000.0F : -1.0F;
         float fadeIn = this.fadeInStart > -1L ? (float)(millis - this.fadeInStart) / 500.0F : -1.0F;
-        int color = overlay == TweakVersion.OVERLAY.ALPHA ?
+        int color = overlay == TweakVersion.Overlay.ALPHA ?
             FastColor.ARGB32.color(255, 55, 51, 99) :
             FastColor.ARGB32.color(255, 255, 255, 255)
         ;

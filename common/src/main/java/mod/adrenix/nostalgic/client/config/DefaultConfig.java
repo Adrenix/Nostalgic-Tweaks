@@ -17,7 +17,7 @@ public abstract class DefaultConfig
     public static class Candy
     {
         // Title Screen Candy
-        public static final TweakVersion.BUTTON_LAYOUT TITLE_BUTTON_LAYOUT = TweakVersion.BUTTON_LAYOUT.MODERN;
+        public static final TweakVersion.ButtonLayout TITLE_BUTTON_LAYOUT = TweakVersion.ButtonLayout.MODERN;
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
@@ -30,8 +30,8 @@ public abstract class DefaultConfig
         public static final boolean UNCAP_TITLE_FPS = true;
 
         // Interface Candy
-        public static final TweakVersion.OVERLAY OLD_LOADING_OVERLAY = TweakVersion.OVERLAY.ALPHA;
-        public static final TweakVersion.HOTBAR OLD_CREATIVE_HOTBAR = TweakVersion.HOTBAR.CLASSIC;
+        public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
+        public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_LOADING_BAR = false;
         public static final boolean OLD_CHAT_INPUT = true;
@@ -82,9 +82,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
         public static final boolean OLD_STARS = true;
 
-        public static final TweakVersion.GENERIC OLD_SKY_COLOR = TweakVersion.GENERIC.ALPHA;
-        public static final TweakVersion.GENERIC OLD_FOG_COLOR = TweakVersion.GENERIC.ALPHA;
-        public static final TweakVersion.GENERIC OLD_BLUE_VOID = TweakVersion.GENERIC.ALPHA;
+        public static final TweakVersion.Generic OLD_SKY_COLOR = TweakVersion.Generic.ALPHA;
+        public static final TweakVersion.Generic OLD_FOG_COLOR = TweakVersion.Generic.ALPHA;
+        public static final TweakVersion.Generic OLD_BLUE_VOID = TweakVersion.Generic.ALPHA;
     }
 
     public static class Animation

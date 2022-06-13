@@ -147,12 +147,12 @@ public abstract class MixinConfig
 
         /* Version Tweaks */
 
-        public static TweakVersion.BUTTON_LAYOUT getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
-        public static TweakVersion.OVERLAY getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
-        public static TweakVersion.GENERIC getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
-        public static TweakVersion.GENERIC getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
-        public static TweakVersion.GENERIC getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
-        public static TweakVersion.HOTBAR getHotbar() { return getVersion(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar); }
+        public static TweakVersion.ButtonLayout getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static TweakVersion.Overlay getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
+        public static TweakVersion.Generic getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
+        public static TweakVersion.Generic getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
+        public static TweakVersion.Generic getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static TweakVersion.Hotbar getHotbar() { return getVersion(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar); }
 
         /* String Tweaks */
 

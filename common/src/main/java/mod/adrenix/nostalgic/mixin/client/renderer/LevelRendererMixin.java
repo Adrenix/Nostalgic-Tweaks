@@ -111,7 +111,7 @@ public abstract class LevelRendererMixin
     )
     private void NT$onDrawSkyBuffer(PoseStack poseStack, Matrix4f matrix4f, float f, Camera camera, boolean bl, Runnable runnable, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.getBlueVoid() != TweakVersion.GENERIC.MODERN)
+        if (MixinConfig.Candy.getBlueVoid() != TweakVersion.Generic.MODERN)
         {
             MixinUtil.World.setBlueVoidColor();
             ShaderInstance shader = RenderSystem.getShader();
@@ -137,8 +137,8 @@ public abstract class LevelRendererMixin
     )
     private void NT$onRenderDarkVoid(VertexBuffer instance, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, ShaderInstance shaderInstance)
     {
-        TweakVersion.GENERIC voidState = MixinConfig.Candy.getBlueVoid();
-        boolean isBlueRendered = voidState == TweakVersion.GENERIC.ALPHA || voidState == TweakVersion.GENERIC.BETA;
+        TweakVersion.Generic voidState = MixinConfig.Candy.getBlueVoid();
+        boolean isBlueRendered = voidState == TweakVersion.Generic.ALPHA || voidState == TweakVersion.Generic.BETA;
         boolean isDarkOverride = MixinConfig.Candy.oldBlueVoidOverride();
 
         if (!isBlueRendered || !isDarkOverride)

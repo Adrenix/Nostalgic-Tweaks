@@ -125,7 +125,7 @@ public class ClassicTitleScreen extends TitleScreen
             default -> this.release;
         };
 
-        if (MixinConfig.Candy.getButtonLayout() != TweakVersion.BUTTON_LAYOUT.MODERN)
+        if (MixinConfig.Candy.getButtonLayout() != TweakVersion.ButtonLayout.MODERN)
             widgets.forEach((widget) -> super.addRenderableWidget((AbstractWidget) widget));
 
         super.init();
@@ -172,7 +172,7 @@ public class ClassicTitleScreen extends TitleScreen
         if (this.updateScreenDelay == 0L)
             this.updateScreenDelay = Util.getMillis();
 
-        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == TweakVersion.OVERLAY.MODERN;
+        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == TweakVersion.Overlay.MODERN;
         boolean isDelayed = !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
         if (this.minecraft == null || (isModern && isDelayed))
             return;
@@ -226,7 +226,7 @@ public class ClassicTitleScreen extends TitleScreen
             }
         }
 
-        TweakVersion.BUTTON_LAYOUT layout = MixinConfig.Candy.getButtonLayout();
+        TweakVersion.ButtonLayout layout = MixinConfig.Candy.getButtonLayout();
         ClassicTitleScreen.isGameReady = true;
         IMixinTitleScreen accessor = (IMixinTitleScreen) this;
         IMixinScreen screen = (IMixinScreen) this;
@@ -264,11 +264,11 @@ public class ClassicTitleScreen extends TitleScreen
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
 
-        boolean isRelease = layout == TweakVersion.BUTTON_LAYOUT.RELEASE_TEXTURE_PACK || layout == TweakVersion.BUTTON_LAYOUT.RELEASE_NO_TEXTURE_PACK;
+        boolean isRelease = layout == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK || layout == TweakVersion.ButtonLayout.RELEASE_NO_TEXTURE_PACK;
 
-        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.BUTTON_LAYOUT.MODERN);
-        setLayoutVisibility(this.alpha, layout == TweakVersion.BUTTON_LAYOUT.ALPHA);
-        setLayoutVisibility(this.beta, layout == TweakVersion.BUTTON_LAYOUT.BETA);
+        setLayoutVisibility(screen.getRenderables(), layout == TweakVersion.ButtonLayout.MODERN);
+        setLayoutVisibility(this.alpha, layout == TweakVersion.ButtonLayout.ALPHA);
+        setLayoutVisibility(this.beta, layout == TweakVersion.ButtonLayout.BETA);
         setLayoutVisibility(this.release, isRelease);
 
         switch (layout)
@@ -416,7 +416,7 @@ public class ClassicTitleScreen extends TitleScreen
         this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
 
         // Texture Packs
-        if (MixinConfig.Candy.getButtonLayout() == TweakVersion.BUTTON_LAYOUT.RELEASE_TEXTURE_PACK)
+        if (MixinConfig.Candy.getButtonLayout() == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK)
             this.release.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onMods));
 
         int lastRow = this.height / 4 + 48;

@@ -10,7 +10,7 @@ public abstract class TweakVersion
         E getDisabled();
     }
 
-    public enum GENERIC implements IDisabled<GENERIC>
+    public enum Generic implements IDisabled<Generic>
     {
         ALPHA(NostalgicLang.Gui.SETTINGS_ALPHA),
         BETA(NostalgicLang.Gui.SETTINGS_BETA),
@@ -18,56 +18,56 @@ public abstract class TweakVersion
 
         private final String langKey;
 
-        GENERIC(String langKey) { this.langKey = langKey; }
+        Generic(String langKey) { this.langKey = langKey; }
 
         public String toString() { return new TranslatableComponent(this.langKey).getString(); }
         public String getLangKey() { return this.langKey; }
-        public GENERIC getDisabled() { return MODERN; }
+        public Generic getDisabled() { return MODERN; }
     }
 
-    public enum OVERLAY implements IDisabled<OVERLAY>
+    public enum Overlay implements IDisabled<Overlay>
     {
-        ALPHA(GENERIC.ALPHA.getLangKey()),
-        BETA(GENERIC.BETA.getLangKey()),
+        ALPHA(Generic.ALPHA.getLangKey()),
+        BETA(Generic.BETA.getLangKey()),
         RELEASE_ORANGE("§61.0§r - §61.6.4"),
         RELEASE_BLACK("§61.7§r - §61.15"),
-        MODERN(GENERIC.MODERN.getLangKey());
+        MODERN(Generic.MODERN.getLangKey());
 
         private final String langKey;
 
-        OVERLAY(String langKey) { this.langKey = langKey; }
+        Overlay(String langKey) { this.langKey = langKey; }
 
         public String toString() { return new TranslatableComponent(this.langKey).getString(); }
-        public OVERLAY getDisabled() { return MODERN; }
+        public Overlay getDisabled() { return MODERN; }
     }
 
-    public enum BUTTON_LAYOUT implements IDisabled<BUTTON_LAYOUT>
+    public enum ButtonLayout implements IDisabled<ButtonLayout>
     {
-        ALPHA(GENERIC.ALPHA.getLangKey()),
-        BETA(GENERIC.BETA.getLangKey()),
+        ALPHA(Generic.ALPHA.getLangKey()),
+        BETA(Generic.BETA.getLangKey()),
         RELEASE_TEXTURE_PACK("§61.0§r - §61.4.7"),
         RELEASE_NO_TEXTURE_PACK("§61.5.2§r - §61.7.9"),
-        MODERN(GENERIC.MODERN.getLangKey());
+        MODERN(Generic.MODERN.getLangKey());
 
         private final String langKey;
 
-        BUTTON_LAYOUT(String langKey) { this.langKey = langKey; }
+        ButtonLayout(String langKey) { this.langKey = langKey; }
 
         public String toString() { return new TranslatableComponent(this.langKey).getString(); }
-        public BUTTON_LAYOUT getDisabled() { return MODERN; }
+        public ButtonLayout getDisabled() { return MODERN; }
     }
 
-    public enum HOTBAR implements IDisabled<HOTBAR>
+    public enum Hotbar implements IDisabled<Hotbar>
     {
         CLASSIC(NostalgicLang.Gui.SETTINGS_CLASSIC),
-        BETA(GENERIC.BETA.getLangKey()),
-        MODERN(GENERIC.MODERN.getLangKey());
+        BETA(Generic.BETA.getLangKey()),
+        MODERN(Generic.MODERN.getLangKey());
 
         private final String langKey;
 
-        HOTBAR(String langKey) { this.langKey = langKey; }
+        Hotbar(String langKey) { this.langKey = langKey; }
 
         public String toString() { return new TranslatableComponent(this.langKey).getString(); }
-        public HOTBAR getDisabled() { return MODERN; }
+        public Hotbar getDisabled() { return MODERN; }
     }
 }
