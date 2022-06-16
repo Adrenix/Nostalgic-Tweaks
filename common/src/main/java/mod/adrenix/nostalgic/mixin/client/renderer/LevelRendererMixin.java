@@ -1,18 +1,20 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
 import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -215,5 +217,35 @@ public abstract class LevelRendererMixin
     private float NT$onDrawStarsHeight(float vanilla)
     {
         return MixinConfig.Candy.oldStars() ? 0.25F : 0.1F;
+    }
+
+    /**
+     * Renders a full block hit outline for chests. This circumvents the need of changing the voxel shape of chest blocks.
+     * If a user wishes to change the voxel shape for a true nostalgic experience, the server will have to facilitate
+     * a change in the chest's voxel shape.
+     *
+     * Controlled by various old chest tweaks.
+     */
+    @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
+    private void NT$onRenderHitOutline(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo callback)
+    {
+        if (!MixinUtil.Block.isBlockOldChest(state.getBlock()))
+            return;
+
+        IMixinLevelRenderer.NT$invokeRenderShape
+        (
+            poseStack,
+            consumer,
+            Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0),
+            (double) pos.getX() - camX,
+            (double) pos.getY() - camY,
+            (double) pos.getZ() - camZ,
+            0.0F,
+            0.0F,
+            0.0F,
+            0.4F
+        );
+
+        callback.cancel();
     }
 }

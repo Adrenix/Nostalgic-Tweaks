@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.mixin.widen.IMixinEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -42,7 +43,7 @@ public abstract class EntityMixin
     {
         if (MixinConfig.Sound.oldStep())
         {
-            if (instance instanceof Spider)
+            if (instance instanceof Spider || instance instanceof Silverfish)
                 return;
 
             if (!state.getMaterial().isLiquid())

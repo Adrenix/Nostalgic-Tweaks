@@ -59,7 +59,11 @@ public enum CandyTweak implements ITweak
     NO_MAGIC_HIT_PARTICLES,
     NO_SELECTED_ITEM_NAME,
     PLAIN_SELECTED_ITEM_NAME,
-    CLOUD_HEIGHT;
+    CLOUD_HEIGHT,
+    CHEST,
+    CHEST_VOXEL,
+    ENDER_CHEST,
+    TRAPPED_CHEST;
 
     /* Implementation */
 

@@ -19,6 +19,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,19 +50,42 @@ public abstract class MixinUtil
         // On-save Runnables
         public static final ArrayList<Runnable> onSave = new ArrayList<>();
 
-        // Reload Chunks Runnable
+        // Reload States
+
         public static boolean reloadChunks = false;
+        public static boolean reloadResources = false;
 
         static
         {
             onSave.add(() -> {
                 Minecraft minecraft = Minecraft.getInstance();
-                if (reloadChunks && minecraft != null)
+
+                if (reloadResources)
+                {
+                    reloadResources = false;
+                    reloadChunks = false;
+                    minecraft.reloadResourcePacks();
+                }
+                else if (reloadChunks)
                 {
                     reloadChunks = false;
                     minecraft.levelRenderer.allChanged();
                 }
             });
+        }
+    }
+
+    /* Block Helpers */
+
+    public static class Block
+    {
+        public static boolean isBlockOldChest(net.minecraft.world.level.block.Block block)
+        {
+            boolean isOldChest = MixinConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);
+            boolean isOldEnder = MixinConfig.Candy.oldEnderChest() && block.getClass().equals(EnderChestBlock.class);
+            boolean isOldTrap = MixinConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
+
+            return isOldChest || isOldEnder || isOldTrap;
         }
     }
 

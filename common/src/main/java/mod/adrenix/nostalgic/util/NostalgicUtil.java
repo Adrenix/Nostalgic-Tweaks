@@ -36,6 +36,19 @@ public abstract class NostalgicUtil
         public static void nothing() {}
     }
 
+    public static class Numbers
+    {
+        public static boolean tolerance(int a, int b, int tolerance)
+        {
+            return Math.abs(a - b) < tolerance;
+        }
+
+        public static boolean tolerance(int a, int b)
+        {
+            return tolerance(a, b, 3);
+        }
+    }
+
     public static class Text
     {
         public static String toTitleCase(String convert)

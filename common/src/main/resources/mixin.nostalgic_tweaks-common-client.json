@@ -13,6 +13,7 @@
     "gui.LoadingOverlayMixin",
     "gui.ScreenMixin",
     "gui.WorldListEntryMixin",
+    "renderer.BlockEntityRenderDispatcherMixin",
     "renderer.ExperienceOrbRendererMixin",
     "renderer.FogRendererMixin",
     "renderer.GameRendererMixin",
@@ -33,6 +34,7 @@
     "world.DimensionTypeMixin",
     "CameraMixin",
     "MinecraftMixin",
+    "ModelBakeryMixin",
     "ParticleEngineMixin"
   ]
 }

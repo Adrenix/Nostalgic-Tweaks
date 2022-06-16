@@ -85,16 +85,11 @@ public abstract class MixinConfig
     {
         /* Boolean Tweaks */
 
-        // Title Screen Candy
-        public static boolean overrideTitleScreen() { return isModEnabled(CandyTweak.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
-        public static boolean removeAccessibilityButton() { return isModEnabled(CandyTweak.TITLE_ACCESSIBILITY) && CANDY.removeTitleAccessibilityButton; }
-        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyTweak.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
-        public static boolean removeLanguageButton() { return isModEnabled(CandyTweak.TITLE_LANGUAGE) && CANDY.removeTitleLanguageButton; }
-        public static boolean titleBottomLeftText() { return isModEnabled(CandyTweak.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
-        public static boolean oldTitleBackground() { return isModEnabled(CandyTweak.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
-        public static boolean oldLogoOutline() { return isModEnabled(CandyTweak.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
-        public static boolean oldAlphaLogo() { return isModEnabled(CandyTweak.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
-        public static boolean uncapTitleFPS() { return isModEnabled(CandyTweak.UNCAP_TITLE_FPS) && CANDY.uncapTitleFPS; }
+        // Block Candy
+        public static boolean oldTrappedChest() { return isModEnabled(CandyTweak.TRAPPED_CHEST) && CANDY.oldTrappedChest; }
+        public static boolean oldEnderChest() { return isModEnabled(CandyTweak.ENDER_CHEST) && CANDY.oldEnderChest; }
+        public static boolean oldChestVoxel() { return isModEnabled(CandyTweak.CHEST_VOXEL) && CANDY.oldChestVoxel; }
+        public static boolean oldChest() { return isModEnabled(CandyTweak.CHEST) && CANDY.oldChest; }
 
         // Interface Candy
         public static boolean oldPlainSelectedItemName() { return isModEnabled(CandyTweak.PLAIN_SELECTED_ITEM_NAME) && CANDY.oldPlainSelectedItemName; }
@@ -118,6 +113,14 @@ public abstract class MixinConfig
         public static boolean oldItemMerging() { return isModEnabled(CandyTweak.ITEM_MERGING) && CANDY.oldItemMerging; }
         public static boolean oldFlatFrames() { return isModEnabled(CandyTweak.FLAT_FRAMES) && CANDY.old2dFrames; }
 
+        // Lighting Candy
+        public static boolean oldSmoothLighting() { return isModEnabled(CandyTweak.SMOOTH_LIGHTING) && CANDY.oldSmoothLighting; }
+        public static boolean oldNetherLighting() { return isModEnabled(CandyTweak.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
+        public static boolean oldLeavesLighting() { return isModEnabled(CandyTweak.LEAVES_LIGHTING) && CANDY.oldLeavesLighting; }
+        public static boolean oldWaterLighting() { return isModEnabled(CandyTweak.WATER_LIGHTING) && CANDY.oldWaterLighting; }
+        public static boolean oldLightFlicker() { return isModEnabled(CandyTweak.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
+        public static boolean oldLighting() { return isModEnabled(CandyTweak.LIGHTING) && CANDY.oldLighting; }
+
         // Particle Candy
         public static boolean oldNoCriticalHitParticles() { return isModEnabled(CandyTweak.NO_CRIT_PARTICLES) && CANDY.oldNoCritParticles; }
         public static boolean oldMixedExplosionParticles() { return isModEnabled(CandyTweak.MIXED_EXPLOSION_PARTICLES) && CANDY.oldMixedExplosionParticles; }
@@ -127,13 +130,16 @@ public abstract class MixinConfig
         public static boolean oldOpaqueExperience() { return isModEnabled(CandyTweak.OPAQUE_EXPERIENCE) && CANDY.oldOpaqueExperience; }
         public static boolean oldSweepParticles() { return isModEnabled(CandyTweak.SWEEP) && CANDY.oldSweepParticles; }
 
-        // Lighting Candy
-        public static boolean oldSmoothLighting() { return isModEnabled(CandyTweak.SMOOTH_LIGHTING) && CANDY.oldSmoothLighting; }
-        public static boolean oldNetherLighting() { return isModEnabled(CandyTweak.NETHER_LIGHTING) && CANDY.oldNetherLighting; }
-        public static boolean oldLeavesLighting() { return isModEnabled(CandyTweak.LEAVES_LIGHTING) && CANDY.oldLeavesLighting; }
-        public static boolean oldWaterLighting() { return isModEnabled(CandyTweak.WATER_LIGHTING) && CANDY.oldWaterLighting; }
-        public static boolean oldLightFlicker() { return isModEnabled(CandyTweak.LIGHT_FLICKER) && CANDY.oldLightFlicker; }
-        public static boolean oldLighting() { return isModEnabled(CandyTweak.LIGHTING) && CANDY.oldLighting; }
+        // Title Screen Candy
+        public static boolean overrideTitleScreen() { return isModEnabled(CandyTweak.OVERRIDE_TITLE_SCREEN) && CANDY.overrideTitleScreen; }
+        public static boolean removeAccessibilityButton() { return isModEnabled(CandyTweak.TITLE_ACCESSIBILITY) && CANDY.removeTitleAccessibilityButton; }
+        public static boolean removeTitleModLoaderText() { return isModEnabled(CandyTweak.TITLE_MOD_LOADER_TEXT) && CANDY.removeTitleModLoaderText; }
+        public static boolean removeLanguageButton() { return isModEnabled(CandyTweak.TITLE_LANGUAGE) && CANDY.removeTitleLanguageButton; }
+        public static boolean titleBottomLeftText() { return isModEnabled(CandyTweak.TITLE_BOTTOM_LEFT_TEXT) && CANDY.titleBottomLeftText; }
+        public static boolean oldTitleBackground() { return isModEnabled(CandyTweak.TITLE_BACKGROUND) && CANDY.oldTitleBackground; }
+        public static boolean oldLogoOutline() { return isModEnabled(CandyTweak.LOGO_OUTLINE) && CANDY.oldLogoOutline; }
+        public static boolean oldAlphaLogo() { return isModEnabled(CandyTweak.ALPHA_LOGO) && CANDY.oldAlphaLogo; }
+        public static boolean uncapTitleFPS() { return isModEnabled(CandyTweak.UNCAP_TITLE_FPS) && CANDY.uncapTitleFPS; }
 
         // World Candy
         public static boolean oldSunriseSunsetFog() { return isModEnabled(CandyTweak.SUNRISE_SUNSET_FOG) && CANDY.oldSunriseSunsetFog; }

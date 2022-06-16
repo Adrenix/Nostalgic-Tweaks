@@ -28,7 +28,7 @@ public class ClientConfig implements ConfigData
     public Sound sound = new Sound();
     public static class Sound
     {
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         public boolean oldAttack = DefaultConfig.Sound.OLD_ATTACK;
         static { SoundTweak.OLD_ATTACK.setKey("oldAttack"); }
@@ -43,7 +43,7 @@ public class ClientConfig implements ConfigData
         public boolean oldFall = DefaultConfig.Sound.OLD_FALL;
         static { SoundTweak.OLD_FALL.setKey("oldFall"); }
 
-        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
         static { SoundTweak.OLD_STEP.setKey("oldStep"); }
@@ -60,85 +60,37 @@ public class ClientConfig implements ConfigData
     public static class EyeCandy
     {
         /**
-         * Title Screen Candy
+         * Block Candy
          */
 
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
-        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
-        static { CandyTweak.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
-        static { CandyTweak.ALPHA_LOGO.setKey("oldAlphaLogo"); }
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldChest = DefaultConfig.Candy.OLD_CHEST;
+        static { CandyTweak.CHEST.setKey("oldChest"); }
 
         @TweakEntry.Gui.New
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
-        static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
-        static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
-        static { CandyTweak.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Warning
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
+        static { CandyTweak.CHEST_VOXEL.setKey("oldChestVoxel"); }
 
         @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
-        static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldEnderChest = DefaultConfig.Candy.OLD_ENDER_CHEST;
+        static { CandyTweak.ENDER_CHEST.setKey("oldEnderChest"); }
 
         @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 1)
-        public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
-        static { CandyTweak.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
-
-        @TweakEntry.Gui.New
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 2)
-        public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
-        static { CandyTweak.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 3)
-        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
-        static { CandyTweak.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 4)
-        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
-        static { CandyTweak.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
-        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 5)
-        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldTrappedChest = DefaultConfig.Candy.OLD_TRAPPED_CHEST;
+        static { CandyTweak.TRAPPED_CHEST.setKey("oldTrappedChest"); }
 
         /**
          * Interface Candy
@@ -276,12 +228,59 @@ public class ClientConfig implements ConfigData
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
         static { CandyTweak.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
 
+        @TweakEntry.Run.ReloadResources
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Reload
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean fixItemModelGap = DefaultConfig.Candy.FIX_ITEM_MODEL_GAP;
         static { CandyTweak.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
+
+        /**
+         * Lighting Candy
+         */
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
+        static { CandyTweak.LIGHT_FLICKER.setKey("oldLightFlicker"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
+        static { CandyTweak.NETHER_LIGHTING.setKey("oldNetherLighting"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
+        static { CandyTweak.LIGHTING.setKey("oldLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldSmoothLighting = DefaultConfig.Candy.OLD_SMOOTH_LIGHTING;
+        static { CandyTweak.SMOOTH_LIGHTING.setKey("oldSmoothLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLeavesLighting = DefaultConfig.Candy.OLD_LEAVES_LIGHTING;
+        static { CandyTweak.LEAVES_LIGHTING.setKey("oldLeavesLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Warning
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
+        static { CandyTweak.WATER_LIGHTING.setKey("oldWaterLighting"); }
 
         /**
          * Particle Candy
@@ -331,51 +330,85 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
 
         /**
-         * Lighting Candy
+         * Title Screen Candy
          */
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
-        static { CandyTweak.LIGHT_FLICKER.setKey("oldLightFlicker"); }
+        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
+        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
+        static { CandyTweak.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
-        static { CandyTweak.NETHER_LIGHTING.setKey("oldNetherLighting"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
-        static { CandyTweak.LIGHTING.setKey("oldLighting"); }
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
+        static { CandyTweak.ALPHA_LOGO.setKey("oldAlphaLogo"); }
 
         @TweakEntry.Gui.New
-        @TweakEntry.Run.ReloadChunks
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldSmoothLighting = DefaultConfig.Candy.OLD_SMOOTH_LIGHTING;
-        static { CandyTweak.SMOOTH_LIGHTING.setKey("oldSmoothLighting"); }
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
+        static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
+        static { CandyTweak.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
 
         @TweakEntry.Gui.New
-        @TweakEntry.Run.ReloadChunks
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldLeavesLighting = DefaultConfig.Candy.OLD_LEAVES_LIGHTING;
-        static { CandyTweak.LEAVES_LIGHTING.setKey("oldLeavesLighting"); }
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
+        static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
 
         @TweakEntry.Gui.New
-        @TweakEntry.Gui.Warning
+        @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.Server
-        @TweakEntry.Gui.EntryStatus
-        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
-        public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
-        static { CandyTweak.WATER_LIGHTING.setKey("oldWaterLighting"); }
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 1)
+        public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
+        static { CandyTweak.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 2)
+        public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
+        static { CandyTweak.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 3)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyTweak.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 4)
+        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
+        static { CandyTweak.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 5)
+        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
 
         /**
          * World Candy

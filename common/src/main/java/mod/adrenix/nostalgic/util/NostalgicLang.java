@@ -128,6 +128,7 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";
         public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
+        public static final String CANDY_CATEGORY_BLOCK = "gui.nostalgic_tweaks.config.candy.category.block";
 
         public static final String CANDY_TITLE_MODS = "gui.nostalgic_tweaks.config.candy.title.mods";
         public static final String CANDY_TITLE_TEXTURE_PACK = "gui.nostalgic_tweaks.config.candy.title.texture_pack";

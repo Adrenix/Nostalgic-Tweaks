@@ -86,6 +86,10 @@ public class TweakCache<T>
             TweakEntry.Run.ReloadChunks chunks = ConfigReflect.getAnnotation(this.group, this.key, TweakEntry.Run.ReloadChunks.class);
             if (chunks != null)
                 MixinUtil.Run.reloadChunks = true;
+
+            TweakEntry.Run.ReloadResources resources = ConfigReflect.getAnnotation(this.group, this.key, TweakEntry.Run.ReloadResources.class);
+            if (resources != null)
+                MixinUtil.Run.reloadResources = true;
         }
 
         ConfigReflect.setConfig(this.group, this.key, this.value);

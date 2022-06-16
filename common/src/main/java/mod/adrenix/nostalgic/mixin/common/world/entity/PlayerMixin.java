@@ -4,7 +4,6 @@ import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import mod.adrenix.nostalgic.util.SoundUtil;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -61,27 +60,6 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     {
         if (MixinConfig.Sound.oldDamage())
             callback.setReturnValue(SoundUtil.Event.PLAYER_HURT.get());
-    }
-
-    /**
-     * Multiplayer:
-     *
-     * Disables on sounds when attacking.
-     * Controlled by the sound attack tweak.
-     */
-    @Redirect
-    (
-        method = "attack",
-        at = @At
-        (
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"
-        )
-    )
-    private void NT$onAttack(Level level, Player player, double x, double y, double z, SoundEvent event, SoundSource sound, float volume, float pitch)
-    {
-        if (!MixinConfig.Sound.oldAttack())
-            level.playSound(null, x, y, z, event, sound, volume, pitch);
     }
 
     /**

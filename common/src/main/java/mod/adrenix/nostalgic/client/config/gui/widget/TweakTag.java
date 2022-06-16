@@ -92,9 +92,9 @@ public class TweakTag extends AbstractWidget
         TweakEntry.Gui.New isNew = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.New.class);
         TweakEntry.Gui.Client isClient = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Client.class);
         TweakEntry.Gui.Server isServer = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Server.class);
-        TweakEntry.Gui.Reload isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Reload.class);
         TweakEntry.Gui.Restart isRestart = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Restart.class);
         TweakEntry.Gui.Warning isWarning = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Warning.class);
+        TweakEntry.Run.ReloadResources isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Run.ReloadResources.class);
 
         Component title = new TranslatableComponent(this.cache.getLangKey());
         Component newTag = new TranslatableComponent(NostalgicLang.Gui.TAG_NEW);

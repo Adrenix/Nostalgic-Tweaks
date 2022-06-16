@@ -1,0 +1,14 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "#top",
+    "down": "#top",
+    "up": "#top",
+    "north": "block/ender_chest_front_single",
+    "south": "#side",
+    "east": "#side",
+    "west": "#side",
+    "top": "block/ender_chest_top_bottom",
+    "side": "block/ender_chest_side"
+  }
+}

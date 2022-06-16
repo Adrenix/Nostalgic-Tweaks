@@ -15,6 +15,8 @@
     "world.level.block.BlockBehaviourMixin",
     "world.level.block.BlockMixin",
     "world.level.block.BlockStateBaseMixin",
+    "world.level.block.ChestBlockMixin",
+    "world.level.block.EnderChestBlockMixin",
     "world.level.block.LeavesBlockMixin",
     "server.ChunkMapMixin",
     "server.PlayerListMixin"

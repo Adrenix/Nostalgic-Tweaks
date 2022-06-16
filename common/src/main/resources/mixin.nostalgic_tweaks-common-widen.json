@@ -6,6 +6,7 @@
   "client": [
     "IMixinAbstractSelectionList",
     "IMixinEntity",
+    "IMixinLevelRenderer",
     "IMixinProgressScreen",
     "IMixinScreen",
     "IMixinTitleScreen"

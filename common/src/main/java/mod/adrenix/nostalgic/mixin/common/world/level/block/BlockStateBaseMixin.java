@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -47,5 +48,16 @@ public abstract class BlockStateBaseMixin
 
         if (isBlockWaterRelated)
             callback.setReturnValue(3);
+    }
+
+    /**
+     * Occlusion needs to be disabled to prevent rendering issues if the old chest voxel tweak gets disabled after being enabled.
+     * This is because the occlusion block property cannot be changed during runtime.
+     */
+    @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
+    private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (MixinUtil.Block.isBlockOldChest(this.getBlock()))
+            callback.setReturnValue(false);
     }
 }

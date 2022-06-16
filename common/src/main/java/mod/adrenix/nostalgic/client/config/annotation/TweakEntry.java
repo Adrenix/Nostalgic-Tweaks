@@ -55,10 +55,6 @@ public abstract class TweakEntry
 
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
-        public @interface Reload {}
-
-        @Retention(RetentionPolicy.RUNTIME)
-        @Target({ElementType.FIELD})
         public @interface Restart {}
 
         public enum Position
@@ -109,15 +105,20 @@ public abstract class TweakEntry
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
         public @interface ReloadChunks {}
+
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface ReloadResources {}
     }
 
     public enum Category
     {
-        TITLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_TITLE),
+        BLOCK_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_BLOCK),
         INTERFACE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_GUI),
         ITEM_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_ITEM),
-        PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
         LIGHTING_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_LIGHTING),
+        PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
+        TITLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_TITLE),
         WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD);
 
         private final String langKey;
