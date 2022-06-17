@@ -88,10 +88,10 @@ public abstract class LevelRendererMixin
      * This is done so the stars and sky can be overlaid with the blue void correctly.
      */
     @Inject(method = "renderSky", at = @At(value = "HEAD"))
-    private void NT$onCacheSkyPose(PoseStack poseStack, Matrix4f matrix4f, float f, Camera camera, boolean bl, Runnable runnable, CallbackInfo callback)
+    private void NT$onCacheSkyPose(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         MixinUtil.World.blueModelView = poseStack.last().pose().copy();
-        MixinUtil.World.blueProjection = matrix4f.copy();
+        MixinUtil.World.blueProjection = projectionMatrix.copy();
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class LevelRendererMixin
             target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"
         )
     )
-    private void NT$onDrawSkyBuffer(PoseStack poseStack, Matrix4f matrix4f, float f, Camera camera, boolean bl, Runnable runnable, CallbackInfo callback)
+    private void NT$onDrawSkyBuffer(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         if (MixinConfig.Candy.getBlueVoid() != TweakVersion.Generic.MODERN)
         {
