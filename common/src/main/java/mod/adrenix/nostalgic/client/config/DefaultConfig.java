@@ -11,6 +11,8 @@ public abstract class DefaultConfig
         public static final boolean OLD_HURT = true;
         public static final boolean OLD_FALL = true;
         public static final boolean OLD_STEP = true;
+        public static final boolean OLD_DOOR = true;
+        public static final boolean OLD_BED = true;
         public static final boolean OLD_XP = false;
     }
 

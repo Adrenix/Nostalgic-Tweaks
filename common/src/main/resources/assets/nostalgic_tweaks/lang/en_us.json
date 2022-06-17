@@ -127,6 +127,10 @@
   "text.autoconfig.nostalgic_tweaks.option.sound.oldFall.@Tooltip": "Disable the fall damage sounds.",
   "text.autoconfig.nostalgic_tweaks.option.sound.oldStep": "Old Mob Steps",
   "text.autoconfig.nostalgic_tweaks.option.sound.oldStep.@Tooltip": "Disable the unique footstep sounds for mobs. Sounds will be replaced by the block the mob is walking on. While this tweak does work in multiplayer, there may be some inconsistencies.",
+  "text.autoconfig.nostalgic_tweaks.option.sound.oldDoor": "Old Door Placing",
+  "text.autoconfig.nostalgic_tweaks.option.sound.oldDoor.@Tooltip": "Disable the placing sound when placing a door in the world.",
+  "text.autoconfig.nostalgic_tweaks.option.sound.oldBed": "Old Bed Placing",
+  "text.autoconfig.nostalgic_tweaks.option.sound.oldBed.@Tooltip": "Disable the placing sound when placing a bed in the world.",
   "text.autoconfig.nostalgic_tweaks.option.sound.oldXP": "Old Experience Pickup",
   "text.autoconfig.nostalgic_tweaks.option.sound.oldXP.@Tooltip": "Bring back the old early 1.8 beta pickup sound for experience orbs.",
 

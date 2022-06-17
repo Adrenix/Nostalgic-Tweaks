@@ -8,6 +8,8 @@ public enum SoundTweak implements ITweak
     OLD_HURT,
     OLD_FALL,
     OLD_STEP,
+    OLD_DOOR,
+    OLD_BED,
     OLD_XP;
 
     /* Implementation */

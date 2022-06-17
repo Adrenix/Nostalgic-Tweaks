@@ -53,6 +53,16 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.IgnoreDisable
         public boolean oldXP = DefaultConfig.Sound.OLD_XP;
         static { SoundTweak.OLD_XP.setKey("oldXP"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldDoor = DefaultConfig.Sound.OLD_DOOR;
+        static { SoundTweak.OLD_DOOR.setKey("oldDoor"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldBed = DefaultConfig.Sound.OLD_BED;
+        static { SoundTweak.OLD_BED.setKey("oldBed"); }
     }
 
     @TweakEntry.Gui.Ignore

@@ -76,6 +76,8 @@ public abstract class MixinConfig
         public static boolean oldDamage() { return isModEnabled(SoundTweak.OLD_HURT) && SOUND.oldHurt; }
         public static boolean oldFall() { return isModEnabled(SoundTweak.OLD_FALL) && SOUND.oldFall; }
         public static boolean oldStep() { return isModEnabled(SoundTweak.OLD_STEP) && SOUND.oldStep; }
+        public static boolean oldDoor() { return isModEnabled(SoundTweak.OLD_DOOR) && SOUND.oldDoor; }
+        public static boolean oldBed() { return isModEnabled(SoundTweak.OLD_BED) && SOUND.oldBed; }
         public static boolean oldXP() { return isModEnabled(SoundTweak.OLD_XP) && SOUND.oldXP; }
     }
 

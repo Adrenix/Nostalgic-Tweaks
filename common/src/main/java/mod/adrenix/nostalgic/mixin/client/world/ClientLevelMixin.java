@@ -16,7 +16,9 @@ import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
@@ -100,11 +102,13 @@ public abstract class ClientLevelMixin
         if (level == null)
             return;
 
-        if (MixinConfig.Candy.oldChest() && level.getBlockState(pos).is(Blocks.CHEST) && isWoodenChest)
+        BlockState state = level.getBlockState(pos);
+
+        if (MixinConfig.Candy.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
             isChestSound = true;
-        else if (MixinConfig.Candy.oldEnderChest() && level.getBlockState(pos).is(Blocks.ENDER_CHEST) && isEnderChest)
+        else if (MixinConfig.Candy.oldEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
             isChestSound = true;
-        else if (MixinConfig.Candy.oldTrappedChest() && level.getBlockState(pos).is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+        else if (MixinConfig.Candy.oldTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
             isChestSound = true;
 
         if (isChestSound)
@@ -114,13 +118,33 @@ public abstract class ClientLevelMixin
         }
 
         /*
-          Entity Walking Sounds:
+            Bed & Door Placement Sounds:
 
-          The following logic is intended for multiplayer support.
+            Disables the placement sound if the block at the given position is a bed or door.
+            Controlled by the old door sound tweak and the old bed sound tweak.
+         */
 
-          While this does work in ideal environments, there may be points during play where sounds can become
-          inconsistent if there is significant latency or if there is a path without the 'entity.' and '.step'
-          identifiers.
+        boolean isBlockedSound = false;
+
+        if (MixinConfig.Sound.oldDoor() && state.getBlock() instanceof DoorBlock)
+            isBlockedSound = true;
+        else if (MixinConfig.Sound.oldBed() && state.getBlock() instanceof BedBlock)
+            isBlockedSound = true;
+
+        if (isBlockedSound)
+        {
+            callback.cancel();
+            return;
+        }
+
+        /*
+            Entity Walking Sounds:
+
+            The following logic is intended for multiplayer support.
+
+            While this does work in ideal environments, there may be points during play where sounds can become
+            inconsistent if there is significant latency or if there is a path without the 'entity.' and '.step'
+            identifiers.
          */
 
         boolean isEntityStep = sound.getLocation().getPath().contains("entity.") && sound.getLocation().getPath().contains(".step");
@@ -152,18 +176,18 @@ public abstract class ClientLevelMixin
                 callback.cancel();
             else
             {
-                BlockState state = level.getBlockState(pos.below());
+                BlockState standing = level.getBlockState(pos.below());
 
-                if (state.getMaterial().isLiquid())
+                if (standing.getMaterial().isLiquid())
                     return;
-                else if (state.is(Blocks.AIR))
+                else if (standing.is(Blocks.AIR))
                 {
                     callback.cancel();
                     return;
                 }
 
-                BlockState blockState = level.getBlockState(pos);
-                SoundType soundType = blockState.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? blockState.getSoundType() : state.getSoundType();
+                BlockState inside = level.getBlockState(pos);
+                SoundType soundType = inside.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? inside.getSoundType() : standing.getSoundType();
                 this.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch(), false);
 
                 callback.cancel();
