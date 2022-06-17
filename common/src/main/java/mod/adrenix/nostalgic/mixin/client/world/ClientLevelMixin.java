@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
@@ -130,6 +131,9 @@ public abstract class ClientLevelMixin
 
             for (Entity next : level.entitiesForRendering())
             {
+                if (next instanceof ItemEntity)
+                    continue;
+
                 boolean isX = NostalgicUtil.Numbers.tolerance((int) next.getX(), (int) x);
                 boolean isY = NostalgicUtil.Numbers.tolerance((int) next.getY(), (int) y);
                 boolean isZ = NostalgicUtil.Numbers.tolerance((int) next.getZ(), (int) z);
