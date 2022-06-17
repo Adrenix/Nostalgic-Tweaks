@@ -117,7 +117,8 @@ public class ConfigWidgets
 
     private ConfigRowList generateConfigRowList()
     {
-        return new ConfigRowList(
+        return new ConfigRowList
+        (
             this.parent,
             this.parent.width,
             this.parent.height,
@@ -130,7 +131,8 @@ public class ConfigWidgets
     private Button generateGeneralButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.GENERAL.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -143,7 +145,8 @@ public class ConfigWidgets
     private Button generateSoundButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.SOUND.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -156,7 +159,8 @@ public class ConfigWidgets
     private Button generateCandyButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.CANDY.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -169,7 +173,8 @@ public class ConfigWidgets
     private Button generateAnimationButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.ANIMATION.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -182,7 +187,8 @@ public class ConfigWidgets
     private Button generateSwingButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.SWING.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -197,7 +203,8 @@ public class ConfigWidgets
         TranslatableComponent translation = new TranslatableComponent(ConfigScreen.ConfigTab.SEARCH.getLangKey());
         Component title = new TextComponent("    " + translation.getString());
 
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -209,7 +216,8 @@ public class ConfigWidgets
 
     private Button generateCancelButton()
     {
-        return new Button(
+        return new Button
+        (
             this.parent.width / 2 - getSmallWidth() - 3,
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
@@ -221,7 +229,8 @@ public class ConfigWidgets
 
     private Button generateSaveButton()
     {
-        return new Button(
+        return new Button
+        (
             this.parent.width / 2 + 3,
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
@@ -276,23 +285,28 @@ public class ConfigWidgets
             {
                 switch (tag)
                 {
-                    case NEW -> {
+                    case NEW ->
+                    {
                         if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.New.class) != null)
                             this.parent.search.add(tweak);
                     }
-                    case CONFLICT -> {
-                        if (tweak.getStatus() != StatusType.OKAY)
+                    case CONFLICT ->
+                    {
+                        if (tweak.getStatus() != StatusType.LOADED)
                             this.parent.search.add(tweak);
                     }
-                    case RESET -> {
+                    case RESET ->
+                    {
                         if (tweak.isResettable())
                             this.parent.search.add(tweak);
                     }
-                    case CLIENT -> {
+                    case CLIENT ->
+                    {
                         if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Client.class) != null)
                             this.parent.search.add(tweak);
                     }
-                    case SERVER -> {
+                    case SERVER ->
+                    {
                         if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Server.class) != null)
                             this.parent.search.add(tweak);
                     }

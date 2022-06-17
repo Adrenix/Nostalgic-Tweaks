@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.reflect;
 
 public enum StatusType
 {
-    OKAY,
+    LOADED,
     WAIT,
     WARN,
     FAIL

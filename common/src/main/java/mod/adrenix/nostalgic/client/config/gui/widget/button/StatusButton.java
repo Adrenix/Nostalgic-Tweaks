@@ -35,13 +35,13 @@ public class StatusButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        if (this.cache.getStatus() == StatusType.OKAY) return;
+        if (this.cache.getStatus() == StatusType.LOADED) return;
 
         boolean isRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_FEATURE_STATUS.getKey()).getCurrent();
         if (!isRenderable && this.cache.getStatus() != StatusType.WARN)
             return;
 
-        StatusType status = flipState ? StatusType.OKAY : this.cache.getStatus();
+        StatusType status = flipState ? StatusType.LOADED : this.cache.getStatus();
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
@@ -63,7 +63,7 @@ public class StatusButton extends Button
         switch (status)
         {
             case WAIT -> screen.blit(poseStack, xStart, yStart, 14, 21, uWidth, vHeight);
-            case OKAY -> screen.blit(poseStack, xStart, yStart, 14, 0, uWidth, vHeight);
+            case LOADED -> screen.blit(poseStack, xStart, yStart, 14, 0, uWidth, vHeight);
             case WARN -> screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
             case FAIL -> screen.blit(poseStack, xStart, yStart, 27, 0, uWidth, vHeight);
         }

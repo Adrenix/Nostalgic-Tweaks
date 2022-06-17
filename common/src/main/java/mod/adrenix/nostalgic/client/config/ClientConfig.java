@@ -21,7 +21,7 @@ public class ClientConfig implements ConfigData
 
     @TweakEntry.Gui.Client
     @TweakEntry.Gui.NoTooltip
-    @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+    @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
     public boolean isModEnabled = true;
 
     @TweakEntry.Gui.Ignore
@@ -114,13 +114,13 @@ public class ClientConfig implements ConfigData
          */
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
 
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public TweakVersion.Overlay oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
@@ -215,7 +215,7 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
 
         @TweakEntry.Gui.Server
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
         static { CandyTweak.ITEM_MERGING.setKey("oldItemMerging"); }
@@ -358,26 +358,26 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
         static { CandyTweak.ALPHA_LOGO.setKey("oldAlphaLogo"); }
 
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
         static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
         static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
         static { CandyTweak.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
@@ -391,7 +391,7 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 1)
         public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
@@ -400,14 +400,14 @@ public class ClientConfig implements ConfigData
         @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 2)
         public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
         static { CandyTweak.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 3)
         public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
@@ -415,14 +415,14 @@ public class ClientConfig implements ConfigData
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 4)
         public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
         static { CandyTweak.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
         @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 5)
         public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
@@ -540,12 +540,12 @@ public class ClientConfig implements ConfigData
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.IgnoreDisable
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         public boolean armSwayMirror = DefaultConfig.Animation.ARM_SWAY_MIRROR;
         static { AnimationTweak.ARM_SWAY_MIRROR.setKey("armSwayMirror"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @TweakEntry.Gui.SliderType(slider = TweakEntry.Gui.Slider.INTENSITY_SLIDER)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 300)
         public int armSwayIntensity = DefaultConfig.Animation.ARM_SWAY_INTENSITY;
@@ -603,37 +603,37 @@ public class ClientConfig implements ConfigData
         static { SwingTweak.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int tool = DefaultConfig.Swing.TOOL;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int block = DefaultConfig.Swing.BLOCK;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int sword = DefaultConfig.Swing.SWORD;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int item = DefaultConfig.Swing.ITEM;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int haste = DefaultConfig.Swing.HASTE;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int fatigue = DefaultConfig.Swing.FATIGUE;
 
         @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int global = DefaultConfig.Swing.GLOBAL;
     }
@@ -642,26 +642,26 @@ public class ClientConfig implements ConfigData
     public Gui gui = new Gui();
     public static class Gui
     {
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         public SettingsScreen.OptionScreen defaultScreen = DefaultConfig.Gui.DEFAULT_SCREEN;
         static { GuiTweak.DEFAULT_SCREEN.setKey("defaultScreen"); }
 
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayNewTags = DefaultConfig.Gui.DISPLAY_NEW_TAGS;
         static { GuiTweak.DISPLAY_NEW_TAGS.setKey("displayNewTags"); }
 
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displaySidedTags = DefaultConfig.Gui.DISPLAY_SIDED_TAGS;
         static { GuiTweak.DISPLAY_SIDED_TAGS.setKey("displaySidedTags"); }
 
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayTagTooltips = DefaultConfig.Gui.DISPLAY_TAG_TOOLTIPS;
         static { GuiTweak.DISPLAY_TAG_TOOLTIPS.setKey("displayTagTooltips"); }
 
-        @TweakEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayFeatureStatus = DefaultConfig.Gui.DISPLAY_FEATURE_STATUS;
         static { GuiTweak.DISPLAY_FEATURE_STATUS.setKey("displayFeatureStatus"); }

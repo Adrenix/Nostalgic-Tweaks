@@ -29,7 +29,7 @@ public interface ITweak
 
         TweakCache<Object> tweakCache = TweakCache.get(this.getGroup(), this.getKey());
         if (tweakCache != null)
-            tweakCache.setStatus(StatusType.OKAY);
+            tweakCache.setStatus(StatusType.LOADED);
         else
         {
             NostalgicTweaks.LOGGER.warn(String.format("Unable to set status of tweak '%s' in tweak group '%s'", this.getKey(), this.getGroup()));
