@@ -47,6 +47,9 @@
     "minecraft": "<=1.18.1",
     "cloth-config": ">=6.0.45"
   },
+  "breaks": {
+    "optifabric": "*"
+  },
   "custom": {
     "modmenu": {
       "links": {

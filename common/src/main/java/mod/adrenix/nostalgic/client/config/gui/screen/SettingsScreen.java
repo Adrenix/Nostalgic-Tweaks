@@ -179,7 +179,7 @@ public class SettingsScreen extends Screen
             this.addRenderableWidget(button);
 
         // Jump Screen
-        if (this.isRedirected && this.minecraft.level != null)
+        if (this.isRedirected)
         {
             this.isRedirected = false;
             switch (CommonRegistry.getGui().defaultScreen)

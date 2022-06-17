@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(Entity.class)
 public interface IMixinEntity
 {
-    @Invoker("playStepSound") void invokeStepSound(BlockPos pos, BlockState state);
+    @Invoker("playStepSound") void NT$invokeStepSound(BlockPos pos, BlockState state);
 }

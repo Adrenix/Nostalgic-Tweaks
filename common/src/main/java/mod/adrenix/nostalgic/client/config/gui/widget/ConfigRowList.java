@@ -5,13 +5,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.CycleButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -75,7 +75,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
     /* Config Row Providers */
 
-    public Row getRow(GroupType group, String key, Object value)
+    public <E extends Enum<E>> Row getRow(GroupType group, String key, Object value)
     {
         if (value instanceof Boolean)
             return new BooleanRow(group, key, (Boolean) value).add();
@@ -83,8 +83,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             return new IntSliderRow(group, key, (Integer) value).add();
         else if (value instanceof String)
             return new StringRow(group, key, (String) value).add();
-        else if (value instanceof DefaultConfig.VERSION)
-            return new VersionRow(group, key, (DefaultConfig.VERSION) value).add();
+        else if (value instanceof Enum)
+            return new EnumRow<E>(group, key, value).add();
         else
             return new InvalidRow(group, key, value).add();
     }
@@ -97,14 +97,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     // Abstract Entry Row
     public abstract static class AbstractRow<T>
     {
-        protected final EntryCache<T> cache;
+        protected final TweakCache<T> cache;
         protected final GroupType group;
         protected final String key;
         protected final T value;
 
         protected AbstractRow(GroupType group, String key, T value)
         {
-            this.cache = EntryCache.get(group, key);
+            this.cache = TweakCache.get(group, key);
             this.group = group;
             this.key = key;
             this.value = value;
@@ -113,12 +113,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            NostalgicEntry.Gui.NoTooltip noTooltip = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getEntryKey(), NostalgicEntry.Gui.NoTooltip.class);
+            TweakEntry.Gui.NoTooltip noTooltip = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.NoTooltip.class);
 
             widgets.add(controller);
             widgets.add(new ResetButton(this.cache, controller));
             widgets.add(new StatusButton(this.cache, controller));
-            widgets.add(new EntryTag(this.cache, controller, noTooltip == null));
+            widgets.add(new TweakTag(this.cache, controller, noTooltip == null));
 
             if (noTooltip == null)
                 widgets.add(new TooltipButton(this.cache, controller));
@@ -169,12 +169,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         @Override public ConfigRowList.Row add() { return this.create(new StringInput(this.cache).getWidget()); }
     }
 
-    // Enum Version Entry
-    public static class VersionRow extends AbstractRow<DefaultConfig.VERSION>
+    // Enum Cycle Entry
+    public static class EnumRow<E extends Enum<E>> extends AbstractRow<E>
     {
-        public VersionRow(GroupType group, String key, DefaultConfig.VERSION value) { super(group, key, value); }
+        @SuppressWarnings("unchecked")
+        public EnumRow(GroupType group, String key, Object value) { super(group, key, (E) value); }
 
-        @Override public ConfigRowList.Row add() { return this.create(new VersionButton(this.cache, (button) -> ((VersionButton) button).toggle())); }
+        @Override
+        public ConfigRowList.Row add()
+        {
+            return this.create(new CycleButton<>(this.cache, this.cache.getCurrent().getDeclaringClass(), (button) -> ((CycleButton<?>) button).toggle()));
+        }
     }
 
     /* Manual Custom Row Builders */
@@ -300,13 +305,13 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     {
         /* Instance Fields */
 
-        @Nullable private final EntryCache<?> cache;
+        @Nullable private final TweakCache<?> cache;
         public final List<AbstractWidget> children;
         private float fadeIn = 0F;
 
         /* Constructor */
 
-        public Row(List<AbstractWidget> list, @Nullable EntryCache<?> cache)
+        public Row(List<AbstractWidget> list, @Nullable TweakCache<?> cache)
         {
             this.children = list;
             this.cache = cache;

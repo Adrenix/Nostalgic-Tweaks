@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -120,7 +122,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
             if (screen == null) return;
 
             int uOffset = 0;
-            int vOffset = this.isDefault() ? 43 : 103;
+            int vOffset = 103;
             int uWidth = 20;
             int vHeight = 20;
 
@@ -128,13 +130,16 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
             {
                 uOffset = 20;
                 vOffset = this.isSelected() ? 63 : vOffset;
-                vOffset = this.isDefault() ? 43 : vOffset;
             }
             else if (this.isSelected())
-                vOffset = this.isDefault() ? 43 : 63;
+                vOffset = 63;
 
             screen.blit(poseStack, this.x, this.y, uOffset, vOffset, uWidth, vHeight);
-            RadioGroup.drawString(poseStack, Minecraft.getInstance().font, this.label.apply(this.instance), this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFF);
+
+            TextComponent defaultText = new TextComponent(this.isDefault() ? String.format(" (%s)", new TranslatableComponent(NostalgicLang.Gui.DEFAULT).getString()) : "");
+            TextComponent optionText = new TextComponent(this.label.apply(this.instance).getString() + defaultText.getString());
+
+            RadioGroup.drawString(poseStack, Minecraft.getInstance().font, optionText, this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFF);
         }
 
         @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}

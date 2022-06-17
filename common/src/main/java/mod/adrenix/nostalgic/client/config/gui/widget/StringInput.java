@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -10,9 +10,9 @@ import net.minecraft.network.chat.TextComponent;
 public class StringInput
 {
     public final EditBox input;
-    protected final EntryCache<String> cache;
+    protected final TweakCache<String> cache;
 
-    public StringInput(EntryCache<String> cache)
+    public StringInput(TweakCache<String> cache)
     {
         this.cache = cache;
         this.input = new EditBox(
@@ -36,7 +36,7 @@ public class StringInput
 
     public void setInput(String input)
     {
-        String cached = ConfigReflect.getCurrent(this.cache.getGroup(), this.cache.getEntryKey());
+        String cached = ConfigReflect.getCurrent(this.cache.getGroup(), this.cache.getKey());
         if (cached.equals(input))
             this.cache.setCurrent(cached);
         else

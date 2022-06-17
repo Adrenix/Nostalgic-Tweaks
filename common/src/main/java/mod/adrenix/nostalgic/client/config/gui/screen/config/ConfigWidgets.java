@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.TextGroup;
 import mod.adrenix.nostalgic.client.config.reflect.*;
@@ -117,7 +117,8 @@ public class ConfigWidgets
 
     private ConfigRowList generateConfigRowList()
     {
-        return new ConfigRowList(
+        return new ConfigRowList
+        (
             this.parent,
             this.parent.width,
             this.parent.height,
@@ -130,7 +131,8 @@ public class ConfigWidgets
     private Button generateGeneralButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.GENERAL.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -143,7 +145,8 @@ public class ConfigWidgets
     private Button generateSoundButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.SOUND.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -156,7 +159,8 @@ public class ConfigWidgets
     private Button generateCandyButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.CANDY.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -169,7 +173,8 @@ public class ConfigWidgets
     private Button generateAnimationButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.ANIMATION.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -182,7 +187,8 @@ public class ConfigWidgets
     private Button generateSwingButton()
     {
         TranslatableComponent title = new TranslatableComponent(ConfigScreen.ConfigTab.SWING.getLangKey());
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -197,7 +203,8 @@ public class ConfigWidgets
         TranslatableComponent translation = new TranslatableComponent(ConfigScreen.ConfigTab.SEARCH.getLangKey());
         Component title = new TextComponent("    " + translation.getString());
 
-        return new Button(
+        return new Button
+        (
             0,
             TOP_ROW,
             this.parent.getFont().width(title) + WIDTH_PADDING,
@@ -209,7 +216,8 @@ public class ConfigWidgets
 
     private Button generateCancelButton()
     {
-        return new Button(
+        return new Button
+        (
             this.parent.width / 2 - getSmallWidth() - 3,
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
@@ -221,7 +229,8 @@ public class ConfigWidgets
 
     private Button generateSaveButton()
     {
-        return new Button(
+        return new Button
+        (
             this.parent.width / 2 + 3,
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
@@ -259,7 +268,7 @@ public class ConfigWidgets
         search = search.toLowerCase();
         ConfigScreen.SearchTag tag = null;
         String input = this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "").toLowerCase();
-        HashMap<String, EntryCache<?>> entries = EntryCache.all();
+        HashMap<String, TweakCache<?>> entries = TweakCache.all();
 
         for (ConfigScreen.SearchTag searchTag : ConfigScreen.SearchTag.values())
         {
@@ -267,41 +276,46 @@ public class ConfigWidgets
                 tag = searchTag;
         }
 
-        for (EntryCache<?> entry : entries.values())
+        for (TweakCache<?> tweak : entries.values())
         {
-            if (GroupType.isManual(entry.getGroup()))
+            if (GroupType.isManual(tweak.getGroup()))
                 continue;
 
             if (tag != null)
             {
                 switch (tag)
                 {
-                    case NEW -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.New.class) != null)
-                            this.parent.search.add(entry);
+                    case NEW ->
+                    {
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.New.class) != null)
+                            this.parent.search.add(tweak);
                     }
-                    case CONFLICT -> {
-                        if (entry.getStatus() != StatusType.OKAY)
-                            this.parent.search.add(entry);
+                    case CONFLICT ->
+                    {
+                        if (tweak.getStatus() != StatusType.LOADED)
+                            this.parent.search.add(tweak);
                     }
-                    case RESET -> {
-                        if (entry.isResettable())
-                            this.parent.search.add(entry);
+                    case RESET ->
+                    {
+                        if (tweak.isResettable())
+                            this.parent.search.add(tweak);
                     }
-                    case CLIENT -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.Client.class) != null)
-                            this.parent.search.add(entry);
+                    case CLIENT ->
+                    {
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Client.class) != null)
+                            this.parent.search.add(tweak);
                     }
-                    case SERVER -> {
-                        if (ConfigReflect.getAnnotation(entry.getGroup(), entry.getEntryKey(), NostalgicEntry.Gui.Server.class) != null)
-                            this.parent.search.add(entry);
+                    case SERVER ->
+                    {
+                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Server.class) != null)
+                            this.parent.search.add(tweak);
                     }
                 }
             }
             else
             {
-                if (new TranslatableComponent(entry.getLangKey()).getString().toLowerCase().contains(search))
-                    this.parent.search.add(entry);
+                if (new TranslatableComponent(tweak.getLangKey()).getString().toLowerCase().contains(search))
+                    this.parent.search.add(tweak);
             }
         }
     }

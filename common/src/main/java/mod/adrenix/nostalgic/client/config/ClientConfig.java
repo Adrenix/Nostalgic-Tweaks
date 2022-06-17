@@ -5,8 +5,8 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
-import mod.adrenix.nostalgic.client.config.feature.*;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.client.config.tweak.*;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.reflect.StatusType;
 
@@ -15,492 +15,658 @@ import java.util.Map;
 @Config(name = NostalgicTweaks.MOD_ID)
 public class ClientConfig implements ConfigData
 {
-    @NostalgicEntry.Gui.Ignore public static final int MIN = 0;
-    @NostalgicEntry.Gui.Ignore public static final int MAX = 16;
-    @NostalgicEntry.Gui.Ignore public static final String ROOT_KEY = "isModEnabled";
+    @TweakEntry.Gui.Ignore public static final int MIN = 0;
+    @TweakEntry.Gui.Ignore public static final int MAX = 16;
+    @TweakEntry.Gui.Ignore public static final String ROOT_KEY = "isModEnabled";
 
-    @NostalgicEntry.Gui.Client
-    @NostalgicEntry.Gui.NoTooltip
-    @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+    @TweakEntry.Gui.Client
+    @TweakEntry.Gui.NoTooltip
+    @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
     public boolean isModEnabled = true;
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public Sound sound = new Sound();
     public static class Sound
     {
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldAttack = DefaultConfig.Sound.OLD_ATTACK;
-        static { SoundFeature.OLD_ATTACK.setKey("oldAttack"); }
+        static { SoundTweak.OLD_ATTACK.setKey("oldAttack"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldHurt = DefaultConfig.Sound.OLD_HURT;
-        static { SoundFeature.OLD_HURT.setKey("oldHurt"); }
+        static { SoundTweak.OLD_HURT.setKey("oldHurt"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldFall = DefaultConfig.Sound.OLD_FALL;
-        static { SoundFeature.OLD_FALL.setKey("oldFall"); }
+        static { SoundTweak.OLD_FALL.setKey("oldFall"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
-        static { SoundFeature.OLD_STEP.setKey("oldStep"); }
+        static { SoundTweak.OLD_STEP.setKey("oldStep"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.IgnoreDisable
         public boolean oldXP = DefaultConfig.Sound.OLD_XP;
-        static { SoundFeature.OLD_XP.setKey("oldXP"); }
+        static { SoundTweak.OLD_XP.setKey("oldXP"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldDoor = DefaultConfig.Sound.OLD_DOOR;
+        static { SoundTweak.OLD_DOOR.setKey("oldDoor"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldBed = DefaultConfig.Sound.OLD_BED;
+        static { SoundTweak.OLD_BED.setKey("oldBed"); }
     }
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public EyeCandy eyeCandy = new EyeCandy();
     public static class EyeCandy
     {
         /**
-         * Title Screen Candy
+         * Block Candy
          */
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.TOP, order = 1)
-        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
-        static { CandyFeature.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean fixAmbientOcclusion = DefaultConfig.Candy.FIX_AMBIENT_OCCLUSION;
+        static { CandyTweak.FIX_AO.setKey("fixAmbientOcclusion"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
-        static { CandyFeature.ALPHA_LOGO.setKey("oldAlphaLogo"); }
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldChest = DefaultConfig.Candy.OLD_CHEST;
+        static { CandyTweak.CHEST.setKey("oldChest"); }
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
-        static { CandyFeature.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Warning
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
+        static { CandyTweak.CHEST_VOXEL.setKey("oldChestVoxel"); }
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
-        static { CandyFeature.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldEnderChest = DefaultConfig.Candy.OLD_ENDER_CHEST;
+        static { CandyTweak.ENDER_CHEST.setKey("oldEnderChest"); }
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 1)
-        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
-        static { CandyFeature.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
-
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 2)
-        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
-        static { CandyFeature.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
-
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.TITLE_CANDY)
-        @NostalgicEntry.Gui.Placement(pos = NostalgicEntry.Gui.Position.BOTTOM, order = 3)
-        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadResources
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean oldTrappedChest = DefaultConfig.Candy.OLD_TRAPPED_CHEST;
+        static { CandyTweak.TRAPPED_CHEST.setKey("oldTrappedChest"); }
 
         /**
          * Interface Candy
          */
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public TweakVersion.Overlay oldLoadingOverlay = DefaultConfig.Candy.OLD_LOADING_OVERLAY;
+        static { CandyTweak.LOADING_OVERLAY.setKey("oldLoadingOverlay"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
+        static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 2)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean removeLoadingBar = DefaultConfig.Candy.REMOVE_LOADING_BAR;
+        static { CandyTweak.REMOVE_LOADING_BAR.setKey("removeLoadingBar"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldVersionOverlay = DefaultConfig.Candy.OLD_VERSION_OVERLAY;
-        static { CandyFeature.VERSION_OVERLAY.setKey("oldVersionOverlay"); }
+        static { CandyTweak.VERSION_OVERLAY.setKey("oldVersionOverlay"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldChatInput = DefaultConfig.Candy.OLD_CHAT_INPUT;
+        static { CandyTweak.CHAT_INPUT.setKey("oldChatInput"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldChatBox = DefaultConfig.Candy.OLD_CHAT_BOX;
+        static { CandyTweak.CHAT_BOX.setKey("oldChatBox"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldButtonHover = DefaultConfig.Candy.OLD_BUTTON_HOVER;
-        static { CandyFeature.BUTTON_HOVER.setKey("oldButtonHover"); }
+        static { CandyTweak.BUTTON_HOVER.setKey("oldButtonHover"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldTooltipBoxes = DefaultConfig.Candy.OLD_TOOLTIP_BOXES;
-        static { CandyFeature.TOOLTIP_BOXES.setKey("oldTooltipBoxes"); }
+        static { CandyTweak.TOOLTIP_BOXES.setKey("oldTooltipBoxes"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
+        public boolean oldNoItemTooltips = DefaultConfig.Candy.OLD_NO_ITEM_TOOLTIPS;
+        static { CandyTweak.NO_ITEM_TOOLTIPS.setKey("oldNoItemTooltips"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldDurabilityColors = DefaultConfig.Candy.OLD_DURABILITY_COLORS;
-        static { CandyFeature.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
+        static { CandyTweak.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.FAIL)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
-        static { CandyFeature.LOADING_SCREENS.setKey("oldLoadingScreens"); }
+        static { CandyTweak.LOADING_SCREENS.setKey("oldLoadingScreens"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
-        static { CandyFeature.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
+        static { CandyTweak.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.INTERFACE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.INTERFACE_CANDY)
         public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
-        static { CandyFeature.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
+        static { CandyTweak.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
         /**
          * Item Candy
          */
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean oldItemHolding = DefaultConfig.Candy.OLD_ITEM_HOLDING;
-        static { CandyFeature.ITEM_HOLDING.setKey("oldItemHolding"); }
+        static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
-        static { CandyFeature.ITEM_MERGING.setKey("oldItemMerging"); }
+        static { CandyTweak.ITEM_MERGING.setKey("oldItemMerging"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean old2dItems = DefaultConfig.Candy.OLD_2D_ITEMS;
-        static { CandyFeature.FLAT_ITEMS.setKey("old2dItems"); }
+        static { CandyTweak.FLAT_ITEMS.setKey("old2dItems"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean old2dFrames = DefaultConfig.Candy.OLD_2D_FRAMES;
-        static { CandyFeature.FLAT_FRAMES.setKey("old2dFrames"); }
+        static { CandyTweak.FLAT_FRAMES.setKey("old2dFrames"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean old2dThrownItems = DefaultConfig.Candy.OLD_2D_THROWN_ITEMS;
-        static { CandyFeature.FLAT_THROWN_ITEMS.setKey("old2dThrownItems"); }
+        static { CandyTweak.FLAT_THROW_ITEMS.setKey("old2dThrownItems"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
-        static { CandyFeature.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
+        static { CandyTweak.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Reload
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.ITEM_CANDY)
+        @TweakEntry.Run.ReloadResources
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.ITEM_CANDY)
         public boolean fixItemModelGap = DefaultConfig.Candy.FIX_ITEM_MODEL_GAP;
-        static { CandyFeature.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
+        static { CandyTweak.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
+
+        /**
+         * Lighting Candy
+         */
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
+        static { CandyTweak.LIGHT_FLICKER.setKey("oldLightFlicker"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
+        static { CandyTweak.NETHER_LIGHTING.setKey("oldNetherLighting"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
+        static { CandyTweak.LIGHTING.setKey("oldLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldSmoothLighting = DefaultConfig.Candy.OLD_SMOOTH_LIGHTING;
+        static { CandyTweak.SMOOTH_LIGHTING.setKey("oldSmoothLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldLeavesLighting = DefaultConfig.Candy.OLD_LEAVES_LIGHTING;
+        static { CandyTweak.LEAVES_LIGHTING.setKey("oldLeavesLighting"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Warning
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.LIGHTING_CANDY)
+        public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
+        static { CandyTweak.WATER_LIGHTING.setKey("oldWaterLighting"); }
 
         /**
          * Particle Candy
          */
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldSweepParticles = DefaultConfig.Candy.OLD_SWEEP_PARTICLES;
-        static { CandyFeature.SWEEP.setKey("oldSweepParticles"); }
+        static { CandyTweak.SWEEP.setKey("oldSweepParticles"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldOpaqueExperience = DefaultConfig.Candy.OLD_OPAQUE_EXPERIENCE;
-        static { CandyFeature.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
+        static { CandyTweak.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoDamageParticles = DefaultConfig.Candy.OLD_NO_DAMAGE_PARTICLES;
-        static { CandyFeature.NO_DAMAGE_PARTICLES.setKey("oldNoDamageParticles"); }
+        static { CandyTweak.NO_DAMAGE_PARTICLES.setKey("oldNoDamageParticles"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoCritParticles = DefaultConfig.Candy.OLD_NO_CRIT_PARTICLES;
-        static { CandyFeature.NO_CRIT_PARTICLES.setKey("oldNoCritParticles"); }
+        static { CandyTweak.NO_CRIT_PARTICLES.setKey("oldNoCritParticles"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldNoMagicHitParticles = DefaultConfig.Candy.OLD_NO_MAGIC_HIT_PARTICLES;
-        static { CandyFeature.NO_MAGIC_HIT_PARTICLES.setKey("oldNoMagicHitParticles"); }
+        static { CandyTweak.NO_MAGIC_HIT_PARTICLES.setKey("oldNoMagicHitParticles"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldExplosionParticles = DefaultConfig.Candy.OLD_EXPLOSION_PARTICLES;
-        static { CandyFeature.EXPLOSION_PARTICLES.setKey("oldExplosionParticles"); }
+        static { CandyTweak.EXPLOSION_PARTICLES.setKey("oldExplosionParticles"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.PARTICLE_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.PARTICLE_CANDY)
         public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
-        static { CandyFeature.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
+        static { CandyTweak.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
+
+        /**
+         * Title Screen Candy
+         */
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.FAIL)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.TOP, order = 1)
+        public boolean overrideTitleScreen = DefaultConfig.Candy.OVERRIDE_TITLE_SCREEN;
+        static { CandyTweak.OVERRIDE_TITLE_SCREEN.setKey("overrideTitleScreen"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldAlphaLogo = DefaultConfig.Candy.OLD_ALPHA_LOGO;
+        static { CandyTweak.ALPHA_LOGO.setKey("oldAlphaLogo"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
+        static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean oldTitleBackground = DefaultConfig.Candy.OLD_TITLE_BACKGROUND;
+        static { CandyTweak.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
+        static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 1)
+        public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
+        static { CandyTweak.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 2)
+        public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
+        static { CandyTweak.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 3)
+        public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
+        static { CandyTweak.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 4)
+        public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
+        static { CandyTweak.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.TITLE_CANDY)
+        @TweakEntry.Gui.Placement(pos = TweakEntry.Gui.Position.BOTTOM, order = 5)
+        public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
 
         /**
          * World Candy
          */
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
-        static { CandyFeature.LIGHT_FLICKER.setKey("oldLightFlicker"); }
-
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
-        static { CandyFeature.LIGHTING.setKey("oldLighting"); }
-
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
-        static { CandyFeature.NETHER_LIGHTING.setKey("oldNetherLighting"); }
-
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
-        static { CandyFeature.TERRAIN_FOG.setKey("oldTerrainFog"); }
+        static { CandyTweak.TERRAIN_FOG.setKey("oldTerrainFog"); }
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldHorizonFog = DefaultConfig.Candy.OLD_HORIZON_FOG;
-        static { CandyFeature.HORIZON_FOG.setKey("oldHorizonFog"); }
+        static { CandyTweak.HORIZON_FOG.setKey("oldHorizonFog"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldNetherFog = DefaultConfig.Candy.OLD_NETHER_FOG;
-        static { CandyFeature.NETHER_FOG.setKey("oldNetherFog"); }
+        static { CandyTweak.NETHER_FOG.setKey("oldNetherFog"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldSunriseAtNorth = DefaultConfig.Candy.OLD_SUNRISE_AT_NORTH;
-        static { CandyFeature.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
+        static { CandyTweak.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldBlueVoidOverride = DefaultConfig.Candy.OLD_BLUE_VOID_OVERRIDE;
-        static { CandyFeature.BLUE_VOID_OVERRIDE.setKey("oldBlueVoidOverride"); }
+        static { CandyTweak.BLUE_VOID_OVERRIDE.setKey("oldBlueVoidOverride"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
+        static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
-        static { CandyFeature.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
+        static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 
-        @NostalgicEntry.Gui.Server
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.Server
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
-        static { CandyFeature.SQUARE_BORDER.setKey("oldSquareBorder"); }
+        static { CandyTweak.SQUARE_BORDER.setKey("oldSquareBorder"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
-        static { CandyFeature.SKY_COLOR.setKey("oldSkyColor"); }
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public boolean oldStars = DefaultConfig.Candy.OLD_STARS;
+        static { CandyTweak.STARS.setKey("oldStars"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
-        static { CandyFeature.FOG_COLOR.setKey("oldFogColor"); }
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public TweakVersion.Generic oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
+        static { CandyTweak.SKY_COLOR.setKey("oldSkyColor"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.Restart
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        public DefaultConfig.VERSION oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
-        static { CandyFeature.BLUE_VOID.setKey("oldBlueVoid"); }
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public TweakVersion.Generic oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
+        static { CandyTweak.FOG_COLOR.setKey("oldFogColor"); }
 
-        @NostalgicEntry.Gui.New
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
-        @NostalgicEntry.Gui.Sub(group = NostalgicEntry.Category.WORLD_CANDY)
-        @NostalgicEntry.Gui.SliderType(slider = NostalgicEntry.Gui.Slider.CLOUD_SLIDER)
-        @NostalgicEntry.Gui.DisabledInteger(disabled = 192)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        public TweakVersion.Generic oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
+        static { CandyTweak.BLUE_VOID.setKey("oldBlueVoid"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.WORLD_CANDY)
+        @TweakEntry.Gui.SliderType(slider = TweakEntry.Gui.Slider.CLOUD_SLIDER)
+        @TweakEntry.Gui.DisabledInteger(disabled = 192)
         @ConfigEntry.BoundedDiscrete(min = 108, max = 192)
         public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
-        static { CandyFeature.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
+        static { CandyTweak.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
     }
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public Animation animation = new Animation();
     public static class Animation
     {
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
-        static { AnimationFeature.ITEM_SWING.setKey("oldSwing"); }
+        static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldItemCooldown = DefaultConfig.Animation.OLD_ITEM_COOLDOWN;
-        static { AnimationFeature.COOLDOWN.setKey("oldItemCooldown"); }
+        static { AnimationTweak.COOLDOWN.setKey("oldItemCooldown"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldItemReequip = DefaultConfig.Animation.OLD_ITEM_REEQUIP;
-        static { AnimationFeature.REEQUIP.setKey("oldItemReequip"); }
+        static { AnimationTweak.REEQUIP.setKey("oldItemReequip"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldArmSway = DefaultConfig.Animation.OLD_ARM_SWAY;
-        static { AnimationFeature.ARM_SWAY.setKey("oldArmSway"); }
+        static { AnimationTweak.ARM_SWAY.setKey("oldArmSway"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.IgnoreDisable
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.IgnoreDisable
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         public boolean armSwayMirror = DefaultConfig.Animation.ARM_SWAY_MIRROR;
-        static { AnimationFeature.ARM_SWAY_MIRROR.setKey("armSwayMirror"); }
+        static { AnimationTweak.ARM_SWAY_MIRROR.setKey("armSwayMirror"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
-        @NostalgicEntry.Gui.SliderType(slider = NostalgicEntry.Gui.Slider.INTENSITY_SLIDER)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
+        @TweakEntry.Gui.SliderType(slider = TweakEntry.Gui.Slider.INTENSITY_SLIDER)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 300)
         public int armSwayIntensity = DefaultConfig.Animation.ARM_SWAY_INTENSITY;
-        static { AnimationFeature.ARM_SWAY_INTENSITY.setKey("armSwayIntensity"); }
+        static { AnimationTweak.ARM_SWAY_INTENSITY.setKey("armSwayIntensity"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldCollideBobbing = DefaultConfig.Animation.OLD_COLLIDE_BOBBING;
-        static { AnimationFeature.COLLIDE_BOB.setKey("oldCollideBobbing"); }
+        static { AnimationTweak.COLLIDE_BOB.setKey("oldCollideBobbing"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldVerticalBobbing = DefaultConfig.Animation.OLD_VERTICAL_BOBBING;
-        static { AnimationFeature.BOB_VERTICAL.setKey("oldVerticalBobbing"); }
+        static { AnimationTweak.BOB_VERTICAL.setKey("oldVerticalBobbing"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldSneaking = DefaultConfig.Animation.OLD_SNEAKING;
-        static { AnimationFeature.SNEAK_SMOOTH.setKey("oldSneaking"); }
+        static { AnimationTweak.SNEAK_SMOOTH.setKey("oldSneaking"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldSwingDropping = DefaultConfig.Animation.OLD_SWING_DROPPING;
-        static { AnimationFeature.SWING_DROP.setKey("oldSwingDropping"); }
+        static { AnimationTweak.SWING_DROP.setKey("oldSwingDropping"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldToolExplosion = DefaultConfig.Animation.OLD_TOOL_EXPLOSION;
-        static { AnimationFeature.TOOL_EXPLODE.setKey("oldToolExplosion"); }
+        static { AnimationTweak.TOOL_EXPLODE.setKey("oldToolExplosion"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldZombieArms = DefaultConfig.Animation.OLD_ZOMBIE_ARMS;
-        static { AnimationFeature.ZOMBIE_ARMS.setKey("oldZombieArms"); }
+        static { AnimationTweak.ZOMBIE_ARMS.setKey("oldZombieArms"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldSkeletonArms = DefaultConfig.Animation.OLD_SKELETON_ARMS;
-        static { AnimationFeature.SKELETON_ARMS.setKey("oldSkeletonArms"); }
+        static { AnimationTweak.SKELETON_ARMS.setKey("oldSkeletonArms"); }
+
+        @TweakEntry.Gui.New
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldGhastCharging = DefaultConfig.Animation.OLD_GHAST_CHARGING;
+        static { AnimationTweak.GHAST_CHARGING.setKey("oldGhastCharging"); }
     }
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public Swing swing = new Swing();
     public static class Swing
     {
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean overrideSpeeds = DefaultConfig.Swing.OVERRIDE_SPEEDS;
-        static { SwingFeature.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }
+        static { SwingTweak.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int tool = DefaultConfig.Swing.TOOL;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int block = DefaultConfig.Swing.BLOCK;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int sword = DefaultConfig.Swing.SWORD;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int item = DefaultConfig.Swing.ITEM;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int haste = DefaultConfig.Swing.HASTE;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int fatigue = DefaultConfig.Swing.FATIGUE;
 
-        @NostalgicEntry.Gui.Client
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int global = DefaultConfig.Swing.GLOBAL;
     }
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public Gui gui = new Gui();
     public static class Gui
     {
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         public SettingsScreen.OptionScreen defaultScreen = DefaultConfig.Gui.DEFAULT_SCREEN;
-        static { GuiFeature.DEFAULT_SCREEN.setKey("defaultScreen"); }
+        static { GuiTweak.DEFAULT_SCREEN.setKey("defaultScreen"); }
 
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayNewTags = DefaultConfig.Gui.DISPLAY_NEW_TAGS;
-        static { GuiFeature.DISPLAY_NEW_TAGS.setKey("displayNewTags"); }
+        static { GuiTweak.DISPLAY_NEW_TAGS.setKey("displayNewTags"); }
 
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displaySidedTags = DefaultConfig.Gui.DISPLAY_SIDED_TAGS;
-        static { GuiFeature.DISPLAY_SIDED_TAGS.setKey("displaySidedTags"); }
+        static { GuiTweak.DISPLAY_SIDED_TAGS.setKey("displaySidedTags"); }
 
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayTagTooltips = DefaultConfig.Gui.DISPLAY_TAG_TOOLTIPS;
-        static { GuiFeature.DISPLAY_TAG_TOOLTIPS.setKey("displayTagTooltips"); }
+        static { GuiTweak.DISPLAY_TAG_TOOLTIPS.setKey("displayTagTooltips"); }
 
-        @NostalgicEntry.Gui.EntryStatus(status = StatusType.OKAY)
+        @TweakEntry.Gui.EntryStatus(status = StatusType.LOADED)
         @SuppressWarnings("unused")
         public boolean displayFeatureStatus = DefaultConfig.Gui.DISPLAY_FEATURE_STATUS;
-        static { GuiFeature.DISPLAY_FEATURE_STATUS.setKey("displayFeatureStatus"); }
+        static { GuiTweak.DISPLAY_FEATURE_STATUS.setKey("displayFeatureStatus"); }
     }
 
-    @NostalgicEntry.Gui.Ignore
+    @TweakEntry.Gui.Ignore
     public Map<String, Integer> custom = Maps.newHashMap();
 }

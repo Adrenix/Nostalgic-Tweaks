@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.screen;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,15 +9,29 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
+import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
+import mod.adrenix.nostalgic.util.KeyUtil;
+import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -25,7 +40,12 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
@@ -34,13 +54,19 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ClassicTitleScreen extends TitleScreen
 {
-    /* Fields */
+    /* Public Fields */
 
-    protected static final String[] MINECRAFT = {
+    public static boolean isGameReady = false;
+
+    /* Private Fields */
+
+    private static final String[] MINECRAFT = {
         " *   * * *   * *** *** *** *** *** ***",
         " ** ** * **  * *   *   * * * * *    * ",
         " * * * * * * * **  *   **  *** **   * ",
@@ -48,30 +74,76 @@ public class ClassicTitleScreen extends TitleScreen
         " *   * * *   * *** *** * * * * *    * "
     };
 
-    public static boolean isGameReady = false;
-    protected LogoEffectRandomizer[][] logoEffects;
-    protected long updateLogoDelay;
-    protected float updateCounter;
-    protected static final Random RANDOM = new Random();
-    public static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
+    private final boolean isEasterEgged;
+    private final float updateCounter;
+    private long updateScreenDelay;
+    private LogoEffectRandomizer[][] logoEffects;
+
+    private static final int BUTTON_WIDTH = 200;
+    private static final int BUTTON_HEIGHT = 20;
+    private static final Random RANDOM = new Random();
+    private static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
+    private final KeyMapping optionsKey = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
+
+    private final List<Widget> alpha = new ArrayList<>();
+    private final List<Widget> beta = new ArrayList<>();
+    private final List<Widget> release = new ArrayList<>();
 
     /* Constructor */
 
     public ClassicTitleScreen()
     {
+        this.isEasterEgged = (double) this.getRand().nextFloat() < 1.0E-4;
         this.updateCounter = this.getRand().nextFloat();
-        this.updateLogoDelay = 0L;
+        this.updateScreenDelay = 0L;
+
+        if (this.isEasterEgged)
+            MINECRAFT[2] = " * * * * * * * *   **  **  *** **   * ";
+        else
+            MINECRAFT[2] = " * * * * * * * **  *   **  *** **   * ";
     }
 
     /* Overrides */
 
     @Override
+    protected void init()
+    {
+        int x = this.width / 2 - 100;
+        int y = this.height / 4 + 48;
+        int rowHeight = 24;
+
+        this.alpha.clear();
+        this.beta.clear();
+        this.release.clear();
+
+        this.createAlphaOptions(x, y, rowHeight);
+        this.createBetaOptions(x, y, rowHeight);
+        this.createReleaseOptions(x, y, rowHeight);
+
+        List<Widget> widgets = switch (MixinConfig.Candy.getButtonLayout())
+        {
+            case ALPHA -> this.alpha;
+            case BETA -> this.beta;
+            default -> this.release;
+        };
+
+        if (MixinConfig.Candy.getButtonLayout() != TweakVersion.ButtonLayout.MODERN)
+            widgets.forEach((widget) -> super.addRenderableWidget((AbstractWidget) widget));
+
+        super.init();
+    }
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (keyCode == GLFW.GLFW_KEY_M && this.minecraft != null)
+        if (this.minecraft == null)
+            return false;
+        else if (keyCode == GLFW.GLFW_KEY_M)
             this.minecraft.setScreen(new ClassicTitleScreen());
-        return true;
+        else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
+            this.minecraft.setScreen(new SettingsScreen(this, true));
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -100,10 +172,12 @@ public class ClassicTitleScreen extends TitleScreen
             TitleScreen.blit(poseStack, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
         }
 
-        if (this.updateLogoDelay == 0L)
-            this.updateLogoDelay = Util.getMillis();
+        if (this.updateScreenDelay == 0L)
+            this.updateScreenDelay = Util.getMillis();
 
-        if (this.minecraft == null || !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateLogoDelay < 1200)
+        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == TweakVersion.Overlay.MODERN;
+        boolean isDelayed = !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
+        if (this.minecraft == null || (isModern && isDelayed))
             return;
 
         if (MixinConfig.Candy.oldAlphaLogo())
@@ -119,39 +193,70 @@ public class ClassicTitleScreen extends TitleScreen
 
             if (MixinConfig.Candy.oldLogoOutline())
             {
-                this.blit(poseStack, width, height, 0, 0, 155, 44);
-                this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                if (this.isEasterEgged)
+                {
+                    this.blit(poseStack, width, height, 0, 0, 99, 44);
+                    this.blit(poseStack, width + 99, height, 129, 0, 27, 44);
+                    this.blit(poseStack, width + 99 + 26, height, 126, 0, 3, 44);
+                    this.blit(poseStack, width + 99 + 26 + 3, height, 99, 0, 26, 44);
+                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                }
+                else
+                {
+                    this.blit(poseStack, width, height, 0, 0, 155, 44);
+                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                }
             }
             else
             {
-                this.blitOutlineBlack(width, height, (x, y) -> {
-                    this.blit(poseStack, x, y, 0, 0, 155, 44);
-                    this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
-                });
+                if (this.isEasterEgged)
+                {
+                    this.blitOutlineBlack(width, height, (x, y) -> {
+                        this.blit(poseStack, x, y, 0, 0, 99, 44);
+                        this.blit(poseStack, x + 99, y, 129, 0, 27, 44);
+                        this.blit(poseStack, x + 99 + 26, y, 126, 0, 3, 44);
+                        this.blit(poseStack, x + 99 + 26 + 3, y, 99, 0, 26, 44);
+                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                    });
+                }
+                else
+                {
+                    this.blitOutlineBlack(width, height, (x, y) -> {
+                        this.blit(poseStack, x, y, 0, 0, 155, 44);
+                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                    });
+                }
             }
         }
 
+        TweakVersion.ButtonLayout layout = MixinConfig.Candy.getButtonLayout();
         ClassicTitleScreen.isGameReady = true;
         IMixinTitleScreen accessor = (IMixinTitleScreen) this;
         IMixinScreen screen = (IMixinScreen) this;
         int color = Mth.ceil(255.0F) << 24;
 
-        if (accessor.getSplash() != null)
+        if (accessor.NT$getSplash() != null)
         {
             poseStack.pushPose();
             poseStack.translate((float) this.width / 2 + 90, 70.0, 0.0);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
 
             float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
-            scale = scale * 100.0F / (float) (this.font.width(accessor.getSplash()) + 32);
+            scale = scale * 100.0F / (float) (this.font.width(accessor.NT$getSplash()) + 32);
             poseStack.scale(scale, scale, scale);
 
-            TitleScreen.drawCenteredString(poseStack, this.font, accessor.getSplash(), 0, -8, 0xFFFF00 | color);
+            TitleScreen.drawCenteredString(poseStack, this.font, accessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
 
             poseStack.popPose();
         }
 
         String minecraft = MixinConfig.Candy.getVersionText();
+        Component copyright = switch (layout)
+        {
+            case ALPHA -> new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_COPYRIGHT_ALPHA);
+            case BETA -> new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_COPYRIGHT_BETA);
+            default -> new TextComponent(COPYRIGHT_TEXT);
+        };
 
         if (Minecraft.checkModStatus().shouldReportAsModified() && !MixinConfig.Candy.removeTitleModLoaderText())
             minecraft = minecraft + "/" + this.minecraft.getVersionType() + I18n.get("menu.modded");
@@ -160,24 +265,205 @@ public class ClassicTitleScreen extends TitleScreen
         int height = MixinConfig.Candy.titleBottomLeftText() ? this.height - 10 : 2;
 
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
-        TitleScreen.drawString(poseStack, this.font, COPYRIGHT_TEXT, this.width - this.font.width(COPYRIGHT_TEXT) - 2, this.height - 10, 0xFFFFFF);
+        TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
 
-        for (GuiEventListener child : this.children())
+        boolean isRelease = layout == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK || layout == TweakVersion.ButtonLayout.RELEASE_NO_TEXTURE_PACK;
+
+        setLayoutVisibility(screen.NT$getRenderables(), layout == TweakVersion.ButtonLayout.MODERN);
+        setLayoutVisibility(this.alpha, layout == TweakVersion.ButtonLayout.ALPHA);
+        setLayoutVisibility(this.beta, layout == TweakVersion.ButtonLayout.BETA);
+        setLayoutVisibility(this.release, isRelease);
+
+        switch (layout)
         {
-            if (child instanceof AbstractWidget)
-                ((AbstractWidget) child).setAlpha(1.0F);
+            case MODERN ->
+            {
+                for (GuiEventListener child : this.children())
+                {
+                    if (child instanceof AbstractWidget)
+                        ((AbstractWidget) child).setAlpha(1.0F);
+                }
+
+                this.setImageButtonVisibility();
+
+                for (Widget widget : screen.NT$getRenderables())
+                    widget.render(poseStack, mouseX, mouseY, partialTick);
+
+                if (accessor.NT$getRealmsNotificationsEnabled())
+                    accessor.NT$getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
+            }
+            case ALPHA -> this.alpha.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
+            case BETA -> this.beta.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
+            default -> this.release.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
         }
+    }
 
-        for (Widget widget : screen.getRenderables())
-            widget.render(poseStack, mouseX, mouseY, partialTick);
-
-        if (accessor.getRealmsNotificationsEnabled())
-            accessor.getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        return switch (MixinConfig.Candy.getButtonLayout())
+        {
+            case ALPHA -> getClicked(this.alpha, mouseX, mouseY, button);
+            case BETA -> getClicked(this.beta, mouseX, mouseY, button);
+            case RELEASE_TEXTURE_PACK, RELEASE_NO_TEXTURE_PACK -> getClicked(this.release, mouseX, mouseY, button);
+            case MODERN -> super.mouseClicked(mouseX, mouseY, button);
+        };
     }
 
     /* Methods */
 
-    protected void renderClassicLogo(float partialTick)
+    private void setImageButtonVisibility()
+    {
+        IMixinScreen screen = (IMixinScreen) this;
+        for (Widget widget : screen.NT$getRenderables())
+        {
+            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
+                ((ImageButton) widget).visible = !MixinConfig.Candy.removeLanguageButton();
+            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
+                ((ImageButton) widget).visible = !MixinConfig.Candy.removeAccessibilityButton();
+        }
+    }
+
+    private void setLayoutVisibility(List<Widget> widgets, boolean visible)
+    {
+        for (Widget widget : widgets)
+        {
+            if (widget instanceof AbstractWidget)
+                ((AbstractWidget) widget).visible = visible;
+        }
+    }
+
+    private boolean getClicked(List<Widget> widgets, double mouseX, double mouseY, int button)
+    {
+        boolean isClicked = false;
+
+        for (Widget widget : widgets)
+        {
+            if (widget instanceof AbstractWidget)
+                isClicked = ((AbstractWidget) widget).mouseClicked(mouseX, mouseY, button);
+
+            if (isClicked)
+                break;
+        }
+
+        return isClicked;
+    }
+
+    private void onSingleplayer(Button ignored)
+    {
+        if (this.minecraft != null)
+            this.minecraft.setScreen(new SelectWorldScreen(this));
+    }
+
+    private void onMultiplayer(Button ignored)
+    {
+        if (this.minecraft != null)
+            this.minecraft.setScreen(new JoinMultiplayerScreen(this));
+    }
+
+    private void onOptions(Button ignored)
+    {
+        if (this.minecraft != null)
+            this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
+    }
+
+    private void updatePackList(PackRepository repository)
+    {
+        if (this.minecraft == null)
+            return;
+
+        Options options = this.minecraft.options;
+        ImmutableList<String> before = ImmutableList.copyOf(options.resourcePacks);
+
+        options.resourcePacks.clear();
+        options.incompatibleResourcePacks.clear();
+
+        for (Pack pack : repository.getSelectedPacks())
+        {
+            if (pack.isFixedPosition())
+                continue;
+
+            options.resourcePacks.add(pack.getId());
+
+            if (pack.getCompatibility().isCompatible())
+                continue;
+
+            options.incompatibleResourcePacks.add(pack.getId());
+        }
+
+        options.save();
+
+        ImmutableList<String> after = ImmutableList.copyOf(options.resourcePacks);
+        if (!after.equals(before))
+            this.minecraft.reloadResourcePacks();
+    }
+
+    private void onMods(Button ignored)
+    {
+        if (this.minecraft != null)
+            this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), new TranslatableComponent("resourcePack.title")));
+    }
+
+    private void createAlphaOptions(int x, int y, int rowHeight)
+    {
+        // Singleplayer
+        this.alpha.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+
+        // Multiplayer
+        this.alpha.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+
+        // Tutorial
+        Button tutorial = new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, TextComponent.EMPTY, (button) -> {});
+        tutorial.active = false;
+        tutorial.setMessage(new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_TUTORIAL).withStyle(ChatFormatting.GRAY));
+
+        this.alpha.add(tutorial);
+
+        // Options
+        this.alpha.add(new Button(x, y + rowHeight * 4 - 12, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
+    }
+
+    private void createBetaOptions(int x, int y, int rowHeight)
+    {
+        // Singleplayer
+        this.beta.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+
+        // Multiplayer
+        this.beta.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+
+        // Mods & Texture Packs
+        this.beta.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_MODS), this::onMods));
+
+        // Options
+        this.beta.add(new Button(x, y + rowHeight * 3, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
+    }
+
+    private void createReleaseOptions(int x, int y, int rowHeight)
+    {
+        // Singleplayer
+        this.release.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+
+        // Multiplayer
+        this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+
+        // Texture Packs
+        if (MixinConfig.Candy.getButtonLayout() == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK)
+            this.release.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onMods));
+
+        int lastRow = this.height / 4 + 48;
+
+        // Language
+        if (this.minecraft != null && !MixinConfig.Candy.removeLanguageButton())
+            this.release.add(new ImageButton(this.width / 2 - 124, lastRow + 72 + 12, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), new TranslatableComponent("narrator.button.language")));
+
+        // Options
+        this.release.add(new Button(this.width / 2 - 100, lastRow + 72 + 12, 98, 20, new TranslatableComponent(NostalgicLang.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
+
+        // Quit
+        this.release.add(new Button(this.width / 2 + 2, lastRow + 72 + 12, 98, 20, new TranslatableComponent(NostalgicLang.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
+    }
+
+    private void renderClassicLogo(float partialTick)
     {
         if (this.minecraft == null) return;
         if (this.logoEffects == null)
@@ -290,7 +576,7 @@ public class ClassicTitleScreen extends TitleScreen
         RenderSystem.enableCull();
     }
 
-    public Random getRand()
+    private Random getRand()
     {
         return RANDOM;
     }
@@ -357,7 +643,7 @@ public class ClassicTitleScreen extends TitleScreen
 
             int color = getColorFromBrightness(brightness, alpha);
 
-            for (BakedQuad quad : model.getQuads(null, direction, this.getRand()))
+            for (BakedQuad quad : model.getQuads(null, direction, RANDOM))
             {
                 if (row == 0)
                     renderQuad(modelView.last(), bufferbuilder, quad, brightness, alpha);
@@ -372,7 +658,7 @@ public class ClassicTitleScreen extends TitleScreen
 
     /* Logo Effect Randomizer */
 
-    protected static class LogoEffectRandomizer
+    private static class LogoEffectRandomizer
     {
         public double horizontal;
         public double vertical;

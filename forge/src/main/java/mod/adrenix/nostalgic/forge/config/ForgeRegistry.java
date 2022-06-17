@@ -29,8 +29,8 @@ public abstract class ForgeRegistry
     {
         // Register config screen
         ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () ->
-            new ConfigGuiHandler.ConfigGuiFactory(((minecraft, screen) ->
-                new SettingsScreen(screen, false))))
+                new ConfigGuiHandler.ConfigGuiFactory(((minecraft, screen) ->
+                        new SettingsScreen(screen, false))))
         ;
 
         // Register key that opens config while in-game

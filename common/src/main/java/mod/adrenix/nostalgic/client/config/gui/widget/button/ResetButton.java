@@ -2,8 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -16,10 +15,10 @@ public class ResetButton extends Button
 {
     protected static final TranslatableComponent TITLE = new TranslatableComponent(NostalgicLang.Cloth.RESET);
     @Nullable
-    protected final EntryCache<?> cache;
+    protected final TweakCache<?> cache;
     protected final AbstractWidget anchor;
 
-    public ResetButton(@Nullable EntryCache<?> cache, AbstractWidget anchor)
+    public ResetButton(@Nullable TweakCache<?> cache, AbstractWidget anchor)
     {
         super(
             0,

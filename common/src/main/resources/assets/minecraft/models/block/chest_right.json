@@ -1,0 +1,7 @@
+{
+  "parent": "block/chest",
+  "textures": {
+    "north": "block/chest_front_right",
+    "south": "block/chest_back_right"
+  }
+}

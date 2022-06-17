@@ -5,10 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.annotation.NostalgicEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.*;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
@@ -36,9 +37,17 @@ public class ConfigScreen extends Screen
         SWING(NostalgicLang.Cloth.SWING_TITLE),
         SEARCH(NostalgicLang.Vanilla.SEARCH);
 
-        ConfigTab(String langKey) { this.langKey = langKey; }
+        ConfigTab(String langKey)
+        {
+            this.langKey = langKey;
+        }
 
-        private final String langKey; String getLangKey() { return this.langKey; }
+        private final String langKey;
+
+        String getLangKey()
+        {
+            return this.langKey;
+        }
     }
 
     /* Search Tags */
@@ -51,18 +60,23 @@ public class ConfigScreen extends Screen
         CLIENT,
         SERVER;
 
-        @Override public String toString() { return super.toString().toLowerCase(); }
+        @Override
+        public String toString()
+        {
+            return super.toString().toLowerCase();
+        }
     }
 
     /* Instance Fields */
 
-    final Set<EntryCache<?>> search = new HashSet<>();
+    final Set<TweakCache<?>> search = new HashSet<>();
     public final ArrayList<Runnable> renderLast = new ArrayList<>();
     private final Minecraft minecraft;
     private final Screen parentScreen;
     private ConfigWidgets widgetProvider;
     private ConfigRenderer rendererProvider;
     private ConfigTab configTab = ConfigTab.GENERAL;
+    private static boolean isCacheReflected = false;
 
     /* Getters */
 
@@ -98,17 +112,18 @@ public class ConfigScreen extends Screen
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
 
-        if (Minecraft.getInstance().level != null)
+        if (Minecraft.getInstance().level != null && !ConfigScreen.isCacheReflected)
         {
-            EntryCache.all().forEach((key, entry) -> {
-                NostalgicEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
-                    entry.getGroup(),
-                    entry.getEntryKey(),
-                    NostalgicEntry.Gui.EntryStatus.class
+            ConfigScreen.isCacheReflected = true;
+            TweakCache.all().forEach((key, tweak) -> {
+                TweakEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
+                    tweak.getGroup(),
+                    tweak.getKey(),
+                    TweakEntry.Gui.EntryStatus.class
                 );
 
-                if (entryStatus != null && entry.getStatus() == StatusType.WAIT)
-                    entry.setStatus(StatusType.FAIL);
+                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
+                    tweak.setStatus(StatusType.FAIL);
             });
         }
     }
@@ -123,7 +138,11 @@ public class ConfigScreen extends Screen
         this.getWidgets().addWidgets();
     }
 
-    @Override public void tick() { this.getWidgets().getSearchInput().tick(); }
+    @Override
+    public void tick()
+    {
+        this.getWidgets().getSearchInput().tick();
+    }
 
     @Override
     public void onClose()
@@ -157,6 +176,19 @@ public class ConfigScreen extends Screen
         return false;
     }
 
+    private EditBox getEditBox()
+    {
+        ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+        if (focused != null)
+        {
+            for (AbstractWidget widget : focused.children)
+                if (widget instanceof EditBox && ((EditBox) widget).canConsumeInput())
+                    return (EditBox) widget;
+        }
+
+        return null;
+    }
+
     private KeyBindButton getMappingInput()
     {
         ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
@@ -182,6 +214,21 @@ public class ConfigScreen extends Screen
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
         KeyBindButton mappingInput = this.getMappingInput();
+        EditBox editBox = this.getEditBox();
+
+        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
+        {
+            if (this.getWidgets().getSearchInput().isFocused())
+                this.getWidgets().getSearchInput().setFocus(false);
+            else if (editBox != null && editBox.isFocused())
+                editBox.setFocus(false);
+            else
+                this.onCancel();
+            return true;
+        }
+
+        if (editBox != null)
+            return editBox.keyPressed(keyCode, scanCode, modifiers);
 
         if (mappingInput != null)
         {
@@ -247,15 +294,7 @@ public class ConfigScreen extends Screen
             return isInputChanged;
         }
 
-        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
-        {
-            if (this.getWidgets().getSearchInput().isFocused())
-                this.getWidgets().getSearchInput().setFocus(false);
-            else
-                this.onCancel();
-            return true;
-        }
-        else if (isSearching(keyCode))
+        if (isSearching(keyCode))
         {
             this.setConfigTab(ConfigTab.SEARCH);
             this.getWidgets().focusInput = true;
@@ -333,7 +372,7 @@ public class ConfigScreen extends Screen
     {
         if (isCancelled)
         {
-            for (EntryCache<?> cache : EntryCache.all().values())
+            for (TweakCache<?> cache : TweakCache.all().values())
             {
                 if (cache.isSavable())
                     cache.undo();
@@ -349,7 +388,7 @@ public class ConfigScreen extends Screen
     {
         boolean isCacheDifferent = false;
 
-        for (EntryCache<?> cache : EntryCache.all().values())
+        for (TweakCache<?> cache : TweakCache.all().values())
         {
             if (isCacheDifferent) break;
             if (cache.isSavable())
@@ -361,11 +400,13 @@ public class ConfigScreen extends Screen
 
     private void save()
     {
-        for (EntryCache<?> cache : EntryCache.all().values())
+        for (TweakCache<?> cache : TweakCache.all().values())
         {
             if (cache.isSavable())
                 cache.save();
         }
+
+        MixinUtil.Run.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(TitleScreen.class)
 public interface IMixinTitleScreen
 {
-    @Accessor Screen getRealmsNotificationsScreen();
-    @Accessor String getSplash();
-    @Invoker("realmsNotificationsEnabled") boolean getRealmsNotificationsEnabled();
+    @Accessor("splash") String NT$getSplash();
+    @Accessor("realmsNotificationsScreen") Screen NT$getRealmsNotificationsScreen();
+    @Invoker("realmsNotificationsEnabled") boolean NT$getRealmsNotificationsEnabled();
 }

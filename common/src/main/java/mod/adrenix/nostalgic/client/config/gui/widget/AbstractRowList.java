@@ -151,7 +151,7 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
             int height = this.itemHeight - 4;
             int width = this.getRowWidth();
 
-            if (((IMixinAbstractSelectionList) this).getRenderSelection() && this.isSelectedItem(i))
+            if (((IMixinAbstractSelectionList) this).NT$getRenderSelection() && this.isSelectedItem(i))
             {
                 left = this.x0 + this.width / 2 - width / 2;
                 int startX = this.x0 + this.width / 2 + width / 2;

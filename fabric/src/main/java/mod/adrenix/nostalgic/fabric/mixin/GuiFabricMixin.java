@@ -14,14 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public abstract class GuiFabricMixin
 {
+    /* Shadows */
+
     @Shadow @Final private Minecraft minecraft;
 
     /**
      * Renders the current game version to the top left of the HUD.
-     * Controlled by the old version overlay toggle.
+     * Controlled by the old version overlay tweak.
      */
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderEffects(Lcom/mojang/blaze3d/vertex/PoseStack;)V"))
-    protected void onRender(PoseStack matrix, float f, CallbackInfo callback)
+    private void NT$onRender(PoseStack matrix, float f, CallbackInfo callback)
     {
         if (MixinConfig.Candy.oldVersionOverlay() && !this.minecraft.options.renderDebug)
             this.minecraft.font.drawShadow(matrix, MixinConfig.Candy.getOverlayText(), 2.0F, 2.0F, 0xFFFFFF);

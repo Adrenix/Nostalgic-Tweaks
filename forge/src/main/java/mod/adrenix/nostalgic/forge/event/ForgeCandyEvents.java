@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.forge.event;
 
 import mod.adrenix.nostalgic.client.config.MixinConfig;
 import mod.adrenix.nostalgic.util.EventHelper;
-import mod.adrenix.nostalgic.util.MixinInjector;
+import mod.adrenix.nostalgic.util.MixinUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -32,9 +32,9 @@ public abstract class ForgeCandyEvents
     // Fog Rendering
     public static void oldFogRendering(EntityViewRenderEvent.RenderFogEvent event)
     {
-        if (MixinInjector.Fog.isOverworld(event.getCamera()))
-            MixinInjector.Fog.setupFog(event.getCamera(), event.getMode());
-        else if (MixinInjector.Fog.isNether(event.getCamera()))
-            MixinInjector.Fog.setupNetherFog(event.getCamera(), event.getMode());
+        if (MixinUtil.Fog.isOverworld(event.getCamera()))
+            MixinUtil.Fog.setupFog(event.getCamera(), event.getMode());
+        else if (MixinUtil.Fog.isNether(event.getCamera()))
+            MixinUtil.Fog.setupNetherFog(event.getCamera(), event.getMode());
     }
 }

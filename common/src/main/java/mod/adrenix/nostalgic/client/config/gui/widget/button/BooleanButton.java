@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.EntryCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -10,9 +10,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public class BooleanButton extends Button
 {
-    protected final EntryCache<Boolean> cache;
+    protected final TweakCache<Boolean> cache;
 
-    public BooleanButton(EntryCache<Boolean> cache, OnPress onPress)
+    public BooleanButton(TweakCache<Boolean> cache, OnPress onPress)
     {
         super(ConfigRowList.getControlStartX(), 0, ConfigRowList.CONTROL_BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT, TextComponent.EMPTY, onPress);
         this.cache = cache;
