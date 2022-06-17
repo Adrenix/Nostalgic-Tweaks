@@ -19,9 +19,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.EnderChestBlock;
-import net.minecraft.world.level.block.TrappedChestBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,6 +84,16 @@ public abstract class MixinUtil
             boolean isOldTrap = MixinConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
 
             return isOldChest || isOldEnder || isOldTrap;
+        }
+
+        public static boolean isBlockFullShape(net.minecraft.world.level.block.Block block)
+        {
+            boolean isChest = isBlockOldChest(block);
+            boolean isAOFixed = MixinConfig.Candy.fixAmbientOcclusion();
+            boolean isSoulSand = isAOFixed && block.getClass().equals(SoulSandBlock.class);
+            boolean isPowderedSnow = isAOFixed && block.getClass().equals(PowderSnowBlock.class);
+
+            return isChest || isSoulSand || isPowderedSnow;
         }
     }
 

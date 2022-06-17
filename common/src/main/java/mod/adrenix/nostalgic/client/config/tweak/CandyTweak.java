@@ -63,7 +63,8 @@ public enum CandyTweak implements ITweak
     CHEST,
     CHEST_VOXEL,
     ENDER_CHEST,
-    TRAPPED_CHEST;
+    TRAPPED_CHEST,
+    FIX_AO;
 
     /* Implementation */
 

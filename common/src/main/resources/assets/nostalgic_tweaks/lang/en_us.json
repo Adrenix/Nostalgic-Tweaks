@@ -131,6 +131,8 @@
   "text.autoconfig.nostalgic_tweaks.option.sound.oldXP.@Tooltip": "Bring back the old early 1.8 beta pickup sound for experience orbs.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy": "Eye Candy",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion": "Fix Ambient Occlusion",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion.@Tooltip": "Fixes ambient occlusion for broken vanilla blocks such as soul sand and powdered snow.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChest": "Old Chest",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChest.@Tooltip": "Bring back the full-sized chest block. This tweak also disables chest sounds and animations.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChestVoxel": "Old Chest Voxel",

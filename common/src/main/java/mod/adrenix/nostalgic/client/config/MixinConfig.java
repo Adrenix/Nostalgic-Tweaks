@@ -86,6 +86,7 @@ public abstract class MixinConfig
         /* Boolean Tweaks */
 
         // Block Candy
+        public static boolean fixAmbientOcclusion() { return isModEnabled(CandyTweak.FIX_AO) && CANDY.fixAmbientOcclusion; }
         public static boolean oldTrappedChest() { return isModEnabled(CandyTweak.TRAPPED_CHEST) && CANDY.oldTrappedChest; }
         public static boolean oldEnderChest() { return isModEnabled(CandyTweak.ENDER_CHEST) && CANDY.oldEnderChest; }
         public static boolean oldChestVoxel() { return isModEnabled(CandyTweak.CHEST_VOXEL) && CANDY.oldChestVoxel; }

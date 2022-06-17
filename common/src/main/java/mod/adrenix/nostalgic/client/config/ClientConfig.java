@@ -64,6 +64,13 @@ public class ClientConfig implements ConfigData
          */
 
         @TweakEntry.Gui.New
+        @TweakEntry.Run.ReloadChunks
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)
+        public boolean fixAmbientOcclusion = DefaultConfig.Candy.FIX_AMBIENT_OCCLUSION;
+        static { CandyTweak.FIX_AO.setKey("fixAmbientOcclusion"); }
+
+        @TweakEntry.Gui.New
         @TweakEntry.Run.ReloadResources
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.Sub(group = TweakEntry.Category.BLOCK_CANDY)

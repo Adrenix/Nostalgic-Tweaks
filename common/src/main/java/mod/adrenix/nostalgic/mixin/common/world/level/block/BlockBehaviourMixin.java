@@ -42,7 +42,7 @@ public abstract class BlockBehaviourMixin
     )
     private boolean NT$onGetShadeFromShape(BlockState instance, BlockGetter blockGetter, BlockPos blockPos)
     {
-        if (MixinUtil.Block.isBlockOldChest(instance.getBlock()))
+        if (MixinUtil.Block.isBlockFullShape(instance.getBlock()))
             return true;
         return instance.isCollisionShapeFullBlock(blockGetter, blockPos);
     }
