@@ -14,6 +14,8 @@ To see the changes made across all versions, please see the [changelog](https://
 ![Discord](https://img.shields.io/discord/452988045252100107?label=Discord)
 ](https://discordapp.com/invite/jWdfVh3)
 
+This mod is also available on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks)!
+
 This mod brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.
 
 ![Nostalgic Tweaks Banner](https://i.imgur.com/UfVIKHF.png)
