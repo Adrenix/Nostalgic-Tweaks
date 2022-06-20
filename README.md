@@ -10,5 +10,3 @@ v1.1.0
 
 ### Related Development Branches
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
-- [1.18.2](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.2)
-- [1.18.1](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.1)
