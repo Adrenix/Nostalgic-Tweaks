@@ -1,0 +1,47 @@
+modLoader = "javafml"
+loaderVersion = "[41,)"
+issueTrackerURL = "${mod_issues}"
+license = "${mod_license}"
+
+[[mods]]
+modId = "nostalgic_tweaks"
+version = "${version}"
+displayName = "${mod_name}"
+authors = "${mod_name}"
+description = '''
+${mod_description}
+
+Donations: ${mod_donate}
+Discord: ${mod_discord}
+'''
+credits = "${mod_credits}"
+displayURL = "${mod_curse}"
+logoFile = "nt_forge_logo.png"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "cloth_config"
+mandatory = true
+versionRange = "[${cloth_version},)"
+ordering = "NONE"
+side = "CLIENT"
+
+#[[dependencies.${mod_id}]]
+#modId = "architectury"
+#mandatory = true
+#versionRange = "[5.6.22,)"
+#ordering = "AFTER"
+#side = "BOTH"
