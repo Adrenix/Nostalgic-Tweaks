@@ -1,6 +1,7 @@
 # Development Branches
+- [1.19 Universal](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19)
 - [1.18.2 Universal](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.2)
-- [1.18.1 Universal](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.1)
+- [1.18 - 1.18.1 Universal](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.1)
 
 #### Changelogs
 To see the changes made across all versions, please see the [changelog](https://github.com/Adrenix/Nostalgic-Tweaks/blob/main/changelog.md) file.
