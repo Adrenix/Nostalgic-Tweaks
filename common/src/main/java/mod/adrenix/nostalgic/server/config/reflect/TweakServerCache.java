@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * Both the client and server use this class. Do not use client code here.
- * The server uses it to compare received values and retrieve needed config data so tweaks can be saved to disk.
+ * The server uses this to compare received values and retrieve needed config data so tweaks can be saved to disk.
  *
  * Client uses this cache as a way to keep in sync with the server. This prevents any client related states being
  * overridden from values received from the server.

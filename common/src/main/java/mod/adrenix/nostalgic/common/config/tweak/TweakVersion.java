@@ -3,6 +3,13 @@ package mod.adrenix.nostalgic.common.config.tweak;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.network.chat.Component;
 
+/**
+ * Any enumeration that is used by the server will need to be updated in the serializer.
+ * Failing to do so will result in an invalid packet and the tweak can never be changed in multiplayer.
+ *
+ * @see mod.adrenix.nostalgic.common.config.tweak.TweakSerializer
+ */
+
 public abstract class TweakVersion
 {
     public interface IDisabled<E extends Enum<E>>

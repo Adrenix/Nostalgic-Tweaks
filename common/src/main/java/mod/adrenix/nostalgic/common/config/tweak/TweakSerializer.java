@@ -5,6 +5,13 @@ import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
+/**
+ * Prepares a cached server tweak for transmission over the network.
+ * Any enumerations not defined in the serializer will need to be handled manually.
+ *
+ * @see mod.adrenix.nostalgic.common.config.tweak.TweakVersion
+ */
+
 public class TweakSerializer
 {
     /* General Tweak Serialization */
