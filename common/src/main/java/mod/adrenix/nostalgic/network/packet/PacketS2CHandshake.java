@@ -74,6 +74,7 @@ public class PacketS2CHandshake
             }
             else
             {
+                NostalgicTweaks.setNetworkVerification(false);
                 NostalgicTweaks.LOGGER.warn("Connected to a server with N.T but received incorrect protocol.");
                 NostalgicTweaks.LOGGER.warn(String.format("Received (%s) :: Expected (%s)", this.protocol, NostalgicTweaks.PROTOCOL));
             }
