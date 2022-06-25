@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.forge.init;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,7 +20,7 @@ public abstract class ForgeSoundInit
         new SoundEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
     );
 
-    public static void register()
+    public static void init()
     {
         SoundUtil.Event.BLANK = BLANK;
         SoundUtil.Event.PLAYER_HURT = PLAYER_HURT;

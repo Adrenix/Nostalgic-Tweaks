@@ -1,8 +1,9 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
+import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.SoundUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -68,10 +69,10 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
                 return;
         }
 
-        int mod = MixinConfig.Swing.getSwingSpeed(player);
+        int mod = SwingConfig.getSwingSpeed(player);
 
         if (MixinConfig.Swing.isSpeedGlobal())
-            callback.setReturnValue(MixinConfig.Swing.getSwingSpeed());
+            callback.setReturnValue(SwingConfig.getSwingSpeed());
         else if (MixinConfig.Swing.isOverridingHaste() && player.hasEffect(MobEffects.DIG_SPEED))
             callback.setReturnValue(MixinConfig.Swing.getHasteSpeed());
         else if (MixinConfig.Swing.isOverridingFatigue() && player.hasEffect(MobEffects.DIG_SLOWDOWN))

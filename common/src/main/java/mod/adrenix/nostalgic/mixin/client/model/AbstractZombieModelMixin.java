@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.model;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import net.minecraft.client.model.AbstractZombieModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

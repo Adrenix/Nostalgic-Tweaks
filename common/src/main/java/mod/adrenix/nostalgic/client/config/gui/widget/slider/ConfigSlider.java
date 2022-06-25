@@ -2,16 +2,17 @@ package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
+import mod.adrenix.nostalgic.client.config.gui.widget.IPermissionWidget;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 
-public class ConfigSlider extends GenericSlider
+public class ConfigSlider extends GenericSlider implements IPermissionWidget
 {
-    protected final TweakCache<Integer> cache;
+    protected final TweakClientCache<Integer> cache;
 
-    public ConfigSlider(TweakCache<Integer> cache)
+    public ConfigSlider(TweakClientCache<Integer> cache)
     {
         super(
             cache::setCurrent,
@@ -25,7 +26,7 @@ public class ConfigSlider extends GenericSlider
 
         this.cache = cache;
 
-        ConfigEntry.BoundedDiscrete bounds = ConfigReflect.getAnnotation(
+        ConfigEntry.BoundedDiscrete bounds = CommonReflect.getAnnotation(
             cache.getGroup(),
             cache.getKey(),
             ConfigEntry.BoundedDiscrete.class
@@ -37,10 +38,10 @@ public class ConfigSlider extends GenericSlider
             this.setMaximum((int) bounds.max());
         }
 
-        TweakEntry.Gui.SliderType sliderType = ConfigReflect.getAnnotation(
+        TweakClient.Gui.SliderType sliderType = CommonReflect.getAnnotation(
             cache.getGroup(),
             cache.getKey(),
-            TweakEntry.Gui.SliderType.class
+            TweakClient.Gui.SliderType.class
         );
 
         if (sliderType != null)

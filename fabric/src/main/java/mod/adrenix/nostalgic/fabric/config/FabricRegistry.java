@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric.config;
 
-import mod.adrenix.nostalgic.client.config.CommonRegistry;
-import mod.adrenix.nostalgic.util.KeyUtil;
+import mod.adrenix.nostalgic.client.config.ClientKeyMapping;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
@@ -17,8 +17,8 @@ public abstract class FabricRegistry
     /* Fabric Key Handler */
     public static void registerConfigurationKey()
     {
-        openConfig = KeyBindingHelper.registerKeyBinding(CommonRegistry.getConfigurationKey());
-        toggleFog = KeyBindingHelper.registerKeyBinding(CommonRegistry.getFogKey());
+        openConfig = KeyBindingHelper.registerKeyBinding(ClientKeyMapping.getConfigKey());
+        toggleFog = KeyBindingHelper.registerKeyBinding(ClientKeyMapping.getFogKey());
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> KeyUtil.onOpenConfig(openConfig));
         ClientTickEvents.END_CLIENT_TICK.register(client -> KeyUtil.onToggleFog(toggleFog));

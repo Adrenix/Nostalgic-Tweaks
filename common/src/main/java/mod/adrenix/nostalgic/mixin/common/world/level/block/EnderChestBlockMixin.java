@@ -1,6 +1,11 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -43,14 +48,32 @@ public abstract class EnderChestBlockMixin
     }
 
     /**
+     * Multiplayer:
+     *
      * Changes the voxel shape of the ender chest to be a full block.
      * Controlled by the old chest voxel tweak.
      */
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (!MixinConfig.Candy.oldChestVoxel() || !MixinConfig.Candy.oldEnderChest())
-            return;
-        callback.setReturnValue(Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0));
+        TweakServerCache<Boolean> cache = TweakServerCache.get(GroupType.CANDY, CandyTweak.CHEST_VOXEL.getKey());
+        VoxelShape shape = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+
+        if (NostalgicTweaks.isServer() && MixinConfig.Candy.oldChestVoxel())
+            callback.setReturnValue(shape);
+        else if (NostalgicTweaks.isClient())
+        {
+            boolean isServerVoxel = cache != null && cache.getServerCache();
+
+            if (NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer() && isServerVoxel)
+            {
+                callback.setReturnValue(shape);
+                return;
+            }
+
+            if (!MixinConfig.Candy.oldChestVoxel() || !MixinConfig.Candy.oldEnderChest())
+                return;
+            callback.setReturnValue(shape);
+        }
     }
 }

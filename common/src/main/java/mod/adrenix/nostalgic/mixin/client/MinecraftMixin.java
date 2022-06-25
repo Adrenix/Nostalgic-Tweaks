@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client;
 
 import com.mojang.blaze3d.platform.Window;
-import mod.adrenix.nostalgic.client.config.CommonRegistry;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
@@ -32,12 +32,8 @@ public abstract class MinecraftMixin
     @Shadow @Nullable public ClientLevel level;
     @Shadow public abstract Window getWindow();
 
-    // Loading the config as early as possible to prevent NPEs during mixin applications.
-    static
-    {
-        if (CommonRegistry.cache == null)
-            CommonRegistry.preloadConfiguration();
-    }
+    // Loading the config as early as possible so mixins are configured properly.
+    static { ClientConfigCache.preloadConfiguration(); }
 
     /**
      * Prevents the hand swing animation when dropping an item.

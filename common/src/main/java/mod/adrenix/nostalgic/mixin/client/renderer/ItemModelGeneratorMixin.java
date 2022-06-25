@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
@@ -23,10 +24,7 @@ public abstract class ItemModelGeneratorMixin
      * https://github.com/PepperCode1/Item-Model-Fix/
      */
 
-    private static float reduce(float start, float end, float delta)
-    {
-        return (start - delta * end) / (1 - delta);
-    }
+    private static float reduce(float start, float end, float delta) { return (start - delta * end) / (1 - delta); }
 
     private static void reduceUVs(float[] uvs, float delta)
     {
@@ -67,7 +65,7 @@ public abstract class ItemModelGeneratorMixin
         for (BlockElement element : blockElements)
         {
             for (BlockElementFace face : element.faces.values())
-                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio());
+                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio() + (NostalgicTweaks.isForge() ? 0.00193F : 0.0F));
         }
     }
 }

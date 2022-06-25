@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.util.common.MixinCommonUtil;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = FogRenderer.class, priority = MixinUtil.APPLY_FIRST)
+@Mixin(value = FogRenderer.class, priority = MixinCommonUtil.APPLY_FIRST)
 public abstract class FogRendererMixin
 {
     /**

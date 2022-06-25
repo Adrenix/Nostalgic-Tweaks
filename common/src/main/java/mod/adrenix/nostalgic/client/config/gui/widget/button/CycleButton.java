@@ -2,7 +2,8 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
+import mod.adrenix.nostalgic.client.config.gui.widget.IPermissionWidget;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -10,12 +11,12 @@ import net.minecraft.network.chat.Component;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class CycleButton<E extends Enum<E>> extends Button
+public class CycleButton<E extends Enum<E>> extends Button implements IPermissionWidget
 {
-    private final TweakCache<E> cache;
+    private final TweakClientCache<E> cache;
     private final Class<E> values;
 
-    public CycleButton(TweakCache<E> cache, Class<E> values, OnPress onPress)
+    public CycleButton(TweakClientCache<E> cache, Class<E> values, OnPress onPress)
     {
         super(ConfigRowList.getControlStartX(), 0, ConfigRowList.CONTROL_BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT, Component.empty(), onPress);
         this.cache = cache;

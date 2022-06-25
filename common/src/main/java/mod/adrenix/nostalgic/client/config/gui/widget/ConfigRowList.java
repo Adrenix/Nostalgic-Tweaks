@@ -5,14 +5,16 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.CycleButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
-import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
-import mod.adrenix.nostalgic.client.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -95,14 +97,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     // Abstract Entry Row
     public abstract static class AbstractRow<T>
     {
-        protected final TweakCache<T> cache;
+        protected final TweakClientCache<T> cache;
         protected final GroupType group;
         protected final String key;
         protected final T value;
 
         protected AbstractRow(GroupType group, String key, T value)
         {
-            this.cache = TweakCache.get(group, key);
+            this.cache = TweakClientCache.get(group, key);
             this.group = group;
             this.key = key;
             this.value = value;
@@ -111,7 +113,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            TweakEntry.Gui.NoTooltip noTooltip = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.NoTooltip.class);
+            TweakClient.Gui.NoTooltip noTooltip = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.NoTooltip.class);
 
             widgets.add(controller);
             widgets.add(new ResetButton(this.cache, controller));
@@ -303,13 +305,13 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     {
         /* Instance Fields */
 
-        @Nullable private final TweakCache<?> cache;
+        @Nullable private final TweakClientCache<?> cache;
         public final List<AbstractWidget> children;
         private float fadeIn = 0F;
 
         /* Constructor */
 
-        public Row(List<AbstractWidget> list, @Nullable TweakCache<?> cache)
+        public Row(List<AbstractWidget> list, @Nullable TweakClientCache<?> cache)
         {
             this.children = list;
             this.cache = cache;
@@ -322,6 +324,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             for (AbstractWidget widget : this.children)
                 if (widget instanceof KeyBindButton)
                     return true;
+            return false;
+        }
+
+        private boolean isRowLocked()
+        {
+            if ((this.cache != null && this.cache.isClientSide()) || !NostalgicTweaks.isNetworkVerified())
+                return false;
+
+            for (AbstractWidget widget : this.children)
+                if (widget instanceof IPermissionWidget && Minecraft.getInstance().player != null)
+                    return !NetClientUtil.isPlayerOp(Minecraft.getInstance().player);
             return false;
         }
 
@@ -366,6 +379,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             Screen screen = Minecraft.getInstance().screen;
             if (screen == null) return;
 
+            boolean isRowLocked = this.isRowLocked();
+
             this.fadeIn = Mth.clamp(this.fadeIn, 0F, 1F);
             if (this.isMouseOver(mouseX, mouseY))
                 this.fadeIn += 0.05F;
@@ -399,7 +414,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     Component translation = Component.translatable(this.cache.getLangKey());
                     title = this.cache.isSavable() ? translation.copy().withStyle(ChatFormatting.ITALIC) : translation.copy().withStyle(ChatFormatting.RESET);
-
                 }
                 else if (widget instanceof KeyBindButton)
                 {
@@ -418,6 +432,11 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     widget.x -= 1;
                     widget.y += 1;
                 }
+
+                if (widget instanceof IPermissionWidget && Minecraft.getInstance().player != null)
+                    widget.active = !isRowLocked;
+                else if (isRowLocked && widget instanceof ResetButton)
+                    widget.active = false;
 
                 widget.render(poseStack, mouseX, mouseY, partialTick);
 

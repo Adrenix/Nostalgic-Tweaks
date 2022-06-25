@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.model;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.util.client.MixinClientUtil;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.geom.ModelPart;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,6 +29,6 @@ public abstract class AnimationUtilsMixin
     private static void NT$onBobZombieArms(ModelPart leftArm, ModelPart rightArm, boolean isAggressive, float attackTime, float ageInTicks, CallbackInfo callback)
     {
         if (MixinConfig.Animation.oldZombieArms())
-            MixinUtil.Animation.setStaticArms(rightArm, leftArm);
+            MixinClientUtil.Animation.setStaticArms(rightArm, leftArm);
     }
 }

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

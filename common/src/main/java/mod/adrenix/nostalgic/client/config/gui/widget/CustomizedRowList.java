@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.CustomSwings;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ItemButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.GenericSlider;

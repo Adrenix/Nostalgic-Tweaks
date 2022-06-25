@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

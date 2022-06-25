@@ -1,9 +1,13 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.TextGroup;
-import mod.adrenix.nostalgic.client.config.reflect.*;
+import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.*;
@@ -268,7 +272,7 @@ public class ConfigWidgets
         search = search.toLowerCase();
         ConfigScreen.SearchTag tag = null;
         String input = this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "").toLowerCase();
-        HashMap<String, TweakCache<?>> entries = TweakCache.all();
+        HashMap<String, TweakClientCache<?>> entries = TweakClientCache.all();
 
         for (ConfigScreen.SearchTag searchTag : ConfigScreen.SearchTag.values())
         {
@@ -276,7 +280,7 @@ public class ConfigWidgets
                 tag = searchTag;
         }
 
-        for (TweakCache<?> tweak : entries.values())
+        for (TweakClientCache<?> tweak : entries.values())
         {
             if (GroupType.isManual(tweak.getGroup()))
                 continue;
@@ -287,7 +291,7 @@ public class ConfigWidgets
                 {
                     case NEW ->
                     {
-                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.New.class) != null)
+                        if (CommonReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakClient.Gui.New.class) != null)
                             this.parent.search.add(tweak);
                     }
                     case CONFLICT ->
@@ -302,12 +306,12 @@ public class ConfigWidgets
                     }
                     case CLIENT ->
                     {
-                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Client.class) != null)
+                        if (CommonReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakSide.Client.class) != null)
                             this.parent.search.add(tweak);
                     }
                     case SERVER ->
                     {
-                        if (ConfigReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakEntry.Gui.Server.class) != null)
+                        if (CommonReflect.getAnnotation(tweak.getGroup(), tweak.getKey(), TweakSide.Server.class) != null)
                             this.parent.search.add(tweak);
                     }
                 }

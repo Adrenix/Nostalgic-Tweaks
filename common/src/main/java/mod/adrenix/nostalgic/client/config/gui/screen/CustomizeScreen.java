@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.autoconfig.AutoConfig;
-import mod.adrenix.nostalgic.client.config.CommonRegistry;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.CustomSwings;
 import mod.adrenix.nostalgic.client.config.gui.ItemSuggestionHelper;
 import mod.adrenix.nostalgic.client.config.gui.widget.CustomizedRowList;
@@ -42,7 +42,7 @@ public class CustomizeScreen extends SettingsScreen
     protected static final int TOP_ROW_Y = 23;
 
     // Customize Fields
-    private static final ClientConfig config = CommonRegistry.getRoot();
+    private static final ClientConfig config = ClientConfigCache.getRoot();
     private final Checkbox toolsCheckbox;
     private final Checkbox blocksCheckbox;
     private final Checkbox itemsCheckbox;

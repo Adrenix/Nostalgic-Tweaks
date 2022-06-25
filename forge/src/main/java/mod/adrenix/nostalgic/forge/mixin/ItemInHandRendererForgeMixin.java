@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.client.MixinClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -45,7 +45,7 @@ public abstract class ItemInHandRendererForgeMixin
         if (player == null)
             return itemStack;
 
-        return MixinUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return MixinClientUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
     }
 
     /**

@@ -35,6 +35,9 @@
     ],
     "server": [
       "mod.adrenix.nostalgic.fabric.NostalgicServerFabric"
+    ],
+    "main": [
+      "mod.adrenix.nostalgic.fabric.NostalgicCommonFabric"
     ]
   },
 
@@ -48,7 +51,8 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19",
-    "cloth-config": ">=${cloth_version}"
+    "cloth-config": ">=${cloth_version}",
+    "architectury": ">=${architectury_version}"
   },
 
   "breaks": {

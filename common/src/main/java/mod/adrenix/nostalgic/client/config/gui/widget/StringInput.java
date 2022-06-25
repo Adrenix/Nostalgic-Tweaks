@@ -1,18 +1,18 @@
 package mod.adrenix.nostalgic.client.config.gui.widget;
 
-import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
+import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
-public class StringInput
+public class StringInput implements IPermissionWidget
 {
     public final EditBox input;
-    protected final TweakCache<String> cache;
+    protected final TweakClientCache<String> cache;
 
-    public StringInput(TweakCache<String> cache)
+    public StringInput(TweakClientCache<String> cache)
     {
         this.cache = cache;
         this.input = new EditBox(
@@ -36,7 +36,7 @@ public class StringInput
 
     public void setInput(String input)
     {
-        String cached = ConfigReflect.getCurrent(this.cache.getGroup(), this.cache.getKey());
+        String cached = ClientReflect.getCurrent(this.cache.getGroup(), this.cache.getKey());
         if (cached.equals(input))
             this.cache.setCurrent(cached);
         else

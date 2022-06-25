@@ -2,12 +2,13 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
-import mod.adrenix.nostalgic.client.config.tweak.GuiTweak;
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.client.config.reflect.ConfigReflect;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
-import mod.adrenix.nostalgic.client.config.reflect.GroupType;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.ChatFormatting;
@@ -33,11 +34,11 @@ public class TweakTag extends AbstractWidget
     public static final int V_GLOBAL_HEIGHT = 11;
     public static final int TAG_MARGIN = 5;
 
-    protected final TweakCache<?> cache;
+    protected final TweakClientCache<?> cache;
     protected final AbstractWidget anchor;
     protected final boolean isTooltip;
 
-    public TweakTag(TweakCache<?> cache, AbstractWidget anchor, boolean isTooltip)
+    public TweakTag(TweakClientCache<?> cache, AbstractWidget anchor, boolean isTooltip)
     {
         super(0, 0, 0, 0, Component.empty());
 
@@ -87,12 +88,12 @@ public class TweakTag extends AbstractWidget
         Screen screen = minecraft.screen;
         if (screen == null) return;
 
-        TweakEntry.Gui.New isNew = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.New.class);
-        TweakEntry.Gui.Client isClient = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Client.class);
-        TweakEntry.Gui.Server isServer = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Server.class);
-        TweakEntry.Gui.Restart isRestart = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Restart.class);
-        TweakEntry.Gui.Warning isWarning = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Gui.Warning.class);
-        TweakEntry.Run.ReloadResources isReload = ConfigReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakEntry.Run.ReloadResources.class);
+        TweakClient.Gui.New isNew = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.New.class);
+        TweakSide.Client isClient = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakSide.Client.class);
+        TweakSide.Server isServer = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakSide.Server.class);
+        TweakClient.Gui.Restart isRestart = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.Restart.class);
+        TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.Warning.class);
+        TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Run.ReloadResources.class);
 
         Component title = Component.translatable(this.cache.getLangKey());
         Component newTag = Component.translatable(NostalgicLang.Gui.TAG_NEW);
@@ -108,9 +109,9 @@ public class TweakTag extends AbstractWidget
         Component restartTooltip = Component.translatable(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
         Component warningTooltip = Component.translatable(this.cache.getWarningKey());
 
-        boolean isNewRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey()).getCurrent();
-        boolean isSidedRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
-        boolean isTooltipRenderable = (Boolean) TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
+        boolean isNewRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey()).getCurrent();
+        boolean isSidedRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
+        boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
 
         int startX = ConfigRowList.TEXT_START + minecraft.font.width(title) + (isTooltip ? 20 : 4);
         int startY = this.anchor.y + 4;

@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
+import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public class GenericSlider extends AbstractSliderButton
 {
-    protected TweakEntry.Gui.Slider slider = TweakEntry.Gui.Slider.SWING_SLIDER;
+    protected TweakClient.Gui.Slider slider = TweakClient.Gui.Slider.SWING_SLIDER;
     protected int min = ClientConfig.MIN;
     protected int max = ClientConfig.MAX;
     protected final Consumer<Integer> setCurrent;
@@ -33,7 +33,7 @@ public class GenericSlider extends AbstractSliderButton
         this.setValue(current.get());
     }
 
-    public void setSlider(TweakEntry.Gui.Slider slider) { this.slider = slider; }
+    public void setSlider(TweakClient.Gui.Slider slider) { this.slider = slider; }
 
     protected void setMinimum(int min)
     {
@@ -52,19 +52,19 @@ public class GenericSlider extends AbstractSliderButton
         ChatFormatting color = ChatFormatting.GREEN;
         int integer = this.current.get();
 
-        if (this.slider == TweakEntry.Gui.Slider.SWING_SLIDER)
+        if (this.slider == TweakClient.Gui.Slider.SWING_SLIDER)
         {
             if (integer == DefaultConfig.Swing.DISABLED) color = ChatFormatting.RED;
             else if (integer == DefaultConfig.Swing.PHOTOSENSITIVE) color = ChatFormatting.YELLOW;
             else if (integer <= DefaultConfig.Swing.NEW_SPEED) color = ChatFormatting.GOLD;
         }
-        else if (this.slider == TweakEntry.Gui.Slider.INTENSITY_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.INTENSITY_SLIDER)
         {
             if (integer == 0) color = ChatFormatting.RED;
             else if (integer <= 50) color = ChatFormatting.GOLD;
             else if (integer > 100) color = ChatFormatting.AQUA;
         }
-        else if (this.slider == TweakEntry.Gui.Slider.CLOUD_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.CLOUD_SLIDER)
         {
             if (integer == 128) color = ChatFormatting.YELLOW;
             else if (integer == 192) color = ChatFormatting.GOLD;
@@ -84,14 +84,14 @@ public class GenericSlider extends AbstractSliderButton
 
         if (this.text != null)
             header = this.text.get();
-        else if (this.slider == TweakEntry.Gui.Slider.SWING_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.SWING_SLIDER)
             header = Component.translatable(NostalgicLang.Gui.SETTINGS_SPEED).getString();
-        else if (this.slider == TweakEntry.Gui.Slider.INTENSITY_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.INTENSITY_SLIDER)
         {
             header = Component.translatable(NostalgicLang.Gui.SETTINGS_INTENSITY).getString();
             suffix = "%";
         }
-        else if (this.slider == TweakEntry.Gui.Slider.CLOUD_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.CLOUD_SLIDER)
         {
             int height = this.current.get();
             if (height == 108) header = Component.translatable(NostalgicLang.Gui.SETTINGS_ALPHA).getString();

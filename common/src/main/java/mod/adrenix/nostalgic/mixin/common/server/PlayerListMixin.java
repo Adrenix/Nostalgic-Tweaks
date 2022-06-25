@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.server;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;

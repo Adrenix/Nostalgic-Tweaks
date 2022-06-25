@@ -1,15 +1,18 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
+import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.DefaultConfig;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
-import mod.adrenix.nostalgic.client.config.tweak.GuiTweak;
-import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
+import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
-import mod.adrenix.nostalgic.client.config.reflect.*;
-import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.util.KeyUtil;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.KeyMapping;
@@ -21,28 +24,79 @@ import java.util.function.Supplier;
 
 public record ConfigRenderer(ConfigScreen parent)
 {
+    private static ConfigRowList.CategoryRow getCategory(TweakClient.Category category, ConfigRowList list)
+    {
+        return new ConfigRowList.CategoryRow(list, Component.translatable(category.getLangKey()), () -> {
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+            HashMap<String, TweakClientCache<?>> translated = new HashMap<>();
+            HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
+            HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
+
+            TweakClientCache.all().forEach(((key, entry) -> {
+                TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry.getGroup(), entry.getKey(), TweakClient.Gui.Sub.class);
+                TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry.getGroup(), entry.getKey(), TweakClient.Gui.Placement.class);
+
+                if (sub != null && sub.group() == category && entry.getGroup() == category.getGroup())
+                {
+                    if (placement == null)
+                        translated.put(Component.translatable(entry.getLangKey()).getString(), entry);
+                    else
+                    {
+                        if (entry.getPosition() == TweakClient.Gui.Position.TOP)
+                            top.put(entry.getOrder(), entry);
+                        else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
+                            bottom.put(entry.getOrder(), entry);
+                    }
+                }
+            }));
+
+            SortedMap<Integer, TweakClientCache<?>> sortTop = new TreeMap<>(top);
+            SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
+            SortedMap<Integer, TweakClientCache<?>> sortBottom = new TreeMap<>(bottom);
+
+            sortTop.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+            sortMiddle.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+            sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+
+            return rows;
+        });
+    }
+
+    private static List<ConfigRowList.Row> getCategories(ConfigRowList list, GroupType group)
+    {
+        List<ConfigRowList.Row> subs = new ArrayList<>();
+
+        EnumSet<TweakClient.Category> categories = EnumSet.allOf(TweakClient.Category.class);
+        categories.forEach((category) -> {
+            if (category.getGroup() == group)
+                subs.add(getCategory(category, list).add());
+        });
+
+        return subs;
+    }
+
     private void addRows(GroupType group)
     {
-        TweakEntry.Category.getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
+        getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
 
-        Comparator<String> translationComparator = Comparator.comparing((String key) -> Component.translatable(TweakCache.get(group, key).getLangKey()).getString());
-        Comparator<String> orderComparator = Comparator.comparing((String key) -> TweakCache.get(group, key).getOrder());
+        Comparator<String> translationComparator = Comparator.comparing((String key) -> Component.translatable(TweakClientCache.get(group, key).getLangKey()).getString());
+        Comparator<String> orderComparator = Comparator.comparing((String key) -> TweakClientCache.get(group, key).getOrder());
 
         HashMap<String, Object> top = new HashMap<>();
         HashMap<String, Object> middle = new HashMap<>();
         HashMap<String, Object> bottom = new HashMap<>();
-        HashMap<String, Object> all = new HashMap<>(ConfigReflect.getGroup(group));
+        HashMap<String, Object> all = new HashMap<>(ClientReflect.getGroup(group));
 
         all.forEach((key, value) -> {
-            TweakEntry.Gui.Placement placement = ConfigReflect.getAnnotation(group, key, TweakEntry.Gui.Placement.class);
+            TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
 
-            if (ConfigReflect.getAnnotation(group, key, TweakEntry.Gui.Sub.class) == null)
+            if (CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class) == null)
             {
                 if (placement == null)
                     middle.put(key, value);
-                else if (placement.pos() == TweakEntry.Gui.Position.TOP)
+                else if (placement.pos() == TweakClient.Gui.Position.TOP)
                     top.put(key, value);
-                else if (placement.pos() == TweakEntry.Gui.Position.BOTTOM)
+                else if (placement.pos() == TweakClient.Gui.Position.BOTTOM)
                     bottom.put(key, value);
             }
         });
@@ -63,8 +117,8 @@ public record ConfigRenderer(ConfigScreen parent)
     private void addFound()
     {
         if (this.parent.search.isEmpty()) return;
-        Comparator<TweakCache<?>> comparator = Comparator.comparing((TweakCache<?> tweak) -> Component.translatable(tweak.getLangKey()).getString());
-        SortedSet<TweakCache<?>> sorted = new TreeSet<>(comparator);
+        Comparator<TweakClientCache<?>> comparator = Comparator.comparing((TweakClientCache<?> tweak) -> Component.translatable(tweak.getLangKey()).getString());
+        SortedSet<TweakClientCache<?>> sorted = new TreeSet<>(comparator);
         sorted.addAll(this.parent.search);
         sorted.forEach((tweak) -> this.parent.getWidgets().getConfigRowList().addRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent()));
     }
@@ -75,7 +129,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Mod Enabled */
 
-        TweakCache<Boolean> isModEnabled = TweakCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
+        TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
         list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getKey(), isModEnabled.getCurrent()).add());
 
         /* Key Bindings */
@@ -103,14 +157,14 @@ public record ConfigRenderer(ConfigScreen parent)
             // Default Screen Options
 
             TextGroup menuHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_HELP_MENU));
-            TweakCache<SettingsScreen.OptionScreen> screenCache = TweakCache.get(GroupType.GUI, GuiTweak.DEFAULT_SCREEN.getKey());
-            RadioGroup<SettingsScreen.OptionScreen> screens = new RadioGroup<>(
+            TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DEFAULT_SCREEN.getKey());
+            RadioGroup<MenuOption> screens = new RadioGroup<>(
                 list,
-                SettingsScreen.OptionScreen.class,
+                MenuOption.class,
                 DefaultConfig.Gui.DEFAULT_SCREEN,
                 screenCache::getCurrent,
-                (option) -> SettingsScreen.OptionScreen.getTranslation((SettingsScreen.OptionScreen) option),
-                (selected) -> screenCache.setCurrent((SettingsScreen.OptionScreen) selected)
+                (option) -> MenuOption.getTranslation((MenuOption) option),
+                (selected) -> screenCache.setCurrent((MenuOption) selected)
             );
 
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>(menuHelp.getRows());
@@ -124,7 +178,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // New Tags
 
-            TweakCache<Boolean> newCache = TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey());
+            TweakClientCache<Boolean> newCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey());
             ToggleCheckbox toggleNewTags = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
@@ -137,7 +191,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // Sided tags
 
-            TweakCache<Boolean> sidedCache = TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey());
+            TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey());
             ToggleCheckbox toggleSidedTags = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
@@ -150,7 +204,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // Tag Tooltips
 
-            TweakCache<Boolean> tooltipCache = TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey());
+            TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey());
             ToggleCheckbox toggleTagTooltips = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
@@ -167,7 +221,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TextGroup statusHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
             rows.addAll(statusHelp.getRows());
 
-            TweakCache<Boolean> featureCache = TweakCache.get(GroupType.GUI, GuiTweak.DISPLAY_FEATURE_STATUS.getKey());
+            TweakClientCache<Boolean> featureCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_FEATURE_STATUS.getKey());
             ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
@@ -194,14 +248,14 @@ public record ConfigRenderer(ConfigScreen parent)
                 (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
                     if (!GroupType.isManual(group))
                     {
-                        ConfigReflect.getGroup(group).forEach((key, value) -> {
-                            TweakCache<Boolean> entry = TweakCache.get(group, key);
+                        ClientReflect.getGroup(group).forEach((key, value) -> {
+                            TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
                             entry.reset();
 
-                            boolean isDisableIgnored = ConfigReflect.getAnnotation(
+                            boolean isDisableIgnored = CommonReflect.getAnnotation(
                                 entry.getGroup(),
                                 entry.getKey(),
-                                TweakEntry.Gui.IgnoreDisable.class
+                                TweakClient.Gui.IgnoreDisable.class
                             ) != null;
 
                             if (value instanceof Boolean && !isDisableIgnored)
@@ -212,22 +266,22 @@ public record ConfigRenderer(ConfigScreen parent)
 
                             if (value instanceof Integer && !isDisableIgnored)
                             {
-                                TweakEntry.Gui.DisabledInteger disabledInteger = ConfigReflect.getAnnotation(
+                                TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(
                                     entry.getGroup(),
                                     entry.getKey(),
-                                    TweakEntry.Gui.DisabledInteger.class
+                                    TweakClient.Gui.DisabledInteger.class
                                 );
 
                                 if (disabledInteger != null)
                                 {
-                                    TweakCache<Integer> entryInteger = TweakCache.get(group, key);
+                                    TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
                                     entryInteger.setCurrent(disabledInteger.disabled());
                                 }
                             }
 
                             if (value instanceof TweakVersion.IDisabled<?> && !isDisableIgnored)
                             {
-                                TweakCache<Enum<?>> version = TweakCache.get(group, key);
+                                TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
                                 version.setCurrent(((TweakVersion.IDisabled<?>) value).getDisabled());
                             }
                         });
@@ -240,7 +294,7 @@ public record ConfigRenderer(ConfigScreen parent)
                     Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE),
                 (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
                     if (!GroupType.isManual(group))
-                        ConfigReflect.getGroup(group).forEach((key, value) -> TweakCache.get(group, key).reset());
+                        ClientReflect.getGroup(group).forEach((key, value) -> TweakClientCache.get(group, key).reset());
                 })
             );
 
@@ -257,7 +311,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         Supplier<ArrayList<ConfigRowList.Row>> notifications = () ->
         {
-            TextGroup notify = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_CONFLICT, TweakCache.getConflicts()));
+            TextGroup notify = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
             return new ArrayList<>(notify.getRows());
         };
 

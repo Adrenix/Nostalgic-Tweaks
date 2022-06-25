@@ -10,6 +10,11 @@
   "gui.nostalgic_tweaks.settings.discord": "Join our Discord",
   "gui.nostalgic_tweaks.settings.golden_days": "Golden Days Resource Pack",
 
+  "gui.nostalgic_tweaks.settings.toast.tweak_update_header": "Tweaks Updated",
+  "gui.nostalgic_tweaks.settings.toast.tweak_update_body": "Server operator changed tweaks.",
+  "gui.nostalgic_tweaks.settings.toast.tweak_sent_header": "Tweaks Changed",
+  "gui.nostalgic_tweaks.settings.toast.tweak_sent_body": "Sent changes to server.",
+
   "gui.nostalgic_tweaks.customize.tool": "Tool",
   "gui.nostalgic_tweaks.customize.block": "Block",
   "gui.nostalgic_tweaks.customize.item": "Item",
@@ -49,6 +54,8 @@
   "gui.nostalgic_tweaks.config.status.wait": "This tweak has§c not§r been§e loaded§r yet. It is§4 impossible§r to detect if a mod conflict has occurred at this time.\n\n§eLoad a world and check again.",
   "gui.nostalgic_tweaks.config.status.warn": "This tweak is still in§6 development§r. It is possible you might run into§c bugs§r when this tweak is§a enabled§r.",
   "gui.nostalgic_tweaks.config.status.fail": "This tweak has encountered a mod§4 conflict§r or has§c not loaded§r.\n\nFor example, to§a load§e 2D floating items§r there§6 must§r be an§e item entity§r somewhere within the world.\n\n§eNote:§c It is§4 impossible§c for this mod to automatically find conflicting mods.",
+  "gui.nostalgic_tweaks.config.status.perm": "To change this tweak you must be a server§e operator§r.",
+  "gui.nostalgic_tweaks.config.status.net": "Nostalgic Tweaks is§6 not installed§r on this server. Changing this tweak will have§c no§r effect.",
 
   "gui.nostalgic_tweaks.config.tag.new": "New",
   "gui.nostalgic_tweaks.config.tag.new.@Tooltip": "This is a§c new§r tweak in this update.",

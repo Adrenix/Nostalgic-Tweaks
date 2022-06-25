@@ -3,10 +3,11 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.util.server.MixinServerUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -58,7 +59,7 @@ public abstract class LevelRendererMixin
         };
 
         this.blueBuffer = new VertexBuffer();
-        BufferBuilder.RenderedBuffer renderedBuffer = MixinUtil.World.buildSkyDisc(builder, height);
+        BufferBuilder.RenderedBuffer renderedBuffer = MixinClientUtil.World.buildSkyDisc(builder, height);
         this.blueBuffer.bind();
         this.blueBuffer.upload(renderedBuffer);
         VertexBuffer.unbind();
@@ -77,13 +78,13 @@ public abstract class LevelRendererMixin
         if (!isStarRunnableSaved)
         {
             isStarRunnableSaved = true;
-            MixinUtil.Run.onSave.add(this::createStars);
+            MixinClientUtil.Run.onSave.add(this::createStars);
         }
 
         if (!isBlueRunnableSaved)
         {
             isBlueRunnableSaved = true;
-            MixinUtil.Run.onSave.add(this::NT$createBlueBuffer);
+            MixinClientUtil.Run.onSave.add(this::NT$createBlueBuffer);
         }
     }
 
@@ -94,8 +95,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderSky", at = @At(value = "HEAD"))
     private void NT$onCacheSkyPose(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        MixinUtil.World.blueModelView = poseStack.last().pose().copy();
-        MixinUtil.World.blueProjection = projectionMatrix.copy();
+        MixinClientUtil.World.blueModelView = poseStack.last().pose().copy();
+        MixinClientUtil.World.blueProjection = projectionMatrix.copy();
     }
 
     /**
@@ -119,13 +120,13 @@ public abstract class LevelRendererMixin
     {
         if (MixinConfig.Candy.getBlueVoid() != TweakVersion.Generic.MODERN)
         {
-            MixinUtil.World.setBlueVoidColor();
+            MixinClientUtil.World.setBlueVoidColor();
             ShaderInstance shader = RenderSystem.getShader();
 
             if (this.blueBuffer != null && shader != null)
             {
                 this.blueBuffer.bind();
-                this.blueBuffer.drawWithShader(MixinUtil.World.blueModelView, MixinUtil.World.blueProjection, shader);
+                this.blueBuffer.drawWithShader(MixinClientUtil.World.blueModelView, MixinClientUtil.World.blueProjection, shader);
                 VertexBuffer.unbind();
             }
         }
@@ -175,8 +176,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderLevel", at = @At(value = "HEAD"))
     private void NT$onStartLevelRendering(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        MixinUtil.Item.levelPoseStack = poseStack.last();
-        MixinUtil.Item.levelBufferSource = this.renderBuffers.bufferSource();
+        MixinClientUtil.Item.levelPoseStack = poseStack.last();
+        MixinClientUtil.Item.levelBufferSource = this.renderBuffers.bufferSource();
     }
 
     /**
@@ -198,7 +199,7 @@ public abstract class LevelRendererMixin
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 2, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
     private float NT$onRenderSkyDiscColor(float vanilla)
     {
-        return MixinUtil.World.getSunriseRotation(vanilla);
+        return MixinClientUtil.World.getSunriseRotation(vanilla);
     }
 
     /**
@@ -208,7 +209,7 @@ public abstract class LevelRendererMixin
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
     private float NT$onRenderSun(float vanilla)
     {
-        return MixinUtil.World.getSunriseRotation(vanilla);
+        return MixinClientUtil.World.getSunriseRotation(vanilla);
     }
 
     /**
@@ -237,7 +238,7 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void NT$onRenderHitOutline(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo callback)
     {
-        if (!MixinUtil.Block.isBlockOldChest(state.getBlock()))
+        if (!MixinServerUtil.Block.isBlockOldChest(state.getBlock()))
             return;
 
         IMixinLevelRenderer.NT$invokeRenderShape

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.server.MixinServerUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,12 +13,14 @@ import java.util.function.Consumer;
 public abstract class LivingEntityForgeMixin
 {
     /**
+     * Multiplayer:
+     *
      * Separates items from a clumped item entity into multiple item entities when a mob is killed.
      * Controlled by the item merging tweak.
      */
     @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"))
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return MixinUtil.Item.explodeStack(consumer);
+        return MixinServerUtil.Item.explodeStack(consumer);
     }
 }

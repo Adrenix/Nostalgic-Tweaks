@@ -25,6 +25,11 @@ public abstract class NostalgicLang
 
     public static class Gui
     {
+        public static final String TOAST_TWEAK_UPDATE_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_update_header";
+        public static final String TOAST_TWEAK_UPDATE_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_update_body";
+        public static final String TOAST_TWEAK_SENT_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_sent_header";
+        public static final String TOAST_TWEAK_SENT_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_sent_body";
+
         public static final String SETTINGS_TITLE = "gui.nostalgic_tweaks.settings.title";
         public static final String SETTINGS_SUPPORT = "gui.nostalgic_tweaks.settings.support";
         public static final String SETTINGS_DISCORD = "gui.nostalgic_tweaks.settings.discord";
@@ -70,6 +75,8 @@ public abstract class NostalgicLang
         public static final String STATUS_WAIT = "gui.nostalgic_tweaks.config.status.wait";
         public static final String STATUS_WARN = "gui.nostalgic_tweaks.config.status.warn";
         public static final String STATUS_FAIL = "gui.nostalgic_tweaks.config.status.fail";
+        public static final String STATUS_PERM = "gui.nostalgic_tweaks.config.status.perm";
+        public static final String STATUS_NET = "gui.nostalgic_tweaks.config.status.net";
 
         public static final String TAG_NEW = "gui.nostalgic_tweaks.config.tag.new";
         public static final String TAG_NEW_TOOLTIP = "gui.nostalgic_tweaks.config.tag.new.@Tooltip";

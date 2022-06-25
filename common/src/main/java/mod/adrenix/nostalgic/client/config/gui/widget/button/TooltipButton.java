@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -14,10 +14,10 @@ import net.minecraft.network.chat.Component;
 
 public class TooltipButton extends Button
 {
-    protected final TweakCache<?> cache;
+    protected final TweakClientCache<?> cache;
     protected final AbstractWidget anchor;
 
-    public TooltipButton(TweakCache<?> cache, AbstractWidget anchor)
+    public TooltipButton(TweakClientCache<?> cache, AbstractWidget anchor)
     {
         super(0, 0, 0, 0, Component.empty(), (ignored) -> {});
         this.cache = cache;

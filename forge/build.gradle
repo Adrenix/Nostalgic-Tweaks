@@ -35,7 +35,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     
     // Remove the next line if you don't want to depend on the API
-    // modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -61,7 +61,8 @@ processResources {
             "mod_donate": rootProject.mod_donate,
             "mod_discord": rootProject.mod_discord,
             "mod_description": rootProject.mod_description,
-            "cloth_version": rootProject.cloth_config_version
+            "cloth_version": rootProject.cloth_config_version,
+            "architectury_version": rootProject.architectury_version
     }
 }
 

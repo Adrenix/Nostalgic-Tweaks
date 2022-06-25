@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;

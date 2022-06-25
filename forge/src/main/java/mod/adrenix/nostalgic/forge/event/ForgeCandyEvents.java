@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.forge.event;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.EventHelper;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.client.event.ClientEventHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -20,13 +19,13 @@ public abstract class ForgeCandyEvents
     // Old Title Screen
     public static void classicTitleScreen(ScreenOpenEvent event)
     {
-        EventHelper.renderClassicTitle(event.getScreen(), event::setScreen);
+        ClientEventHelper.renderClassicTitle(event.getScreen(), event::setScreen);
     }
 
     // Old Loading Screens
     public static void classicLoadingScreens(ScreenOpenEvent event)
     {
-        EventHelper.renderClassicProgress(event.getScreen(), event::setScreen);
+        ClientEventHelper.renderClassicProgress(event.getScreen(), event::setScreen);
     }
 
     // Fog Rendering

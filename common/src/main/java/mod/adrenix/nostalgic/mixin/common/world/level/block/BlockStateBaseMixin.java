@@ -1,8 +1,11 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
-import net.minecraft.client.Minecraft;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.server.MixinServerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +25,8 @@ public abstract class BlockStateBaseMixin
     @Shadow public abstract Block getBlock();
 
     /**
+     * Multiplayer:
+     *
      * Changes the amount of light blocked by water related blocks from 1 level to 3.
      * Controlled by the old water lighting tweak.
      *
@@ -34,8 +39,18 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "getLightBlock", at = @At("HEAD"), cancellable = true)
     private void NT$onGetLightBlock(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Integer> callback)
     {
-        if (!MixinConfig.Candy.oldWaterLighting() || !Minecraft.getInstance().hasSingleplayerServer())
+        if (!MixinConfig.Candy.oldWaterLighting())
             return;
+
+        if (NostalgicTweaks.isClient())
+        {
+            TweakServerCache<Boolean> cache = TweakServerCache.get(GroupType.CANDY, CandyTweak.WATER_LIGHTING.getKey());
+            boolean isVanilla = !NostalgicTweaks.isNetworkVerified();
+            boolean isDisabled = cache == null || cache.getServerCache();
+
+            if (isVanilla || isDisabled)
+                return;
+        }
 
         Block block = this.getBlock();
 
@@ -57,7 +72,7 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (MixinUtil.Block.isBlockOldChest(this.getBlock()))
+        if (MixinServerUtil.Block.isBlockOldChest(this.getBlock()))
             callback.setReturnValue(false);
     }
 }

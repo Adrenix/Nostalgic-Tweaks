@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.util.client.MixinClientUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemFrameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -42,10 +42,10 @@ public abstract class ItemFrameRendererMixin <T extends ItemFrame>
         if (MixinConfig.Candy.oldFlatFrames())
         {
             BakedModel model = itemRenderer.getModel(entity.getItem(), null, null, 0);
-            if (MixinUtil.Item.isModelFlat(model))
+            if (MixinClientUtil.Item.isModelFlat(model))
             {
-                MixinUtil.Item.flatten(poseStack);
-                MixinUtil.Item.disableDiffusedLighting();
+                MixinClientUtil.Item.flatten(poseStack);
+                MixinClientUtil.Item.disableDiffusedLighting();
             }
         }
     }
@@ -62,6 +62,6 @@ public abstract class ItemFrameRendererMixin <T extends ItemFrame>
     )
     private void NT$onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        MixinUtil.Item.enableDiffusedLighting();
+        MixinClientUtil.Item.enableDiffusedLighting();
     }
 }

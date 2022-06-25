@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
 import net.minecraft.client.renderer.entity.GhastRenderer;
 import net.minecraft.util.Mth;

@@ -6,8 +6,10 @@
   "priority": 1001,
   "client": [
     "ItemInHandRendererForgeMixin",
-    "LivingEntityForgeMixin",
     "ProgressScreenForgeMixin",
     "TempFogRendererMixin"
+  ],
+  "mixins": [
+    "LivingEntityForgeMixin"
   ]
 }

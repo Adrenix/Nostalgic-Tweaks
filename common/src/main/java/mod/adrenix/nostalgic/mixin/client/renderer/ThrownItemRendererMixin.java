@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.util.client.MixinClientUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
@@ -32,8 +32,8 @@ public abstract class ThrownItemRendererMixin <T extends Entity>
     {
         if (MixinConfig.Candy.oldFlatThrowing())
         {
-            MixinUtil.Item.flatten(poseStack);
-            MixinUtil.Item.disableDiffusedLighting();
+            MixinClientUtil.Item.flatten(poseStack);
+            MixinClientUtil.Item.disableDiffusedLighting();
         }
     }
 
@@ -52,6 +52,6 @@ public abstract class ThrownItemRendererMixin <T extends Entity>
     )
     private void NT$onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        MixinUtil.Item.enableDiffusedLighting();
+        MixinClientUtil.Item.enableDiffusedLighting();
     }
 }

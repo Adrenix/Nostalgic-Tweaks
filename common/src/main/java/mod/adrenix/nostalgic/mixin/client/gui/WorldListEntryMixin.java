@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.gui.screens.ProgressScreen;

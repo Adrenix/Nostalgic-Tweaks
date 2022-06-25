@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric.init;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

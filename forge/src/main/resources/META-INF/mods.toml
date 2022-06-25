@@ -39,9 +39,9 @@ versionRange = "[${cloth_version},)"
 ordering = "NONE"
 side = "CLIENT"
 
-#[[dependencies.${mod_id}]]
-#modId = "architectury"
-#mandatory = true
-#versionRange = "[5.6.22,)"
-#ordering = "AFTER"
-#side = "BOTH"
+[[dependencies.nostalgic_tweaks]]
+modId = "architectury"
+mandatory = true
+versionRange = "[${architectury_version},)"
+ordering = "AFTER"
+side = "BOTH"

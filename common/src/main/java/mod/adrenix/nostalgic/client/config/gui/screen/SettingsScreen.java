@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Vector3f;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.CommonRegistry;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
@@ -24,25 +24,6 @@ import java.util.ArrayList;
 
 public class SettingsScreen extends Screen
 {
-    /* Screen Option Enum */
-
-    public enum OptionScreen
-    {
-        MAIN_MENU(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_MAIN),
-        SETTINGS_MENU(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_SETTINGS),
-        CUSTOM_SWING_MENU(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_CUSTOM);
-
-        OptionScreen(String langKey) { this.langKey = langKey; }
-
-        private final String langKey;
-        public String getLangKey() { return this.langKey; }
-
-        public static Component getTranslation(OptionScreen screen) { return Component.translatable(screen.getLangKey()); }
-
-        @Override
-        public String toString() { return NostalgicUtil.Text.toTitleCase(super.toString()); }
-    }
-
     /* Widget Constants */
 
     protected static final int BUTTON_HEIGHT = 20;
@@ -181,7 +162,7 @@ public class SettingsScreen extends Screen
         if (this.isRedirected)
         {
             this.isRedirected = false;
-            switch (CommonRegistry.getGui().defaultScreen)
+            switch (ClientConfigCache.getGui().defaultScreen)
             {
                 case SETTINGS_MENU -> this.minecraft.setScreen(new ConfigScreen(this));
                 case CUSTOM_SWING_MENU -> this.minecraft.setScreen(new CustomizeScreen(this));

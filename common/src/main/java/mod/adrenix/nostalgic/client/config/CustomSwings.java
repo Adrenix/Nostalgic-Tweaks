@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.widget.CustomizedRowList;
+import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 public abstract class CustomSwings
 {
-    private static final ClientConfig config = CommonRegistry.getRoot();
+    private static final ClientConfig config = ClientConfigCache.getRoot();
 
     /* Check Validity of Customized Items */
     public static void validate()

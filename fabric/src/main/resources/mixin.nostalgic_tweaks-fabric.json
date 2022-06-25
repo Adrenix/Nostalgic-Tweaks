@@ -6,7 +6,9 @@
   "priority": 1001,
   "client": [
     "FogRendererFabricMixin",
-    "GuiFabricMixin",
+    "GuiFabricMixin"
+  ],
+  "mixins": [
     "LivingEntityFabricMixin"
   ]
 }

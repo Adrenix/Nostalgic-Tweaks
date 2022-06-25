@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.mixin.widen.IMixinEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
