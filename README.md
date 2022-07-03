@@ -18,12 +18,12 @@ To see the changes made across all versions, please see the [changelog](https://
 
 This mod is also available on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks)!
 
-This mod brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.
+Nostalgic Tweaks brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.
 
 ![Nostalgic Tweaks Banner](https://i.imgur.com/UfVIKHF.png)
 
 ## Mod Description
-Nostalgic Tweaks in version 1.0 comes with four major categories; Sounds, Eye Candies, Animations, and Swing Speeds. Some of these categories will have their own subcategories that clump together related tweaks. To achieve the most nostalgic experience, it is recommend to have the [Golden Days](https://github.com/PoeticRainbow/golden-days) resource pack by PoeticRainbow installed. The order of your resource packs matters. Make sure Programmer Art is first, followed by the order of resource packs listed in the instructions from the Golden Days resource pack. To achieve the most accurate old fog rendering, you will need to use the Golden Days resource pack since it uses my modified vanilla GLSL fog shader that reverts the cylinder fog back to spherical fog.
+Nostalgic Tweaks in version 1.0 comes with four major categories; Sounds, Eye Candies, Animations, and Swing Speeds. Some of these categories will have their own subcategories that clump together related tweaks. To achieve the most nostalgic experience, it is recommend to have the [Golden Days](https://github.com/PoeticRainbow/golden-days/releases) resource pack by PoeticRainbow installed. The order of your resource packs matters. Make sure Programmer Art is first, followed by the order of resource packs listed in the instructions from the Golden Days resource pack. To achieve the most accurate old fog rendering, you will need to use the Golden Days resource pack since it uses my modified vanilla GLSL fog shader that reverts the cylinder fog back to spherical fog.
 
 The mod currently has over 60+ nostalgic tweaks that can all be used in singleplayer. Tweaks that are controlled by the server are tagged as such in the mod's config menu. Multiplayer support is the next priority on the mod's project road map. Until then, tweaks that are controlled by the server will only run on singleplayer or LAN in version 1.0.
  
