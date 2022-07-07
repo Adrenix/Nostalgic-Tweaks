@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +18,7 @@ public abstract class ProgressScreenForgeMixin
     @Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onRenderProgress(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldLoadingScreens())
+        if (ModConfig.Candy.oldLoadingScreens())
             callback.cancel();
     }
 }

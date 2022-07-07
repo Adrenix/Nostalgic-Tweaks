@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.util.server.MixinServerUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -22,7 +22,7 @@ public abstract class BlockBehaviourMixin
     @ModifyConstant(method = "getShadeBrightness", constant = @Constant(floatValue = 0.2F))
     private float NT$onGetShadeBrightness(float vanilla)
     {
-        return MixinConfig.Candy.oldSmoothLighting() ? 0.0F : 0.2F;
+        return ModConfig.Candy.oldSmoothLighting() ? 0.0F : 0.2F;
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class BlockBehaviourMixin
     )
     private boolean NT$onGetShadeFromShape(BlockState instance, BlockGetter blockGetter, BlockPos blockPos)
     {
-        if (MixinServerUtil.Block.isBlockFullShape(instance.getBlock()))
+        if (ModClientUtil.Block.isBlockFullShape(instance.getBlock()))
             return true;
         return instance.isCollisionShapeFullBlock(blockGetter, blockPos);
     }

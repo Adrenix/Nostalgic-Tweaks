@@ -1,11 +1,10 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.server.MixinServerUtil;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -39,12 +38,12 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "getLightBlock", at = @At("HEAD"), cancellable = true)
     private void NT$onGetLightBlock(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Integer> callback)
     {
-        if (!MixinConfig.Candy.oldWaterLighting())
+        if (!ModConfig.Candy.oldWaterLighting())
             return;
 
         if (NostalgicTweaks.isClient())
         {
-            TweakServerCache<Boolean> cache = TweakServerCache.get(GroupType.CANDY, CandyTweak.WATER_LIGHTING.getKey());
+            TweakServerCache<Boolean> cache = TweakServerCache.get(CandyTweak.WATER_LIGHTING);
             boolean isVanilla = !NostalgicTweaks.isNetworkVerified();
             boolean isDisabled = cache == null || cache.getServerCache();
 
@@ -66,13 +65,18 @@ public abstract class BlockStateBaseMixin
     }
 
     /**
+     * Client:
+     *
      * Occlusion needs to be disabled to prevent rendering issues if the old chest voxel tweak gets disabled after being enabled.
      * This is because the occlusion block property cannot be changed during runtime.
      */
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (MixinServerUtil.Block.isBlockOldChest(this.getBlock()))
+        if (NostalgicTweaks.isServer())
+            return;
+
+        if (ModClientUtil.Block.isBlockOldChest(this.getBlock()))
             callback.setReturnValue(false);
     }
 }

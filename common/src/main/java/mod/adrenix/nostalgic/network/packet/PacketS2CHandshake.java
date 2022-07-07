@@ -2,6 +2,8 @@ package mod.adrenix.nostalgic.network.packet;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.util.LogColor;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,6 +12,7 @@ import java.util.function.Supplier;
 
 /**
  * This packet is sent to the client with details about the mod's current network state.
+ *
  * If the client never receives this packet after joining the world, then the mod must assume the server is not
  * running an instance of the mod.
  */
@@ -70,13 +73,29 @@ public class PacketS2CHandshake
             if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
             {
                 NostalgicTweaks.setNetworkVerification(true);
-                NostalgicTweaks.LOGGER.info(String.format("Successfully connected to N.T supported server with protocol (%s).", NostalgicTweaks.PROTOCOL));
+                ToastNotification.addServerHandshake();
+
+                String info = String.format
+                (
+                    "Successfully connected to a world with Nostalgic Tweaks with protocol (%s).",
+                    LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
+                );
+
+                NostalgicTweaks.LOGGER.debug(info);
             }
             else
             {
                 NostalgicTweaks.setNetworkVerification(false);
-                NostalgicTweaks.LOGGER.warn("Connected to a server with N.T but received incorrect protocol.");
-                NostalgicTweaks.LOGGER.warn(String.format("Received (%s) :: Expected (%s)", this.protocol, NostalgicTweaks.PROTOCOL));
+                NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received incorrect protocol.");
+
+                String info = String.format
+                (
+                    "Received (%s) :: Expected (%s)",
+                    LogColor.apply(LogColor.RED, this.protocol),
+                    LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
+                );
+
+                NostalgicTweaks.LOGGER.warn(info);
             }
         });
     }

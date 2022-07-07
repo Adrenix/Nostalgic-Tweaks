@@ -17,14 +17,27 @@ public abstract class ClientConfigCache
 {
     /* Configuration Caching */
 
-    private static ClientConfig cache = new ClientConfig();
-    public static ClientConfig getRoot() { return cache; }
-    public static ClientConfig.Sound getSound() { return cache.sound; }
-    public static ClientConfig.EyeCandy getCandy() { return cache.eyeCandy; }
-    public static ClientConfig.Animation getAnimation() { return cache.animation; }
-    public static ClientConfig.Swing getSwing() { return cache.swing; }
-    public static ClientConfig.Gui getGui() { return cache.gui; }
-    private static boolean isInitialized = false;
+    private static boolean initialized = false;
+    private static final ClientConfig SERVER_CACHE = new ClientConfig();
+    private static ClientConfig cache;
+    private static ClientConfig getCache()
+    {
+        // This cache is only used by the ModConfig class and is not used for logic
+        if (NostalgicTweaks.isServer())
+            return SERVER_CACHE;
+
+        if (!initialized)
+            preloadConfiguration();
+        return cache;
+    }
+
+    public static ClientConfig getRoot() { return getCache(); }
+    public static ClientConfig.Sound getSound() { return getCache().sound; }
+    public static ClientConfig.EyeCandy getCandy() { return getCache().eyeCandy; }
+    public static ClientConfig.Gameplay getGameplay() { return getCache().gameplay; }
+    public static ClientConfig.Animation getAnimation() { return getCache().animation; }
+    public static ClientConfig.Swing getSwing() { return getCache().swing; }
+    public static ClientConfig.Gui getGui() { return getCache().gui; }
 
     private static InteractionResult reloadConfiguration()
     {
@@ -40,15 +53,21 @@ public abstract class ClientConfigCache
 
     public static void preloadConfiguration()
     {
-        NostalgicTweaks.LOGGER.info("Initializing config prematurely for mixin compatibility");
+        if (NostalgicTweaks.isServer())
+        {
+            String fail = String.format("[%s] Cannot initialize client config for server.", NostalgicTweaks.MOD_NAME);
+            throw new AssertionError(fail);
+        }
+
+        NostalgicTweaks.LOGGER.info("Initializing client config prematurely for mixin compatibility");
         initializeConfiguration();
     }
 
     public static void initializeConfiguration()
     {
         // Do not initialize again if this method was run prematurely
-        if (!isInitialized)
-            isInitialized = true;
+        if (!initialized)
+            initialized = true;
         else
             return;
 

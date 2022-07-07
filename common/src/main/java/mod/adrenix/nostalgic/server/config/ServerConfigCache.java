@@ -10,18 +10,30 @@ import net.minecraft.world.InteractionResult;
  * This class is used exclusively by the server. It caches the current values stored on disk.
  *
  * The {@link TweakServerCache} caches these values and provides the server with an interface to send updated tweaks
- * to connected players without interfering with the values saved on disk.
+ * to connected players without referencing the values saved on disk.
  */
 
 public abstract class ServerConfigCache
 {
     /* Configuration Caching */
 
-    private static boolean isInitialized = false;
+    private static boolean initialized = false;
     private static final ServerConfig CLIENT_CACHE = new ServerConfig();
-    private static ServerConfig cache = new ServerConfig();
-    public static ServerConfig getRoot() { return cache; }
-    public static ServerConfig.EyeCandy getCandy() { return NostalgicTweaks.isServer() ? cache.eyeCandy : CLIENT_CACHE.eyeCandy; }
+    private static ServerConfig cache;
+    private static ServerConfig getCache()
+    {
+        // This cache is only used by the ModConfig class and is not used for logic
+        if (NostalgicTweaks.isClient())
+            return CLIENT_CACHE;
+
+        if (!initialized)
+            preloadConfiguration();
+        return cache;
+    }
+
+    public static ServerConfig getRoot() { return getCache(); }
+    public static ServerConfig.EyeCandy getCandy() { return getCache().eyeCandy; }
+    public static ServerConfig.Gameplay getGameplay() { return getCache().gameplay; }
 
     private static InteractionResult reloadConfiguration()
     {
@@ -34,11 +46,17 @@ public abstract class ServerConfigCache
         return InteractionResult.SUCCESS;
     }
 
+    public static void preloadConfiguration()
+    {
+        NostalgicTweaks.LOGGER.info("Initializing server config prematurely for mixin compatibility");
+        initializeConfiguration();
+    }
+
     public static void initializeConfiguration()
     {
         // Do not initialize again this method was already run
-        if (!isInitialized)
-            isInitialized = true;
+        if (!initialized)
+            initialized = true;
         else
             return;
 

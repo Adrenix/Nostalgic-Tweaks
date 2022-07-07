@@ -1,122 +1,62 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.SwingConfig;
-import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.effect.MobEffectUtil;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Objects;
 
 /**
- * All mixins within this class are currently controlled by the client.
+ * All mixins within this class are injected into both client and server.
+ * Do not class load any vanilla client code here.
+ * @see mod.adrenix.nostalgic.mixin.client.world.entity.LivingEntityMixin
+ * @see mod.adrenix.nostalgic.mixin.common.world.entity.LivingEntityMixin
  */
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements ICameraPitch
+public abstract class LivingEntityMixin
 {
-    /* Dummy Constructor */
-
-    private LivingEntityMixin(EntityType<?> entityType, Level level)
-    {
-        super(entityType, level);
-    }
-
-    /* Camera Pitching Ducking */
-
-    @Unique private float NT$cameraPitch = 0.0F;
-    @Unique public float NT$prevCameraPitch = 0.0F;
-
-    @Override public void setCameraPitch(float cameraPitch) { this.NT$cameraPitch = cameraPitch; }
-    @Override public void setPrevCameraPitch(float prevCameraPitch) { this.NT$prevCameraPitch = prevCameraPitch; }
-
-    @Override public float getCameraPitch() { return NT$cameraPitch; }
-    @Override public float getPrevCameraPitch() { return NT$prevCameraPitch; }
-
-    /* Mixin Injections */
-
     /**
-     * Controls how fast the swinging animation is.
-     * Modified by numerous swing speed parameters controlled within the config.
+     * Prevents living entities from playing the food consumption sound.
+     * Controlled by the old hunger tweak.
      */
-    @Inject(method = "getCurrentSwingDuration", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onGetCurrentSwingDuration(CallbackInfoReturnable<Integer> callback)
+    @Redirect(method = "eat", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    private void NT$onEat(Level instance, Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch)
     {
-        AbstractClientPlayer player = Minecraft.getInstance().player;
-
-        if (MixinConfig.Swing.isOverridingSpeeds() || player == null)
+        if (ModConfig.Gameplay.instantEat())
             return;
-        else if (this.getType() == EntityType.PLAYER)
-        {
-            Player entity = (Player) this.getType().tryCast(this);
-            if (entity == null || !entity.isLocalPlayer())
-                return;
-        }
-
-        int mod = SwingConfig.getSwingSpeed(player);
-
-        if (MixinConfig.Swing.isSpeedGlobal())
-            callback.setReturnValue(SwingConfig.getSwingSpeed());
-        else if (MixinConfig.Swing.isOverridingHaste() && player.hasEffect(MobEffects.DIG_SPEED))
-            callback.setReturnValue(MixinConfig.Swing.getHasteSpeed());
-        else if (MixinConfig.Swing.isOverridingFatigue() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
-            callback.setReturnValue(MixinConfig.Swing.getFatigueSpeed());
-        else if (MobEffectUtil.hasDigSpeed(player))
-            callback.setReturnValue(mod - (1 + MobEffectUtil.getDigSpeedAmplification(player)));
-        else
-        {
-            callback.setReturnValue(
-                player.hasEffect(MobEffects.DIG_SLOWDOWN) ?
-                    mod + (1 + Objects.requireNonNull(player.getEffect(MobEffects.DIG_SLOWDOWN)).getAmplifier()) * 2 :
-                    mod
-            );
-        }
+        instance.playSound(player, x, y, z, sound, category, volume, pitch);
     }
 
     /**
-     * Prevents the breaking animation and breaking sound when a tool runs out of durability.
-     * Controlled by the tool disintegration tweak.
+     * Prevents the spawning of food consumption particles and eating sounds.
+     * Controlled by the old hunger tweak.
      */
-    @Inject(method = "breakItem", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onBreakItem(ItemStack itemStack, CallbackInfo callback)
+    @Inject(method = "triggerItemUseEffects", at = @At("HEAD"), cancellable = true)
+    private void NT$onAddEatEffect(ItemStack itemStack, int count, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldToolExplosion())
+        if (ModConfig.Gameplay.instantEat() && itemStack.getUseAnimation() == UseAnim.EAT)
             callback.cancel();
     }
 
     /**
-     * Updates the previous camera pitching.
+     * Brings back the old backwards walking animation.
+     * Controlled by the old backwards walk tweak.
      */
-    @Inject(method = "baseTick", at = @At(value = "FIELD", ordinal = 0, target = "Lnet/minecraft/world/entity/LivingEntity;hurtTime:I"))
-    private void NT$onBaseTick(CallbackInfo callback)
+    @ModifyConstant
+    (
+        method = "tick",
+        slice = @Slice(to = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;attackAnim:F")),
+        constant = @Constant(floatValue = 180.0F)
+    )
+    public float NT$onBackwardsRotation(float vanilla)
     {
-        this.setPrevCameraPitch(this.getCameraPitch());
-    }
-
-    /**
-     * Redirects the vanilla falling sounds to a blank sound.
-     * Controlled by the old fall sounds tweak.
-     */
-    @Inject(method = "getFallDamageSound", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onGetFallDamageSound(int height, CallbackInfoReturnable<SoundEvent> callback)
-    {
-        if (MixinConfig.Sound.oldFall())
-            callback.setReturnValue(SoundUtil.Event.BLANK.get());
+        return ModConfig.Animation.oldBackwardsWalking() ? 0.0F : vanilla;
     }
 }

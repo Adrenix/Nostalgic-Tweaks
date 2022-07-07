@@ -5,37 +5,41 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
 /**
- * This mixin utility uses Minecraft classes exclusive to the client. For safety, the server should not interface with
- * this utility.
- *
- * For a server safe mixin utility use {@link mod.adrenix.nostalgic.util.server.MixinServerUtil}.
+ * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
+ * For a server safe mixin utility use {@link mod.adrenix.nostalgic.util.server.ModServerUtil}.
  */
 
-public abstract class MixinClientUtil
+public abstract class ModClientUtil
 {
     /**
-     * Mixin Runnables
+     * Config Runnables
      *
      * Some tweaks require more work for a change to take place.
      *
@@ -74,14 +78,115 @@ public abstract class MixinClientUtil
         }
     }
 
-    /* World Candy Mixin Helpers */
+    /* Gui Helpers */
+
+    public static class Gui
+    {
+        // Renders in-game HUD text overlays - game version, food, experience, etc.
+        public static void renderOverlays(PoseStack poseStack)
+        {
+            if (Minecraft.getInstance().options.renderDebug)
+                return;
+
+            Font font = Minecraft.getInstance().font;
+            Player player = Minecraft.getInstance().player;
+
+            if (player == null)
+                return;
+
+            boolean isVersion = ModConfig.Candy.oldVersionOverlay();
+            boolean isExperience = ModConfig.Gameplay.alternativeExperienceBar();
+            boolean isFood = ModConfig.Gameplay.alternativeHungerBar();
+
+            int foodLevel = player.getFoodData().getFoodLevel();
+            int xpPercent = (int) (player.experienceProgress * 100.0F);
+
+            int white = 0xFFFFFF;
+            float x = 2.0F;
+            float y = 0.0F;
+            float dy = 10.0F;
+
+            String foodColor = "a";
+            String xpColor = "a";
+
+            if (foodLevel <= 2) foodColor = "4";
+            else if (foodLevel <= 6) foodColor = "c";
+            else if (foodLevel <= 10) foodColor = "6";
+            else if (foodLevel <= 15) foodColor = "e";
+            else if (foodLevel < 20) foodColor = "2";
+
+            if (xpPercent <= 20) xpColor = "c";
+            else if (xpPercent <= 40) xpColor = "6";
+            else if (xpPercent <= 60) xpColor = "e";
+            else if (xpPercent <= 80) xpColor = "2";
+
+            String food = Component.translatable(NostalgicLang.Gui.HUD_FOOD, foodColor, foodLevel).getString();
+            String xp = Component.translatable(NostalgicLang.Gui.HUD_EXPERIENCE, xpColor, xpPercent).getString();
+            String level = Component.translatable(NostalgicLang.Gui.HUD_LEVEL, player.experienceLevel).getString();
+
+            if (isVersion)
+                font.drawShadow(poseStack, ModConfig.Candy.getOverlayText(), x, y += 2.0F, white);
+            if (isExperience)
+            {
+                font.drawShadow(poseStack, xp, x, y += y == 0.0F ? 2.0F : dy, white);
+                font.drawShadow(poseStack, level, x, y += y == 0.0F ? 2.0F :  dy, white);
+            }
+            if (isFood)
+            {
+                float py = y == 0.0F ? 2.0F : y + dy;
+                font.drawShadow(poseStack, food, x, py, white);
+            }
+        }
+
+        // Render an inverse half-armor texture
+        public static void renderInverseArmor(PoseStack poseStack, float offset, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+        {
+            // Flip the vertex’s u texture coordinates so the half armor texture rendering goes from right to left
+            Matrix4f matrix = poseStack.last().pose();
+            BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+            bufferBuilder.vertex(matrix, x, y + vHeight, offset).uv((uOffset + uWidth) / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
+            bufferBuilder.vertex(matrix, x + uWidth, y + vHeight, offset).uv(uOffset / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
+            bufferBuilder.vertex(matrix, x + uWidth, y, offset).uv(uOffset / 256.0F, vOffset / 256.0F).endVertex();
+            bufferBuilder.vertex(matrix, x, y, offset).uv((uOffset + uWidth) / 256.0F, vOffset / 256.0F).endVertex();
+            BufferUploader.drawWithShader(bufferBuilder.end());
+        }
+    }
+
+    /* Block Helpers */
+
+    public static class Block
+    {
+        public static boolean isBlockOldChest(net.minecraft.world.level.block.Block block)
+        {
+            boolean isOldChest = ModConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);
+            boolean isOldEnder = ModConfig.Candy.oldEnderChest() && block.getClass().equals(EnderChestBlock.class);
+            boolean isOldTrap = ModConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
+
+            return isOldChest || isOldEnder || isOldTrap;
+        }
+
+        public static boolean isBlockFullShape(net.minecraft.world.level.block.Block block)
+        {
+            boolean isChest = isBlockOldChest(block);
+            boolean isAOFixed = ModConfig.Candy.fixAmbientOcclusion();
+            boolean isSoulSand = isAOFixed && block.getClass().equals(SoulSandBlock.class);
+            boolean isPowderedSnow = isAOFixed && block.getClass().equals(PowderSnowBlock.class);
+            boolean isComposter = isAOFixed && block.getClass().equals(ComposterBlock.class);
+            boolean isPiston = isAOFixed && block.getClass().equals(PistonBaseBlock.class);
+
+            return isChest || isSoulSand || isPowderedSnow || isComposter || isPiston;
+        }
+    }
+
+    /* World Candy Helpers */
 
     public static class World
     {
         // Determines where the sun/moon should be rotated when rendering it.
         public static float getSunriseRotation(float vanilla)
         {
-            return MixinConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
+            return ModConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
         }
 
         // Builds a sky disc for the far plane.
@@ -151,7 +256,7 @@ public abstract class MixinClientUtil
         }
     }
 
-    /* Animation Mixin Helpers */
+    /* Animation Helpers */
 
     public static class Animation
     {
@@ -168,10 +273,11 @@ public abstract class MixinClientUtil
         }
     }
 
-    /* Fog Mixin Helpers */
+    /* Fog Helpers */
 
     public static class Fog
     {
+        public static boolean isMobEffectActive = false;
         public static boolean isOverworld(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.OVERWORLD; }
         public static boolean isNether(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.NETHER; }
         private static boolean isFluidFog(Camera camera) { return camera.getFluidInCamera() != FogType.NONE; }
@@ -209,9 +315,9 @@ public abstract class MixinClientUtil
 
         private static void renderFog(FogRenderer.FogMode fogMode)
         {
-            if (MixinConfig.Candy.oldTerrainFog())
+            if (ModConfig.Candy.oldTerrainFog())
                 setTerrainFog(fogMode);
-            if (MixinConfig.Candy.oldHorizonFog())
+            if (ModConfig.Candy.oldHorizonFog())
                 setHorizonFog(fogMode);
             RenderSystem.setShaderFogShape(FogShape.SPHERE);
         }
@@ -221,21 +327,32 @@ public abstract class MixinClientUtil
         {
             if (isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera))
                 return;
+            else if (isMobEffectActive)
+            {
+                isMobEffectActive = false;
+                return;
+            }
+
             renderFog(fogMode);
         }
 
         // Overrides fog in the nether
         public static void setupNetherFog(Camera camera, FogRenderer.FogMode fogMode)
         {
-            if (!MixinConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
+            if (!ModConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
                 return;
+            else if (isMobEffectActive)
+            {
+                isMobEffectActive = false;
+                return;
+            }
 
             renderFog(fogMode);
             RenderSystem.setShaderFogStart(0.0F);
         }
     }
 
-    /* Item Mixin Helpers */
+    /* Item Helpers */
 
     public static class Item
     {
@@ -244,10 +361,10 @@ public abstract class MixinClientUtil
         {
             // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
             boolean isUnequipped = rendererItemStack.toString().equals("0 air") && playerItemStack.toString().equals("1 air");
-            if (!MixinConfig.Animation.oldItemReequip() || !isUnequipped)
+            if (!ModConfig.Animation.oldItemReequip() || !isUnequipped)
                 return originalItemStack;
 
-            return player.getLastItem();
+            return player.NT$getLastItem();
         }
 
         // Tells the item renderer if we're rendering a flat item.

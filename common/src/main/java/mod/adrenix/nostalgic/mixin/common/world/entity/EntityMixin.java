@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.widen.IMixinEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -41,7 +41,7 @@ public abstract class EntityMixin
     )
     private void NT$onMoveSound(Entity instance, BlockPos pos, BlockState state)
     {
-        if (MixinConfig.Sound.oldStep())
+        if (ModConfig.Sound.oldStep())
         {
             if (instance instanceof Spider || instance instanceof Silverfish)
                 return;

@@ -32,7 +32,7 @@ public class TooltipButton extends Button
         Screen screen = minecraft.screen;
         if (screen == null) return;
 
-        int startX = ConfigRowList.TEXT_START + minecraft.font.width(Component.translatable(this.cache.getLangKey())) + 4;
+        int startX = ConfigRowList.TEXT_START + minecraft.font.width(this.cache.getTranslation()) + 4;
         int startY = this.anchor.y + 4;
         int uWidth = 12;
         int vHeight = 14;
@@ -42,7 +42,7 @@ public class TooltipButton extends Button
         if (isMouseOver && screen instanceof ConfigScreen)
         {
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(Component.translatable(cache.getTooltipKey()), 38), mouseX, mouseY));
+                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(cache.getTooltipKey()), 38), mouseX, mouseY));
         }
     }
 }

@@ -10,5 +10,9 @@
     "IMixinProgressScreen",
     "IMixinScreen",
     "IMixinTitleScreen"
+  ],
+
+  "mixins": [
+    "IMixinLivingEntity"
   ]
 }

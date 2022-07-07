@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 /**
  * The tweak package assists the configuration menu by indicating to the user that something might be wrong if a
@@ -17,6 +19,11 @@ public interface ITweak
     String getKey();
     GroupType getGroup();
 
+    TweakClientCache<?> getClientCache();
+    TweakServerCache<?> getServerCache();
+    void setServerCache(TweakServerCache<?> cache);
+    void setClientCache(TweakClientCache<?> cache);
+
     void setKey(String key);
     void setLoaded(boolean state);
     boolean isLoaded();
@@ -26,19 +33,42 @@ public interface ITweak
         if (this.isLoaded())
             return;
 
-        TweakClientCache<Object> tweakCache = TweakClientCache.get(this.getGroup(), this.getKey());
-        if (tweakCache != null)
-            tweakCache.setStatus(StatusType.LOADED);
+        TweakClientCache<Object> clientCache = TweakClientCache.get(this);
+        TweakServerCache<Object> serverCache = TweakServerCache.get(this);
+
+        if (NostalgicTweaks.isClient())
+        {
+            if (clientCache != null)
+                clientCache.setStatus(StatusType.LOADED);
+            else
+            {
+                String fail = String.format(
+                    "[%s] Unable to set status of client tweak '%s' in tweak group '%s'.\nThis is a fault of the mod dev. Please report this key mismatch!",
+                    NostalgicTweaks.MOD_NAME,
+                    this.getKey(),
+                    this.getGroup()
+                );
+
+                // Each config key needs to match the tweak cache. Failing this requirement results in a thrown error.
+                throw new AssertionError(fail);
+            }
+        }
         else
         {
-            String fail = String.format(
-                "Unable to set status of tweak '%s' in tweak group '%s'.\nThis is a fault of the mod dev. Please report this key mismatch!",
-                this.getKey(),
-                this.getGroup()
-            );
+            if (serverCache != null)
+                serverCache.setStatus(StatusType.LOADED);
+            else if (clientCache == null)
+            {
+                String fail = String.format(
+                    "[%s] Unable to set status of server tweak '%s' in tweak group '%s'.\nThis is a fault of the mod dev. Please report this key mismatch!",
+                    NostalgicTweaks.MOD_NAME,
+                    this.getKey(),
+                    this.getGroup()
+                );
 
-            // Each config key needs to match the tweak cache. Failing this requirement results in a thrown error.
-            throw new AssertionError(fail);
+                // Each config key needs to match the tweak cache. Failing this requirement results in a thrown error.
+                throw new AssertionError(fail);
+            }
         }
 
         this.setLoaded(true);

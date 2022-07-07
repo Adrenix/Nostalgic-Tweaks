@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
@@ -55,7 +55,7 @@ public abstract class ItemModelGeneratorMixin
     {
         try
         {
-            if (!MixinConfig.Candy.fixItemModelGaps())
+            if (!ModConfig.Candy.fixItemModelGaps())
                 return;
         }
         // Captures NoClassDefFoundError if config dependency is missing which allows forge to reach missing dependency screen

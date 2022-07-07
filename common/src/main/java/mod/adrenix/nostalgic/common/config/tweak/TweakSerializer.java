@@ -22,6 +22,15 @@ public class TweakSerializer
     private final StatusType status;
     private Object value;
 
+    /* Transmitted Numbers */
+
+    private final boolean isByte;
+    private final boolean isShort;
+    private final boolean isInteger;
+    private final boolean isLong;
+    private final boolean isFloat;
+    private final boolean isDouble;
+
     /* Transmitted Tweak Versions */
 
     private TweakVersion.Hotbar hotbar = null;
@@ -34,6 +43,13 @@ public class TweakSerializer
         this.value = cache.getValue();
         this.group = cache.getGroup();
         this.status = cache.getStatus();
+
+        this.isByte = this.value instanceof Byte;
+        this.isShort = this.value instanceof Short;
+        this.isInteger = this.value instanceof Integer;
+        this.isLong = this.value instanceof Long;
+        this.isFloat = this.value instanceof Float;
+        this.isDouble = this.value instanceof Double;
 
         if (this.value instanceof TweakVersion.Hotbar)
             this.hotbar = (TweakVersion.Hotbar) this.value;
@@ -53,7 +69,20 @@ public class TweakSerializer
     {
         TweakSerializer serializer = GSON.fromJson(json, TweakSerializer.class);
 
-        if (serializer.getHotbar() != null)
+        // Numerical values gets sent over as doubles
+        if (serializer.isByte)
+            serializer.setValue(((Double) serializer.getValue()).byteValue());
+        else if (serializer.isShort)
+            serializer.setValue(((Double) serializer.getValue()).shortValue());
+        else if (serializer.isInteger)
+            serializer.setValue(((Double) serializer.getValue()).intValue());
+        else if (serializer.isLong)
+            serializer.setValue(((Double) serializer.getValue()).longValue());
+        else if (serializer.isFloat)
+            serializer.setValue(((Double) serializer.getValue()).floatValue());
+        else if (serializer.isDouble)
+            serializer.setValue(serializer.getValue());
+        else if (serializer.getHotbar() != null)
             serializer.setValue(serializer.getHotbar());
 
         return serializer;

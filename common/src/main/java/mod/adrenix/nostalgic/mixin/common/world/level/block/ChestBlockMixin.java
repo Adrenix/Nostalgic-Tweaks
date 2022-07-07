@@ -1,12 +1,11 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
-import mod.adrenix.nostalgic.util.server.MixinServerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -25,13 +24,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ChestBlockMixin
 {
     /**
+     * Client:
+     *
      * Changes the render shape to be that of a model. The JSON models will instruct the vanilla renderer to show a
      * full chest block.
      */
     @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetRenderShape(BlockState state, CallbackInfoReturnable<RenderShape> callback)
     {
-        if (MixinServerUtil.Block.isBlockOldChest(state.getBlock()))
+        if (NostalgicTweaks.isServer())
+            return;
+
+        if (ModClientUtil.Block.isBlockOldChest(state.getBlock()))
             callback.setReturnValue(RenderShape.MODEL);
     }
 
@@ -44,10 +48,10 @@ public abstract class ChestBlockMixin
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        TweakServerCache<Boolean> cache = TweakServerCache.get(GroupType.CANDY, CandyTweak.CHEST_VOXEL.getKey());
+        TweakServerCache<Boolean> cache = TweakServerCache.get(CandyTweak.CHEST_VOXEL);
         VoxelShape shape = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
-        if (NostalgicTweaks.isServer() && MixinConfig.Candy.oldChestVoxel())
+        if (NostalgicTweaks.isServer() && ModConfig.Candy.oldChestVoxel())
             callback.setReturnValue(shape);
         else if (NostalgicTweaks.isClient())
         {
@@ -59,11 +63,11 @@ public abstract class ChestBlockMixin
                 return;
             }
 
-            if (!MixinConfig.Candy.oldChestVoxel())
+            if (!ModConfig.Candy.oldChestVoxel())
                 return;
-            else if (!MixinConfig.Candy.oldChest() && state.getBlock().getClass().equals(ChestBlock.class))
+            else if (!ModConfig.Candy.oldChest() && state.getBlock().getClass().equals(ChestBlock.class))
                 return;
-            else if (!MixinConfig.Candy.oldTrappedChest() && state.getBlock().getClass().equals(TrappedChestBlock.class))
+            else if (!ModConfig.Candy.oldTrappedChest() && state.getBlock().getClass().equals(TrappedChestBlock.class))
                 return;
             callback.setReturnValue(shape);
         }

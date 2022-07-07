@@ -199,7 +199,7 @@ public class CustomizedRowList extends AbstractRowList<CustomizedRowList.Row>
                     0,
                     20,
                     20,
-                    Component.translatable("#").withStyle(isAdded ? ChatFormatting.YELLOW : ChatFormatting.RESET),
+                    Component.literal("#").withStyle(isAdded ? ChatFormatting.YELLOW : ChatFormatting.RESET),
                     (ignored) -> {},
                     (button, stack, mouseX, mouseY) ->
                     {
@@ -216,7 +216,7 @@ public class CustomizedRowList extends AbstractRowList<CustomizedRowList.Row>
                     0,
                     20,
                     20,
-                    Component.translatable(REMOVE),
+                    Component.literal(REMOVE),
                     (button) -> CustomizedRowList.Row.delete(entry, widgets),
                     (button, stack, mouseX, mouseY) ->
                     {
@@ -233,7 +233,7 @@ public class CustomizedRowList extends AbstractRowList<CustomizedRowList.Row>
                     0,
                     20,
                     20,
-                    Component.translatable(UNDO),
+                    Component.literal(UNDO),
                     (button) -> CustomizedRowList.Row.undo(entry, widgets),
                     (button, stack, mouseX, mouseY) ->
                     {

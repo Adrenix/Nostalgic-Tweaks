@@ -2,13 +2,13 @@ package mod.adrenix.nostalgic.util.common;
 
 /**
  * This utility is used by both client and server.
- * Keep client code out.
+ * Keep vanilla client code out.
  *
- * @see mod.adrenix.nostalgic.util.client.MixinClientUtil
- * @see mod.adrenix.nostalgic.util.server.MixinServerUtil
+ * @see mod.adrenix.nostalgic.util.client.ModClientUtil
+ * @see mod.adrenix.nostalgic.util.server.ModServerUtil
  */
 
-public abstract class MixinCommonUtil
+public abstract class ModCommonUtil
 {
     /* Mixin Utility Constants */
 

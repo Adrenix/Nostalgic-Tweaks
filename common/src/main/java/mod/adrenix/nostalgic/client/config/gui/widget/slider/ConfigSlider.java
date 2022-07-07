@@ -26,11 +26,7 @@ public class ConfigSlider extends GenericSlider implements IPermissionWidget
 
         this.cache = cache;
 
-        ConfigEntry.BoundedDiscrete bounds = CommonReflect.getAnnotation(
-            cache.getGroup(),
-            cache.getKey(),
-            ConfigEntry.BoundedDiscrete.class
-        );
+        ConfigEntry.BoundedDiscrete bounds = CommonReflect.getAnnotation(cache, ConfigEntry.BoundedDiscrete.class);
 
         if (bounds != null)
         {
@@ -38,11 +34,7 @@ public class ConfigSlider extends GenericSlider implements IPermissionWidget
             this.setMaximum((int) bounds.max());
         }
 
-        TweakClient.Gui.SliderType sliderType = CommonReflect.getAnnotation(
-            cache.getGroup(),
-            cache.getKey(),
-            TweakClient.Gui.SliderType.class
-        );
+        TweakClient.Gui.SliderType sliderType = CommonReflect.getAnnotation(cache, TweakClient.Gui.SliderType.class);
 
         if (sliderType != null)
             this.setSlider(sliderType.slider());

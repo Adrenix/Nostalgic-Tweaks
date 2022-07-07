@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.util;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,29 +28,71 @@ public abstract class NostalgicUtil
     {
         public static final String DISCORD = "https://discord.gg/jWdfVh3";
         public static final String KO_FI = "https://ko-fi.com/adrenix";
-        public static final String GOLDEN_DAYS = "https://github.com/PoeticRainbow/golden-days";
+        public static final String GOLDEN_DAYS = "https://github.com/PoeticRainbow/golden-days/releases";
     }
 
     public static class Run
     {
+        /**
+         * Used in loops that want to "simulate" work being done.
+         * This is used mostly in progress screens.
+         */
         public static void nothing() {}
     }
 
     public static class Numbers
     {
+        /**
+         * Determine if two integers are within a given tolerance.
+         * @param a First integer.
+         * @param b Second integer.
+         * @param tolerance The allowed distance between a and b.
+         * @return If the two integers are within the given tolerance.
+         */
         public static boolean tolerance(int a, int b, int tolerance)
         {
             return Math.abs(a - b) < tolerance;
         }
 
+        /**
+         * This is an overload method for {@link Numbers#tolerance(int, int, int)} with a default tolerance of 3.
+         * @param a First integer.
+         * @param b Second integer.
+         * @return If the two integers are within a tolerance of 3.
+         */
         public static boolean tolerance(int a, int b)
         {
             return tolerance(a, b, 3);
         }
     }
 
+    public static class Array
+    {
+        /**
+         * Safely get an item from an array without incurring an out-of-bounds exception.
+         * @param array The array to get the item from.
+         * @param index The index the item should be at.
+         * @param <T> The item from the given index.
+         * @return Item at the given index within the array. Will be null if the index is out-of-bounds.
+         */
+        @Nullable
+        public static <T> T get(T[] array, int index)
+        {
+            int bound = array.length - 1;
+
+            if (index <= bound && index >= 0)
+                return array[index];
+            return null;
+        }
+    }
+
     public static class Text
     {
+        /**
+         * Converts a string into a title case format. Handles space and underscore delimiters.
+         * @param convert The string to convert.
+         * @return A string that is in title case format.
+         */
         public static String toTitleCase(String convert)
         {
             String delimiters = " _";
@@ -75,6 +118,11 @@ public abstract class NostalgicUtil
             return builder.toString();
         }
 
+        /**
+         * Combine multiple Minecraft {@link Component Components} into one single component.
+         * @param lines An array of {@link Component Components}.
+         * @return One single {@link Component}
+         */
         public static Component combine(Component[] lines)
         {
             StringBuilder builder = new StringBuilder();
@@ -85,7 +133,14 @@ public abstract class NostalgicUtil
 
     public static class Wrap
     {
-        public static List<Component> tooltips(Component translation, int width)
+        /**
+         * Text wrap a Minecraft {@link Component} into an array of multiple {@link Component Components}
+         * with the given width.
+         * @param translation A {@link Component}.
+         * @param width How long each line should be.
+         * @return An array of {@link Component Components}.
+         */
+        public static List<Component> tooltip(Component translation, int width)
         {
             String translated = translation.getString();
             ArrayList<String> lines = wrap(translated, width);
@@ -95,6 +150,10 @@ public abstract class NostalgicUtil
 
             return components;
         }
+
+        /**
+         * Text wrapping helper methods.
+         */
 
         private static ArrayList<String> wrap(String string, int lineLength)
         {

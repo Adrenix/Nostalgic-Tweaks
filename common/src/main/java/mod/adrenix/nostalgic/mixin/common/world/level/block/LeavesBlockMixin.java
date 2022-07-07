@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -30,6 +30,6 @@ public abstract class LeavesBlockMixin extends Block
     @SuppressWarnings("deprecation")
     public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return MixinConfig.Candy.oldLeavesLighting() ? 1.0F : super.getShadeBrightness(state, level, pos);
+        return ModConfig.Candy.oldLeavesLighting() ? 1.0F : super.getShadeBrightness(state, level, pos);
     }
 }

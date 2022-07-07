@@ -25,13 +25,6 @@ public abstract class ForgeClientEventHandler
     /* Candy Events */
 
     /**
-     * Renders the current game version to the top left of the HUD.
-     * Controlled by the old version overlay toggle.
-     */
-    @SubscribeEvent
-    public static void versionOverlay(RenderGameOverlayEvent.PreLayer event) { ForgeCandyEvents.versionOverlay(event); }
-
-    /**
      * Redirects the vanilla title screen to the mod's classic title screen.
      * Controlled by the old title screen toggle.
      */
@@ -51,4 +44,16 @@ public abstract class ForgeClientEventHandler
      */
     @SubscribeEvent
     public static void oldFogRendering(EntityViewRenderEvent.RenderFogEvent event) { ForgeCandyEvents.oldFogRendering(event); }
+
+    /* Gui Events */
+
+    /**
+     * Renders the current game version to the top left of the HUD along with alternative text HUD tweaks.
+     * Controlled by the old version overlay toggle and various alternative HUD tweaks.
+     *
+     * Also overrides the overlays for armor, food, and air level bar.
+     * Controlled by various HUD tweaks.
+     */
+    @SubscribeEvent
+    public static void overlayOverride(RenderGameOverlayEvent.PreLayer event) { ForgeGuiEvents.overlayOverride(event); }
 }

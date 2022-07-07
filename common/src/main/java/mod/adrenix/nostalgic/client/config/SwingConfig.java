@@ -1,7 +1,8 @@
 package mod.adrenix.nostalgic.client.config;
 
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.SwingTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.item.*;
@@ -9,12 +10,10 @@ import net.minecraft.world.item.*;
 import java.util.Map;
 
 /**
- * Pulls Minecraft client code out of the {@link MixinConfig} class.
+ * Pulls Minecraft client code out of the {@link ModConfig} class. This utility allows the client to interface with the
+ * mod's swing speed configurations.
  *
- * While having the code there was fine since the server didn't class load the utility, this removes the
- * possibility have running into issues in the future.
- *
- * This class is used exclusively by the client. There is zero reason for the server to interface with this.
+ * This class is used exclusively by the client. There is no reason for the server to interface with this.
  */
 
 public abstract class SwingConfig
@@ -24,7 +23,7 @@ public abstract class SwingConfig
     {
         Map.Entry<String, Integer> entry = CustomSwings.getEntryFromItem(item);
 
-        if (MixinConfig.Swing.isSpeedGlobal())
+        if (isSpeedGlobal())
             return SWING.global;
         else if (entry != null)
             return entry.getValue();
@@ -39,10 +38,17 @@ public abstract class SwingConfig
 
     public static int getSwingSpeed(AbstractClientPlayer player)
     {
-        if (MixinConfig.isModEnabled(null))
+        if (ModConfig.isModEnabled())
             return getSpeedFromItem(player.getMainHandItem().getItem());
         return DefaultConfig.Swing.NEW_SPEED;
     }
 
+    public static boolean isOverridingFatigue() { return ModConfig.isModEnabled() && SWING.fatigue != DefaultConfig.Swing.GLOBAL; }
+    public static boolean isOverridingSpeeds() { return !ModConfig.isTweakOn(SwingTweak.OVERRIDE_SPEEDS) || SWING.overrideSpeeds; }
+    public static boolean isOverridingHaste() { return ModConfig.isModEnabled() && SWING.haste != DefaultConfig.Swing.GLOBAL; }
+    public static boolean isSpeedGlobal() { return SWING.global != DefaultConfig.Swing.GLOBAL; }
+    public static int getFatigueSpeed() { return isSpeedGlobal() ? SWING.global : SWING.fatigue; }
+    public static int getHasteSpeed() { return isSpeedGlobal() ? SWING.global : SWING.haste; }
     public static int getSwingSpeed() { return getSwingSpeed(Minecraft.getInstance().player); }
+    public static int getGlobalSpeed() { return SWING.global; }
 }

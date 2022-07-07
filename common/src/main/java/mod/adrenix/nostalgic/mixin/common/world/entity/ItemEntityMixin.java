@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +19,7 @@ public abstract class ItemEntityMixin
     @Inject(method = "isMergable", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onIsMergable(CallbackInfoReturnable<Boolean> callback)
     {
-        if (MixinConfig.Candy.oldItemMerging())
+        if (ModConfig.Candy.oldItemMerging())
             callback.setReturnValue(false);
     }
 }

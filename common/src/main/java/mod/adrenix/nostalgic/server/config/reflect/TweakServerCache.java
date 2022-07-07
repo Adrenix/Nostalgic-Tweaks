@@ -1,10 +1,13 @@
 package mod.adrenix.nostalgic.server.config.reflect;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
+import mod.adrenix.nostalgic.common.config.tweak.ITweak;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,25 +34,45 @@ public class TweakServerCache<T>
     private static String generateKey(GroupType group, String key) { return TweakCommonCache.generateKey(group, key); }
     static
     {
-        Arrays.stream(GroupType.values()).forEach((group) ->
-            ServerReflect.getGroup(group).forEach((key, value) ->
-            {
-                if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
+        if (NostalgicTweaks.isClient())
+        {
+            TweakClientCache.all().forEach((id, tweak) -> {
+                if (!tweak.isClientSide() || tweak.isDynamic())
+                    cache.put(id, new TweakServerCache<>(tweak.getGroup(), tweak.getKey(), tweak.getSavedValue()));
+            });
+        }
+        else
+        {
+            Arrays.stream(GroupType.values()).forEach((group) ->
+                ServerReflect.getGroup(group).forEach((key, value) ->
                 {
-                    TweakSide.Server server = CommonReflect.getAnnotation(group, key, TweakSide.Server.class);
-                    if (server != null)
-                        cache.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
-                }
-            })
-        );
+                    if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
+                    {
+                        TweakSide.Server server = CommonReflect.getAnnotation(group, key, TweakSide.Server.class);
+                        TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(group, key, TweakSide.Dynamic.class);
+
+                        if (server != null || dynamic != null)
+                            cache.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
+                    }
+                })
+            );
+        }
     }
 
     public static HashMap<String, TweakServerCache<?>> all() { return cache; }
 
-    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned value is assured.
+    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakServerCache<T> get(GroupType group, String key)
     {
         return (TweakServerCache<T>) cache.get(generateKey(group, key));
+    }
+
+    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
+    public static <T> TweakServerCache<T> get(ITweak tweak)
+    {
+        if (tweak.getServerCache() == null)
+            tweak.setServerCache(get(tweak.getGroup(), tweak.getKey()));
+        return (TweakServerCache<T>) tweak.getServerCache();
     }
 
     /**
@@ -104,7 +127,16 @@ public class TweakServerCache<T>
     public String getKey() { return this.key; }
     public T getValue() { return this.value; }
     public T getServerCache() { return this.server; }
-    public void setServerCache(T value) { this.server = value; }
+
+    /**
+     * Some server tweaks may be marked as dynamic. Ultimately, the server will decide what the state of these tweaks
+     * should be. If a client is connected to a server without N.T., then the client will take over the state.
+     * @return Whether the tweak is annotated with a dynamic side.
+     */
+    public boolean isDynamic()
+    {
+        return CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
+    }
 
     /**
      * The status of a tweak is updated when its code is executed.
@@ -129,5 +161,40 @@ public class TweakServerCache<T>
     {
         if (value.getClass().equals(this.value.getClass()))
             this.value = (T) value;
+        else
+        {
+            String info = String.format
+            (
+                "Unable to update value for %s since the received value was (%s). Expected (%s)",
+                generateKey(this.group, this.key),
+                value,
+                this.value
+            );
+
+            NostalgicTweaks.LOGGER.warn(info);
+        }
+    }
+
+    /**
+     * Sets the current state last received by the server. Only the client should be using this method.
+     * @param value Any object - will be class checked.
+     */
+    @SuppressWarnings("unchecked") // Check if value received from server matches client cached value
+    public void setServerCache(Object value)
+    {
+        if (value.getClass().equals(this.server.getClass()))
+            this.server = (T) value;
+        else
+        {
+            String info = String.format
+            (
+                "Unable to update server cache for %s since the received value was (%s). Expected (%s)",
+                generateKey(this.group, this.key),
+                value,
+                this.value
+            );
+
+            NostalgicTweaks.LOGGER.warn(info);
+        }
     }
 }

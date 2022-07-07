@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public abstract class TempFogRendererMixin
     @Inject(method = "setupFog", at = @At(value = "RETURN"))
     private static void NT$onSetupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        MixinClientUtil.Fog.setupFog(camera, fogMode);
-        MixinClientUtil.Fog.setupNetherFog(camera, fogMode);
+        ModClientUtil.Fog.setupFog(camera, fogMode);
+        ModClientUtil.Fog.setupNetherFog(camera, fogMode);
     }
 }

@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
@@ -34,6 +35,13 @@ public abstract class ToastNotification
         }
     }
 
+    private static void add(String headKey, String bodyKey)
+    {
+        Component header = Component.translatable(headKey).withStyle(ChatFormatting.WHITE);
+        Component body = Component.translatable(bodyKey).withStyle(ChatFormatting.YELLOW);
+        add(new SystemToast(SystemToast.SystemToastIds.TUTORIAL_HINT, header, body));
+    }
+
     /**
      * Notifies the client that a tweak update was sent to the client from the server.
      */
@@ -42,9 +50,7 @@ public abstract class ToastNotification
         if (!NetClientUtil.isMultiplayer())
             return;
 
-        Component header = Component.translatable(NostalgicLang.Gui.TOAST_TWEAK_UPDATE_HEADER).withStyle(ChatFormatting.WHITE);
-        Component body = Component.translatable(NostalgicLang.Gui.TOAST_TWEAK_UPDATE_BODY).withStyle(ChatFormatting.YELLOW);
-        add(new SystemToast(SystemToast.SystemToastIds.TUTORIAL_HINT, header, body));
+        add(NostalgicLang.Gui.TOAST_TWEAK_UPDATE_HEADER, NostalgicLang.Gui.TOAST_TWEAK_UPDATE_BODY);
     }
 
     /**
@@ -55,8 +61,17 @@ public abstract class ToastNotification
         if (!NetClientUtil.isMultiplayer())
             return;
 
-        Component header = Component.translatable(NostalgicLang.Gui.TOAST_TWEAK_SENT_HEADER).withStyle(ChatFormatting.WHITE);
-        Component body = Component.translatable(NostalgicLang.Gui.TOAST_TWEAK_SENT_BODY).withStyle(ChatFormatting.YELLOW);
-        add(new SystemToast(SystemToast.SystemToastIds.TUTORIAL_HINT, header, body));
+        add(NostalgicLang.Gui.TOAST_TWEAK_SENT_HEADER, NostalgicLang.Gui.TOAST_TWEAK_SENT_BODY);
+    }
+
+    /**
+     * Notifies the client that it connected to a world with Nostalgic Tweaks installed.
+     */
+    public static void addServerHandshake()
+    {
+        if (!NostalgicTweaks.isNetworkVerified() || NetClientUtil.isSingleplayer())
+            return;
+
+        add(NostalgicLang.Gui.TOAST_SYNC_HEADER, NostalgicLang.Gui.TOAST_SYNC_BODY);
     }
 }

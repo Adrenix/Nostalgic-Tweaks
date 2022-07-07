@@ -8,10 +8,10 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IReequipSlot extends ICameraPitch
 {
-    void setLastSlot(int slot);
-    void setReequip(boolean state);
+    void NT$setLastSlot(int slot);
+    void NT$setReequip(boolean state);
 
-    int getLastSlot();
-    boolean getReequip();
-    ItemStack getLastItem();
+    int NT$getLastSlot();
+    boolean NT$getReequip();
+    ItemStack NT$getLastItem();
 }

@@ -36,6 +36,10 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    // Fuzzy Searching
+    implementation "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
+    include "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
 }
 
 processResources {

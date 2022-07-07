@@ -29,6 +29,14 @@ public abstract class TweakSide
     public @interface Server {}
 
     /**
+     * Instructs the mod that this tweak is controlled by both the client and server.
+     * Only servers with Nostalgic Tweaks installed will override the tweak.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD})
+    public @interface Dynamic {}
+
+    /**
      * Instructs the mod that this configuration entry is not a tweak.
      */
     @Retention(RetentionPolicy.RUNTIME)

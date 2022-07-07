@@ -3,10 +3,11 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.SwingConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -54,10 +55,10 @@ public abstract class ItemInHandRendererMixin
     )
     private void NT$armSwayXP(PoseStack poseStack, Quaternion q, float partialTicks, PoseStack ps2, MultiBufferSource.BufferSource b, LocalPlayer player)
     {
-        if (MixinConfig.Animation.oldArmSway())
+        if (ModConfig.Animation.oldArmSway())
             return;
 
-        float intensity = MixinConfig.Animation.getArmSwayIntensity();
+        float intensity = ModConfig.Animation.getArmSwayIntensity();
         float xBobInterpolate = Mth.lerp(partialTicks, player.xBobO, player.xBob);
         poseStack.mulPose(Vector3f.XP.rotationDegrees(((player.getViewXRot(partialTicks) - xBobInterpolate) * 0.1F) * intensity));
     }
@@ -78,10 +79,10 @@ public abstract class ItemInHandRendererMixin
     )
     private void NT$armSwayYP(PoseStack poseStack, Quaternion q, float partialTicks, PoseStack ps2, MultiBufferSource.BufferSource b, LocalPlayer player)
     {
-        if (MixinConfig.Animation.oldArmSway())
+        if (ModConfig.Animation.oldArmSway())
             return;
 
-        float intensity = MixinConfig.Animation.getArmSwayIntensity();
+        float intensity = ModConfig.Animation.getArmSwayIntensity();
         float yBobInterpolate = Mth.lerp(partialTicks, player.yBobO, player.yBob);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(((player.getViewYRot(partialTicks) - yBobInterpolate) * 0.1F) * intensity));
     }
@@ -103,7 +104,7 @@ public abstract class ItemInHandRendererMixin
     )
     private ItemStack NT$onRenderItem(AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack itemStack, float equippedProgress, PoseStack matrix, MultiBufferSource buffer, int combinedLight)
     {
-        return MixinClientUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return ModClientUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
     }
 
     /**
@@ -113,7 +114,7 @@ public abstract class ItemInHandRendererMixin
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getAttackStrengthScale(F)F"))
     private float NT$onGetStrength(LocalPlayer player, float partialTick)
     {
-        return MixinConfig.Animation.oldItemCooldown() ? 1.0F : player.getAttackStrengthScale(partialTick);
+        return ModConfig.Animation.oldItemCooldown() ? 1.0F : player.getAttackStrengthScale(partialTick);
     }
 
     /**
@@ -124,7 +125,7 @@ public abstract class ItemInHandRendererMixin
     private float NT$onOffHandTick(float current)
     {
         LocalPlayer player = this.minecraft.player;
-        if (!MixinConfig.Animation.oldItemReequip() || player == null)
+        if (!ModConfig.Animation.oldItemReequip() || player == null)
             return current;
 
         ItemStack offStack = player.getOffhandItem();
@@ -141,7 +142,7 @@ public abstract class ItemInHandRendererMixin
     @Redirect(method = "tick", at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
     private float NT$onTickIncreaseMain(float current, float min, float max)
     {
-        return MixinConfig.Animation.oldItemReequip() ? 0.0F : Mth.clamp(current, min, max);
+        return ModConfig.Animation.oldItemReequip() ? 0.0F : Mth.clamp(current, min, max);
     }
 
     /**
@@ -162,7 +163,7 @@ public abstract class ItemInHandRendererMixin
     )
     private boolean NT$onMainItemTick(ItemStack from, ItemStack to)
     {
-        return !MixinConfig.Animation.oldItemReequip() && ItemStack.matches(from, to);
+        return !ModConfig.Animation.oldItemReequip() && ItemStack.matches(from, to);
     }
 
     /**
@@ -173,46 +174,46 @@ public abstract class ItemInHandRendererMixin
     private void NT$onTick(CallbackInfo callback)
     {
         LocalPlayer player = this.minecraft.player;
-        if (!MixinConfig.Animation.oldItemReequip() || player == null)
+        if (!ModConfig.Animation.oldItemReequip() || player == null)
             return;
 
         IReequipSlot injector = (IReequipSlot) player;
         ItemStack main = player.getMainHandItem();
         int slot = player.getInventory().selected;
 
-        if (main.isEmpty() && this.mainHandItem.isEmpty() && !injector.getReequip())
-            injector.setReequip(false);
-        else if (slot != injector.getLastSlot())
+        if (main.isEmpty() && this.mainHandItem.isEmpty() && !injector.NT$getReequip())
+            injector.NT$setReequip(false);
+        else if (slot != injector.NT$getLastSlot())
         {
-            injector.setLastSlot(slot);
-            injector.setReequip(true);
+            injector.NT$setLastSlot(slot);
+            injector.NT$setReequip(true);
         }
 
         // Needed to fix weird bug that occurs when pulling an item out from the main hand while in an inventory.
         boolean isUnequipped = this.mainHandItem.toString().equals("0 air") && main.toString().equals("1 air");
         boolean isItemChanged = !this.mainHandItem.is(main.getItem());
-        boolean isSlotUpdated = slot == injector.getLastSlot() && isItemChanged && !injector.getReequip();
-        boolean isHandChanged = isUnequipped && !injector.getLastItem().isEmpty() && !injector.getReequip();
+        boolean isSlotUpdated = slot == injector.NT$getLastSlot() && isItemChanged && !injector.NT$getReequip();
+        boolean isHandChanged = isUnequipped && !injector.NT$getLastItem().isEmpty() && !injector.NT$getReequip();
 
         if (isSlotUpdated || isHandChanged)
-            injector.setReequip(true);
+            injector.NT$setReequip(true);
 
         if (isUnequipped)
-            this.mainHandItem = injector.getLastItem();
+            this.mainHandItem = injector.NT$getLastItem();
 
-        if (slot == injector.getLastSlot() && !injector.getReequip())
+        if (slot == injector.NT$getLastSlot() && !injector.NT$getReequip())
             this.mainHandItem = player.getMainHandItem();
 
-        if (MixinConfig.Animation.oldItemCooldown())
-            this.mainHandHeight = Mth.clamp(this.mainHandHeight + (injector.getReequip() ? -0.4F : 0.4F), 0.0F, 1.0F);
+        if (ModConfig.Animation.oldItemCooldown())
+            this.mainHandHeight = Mth.clamp(this.mainHandHeight + (injector.NT$getReequip() ? -0.4F : 0.4F), 0.0F, 1.0F);
         else
         {
             float scale = player.getAttackStrengthScale(1.0F);
-            this.mainHandHeight += Mth.clamp((!injector.getReequip() ? scale * scale * scale : 0.0f) - this.mainHandHeight, -0.4F, 0.4F);
+            this.mainHandHeight += Mth.clamp((!injector.NT$getReequip() ? scale * scale * scale : 0.0f) - this.mainHandHeight, -0.4F, 0.4F);
         }
 
         if (this.mainHandHeight < 0.1F)
-            injector.setReequip(false);
+            injector.NT$setReequip(false);
     }
 
     /**
@@ -222,10 +223,10 @@ public abstract class ItemInHandRendererMixin
     @Inject(method = "applyItemArmTransform", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onApplyItemArmTransform(PoseStack poseStack, HumanoidArm arm, float equippedProgress, CallbackInfo callback)
     {
-        if (!MixinConfig.isModEnabled(null))
+        if (!ModConfig.isModEnabled())
             return;
 
-        equippedProgress = MixinConfig.Swing.getGlobalSpeed() == DefaultConfig.Swing.PHOTOSENSITIVE ? 0 : equippedProgress;
+        equippedProgress = SwingConfig.getGlobalSpeed() == DefaultConfig.Swing.PHOTOSENSITIVE ? 0 : equippedProgress;
         int i = arm == HumanoidArm.RIGHT ? 1 : -1;
 
         poseStack.translate((float) i * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
@@ -247,7 +248,7 @@ public abstract class ItemInHandRendererMixin
     )
     private void NT$onRenderItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldItemHolding() && !(itemStack.getItem() instanceof BlockItem))
+        if (ModConfig.Candy.oldItemHolding() && !(itemStack.getItem() instanceof BlockItem))
         {
             poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);
@@ -261,7 +262,7 @@ public abstract class ItemInHandRendererMixin
     @Inject(method = "applyItemArmAttackTransform", at = @At(value = "HEAD"))
     private void NT$onApplyItemArmAttackTransform(PoseStack poseStack, HumanoidArm hand, float swingProgress, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldSwing())
+        if (ModConfig.Animation.oldSwing())
         {
             float progress = Mth.sin((float) Math.PI * swingProgress);
             float scale = 1.0F - (0.3F * progress);

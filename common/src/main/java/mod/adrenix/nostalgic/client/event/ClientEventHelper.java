@@ -1,11 +1,11 @@
 package mod.adrenix.nostalgic.client.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicLoadingScreen;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
 import mod.adrenix.nostalgic.client.screen.ClassicTitleScreen;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,10 @@ public abstract class ClientEventHelper
         if (NostalgicTweaks.isClient())
         {
             NostalgicTweaks.setNetworkVerification(false);
-            TweakServerCache.all().forEach((id, tweak) -> tweak.setStatus(StatusType.FAIL));
+            TweakServerCache.all().forEach((id, tweak) -> {
+                if (tweak.isDynamic())
+                    tweak.setValue(TweakClientCache.all().get(id).getCurrent());
+            });
         }
     }
 
@@ -44,12 +47,12 @@ public abstract class ClientEventHelper
 
         if (screen.getClass() == TitleScreen.class)
         {
-            if (MixinConfig.Candy.overrideTitleScreen())
+            if (ModConfig.Candy.overrideTitleScreen())
                 setScreen.set(new ClassicTitleScreen());
             else
                 ClassicTitleScreen.isGameReady = true;
         }
-        else if (!MixinConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
+        else if (!ModConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
             setScreen.set(new TitleScreen());
     }
 
@@ -57,7 +60,7 @@ public abstract class ClientEventHelper
     {
         Minecraft minecraft = Minecraft.getInstance();
 
-        if (screen == null || !MixinConfig.Candy.oldLoadingScreens())
+        if (screen == null || !ModConfig.Candy.oldLoadingScreens())
             return;
 
         if (screen.getClass() == LevelLoadingScreen.class)

@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.util.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Network utility methods for the client.
@@ -10,6 +12,10 @@ import net.minecraft.world.entity.player.Player;
 
 public abstract class NetClientUtil
 {
+    /* Minecraft Instance */
+
+    private static final Minecraft minecraft = Minecraft.getInstance();
+
     /**
      * Check if a certain player has operator permissions.
      * @param player The player to check.
@@ -17,7 +23,7 @@ public abstract class NetClientUtil
      */
     public static boolean isPlayerOp(Player player)
     {
-        if (Minecraft.getInstance().hasSingleplayerServer())
+        if (minecraft.hasSingleplayerServer())
             return true;
         return player.hasPermissions(2);
     }
@@ -29,32 +35,61 @@ public abstract class NetClientUtil
      */
     public static boolean isPlayerOp()
     {
-        if (Minecraft.getInstance().player == null)
+        if (minecraft.player == null)
             return true;
         else
-            return isPlayerOp(Minecraft.getInstance().player);
+            return isPlayerOp(minecraft.player);
+    }
+
+    /**
+     * Checks if there is a connection made with a world. If not, then we are at the game's menu.
+     * @return Whether there is a live connection with a world session.
+     */
+    public static boolean isConnected()
+    {
+        return minecraft.getConnection() != null && minecraft.getConnection().getConnection().isConnected();
     }
 
     /**
      * Checks if the loaded world is singleplayer.
      * @return Whether the current session is singleplayer.
      */
-    public static boolean isSingleplayer() { return Minecraft.getInstance().hasSingleplayerServer(); }
+    public static boolean isSingleplayer()
+    {
+        return minecraft.getSingleplayerServer() != null && !minecraft.getSingleplayerServer().isPublished();
+    }
 
     /**
-     * Checks if the loaded world is an integrated server.
+     * Checks if the loaded world is current a LAN session.
      * @return Whether the current session is an integrated server.
      */
-    public static boolean isIntegratedServer() { return Minecraft.getInstance().isLocalServer(); }
+    public static boolean isLocalHost()
+    {
+        return minecraft.getSingleplayerServer() != null && minecraft.getSingleplayerServer().isPublished();
+    }
 
     /**
-     * Checks if the current world is not singleplayer, not an integrated session, and a connection is established
+     * Gets the integrated server if the client is a local host.
+     * @return The client's integrated server (or null).
+     */
+    @Nullable
+    public static IntegratedServer getIntegratedServer()
+    {
+        return isLocalHost() ? minecraft.getSingleplayerServer() : null;
+    }
+
+    /**
+     * Checks if the current world is not singleplayer and that a connection is established
      * with a server.
      *
-     * @return Whether the current session is in multiplayer.
+     * Will return true if the client is hosting a LAN session.
+     *
+     * @return Whether the current session is in multiplayer or a LAN session.
      */
     public static boolean isMultiplayer()
     {
-        return !isSingleplayer() && !isIntegratedServer() && Minecraft.getInstance().getConnection() != null;
+        if (isLocalHost())
+            return true;
+        return !isSingleplayer() && minecraft.getConnection() != null;
     }
 }

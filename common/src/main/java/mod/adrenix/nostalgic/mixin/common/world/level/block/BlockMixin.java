@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -32,7 +32,7 @@ public abstract class BlockMixin
     )
     private static void NT$onPopResource(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback)
     {
-        if (!MixinConfig.Candy.oldItemMerging())
+        if (!ModConfig.Candy.oldItemMerging())
             return;
 
         ItemEntity entity = supplier.get();

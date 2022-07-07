@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.gui.components.ChatComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public abstract class ChatComponentMixin
     )
     private int NT$onRenderBoxFill(int vanilla)
     {
-        return MixinConfig.Candy.oldChatBox() ? -2 : vanilla;
+        return ModConfig.Candy.oldChatBox() ? -2 : vanilla;
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class ChatComponentMixin
     )
     private float NT$onDrawMessagePosition(float vanilla)
     {
-        return MixinConfig.Candy.oldChatBox() ? -2.0F : vanilla;
+        return ModConfig.Candy.oldChatBox() ? -2.0F : vanilla;
     }
 
     /**
@@ -63,6 +63,6 @@ public abstract class ChatComponentMixin
     )
     private int NT$onDrawMessageColor(int vanilla)
     {
-        return MixinConfig.Candy.oldChatBox() ? 0xFFFFFF : vanilla;
+        return ModConfig.Candy.oldChatBox() ? 0xFFFFFF : vanilla;
     }
 }

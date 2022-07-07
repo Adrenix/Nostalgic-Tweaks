@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -34,8 +34,8 @@ public abstract class ChatScreenMixin extends Screen
     @Inject(method = "init", at = @At("RETURN"))
     private void NT$onInitInput(CallbackInfo callback)
     {
-        this.input.setX(MixinConfig.Candy.oldChatInput() ? 12 : 4);
-        this.input.setWidth(MixinConfig.Candy.oldChatInput() ? this.width - 21 : this.width - 4);
+        this.input.setX(ModConfig.Candy.oldChatInput() ? 12 : 4);
+        this.input.setWidth(ModConfig.Candy.oldChatInput() ? this.width - 21 : this.width - 4);
         this.input.setTextColor(0xFFFFFF);
     }
 
@@ -46,7 +46,7 @@ public abstract class ChatScreenMixin extends Screen
     @Inject(method = "render", at = @At("RETURN"))
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        if (!MixinConfig.Candy.oldChatInput())
+        if (!ModConfig.Candy.oldChatInput())
             return;
         ChatScreen.drawString(poseStack, Minecraft.getInstance().font, ">", 4, this.height - 12, 0xFFFFFF);
     }

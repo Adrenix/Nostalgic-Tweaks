@@ -6,9 +6,9 @@ package mod.adrenix.nostalgic.mixin.duck;
 
 public interface ICameraPitch
 {
-    void setCameraPitch(float cameraPitch);
-    void setPrevCameraPitch(float prevCameraPitch);
+    void NT$setCameraPitch(float cameraPitch);
+    void NT$setPrevCameraPitch(float prevCameraPitch);
 
-    float getCameraPitch();
-    float getPrevCameraPitch();
+    float NT$getCameraPitch();
+    float NT$getPrevCameraPitch();
 }

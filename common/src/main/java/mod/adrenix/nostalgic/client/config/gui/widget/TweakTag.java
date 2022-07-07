@@ -8,7 +8,6 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.ChatFormatting;
@@ -24,6 +23,7 @@ public class TweakTag extends AbstractWidget
     public static final int U_NEW_OFFSET = 66;
     public static final int U_CLIENT_OFFSET = 69;
     public static final int U_SERVER_OFFSET = 72;
+    public static final int U_DYNAMIC_OFFSET = 81;
     public static final int U_RELOAD_OFFSET = 75;
     public static final int U_RESTART_OFFSET = 78;
     public static final int U_KEY_OFFSET = 81;
@@ -78,7 +78,7 @@ public class TweakTag extends AbstractWidget
 
         if (isMouseOver && screen instanceof ConfigScreen)
             ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltips(tooltip, 38), mouseX, mouseY));
+                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
 
     @Override
@@ -88,30 +88,33 @@ public class TweakTag extends AbstractWidget
         Screen screen = minecraft.screen;
         if (screen == null) return;
 
-        TweakClient.Gui.New isNew = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.New.class);
-        TweakSide.Client isClient = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakSide.Client.class);
-        TweakSide.Server isServer = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakSide.Server.class);
-        TweakClient.Gui.Restart isRestart = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.Restart.class);
-        TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.Warning.class);
-        TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Run.ReloadResources.class);
+        TweakClient.Gui.New isNew = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.New.class);
+        TweakSide.Client isClient = CommonReflect.getAnnotation(this.cache, TweakSide.Client.class);
+        TweakSide.Server isServer = CommonReflect.getAnnotation(this.cache, TweakSide.Server.class);
+        TweakSide.Dynamic isDynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
+        TweakClient.Gui.Restart isRestart = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Restart.class);
+        TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
+        TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
 
         Component title = Component.translatable(this.cache.getLangKey());
         Component newTag = Component.translatable(NostalgicLang.Gui.TAG_NEW);
         Component clientTag = Component.translatable(NostalgicLang.Gui.TAG_CLIENT);
         Component serverTag = Component.translatable(NostalgicLang.Gui.TAG_SERVER);
+        Component dynamicTag = Component.translatable(NostalgicLang.Gui.TAG_DYNAMIC);
         Component reloadTag = Component.translatable(NostalgicLang.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
         Component restartTag = Component.translatable(NostalgicLang.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
         Component warningTag = Component.translatable(NostalgicLang.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
         Component newTooltip = Component.translatable(NostalgicLang.Gui.TAG_NEW_TOOLTIP);
         Component clientTooltip = Component.translatable(NostalgicLang.Gui.TAG_CLIENT_TOOLTIP);
         Component serverTooltip = Component.translatable(NostalgicLang.Gui.TAG_SERVER_TOOLTIP);
+        Component dynamicTooltip = Component.translatable(NostalgicLang.Gui.TAG_DYNAMIC_TOOLTIP);
         Component reloadTooltip = Component.translatable(NostalgicLang.Gui.TAG_RELOAD_TOOLTIP);
         Component restartTooltip = Component.translatable(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
         Component warningTooltip = Component.translatable(this.cache.getWarningKey());
 
-        boolean isNewRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey()).getCurrent();
-        boolean isSidedRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey()).getCurrent();
-        boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey()).getCurrent();
+        boolean isNewRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS).getCurrent();
+        boolean isSidedRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS).getCurrent();
+        boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS).getCurrent();
 
         int startX = ConfigRowList.TEXT_START + minecraft.font.width(title) + (isTooltip ? 20 : 4);
         int startY = this.anchor.y + 4;
@@ -136,6 +139,13 @@ public class TweakTag extends AbstractWidget
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, serverTag, serverTooltip, lastX, startY, mouseX, mouseY);
             lastX = renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET);
+        }
+
+        if (isDynamic != null && isSidedRenderable)
+        {
+            if (isTooltipRenderable)
+                renderTooltip(screen, poseStack, dynamicTag, dynamicTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, dynamicTag, lastX, startY, U_DYNAMIC_OFFSET);
         }
 
         if (isReload != null)

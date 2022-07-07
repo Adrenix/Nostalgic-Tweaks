@@ -37,41 +37,77 @@ public class ClientConfig implements ConfigData
     public Sound sound = new Sound();
     public static class Sound
     {
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldAttack = DefaultConfig.Sound.OLD_ATTACK;
-        static { SoundTweak.OLD_ATTACK.setKey("oldAttack"); }
+        /**
+         * Block Sounds
+         */
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        public boolean oldHurt = DefaultConfig.Sound.OLD_HURT;
-        static { SoundTweak.OLD_HURT.setKey("oldHurt"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldFall = DefaultConfig.Sound.OLD_FALL;
-        static { SoundTweak.OLD_FALL.setKey("oldFall"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
-        static { SoundTweak.OLD_STEP.setKey("oldStep"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.IgnoreDisable
-        public boolean oldXP = DefaultConfig.Sound.OLD_XP;
-        static { SoundTweak.OLD_XP.setKey("oldXP"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_SOUND)
         public boolean oldDoor = DefaultConfig.Sound.OLD_DOOR;
         static { SoundTweak.OLD_DOOR.setKey("oldDoor"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_SOUND)
         public boolean oldBed = DefaultConfig.Sound.OLD_BED;
         static { SoundTweak.OLD_BED.setKey("oldBed"); }
+
+        /**
+         * Damage Sounds
+         */
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.DAMAGE_SOUND)
+        public boolean oldAttack = DefaultConfig.Sound.OLD_ATTACK;
+        static { SoundTweak.OLD_ATTACK.setKey("oldAttack"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.DAMAGE_SOUND)
+        public boolean oldHurt = DefaultConfig.Sound.OLD_HURT;
+        static { SoundTweak.OLD_HURT.setKey("oldHurt"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.DAMAGE_SOUND)
+        public boolean oldFall = DefaultConfig.Sound.OLD_FALL;
+        static { SoundTweak.OLD_FALL.setKey("oldFall"); }
+
+        /**
+         * Experience Sounds
+         */
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_SOUND)
+        public boolean oldXp = DefaultConfig.Sound.OLD_XP;
+        static { SoundTweak.OLD_XP.setKey("oldXp"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_SOUND)
+        public boolean disableXpPickup = DefaultConfig.Sound.DISABLE_XP_PICKUP;
+        static { SoundTweak.DISABLE_PICKUP.setKey("disableXpPickup"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_SOUND)
+        public boolean disableXpLevel = DefaultConfig.Sound.DISABLE_XP_LEVEL;
+        static { SoundTweak.DISABLE_LEVEL.setKey("disableXpLevel"); }
+
+        /**
+         * Mob Sounds
+         */
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_SOUND)
+        public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
+        static { SoundTweak.OLD_STEP.setKey("oldStep"); }
     }
 
     @TweakSide.Ignore
@@ -83,18 +119,21 @@ public class ClientConfig implements ConfigData
          */
 
         @TweakSide.Client
+        @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
         @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_CANDY)
         public boolean fixAmbientOcclusion = DefaultConfig.Candy.FIX_AMBIENT_OCCLUSION;
         static { CandyTweak.FIX_AO.setKey("fixAmbientOcclusion"); }
 
         @TweakSide.Client
+        @TweakSide.EntryStatus
         @TweakClient.Run.ReloadResources
         @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_CANDY)
         public boolean oldChest = DefaultConfig.Candy.OLD_CHEST;
         static { CandyTweak.CHEST.setKey("oldChest"); }
 
         @TweakSide.Server
+        @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
         @TweakClient.Gui.Warning
         @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_CANDY)
@@ -102,12 +141,14 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.CHEST_VOXEL.setKey("oldChestVoxel"); }
 
         @TweakSide.Client
+        @TweakSide.EntryStatus
         @TweakClient.Run.ReloadResources
         @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_CANDY)
         public boolean oldEnderChest = DefaultConfig.Candy.OLD_ENDER_CHEST;
         static { CandyTweak.ENDER_CHEST.setKey("oldEnderChest"); }
 
         @TweakSide.Client
+        @TweakSide.EntryStatus
         @TweakClient.Run.ReloadResources
         @TweakClient.Gui.Sub(group = TweakClient.Category.BLOCK_CANDY)
         public boolean oldTrappedChest = DefaultConfig.Candy.OLD_TRAPPED_CHEST;
@@ -130,12 +171,13 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.LOADING_OVERLAY.setKey("oldLoadingOverlay"); }
 
         @TweakSide.Server
+        @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.INTERFACE_CANDY)
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
 
         @TweakSide.Client
-        @TweakClient.Gui.IgnoreDisable
+        @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         @TweakClient.Gui.Sub(group = TweakClient.Category.INTERFACE_CANDY)
         public boolean removeLoadingBar = DefaultConfig.Candy.REMOVE_LOADING_BAR;
@@ -172,7 +214,7 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.TOOLTIP_BOXES.setKey("oldTooltipBoxes"); }
 
         @TweakSide.Client
-        @TweakClient.Gui.IgnoreDisable
+        @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.INTERFACE_CANDY)
         public boolean oldNoItemTooltips = DefaultConfig.Candy.OLD_NO_ITEM_TOOLTIPS;
         static { CandyTweak.NO_ITEM_TOOLTIPS.setKey("oldNoItemTooltips"); }
@@ -197,7 +239,6 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.IgnoreDisable
         @TweakClient.Gui.Sub(group = TweakClient.Category.INTERFACE_CANDY)
         public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
         static { CandyTweak.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
@@ -246,7 +287,6 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.IgnoreDisable
         @TweakClient.Gui.Sub(group = TweakClient.Category.ITEM_CANDY)
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
         static { CandyTweak.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
@@ -290,7 +330,6 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Warning
-        @TweakClient.Gui.IgnoreDisable
         @TweakClient.Gui.Sub(group = TweakClient.Category.LIGHTING_CANDY)
         public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
         static { CandyTweak.WATER_LIGHTING.setKey("oldWaterLighting"); }
@@ -337,7 +376,6 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.IgnoreDisable
         @TweakClient.Gui.Sub(group = TweakClient.Category.PARTICLE_CANDY)
         public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
         static { CandyTweak.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
@@ -362,14 +400,14 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
-        static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
+        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
+        static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        public boolean oldLogoOutline = DefaultConfig.Candy.OLD_LOGO_OUTLINE;
-        static { CandyTweak.LOGO_OUTLINE.setKey("oldLogoOutline"); }
+        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
@@ -378,12 +416,12 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.TITLE_BACKGROUND.setKey("oldTitleBackground"); }
 
         @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
         public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
         static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
 
         @TweakSide.Client
-        @TweakClient.Gui.IgnoreDisable
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
@@ -391,7 +429,6 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
 
         @TweakSide.Client
-        @TweakClient.Gui.IgnoreDisable
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
@@ -406,7 +443,6 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
 
         @TweakSide.Client
-        @TweakClient.Gui.IgnoreDisable
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 4)
@@ -444,6 +480,12 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.WORLD_CANDY)
+        public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
+        static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.WORLD_CANDY)
         public boolean oldSunriseAtNorth = DefaultConfig.Candy.OLD_SUNRISE_AT_NORTH;
         static { CandyTweak.SUNRISE_AT_NORTH.setKey("oldSunriseAtNorth"); }
 
@@ -458,12 +500,6 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Sub(group = TweakClient.Category.WORLD_CANDY)
         public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
         static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Category.WORLD_CANDY)
-        public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
-        static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 
         @TweakSide.Server
         @TweakClient.Run.ReloadChunks
@@ -507,37 +543,186 @@ public class ClientConfig implements ConfigData
     }
 
     @TweakSide.Ignore
+    public Gameplay gameplay = new Gameplay();
+    public static class Gameplay
+    {
+        /**
+         * Combat System
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY_SLIDER)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
+        static { GameplayTweak.ARROW_SPEED.setKey("arrowSpeed"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;
+        static { GameplayTweak.INSTANT_BOW.setKey("instantBow"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean invincibleBow = DefaultConfig.Gameplay.INVINCIBLE_BOW;
+        static { GameplayTweak.INVINCIBLE_BOW.setKey("invincibleBow"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public boolean disableCooldown = DefaultConfig.Gameplay.DISABLE_COOLDOWN;
+        static { GameplayTweak.DISABLE_COOLDOWN.setKey("disableCooldown"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        public boolean disableSweep = DefaultConfig.Gameplay.DISABLE_SWEEP;
+        static { GameplayTweak.DISABLE_SWEEP.setKey("disableSweep"); }
+
+        /**
+         * Experience System
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean alternativeExperienceBar = DefaultConfig.Gameplay.ALTERNATIVE_EXPERIENCE_BAR;
+        static { GameplayTweak.ALT_EXPERIENCE_BAR.setKey("alternativeExperienceBar"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean disableExperienceBar = DefaultConfig.Gameplay.DISABLE_EXPERIENCE_BAR;
+        static { GameplayTweak.DISABLE_EXP_BAR.setKey("disableExperienceBar"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean disableOrbSpawn = DefaultConfig.Gameplay.DISABLE_ORB_SPAWN;
+        static { GameplayTweak.ORB_SPAWN.setKey("disableOrbSpawn"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public boolean disableOrbRendering = DefaultConfig.Gameplay.DISABLE_ORB_RENDERING;
+        static { GameplayTweak.ORB_RENDERING.setKey("disableOrbRendering"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
+        public boolean disableAnvil = DefaultConfig.Gameplay.DISABLE_ANVIL;
+        static { GameplayTweak.ANVIL.setKey("disableAnvil"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
+        public boolean disableEnchantTable = DefaultConfig.Gameplay.DISABLE_ENCHANT_TABLE;
+        static { GameplayTweak.ENCHANT_TABLE.setKey("disableEnchantTable"); }
+
+        /**
+         * Game Mechanics
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Dynamic
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        public boolean oldSprint = DefaultConfig.Gameplay.OLD_SPRINT;
+        static { GameplayTweak.SPRINT.setKey("oldSprint"); }
+
+        /**
+         * Hunger System
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean alternativeHungerBar = DefaultConfig.Gameplay.ALTERNATIVE_HUNGER_BAR;
+        static { GameplayTweak.ALT_HUNGER_BAR.setKey("alternativeHungerBar"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean disableHungerBar = DefaultConfig.Gameplay.DISABLE_HUNGER_BAR;
+        static { GameplayTweak.DISABLE_HUNGER_BAR.setKey("disableHungerBar"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
+        static { GameplayTweak.HUNGER.setKey("disableHunger"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
+        static { GameplayTweak.INSTANT_EAT.setKey("instantEat"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        public boolean oldFoodStacking = DefaultConfig.Gameplay.OLD_FOOD_STACKING;
+        static { GameplayTweak.FOOD_STACKING.setKey("oldFoodStacking"); }
+    }
+
+    @TweakSide.Ignore
     public Animation animation = new Animation();
     public static class Animation
     {
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
-        static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
+        /**
+         * Arm Animations
+         */
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        public boolean oldItemCooldown = DefaultConfig.Animation.OLD_ITEM_COOLDOWN;
-        static { AnimationTweak.COOLDOWN.setKey("oldItemCooldown"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldItemReequip = DefaultConfig.Animation.OLD_ITEM_REEQUIP;
-        static { AnimationTweak.REEQUIP.setKey("oldItemReequip"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ARM_ANIMATION)
         public boolean oldArmSway = DefaultConfig.Animation.OLD_ARM_SWAY;
         static { AnimationTweak.ARM_SWAY.setKey("oldArmSway"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @TweakClient.Gui.IgnoreDisable
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ARM_ANIMATION)
         public boolean armSwayMirror = DefaultConfig.Animation.ARM_SWAY_MIRROR;
         static { AnimationTweak.ARM_SWAY_MIRROR.setKey("armSwayMirror"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ARM_ANIMATION)
         @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY_SLIDER)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 300)
         public int armSwayIntensity = DefaultConfig.Animation.ARM_SWAY_INTENSITY;
@@ -545,43 +730,88 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        public boolean oldCollideBobbing = DefaultConfig.Animation.OLD_COLLIDE_BOBBING;
-        static { AnimationTweak.COLLIDE_BOB.setKey("oldCollideBobbing"); }
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ARM_ANIMATION)
+        public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
+        static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        public boolean oldVerticalBobbing = DefaultConfig.Animation.OLD_VERTICAL_BOBBING;
-        static { AnimationTweak.BOB_VERTICAL.setKey("oldVerticalBobbing"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldSneaking = DefaultConfig.Animation.OLD_SNEAKING;
-        static { AnimationTweak.SNEAK_SMOOTH.setKey("oldSneaking"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ARM_ANIMATION)
         public boolean oldSwingDropping = DefaultConfig.Animation.OLD_SWING_DROPPING;
         static { AnimationTweak.SWING_DROP.setKey("oldSwingDropping"); }
 
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        public boolean oldToolExplosion = DefaultConfig.Animation.OLD_TOOL_EXPLOSION;
-        static { AnimationTweak.TOOL_EXPLODE.setKey("oldToolExplosion"); }
+        /**
+         * Item Animations
+         */
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ITEM_ANIMATION)
+        public boolean oldItemCooldown = DefaultConfig.Animation.OLD_ITEM_COOLDOWN;
+        static { AnimationTweak.COOLDOWN.setKey("oldItemCooldown"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ITEM_ANIMATION)
+        public boolean oldItemReequip = DefaultConfig.Animation.OLD_ITEM_REEQUIP;
+        static { AnimationTweak.REEQUIP.setKey("oldItemReequip"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.ITEM_ANIMATION)
+        public boolean oldToolExplosion = DefaultConfig.Animation.OLD_TOOL_EXPLOSION;
+        static { AnimationTweak.TOOL_EXPLODE.setKey("oldToolExplosion"); }
+
+        /**
+         * Mob Animations
+         */
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_ANIMATION)
         public boolean oldZombieArms = DefaultConfig.Animation.OLD_ZOMBIE_ARMS;
         static { AnimationTweak.ZOMBIE_ARMS.setKey("oldZombieArms"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_ANIMATION)
         public boolean oldSkeletonArms = DefaultConfig.Animation.OLD_SKELETON_ARMS;
         static { AnimationTweak.SKELETON_ARMS.setKey("oldSkeletonArms"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_ANIMATION)
         public boolean oldGhastCharging = DefaultConfig.Animation.OLD_GHAST_CHARGING;
         static { AnimationTweak.GHAST_CHARGING.setKey("oldGhastCharging"); }
+
+        /**
+         * Player Animations
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldBackwardWalking = DefaultConfig.Animation.OLD_BACKWARD_WALKING;
+        static { AnimationTweak.BACKWARD_WALK.setKey("oldBackwardWalking"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldCollideBobbing = DefaultConfig.Animation.OLD_COLLIDE_BOBBING;
+        static { AnimationTweak.COLLIDE_BOB.setKey("oldCollideBobbing"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldVerticalBobbing = DefaultConfig.Animation.OLD_VERTICAL_BOBBING;
+        static { AnimationTweak.BOB_VERTICAL.setKey("oldVerticalBobbing"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldSneaking = DefaultConfig.Animation.OLD_SNEAKING;
+        static { AnimationTweak.SNEAK_SMOOTH.setKey("oldSneaking"); }
     }
 
     @TweakSide.Ignore
@@ -590,43 +820,52 @@ public class ClientConfig implements ConfigData
     {
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.DisabledBoolean(disabled = true)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
         public boolean overrideSpeeds = DefaultConfig.Swing.OVERRIDE_SPEEDS;
         static { SwingTweak.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
+        public int global = DefaultConfig.Swing.GLOBAL;
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int tool = DefaultConfig.Swing.TOOL;
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int block = DefaultConfig.Swing.BLOCK;
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int sword = DefaultConfig.Swing.SWORD;
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         @ConfigEntry.BoundedDiscrete(min = MIN, max = MAX)
         public int item = DefaultConfig.Swing.ITEM;
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 6)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int haste = DefaultConfig.Swing.HASTE;
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 7)
         @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
         public int fatigue = DefaultConfig.Swing.FATIGUE;
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @ConfigEntry.BoundedDiscrete(min = DefaultConfig.Swing.GLOBAL, max = MAX)
-        public int global = DefaultConfig.Swing.GLOBAL;
     }
 
     @TweakSide.Ignore

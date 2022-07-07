@@ -33,13 +33,13 @@ public record ConfigRenderer(ConfigScreen parent)
             HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
 
             TweakClientCache.all().forEach(((key, entry) -> {
-                TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry.getGroup(), entry.getKey(), TweakClient.Gui.Sub.class);
-                TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry.getGroup(), entry.getKey(), TweakClient.Gui.Placement.class);
+                TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry, TweakClient.Gui.Sub.class);
+                TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry, TweakClient.Gui.Placement.class);
 
                 if (sub != null && sub.group() == category && entry.getGroup() == category.getGroup())
                 {
                     if (placement == null)
-                        translated.put(Component.translatable(entry.getLangKey()).getString(), entry);
+                        translated.put(entry.getTranslation(), entry);
                     else
                     {
                         if (entry.getPosition() == TweakClient.Gui.Position.TOP)
@@ -79,7 +79,7 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
 
-        Comparator<String> translationComparator = Comparator.comparing((String key) -> Component.translatable(TweakClientCache.get(group, key).getLangKey()).getString());
+        Comparator<String> translationComparator = Comparator.comparing((String key) -> TweakClientCache.get(group, key).getTranslation());
         Comparator<String> orderComparator = Comparator.comparing((String key) -> TweakClientCache.get(group, key).getOrder());
 
         HashMap<String, Object> top = new HashMap<>();
@@ -116,11 +116,22 @@ public record ConfigRenderer(ConfigScreen parent)
 
     private void addFound()
     {
-        if (this.parent.search.isEmpty()) return;
-        Comparator<TweakClientCache<?>> comparator = Comparator.comparing((TweakClientCache<?> tweak) -> Component.translatable(tweak.getLangKey()).getString());
-        SortedSet<TweakClientCache<?>> sorted = new TreeSet<>(comparator);
-        sorted.addAll(this.parent.search);
-        sorted.forEach((tweak) -> this.parent.getWidgets().getConfigRowList().addRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent()));
+        if (this.parent.search.isEmpty())
+            return;
+
+        String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
+        String first = NostalgicUtil.Array.get(words, 0);
+
+        boolean isTagOnly = first != null && first.startsWith("@") && words.length == 1;
+
+        Map<String, TweakClientCache<?>> found = this.parent.search;
+        Map<String, TweakClientCache<?>> sorted = isTagOnly ?
+            new TreeMap<>(Comparator.comparing(key -> found.get(key).getTranslation())) :
+            new TreeMap<>((firstKey, secondKey) -> TweakClientCache.compareWeights(found.get(secondKey).getWeight(), found.get(firstKey).getWeight()))
+        ;
+
+        sorted.putAll(found);
+        sorted.forEach((key, tweak) -> this.parent.getWidgets().getConfigRowList().addRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent()));
     }
 
     private void addGeneral()
@@ -157,7 +168,7 @@ public record ConfigRenderer(ConfigScreen parent)
             // Default Screen Options
 
             TextGroup menuHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_HELP_MENU));
-            TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DEFAULT_SCREEN.getKey());
+            TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
             RadioGroup<MenuOption> screens = new RadioGroup<>(
                 list,
                 MenuOption.class,
@@ -178,7 +189,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // New Tags
 
-            TweakClientCache<Boolean> newCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_NEW_TAGS.getKey());
+            TweakClientCache<Boolean> newCache = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
             ToggleCheckbox toggleNewTags = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
@@ -191,7 +202,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // Sided tags
 
-            TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_SIDED_TAGS.getKey());
+            TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
             ToggleCheckbox toggleSidedTags = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
@@ -204,7 +215,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // Tag Tooltips
 
-            TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_TAG_TOOLTIPS.getKey());
+            TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
             ToggleCheckbox toggleTagTooltips = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
@@ -221,7 +232,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TextGroup statusHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
             rows.addAll(statusHelp.getRows());
 
-            TweakClientCache<Boolean> featureCache = TweakClientCache.get(GroupType.GUI, GuiTweak.DISPLAY_FEATURE_STATUS.getKey());
+            TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
             ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox(
                 this.parent,
                     Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
@@ -252,25 +263,24 @@ public record ConfigRenderer(ConfigScreen parent)
                             TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
                             entry.reset();
 
-                            boolean isDisableIgnored = CommonReflect.getAnnotation(
-                                entry.getGroup(),
-                                entry.getKey(),
-                                TweakClient.Gui.IgnoreDisable.class
-                            ) != null;
+                            boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
 
                             if (value instanceof Boolean && !isDisableIgnored)
                             {
-                                entry.reset();
-                                entry.setCurrent(!entry.getCurrent());
+                                TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
+
+                                if (disabledBoolean == null && entry.getDefault())
+                                {
+                                    entry.reset();
+                                    entry.setCurrent(!entry.getCurrent());
+                                }
+                                else if (disabledBoolean != null)
+                                    entry.setCurrent(disabledBoolean.disabled());
                             }
 
                             if (value instanceof Integer && !isDisableIgnored)
                             {
-                                TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(
-                                    entry.getGroup(),
-                                    entry.getKey(),
-                                    TweakClient.Gui.DisabledInteger.class
-                                );
+                                TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
 
                                 if (disabledInteger != null)
                                 {
@@ -326,9 +336,10 @@ public record ConfigRenderer(ConfigScreen parent)
             Component resetTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_RESET);
             Component clientTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_CLIENT);
             Component serverTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_SERVER);
+            Component allTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_ALL);
 
             return new TextGroup(list, NostalgicUtil.Text.combine(new Component[] {
-                help, newTag, conflictTag, resetTag, clientTag, serverTag
+                help, newTag, conflictTag, resetTag, clientTag, serverTag, allTag
             })).getRows();
         };
 
@@ -355,18 +366,25 @@ public record ConfigRenderer(ConfigScreen parent)
             this.parent.getWidgets().getSwingSpeedPrefix().render(poseStack, mouseX, mouseY, partialTick);
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
+            String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
+            String first = NostalgicUtil.Array.get(words, 0);
+
             boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("@");
-            for (ConfigScreen.SearchTag tag : ConfigScreen.SearchTag.values())
+
+            if (first != null)
             {
-                if (tag.toString().equals(this.parent.getWidgets().getSearchInput().getValue().replaceAll("@", "")))
-                    isInvalidTag = false;
+                for (ConfigScreen.SearchTag tag : ConfigScreen.SearchTag.values())
+                {
+                    if (tag.toString().equals(first.replaceAll("@", "")))
+                        isInvalidTag = false;
+                }
             }
 
             if (isInvalidTag)
                 this.parent.renderLast.add(() -> Screen.drawCenteredString(
                     poseStack,
                     this.parent.getFont(),
-                        Component.translatable(NostalgicLang.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
+                    Component.translatable(NostalgicLang.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
                     this.parent.width / 2,
                     this.parent.height / 2,
                     0xFFFFFF
@@ -376,7 +394,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 this.parent.renderLast.add(() -> Screen.drawCenteredString(
                     poseStack,
                     this.parent.getFont(),
-                        Component.translatable(NostalgicLang.Gui.SEARCH_EMPTY),
+                    Component.translatable(NostalgicLang.Gui.SEARCH_EMPTY),
                     this.parent.width / 2,
                     this.parent.height / 2,
                     0xFFFFFF
@@ -389,6 +407,7 @@ public record ConfigRenderer(ConfigScreen parent)
             case GENERAL -> addGeneral();
             case SOUND -> addRows(GroupType.SOUND);
             case CANDY -> addRows(GroupType.CANDY);
+            case GAMEPLAY -> addRows(GroupType.GAMEPLAY);
             case ANIMATION -> addRows(GroupType.ANIMATION);
             case SWING -> addRows(GroupType.SWING);
             case SEARCH -> addFound();

@@ -1,5 +1,7 @@
 package mod.adrenix.nostalgic.common.config.reflect;
 
+import mod.adrenix.nostalgic.util.LogColor;
+
 /**
  * There are numerous states a tweak can be in. Some tweaks will start in different states than others.
  *
@@ -19,5 +21,16 @@ public enum StatusType
     LOADED,
     WAIT,
     WARN,
-    FAIL
+    FAIL;
+
+    public static String toStringWithColor(StatusType status)
+    {
+        return switch (status)
+        {
+            case LOADED -> LogColor.apply(LogColor.GREEN, status.toString());
+            case WAIT -> LogColor.apply(LogColor.YELLOW, status.toString());
+            case WARN -> LogColor.apply(LogColor.GOLD, status.toString());
+            case FAIL -> LogColor.apply(LogColor.RED, status.toString());
+        };
+    }
 }

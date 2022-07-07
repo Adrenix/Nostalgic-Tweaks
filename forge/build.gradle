@@ -42,6 +42,10 @@ dependencies {
     
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}")
+
+    // Fuzzy Searching
+    common "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
+    shadowCommon "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
 }
 
 processResources {
@@ -72,6 +76,10 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
+
+    // Relocate fuzzy package to be under N.T package.
+    // This minimizes the chance of conflicting with other mods that may include the same dependencies
+    relocate "me.xdrop", "${project.maven_group}.relocated.xdrop"
 }
 
 remapJar {

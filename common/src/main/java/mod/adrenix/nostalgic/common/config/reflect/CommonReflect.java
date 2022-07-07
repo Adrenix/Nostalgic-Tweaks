@@ -2,6 +2,8 @@ package mod.adrenix.nostalgic.common.config.reflect;
 
 import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -37,6 +39,7 @@ public abstract class CommonReflect
             case ROOT -> { return new Pair<>(ClientConfig.class, config); }
             case SOUND -> { return new Pair<>(ClientConfig.Sound.class, config.sound); }
             case CANDY -> { return new Pair<>(ClientConfig.EyeCandy.class, config.eyeCandy); }
+            case GAMEPLAY -> { return new Pair<>(ClientConfig.Gameplay.class, config.gameplay); }
             case ANIMATION -> { return new Pair<>(ClientConfig.Animation.class, config.animation); }
             case SWING -> { return new Pair<>(ClientConfig.Swing.class, config.swing); }
             case GUI -> { return new Pair<>(ClientConfig.Gui.class, config.gui); }
@@ -71,6 +74,31 @@ public abstract class CommonReflect
     }
 
     /**
+     * Helper method for getting a field within a given class instance.
+     * @param groupClass A data pair with a class reference on the left and a class instance on the right.
+     * @param key A config key that is available in the given class instance.
+     * @return The value stored in the class instance at the given key.
+     */
+    @SuppressWarnings("unchecked") // Keys are guaranteed to find a config value
+    public static <T> T getFieldHelper(Pair<Class<?>, Object> groupClass, String key)
+    {
+        Class<?> reference = groupClass.getFirst();
+        Object instance = groupClass.getSecond();
+
+        for (Field field : reference.getFields())
+        {
+            try
+            {
+                if (key.equals(field.getName()))
+                    return (T) field.get(instance);
+            }
+            catch (IllegalArgumentException | IllegalAccessException e) { e.printStackTrace(); }
+        }
+
+        return null;
+    }
+
+    /**
      * Get an annotation attached to a config tweak.
      * @param group Group associated with tweak.
      * @param key Key that matches both tweak and config class field.
@@ -82,6 +110,34 @@ public abstract class CommonReflect
     public static <T extends Annotation> T getAnnotation(GroupType group, String key, Class<T> annotation)
     {
         return getFieldAnnotation(group, key, annotation);
+    }
+
+    /**
+     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}. This requires tweaks from
+     * the {@link TweakClientCache}.
+     * @param cache A cached entry from {@link TweakClientCache}.
+     * @param annotation An annotation class to check for.
+     * @param <T> The class type of annotation.
+     * @return An annotation instance if it was found.
+     */
+    @Nullable
+    public static <T extends Annotation> T getAnnotation(TweakClientCache<?> cache, Class<T> annotation)
+    {
+        return getAnnotation(cache.getGroup(), cache.getKey(), annotation);
+    }
+
+    /**
+     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}. This requires tweaks from
+     * the {@link TweakServerCache}.
+     * @param cache A cached entry from {@link TweakServerCache}.
+     * @param annotation An annotation class to check for.
+     * @param <T> The class type of annotation.
+     * @return An annotation instance if it was found.
+     */
+    @Nullable
+    public static <T extends Annotation> T getAnnotation(TweakServerCache<?> cache, Class<T> annotation)
+    {
+        return getAnnotation(cache.getGroup(), cache.getKey(), annotation);
     }
 
     @Nullable // Helper for public annotation retriever method

@@ -8,12 +8,14 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
+import mod.adrenix.nostalgic.common.config.tweak.ITweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.network.packet.PacketC2SChangeTweak;
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -31,7 +33,7 @@ public class TweakClientCache<T>
      * This cache keeps a record of every tweak used by both client and server. If the server wants to interface with
      * a server tweak it needs to reference the server cache.
      *
-     * @see mod.adrenix.nostalgic.server.config.reflect.TweakServerCache
+     * @see TweakServerCache
      */
 
     private static final HashMap<String, TweakClientCache<?>> cache = new HashMap<>();
@@ -49,10 +51,48 @@ public class TweakClientCache<T>
 
     public static HashMap<String, TweakClientCache<?>> all() { return cache; }
 
-    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned value is assured.
+    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakClientCache<T> get(GroupType group, String key)
     {
         return (TweakClientCache<T>) cache.get(generateKey(group, key));
+    }
+
+    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
+    public static <T> TweakClientCache<T> get(ITweak tweak)
+    {
+        if (tweak.getClientCache() == null)
+            tweak.setClientCache(get(tweak.getGroup(), tweak.getKey()));
+        return (TweakClientCache<T>) tweak.getClientCache();
+    }
+
+    /**
+     * This field is used to determine a tweak's fuzzy weight when the client is searching for tweaks.
+     * Range goes from 0-100 with 100 being an exact match.
+     */
+    private int weight = 0;
+
+    /**
+     * Set the weight that results from a fuzzy search using the Levenshtein distance algorithm.
+     * @param weight Levenshtein distance result.
+     */
+    public void setWeight(int weight) { this.weight = weight; }
+
+    /**
+     * Get the cached Levenshtein distance result.
+     * @return Levenshtein distance.
+     */
+    public int getWeight() { return this.weight; }
+
+    /**
+     * This static helper assists the fuzzy sorting algorithm.
+     * @param firstWeight The first weight to compare.
+     * @param secondWeight The second weight to compare.
+     * @return A non-zero result so the comparison is guaranteed to appear in a tree map.
+     */
+    public static int compareWeights(int firstWeight, int secondWeight)
+    {
+        int compare = Integer.compare(firstWeight, secondWeight);
+        return compare != 0 ? compare : compare + 1;
     }
 
     /**
@@ -79,7 +119,7 @@ public class TweakClientCache<T>
      * Client tweaks do interface with the server tweak cache. This is needed so the client can stay in sync while
      * connected to a verified N.T supported server.
      *
-     * @see mod.adrenix.nostalgic.server.config.reflect.TweakServerCache
+     * @see TweakServerCache
      */
 
     public TweakServerCache<T> getServerTweak() { return TweakServerCache.get(this.group, this.key); }
@@ -92,9 +132,9 @@ public class TweakClientCache<T>
      */
     private boolean isClientHandled()
     {
-        if (!NostalgicTweaks.isNetworkVerified())
+        if (!NostalgicTweaks.isNetworkVerified() || NetClientUtil.isSingleplayer() || Minecraft.getInstance().level == null)
             return true;
-        return this.isClientSide() || NetClientUtil.isSingleplayer() || Minecraft.getInstance().level == null;
+        return !this.isDynamic() && this.isClientSide();
     }
 
     /**
@@ -102,10 +142,13 @@ public class TweakClientCache<T>
      * It is important that the keys stay in sync with the client config. This is why keys are established within
      * class loaded code blocks underneath each tweak entry.
      *
+     * To get a tweak's key in the cache map, use {@link TweakClientCache#getId()}
+     *
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      */
 
     private final String key;
+    private final String id;
     private final GroupType group;
     private StatusType status;
 
@@ -139,18 +182,25 @@ public class TweakClientCache<T>
         this.key = key;
         this.value = value;
         this.status = StatusType.FAIL;
+        this.id = generateKey(group, key);
 
-        TweakSide.EntryStatus status = CommonReflect.getAnnotation(group, key, TweakSide.EntryStatus.class);
+        TweakSide.EntryStatus status = CommonReflect.getAnnotation(this, TweakSide.EntryStatus.class);
         if (status != null)
             this.status = status.status();
 
-        TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
+        TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(this, TweakClient.Gui.Placement.class);
         if (placement != null)
         {
             this.position = placement.pos();
             this.order = placement.order();
         }
     }
+
+    /**
+     * Get a tweak's ID which is its key in the {@link TweakClientCache#cache} map.
+     * @return The key used to identify the tweak in the client {@link TweakClientCache#cache}.
+     */
+    public String getId() { return this.id; }
 
     /**
      * Gets the default value of a tweak via reflection.
@@ -167,17 +217,43 @@ public class TweakClientCache<T>
     public T getCurrent() { return this.isClientHandled() ? this.value : this.getServerTweak().getValue(); }
 
     /**
+     * Get the value of this tweak that is saved on disk.
+     * @return The tweak value on disk.
+     */
+    public T getSavedValue() { return ClientReflect.getCurrent(this.group, this.key); }
+
+    /**
      * If the tweak is server controlled, then the client cache is updated. Otherwise, the server cache is updated and
      * won't be saved client side until the server has processed the updated value.
+     *
+     * If the session is LAN, then an override is necessary so the changes can be saved to the client's config.
+     *
+     * @param value The new tweak value.
+     * @param override Whether to ignore if the tweak is client cached or server cached.
+     */
+    public void setCurrent(T value, boolean override)
+    {
+        if (this.isClientHandled() || override)
+        {
+            this.value = value;
+
+            TweakServerCache<T> cache = this.getServerTweak();
+            if (override && cache != null)
+                cache.setValue(value);
+        }
+        else
+            this.getServerTweak().setValue(value);
+    }
+
+    /**
+     * Overload method for setting the current value of a tweak. The default behavior is to examine if the client should
+     * handle the tweak. If the session is over LAN, it is necessary to override this behavior when a server tweak changes.
      *
      * @param value The new tweak value.
      */
     public void setCurrent(T value)
     {
-        if (this.isClientHandled())
-            this.value = value;
-        else
-            this.getServerTweak().setValue(value);
+        this.setCurrent(value, false);
     }
 
     /**
@@ -256,26 +332,36 @@ public class TweakClientCache<T>
      */
     public void save()
     {
-        if (this.isSavable())
+        if (!this.isSavable())
+            return;
+
+        if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadChunks.class) != null)
+            ModClientUtil.Run.reloadChunks = true;
+
+        if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null)
+            ModClientUtil.Run.reloadResources = true;
+
+        boolean isClient = this.isClientSide();
+        boolean isDynamic = this.isDynamic() && NetClientUtil.isPlayerOp();
+        boolean isServerTweak = isDynamic || !isClient;
+        boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer();
+
+        if (NetClientUtil.isSingleplayer() && isServerTweak)
         {
-            TweakClient.Run.ReloadChunks chunks = CommonReflect.getAnnotation(this.group, this.key, TweakClient.Run.ReloadChunks.class);
-            if (chunks != null)
-                MixinClientUtil.Run.reloadChunks = true;
-
-            TweakClient.Run.ReloadResources resources = CommonReflect.getAnnotation(this.group, this.key, TweakClient.Run.ReloadResources.class);
-            if (resources != null)
-                MixinClientUtil.Run.reloadResources = true;
-
-            if (!this.isClientSide())
-            {
-                this.getServerTweak().setServerCache(this.value);
-                PacketUtil.sendToServer(new PacketC2SChangeTweak(TweakServerCache.get(this.group, this.key)));
-                ToastNotification.addTweakChange();
-            }
+            this.getServerTweak().setValue(this.value);
+            this.getServerTweak().setServerCache(this.value);
         }
 
-        if (this.isClientHandled())
-            ClientReflect.setConfig(this.group, this.key, this.value);
+        if (isServerTweak && isMultiplayer)
+        {
+            PacketUtil.sendToServer(new PacketC2SChangeTweak(this.getServerTweak()));
+            ToastNotification.addTweakChange();
+        }
+
+        T value = isDynamic && isMultiplayer ? this.getServerTweak().getValue() : this.value;
+
+        if (NetClientUtil.isLocalHost() || this.isClientHandled() || isDynamic)
+            ClientReflect.setConfig(this.group, this.key, value);
     }
 
     /**
@@ -285,7 +371,17 @@ public class TweakClientCache<T>
      */
     public boolean isClientSide()
     {
-        return CommonReflect.getAnnotation(this.group, this.key, TweakSide.Server.class) == null;
+        return CommonReflect.getAnnotation(this, TweakSide.Server.class) == null;
+    }
+
+    /**
+     * Checks the annotations defined in the client's configuration class if a tweak is dynamically sided.
+     * @see mod.adrenix.nostalgic.client.config.ClientConfig
+     * @return If the dynamic annotation is attached to a tweak.
+     */
+    public boolean isDynamic()
+    {
+        return CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
     }
 
     /**
@@ -304,9 +400,7 @@ public class TweakClientCache<T>
         // This check is required since comparison on the generics appears to check the integers as if they were bytes.
         if (current instanceof Integer && def instanceof Integer)
             return ((Integer) current).compareTo((Integer) def) != 0;
-        else if (current instanceof String && def instanceof String)
-            return !current.equals(def);
-        return this.getCurrent() != this.getDefault();
+        return !current.equals(def);
     }
 
     /**
@@ -320,7 +414,7 @@ public class TweakClientCache<T>
 
         if (current instanceof Integer && cache instanceof Integer)
             return ((Integer) current).compareTo((Integer) cache) != 0;
-        return current != cache;
+        return !current.equals(cache);
     }
 
     /**
@@ -332,4 +426,6 @@ public class TweakClientCache<T>
     public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
     public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
     public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
+    public String getTranslation() { return Component.translatable(this.getLangKey()).getString(); }
+    public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
 }

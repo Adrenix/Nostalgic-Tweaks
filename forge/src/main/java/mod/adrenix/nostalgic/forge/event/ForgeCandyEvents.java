@@ -1,21 +1,11 @@
 package mod.adrenix.nostalgic.forge.event;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.ScreenOpenEvent;
 
 public abstract class ForgeCandyEvents
 {
-    // Old Version Overlay
-    public static void versionOverlay(RenderGameOverlayEvent.PreLayer event)
-    {
-        if (MixinConfig.Candy.oldVersionOverlay())
-            Minecraft.getInstance().font.drawShadow(event.getPoseStack(), MixinConfig.Candy.getOverlayText(), 2.0F, 2.0F, 0xFFFFFF);
-    }
-
     // Old Title Screen
     public static void classicTitleScreen(ScreenOpenEvent event)
     {
@@ -31,7 +21,7 @@ public abstract class ForgeCandyEvents
     // Fog Rendering
     public static void oldFogRendering(EntityViewRenderEvent.RenderFogEvent event)
     {
-        // TODO: Uncomment this when forge fixes this event
+        // TODO: Uncomment this when forge fixes this event and remove temporary mixin
         /*
         The fog mode is currently not passed to the RenderFogEvent in 1.19.
         This seems like an accidental oversight when porting happened from 1.18 to 1.19.

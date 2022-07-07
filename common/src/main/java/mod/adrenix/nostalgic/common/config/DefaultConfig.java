@@ -7,13 +7,22 @@ public abstract class DefaultConfig
 {
     public static class Sound
     {
+        // Block Sounds
+        public static final boolean OLD_DOOR = true;
+        public static final boolean OLD_BED = true;
+
+        // Damage Sounds
         public static final boolean OLD_ATTACK = true;
         public static final boolean OLD_HURT = true;
         public static final boolean OLD_FALL = true;
-        public static final boolean OLD_STEP = true;
-        public static final boolean OLD_DOOR = true;
-        public static final boolean OLD_BED = true;
+
+        // Experience Sounds
         public static final boolean OLD_XP = false;
+        public static final boolean DISABLE_XP_PICKUP = false;
+        public static final boolean DISABLE_XP_LEVEL = false;
+
+        // Mob Sounds
+        public static final boolean OLD_STEP = true;
     }
 
     public static class Candy
@@ -97,22 +106,58 @@ public abstract class DefaultConfig
         public static final TweakVersion.Generic OLD_BLUE_VOID = TweakVersion.Generic.ALPHA;
     }
 
+    public static class Gameplay
+    {
+        // Combat System
+        public static final int ARROW_SPEED = 70;
+        public static final boolean INSTANT_BOW = true;
+        public static final boolean INVINCIBLE_BOW = true;
+        public static final boolean DISABLE_COOLDOWN = true;
+        public static final boolean DISABLE_SWEEP = true;
+
+        // Experience System
+        public static final boolean ALTERNATIVE_EXPERIENCE_BAR = false;
+        public static final boolean DISABLE_EXPERIENCE_BAR = true;
+        public static final boolean DISABLE_ORB_SPAWN = true;
+        public static final boolean DISABLE_ORB_RENDERING = false;
+        public static final boolean DISABLE_ANVIL = false;
+        public static final boolean DISABLE_ENCHANT_TABLE = false;
+
+        // Game Mechanics
+        public static final boolean OLD_SPRINT = true;
+
+        // Hunger System
+        public static final boolean ALTERNATIVE_HUNGER_BAR = false;
+        public static final boolean DISABLE_HUNGER_BAR = true;
+        public static final boolean DISABLE_HUNGER = true;
+        public static final boolean INSTANT_EAT = true;
+        public static final boolean OLD_FOOD_STACKING = false;
+    }
+
     public static class Animation
     {
+        // Arm Animations
         public static final int ARM_SWAY_INTENSITY = 100;
         public static final boolean ARM_SWAY_MIRROR = false;
         public static final boolean OLD_ARM_SWAY = true;
         public static final boolean OLD_SWING = true;
+        public static final boolean OLD_SWING_DROPPING = true;
+
+        // Item Animations
         public static final boolean OLD_ITEM_COOLDOWN = true;
         public static final boolean OLD_ITEM_REEQUIP = true;
-        public static final boolean OLD_COLLIDE_BOBBING = true;
-        public static final boolean OLD_VERTICAL_BOBBING = true;
-        public static final boolean OLD_SNEAKING = true;
-        public static final boolean OLD_SWING_DROPPING = true;
         public static final boolean OLD_TOOL_EXPLOSION = true;
+
+        // Mob Animations
         public static final boolean OLD_ZOMBIE_ARMS = true;
         public static final boolean OLD_SKELETON_ARMS = true;
         public static final boolean OLD_GHAST_CHARGING = true;
+
+        // Player Animations
+        public static final boolean OLD_BACKWARD_WALKING = true;
+        public static final boolean OLD_COLLIDE_BOBBING = true;
+        public static final boolean OLD_VERTICAL_BOBBING = true;
+        public static final boolean OLD_SNEAKING = true;
     }
 
     public static class Swing

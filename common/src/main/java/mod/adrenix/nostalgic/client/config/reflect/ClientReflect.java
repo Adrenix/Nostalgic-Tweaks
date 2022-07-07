@@ -1,12 +1,10 @@
 package mod.adrenix.nostalgic.client.config.reflect;
 
-import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -73,24 +71,9 @@ public abstract class ClientReflect
         return findField(group, config, key);
     }
 
-    @SuppressWarnings("unchecked") // Keys are guaranteed to find a config value
     private static <T> T findField(GroupType group, ClientConfig config, String key)
     {
-        Pair<Class<?>, Object> groupClass = CommonReflect.getGroupClass(group, config);
-        Class<?> reference = groupClass.getFirst();
-        Object instance = groupClass.getSecond();
-
-        for (Field field : reference.getFields())
-        {
-            try
-            {
-                if (key.equals(field.getName()))
-                    return (T) field.get(instance);
-            }
-            catch (IllegalArgumentException | IllegalAccessException e) { e.printStackTrace(); }
-        }
-
-        return null;
+        return CommonReflect.getFieldHelper(CommonReflect.getGroupClass(group, config), key);
     }
 
     private static void setField(GroupType group, ClientConfig config, String key, Object value)

@@ -1,10 +1,17 @@
 package mod.adrenix.nostalgic.network.packet;
 
 import dev.architectury.networking.NetworkManager;
+import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
+import mod.adrenix.nostalgic.util.LogColor;
+import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -72,33 +79,48 @@ public class PacketS2CTweakUpdate
             TweakSerializer serializer = TweakSerializer.deserialize(this.json);
             TweakServerCache<?> serverCache = TweakServerCache.get(serializer.getGroup(), serializer.getKey());
 
+            // Ensure cache is available and that the class value received over the wire matches what is cached.
             if (serverCache != null && serverCache.getValue().getClass().equals(serializer.getValue().getClass()))
             {
-                boolean isValueChanged = !serverCache.getValue().equals(serializer.getValue());
+                boolean isValueChanged = !serverCache.getServerCache().equals(serializer.getValue());
 
                 serverCache.setValue(serializer.getValue());
                 serverCache.setStatus(serializer.getStatus());
                 serverCache.setServerCache(serializer.getValue());
 
+                // Notify client that a tweak was updated
                 if (isValueChanged)
                     ToastNotification.addTweakUpdate();
 
+                // Update the client's config if this is a LAN session
+                if (NetClientUtil.isLocalHost())
+                {
+                    TweakClientCache<?> clientCache = TweakClientCache.get(serializer.getGroup(), serializer.getKey());
+                    if (clientCache != null)
+                    {
+                        clientCache.setCurrent(serializer.getValue(), true);
+                        ClientReflect.setConfig(serializer.getGroup(), serializer.getKey(), serializer.getValue());
+                        AutoConfig.getConfigHolder(ClientConfig.class).save();
+                    }
+                }
+
+                // Add debug information to console
                 String information = String.format(
                     "Updated client's server cache in group (%s) and key (%s) with value (%s) and status (%s)",
-                    serializer.getGroup(),
-                    serializer.getKey(),
-                    serializer.getValue(),
-                    serializer.getStatus()
+                    LogColor.apply(LogColor.LIGHT_PURPLE, serializer.getGroup().toString()),
+                    LogColor.apply(LogColor.GREEN, serializer.getKey()),
+                    LogColor.apply(LogColor.BLUE, serializer.getValue().toString()),
+                    StatusType.toStringWithColor(serializer.getStatus())
                 );
 
-                NostalgicTweaks.LOGGER.info(information);
+                NostalgicTweaks.LOGGER.debug(information);
             }
             else if (serverCache == null)
             {
                 String warning = String.format(
                     "Client's deserialized data with group (%s) and key (%s) could not be found in tweak server cache",
-                    serializer.getGroup(),
-                    serializer.getKey()
+                    LogColor.apply(LogColor.LIGHT_PURPLE, serializer.getGroup().toString()),
+                    LogColor.apply(LogColor.GREEN, serializer.getKey())
                 );
 
                 NostalgicTweaks.LOGGER.warn(warning);
@@ -107,8 +129,8 @@ public class PacketS2CTweakUpdate
             {
                 String warning = String.format(
                     "Client's server cache (%s) didn't match deserialized (%s)",
-                    serverCache.getValue().getClass(),
-                    serializer.getValue().getClass()
+                    LogColor.apply(LogColor.GREEN, serverCache.getValue().getClass().toString()),
+                    LogColor.apply(LogColor.RED, serializer.getValue().getClass().toString())
                 );
 
                 NostalgicTweaks.LOGGER.warn(warning);

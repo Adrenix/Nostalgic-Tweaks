@@ -4,6 +4,7 @@ import dev.architectury.networking.NetworkChannel;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
+import mod.adrenix.nostalgic.util.LogColor;
 import mod.adrenix.nostalgic.util.NostalgicLogger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -14,11 +15,13 @@ public class NostalgicTweaks
     /* Mod ID & Logger */
 
     public static final String MOD_ID = "nostalgic_tweaks";
-    public static final NostalgicLogger LOGGER = new NostalgicLogger("Nostalgic Tweaks");
+    public static final String MOD_NAME = "Nostalgic Tweaks";
+    public static final NostalgicLogger LOGGER = new NostalgicLogger(MOD_NAME);
+    public static boolean isDebugging() { return LOGGER.isDebugMode(); }
 
     /* Networking */
 
-    public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network_channel"));
+    public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));
     public static final String PROTOCOL = "1.0";
     private static MinecraftServer server;
     private static boolean isNetworkSupported = false;
@@ -37,7 +40,17 @@ public class NostalgicTweaks
     private static void setSide(Side _side) { side = _side; }
     private static void setEnvironment(Environment _env) { environment = _env; }
 
+    private static boolean isDevEnv = false;
+
     /* State Checkers */
+
+    public static void setDevelopmentEnvironment(boolean state)
+    {
+        NostalgicTweaks.LOGGER.setDebug(state);
+        isDevEnv = state;
+    }
+
+    public static boolean isDevelopmentEnvironment() { return isDevEnv; }
 
     public static boolean isClient() { return side == Side.CLIENT; }
     public static boolean isServer() { return side == Side.SERVER; }
@@ -45,8 +58,18 @@ public class NostalgicTweaks
     public static boolean isFabric() { return environment == Environment.FABRIC; }
     public static boolean isForge() { return environment == Environment.FORGE; }
 
-    public static boolean isNetworkVerified() { return isNetworkSupported; }
-    public static void setNetworkVerification(boolean verified) { NostalgicTweaks.LOGGER.info(String.format("Setting network verification to: %s", verified)); isNetworkSupported = verified; }
+    public static boolean isNetworkVerified()
+    {
+        if (NostalgicTweaks.isServer())
+            return true;
+        return isNetworkSupported;
+    }
+
+    public static void setNetworkVerification(boolean verified)
+    {
+        NostalgicTweaks.LOGGER.debug(String.format("Setting network verification to: %s", verified));
+        isNetworkSupported = verified;
+    }
 
     /* Sided Initialization */
 
@@ -59,7 +82,7 @@ public class NostalgicTweaks
 
         NostalgicTweaks.setSide(Side.SERVER);
         NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] server environment", environment.toString()));
+        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString())));
         PacketRegistry.init();
     }
 
@@ -69,7 +92,7 @@ public class NostalgicTweaks
 
         NostalgicTweaks.setSide(Side.CLIENT);
         NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] client environment", environment.toString()));
+        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString())));
         PacketRegistry.init();
     }
 }

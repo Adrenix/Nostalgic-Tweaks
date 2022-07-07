@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.gui.components.AbstractWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,7 +31,7 @@ public abstract class AbstractWidgetMixin
     )
     private int NT$onRenderButton(int current)
     {
-        if (!MixinConfig.Candy.oldButtonHover())
+        if (!ModConfig.Candy.oldButtonHover())
             return current;
         if (this.isHovered && this.isActive())
             return 0xFFFFA0;

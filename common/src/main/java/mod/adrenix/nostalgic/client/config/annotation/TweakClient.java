@@ -40,11 +40,36 @@ public abstract class TweakClient
 
         /**
          * This will prevent tweaks from getting their states toggled when a user disables/enables all
-         * tweaks. This is intended for Boolean tweaks. Other tweak types will need their own implementation.
+         * tweaks. This works for all tweak types. For explicit default states see below.
+         *
+         * @see DisabledInteger
+         * @see DisabledBoolean
          */
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
         public @interface IgnoreDisable {}
+
+        /**
+         * Used to disable tweaks that hold an Integer value.
+         * This is the implementation used for the disable/enable all tweaks feature.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface DisabledInteger
+        {
+            int disabled();
+        }
+
+        /**
+         * Used to disable tweaks that hold a Boolean value.
+         * This is the implementation used for the disable/enable all tweaks feature.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface DisabledBoolean
+        {
+            boolean disabled();
+        }
 
         /**
          * Adds a "New" tag to a tweak in the configuration menu.
@@ -96,17 +121,6 @@ public abstract class TweakClient
         }
 
         /**
-         * Used to disable tweaks that hold an Integer value.
-         * This is the implementation used for the disable/enable all tweaks feature.
-         */
-        @Retention(RetentionPolicy.RUNTIME)
-        @Target({ElementType.FIELD})
-        public @interface DisabledInteger
-        {
-            int disabled();
-        }
-
-        /**
          * An enumeration that tells the config row renderer what type of slider it is rendering.
          * Each slider will be displayed in a different style based on the given Slider enum.
          */
@@ -151,13 +165,32 @@ public abstract class TweakClient
 
     public enum Category
     {
+        // Sound Subcategories
+        BLOCK_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_BLOCK),
+        DAMAGE_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_DAMAGE),
+        EXPERIENCE_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_EXPERIENCE),
+        MOB_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_MOB),
+
+        // Candy Subcategories
         BLOCK_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_BLOCK),
         INTERFACE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_GUI),
         ITEM_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_ITEM),
         LIGHTING_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_LIGHTING),
         PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
         TITLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_TITLE),
-        WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD);
+        WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD),
+
+        // Gameplay Subcategories
+        COMBAT_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_COMBAT),
+        EXPERIENCE_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_EXPERIENCE),
+        MECHANICS_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_MECHANICS),
+        HUNGER_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_HUNGER),
+
+        // Animation Subcategories
+        ARM_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_ARM),
+        ITEM_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_ITEM),
+        MOB_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_MOB),
+        PLAYER_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_PLAYER);
 
         private final String langKey;
         private final GroupType groupType;

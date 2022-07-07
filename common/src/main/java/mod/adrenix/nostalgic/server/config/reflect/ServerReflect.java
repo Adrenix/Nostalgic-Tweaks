@@ -49,7 +49,8 @@ public abstract class ServerReflect
         switch (group)
         {
             // For group types not used by the server, just return the root of the config
-            case ROOT, SWING, GUI, ANIMATION, SOUND -> { return new Pair<>(ServerConfig.class, config); }
+            case ROOT, SWING, GUI, SOUND, ANIMATION -> { return new Pair<>(ServerConfig.class, config); }
+            case GAMEPLAY -> { return new Pair<>(ServerConfig.Gameplay.class, config.gameplay); }
             case CANDY -> { return new Pair<>(ServerConfig.EyeCandy.class, config.eyeCandy); }
         }
 

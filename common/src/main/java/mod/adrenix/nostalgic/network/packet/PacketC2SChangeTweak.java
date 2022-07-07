@@ -106,7 +106,7 @@ public class PacketC2SChangeTweak
                     serializer.getValue()
                 );
 
-                NostalgicTweaks.LOGGER.info(information);
+                NostalgicTweaks.LOGGER.debug(information);
             }
             else if (cache == null)
             {

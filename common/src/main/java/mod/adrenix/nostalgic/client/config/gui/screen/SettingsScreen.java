@@ -4,11 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Vector3f;
 import me.shedaniel.autoconfig.AutoConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -17,6 +20,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import org.lwjgl.glfw.GLFW;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -171,6 +175,15 @@ public class SettingsScreen extends Screen
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    {
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_D)
+            NostalgicTweaks.LOGGER.setDebug(!NostalgicTweaks.isDebugging());
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
     public void onClose()
     {
         AutoConfig.getConfigHolder(ClientConfig.class).save();
@@ -190,12 +203,39 @@ public class SettingsScreen extends Screen
         this.renderScreenTitle(poseStack, this.height / 4 - 42);
         this.renderLogo(poseStack);
 
+        if (NostalgicTweaks.isDebugging())
+            this.renderDebug(poseStack);
+        else
+        {
+            Component hint = Component.literal("Debug (Ctrl + Shift + D)").withStyle(ChatFormatting.DARK_GRAY);
+            drawString(poseStack, this.font, hint, 2, this.height - 10, 0xFFFFFF);
+        }
+
         super.render(poseStack, mouseX, mouseY, ticks);
     }
 
     protected void renderScreenTitle(PoseStack poseStack, int height)
     {
         drawCenteredString(poseStack, this.font, this.title.getString(), this.width / 2, height, 0xFFFFFF);
+    }
+
+    private String getColored(Object value)
+    {
+        if (value instanceof Boolean)
+            return String.format("%s%s", (Boolean) value ? "§2" : "§4", value);
+        return String.format("§f%s", value);
+    }
+
+    private void renderDebug(PoseStack poseStack)
+    {
+        drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 5, 0xFFFF00);
+        drawString(poseStack, this.font, String.format("LAN: %s", getColored(NetClientUtil.isLocalHost())), 2, height - 70, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Verified: %s", getColored(NostalgicTweaks.isNetworkVerified())), 2, height - 60, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Operator: %s", getColored(NetClientUtil.isPlayerOp())), 2, height - 50, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Connection: %s", getColored(NetClientUtil.isConnected())), 2, height - 40, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Multiplayer: %s", getColored(NetClientUtil.isMultiplayer())), 2, height - 30, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Integration: %s", getColored(NetClientUtil.getIntegratedServer())), 2, height - 20, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Singleplayer: %s", getColored(NetClientUtil.isSingleplayer())), 2, height - 10, 0xFFFFFF);
     }
 
     private void renderLogo(PoseStack poseStack)

@@ -32,7 +32,7 @@ public class TextGroup extends AbstractWidget
     {
         this.rows.clear();
 
-        this.lines = NostalgicUtil.Wrap.tooltips(this.text, (this.width / 5) - 3);
+        this.lines = NostalgicUtil.Wrap.tooltip(this.text, (this.width / 5) - 3);
         int rowsNeeded = (int) Math.ceil((double) (lines.size()) / 2);
 
         for (int i = 0; i < rowsNeeded; i++)

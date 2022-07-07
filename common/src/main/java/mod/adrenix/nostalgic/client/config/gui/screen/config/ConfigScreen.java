@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.autoconfig.AutoConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
@@ -11,7 +12,8 @@ import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
@@ -35,6 +37,7 @@ public class ConfigScreen extends Screen
         GENERAL(NostalgicLang.Vanilla.GENERAL),
         SOUND(NostalgicLang.Cloth.SOUND_TITLE),
         CANDY(NostalgicLang.Cloth.CANDY_TITLE),
+        GAMEPLAY(NostalgicLang.Cloth.GAMEPLAY_TITLE),
         ANIMATION(NostalgicLang.Cloth.ANIMATION_TITLE),
         SWING(NostalgicLang.Cloth.SWING_TITLE),
         SEARCH(NostalgicLang.Vanilla.SEARCH);
@@ -56,11 +59,12 @@ public class ConfigScreen extends Screen
 
     public enum SearchTag
     {
-        NEW,
+        CLIENT,
+        SERVER,
         CONFLICT,
         RESET,
-        CLIENT,
-        SERVER;
+        NEW,
+        ALL;
 
         @Override
         public String toString()
@@ -71,7 +75,7 @@ public class ConfigScreen extends Screen
 
     /* Instance Fields */
 
-    final Set<TweakClientCache<?>> search = new HashSet<>();
+    final Map<String, TweakClientCache<?>> search = new TreeMap<>();
     public final ArrayList<Runnable> renderLast = new ArrayList<>();
     private final Minecraft minecraft;
     private final Screen parentScreen;
@@ -118,11 +122,14 @@ public class ConfigScreen extends Screen
         {
             ConfigScreen.isCacheReflected = true;
             TweakClientCache.all().forEach((key, tweak) -> {
-                TweakSide.EntryStatus entryStatus = CommonReflect.getAnnotation(
-                    tweak.getGroup(),
-                    tweak.getKey(),
-                    TweakSide.EntryStatus.class
-                );
+                TweakSide.EntryStatus entryStatus = CommonReflect.getAnnotation(tweak, TweakSide.EntryStatus.class);
+
+                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
+                    tweak.setStatus(StatusType.FAIL);
+            });
+
+            TweakServerCache.all().forEach((key, tweak) -> {
+                TweakSide.EntryStatus entryStatus = CommonReflect.getAnnotation(tweak, TweakSide.EntryStatus.class);
 
                 if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
                     tweak.setStatus(StatusType.FAIL);
@@ -215,6 +222,8 @@ public class ConfigScreen extends Screen
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
+        this.parentScreen.keyPressed(keyCode, scanCode, modifiers);
+
         KeyBindButton mappingInput = this.getMappingInput();
         EditBox editBox = this.getEditBox();
 
@@ -284,10 +293,7 @@ public class ConfigScreen extends Screen
                 else if (isModifierDown() || isInputChanged)
                 {
                     if (isInputChanged)
-                    {
-                        this.getWidgets().getConfigRowList().children().clear();
                         this.getWidgets().checkSearch(this.getWidgets().getSearchInput().getValue());
-                    }
 
                     return true;
                 }
@@ -408,7 +414,7 @@ public class ConfigScreen extends Screen
                 cache.save();
         }
 
-        MixinClientUtil.Run.onSave.forEach(Runnable::run);
+        ModClientUtil.Run.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */
@@ -436,6 +442,7 @@ public class ConfigScreen extends Screen
             case GENERAL -> this.getWidgets().getGeneral().active = false;
             case SOUND -> this.getWidgets().getSound().active = false;
             case CANDY -> this.getWidgets().getCandy().active = false;
+            case GAMEPLAY -> this.getWidgets().getGameplay().active = false;
             case ANIMATION -> this.getWidgets().getAnimation().active = false;
             case SWING -> this.getWidgets().getSwing().active = false;
             case SEARCH -> this.getWidgets().getSearch().active = false;
@@ -452,16 +459,16 @@ public class ConfigScreen extends Screen
         if (this.configTab != ConfigTab.SEARCH)
         {
             this.getWidgets().getSearchInput().setVisible(false);
-            ConfigScreen.drawCenteredString(poseStack, this.font, title, this.width / 2, 7, 0xFFFFFF);
+            ConfigScreen.drawCenteredString(poseStack, this.font, title, this.width / 2, 8, 0xFFFFFF);
         }
         else if (this.getWidgets().focusInput)
         {
-            this.getWidgets().getSearchInput().setVisible(true);
-            this.getWidgets().getSearchInput().setFocus(true);
-            this.getWidgets().getSearchInput().setEditable(true);
+            this.getWidgets().setSearchFocus();
             this.getWidgets().focusInput = false;
         }
 
+        this.getWidgets().getClear().active = this.getWidgets().getSearchInput().getValue().length() > 0;
+        this.getWidgets().getSearchControls().forEach((button) -> button.visible = this.configTab == ConfigTab.SEARCH);
         this.getWidgets().getSearchInput().render(poseStack, mouseX, mouseY, partialTick);
 
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
@@ -469,5 +476,8 @@ public class ConfigScreen extends Screen
 
         this.renderLast.forEach(Runnable::run);
         this.renderLast.clear();
+
+        if (NostalgicTweaks.isDebugging())
+            drawString(poseStack, this.font, "Debug: §2ON", 2, this.height - 10, 0xFFFF00);
     }
 }

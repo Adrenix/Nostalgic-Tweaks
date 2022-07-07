@@ -29,6 +29,9 @@ public class NostalgicForge
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(ForgeCommonSetup::init);
 
+        // Development Environment
+        NostalgicTweaks.setDevelopmentEnvironment(!FMLLoader.isProduction());
+
         // Register sounds
         ForgeSoundInit.SOUNDS.register(bus);
         ForgeSoundInit.init();

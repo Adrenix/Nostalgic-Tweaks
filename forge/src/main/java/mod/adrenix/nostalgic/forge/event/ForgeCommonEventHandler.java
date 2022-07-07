@@ -2,7 +2,9 @@ package mod.adrenix.nostalgic.forge.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.server.event.ServerEventHelper;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -15,4 +17,10 @@ public abstract class ForgeCommonEventHandler
      */
     @SubscribeEvent
     public static void onJoinWorld(PlayerEvent.PlayerLoggedInEvent event) { ServerEventHelper.connect(event.getPlayer()); }
+
+    @SubscribeEvent
+    public static void onExperienceDrop(LivingExperienceDropEvent event) { ForgeGameplayEvents.disableExperienceDrop(event); }
+
+    @SubscribeEvent
+    public static void onExperiencePickup(PlayerXpEvent.PickupXp event) { ForgeGameplayEvents.disableExperiencePickup(event); }
 }

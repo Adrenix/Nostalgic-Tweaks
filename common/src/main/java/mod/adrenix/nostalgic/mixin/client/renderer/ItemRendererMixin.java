@@ -2,9 +2,9 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
-import mod.adrenix.nostalgic.util.common.MixinCommonUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.common.ModCommonUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Mixin injections here will occur after all other mods have finished their required modifications.
  */
 
-@Mixin(value = ItemRenderer.class, priority = MixinCommonUtil.APPLY_LAST)
+@Mixin(value = ItemRenderer.class, priority = ModCommonUtil.APPLY_LAST)
 public abstract class ItemRendererMixin
 {
     /* Shadows */
@@ -47,8 +47,8 @@ public abstract class ItemRendererMixin
     @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
     private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
     {
-        if (MixinClientUtil.Item.isLightingFlat())
-            MixinClientUtil.Item.setNormalQuad(poseStack.last(), quad);
+        if (ModClientUtil.Item.isLightingFlat())
+            ModClientUtil.Item.setNormalQuad(poseStack.last(), quad);
         return quad;
     }
 
@@ -67,9 +67,9 @@ public abstract class ItemRendererMixin
     )
     private void NT$onGetGlint(ItemRenderer renderer, BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, ItemStack unused1, ItemTransforms.TransformType transformer, boolean leftHand, PoseStack unused2, MultiBufferSource buffer)
     {
-        boolean noGlobalGlint = MixinConfig.Candy.oldFlatEnchantment() && MixinClientUtil.Item.isLightingFlat();
-        boolean noEntityGlint = MixinConfig.Candy.oldFloatingItems() && transformer == ItemTransforms.TransformType.GROUND;
-        boolean noFrameGlint = MixinConfig.Candy.oldFlatFrames() && transformer == ItemTransforms.TransformType.FIXED;
+        boolean noGlobalGlint = ModConfig.Candy.oldFlatEnchantment() && ModClientUtil.Item.isLightingFlat();
+        boolean noEntityGlint = ModConfig.Candy.oldFloatingItems() && transformer == ItemTransforms.TransformType.GROUND;
+        boolean noFrameGlint = ModConfig.Candy.oldFlatFrames() && transformer == ItemTransforms.TransformType.FIXED;
 
         if (noGlobalGlint && (noEntityGlint || noFrameGlint))
         {
@@ -93,7 +93,7 @@ public abstract class ItemRendererMixin
     )
     private void NT$onRenderGuiItemDecorations(Font font, ItemStack stack, int x, int y, String text, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldDurabilityColors() && stack.isDamaged())
+        if (ModConfig.Candy.oldDurabilityColors() && stack.isDamaged())
         {
             RenderSystem.disableDepthTest();
             RenderSystem.disableTexture();

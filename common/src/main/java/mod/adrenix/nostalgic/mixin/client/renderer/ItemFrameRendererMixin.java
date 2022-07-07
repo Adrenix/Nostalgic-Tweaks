@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
-import mod.adrenix.nostalgic.util.client.MixinClientUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemFrameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -39,13 +39,13 @@ public abstract class ItemFrameRendererMixin <T extends ItemFrame>
     )
     private void NT$onRenderStart(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldFlatFrames())
+        if (ModConfig.Candy.oldFlatFrames())
         {
             BakedModel model = itemRenderer.getModel(entity.getItem(), null, null, 0);
-            if (MixinClientUtil.Item.isModelFlat(model))
+            if (ModClientUtil.Item.isModelFlat(model))
             {
-                MixinClientUtil.Item.flatten(poseStack);
-                MixinClientUtil.Item.disableDiffusedLighting();
+                ModClientUtil.Item.flatten(poseStack);
+                ModClientUtil.Item.disableDiffusedLighting();
             }
         }
     }
@@ -62,6 +62,6 @@ public abstract class ItemFrameRendererMixin <T extends ItemFrame>
     )
     private void NT$onRenderFinish(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        MixinClientUtil.Item.enableDiffusedLighting();
+        ModClientUtil.Item.enableDiffusedLighting();
     }
 }

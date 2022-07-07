@@ -9,6 +9,7 @@
     "GuiFabricMixin"
   ],
   "mixins": [
+    "ExperienceOrbFabricMixin",
     "LivingEntityFabricMixin"
   ]
 }

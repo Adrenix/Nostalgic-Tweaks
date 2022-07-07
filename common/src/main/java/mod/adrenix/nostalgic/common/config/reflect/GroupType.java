@@ -4,7 +4,8 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 
 /**
  * Any additional enumerations added to this file will require updates in:
- * - ConfigReflect (Required)
+ * - CommonReflect {@link mod.adrenix.nostalgic.common.config.reflect.CommonReflect} (Required)
+ * - ServerReflect {@link mod.adrenix.nostalgic.server.config.reflect.ServerReflect} (Required)
  */
 
 public enum GroupType
@@ -12,6 +13,7 @@ public enum GroupType
     ROOT { @Override public String getLangKey() { return AUTO_CONFIG; } },
     SOUND { @Override public String getLangKey() { return AUTO_CONFIG + ".sound"; } },
     CANDY { @Override public String getLangKey() { return AUTO_CONFIG + ".eyeCandy"; } },
+    GAMEPLAY { @Override public String getLangKey() { return AUTO_CONFIG + ".gameplay"; } },
     ANIMATION { @Override public String getLangKey() { return AUTO_CONFIG + ".animation"; } },
     SWING { @Override public String getLangKey() { return AUTO_CONFIG + ".swing"; } },
     GUI { @Override public String getLangKey() { return AUTO_CONFIG + ".gui"; } };

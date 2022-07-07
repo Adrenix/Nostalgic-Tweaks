@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -113,7 +114,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            TweakClient.Gui.NoTooltip noTooltip = CommonReflect.getAnnotation(this.cache.getGroup(), this.cache.getKey(), TweakClient.Gui.NoTooltip.class);
+            TweakClient.Gui.NoTooltip noTooltip = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.NoTooltip.class);
 
             widgets.add(controller);
             widgets.add(new ResetButton(this.cache, controller));
@@ -329,8 +330,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
         private boolean isRowLocked()
         {
-            if ((this.cache != null && this.cache.isClientSide()) || !NostalgicTweaks.isNetworkVerified())
+            if (this.cache == null)
                 return false;
+
+            boolean isClient = this.cache.isClientSide();
+            boolean isDynamic = this.cache.isDynamic();
+
+            if ((isClient && !isDynamic) || !NostalgicTweaks.isNetworkVerified())
+                return false;
+
+            if (this.cache.isDynamic() && NostalgicTweaks.isNetworkVerified() && !NetClientUtil.isPlayerOp())
+                return true;
 
             for (AbstractWidget widget : this.children)
                 if (widget instanceof IPermissionWidget && Minecraft.getInstance().player != null)
@@ -444,6 +454,42 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     widget.x = cacheX;
                     widget.y = cacheY;
+                }
+
+                // Debugging
+                if (NostalgicTweaks.isDebugging() && this.isMouseOver(mouseX, mouseY) && this.cache != null)
+                {
+                    if (screen instanceof ConfigScreen config)
+                    {
+                        if (config.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
+                        {
+                            String color = "§a";
+                            int weight = this.cache.getWeight();
+                            if (weight <= 50) color = "§4";
+                            else if (weight <= 60) color = "§c";
+                            else if (weight <= 70) color = "§6";
+                            else if (weight <= 80) color = "§e";
+                            else if (weight <= 99) color = "§2";
+
+                            screen.renderTooltip(poseStack, Component.literal(String.format("Fuzzy Weight: %s%s", color, weight)), mouseX, mouseY);
+                        }
+                        else
+                        {
+                            List<Component> lines = new ArrayList<>();
+                            Object clientCache = this.cache.getSavedValue();
+                            String clientColor = clientCache instanceof Boolean state ? state ? "§2" : "§4" : "";
+                            lines.add(Component.literal(String.format("Client Cache: %s%s", clientColor, clientCache)));
+
+                            TweakServerCache<?> serverCache = TweakServerCache.all().get(this.cache.getId());
+                            if (serverCache != null)
+                            {
+                                String serverColor = serverCache.getServerCache() instanceof Boolean state ? state ? "§2" : "§4" : "";
+                                lines.add(Component.literal(String.format("Server Cache: %s%s", serverColor, serverCache.getServerCache())));
+                            }
+
+                            screen.renderComponentTooltip(poseStack, lines, mouseX, mouseY);
+                        }
+                    }
                 }
             }
         }

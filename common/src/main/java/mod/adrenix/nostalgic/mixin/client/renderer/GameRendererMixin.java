@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -29,14 +29,14 @@ public abstract class GameRendererMixin
     @Inject(method = "bobView", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onBobView(PoseStack mStack, float partialTicks, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
+        if (ModConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
         {
             ICameraPitch injector = (ICameraPitch) player;
 
             float f = player.walkDist - player.walkDistO;
             float f1 = -(player.walkDist + f * partialTicks);
             float f2 = Mth.lerp(partialTicks, player.oBob, player.bob);
-            float f3 = Mth.lerp(partialTicks, injector.getPrevCameraPitch(), injector.getCameraPitch());
+            float f3 = Mth.lerp(partialTicks, injector.NT$getPrevCameraPitch(), injector.NT$getCameraPitch());
 
             mStack.translate(Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, -Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
             mStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));

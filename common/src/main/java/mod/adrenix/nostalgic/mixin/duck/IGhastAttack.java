@@ -6,5 +6,5 @@ package mod.adrenix.nostalgic.mixin.duck;
 
 public interface IGhastAttack
 {
-    int getAttackCounter();
+    int NT$getAttackCounter();
 }

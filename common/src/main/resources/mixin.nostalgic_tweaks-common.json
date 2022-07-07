@@ -7,9 +7,7 @@
   "client": [
     "ClientPacketListenerMixin",
     "world.entity.EntityMixin",
-    "world.entity.LivingEntityMixin",
     "world.entity.MobMixin",
-    "world.entity.PlayerMixin",
     "world.level.ExplosionMixin",
     "world.level.block.BlockBehaviourMixin",
     "world.level.block.LeavesBlockMixin"
@@ -17,11 +15,18 @@
 
   "mixins": [
     "world.entity.ItemEntityMixin",
+    "world.entity.LivingEntityMixin",
+    "world.entity.PlayerMixin",
+    "world.item.ItemMixin",
+    "world.item.BowItemMixin",
+    "world.level.block.AnvilBlockMixin",
     "world.level.block.BlockMixin",
     "world.level.block.BlockStateBaseMixin",
     "world.level.block.ChestBlockMixin",
+    "world.level.block.EnchantmentTableBlockMixin",
     "world.level.block.EnderChestBlockMixin",
     "server.ChunkMapMixin",
-    "server.PlayerListMixin"
+    "server.PlayerListMixin",
+    "server.ServerLevelMixin"
   ]
 }

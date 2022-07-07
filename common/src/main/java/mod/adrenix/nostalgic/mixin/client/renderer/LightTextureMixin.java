@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -56,7 +56,7 @@ public abstract class LightTextureMixin
     @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onTick(CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldLightFlicker())
+        if (ModConfig.Candy.oldLightFlicker())
         {
             this.updateLightTexture = true;
             callback.cancel();
@@ -70,7 +70,7 @@ public abstract class LightTextureMixin
     @Inject(method = "updateLightTexture", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!MixinConfig.Candy.oldLighting() || !this.updateLightTexture)
+        if (!ModConfig.Candy.oldLighting() || !this.updateLightTexture)
             return;
 
         this.updateLightTexture = false;

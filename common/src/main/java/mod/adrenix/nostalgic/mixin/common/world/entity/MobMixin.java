@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +30,7 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
     /* Overrides */
 
     @Override
-    public int getAttackCounter()
+    public int NT$getAttackCounter()
     {
         return this.NT$attackCounter;
     }
@@ -44,7 +44,7 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
     @Inject(method = "tick", at = @At("TAIL"))
     protected void NT$onTick(CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldGhastCharging() && this.getType() == EntityType.GHAST)
+        if (ModConfig.Animation.oldGhastCharging() && this.getType() == EntityType.GHAST)
         {
             Ghast ghast = (Ghast) this.getType().tryCast(this);
             if (ghast != null && ghast.isCharging() && ghast.isAlive())

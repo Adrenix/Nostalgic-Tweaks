@@ -1,10 +1,9 @@
 package mod.adrenix.nostalgic.mixin.common;
 
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Final;
@@ -20,6 +19,8 @@ public abstract class ClientPacketListenerMixin
 
     @Shadow @Final private RandomSource random;
 
+    /* Injections */
+
     /**
      * Client:
      *
@@ -27,6 +28,8 @@ public abstract class ClientPacketListenerMixin
      * This is just the item pickup sound with a deeper pitch.
      *
      * Controlled by the old experience orb pickup tweak.
+     *
+     * Pickup sound can also be muted by the disabled experience orb pickup sound tweak.
      */
     @Redirect
     (
@@ -40,8 +43,10 @@ public abstract class ClientPacketListenerMixin
     )
     private void NT$onPlayLocalExperienceSound(ClientLevel instance, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay)
     {
-        if (MixinConfig.Sound.oldXP())
-            instance.playLocalSound(x, y, z, SoundEvents.ITEM_PICKUP, category, volume, this.random.nextFloat() - this.random.nextFloat() * 0.1F + 0.01F, distanceDelay);
+        if (ModConfig.Sound.oldXp() && !ModConfig.Sound.disableXpPickup())
+            instance.playLocalSound(x, y, z, sound, category, volume, this.random.nextFloat() - this.random.nextFloat() * 0.1F + 0.01F, distanceDelay);
+        else if (ModConfig.Sound.disableXpPickup())
+            instance.playLocalSound(x, y, z, sound, category, 0.0F, pitch, distanceDelay);
         else
             instance.playLocalSound(x, y, z, sound, category, volume, pitch, distanceDelay);
     }

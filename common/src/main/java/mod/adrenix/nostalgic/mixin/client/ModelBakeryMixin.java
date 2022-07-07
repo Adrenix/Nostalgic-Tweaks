@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.MixinConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,15 +27,15 @@ public abstract class ModelBakeryMixin
 
         namespace = switch (path)
         {
-            case "block/chest", "item/chest" -> MixinConfig.Candy.oldChest() ? NostalgicTweaks.MOD_ID : minecraft;
-            case "block/ender_chest", "item/ender_chest" -> MixinConfig.Candy.oldEnderChest() ? NostalgicTweaks.MOD_ID : minecraft;
-            case "block/trapped_chest", "item/trapped_chest" -> MixinConfig.Candy.oldTrappedChest() ? NostalgicTweaks.MOD_ID : minecraft;
+            case "block/chest", "item/chest" -> ModConfig.Candy.oldChest() ? NostalgicTweaks.MOD_ID : minecraft;
+            case "block/ender_chest", "item/ender_chest" -> ModConfig.Candy.oldEnderChest() ? NostalgicTweaks.MOD_ID : minecraft;
+            case "block/trapped_chest", "item/trapped_chest" -> ModConfig.Candy.oldTrappedChest() ? NostalgicTweaks.MOD_ID : minecraft;
             default -> namespace;
         };
 
-        if (MixinConfig.Candy.oldChest() && !MixinConfig.Candy.oldEnderChest() && path.equals("item/ender_chest"))
+        if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldEnderChest() && path.equals("item/ender_chest"))
             return new ResourceLocation(NostalgicTweaks.MOD_ID, "item/vanilla_ender_chest");
-        else if (MixinConfig.Candy.oldChest() && !MixinConfig.Candy.oldTrappedChest() && path.equals("item/trapped_chest"))
+        else if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldTrappedChest() && path.equals("item/trapped_chest"))
             return new ResourceLocation(NostalgicTweaks.MOD_ID, "item/vanilla_trapped_chest");
         return new ResourceLocation(namespace, path);
     }
