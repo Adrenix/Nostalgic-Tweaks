@@ -649,11 +649,29 @@ public class ClientConfig implements ConfigData
          */
 
         @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Warning
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean oldFire = DefaultConfig.Gameplay.OLD_FIRE;
+        static { GameplayTweak.FIRE_SPREAD.setKey("oldFire"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean infiniteBurn = DefaultConfig.Gameplay.INFINITE_BURN;
+        static { GameplayTweak.INFINITE_BURN.setKey("infiniteBurn"); }
+
+        @TweakClient.Gui.New
         @TweakSide.Dynamic
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
-        public boolean oldSprint = DefaultConfig.Gameplay.OLD_SPRINT;
-        static { GameplayTweak.SPRINT.setKey("oldSprint"); }
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
+        static { GameplayTweak.SPRINT.setKey("disableSprint"); }
 
         /**
          * Hunger System

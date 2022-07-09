@@ -135,7 +135,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     @ModifyVariable(method = "setSprinting", at = @At("HEAD"), argsOnly = true)
     private boolean NT$onSetSprinting(boolean vanilla)
     {
-        if (!ModConfig.Gameplay.oldSprint())
+        if (!ModConfig.Gameplay.disableSprint())
             return vanilla;
         else if (this.getType() == EntityType.PLAYER)
         {

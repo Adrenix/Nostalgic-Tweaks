@@ -319,7 +319,9 @@ public abstract class ModConfig
         public static boolean disableAnvil() { return getSidedBoolTweak(GameplayTweak.ANVIL, GAMEPLAY.disableAnvil, SERVER_GAMEPLAY.disableAnvil); }
 
         // Game Mechanics
-        public static boolean oldSprint() { return getSidedBoolTweak(GameplayTweak.SPRINT, GAMEPLAY.oldSprint, SERVER_GAMEPLAY.oldSprint); }
+        public static boolean disableSprint() { return getSidedBoolTweak(GameplayTweak.SPRINT, GAMEPLAY.disableSprint, SERVER_GAMEPLAY.disableSprint); }
+        public static boolean infiniteBurn() { return getSidedBoolTweak(GameplayTweak.INFINITE_BURN, GAMEPLAY.infiniteBurn, SERVER_GAMEPLAY.infiniteBurn); }
+        public static boolean oldFire() { return getSidedBoolTweak(GameplayTweak.FIRE_SPREAD, GAMEPLAY.oldFire, SERVER_GAMEPLAY.oldFire); }
 
         // Hunger System
         public static boolean alternativeHungerBar() { return getBoolTweak(GameplayTweak.ALT_HUNGER_BAR, GAMEPLAY.alternativeHungerBar); }

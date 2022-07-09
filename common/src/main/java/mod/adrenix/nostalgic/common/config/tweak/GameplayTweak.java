@@ -29,7 +29,9 @@ public enum GameplayTweak implements ITweak
     FOOD_STACKING,
 
     // Game Mechanics
-    SPRINT;
+    SPRINT,
+    FIRE_SPREAD,
+    INFINITE_BURN;
 
     /* Implementation */
 

@@ -346,8 +346,13 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableEnchantTable": "Disable Enchantment Table",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableEnchantTable.@Tooltip": "Disable enchantment table block interactions.",
 
-  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSprint": "Old Sprinting",
-  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSprint.@Tooltip": "Disables the ability for the player to sprint and sprint swim.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint": "Disable Sprinting",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint.@Tooltip": "Disables the ability for the player to sprint and sprint swim.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire": "Old Fire",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire.@Tooltip": "Bring back the old fire spread and tick updates.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire.@Warning": "This is a very§4 dangerous§r tweak to enable. All flammable blocks will§6 ignite§r and§e spread fire aggressively§r regardless of difficulty.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.infiniteBurn": "Infinite Burn",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.infiniteBurn.@Tooltip": "Bring back the chance for flammable blocks to always stay on fire. When disabled, blocks on fire will are guaranteed to be destroyed.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay.alternativeHungerBar": "Alternative Hunger Bar",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.alternativeHungerBar.@Tooltip": "Replaces the hunger bar in the HUD with text output in the top-left corner of the screen.",

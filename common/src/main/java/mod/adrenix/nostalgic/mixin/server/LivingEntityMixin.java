@@ -25,7 +25,7 @@ public abstract class LivingEntityMixin
     private boolean NT$onSetServerSprinting(boolean vanilla)
     {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (entity instanceof Player player && ModConfig.Gameplay.oldSprint())
+        if (entity instanceof Player player && ModConfig.Gameplay.disableSprint())
         {
             boolean isOverride = player.isCreative() || player.isSpectator();
             if (isOverride)

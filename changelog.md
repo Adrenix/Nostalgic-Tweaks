@@ -35,7 +35,9 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Added new tweak: (Experience System) Disable Anvil
 - Added new tweak: (Experience System) Disable Enchantment Table
 - Added new Game Mechanics subcategory for Gameplay
-- Added new tweak: (Game Mechanics) Old Sprinting
+- Added new tweak: (Game Mechanics) Old Fire
+- Added new tweak: (Game Mechanics) Infinite Fire
+- Added new tweak: (Game Mechanics) Disable Sprinting
 - Added new Hunger System subcategory for Gameplay
 - Added new tweak: (Hunger System) Alternative Hunger Bar
 - Added new tweak: (Hunger System) Disable Hunger Bar

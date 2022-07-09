@@ -124,7 +124,9 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_ENCHANT_TABLE = false;
 
         // Game Mechanics
-        public static final boolean OLD_SPRINT = true;
+        public static final boolean OLD_FIRE = false;
+        public static final boolean INFINITE_BURN = true;
+        public static final boolean DISABLE_SPRINT = true;
 
         // Hunger System
         public static final boolean ALTERNATIVE_HUNGER_BAR = false;

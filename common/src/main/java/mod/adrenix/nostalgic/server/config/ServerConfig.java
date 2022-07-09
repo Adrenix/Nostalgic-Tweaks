@@ -45,7 +45,9 @@ public class ServerConfig implements ConfigData
         public boolean disableEnchantTable = DefaultConfig.Gameplay.DISABLE_ENCHANT_TABLE;
 
         // Game Mechanics
-        public boolean oldSprint = DefaultConfig.Gameplay.OLD_SPRINT;
+        public boolean oldFire = DefaultConfig.Gameplay.OLD_FIRE;
+        public boolean infiniteBurn = DefaultConfig.Gameplay.INFINITE_BURN;
+        public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
 
         // Hunger System
         public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
