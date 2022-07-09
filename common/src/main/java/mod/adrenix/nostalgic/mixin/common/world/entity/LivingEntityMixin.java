@@ -3,9 +3,13 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,8 +59,39 @@ public abstract class LivingEntityMixin
         slice = @Slice(to = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;attackAnim:F")),
         constant = @Constant(floatValue = 180.0F)
     )
-    public float NT$onBackwardsRotation(float vanilla)
+    private float NT$onBackwardsRotation(float vanilla)
     {
         return ModConfig.Animation.oldBackwardsWalking() ? 0.0F : vanilla;
+    }
+
+    /**
+     * Makes zombie flesh not as overpowered by swapping the hunger effect with poison.
+     * Controlled by the old hunger tweak.
+     */
+    @Inject
+    (
+        cancellable = true,
+        method = "addEatEffect",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/food/FoodProperties;getEffects()Ljava/util/List;"
+        )
+    )
+    private void NT$onAddEatEffect(ItemStack itemStack, Level level, LivingEntity entity, CallbackInfo callback)
+    {
+        if (!ModConfig.Gameplay.disableHunger())
+            return;
+
+        Item item = itemStack.getItem();
+        boolean isRotten = item.equals(Items.ROTTEN_FLESH);
+        boolean isGolden = item.equals(Items.GOLDEN_APPLE);
+        boolean isEffectOverride = isRotten || isGolden;
+
+        if (isRotten)
+            entity.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0));
+
+        if (isEffectOverride)
+            callback.cancel();
     }
 }

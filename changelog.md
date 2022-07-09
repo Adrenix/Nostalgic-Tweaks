@@ -36,13 +36,15 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Added new tweak: (Experience System) Disable Enchantment Table
 - Added new Game Mechanics subcategory for Gameplay
 - Added new tweak: (Game Mechanics) Old Fire
-- Added new tweak: (Game Mechanics) Infinite Fire
+- Added new tweak: (Game Mechanics) Infinite Burn
 - Added new tweak: (Game Mechanics) Disable Sprinting
 - Added new Hunger System subcategory for Gameplay
 - Added new tweak: (Hunger System) Alternative Hunger Bar
 - Added new tweak: (Hunger System) Disable Hunger Bar
 - Added new tweak: (Hunger System) Disable Hunger
+> Effects given to the player are removed and the nutrition values of different foods will change when this is enabled.
 - Added new tweak: (Hunger System) Instant Eat
 - Added new tweak: (Hunger System) Old Food Stacking
+> Only vanilla items will be impacted. Foods that restore half a heart can stack up to 8 like potatoes and carrots.
 - Added new tweak: (Player Animation) Old Backwards Walking
 - Fixed the old fog rendering from overriding the dark fog caused by the darkness effect.
