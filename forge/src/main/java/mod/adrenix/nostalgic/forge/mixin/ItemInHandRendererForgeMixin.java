@@ -32,7 +32,8 @@ public abstract class ItemInHandRendererForgeMixin
     (
         method = "renderHandsWithItems",
         index = 8,
-        at = @At(
+        at = @At
+        (
             remap = false,
             ordinal = 0,
             value = "INVOKE",
@@ -58,7 +59,8 @@ public abstract class ItemInHandRendererForgeMixin
     @Redirect
     (
         method = "tick",
-        at = @At(
+        at = @At
+        (
             remap = false,
             ordinal = 0,
             value = "INVOKE",
