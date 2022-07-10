@@ -30,7 +30,7 @@ public abstract class ItemRendererLastMixin
 
     /**
      * Used to change the normal matrix on the pose stack depending on the quad we're rendering.
-     * Controlled by flat rendering state in the mixin injector helper class.
+     * Controlled by flat rendering state in the mod utility helper class.
      */
     @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
     private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
