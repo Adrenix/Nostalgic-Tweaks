@@ -222,7 +222,8 @@ public class ConfigScreen extends Screen
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        this.parentScreen.keyPressed(keyCode, scanCode, modifiers);
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_D)
+            this.parentScreen.keyPressed(keyCode, scanCode, modifiers);
 
         KeyBindButton mappingInput = this.getMappingInput();
         EditBox editBox = this.getEditBox();
