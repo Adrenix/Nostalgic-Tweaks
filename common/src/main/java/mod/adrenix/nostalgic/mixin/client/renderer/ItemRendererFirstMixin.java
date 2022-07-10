@@ -1,15 +1,16 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.common.ModCommonUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -22,35 +23,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * To help with mod compatibility, the mixins defined in this class will be applied last.
- * Mixin injections here will occur after all other mods have finished their required modifications.
- */
-
-@Mixin(value = ItemRenderer.class, priority = ModCommonUtil.APPLY_LAST)
-public abstract class ItemRendererMixin
+@Mixin(ItemRenderer.class)
+public abstract class ItemRendererFirstMixin
 {
     /* Shadows */
 
     @Shadow protected abstract void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer);
     @Shadow protected abstract void fillRect(BufferBuilder builder, int x, int y, int w, int h, int r, int g, int b, int alpha);
-    @Shadow public abstract void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model);
 
-    /**
-     * Used to change the normal matrix on the pose stack depending on the quad we're rendering.
-     * Controlled by flat rendering state in the mixin injector helper class.
-     */
-    @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
-    private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
-    {
-        if (ModClientUtil.Item.isLightingFlat())
-            ModClientUtil.Item.setNormalQuad(poseStack.last(), quad);
-        return quad;
-    }
+    /* Injections */
 
     /**
      * Disables the enchantment glint on floating items.
