@@ -146,29 +146,29 @@ public abstract class ModConfig
     }
 
     /**
-     * Get the tweak version stored in the given tweak.
-     * @param tweak The tweak to check which version its using.
-     * @param client A {@link ClientConfig client config} tweak version field.
-     * @param <E> The version stored within the tweak.
-     * @return The version saved on disk, or the disabled value if the mod state is off.
+     * Get the tweak enumeration stored on disk for the given tweak.
+     * @param tweak The tweak to check which enumeration it's using.
+     * @param client A {@link ClientConfig client config} tweak enumeration field.
+     * @param <E> The enumeration stored within the tweak.
+     * @return The enumeration saved on disk, or the disabled value if the mod state is off.
      */
-    private static <E extends Enum<E> & TweakVersion.IDisabled<E>> E getVersion(ITweak tweak, E client)
+    private static <E extends Enum<E> & IDisableTweak<E>> E getEnum(ITweak tweak, E client)
     {
         return !isTweakOn(tweak) ? client.getDisabled() : client;
     }
 
     /**
-     * Get a client or server tweak version stored in the given tweak.
-     * @param tweak The tweak to check which version its using.
-     * @param client A {@link ClientConfig client config} tweak version field.
-     * @param server A {@link ServerConfig server config} tweak version field.
-     * @param <E> The version stored within the tweak.
-     * @return The version saved on disk, or the disabled value if the mod is client-side and the mod state is off.
+     * Get a client or server tweak enumeration stored on disk for the given tweak.
+     * @param tweak The tweak to check which enumeration it's using.
+     * @param client A {@link ClientConfig client config} tweak enumeration field.
+     * @param server A {@link ServerConfig server config} tweak enumeration field.
+     * @param <E> The enumeration stored within the tweak.
+     * @return The enumeration saved on disk, or the disabled value if the mod is client-side and the mod state is off.
      */
     @SuppressWarnings("SameParameterValue") // Temporary suppression until another sided version tweak is created
-    private static <E extends Enum<E> & TweakVersion.IDisabled<E>> E getSidedVersion(ITweak tweak, E client, E server)
+    private static <E extends Enum<E> & IDisableTweak<E>> E getSidedEnum(ITweak tweak, E client, E server)
     {
-        return NostalgicTweaks.isClient() ? getVersion(tweak, client) : server;
+        return NostalgicTweaks.isClient() ? getEnum(tweak, client) : server;
     }
 
     /* Root Tweaks */
@@ -266,12 +266,12 @@ public abstract class ModConfig
 
         /* Version Tweaks */
 
-        public static TweakVersion.ButtonLayout getButtonLayout() { return getVersion(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
-        public static TweakVersion.Overlay getLoadingOverlay() { return getVersion(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
-        public static TweakVersion.Generic getSkyColor() { return getVersion(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
-        public static TweakVersion.Generic getFogColor() { return getVersion(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
-        public static TweakVersion.Generic getBlueVoid() { return getVersion(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
-        public static TweakVersion.Hotbar getHotbar() { return getSidedVersion(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar, SERVER_CANDY.oldCreativeHotbar); }
+        public static TweakVersion.ButtonLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static TweakVersion.Overlay getLoadingOverlay() { return getEnum(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
+        public static TweakVersion.Generic getSkyColor() { return getEnum(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
+        public static TweakVersion.Generic getFogColor() { return getEnum(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
+        public static TweakVersion.Generic getBlueVoid() { return getEnum(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static TweakVersion.Hotbar getHotbar() { return getSidedEnum(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar, SERVER_CANDY.oldCreativeHotbar); }
 
         /* String Tweaks */
 
@@ -287,10 +287,7 @@ public abstract class ModConfig
 
         /* Integer Tweaks */
 
-        public static int getCloudHeight()
-        {
-            return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192;
-        }
+        public static int getCloudHeight() { return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
     }
 
     /* Gameplay Tweaks */
@@ -311,6 +308,7 @@ public abstract class ModConfig
         public static boolean instantBow() { return getSidedBoolTweak(GameplayTweak.INSTANT_BOW, GAMEPLAY.instantBow, SERVER_GAMEPLAY.instantBow); }
 
         // Experience System
+        public static TweakType.Corner alternativeExperienceCorner() { return getEnum(GameplayTweak.ALT_EXPERIENCE_CORNER, GAMEPLAY.alternativeExperienceCorner); }
         public static boolean alternativeExperienceBar() { return getBoolTweak(GameplayTweak.ALT_EXPERIENCE_BAR, GAMEPLAY.alternativeExperienceBar); }
         public static boolean disableExperienceBar() { return getBoolTweak(GameplayTweak.DISABLE_EXP_BAR, GAMEPLAY.disableExperienceBar); }
         public static boolean disableOrbRendering() { return getBoolTweak(GameplayTweak.ORB_RENDERING, GAMEPLAY.disableOrbRendering); }
@@ -326,6 +324,7 @@ public abstract class ModConfig
         public static boolean oldFire() { return getSidedBoolTweak(GameplayTweak.FIRE_SPREAD, GAMEPLAY.oldFire, SERVER_GAMEPLAY.oldFire); }
 
         // Hunger System
+        public static TweakType.Corner alternativeHungerCorner() { return getEnum(GameplayTweak.ALT_HUNGER_CORNER, GAMEPLAY.alternativeHungerCorner); }
         public static boolean alternativeHungerBar() { return getBoolTweak(GameplayTweak.ALT_HUNGER_BAR, GAMEPLAY.alternativeHungerBar); }
         public static boolean disableHungerBar() { return getBoolTweak(GameplayTweak.DISABLE_HUNGER_BAR, GAMEPLAY.disableHungerBar); }
         public static boolean oldFoodStacking() { return getSidedBoolTweak(GameplayTweak.FOOD_STACKING, GAMEPLAY.oldFoodStacking, SERVER_GAMEPLAY.oldFoodStacking); }

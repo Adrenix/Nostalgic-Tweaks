@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
-import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.common.config.tweak.IDisableTweak;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
@@ -289,10 +289,10 @@ public record ConfigRenderer(ConfigScreen parent)
                                 }
                             }
 
-                            if (value instanceof TweakVersion.IDisabled<?> && !isDisableIgnored)
+                            if (value instanceof IDisableTweak<?> && !isDisableIgnored)
                             {
                                 TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
-                                version.setCurrent(((TweakVersion.IDisabled<?>) value).getDisabled());
+                                version.setCurrent(((IDisableTweak<?>) value).getDisabled());
                             }
                         });
                     }

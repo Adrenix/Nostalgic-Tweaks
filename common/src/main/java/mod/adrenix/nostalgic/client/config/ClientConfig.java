@@ -609,6 +609,14 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public TweakType.Corner alternativeExperienceCorner = DefaultConfig.Gameplay.ALTERNATIVE_EXPERIENCE_CORNER;
+        static { GameplayTweak.ALT_EXPERIENCE_CORNER.setKey("alternativeExperienceCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         public boolean disableExperienceBar = DefaultConfig.Gameplay.DISABLE_EXPERIENCE_BAR;
         static { GameplayTweak.DISABLE_EXP_BAR.setKey("disableExperienceBar"); }
 
@@ -616,7 +624,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         public boolean disableOrbSpawn = DefaultConfig.Gameplay.DISABLE_ORB_SPAWN;
         static { GameplayTweak.ORB_SPAWN.setKey("disableOrbSpawn"); }
 
@@ -624,7 +632,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.EXPERIENCE_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         public boolean disableOrbRendering = DefaultConfig.Gameplay.DISABLE_ORB_RENDERING;
         static { GameplayTweak.ORB_RENDERING.setKey("disableOrbRendering"); }
 
@@ -706,6 +714,14 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public TweakType.Corner alternativeHungerCorner = DefaultConfig.Gameplay.ALTERNATIVE_HUNGER_CORNER;
+        static { GameplayTweak.ALT_HUNGER_CORNER.setKey("alternativeHungerCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         public boolean disableHungerBar = DefaultConfig.Gameplay.DISABLE_HUNGER_BAR;
         static { GameplayTweak.DISABLE_HUNGER_BAR.setKey("disableHungerBar"); }
 
@@ -713,7 +729,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
         static { GameplayTweak.HUNGER.setKey("disableHunger"); }
 
@@ -721,7 +737,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
         static { GameplayTweak.INSTANT_EAT.setKey("instantEat"); }
 
@@ -729,7 +745,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.HUNGER_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 6)
         public boolean oldFoodStacking = DefaultConfig.Gameplay.OLD_FOOD_STACKING;
         static { GameplayTweak.FOOD_STACKING.setKey("oldFoodStacking"); }
     }

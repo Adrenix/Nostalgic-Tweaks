@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.common.config;
 
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
+import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 
 public abstract class DefaultConfig
@@ -116,6 +117,7 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SWEEP = true;
 
         // Experience System
+        public static final TweakType.Corner ALTERNATIVE_EXPERIENCE_CORNER = TweakType.Corner.TOP_LEFT;
         public static final boolean ALTERNATIVE_EXPERIENCE_BAR = false;
         public static final boolean DISABLE_EXPERIENCE_BAR = true;
         public static final boolean DISABLE_ORB_SPAWN = true;
@@ -131,6 +133,7 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SPRINT = true;
 
         // Hunger System
+        public static final TweakType.Corner ALTERNATIVE_HUNGER_CORNER = TweakType.Corner.TOP_LEFT;
         public static final boolean ALTERNATIVE_HUNGER_BAR = false;
         public static final boolean DISABLE_HUNGER_BAR = true;
         public static final boolean DISABLE_HUNGER = true;

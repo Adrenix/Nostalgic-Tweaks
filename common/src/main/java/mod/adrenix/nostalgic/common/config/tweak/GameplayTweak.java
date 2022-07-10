@@ -15,6 +15,7 @@ public enum GameplayTweak implements ITweak
 
     // Experience System
     ALT_EXPERIENCE_BAR,
+    ALT_EXPERIENCE_CORNER,
     DISABLE_EXP_BAR,
     ORB_SPAWN,
     ORB_RENDERING,
@@ -23,6 +24,7 @@ public enum GameplayTweak implements ITweak
 
     // Hunger System
     ALT_HUNGER_BAR,
+    ALT_HUNGER_CORNER,
     DISABLE_HUNGER_BAR,
     HUNGER,
     INSTANT_EAT,

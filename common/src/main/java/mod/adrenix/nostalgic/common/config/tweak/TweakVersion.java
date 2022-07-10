@@ -12,12 +12,7 @@ import net.minecraft.network.chat.Component;
 
 public abstract class TweakVersion
 {
-    public interface IDisabled<E extends Enum<E>>
-    {
-        E getDisabled();
-    }
-
-    public enum Generic implements IDisabled<Generic>
+    public enum Generic implements IDisableTweak<Generic>
     {
         ALPHA(NostalgicLang.Gui.SETTINGS_ALPHA),
         BETA(NostalgicLang.Gui.SETTINGS_BETA),
@@ -32,7 +27,7 @@ public abstract class TweakVersion
         public Generic getDisabled() { return MODERN; }
     }
 
-    public enum Overlay implements IDisabled<Overlay>
+    public enum Overlay implements IDisableTweak<Overlay>
     {
         ALPHA(Generic.ALPHA.getLangKey()),
         BETA(Generic.BETA.getLangKey()),
@@ -48,7 +43,7 @@ public abstract class TweakVersion
         public Overlay getDisabled() { return MODERN; }
     }
 
-    public enum ButtonLayout implements IDisabled<ButtonLayout>
+    public enum ButtonLayout implements IDisableTweak<ButtonLayout>
     {
         ALPHA(Generic.ALPHA.getLangKey()),
         BETA(Generic.BETA.getLangKey()),
@@ -64,7 +59,7 @@ public abstract class TweakVersion
         public ButtonLayout getDisabled() { return MODERN; }
     }
 
-    public enum Hotbar implements IDisabled<Hotbar>
+    public enum Hotbar implements IDisableTweak<Hotbar>
     {
         CLASSIC(NostalgicLang.Gui.SETTINGS_CLASSIC),
         BETA(Generic.BETA.getLangKey()),

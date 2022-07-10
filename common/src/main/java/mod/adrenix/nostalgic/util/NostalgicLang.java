@@ -28,6 +28,7 @@ public abstract class NostalgicLang
         public static final String HUD_FOOD = "hud.nostalgic_tweaks.food";
         public static final String HUD_LEVEL = "hud.nostalgic_tweaks.level";
         public static final String HUD_EXPERIENCE = "hud.nostalgic_tweaks.experience";
+        public static final String HUD_SATURATION = "hud.nostalgic_tweaks.saturation";
 
         public static final String TOAST_TWEAK_UPDATE_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_update_header";
         public static final String TOAST_TWEAK_UPDATE_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_update_body";
@@ -77,6 +78,11 @@ public abstract class NostalgicLang
         public static final String SETTINGS_BETA = "gui.nostalgic_tweaks.config.beta";
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
         public static final String DEFAULT = "gui.nostalgic_tweaks.config.default";
+
+        public static final String CORNER_TOP_LEFT = "gui.nostalgic_tweaks.config.corner.top_left";
+        public static final String CORNER_TOP_RIGHT = "gui.nostalgic_tweaks.config.corner.top_right";
+        public static final String CORNER_BOTTOM_LEFT = "gui.nostalgic_tweaks.config.corner.bottom_left";
+        public static final String CORNER_BOTTOM_RIGHT = "gui.nostalgic_tweaks.config.corner.bottom_right";
 
         public static final String STATE_SHIFT = "gui.nostalgic_tweaks.config.state.shift";
         public static final String STATE_FUZZY = "gui.nostalgic_tweaks.config.state.fuzzy";
