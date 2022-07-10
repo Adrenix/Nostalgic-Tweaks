@@ -666,10 +666,26 @@ public class ClientConfig implements ConfigData
         static { GameplayTweak.INFINITE_BURN.setKey("infiniteBurn"); }
 
         @TweakClient.Gui.New
-        @TweakSide.Dynamic
+        @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean instantAir = DefaultConfig.Gameplay.INSTANT_AIR;
+        static { GameplayTweak.INSTANT_AIR.setKey("instantAir"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Dynamic
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
+        static { GameplayTweak.SWIM.setKey("disableSwim"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Dynamic
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
         static { GameplayTweak.SPRINT.setKey("disableSprint"); }
 

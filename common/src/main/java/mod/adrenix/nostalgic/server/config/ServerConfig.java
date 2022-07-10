@@ -46,8 +46,10 @@ public class ServerConfig implements ConfigData
 
         // Game Mechanics
         public boolean oldFire = DefaultConfig.Gameplay.OLD_FIRE;
+        public boolean instantAir = DefaultConfig.Gameplay.INSTANT_AIR;
         public boolean infiniteBurn = DefaultConfig.Gameplay.INFINITE_BURN;
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
+        public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
 
         // Hunger System
         public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;

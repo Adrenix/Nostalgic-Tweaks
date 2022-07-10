@@ -18,21 +18,25 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class LivingEntityMixin
 {
     /**
-     * Prevents connected player entities from sprinting if the tweak is enabled.
-     * Controlled by the old sprint tweak.
+     * Prevents connected player entities from sprinting or 'swim sprinting' if either tweak is enabled.
+     * Controlled by the disabled sprint tweak and the disabled swim tweak.
      */
     @ModifyVariable(method = "setSprinting", at = @At("HEAD"), argsOnly = true)
     private boolean NT$onSetServerSprinting(boolean vanilla)
     {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (entity instanceof Player player && ModConfig.Gameplay.disableSprint())
+        if (entity instanceof Player player && (ModConfig.Gameplay.disableSprint() || ModConfig.Gameplay.disableSwim()))
         {
             boolean isOverride = player.isCreative() || player.isSpectator();
             if (isOverride)
                 return vanilla;
-            return false;
+
+            if (player.isUnderWater() && ModConfig.Gameplay.disableSwim())
+                return false;
+            else if (!player.isUnderWater() && ModConfig.Gameplay.disableSprint())
+                return false;
         }
-        else
-            return vanilla;
+
+        return vanilla;
     }
 }

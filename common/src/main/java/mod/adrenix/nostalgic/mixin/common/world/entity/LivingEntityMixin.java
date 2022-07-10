@@ -5,6 +5,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -15,6 +17,7 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * All mixins within this class are injected into both client and server.
@@ -24,8 +27,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin
+public abstract class LivingEntityMixin extends Entity
 {
+    /* Dummy Constructor */
+
+    private LivingEntityMixin(EntityType<?> entity, Level level)
+    {
+        super(entity, level);
+    }
+
+    /* Injections */
+
     /**
      * Prevents living entities from playing the food consumption sound.
      * Controlled by the old hunger tweak.
@@ -62,6 +74,17 @@ public abstract class LivingEntityMixin
     private float NT$onBackwardsRotation(float vanilla)
     {
         return ModConfig.Animation.oldBackwardsWalking() ? 0.0F : vanilla;
+    }
+
+    /**
+     * Immediately refills the player's air supply when they go above water.
+     * Controlled by the instant air tweak.
+     */
+    @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
+    private void NT$onIncreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> callback)
+    {
+        if (ModConfig.Gameplay.instantAir())
+            callback.setReturnValue(this.getMaxAirSupply());
     }
 
     /**

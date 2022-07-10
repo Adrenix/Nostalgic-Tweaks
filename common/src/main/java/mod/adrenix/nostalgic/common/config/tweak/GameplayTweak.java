@@ -30,7 +30,9 @@ public enum GameplayTweak implements ITweak
 
     // Game Mechanics
     SPRINT,
+    SWIM,
     FIRE_SPREAD,
+    INSTANT_AIR,
     INFINITE_BURN;
 
     /* Implementation */

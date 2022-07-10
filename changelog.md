@@ -37,12 +37,14 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Added new Game Mechanics subcategory for Gameplay
 - Added new tweak: (Game Mechanics) Old Fire
 - Added new tweak: (Game Mechanics) Infinite Burn
+- Added new tweak: (Game Mechanics) Instant Air Refill
+- Added new tweak: (Game Mechanics) Disable Swimming
 - Added new tweak: (Game Mechanics) Disable Sprinting
 - Added new Hunger System subcategory for Gameplay
 - Added new tweak: (Hunger System) Alternative Hunger Bar
 - Added new tweak: (Hunger System) Disable Hunger Bar
 - Added new tweak: (Hunger System) Disable Hunger
-> Effects given to the player are removed and the nutrition values of different foods will change when this is enabled.
+> Only vanilla items will be impacted. Effects given to the player are removed and the nutrition values of different foods will change.
 - Added new tweak: (Hunger System) Instant Eat
 - Added new tweak: (Hunger System) Old Food Stacking
 > Only vanilla items will be impacted. Foods that restore half a heart can stack up to 8 like potatoes and carrots.

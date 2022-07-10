@@ -347,7 +347,11 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableEnchantTable.@Tooltip": "Disable enchantment table block interactions.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint": "Disable Sprinting",
-  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint.@Tooltip": "Disables the ability for the player to sprint and sprint swim.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint.@Tooltip": "Disables the ability for the player to sprint.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSwim": "Disable Swimming",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSwim.@Tooltip": "Disables the ability for the player to 'sprint swim' under water.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.instantAir": "Instant Air Refill",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.instantAir.@Tooltip": "Immediately refill the player's air bubbles once the player is above water.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire": "Old Fire",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire.@Tooltip": "Bring back the old fire spread and tick updates.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldFire.@Warning": "This is a very§4 dangerous§r tweak to enable. All flammable blocks will§6 ignite§r and§e spread fire aggressively§r regardless of difficulty.",

@@ -127,15 +127,15 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     /**
      * Client Mixed - Server Controlled
      *
-     * Prevents the ability for the client player to sprint.
+     * Prevents the ability for the client player to sprint or the ability to 'sprint swim'.
      *
-     * Although this tweak is being mixed into the client, a server running the N.T. mod will dictate when this
-     * gameplay element should be active.
+     * Although this tweak is being mixed into the client, a server running the N.T. mod will dictate when these
+     * gameplay elements should be active.
      */
     @ModifyVariable(method = "setSprinting", at = @At("HEAD"), argsOnly = true)
     private boolean NT$onSetSprinting(boolean vanilla)
     {
-        if (!ModConfig.Gameplay.disableSprint())
+        if (!ModConfig.Gameplay.disableSprint() && !ModConfig.Gameplay.disableSwim())
             return vanilla;
         else if (this.getType() == EntityType.PLAYER)
         {
@@ -146,7 +146,10 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
             if (isInvalidEntity || isOverride)
                 return vanilla;
 
-            return false;
+            if (entity.isUnderWater() && ModConfig.Gameplay.disableSwim())
+                return false;
+            else if (!entity.isUnderWater() && ModConfig.Gameplay.disableSprint())
+                return false;
         }
 
         return vanilla;
