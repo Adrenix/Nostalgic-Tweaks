@@ -56,4 +56,11 @@ public class ServerConfig implements ConfigData
         public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
         public boolean oldFoodStacking = DefaultConfig.Gameplay.OLD_FOOD_STACKING;
     }
+
+    public Animation animation = new Animation();
+    public static class Animation
+    {
+        // Player Animations
+        public boolean oldCreativeCrouch = DefaultConfig.Animation.OLD_CREATIVE_CROUCH;
+    }
 }

@@ -27,6 +27,7 @@ public enum AnimationTweak implements ITweak
     BACKWARD_WALK,
     COLLIDE_BOB,
     BOB_VERTICAL,
+    CREATIVE_CROUCH,
     SNEAK_SMOOTH;
 
     /* Implementation */

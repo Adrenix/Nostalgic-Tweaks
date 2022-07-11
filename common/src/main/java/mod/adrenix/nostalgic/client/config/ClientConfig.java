@@ -857,6 +857,13 @@ public class ClientConfig implements ConfigData
         public boolean oldVerticalBobbing = DefaultConfig.Animation.OLD_VERTICAL_BOBBING;
         static { AnimationTweak.BOB_VERTICAL.setKey("oldVerticalBobbing"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Dynamic
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldCreativeCrouch = DefaultConfig.Animation.OLD_CREATIVE_CROUCH;
+        static { AnimationTweak.CREATIVE_CROUCH.setKey("oldCreativeCrouch"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Category.PLAYER_ANIMATION)

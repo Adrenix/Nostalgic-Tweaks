@@ -25,6 +25,7 @@ public abstract class ModConfig
 
     private static final ServerConfig.EyeCandy SERVER_CANDY = ServerConfigCache.getCandy();
     private static final ServerConfig.Gameplay SERVER_GAMEPLAY = ServerConfigCache.getGameplay();
+    private static final ServerConfig.Animation SERVER_ANIMATION = ServerConfigCache.getAnimation();
 
     /* Client Config References */
 
@@ -72,12 +73,13 @@ public abstract class ModConfig
      */
     private static void loadTweak(ITweak tweak)
     {
-        if (!tweak.isLoaded())
+        TweakServerCache<?> cache = TweakServerCache.get(tweak);
+
+        if (!tweak.isLoaded() || (cache != null && cache.getStatus().equals(StatusType.FAIL)))
         {
             tweak.setEnabled();
 
             // Server cache status syncing
-            TweakServerCache<?> cache = TweakServerCache.get(tweak);
             if (cache != null)
             {
                 cache.setStatus(StatusType.LOADED);
@@ -165,7 +167,7 @@ public abstract class ModConfig
      * @param <E> The enumeration stored within the tweak.
      * @return The enumeration saved on disk, or the disabled value if the mod is client-side and the mod state is off.
      */
-    @SuppressWarnings("SameParameterValue") // Temporary suppression until another sided version tweak is created
+    @SuppressWarnings("SameParameterValue") // Temporary suppression until another sided enum tweak is created
     private static <E extends Enum<E> & IDisableTweak<E>> E getSidedEnum(ITweak tweak, E client, E server)
     {
         return NostalgicTweaks.isClient() ? getEnum(tweak, client) : server;
@@ -366,6 +368,7 @@ public abstract class ModConfig
         public static boolean oldBackwardsWalking() { return getBoolTweak(AnimationTweak.BACKWARD_WALK, ANIMATION.oldBackwardWalking); }
         public static boolean oldVerticalBobbing() { return getBoolTweak(AnimationTweak.BOB_VERTICAL, ANIMATION.oldVerticalBobbing); }
         public static boolean oldCollideBobbing() { return getBoolTweak(AnimationTweak.COLLIDE_BOB, ANIMATION.oldCollideBobbing); }
+        public static boolean oldCreativeCrouch() { return getSidedBoolTweak(AnimationTweak.CREATIVE_CROUCH, ANIMATION.oldCreativeCrouch, SERVER_ANIMATION.oldCreativeCrouch); }
         public static boolean oldSneaking() { return getBoolTweak(AnimationTweak.SNEAK_SMOOTH, ANIMATION.oldSneaking); }
     }
 }

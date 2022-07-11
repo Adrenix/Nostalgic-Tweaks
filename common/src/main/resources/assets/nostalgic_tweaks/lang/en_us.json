@@ -411,6 +411,8 @@
   "text.autoconfig.nostalgic_tweaks.option.animation.oldCollideBobbing.@Tooltip": "Remove the subtle animation that is applied to the arm and viewing distance when trying to move while colliding with a block.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldVerticalBobbing": "Old Vertical Bobbing",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldVerticalBobbing.@Tooltip": "A subtle animation that is applied to the arm and viewing distance when jumping or falling.",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldCreativeCrouch": "Old Creative Crouching",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldCreativeCrouch.@Tooltip": "Bring back the old crouch animation that plays when the player sneaks while in creative.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking": "Old Sneaking",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking.@Tooltip": "Remove the smooth animation that is applied when sneaking.",
 

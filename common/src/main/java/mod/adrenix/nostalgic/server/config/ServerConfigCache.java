@@ -34,6 +34,7 @@ public abstract class ServerConfigCache
     public static ServerConfig getRoot() { return getCache(); }
     public static ServerConfig.EyeCandy getCandy() { return getCache().eyeCandy; }
     public static ServerConfig.Gameplay getGameplay() { return getCache().gameplay; }
+    public static ServerConfig.Animation getAnimation() { return getCache().animation; }
 
     private static InteractionResult reloadConfiguration()
     {
