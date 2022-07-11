@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import com.mojang.authlib.GameProfile;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.gameplay.OldFoodData;
 import mod.adrenix.nostalgic.mixin.widen.IMixinLivingEntity;
@@ -12,17 +11,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -41,6 +39,7 @@ public abstract class PlayerMixin extends LivingEntity
 
     /* Shadows */
 
+    @Shadow @Final private Abilities abilities;
     @Shadow protected FoodData foodData;
     @Shadow public abstract float getCurrentItemAttackStrengthDelay();
 
@@ -111,7 +110,7 @@ public abstract class PlayerMixin extends LivingEntity
     @ModifyArg(method = "updatePlayerPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setPose(Lnet/minecraft/world/entity/Pose;)V"))
     private Pose NT$onSetPlayerPose(Pose vanilla)
     {
-        if (!ModConfig.Animation.oldCreativeCrouch() || !NostalgicTweaks.isNetworkVerified())
+        if (!ModConfig.Animation.oldCreativeCrouch())
             return vanilla;
 
         Pose pose = this.isFallFlying() ? Pose.FALL_FLYING :
@@ -125,5 +124,15 @@ public abstract class PlayerMixin extends LivingEntity
         return this.isSpectator() || this.isPassenger() || this.canEnterPose(pose) ? pose :
             this.canEnterPose(Pose.CROUCHING) ? Pose.CROUCHING : Pose.SWIMMING
         ;
+    }
+
+    /**
+     * Prevents the jittery camera movement that occurs when using the crouch pose override while flying in creative.
+     * Controlled by the old creative crouching tweak.
+     */
+    @ModifyConstant(method = "getStandingEyeHeight", constant = @Constant(floatValue = 1.27F))
+    private float NT$onGetStandingEyeHeight(float vanilla)
+    {
+        return ModConfig.Animation.oldCreativeCrouch() && this.abilities.flying ? 1.62F : 1.27F;
     }
 }
