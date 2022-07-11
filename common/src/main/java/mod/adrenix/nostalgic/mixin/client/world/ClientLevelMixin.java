@@ -172,9 +172,13 @@ public abstract class ClientLevelMixin
             if (entity == null)
                 return;
 
-            if (entity instanceof Spider || entity instanceof Silverfish)
+            boolean isMinecraftEntity = entity.getType().getDescriptionId().contains("minecraft");
+            boolean isEntityIgnored = entity instanceof Spider || entity instanceof Silverfish;
+            boolean isModdedIgnored = ModConfig.Sound.ignoreModdedStep() && !isMinecraftEntity;
+
+            if (isEntityIgnored)
                 callback.cancel();
-            else
+            else if (!isModdedIgnored)
             {
                 BlockState standing = level.getBlockState(pos.below());
 

@@ -108,6 +108,14 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_SOUND)
         public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
         static { SoundTweak.OLD_STEP.setKey("oldStep"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Category.MOB_SOUND)
+        public boolean ignoreModdedStep = DefaultConfig.Sound.IGNORE_MODDED_STEP;
+        static { SoundTweak.IGNORE_MODDED_STEP.setKey("ignoreModdedStep"); }
     }
 
     @TweakSide.Ignore

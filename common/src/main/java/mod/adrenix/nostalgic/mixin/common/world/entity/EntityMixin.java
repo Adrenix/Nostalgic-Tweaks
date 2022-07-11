@@ -43,7 +43,11 @@ public abstract class EntityMixin
     {
         if (ModConfig.Sound.oldStep())
         {
-            if (instance instanceof Spider || instance instanceof Silverfish)
+            boolean isMinecraftEntity = instance.getType().getDescriptionId().contains("minecraft");
+            boolean isEntityIgnored = instance instanceof Spider || instance instanceof Silverfish;
+            boolean isModdedIgnored = ModConfig.Sound.ignoreModdedStep() && !isMinecraftEntity;
+
+            if (isEntityIgnored || isModdedIgnored)
                 return;
 
             if (!state.getMaterial().isLiquid())

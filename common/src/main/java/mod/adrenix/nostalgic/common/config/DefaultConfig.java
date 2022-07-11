@@ -24,6 +24,7 @@ public abstract class DefaultConfig
 
         // Mob Sounds
         public static final boolean OLD_STEP = true;
+        public static final boolean IGNORE_MODDED_STEP = false;
     }
 
     public static class Candy

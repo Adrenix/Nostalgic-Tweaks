@@ -181,6 +181,7 @@ public abstract class ModConfig
 
     public static class Sound
     {
+        public static boolean ignoreModdedStep() { return getBoolTweak(SoundTweak.IGNORE_MODDED_STEP, SOUND.ignoreModdedStep); }
         public static boolean disableXpPickup() { return getBoolTweak(SoundTweak.DISABLE_PICKUP, SOUND.disableXpPickup); }
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
         public static boolean oldAttack() { return getBoolTweak(SoundTweak.OLD_ATTACK, SOUND.oldAttack); }
