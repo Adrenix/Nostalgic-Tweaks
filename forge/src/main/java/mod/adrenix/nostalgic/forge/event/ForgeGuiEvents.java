@@ -133,10 +133,13 @@ public abstract class ForgeGuiEvents
         int top = height - gui.left_height;
         int dy = 0;
         int level = minecraft.player.getArmorValue();
+        boolean isAbsorbing = minecraft.player.getAbsorptionAmount() > 0.0F;
 
         if (isExperienceDisabled)
             dy += 7;
         if (isHungerDisabled)
+            dy += 10;
+        if (isAbsorbing && isHungerDisabled)
             dy += 10;
 
         for (int i = 1; level > 0 && i < 20; i += 2)

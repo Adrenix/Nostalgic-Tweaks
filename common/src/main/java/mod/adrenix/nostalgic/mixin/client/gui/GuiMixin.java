@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +26,8 @@ public abstract class GuiMixin extends GuiComponent
     @Shadow protected abstract LivingEntity getPlayerVehicleWithHealth();
 
     /* Injections */
+
+    @Shadow protected abstract Player getCameraPlayer();
 
     /**
      * Disables the rendering of the selected item name above the hotbar.
@@ -68,6 +71,7 @@ public abstract class GuiMixin extends GuiComponent
         boolean isHungerRendered = !ModConfig.Gameplay.disableHungerBar();
         boolean isExperienceRendered = !ModConfig.Gameplay.disableExperienceBar();
         boolean isVehiclePresent = this.getPlayerVehicleWithHealth() != null;
+        boolean isAbsorbing = false;
 
         if (isVehiclePresent || isHungerRendered)
         {
@@ -75,10 +79,16 @@ public abstract class GuiMixin extends GuiComponent
             return;
         }
 
+        if (this.getCameraPlayer() != null)
+            isAbsorbing = this.getCameraPlayer().getAbsorptionAmount() > 0.0F;
+
         int width = this.screenWidth;
         int mirrorX = width - x - 10;
         int armorY = isExperienceRendered ? 10 : 17;
         int bubbleY = isExperienceRendered ? 1 : 8;
+
+        if (isAbsorbing)
+            armorY += 10;
 
         // All armor slot textures
         if ((uOffset == 16 && vOffset == 9) || (uOffset == 25 && vOffset == 9) || (uOffset == 34 && vOffset == 9))
