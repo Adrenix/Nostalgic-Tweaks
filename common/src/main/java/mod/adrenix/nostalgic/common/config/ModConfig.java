@@ -250,6 +250,7 @@ public abstract class ModConfig
         public static boolean removeAccessibilityButton() { return getBoolTweak(CandyTweak.TITLE_ACCESSIBILITY, CANDY.removeTitleAccessibilityButton); }
         public static boolean removeTitleModLoaderText() { return getBoolTweak(CandyTweak.TITLE_MOD_LOADER_TEXT, CANDY.removeTitleModLoaderText); }
         public static boolean removeLanguageButton() { return getBoolTweak(CandyTweak.TITLE_LANGUAGE, CANDY.removeTitleLanguageButton); }
+        public static boolean removeRealmsButton() { return getBoolTweak(CandyTweak.TITLE_REALMS, CANDY.removeTitleRealmsButton); }
         public static boolean titleBottomLeftText() { return getBoolTweak(CandyTweak.TITLE_BOTTOM_LEFT_TEXT, CANDY.titleBottomLeftText); }
         public static boolean oldTitleBackground() { return getBoolTweak(CandyTweak.TITLE_BACKGROUND, CANDY.oldTitleBackground); }
         public static boolean oldLogoOutline() { return getBoolTweak(CandyTweak.LOGO_OUTLINE, CANDY.oldLogoOutline); }
@@ -300,9 +301,7 @@ public abstract class ModConfig
         // Combat System
         public static int instantBowSpeed()
         {
-            return isTweakOn(GameplayTweak.ARROW_SPEED) ?
-                getSidedTweak(GameplayTweak.ARROW_SPEED, GAMEPLAY.arrowSpeed, SERVER_GAMEPLAY.arrowSpeed) : 0
-            ;
+            return isTweakOn(GameplayTweak.ARROW_SPEED) ? getSidedTweak(GameplayTweak.ARROW_SPEED, GAMEPLAY.arrowSpeed, SERVER_GAMEPLAY.arrowSpeed) : 0;
         }
 
         public static boolean disableCooldown() { return getSidedBoolTweak(GameplayTweak.DISABLE_COOLDOWN, GAMEPLAY.disableCooldown, SERVER_GAMEPLAY.disableCooldown); }
@@ -343,11 +342,7 @@ public abstract class ModConfig
         public static float getArmSwayIntensity()
         {
             float mirror = shouldMirrorArmSway() ? -1.0F : 1.0F;
-
-            return isTweakOn(AnimationTweak.ARM_SWAY_INTENSITY) ?
-                (((float) ANIMATION.armSwayIntensity) * mirror / 100.0F) :
-                1.0F
-            ;
+            return isTweakOn(AnimationTweak.ARM_SWAY_INTENSITY) ? (((float) ANIMATION.armSwayIntensity) * mirror / 100.0F) : 1.0F;
         }
 
         public static boolean oldSwing() { return getBoolTweak(AnimationTweak.ITEM_SWING, ANIMATION.oldSwing); }

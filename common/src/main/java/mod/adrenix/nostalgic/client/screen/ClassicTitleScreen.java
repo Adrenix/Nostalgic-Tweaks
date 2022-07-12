@@ -283,7 +283,7 @@ public class ClassicTitleScreen extends TitleScreen
                         ((AbstractWidget) child).setAlpha(1.0F);
                 }
 
-                this.setImageButtonVisibility();
+                this.setButtonVisibility();
 
                 for (Widget widget : screen.NT$getRenderables())
                     widget.render(poseStack, mouseX, mouseY, partialTick);
@@ -311,15 +311,21 @@ public class ClassicTitleScreen extends TitleScreen
 
     /* Methods */
 
-    private void setImageButtonVisibility()
+    private void setButtonVisibility()
     {
         IMixinScreen screen = (IMixinScreen) this;
         for (Widget widget : screen.NT$getRenderables())
         {
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
                 ((ImageButton) widget).visible = !ModConfig.Candy.removeLanguageButton();
-            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
+            else if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
                 ((ImageButton) widget).visible = !ModConfig.Candy.removeAccessibilityButton();
+            else if (widget instanceof Button button)
+            {
+                boolean isRealms = button.getMessage().getString().equals(Component.translatable("menu.online").getString());
+                boolean isRemovable = ModConfig.Candy.removeRealmsButton();
+                ((Button) widget).visible = !isRealms || !isRemovable;
+            }
         }
     }
 

@@ -50,5 +50,6 @@ All updates that start with a 2.x.x version number will support multiplayer.
 > Only vanilla items will be impacted. Foods that restore half a heart can stack up to 8 like potatoes and carrots.
 - Added new tweak: (Player Animation) Old Backwards Walking
 - Added new tweak: (Player Animation) Old Creative Crouching
+- Added new tweak: (Title Screen Candy) Remove Realms Button
 - Added new tweak: (Sound) Ignore Modded Mob Steps - Prevents the mod from overriding the footstep sounds for modded entities.
 - Fixed the old fog rendering from overriding the dark fog caused by the darkness effect.

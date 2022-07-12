@@ -429,38 +429,46 @@ public class ClientConfig implements ConfigData
         public boolean uncapTitleFPS = DefaultConfig.Candy.UNCAP_TITLE_FPS;
         static { CandyTweak.UNCAP_TITLE_FPS.setKey("uncapTitleFPS"); }
 
+        @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
+        public boolean removeTitleRealmsButton = DefaultConfig.Candy.REMOVE_TITLE_REALMS;
+        static { CandyTweak.TITLE_REALMS.setKey("removeTitleRealmsButton"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
         public boolean removeTitleAccessibilityButton = DefaultConfig.Candy.REMOVE_TITLE_ACCESSIBILITY;
         static { CandyTweak.TITLE_ACCESSIBILITY.setKey("removeTitleAccessibilityButton"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 3)
         public boolean removeTitleLanguageButton = DefaultConfig.Candy.REMOVE_TITLE_LANGUAGE;
         static { CandyTweak.TITLE_LANGUAGE.setKey("removeTitleLanguageButton"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 3)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 4)
         public boolean removeTitleModLoaderText = DefaultConfig.Candy.REMOVE_TITLE_MOD_LOADER_TEXT;
         static { CandyTweak.TITLE_MOD_LOADER_TEXT.setKey("removeTitleModLoaderText"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 4)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 5)
         public boolean titleBottomLeftText = DefaultConfig.Candy.TITLE_BOTTOM_LEFT_TEXT;
         static { CandyTweak.TITLE_BOTTOM_LEFT_TEXT.setKey("titleBottomLeftText"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 5)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 6)
         public String titleVersionText = DefaultConfig.Candy.TITLE_VERSION_TEXT;
 
         /**
