@@ -270,7 +270,8 @@ public abstract class ModConfig
 
         /* Version Tweaks */
 
-        public static TweakVersion.ButtonLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static TweakVersion.TitleLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
+        public static TweakVersion.PauseLayout getPauseLayout() { return getEnum(CandyTweak.PAUSE_LAYOUT, CANDY.oldPauseMenu); }
         public static TweakVersion.Overlay getLoadingOverlay() { return getEnum(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
         public static TweakVersion.Generic getSkyColor() { return getEnum(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
         public static TweakVersion.Generic getFogColor() { return getEnum(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }

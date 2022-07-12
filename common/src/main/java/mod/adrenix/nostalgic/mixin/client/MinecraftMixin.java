@@ -1,8 +1,11 @@
 package mod.adrenix.nostalgic.mixin.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
+import mod.adrenix.nostalgic.client.screen.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
+import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.duck.ILocalSwing;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
@@ -72,9 +75,9 @@ public abstract class MinecraftMixin
 
         if (genericScreen.getClass() == GenericDirtMessageScreen.class)
         {
-            ClassicProgressScreen progressScreen = new ClassicProgressScreen(new ProgressScreen(false));
+            NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
             progressScreen.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_SAVING));
-            progressScreen.setPauseTicking(ClassicProgressScreen.NO_PAUSES);
+            progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
             return progressScreen;
         }
 
@@ -91,15 +94,15 @@ public abstract class MinecraftMixin
     private void NT$onSetLevel(ClientLevel levelClient, CallbackInfo callback)
     {
         if (this.level != null)
-            ClassicProgressScreen.setPreviousDimension(this.level.dimension());
-        ClassicProgressScreen.setCurrentDimension(levelClient.dimension());
+            NostalgicProgressScreen.setPreviousDimension(this.level.dimension());
+        NostalgicProgressScreen.setCurrentDimension(levelClient.dimension());
     }
 
     @Inject(method = "clearLevel()V", at = @At(value = "TAIL"))
     private void NT$onClearLevel(CallbackInfo callback)
     {
-        ClassicProgressScreen.setCurrentDimension(null);
-        ClassicProgressScreen.setPreviousDimension(null);
+        NostalgicProgressScreen.setCurrentDimension(null);
+        NostalgicProgressScreen.setPreviousDimension(null);
     }
 
     /**
@@ -111,5 +114,20 @@ public abstract class MinecraftMixin
     {
         if (ModConfig.Candy.uncapTitleFPS())
             callback.setReturnValue(this.getWindow().getFramerateLimit());
+    }
+
+    /**
+     * Redirects the game's pause menu to our own. This override respects the debug pause input.
+     * Controlled by the old pause screen layout tweak.
+     */
+    @ModifyArg(method = "pauseGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
+    private Screen NT$onPauseGame(Screen vanilla)
+    {
+        boolean isDebug = InputConstants.isKeyDown(this.getWindow().getWindow(), 292);
+
+        if (!ModConfig.Candy.getPauseLayout().equals(TweakVersion.PauseLayout.MODERN) && !isDebug)
+            return new NostalgicPauseScreen();
+
+        return vanilla;
     }
 }

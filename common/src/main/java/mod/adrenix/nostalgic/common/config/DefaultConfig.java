@@ -37,6 +37,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_TRAPPED_CHEST = true;
 
         // Interface Candy
+        public static final TweakVersion.PauseLayout OLD_PAUSE_MENU = TweakVersion.PauseLayout.MODERN;
         public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
         public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
@@ -79,7 +80,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
 
         // Title Screen Candy
-        public static final TweakVersion.ButtonLayout TITLE_BUTTON_LAYOUT = TweakVersion.ButtonLayout.MODERN;
+        public static final TweakVersion.TitleLayout TITLE_BUTTON_LAYOUT = TweakVersion.TitleLayout.MODERN;
         public static final String TITLE_VERSION_TEXT = "Minecraft %v";
         public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
         public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;

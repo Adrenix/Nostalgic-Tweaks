@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 
-public class ClassicLoadingScreen extends Screen
+public class NostalgicLoadingScreen extends Screen
 {
     /* Fields */
 
@@ -19,7 +19,7 @@ public class ClassicLoadingScreen extends Screen
 
     /* Constructors */
 
-    public ClassicLoadingScreen(StoringChunkProgressListener progressListener, Component title, Component subtitle)
+    public NostalgicLoadingScreen(StoringChunkProgressListener progressListener, Component title, Component subtitle)
     {
         super(NarratorChatListener.NO_TITLE);
         this.progressListener = progressListener;
@@ -56,7 +56,7 @@ public class ClassicLoadingScreen extends Screen
 
         ProgressRenderer.drawTitleText(poses, this, this.title);
         ProgressRenderer.drawSubtitleText(poses, this, this.subtitle);
-        ClassicLoadingScreen.renderProgress(this.progressListener);
+        NostalgicLoadingScreen.renderProgress(this.progressListener);
     }
 
     /* Classic Rendering */

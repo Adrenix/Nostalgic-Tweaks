@@ -184,6 +184,13 @@ public class ClientConfig implements ConfigData
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Sub(group = TweakClient.Category.INTERFACE_CANDY)
+        public TweakVersion.PauseLayout oldPauseMenu = DefaultConfig.Candy.OLD_PAUSE_MENU;
+        static { CandyTweak.PAUSE_LAYOUT.setKey("oldPauseMenu"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
@@ -414,7 +421,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Sub(group = TweakClient.Category.TITLE_CANDY)
-        public TweakVersion.ButtonLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
+        public TweakVersion.TitleLayout oldButtonLayout = DefaultConfig.Candy.TITLE_BUTTON_LAYOUT;
         static { CandyTweak.TITLE_BUTTON_LAYOUT.setKey("oldButtonLayout"); }
 
         @TweakSide.Client

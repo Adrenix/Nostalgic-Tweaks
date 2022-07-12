@@ -6,13 +6,21 @@ public abstract class NostalgicLang
     {
         public static final String GENERAL = "stat.generalButton";
         public static final String SEARCH = "gui.socialInteractions.search_hint";
+        public static final String GUI_ADVANCEMENTS = "gui.advancements";
         public static final String GUI_CANCEL = "gui.cancel";
+        public static final String GUI_STATS = "gui.stats";
         public static final String GUI_DONE = "gui.done";
         public static final String READ_WORLD_DATA = "selectWorld.data_read";
         public static final String MENU_SINGLEPLAYER = "menu.singleplayer";
         public static final String MENU_MULTIPLAYER = "menu.multiplayer";
+        public static final String MENU_DISCONNECT = "menu.disconnect";
         public static final String MENU_OPTIONS = "menu.options";
+        public static final String MENU_RETURN_TO_GAME = "menu.returnToGame";
+        public static final String MENU_RETURN_TO_TITLE = "menu.returnToMenu";
         public static final String MENU_QUIT = "menu.quit";
+        public static final String MENU_GAME = "menu.game";
+        public static final String MENU_LAN = "menu.shareToLan";
+        public static final String SAVE_LEVEL = "menu.savingLevel";
     }
 
     public static class Key
@@ -68,6 +76,11 @@ public abstract class NostalgicLang
         public static final String LEVEL_ENTER_END = "gui.nostalgic_tweaks.level.enterEnd";
         public static final String LEVEL_LEAVING_NETHER = "gui.nostalgic_tweaks.level.leaveNether";
         public static final String LEVEL_LEAVING_END = "gui.nostalgic_tweaks.level.leaveEnd";
+
+        public static final String PAUSE_GAME = "gui.nostalgic_tweaks.pause.game";
+        public static final String PAUSE_ACHIEVEMENTS = "gui.nostalgic_tweaks.pause.achievements";
+        public static final String PAUSE_RETURN_LOWER = "gui.nostalgic_tweaks.pause.return";
+        public static final String PAUSE_SAVE_LOWER = "gui.nostalgic_tweaks.pause.save";
 
         public static final String SETTINGS_SPEED = "gui.nostalgic_tweaks.config.speed";
         public static final String SETTINGS_SPEED_HELP = "gui.nostalgic_tweaks.config.speed.@PrefixText";

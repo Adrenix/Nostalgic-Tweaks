@@ -18,6 +18,7 @@ public enum CandyTweak implements ITweak
     CREATIVE_HOTBAR,
     REMOVE_LOADING_BAR,
     VERSION_OVERLAY,
+    PAUSE_LAYOUT,
     CHAT_INPUT,
     CHAT_BOX,
     BUTTON_HOVER,

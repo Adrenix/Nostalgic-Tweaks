@@ -48,6 +48,11 @@
   "gui.nostalgic_tweaks.level.leaveNether": "Leaving the Nether",
   "gui.nostalgic_tweaks.level.leaveEnd": "Leaving the End",
 
+  "gui.nostalgic_tweaks.pause.game": "Game menu",
+  "gui.nostalgic_tweaks.pause.return": "Back to game",
+  "gui.nostalgic_tweaks.pause.save": "Save and quit to title",
+  "gui.nostalgic_tweaks.pause.achievements": "Achievements",
+
   "gui.nostalgic_tweaks.config.speed": "Speed",
   "gui.nostalgic_tweaks.config.speed.@PrefixText": "\nThe higher the swing number is the slower the swinging animation will be.\n\n§aAlpha/Beta Minecraft§f: §b8\n§6Modern Minecraft§f: §b6\n\n§rIf you are§e photosensitive§r, it is recommended to set speeds to§e 0§r.\nTo set§d customized§r speeds for individual items, click the§d Custom Speed§r button at the mod's settings homepage.\n§r",
   "gui.nostalgic_tweaks.config.intensity": "Intensity",
@@ -259,6 +264,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPlainSelectedItemName.@Tooltip": "Remove all text formatting from the item name that appears above the hotbar when selecting an item.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCreativeHotbar": "Old Creative Hotbar",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCreativeHotbar.@Tooltip": "Start with a filled hotbar when joining a world with an empty inventory in creative mode.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPauseMenu": "Old Pause Menu",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPauseMenu.@Tooltip": "Bring back the old pause menus throughout various versions of Minecraft.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding": "Old Item Holding",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding.@Tooltip": "Bring back the old item holding and swinging position.",

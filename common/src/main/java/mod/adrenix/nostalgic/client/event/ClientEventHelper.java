@@ -3,9 +3,9 @@ package mod.adrenix.nostalgic.client.event;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.client.screen.ClassicLoadingScreen;
-import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
-import mod.adrenix.nostalgic.client.screen.ClassicTitleScreen;
+import mod.adrenix.nostalgic.client.screen.NostalgicLoadingScreen;
+import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
+import mod.adrenix.nostalgic.client.screen.NostalgicTitleScreen;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
@@ -34,7 +34,7 @@ public abstract class ClientEventHelper
 
     private static boolean isLoadingScreen(Screen screen)
     {
-        return screen.getClass() == ClassicProgressScreen.class ||
+        return screen.getClass() == NostalgicProgressScreen.class ||
             screen.getClass() == ProgressScreen.class ||
             screen.getClass() == ReceivingLevelScreen.class
         ;
@@ -48,11 +48,11 @@ public abstract class ClientEventHelper
         if (screen.getClass() == TitleScreen.class)
         {
             if (ModConfig.Candy.overrideTitleScreen())
-                setScreen.set(new ClassicTitleScreen());
+                setScreen.set(new NostalgicTitleScreen());
             else
-                ClassicTitleScreen.isGameReady = true;
+                NostalgicTitleScreen.isGameReady = true;
         }
-        else if (!ModConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
+        else if (!ModConfig.Candy.overrideTitleScreen() && screen.getClass() == NostalgicTitleScreen.class)
             setScreen.set(new TitleScreen());
     }
 
@@ -67,27 +67,27 @@ public abstract class ClientEventHelper
         {
             Component title = Component.translatable(NostalgicLang.Gui.LEVEL_LOADING);
             Component subtitle = Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING);
-            setScreen.set(new ClassicLoadingScreen(minecraft.getProgressListener(), title, subtitle));
+            setScreen.set(new NostalgicLoadingScreen(minecraft.getProgressListener(), title, subtitle));
         }
 
         if (ClientEventHelper.isLoadingScreen(screen))
         {
-            if (screen.getClass() == ClassicProgressScreen.class && !((ClassicProgressScreen) screen).isTicking())
-                ((ClassicProgressScreen) screen).renderProgress();
+            if (screen.getClass() == NostalgicProgressScreen.class && !((NostalgicProgressScreen) screen).isTicking())
+                ((NostalgicProgressScreen) screen).renderProgress();
             else
             {
-                ClassicProgressScreen progressScreen;
+                NostalgicProgressScreen progressScreen;
                 if (screen.getClass() == ProgressScreen.class)
                 {
-                    progressScreen = new ClassicProgressScreen((ProgressScreen) screen);
+                    progressScreen = new NostalgicProgressScreen((ProgressScreen) screen);
                     progressScreen.renderProgress();
                 }
                 else if (screen.getClass() == ReceivingLevelScreen.class)
                 {
-                    progressScreen = new ClassicProgressScreen(new ProgressScreen(true));
+                    progressScreen = new NostalgicProgressScreen(new ProgressScreen(true));
                     progressScreen.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LOADING));
                     progressScreen.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_SIMULATE));
-                    progressScreen.setPauseTicking(ClassicProgressScreen.NO_PAUSES);
+                    progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
                     progressScreen.setRenderProgressBar(false);
                     progressScreen.renderProgress();
                 }

@@ -16,7 +16,7 @@ import net.minecraft.util.ProgressListener;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class ClassicProgressScreen extends Screen implements ProgressListener
+public class NostalgicProgressScreen extends Screen implements ProgressListener
 {
     /* Fields */
 
@@ -35,7 +35,7 @@ public class ClassicProgressScreen extends Screen implements ProgressListener
 
     /* Constructor */
 
-    public ClassicProgressScreen(ProgressScreen progressScreen)
+    public NostalgicProgressScreen(ProgressScreen progressScreen)
     {
         super(NarratorChatListener.NO_TITLE);
         this.progressScreen = (IMixinProgressScreen) progressScreen;
@@ -111,7 +111,7 @@ public class ClassicProgressScreen extends Screen implements ProgressListener
         this.ticking = true;
         this.progress = -1;
 
-        while (minecraft.isRunning() && this.ticking && this.progress < ClassicProgressScreen.MAX)
+        while (minecraft.isRunning() && this.ticking && this.progress < NostalgicProgressScreen.MAX)
         {
             long start = Util.getMillis();
             double pause = Math.random();

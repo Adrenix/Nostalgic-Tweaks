@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
+import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -32,10 +32,10 @@ public abstract class WorldListEntryMixin
         if (!ModConfig.Candy.oldLoadingScreens())
             return genericScreen;
 
-        ClassicProgressScreen progressScreen = new ClassicProgressScreen(new ProgressScreen(false));
+        NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
         progressScreen.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LOADING));
         progressScreen.setStage(Component.translatable(NostalgicLang.Vanilla.READ_WORLD_DATA));
-        progressScreen.setPauseTicking(ClassicProgressScreen.NO_PAUSES);
+        progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
 
         return progressScreen;
     }

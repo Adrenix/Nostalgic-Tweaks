@@ -43,7 +43,7 @@ public abstract class TweakVersion
         public Overlay getDisabled() { return MODERN; }
     }
 
-    public enum ButtonLayout implements IDisableTweak<ButtonLayout>
+    public enum TitleLayout implements IDisableTweak<TitleLayout>
     {
         ALPHA(Generic.ALPHA.getLangKey()),
         BETA(Generic.BETA.getLangKey()),
@@ -53,10 +53,27 @@ public abstract class TweakVersion
 
         private final String langKey;
 
-        ButtonLayout(String langKey) { this.langKey = langKey; }
+        TitleLayout(String langKey) { this.langKey = langKey; }
 
         public String toString() { return Component.translatable(this.langKey).getString(); }
-        public ButtonLayout getDisabled() { return MODERN; }
+        public TitleLayout getDisabled() { return MODERN; }
+    }
+
+    public enum PauseLayout implements IDisableTweak<PauseLayout>
+    {
+        ALPHA_BETA("§aAlpha§r - §eb1.4_01"),
+        ACHIEVE_LOWER("§eb1.5§r - §61.0"),
+        ACHIEVE_UPPER("§61.1§r - §61.2.5"),
+        LAN("§61.3§r - §61.11"),
+        ADVANCEMENT("§61.12§r - §61.13.2"),
+        MODERN(Generic.MODERN.getLangKey());
+
+        private final String langKey;
+
+        PauseLayout(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public PauseLayout getDisabled() { return MODERN; }
     }
 
     public enum Hotbar implements IDisableTweak<Hotbar>
