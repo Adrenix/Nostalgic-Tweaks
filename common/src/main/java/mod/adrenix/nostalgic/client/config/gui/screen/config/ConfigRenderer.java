@@ -192,7 +192,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TweakClientCache<Boolean> newCache = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
             ToggleCheckbox toggleNewTags = new ToggleCheckbox(
                 this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
+                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
                 newCache::getCurrent,
                 newCache::setCurrent
             );
@@ -205,7 +205,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
             ToggleCheckbox toggleSidedTags = new ToggleCheckbox(
                 this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
+                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
                 sidedCache::getCurrent,
                 sidedCache::setCurrent
             );
@@ -218,7 +218,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
             ToggleCheckbox toggleTagTooltips = new ToggleCheckbox(
                 this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
+                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
                 tooltipCache::getCurrent,
                 tooltipCache::setCurrent
             );
@@ -235,7 +235,7 @@ public record ConfigRenderer(ConfigScreen parent)
             TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
             ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox(
                 this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
+                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
                 featureCache::getCurrent,
                 featureCache::setCurrent
             );

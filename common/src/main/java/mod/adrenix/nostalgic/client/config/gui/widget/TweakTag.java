@@ -34,6 +34,8 @@ public class TweakTag extends AbstractWidget
     public static final int V_GLOBAL_HEIGHT = 11;
     public static final int TAG_MARGIN = 5;
 
+    private String title;
+    private boolean render = true;
     protected final TweakClientCache<?> cache;
     protected final AbstractWidget anchor;
     protected final boolean isTooltip;
@@ -45,14 +47,25 @@ public class TweakTag extends AbstractWidget
         this.cache = cache;
         this.anchor = anchor;
         this.isTooltip = isTooltip;
+        this.title = Component.translatable(this.cache.getLangKey()).getString();
     }
+
+    public String getTitle() { return this.title; }
+    public void setTitle(String title) { this.title = title; }
+    public void setRender(boolean state) { this.render = state; }
 
     private static int getTagWidth(Component tag, int startX)
     {
         return startX + U_GLOBAL_WIDTH + Minecraft.getInstance().font.width(tag) + TAG_MARGIN;
     }
 
-    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
+    private static void draw(Screen screen, PoseStack poseStack, int x, int y, int uOffset, int vOffset, boolean render)
+    {
+        if (render)
+            screen.blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+    }
+
+    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
         Font font = Minecraft.getInstance().font;
@@ -60,15 +73,21 @@ public class TweakTag extends AbstractWidget
         int tagWidth = font.width(tag);
         int endX = getTagWidth(tag, startX);
 
-        screen.blit(poseStack, startX, startY, uOffset, V_GLOBAL_OFFSET, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+        TweakTag.draw(screen, poseStack, startX, startY, uOffset, V_GLOBAL_OFFSET, render);
 
         for (int i = 0; i < tagWidth + TAG_MARGIN; i++)
-            screen.blit(poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+            TweakTag.draw(screen, poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
 
-        screen.blit(poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+        TweakTag.draw(screen, poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
+
         font.draw(poseStack, tag, startX + 4, startY + 2, 0xFFFFFF);
 
         return endX + TAG_MARGIN;
+    }
+
+    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
+    {
+        return renderTag(screen, poseStack, tag, startX, startY, uOffset, true);
     }
 
     public static void renderTooltip(Screen screen, PoseStack poseStack, Component title, Component tooltip, int startX, int startY, int mouseX, int mouseY)
@@ -96,7 +115,7 @@ public class TweakTag extends AbstractWidget
         TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
         TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
 
-        Component title = Component.translatable(this.cache.getLangKey());
+        Component title = Component.literal(this.title);
         Component newTag = Component.translatable(NostalgicLang.Gui.TAG_NEW);
         Component clientTag = Component.translatable(NostalgicLang.Gui.TAG_CLIENT);
         Component serverTag = Component.translatable(NostalgicLang.Gui.TAG_SERVER);
@@ -116,7 +135,7 @@ public class TweakTag extends AbstractWidget
         boolean isSidedRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS).getCurrent();
         boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS).getCurrent();
 
-        int startX = ConfigRowList.TEXT_START + minecraft.font.width(title) + (isTooltip ? 20 : 4);
+        int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + (isTooltip ? 20 : 4);
         int startY = this.anchor.y + 4;
         int lastX = startX;
 
@@ -124,47 +143,50 @@ public class TweakTag extends AbstractWidget
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, newTag, newTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, newTag, lastX, startY, U_NEW_OFFSET);
+            lastX = renderTag(screen, poseStack, newTag, lastX, startY, U_NEW_OFFSET, this.render);
         }
 
         if (isClient != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, clientTag, clientTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, clientTag, lastX, startY, U_CLIENT_OFFSET);
+            lastX = renderTag(screen, poseStack, clientTag, lastX, startY, U_CLIENT_OFFSET, this.render);
         }
 
         if (isServer != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, serverTag, serverTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET);
+            lastX = renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET, this.render);
         }
 
         if (isDynamic != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, dynamicTag, dynamicTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, dynamicTag, lastX, startY, U_DYNAMIC_OFFSET);
+            lastX = renderTag(screen, poseStack, dynamicTag, lastX, startY, U_DYNAMIC_OFFSET, this.render);
         }
 
         if (isReload != null)
         {
             renderTooltip(screen, poseStack, reloadTag, reloadTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, reloadTag, lastX, startY, U_RELOAD_OFFSET);
+            lastX = renderTag(screen, poseStack, reloadTag, lastX, startY, U_RELOAD_OFFSET, this.render);
         }
 
         if (isRestart != null)
         {
             renderTooltip(screen, poseStack, restartTag, restartTooltip, lastX, startY, mouseX, mouseY);
-            renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET);
+            lastX = renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         if (isWarning != null)
         {
             renderTooltip(screen, poseStack, warningTag, warningTooltip, lastX, startY, mouseX, mouseY);
-            renderTag(screen, poseStack, warningTag, lastX, startY, U_WARNING_OFFSET);
+            lastX = renderTag(screen, poseStack, warningTag, lastX, startY, U_WARNING_OFFSET, this.render);
         }
+
+        this.x = startX;
+        this.setWidth(lastX - startX);
     }
 
     @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}

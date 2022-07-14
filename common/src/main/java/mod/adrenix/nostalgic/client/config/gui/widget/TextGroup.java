@@ -15,6 +15,7 @@ import java.util.List;
 public class TextGroup extends AbstractWidget
 {
     public static final int LINE_HEIGHT = 13;
+    public static final int TEXT_START = ConfigRowList.TEXT_START;
     protected final Component text;
     protected final ConfigRowList list;
     protected final ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
@@ -22,7 +23,7 @@ public class TextGroup extends AbstractWidget
 
     public TextGroup(ConfigRowList list, Component text)
     {
-        super(ConfigRowList.TEXT_START, 0, list.screen.width - ConfigRowList.TEXT_START - ConfigRowList.TEXT_FROM_END, 12, Component.empty());
+        super(TEXT_START, 0, list.screen.width - TEXT_START - ConfigRowList.TEXT_FROM_END, 12, Component.empty());
 
         this.list = list;
         this.text = text;

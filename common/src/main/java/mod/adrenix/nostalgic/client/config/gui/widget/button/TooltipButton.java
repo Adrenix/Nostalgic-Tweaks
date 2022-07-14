@@ -16,13 +16,17 @@ public class TooltipButton extends Button
 {
     protected final TweakClientCache<?> cache;
     protected final AbstractWidget anchor;
+    private String title;
 
     public TooltipButton(TweakClientCache<?> cache, AbstractWidget anchor)
     {
         super(0, 0, 0, 0, Component.empty(), (ignored) -> {});
         this.cache = cache;
         this.anchor = anchor;
+        this.title = Component.translatable(this.cache.getLangKey()).getString();
     }
+
+    public void setTitle(String title) { this.title = title; }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
@@ -32,7 +36,7 @@ public class TooltipButton extends Button
         Screen screen = minecraft.screen;
         if (screen == null) return;
 
-        int startX = ConfigRowList.TEXT_START + minecraft.font.width(this.cache.getTranslation()) + 4;
+        int startX = ConfigRowList.getStartX() + minecraft.font.width(this.title) + 4;
         int startY = this.anchor.y + 4;
         int uWidth = 12;
         int vHeight = 14;

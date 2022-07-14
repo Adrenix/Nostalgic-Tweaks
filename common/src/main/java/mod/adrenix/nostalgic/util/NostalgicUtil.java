@@ -119,6 +119,27 @@ public abstract class NostalgicUtil
         }
 
         /**
+         * Removes the last three characters of a string and replaces them with ellipsis points.
+         * Any current ellipsis points will be removed before applying another set of ellipsis points.
+         * @param in The string to ellipsis.
+         * @return A string with ellipsis points.
+         */
+        public static String ellipsis(String in)
+        {
+            if (in == null)
+                return "";
+
+            in = in.replaceAll("\\.\\.\\.", "");
+
+            int length = in.length();
+            if (length < 3) {
+                return in;
+            }
+
+            return in.substring(0, length - 3) + "...";
+        }
+
+        /**
          * Combine multiple Minecraft {@link Component Components} into one single component.
          * @param lines An array of {@link Component Components}.
          * @return One single {@link Component}

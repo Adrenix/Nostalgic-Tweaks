@@ -15,6 +15,7 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.NostalgicUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -40,8 +41,22 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     public static final int BUTTON_HEIGHT = 20;
     public static final int CONTROL_BUTTON_WIDTH = 120;
     public static final int ROW_WIDGET_GAP = 2;
-    public static final int TEXT_START = 8;
     public static final int TEXT_FROM_END = 8;
+    public static final int TEXT_START = 8;
+    public static final int SUB_TEXT_START = 28;
+
+    @Nullable
+    private static ConfigRowList.Row rendering = null;
+
+    /* Widget Start Positions */
+
+    public static int getStartX()
+    {
+        if (ConfigRowList.rendering == null)
+            return TEXT_START;
+        else
+            return ConfigRowList.rendering.getIndent();
+    }
 
     public static int getControlStartX()
     {
@@ -124,7 +139,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             if (noTooltip == null)
                 widgets.add(new TooltipButton(this.cache, controller));
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), this.cache);
+            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), controller, this.cache);
         }
 
         public ConfigRowList.Row add() { return new ConfigRowList.Row(new ArrayList<>(), this.cache); }
@@ -196,7 +211,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             widgets.add(controller);
             widgets.add(new ResetButton(null, controller));
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), null);
+            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), controller, null);
         }
     }
 
@@ -271,6 +286,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             for (ConfigRowList.Row row : this.cache)
             {
                 this.list.children().add(header, row);
+                row.setIndent(SUB_TEXT_START);
                 header++;
             }
         }
@@ -306,16 +322,37 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     {
         /* Instance Fields */
 
-        @Nullable private final TweakClientCache<?> cache;
+        @Nullable public final TweakClientCache<?> cache;
+        @Nullable public final AbstractWidget controller;
         public final List<AbstractWidget> children;
+
         private float fadeIn = 0F;
+        private int indent = TEXT_START;
 
         /* Constructor */
 
-        public Row(List<AbstractWidget> list, @Nullable TweakClientCache<?> cache)
+        public Row(List<AbstractWidget> list, @Nullable AbstractWidget controller, @Nullable TweakClientCache<?> cache)
         {
             this.children = list;
+            this.controller = controller;
             this.cache = cache;
+        }
+
+        public Row(List<AbstractWidget> list, @Nullable TweakClientCache<?> cache)
+        {
+            this(list, null, cache);
+        }
+
+        /* Getters */
+
+        public void setIndent(int indent)
+        {
+            this.indent = indent;
+        }
+
+        public int getIndent()
+        {
+            return this.indent;
         }
 
         /* Overrides & Rendering */
@@ -389,8 +426,13 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             Screen screen = Minecraft.getInstance().screen;
             if (screen == null) return;
 
+            // Update renderer tracker
+            ConfigRowList.rendering = this;
+
+            // Multiplayer row lockout
             boolean isRowLocked = this.isRowLocked();
 
+            // Row highlights
             this.fadeIn = Mth.clamp(this.fadeIn, 0F, 1F);
             if (this.isMouseOver(mouseX, mouseY))
                 this.fadeIn += 0.05F;
@@ -399,16 +441,25 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             if (this.fadeIn > 0F)
                 this.renderOnHover(poseStack, screen, top, height);
 
+            // Update indentation on widgets
+            int startX = this.indent;
+            for (AbstractWidget widget : this.children)
+            {
+                if (widget.x == TEXT_START && this.indent != TEXT_START)
+                    widget.x = this.indent;
+            }
+
+            // Ensure reset buttons don't overlap scrollbar
             int diffX = 0;
             for (AbstractWidget widget : this.children)
             {
                 if (widget instanceof ResetButton && isRowClipped(screen, widget))
                 {
-                    int startX = widget.x;
+                    int prevX = widget.x;
                     while (isRowClipped(screen, widget))
                         widget.x--;
 
-                    diffX = startX - widget.x;
+                    diffX = prevX - widget.x;
                     break;
                 }
             }
@@ -416,13 +467,56 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             for (AbstractWidget widget : this.children)
                 widget.x -= diffX;
 
+            // Ensure translation does not overlap controllers
+            TweakTag tagger = null;
+
+            if (this.controller != null)
+            {
+                for (AbstractWidget widget : this.children)
+                {
+                    if (widget instanceof TweakTag tag)
+                    {
+                        boolean isUnchecked = tag.x == 0 || tag.getWidth() == 0;
+                        boolean isOverlap = tag.x + tag.getWidth() >= this.controller.x - 6;
+                        tagger = tag;
+
+                        if (isUnchecked || isOverlap)
+                        {
+                            tag.setRender(false);
+                            tag.render(poseStack, mouseX, mouseY, partialTick);
+
+                            while (tag.x + tag.getWidth() >= this.controller.x - 6)
+                            {
+                                tag.setTitle(NostalgicUtil.Text.ellipsis(tag.getTitle()));
+                                tag.render(poseStack, mouseX, mouseY, partialTick);
+
+                                if (tag.getTitle() == null || tag.getTitle().length() < 3)
+                                    break;
+                            }
+
+                            tag.setRender(true);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Update tooltip bubble if text has ellipsis
             for (AbstractWidget widget : this.children)
             {
+                if (widget instanceof TooltipButton button && tagger != null)
+                    button.setTitle(tagger.getTitle());
+            }
+
+            // Render rows
+            for (AbstractWidget widget : this.children)
+            {
+                // Apply row title color formatting
                 Component title = Component.empty();
 
                 if (this.cache != null)
                 {
-                    Component translation = Component.translatable(this.cache.getLangKey());
+                    Component translation = Component.translatable(tagger == null ? this.cache.getLangKey() : tagger.getTitle());
                     title = this.cache.isSavable() ? translation.copy().withStyle(ChatFormatting.ITALIC) : translation.copy().withStyle(ChatFormatting.RESET);
                 }
                 else if (widget instanceof KeyBindButton)
@@ -431,8 +525,10 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     title = KeyBindButton.isMappingConflicted(((KeyBindButton) widget).getMapping()) ? translation.copy().withStyle(ChatFormatting.RED) : translation.copy().withStyle(ChatFormatting.RESET);
                 }
 
-                Screen.drawString(poseStack, font, title, TEXT_START, top + 6, 0xFFFFFF);
+                // Render row title
+                Screen.drawString(poseStack, font, title, startX, top + 6, 0xFFFFFF);
 
+                // Realign edit boxes
                 widget.y = top;
                 int cacheX = widget.x;
                 int cacheY = widget.y;
@@ -443,18 +539,28 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     widget.y += 1;
                 }
 
+                // Apply row locking for multiplayer
                 if (widget instanceof IPermissionWidget && Minecraft.getInstance().player != null)
                     widget.active = !isRowLocked;
                 else if (isRowLocked && widget instanceof ResetButton)
                     widget.active = false;
 
+                // Render final widget
                 widget.render(poseStack, mouseX, mouseY, partialTick);
 
+                // Reset widget positions with caches
                 if (widget instanceof EditBox)
                 {
                     widget.x = cacheX;
                     widget.y = cacheY;
                 }
+
+                // If ellipsis, then give tooltip of full tweak name
+                boolean isEllipsis = tagger != null && tagger.getTitle().contains("...");
+                boolean isOverText = (mouseX >= startX && mouseX <= startX + font.width(title)) && (mouseY >= top + 6 && mouseY <= top + 6 + 8);
+
+                if (isEllipsis && isOverText && this.cache != null)
+                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(this.cache.getTranslation()), 35), mouseX, mouseY);
 
                 // Debugging
                 if (NostalgicTweaks.isDebugging() && this.isMouseOver(mouseX, mouseY) && this.cache != null)
@@ -492,6 +598,9 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     }
                 }
             }
+
+            // Clear rendering tracker
+            ConfigRowList.rendering = null;
         }
     }
 }

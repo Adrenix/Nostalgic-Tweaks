@@ -79,7 +79,7 @@ public class KeyBindButton extends Button
         Component autoTag = Component.translatable(NostalgicLang.Gui.TAG_AUTO);
         Component autoTooltip = Component.translatable(NostalgicLang.Gui.TAG_AUTO_TOOLTIP);
 
-        int startX = ConfigRowList.TEXT_START + minecraft.font.width(title) + 4;
+        int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + 4;
         int startY = this.y + 4;
         int lastX = startX;
 
