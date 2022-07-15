@@ -132,9 +132,8 @@ public abstract class NostalgicUtil
             in = in.replaceAll("\\.\\.\\.", "");
 
             int length = in.length();
-            if (length < 3) {
+            if (length < 3)
                 return in;
-            }
 
             return in.substring(0, length - 3) + "...";
         }
