@@ -3,10 +3,10 @@ package mod.adrenix.nostalgic.forge.event;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.ScreenOpenEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,10 +17,14 @@ public abstract class ForgeClientEventHandler
 
     /**
      * Changes the network verification state of the mod.
-     * If a server is not N.T supported, then we shouldn't be sending packets to it.
+     *
+     * Network verification is authenticated when the client receives a
+     * {@link mod.adrenix.nostalgic.network.packet.PacketS2CHandshake PacketS2CHandshake} packet from a modded server.
+     * If a server is not N.T supported, then network verification is false, and we shouldn't be sending packets to
+     * the server.
      */
     @SubscribeEvent
-    public static void onLeaveWorld(WorldEvent.Unload event) { ClientEventHelper.disconnect(); }
+    public static void onLeaveWorld(ClientPlayerNetworkEvent.LoggedOutEvent event) { ClientEventHelper.disconnect(); }
 
     /* Candy Events */
 
