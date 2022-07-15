@@ -9,7 +9,7 @@ import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 @Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public abstract class ForgeClientEventHandler
 {
@@ -20,7 +20,7 @@ public abstract class ForgeClientEventHandler
      * If a server is not N.T supported, then we shouldn't be sending packets to it.
      */
     @SubscribeEvent
-    public static void onLeaveWorld(WorldEvent.Unload event) { ClientEventHelper.disconnect(); }
+    public static void onLeaveWorld(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) { ClientEventHelper.disconnect(); } /*No, I don't know how events work */
 
     /* Candy Events */
 
