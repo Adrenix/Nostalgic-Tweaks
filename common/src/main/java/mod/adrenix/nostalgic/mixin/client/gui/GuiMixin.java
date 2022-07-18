@@ -88,7 +88,10 @@ public abstract class GuiMixin extends GuiComponent
         int bubbleY = isExperienceRendered ? 1 : 8;
 
         if (isAbsorbing)
+        {
             armorY += 10;
+            bubbleY -= 10;
+        }
 
         // All armor slot textures
         if ((uOffset == 16 && vOffset == 9) || (uOffset == 25 && vOffset == 9) || (uOffset == 34 && vOffset == 9))
@@ -101,7 +104,7 @@ public abstract class GuiMixin extends GuiComponent
         }
         // Air bubbles texture
         else if ((uOffset == 16 && vOffset == 18) || (uOffset == 25 && vOffset == 18))
-            instance.blit(poseStack, mirrorX, y + bubbleY, uOffset, vOffset, uWidth, vHeight);
+            instance.blit(poseStack, mirrorX + (width % 2 == 0 ? 1 : 0), y + bubbleY, uOffset, vOffset, uWidth, vHeight);
         // Icons texture has all hunger related icons on y-27.
         else if (vOffset != 27)
             instance.blit(poseStack, x + 1, y, uOffset, vOffset, uWidth, vHeight);

@@ -185,10 +185,15 @@ public abstract class ForgeGuiEvents
         RenderSystem.enableBlend();
 
         int left = width / 2 + 91;
+        if (left % 2 != 0 && isHungerDisabled)
+            left -= 1;
+
         int top = height - gui.right_height;
         int y = top - (isExperienceDisabled ? 2 : 9);
         int dy = isExperienceDisabled ? 7 : 0;
         int air = player.getAirSupply();
+        if (player.getAbsorptionAmount() > 0.0F)
+            y -= 10;
 
         if (player.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) || air < 300)
         {
