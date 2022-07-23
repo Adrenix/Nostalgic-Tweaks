@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config;
 import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.gui.widget.CustomizedRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.CustomizedRowList;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;

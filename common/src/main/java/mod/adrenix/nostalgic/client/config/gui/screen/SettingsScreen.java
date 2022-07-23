@@ -138,10 +138,10 @@ public class SettingsScreen extends Screen
             this.minecraft.setScreen(new ConfigScreen(this))
         );
 
-        // Custom Swing Speeds
-        this.addButton(Component.translatable(NostalgicLang.Gui.CUSTOMIZE), (button) ->
-            this.minecraft.setScreen(new CustomizeScreen(this))
-        );
+        // Config Presets (WIP)
+        Button preset = new Button(0, 0, SMALL_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.SETTINGS_PRESETS), (button) -> {});
+        preset.active = false;
+        this.buttons.add(preset);
 
         // Support
         this.addButton(Component.translatable(NostalgicLang.Gui.SETTINGS_SUPPORT), this.setLink(NostalgicUtil.Link.KO_FI));

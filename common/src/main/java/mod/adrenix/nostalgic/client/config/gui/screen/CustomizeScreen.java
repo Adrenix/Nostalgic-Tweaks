@@ -8,7 +8,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.CustomSwings;
 import mod.adrenix.nostalgic.client.config.gui.ItemSuggestionHelper;
-import mod.adrenix.nostalgic.client.config.gui.widget.CustomizedRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.CustomizedRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.ToggleCheckbox;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.util.NostalgicLang;

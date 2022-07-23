@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
@@ -14,9 +16,8 @@ import org.jetbrains.annotations.Nullable;
 public class ResetButton extends Button
 {
     protected static final Component TITLE = Component.translatable(NostalgicLang.Cloth.RESET);
-    @Nullable
-    protected final TweakClientCache<?> cache;
     protected final AbstractWidget anchor;
+    @Nullable protected final TweakClientCache<?> cache;
 
     public ResetButton(@Nullable TweakClientCache<?> cache, AbstractWidget anchor)
     {
@@ -30,11 +31,14 @@ public class ResetButton extends Button
                 if (cache != null)
                 {
                     cache.reset();
-                    if (anchor instanceof EditBox && cache.getCurrent() instanceof String)
-                        ((EditBox) anchor).setValue((String) cache.getCurrent());
+
+                    if (anchor instanceof EditBox input && cache.getCurrent() instanceof String value)
+                        input.setValue(value);
+                    else if (anchor instanceof ColorInput color && cache.getCurrent() instanceof String value)
+                        ((EditBox) color.getWidget()).setValue(value);
                 }
-                else if (anchor instanceof KeyBindButton)
-                    ((KeyBindButton) anchor).reset();
+                else if (anchor instanceof KeyBindButton key)
+                    key.reset();
             }
         );
 
@@ -54,8 +58,11 @@ public class ResetButton extends Button
 
         if (this.cache != null)
             this.active = this.cache.isResettable();
-        else if (this.anchor instanceof KeyBindButton)
-            this.active = ((KeyBindButton) this.anchor).isResettable();
+        else if (this.anchor instanceof KeyBindButton key)
+            this.active = key.isResettable();
+
+        if (Overlay.isOpened())
+            this.active = false;
 
         super.render(poseStack, mouseX, mouseY, partialTick);
     }

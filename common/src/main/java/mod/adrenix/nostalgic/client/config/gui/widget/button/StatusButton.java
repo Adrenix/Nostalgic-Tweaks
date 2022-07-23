@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
@@ -40,7 +40,7 @@ public class StatusButton extends Button
 
     private boolean isTweakLocked()
     {
-        if (this.cache.isClientSide())
+        if (this.cache.isClient())
             return false;
         else if (Minecraft.getInstance().player != null)
             return !NetClientUtil.isPlayerOp(Minecraft.getInstance().player);
@@ -60,7 +60,7 @@ public class StatusButton extends Button
         TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
         boolean isTweakDynamic = dynamic != null && minecraft.level != null && cacheStatus != StatusType.FAIL && NetClientUtil.isMultiplayer();
         boolean isTweakLocked = this.isTweakLocked();
-        boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.cache.isClientSide() || Minecraft.getInstance().level == null;
+        boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.cache.isClient() || Minecraft.getInstance().level == null;
         boolean isStatusProblem = !isNetVerified || isTweakLocked;
 
         if (cacheStatus == StatusType.LOADED && !isStatusProblem && !isTweakDynamic)

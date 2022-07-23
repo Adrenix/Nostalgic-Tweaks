@@ -121,8 +121,12 @@ public class TweakClientCache<T>
      *
      * @see TweakServerCache
      */
-
     public TweakServerCache<T> getServerTweak() { return TweakServerCache.get(this.group, this.key); }
+
+    /**
+     * A shortcut for {@link TweakClientCache#getServerTweak()} that gets the current server cache.
+     * @return The value saved in the client's server cache.
+     */
     public T getServerCache() { return this.getServerTweak().getServerCache(); }
 
     /**
@@ -134,7 +138,7 @@ public class TweakClientCache<T>
     {
         if (!NostalgicTweaks.isNetworkVerified() || NetClientUtil.isSingleplayer() || Minecraft.getInstance().level == null)
             return true;
-        return !this.isDynamic() && this.isClientSide();
+        return !this.isDynamic() && this.isClient();
     }
 
     /**
@@ -323,7 +327,7 @@ public class TweakClientCache<T>
         if (this.isClientHandled())
             this.value = value;
         else
-            this.getServerTweak().setValue(value);
+            this.getServerTweak().setValue(this.getServerCache());
     }
 
     /**
@@ -341,7 +345,7 @@ public class TweakClientCache<T>
         if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null)
             ModClientUtil.Run.reloadResources = true;
 
-        boolean isClient = this.isClientSide();
+        boolean isClient = this.isClient();
         boolean isDynamic = this.isDynamic() && NetClientUtil.isPlayerOp();
         boolean isServerTweak = isDynamic || !isClient;
         boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer();
@@ -366,12 +370,24 @@ public class TweakClientCache<T>
 
     /**
      * Checks the annotations defined in the client's configuration class if a tweak is client sided.
+     * This <b>does</b> check if a tweak is dynamic. Restrict using {@link TweakClientCache#isDynamic()}.
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return If the client side annotation is attached to a tweak.
      */
-    public boolean isClientSide()
+    public boolean isClient()
     {
         return CommonReflect.getAnnotation(this, TweakSide.Server.class) == null;
+    }
+
+    /**
+     * Checks the annotations defined in the client's configuration class if a tweak is server sided.
+     * This does <b>not</b> check if a tweak is dynamic, use {@link TweakClientCache#isDynamic()}.
+     * @see mod.adrenix.nostalgic.client.config.ClientConfig
+     * @return If the server annotation is attached to a tweak.
+     */
+    public boolean isServer()
+    {
+        return CommonReflect.getAnnotation(this, TweakSide.Server.class) != null;
     }
 
     /**
@@ -382,6 +398,19 @@ public class TweakClientCache<T>
     public boolean isDynamic()
     {
         return CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
+    }
+
+    /**
+     * Cache utility that checks if a tweak can be changed by the client. Useful to prevent issues of changing tweaks
+     * that shouldn't be changed because the player lacks permission to a connected N.T server.
+     * @return Whether the tweak is locked out from the client.
+     */
+    public boolean isLocked()
+    {
+        if (this.isClient() && !this.isDynamic())
+            return false;
+
+        return NostalgicTweaks.isNetworkVerified() && !NetClientUtil.isPlayerOp();
     }
 
     /**

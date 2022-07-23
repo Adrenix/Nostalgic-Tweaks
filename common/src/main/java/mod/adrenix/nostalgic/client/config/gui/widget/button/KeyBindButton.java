@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.ChatFormatting;
@@ -12,14 +12,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-public class KeyBindButton extends Button
+public class KeyBindButton extends ControlButton
 {
     private final KeyMapping mapping;
     private boolean isModifying = false;
 
     public KeyBindButton(KeyMapping mapping)
     {
-        super(ConfigRowList.getControlStartX(), 0, ConfigRowList.CONTROL_BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT, Component.empty(), KeyBindButton::edit);
+        super(Component.empty(), KeyBindButton::edit);
         this.mapping = mapping;
     }
 

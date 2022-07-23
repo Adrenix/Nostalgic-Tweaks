@@ -7,8 +7,10 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 public enum SoundTweak implements ITweak
 {
     // Block Sounds
-    OLD_DOOR,
-    OLD_BED,
+    OLD_CHEST,
+    DISABLE_CHEST,
+    DISABLE_DOOR,
+    DISABLE_BED,
 
     // Damage Sounds
     OLD_ATTACK,

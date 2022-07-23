@@ -19,6 +19,11 @@ public class NostalgicTweaks
     public static final NostalgicLogger LOGGER = new NostalgicLogger(MOD_NAME);
     public static boolean isDebugging() { return LOGGER.isDebugMode(); }
 
+    /* Other Mod Tracking */
+
+    public static boolean isModMenuInstalled = false;
+    public static boolean isOptifineInstalled = false;
+
     /* Networking */
 
     public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));

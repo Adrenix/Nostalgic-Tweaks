@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
+import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
@@ -13,6 +15,7 @@ public class OverlapButton extends Button
     /* Fields */
 
     protected final ConfigScreen screen;
+    private boolean isListButton = false;
 
     /* Constructors */
 
@@ -28,6 +31,14 @@ public class OverlapButton extends Button
     }
 
     /* Helpers */
+
+    public OverlapButton setAsList()
+    {
+        this.isListButton = true;
+        this.width = 20;
+        this.height = 20;
+        return this;
+    }
 
     protected boolean shouldRenderToolTip(int mouseX, int mouseY)
     {
@@ -59,5 +70,16 @@ public class OverlapButton extends Button
         }
 
         super.renderButton(poseStack, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    {
+        super.render(poseStack, mouseX, mouseY, partialTick);
+        if (this.isListButton)
+        {
+            RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+            blit(poseStack, this.x, this.y, this.isHovered && this.active ? 20 : 0, 163, 20, 20);
+        }
     }
 }

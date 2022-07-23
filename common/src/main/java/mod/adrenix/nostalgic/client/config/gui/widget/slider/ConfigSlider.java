@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.IPermissionWidget;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -20,7 +20,7 @@ public class ConfigSlider extends GenericSlider implements IPermissionWidget
             null,
             ConfigRowList.getControlStartX(),
             0,
-            ConfigRowList.CONTROL_BUTTON_WIDTH,
+            ConfigRowList.BUTTON_WIDTH,
             ConfigRowList.BUTTON_HEIGHT
         );
 

@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "client": [
     "IMixinAbstractSelectionList",
+    "IMixinAbstractWidget",
     "IMixinEntity",
     "IMixinLevelRenderer",
     "IMixinProgressScreen",

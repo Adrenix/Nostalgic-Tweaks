@@ -12,7 +12,6 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.server.IntegratedServer;
 
 /**
  * This utility class acts as the interface for parts of the mod that need to know the state of tweaks.
@@ -90,9 +89,8 @@ public abstract class ModConfig
                     PacketUtil.sendToAll(new PacketS2CTweakUpdate(cache));
                 else if (NostalgicTweaks.isClient())
                 {
-                    IntegratedServer server = NetClientUtil.getIntegratedServer();
-                    if (server != null)
-                        PacketUtil.sendToAll(server.getPlayerList().getPlayers(), new PacketS2CTweakUpdate(cache));
+                    if (NetClientUtil.getIntegratedServer() != null)
+                        PacketUtil.sendToAll(NetClientUtil.getIntegratedServer().getPlayerList().getPlayers(), new PacketS2CTweakUpdate(cache));
                 }
             }
         }
@@ -184,12 +182,14 @@ public abstract class ModConfig
         public static boolean ignoreModdedStep() { return getBoolTweak(SoundTweak.IGNORE_MODDED_STEP, SOUND.ignoreModdedStep); }
         public static boolean disableXpPickup() { return getBoolTweak(SoundTweak.DISABLE_PICKUP, SOUND.disableXpPickup); }
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
+        public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
+        public static boolean disableDoor() { return getBoolTweak(SoundTweak.DISABLE_DOOR, SOUND.disableDoorPlace); }
+        public static boolean disableBed() { return getBoolTweak(SoundTweak.DISABLE_BED, SOUND.disableBedPlace); }
         public static boolean oldAttack() { return getBoolTweak(SoundTweak.OLD_ATTACK, SOUND.oldAttack); }
         public static boolean oldDamage() { return getBoolTweak(SoundTweak.OLD_HURT, SOUND.oldHurt); }
+        public static boolean oldChest() { return getBoolTweak(SoundTweak.OLD_CHEST, SOUND.oldChest); }
         public static boolean oldFall() { return getBoolTweak(SoundTweak.OLD_FALL, SOUND.oldFall); }
         public static boolean oldStep() { return getBoolTweak(SoundTweak.OLD_STEP, SOUND.oldStep); }
-        public static boolean oldDoor() { return getBoolTweak(SoundTweak.OLD_DOOR, SOUND.oldDoor); }
-        public static boolean oldBed() { return getBoolTweak(SoundTweak.OLD_BED, SOUND.oldBed); }
         public static boolean oldXp() { return getBoolTweak(SoundTweak.OLD_XP, SOUND.oldXp); }
     }
 
@@ -210,9 +210,11 @@ public abstract class ModConfig
         public static boolean oldPlainSelectedItemName() { return getBoolTweak(CandyTweak.PLAIN_SELECTED_ITEM_NAME, CANDY.oldPlainSelectedItemName); }
         public static boolean oldNoSelectedItemName() { return getBoolTweak(CandyTweak.NO_SELECTED_ITEM_NAME, CANDY.oldNoSelectedItemName); }
         public static boolean oldDurabilityColors() { return getBoolTweak(CandyTweak.DURABILITY_COLORS, CANDY.oldDurabilityColors); }
+        public static boolean includeModsOnPause() { return getBoolTweak(CandyTweak.PAUSE_MODS, CANDY.includeModsOnPause); }
         public static boolean oldNoItemTooltips() { return getBoolTweak(CandyTweak.NO_ITEM_TOOLTIPS, CANDY.oldNoItemTooltips); }
         public static boolean oldVersionOverlay() { return getBoolTweak(CandyTweak.VERSION_OVERLAY, CANDY.oldVersionOverlay); }
         public static boolean oldLoadingScreens() { return getBoolTweak(CandyTweak.LOADING_SCREENS, CANDY.oldLoadingScreens); }
+        public static boolean oldSimpleTooltips() { return getBoolTweak(CandyTweak.SIMPLE_TOOLTIP, CANDY.oldSimpleTooltips); }
         public static boolean removeLoadingBar() { return getBoolTweak(CandyTweak.REMOVE_LOADING_BAR, CANDY.removeLoadingBar); }
         public static boolean oldButtonHover() { return getBoolTweak(CandyTweak.BUTTON_HOVER, CANDY.oldButtonHover); }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
@@ -229,12 +231,14 @@ public abstract class ModConfig
         public static boolean oldFlatFrames() { return getBoolTweak(CandyTweak.FLAT_FRAMES, CANDY.old2dFrames); }
 
         // Lighting Candy
+        public static boolean oldLightBrightness() { return getBoolTweak(CandyTweak.BRIGHTNESS, CANDY.oldLightBrightness); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
         public static boolean oldWaterLighting() { return getSidedBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting, SERVER_CANDY.oldWaterLighting); }
         public static boolean oldLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.oldLightFlicker); }
         public static boolean oldLighting() { return getBoolTweak(CandyTweak.LIGHTING, CANDY.oldLighting); }
+        public static boolean disableGamma() { return getBoolTweak(CandyTweak.DISABLE_GAMMA, CANDY.disableGamma); }
 
         // Particle Candy
         public static boolean oldNoCriticalHitParticles() { return getBoolTweak(CandyTweak.NO_CRIT_PARTICLES, CANDY.oldNoCritParticles); }
@@ -246,6 +250,7 @@ public abstract class ModConfig
         public static boolean oldSweepParticles() { return getBoolTweak(CandyTweak.SWEEP, CANDY.oldSweepParticles); }
 
         // Title Screen Candy
+        public static boolean includeModsOnTitle() { return getBoolTweak(CandyTweak.TITLE_MODS_BUTTON, CANDY.includeModsOnTitle); }
         public static boolean overrideTitleScreen() { return getBoolTweak(CandyTweak.OVERRIDE_TITLE_SCREEN, CANDY.overrideTitleScreen); }
         public static boolean removeAccessibilityButton() { return getBoolTweak(CandyTweak.TITLE_ACCESSIBILITY, CANDY.removeTitleAccessibilityButton); }
         public static boolean removeTitleModLoaderText() { return getBoolTweak(CandyTweak.TITLE_MOD_LOADER_TEXT, CANDY.removeTitleModLoaderText); }

@@ -17,6 +17,8 @@ public abstract class NostalgicUtil
         public static final ResourceLocation BLACK_RESOURCE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/black.png");
         public static final ResourceLocation GEAR_LOGO = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gear.png");
         public static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/widgets.png");
+        public static final ResourceLocation COLOR_PICKER = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/overlay_picker.png");
+        public static final ResourceLocation CATEGORY_LIST = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/overlay_list.png");
         public static final ResourceLocation MOJANG_ALPHA = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_alpha.png");
         public static final ResourceLocation MOJANG_BETA = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_beta.png");
         public static final ResourceLocation MOJANG_RELEASE_ORANGE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_orange.png");
@@ -63,6 +65,21 @@ public abstract class NostalgicUtil
         public static boolean tolerance(int a, int b)
         {
             return tolerance(a, b, 3);
+        }
+
+        /**
+         * Checks if a point is within a bounding box.
+         * @param pointX The x-point to check against.
+         * @param pointY The y-point to check against.
+         * @param startX The startX of the box.
+         * @param startY The startY of the box.
+         * @param width The width of the box.
+         * @param height The height of the box.
+         * @return Whether the point is within the box's boundaries.
+         */
+        public static boolean isWithinBox(double pointX, double pointY, double startX, double startY, double width, double height)
+        {
+            return pointX >= startX && pointX <= startX + width && pointY >= startY && pointY <= startY + height;
         }
     }
 
@@ -116,6 +133,97 @@ public abstract class NostalgicUtil
             }
 
             return builder.toString();
+        }
+
+        /**
+         * Checks if the given hexadecimal string is a valid (0-9, A-F) entry.
+         * This does not remove any prefixed "#" tags.
+         * @param hex The hexadecimal to check.
+         * @return Whether the input is a valid hexadecimal.
+         */
+        public static boolean isHexValid(String hex)
+        {
+            try { Integer.parseInt(hex, 16); }
+            catch (NumberFormatException ignored) { return false; }
+            return true;
+        }
+
+        /**
+         * Converts a hexadecimal string (e.g., #8B8B8BFF) into an array of integers (e.g., [139, 139, 139, 255]).
+         * Any invalid input strings will have a default array of [255, 255, 255, 255].
+         * @param convert The hexadecimal string to convert.
+         * @return An array of base 16 integers.
+         */
+        public static int[] toHexRGBA(String convert)
+        {
+            int[] rgba = { 0xFF, 0xFF, 0xFF, 0xFF };
+            convert = convert.replaceAll("#", "");
+
+            if (convert.length() != 6 && convert.length() != 8)
+                return rgba;
+
+            String[] hex = splitInTwo(convert);
+
+            for (int i = 0; i < hex.length; i++)
+            {
+                if (isHexValid(hex[i]))
+                    rgba[i] = Integer.parseInt(hex[i], 16);
+            }
+
+            return rgba;
+        }
+
+        /**
+         * Converts a hexadecimal string (e.g., #8B8B8BFF) into an RGBA integer (e.g., -7631989).
+         * Any invalid input strings will have a malformed color.
+         * @param convert The hexadecimal string to convert.
+         * @return An RGBA integer.
+         */
+        public static int toHexInt(String convert)
+        {
+            int[] hex = toHexRGBA(convert);
+            int r = hex[0];
+            int g = hex[1];
+            int b = hex[2];
+            int a = hex[3];
+
+            return a << 24 | r << 16 | g << 8 | b;
+        }
+
+        /**
+         * Converts an array of RGBA integers [0-255] to a hex string. The # is prefixed before creating the string.
+         * Each integer in the RGBA array is range checked before conversion.
+         * @param rgba The array of RGBA integers to convert.
+         * @return A hex string (e.g., #8B8B8BFF)
+         */
+        public static String toHexString(int[] rgba)
+        {
+            StringBuilder hex = new StringBuilder("#");
+
+            for (int color : rgba)
+            {
+                if (color >= 0 && color <= 255)
+                    hex.append(color <= 15 ? "0" : "").append(Integer.toHexString(color).toUpperCase());
+            }
+
+            return hex.toString();
+        }
+
+        /* Private utilities for hexadecimal string conversion */
+
+        private static String[] splitInTwo(String convert)
+        {
+            String[] split = { "FF", "FF", "FF", "FF" };
+            String regex = "(..)";
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(convert);
+
+            int i = -1;
+            while (matcher.find())
+                split[++i] = matcher.group(0);
+
+            return split;
         }
 
         /**

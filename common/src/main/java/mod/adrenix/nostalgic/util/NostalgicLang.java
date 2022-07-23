@@ -38,6 +38,13 @@ public abstract class NostalgicLang
         public static final String HUD_EXPERIENCE = "hud.nostalgic_tweaks.experience";
         public static final String HUD_SATURATION = "hud.nostalgic_tweaks.saturation";
 
+        public static final String GUI_OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
+        public static final String GUI_OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
+        public static final String GUI_OVERLAY_COLOR = "gui.nostalgic_tweaks.overlay.color";
+        public static final String GUI_OVERLAY_COLOR_HINT = "gui.nostalgic_tweaks.overlay.color.hint";
+        public static final String GUI_OVERLAY_INPUT_TIP = "gui.nostalgic_tweaks.overlay.input.@Tooltip";
+        public static final String GUI_OVERLAY_DRAG_TIP = "gui.nostalgic_tweaks.overlay.drag.@Tooltip";
+
         public static final String TOAST_TWEAK_UPDATE_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_update_header";
         public static final String TOAST_TWEAK_UPDATE_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_update_body";
         public static final String TOAST_TWEAK_SENT_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_sent_header";
@@ -45,6 +52,7 @@ public abstract class NostalgicLang
         public static final String TOAST_SYNC_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_sync_header";
         public static final String TOAST_SYNC_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_sync_body";
 
+        public static final String SETTINGS_PRESETS = "gui.nostalgic_tweaks.settings.presets";
         public static final String SETTINGS_TITLE = "gui.nostalgic_tweaks.settings.title";
         public static final String SETTINGS_SUPPORT = "gui.nostalgic_tweaks.settings.support";
         public static final String SETTINGS_DISCORD = "gui.nostalgic_tweaks.settings.discord";
@@ -82,6 +90,7 @@ public abstract class NostalgicLang
         public static final String PAUSE_RETURN_LOWER = "gui.nostalgic_tweaks.pause.return";
         public static final String PAUSE_SAVE_LOWER = "gui.nostalgic_tweaks.pause.save";
 
+        public static final String SETTINGS_ALL = "gui.nostalgic_tweaks.config.all";
         public static final String SETTINGS_SPEED = "gui.nostalgic_tweaks.config.speed";
         public static final String SETTINGS_SPEED_HELP = "gui.nostalgic_tweaks.config.speed.@PrefixText";
         public static final String SETTINGS_INTENSITY = "gui.nostalgic_tweaks.config.intensity";
@@ -142,12 +151,20 @@ public abstract class NostalgicLang
         public static final String GENERAL_OVERRIDE_HELP = "gui.nostalgic_tweaks.config.general.override.help";
         public static final String GENERAL_OVERRIDE_DISABLE = "gui.nostalgic_tweaks.config.general.override.disable";
         public static final String GENERAL_OVERRIDE_ENABLE = "gui.nostalgic_tweaks.config.general.override.enable";
+        public static final String GENERAL_OVERRIDE_SERVER = "gui.nostalgic_tweaks.config.general.override.server";
+        public static final String GENERAL_OVERRIDE_SERVER_TIP = "gui.nostalgic_tweaks.config.general.override.server.@Tooltip";
         public static final String GENERAL_CONFIG_TITLE = "gui.nostalgic_tweaks.config.general.config.title";
-        public static final String GENERAL_CONFIG_HELP_MENU = "gui.nostalgic_tweaks.config.general.config.help.menus";
+        public static final String GENERAL_CONFIG_SCREEN_TITLE = "gui.nostalgic_tweaks.config.general.config.screen.title";
         public static final String GENERAL_CONFIG_SCREEN_MAIN = "gui.nostalgic_tweaks.config.general.config.screen.main";
         public static final String GENERAL_CONFIG_SCREEN_SETTINGS = "gui.nostalgic_tweaks.config.general.config.screen.settings";
         public static final String GENERAL_CONFIG_SCREEN_CUSTOM = "gui.nostalgic_tweaks.config.general.config.screen.custom";
-        public static final String GENERAL_CONFIG_HELP_TAGS = "gui.nostalgic_tweaks.config.general.config.help.tags";
+        public static final String GENERAL_CONFIG_SCREEN_INFO = "gui.nostalgic_tweaks.config.general.config.screen.info";
+        public static final String GENERAL_CONFIG_TREE_TITLE = "gui.nostalgic_tweaks.config.general.config.tree.title";
+        public static final String GENERAL_CONFIG_TREE_INFO = "gui.nostalgic_tweaks.config.general.config.tree.info";
+        public static final String GENERAL_CONFIG_ROW_TITLE = "gui.nostalgic_tweaks.config.general.config.row.title";
+        public static final String GENERAL_CONFIG_ROW_INFO = "gui.nostalgic_tweaks.config.general.config.row.info";
+        public static final String GENERAL_CONFIG_TAGS_TITLE = "gui.nostalgic_tweaks.config.general.config.tags.title";
+        public static final String GENERAL_CONFIG_TAGS_INFO = "gui.nostalgic_tweaks.config.general.config.tags.info";
         public static final String GENERAL_CONFIG_NEW_TAGS_LABEL = "gui.nostalgic_tweaks.config.general.config.newTags.label";
         public static final String GENERAL_CONFIG_SIDED_TAGS_LABEL = "gui.nostalgic_tweaks.config.general.config.sidedTags.label";
         public static final String GENERAL_CONFIG_TAG_TOOLTIPS_LABEL = "gui.nostalgic_tweaks.config.general.config.tagTooltips.label";
@@ -162,12 +179,15 @@ public abstract class NostalgicLang
         public static final String GENERAL_SEARCH_RESET = "gui.nostalgic_tweaks.config.general.search.reset";
         public static final String GENERAL_SEARCH_CLIENT = "gui.nostalgic_tweaks.config.general.search.client";
         public static final String GENERAL_SEARCH_SERVER = "gui.nostalgic_tweaks.config.general.search.server";
+        public static final String GENERAL_SEARCH_SAVE = "gui.nostalgic_tweaks.config.general.search.save";
         public static final String GENERAL_SEARCH_ALL = "gui.nostalgic_tweaks.config.general.search.all";
         public static final String GENERAL_SHORTCUT_TITLE = "gui.nostalgic_tweaks.config.general.shortcut.title";
         public static final String GENERAL_SHORTCUT_HELP = "gui.nostalgic_tweaks.config.general.shortcut.help";
         public static final String GENERAL_SHORTCUT_FIND = "gui.nostalgic_tweaks.config.general.shortcut.find";
         public static final String GENERAL_SHORTCUT_SAVE = "gui.nostalgic_tweaks.config.general.shortcut.save";
         public static final String GENERAL_SHORTCUT_EXIT = "gui.nostalgic_tweaks.config.general.shortcut.exit";
+        public static final String GENERAL_SHORTCUT_JUMP = "gui.nostalgic_tweaks.config.general.shortcut.jump";
+        public static final String GENERAL_SHORTCUT_ALL = "gui.nostalgic_tweaks.config.general.shortcut.all";
         public static final String GENERAL_SHORTCUT_GROUP = "gui.nostalgic_tweaks.config.general.shortcut.group";
 
         public static final String SOUND_CATEGORY_BLOCK = "gui.nostalgic_tweaks.config.sound.category.block";
@@ -175,10 +195,21 @@ public abstract class NostalgicLang
         public static final String SOUND_CATEGORY_EXPERIENCE = "gui.nostalgic_tweaks.config.sound.category.experience";
         public static final String SOUND_CATEGORY_MOB = "gui.nostalgic_tweaks.config.sound.category.mob";
 
+        public static final String SOUND_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.sound.subcategory.chest";
+
         public static final String GAMEPLAY_CATEGORY_COMBAT = "gui.nostalgic_tweaks.config.gameplay.category.combat";
         public static final String GAMEPLAY_CATEGORY_EXPERIENCE = "gui.nostalgic_tweaks.config.gameplay.category.experience";
         public static final String GAMEPLAY_CATEGORY_HUNGER = "gui.nostalgic_tweaks.config.gameplay.category.hunger";
         public static final String GAMEPLAY_CATEGORY_MECHANICS = "gui.nostalgic_tweaks.config.gameplay.category.mechanics";
+
+        public static final String GAMEPLAY_SUBCATEGORY_BOW = "gui.nostalgic_tweaks.config.gameplay.subcategory.bow";
+        public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_BAR = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_bar";
+        public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_orb";
+        public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_block";
+        public static final String GAMEPLAY_SUBCATEGORY_FIRE = "gui.nostalgic_tweaks.config.gameplay.subcategory.fire";
+        public static final String GAMEPLAY_SUBCATEGORY_SWIMMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.swimming";
+        public static final String GAMEPLAY_SUBCATEGORY_HUNGER_BAR = "gui.nostalgic_tweaks.config.gameplay.subcategory.hunger_bar";
+        public static final String GAMEPLAY_SUBCATEGORY_FOOD = "gui.nostalgic_tweaks.config.gameplay.subcategory.food";
 
         public static final String ANIMATION_CATEGORY_ARM = "gui.nostalgic_tweaks.config.animation.category.arm";
         public static final String ANIMATION_CATEGORY_MOB = "gui.nostalgic_tweaks.config.animation.category.mob";
@@ -193,7 +224,30 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
         public static final String CANDY_CATEGORY_BLOCK = "gui.nostalgic_tweaks.config.candy.category.block";
 
+        public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
+        public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
+        public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
+        public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";
+        public static final String CANDY_SUBCATEGORY_OVERLAY = "gui.nostalgic_tweaks.config.candy.subcategory.overlay";
+        public static final String CANDY_SUBCATEGORY_PAUSE = "gui.nostalgic_tweaks.config.candy.subcategory.pause";
+        public static final String CANDY_SUBCATEGORY_TOOLTIP = "gui.nostalgic_tweaks.config.candy.subcategory.tooltip";
+        public static final String CANDY_SUBCATEGORY_FLAT = "gui.nostalgic_tweaks.config.candy.subcategory.flat";
+        public static final String CANDY_SUBCATEGORY_BLOCK_LIGHT = "gui.nostalgic_tweaks.config.candy.subcategory.block_light";
+        public static final String CANDY_SUBCATEGORY_WORLD_LIGHT = "gui.nostalgic_tweaks.config.candy.subcategory.world_light";
+        public static final String CANDY_SUBCATEGORY_ATTACK = "gui.nostalgic_tweaks.config.candy.subcategory.attack";
+        public static final String CANDY_SUBCATEGORY_EXPLOSION = "gui.nostalgic_tweaks.config.candy.subcategory.explosion";
+        public static final String CANDY_SUBCATEGORY_LOGO = "gui.nostalgic_tweaks.config.candy.subcategory.logo";
+        public static final String CANDY_SUBCATEGORY_BUTTON = "gui.nostalgic_tweaks.config.candy.subcategory.button";
+        public static final String CANDY_SUBCATEGORY_TEXT = "gui.nostalgic_tweaks.config.candy.subcategory.text";
+        public static final String CANDY_SUBCATEGORY_FOG = "gui.nostalgic_tweaks.config.candy.subcategory.fog";
+        public static final String CANDY_SUBCATEGORY_SKY = "gui.nostalgic_tweaks.config.candy.subcategory.sky";
+        public static final String CANDY_SUBCATEGORY_VOID = "gui.nostalgic_tweaks.config.candy.subcategory.void";
+
+        public static final String SWING_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.swing.category.item";
+        public static final String SWING_CATEGORY_POTION = "gui.nostalgic_tweaks.config.swing.category.potion";
+
         public static final String CANDY_TITLE_MODS = "gui.nostalgic_tweaks.config.candy.title.mods";
+        public static final String CANDY_TITLE_MODS_TEXTURE = "gui.nostalgic_tweaks.config.candy.title.mods_texture";
         public static final String CANDY_TITLE_TEXTURE_PACK = "gui.nostalgic_tweaks.config.candy.title.texture_pack";
         public static final String CANDY_TITLE_TUTORIAL = "gui.nostalgic_tweaks.config.candy.title.tutorial";
         public static final String CANDY_TITLE_COPYRIGHT_ALPHA = "gui.nostalgic_tweaks.config.candy.title.copyright.alpha";

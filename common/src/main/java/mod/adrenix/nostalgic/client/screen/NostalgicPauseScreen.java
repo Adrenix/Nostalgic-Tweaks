@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
@@ -20,6 +21,7 @@ public class NostalgicPauseScreen extends Screen
     /* Fields */
 
     private final TweakVersion.PauseLayout layout;
+    private final Component mods = Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS);
     private final Component lan = Component.translatable(NostalgicLang.Vanilla.MENU_LAN);
     private final Component stats = Component.translatable(NostalgicLang.Vanilla.GUI_STATS);
     private final Component options = Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS);
@@ -50,16 +52,10 @@ public class NostalgicPauseScreen extends Screen
     /* Overrides */
 
     @Override
-    protected void init()
-    {
-        this.getLayout();
-    }
+    protected void init() { this.getLayout(); }
 
     @Override
-    public void tick()
-    {
-        super.tick();
-    }
+    public void tick() { super.tick(); }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
@@ -105,7 +101,7 @@ public class NostalgicPauseScreen extends Screen
 
     /* Button Lambdas */
 
-    private void returnToGame(Button button)
+    private void returnToGame(Button ignored)
     {
         if (this.minecraft == null)
             return;
@@ -140,28 +136,34 @@ public class NostalgicPauseScreen extends Screen
             this.minecraft.setScreen(new JoinMultiplayerScreen(title));
     }
 
-    private void gotoOptions(Button button)
+    private void gotoOptions(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
     }
 
-    private void gotoAchievements(Button button)
+    private void gotoAchievements(Button ignored)
     {
         if (this.minecraft != null && this.minecraft.player != null)
             this.minecraft.setScreen(new AdvancementsScreen(this.minecraft.player.connection.getAdvancements()));
     }
 
-    private void gotoStats(Button button)
+    private void gotoStats(Button ignored)
     {
         if (this.minecraft != null && this.minecraft.player != null)
             this.minecraft.setScreen(new StatsScreen(this, this.minecraft.player.getStats()));
     }
 
-    private void gotoLan(Button button)
+    private void gotoLan(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new ShareToLanScreen(this));
+    }
+
+    private void gotoMods(Button ignored)
+    {
+        if (this.minecraft != null && ModClientUtil.Gui.modScreen != null)
+            this.minecraft.setScreen(ModClientUtil.Gui.modScreen.apply(this.minecraft.screen));
     }
 
     /* Positioning */
@@ -178,6 +180,7 @@ public class NostalgicPauseScreen extends Screen
     private int getThirdRow() { return this.getSecondRow() + 24; }
     private int getFourthRow() { return this.getThirdRow() + 24; }
     private int getFifthRow() { return this.getFourthRow() + 24; }
+    private int getSixthRow() { return this.getFifthRow() + 24; }
 
     /* Menu Layouts */
 
@@ -189,8 +192,14 @@ public class NostalgicPauseScreen extends Screen
         // Save and quit to title
         this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 2), this.getBigWidth(), this.getHeight(), this.getSave(true), this::returnToTitle));
 
-        // Options...
-        this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+        // Mods and/or Options...
+        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        {
+            this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(new Button(this.getSmallX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+        }
+        else
+            this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
     }
 
     private void getLowerAchieveLayout()
@@ -204,8 +213,14 @@ public class NostalgicPauseScreen extends Screen
         // Statistics
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
-        // Options...
-        this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+        // Mods and/or Options...
+        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        {
+            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+        }
+        else
+            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Save and quit to title
         this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(true), this::returnToTitle));
@@ -222,8 +237,14 @@ public class NostalgicPauseScreen extends Screen
         // Statistics
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight() , this.stats, this::gotoStats));
 
-        // Options...
-        this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+        // Mods and/or Options...
+        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        {
+            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+        }
+        else
+            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Save and Quit to Title
         this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::returnToTitle));
@@ -240,14 +261,19 @@ public class NostalgicPauseScreen extends Screen
         // Statistics
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
+        // Mods
+        boolean isMods = ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null;
+        if (isMods)
+            this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
+
         // Options...
-        this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Open to LAN
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
+        this.addRenderableWidget(new Button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
 
         // Save and Quit to Title
-        this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::returnToTitle));
+        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::returnToTitle));
     }
 
     private void getAdvancementLayout()
@@ -263,13 +289,18 @@ public class NostalgicPauseScreen extends Screen
         // Statistics
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
+        // Mods
+        boolean isMods = ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null;
+        if (isMods)
+            this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
+
         // Options...
-        this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Open to LAN
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
+        this.addRenderableWidget(new Button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
 
         // Save and Quit to Title
-        this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::returnToTitle));
+        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::returnToTitle));
     }
 }

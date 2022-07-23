@@ -37,7 +37,7 @@ public class TweakServerCache<T>
         if (NostalgicTweaks.isClient())
         {
             TweakClientCache.all().forEach((id, tweak) -> {
-                if (!tweak.isClientSide() || tweak.isDynamic())
+                if (!tweak.isClient() || tweak.isDynamic())
                     cache.put(id, new TweakServerCache<>(tweak.getGroup(), tweak.getKey(), tweak.getSavedValue()));
             });
         }

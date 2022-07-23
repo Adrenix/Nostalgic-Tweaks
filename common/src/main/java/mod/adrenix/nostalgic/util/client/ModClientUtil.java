@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
@@ -79,10 +81,28 @@ public abstract class ModClientUtil
         }
     }
 
+    /* Rendering Helpers */
+
+    public static class Render
+    {
+        public static void fill(BufferBuilder buffer, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int rgba)
+        {
+            float z = 0.0F;
+            buffer.vertex(matrix, leftX, bottomY, z).color(rgba).endVertex();
+            buffer.vertex(matrix, rightX, bottomY, z).color(rgba).endVertex();
+            buffer.vertex(matrix, rightX, topY, z).color(rgba).endVertex();
+            buffer.vertex(matrix, leftX, topY, z).color(rgba).endVertex();
+        }
+    }
+
     /* Gui Helpers */
 
     public static class Gui
     {
+        // A mod screen supplier (defined in mod loaders)
+        @Nullable
+        public static Function<Screen, Screen> modScreen = null;
+
         // Gets right side x position for the given text
         private static int getRightX(String text)
         {

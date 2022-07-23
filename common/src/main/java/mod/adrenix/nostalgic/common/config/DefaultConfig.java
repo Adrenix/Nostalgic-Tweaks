@@ -9,8 +9,10 @@ public abstract class DefaultConfig
     public static class Sound
     {
         // Block Sounds
-        public static final boolean OLD_DOOR = true;
-        public static final boolean OLD_BED = true;
+        public static final boolean OLD_CHEST = true;
+        public static final boolean DISABLE_CHEST = true;
+        public static final boolean DISABLE_DOOR_PLACE = true;
+        public static final boolean DISABLE_BED_PLACE = true;
 
         // Damage Sounds
         public static final boolean OLD_ATTACK = true;
@@ -48,10 +50,13 @@ public abstract class DefaultConfig
         public static final boolean OLD_BUTTON_HOVER = true;
         public static final boolean OLD_TOOLTIP_BOXES = true;
         public static final boolean OLD_NO_ITEM_TOOLTIPS = false;
+        public static final boolean OLD_SIMPLE_ITEM_TOOLTIPS = true;
         public static final boolean OLD_DURABILITY_COLORS = true;
         public static final boolean OLD_LOADING_SCREENS = true;
         public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
+        public static final boolean INCLUDE_MODS_ON_PAUSE = true;
+        public static final boolean INCLUDE_MODS_ON_TITLE = true;
 
         // Item Candy
         public static final boolean FIX_ITEM_MODEL_GAP = true;
@@ -65,10 +70,12 @@ public abstract class DefaultConfig
         // Lighting Candy
         public static final boolean OLD_LIGHTING = true;
         public static final boolean OLD_LIGHT_FLICKER = true;
+        public static final boolean OLD_LIGHT_BRIGHTNESS = true;
         public static final boolean OLD_NETHER_LIGHTING = true;
         public static final boolean OLD_LEAVES_LIGHTING = true;
         public static final boolean OLD_SMOOTH_LIGHTING = true;
         public static final boolean OLD_WATER_LIGHTING = false;
+        public static final boolean DISABLE_GAMMA = true;
 
         // Particle Candy
         public static final boolean OLD_SWEEP_PARTICLES = true;
@@ -194,5 +201,10 @@ public abstract class DefaultConfig
         public static final boolean DISPLAY_SIDED_TAGS = true;
         public static final boolean DISPLAY_TAG_TOOLTIPS = true;
         public static final boolean DISPLAY_FEATURE_STATUS = true;
+        public static final boolean DISPLAY_CATEGORY_TREE = true;
+        public static final boolean DISPLAY_ROW_HIGHLIGHT = true;
+        public static final boolean DO_ROW_HIGHLIGHT_FADE = true;
+        public static final String CATEGORY_TREE_COLOR = "#8B8B8B7F";
+        public static final String ROW_HIGHLIGHT_COLOR = "#FFFFFF32";
     }
 }

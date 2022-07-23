@@ -16,6 +16,7 @@ import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
@@ -405,31 +406,45 @@ public class NostalgicTitleScreen extends TitleScreen
 
     private void onMods(Button ignored)
     {
+        if (this.minecraft != null && ModClientUtil.Gui.modScreen != null)
+            this.minecraft.setScreen(ModClientUtil.Gui.modScreen.apply(this.minecraft.screen));
+    }
+
+    private void onResources(Button ignored)
+    {
         if (this.minecraft != null)
             this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), Component.translatable("resourcePack.title")));
     }
 
     private void createAlphaOptions(int x, int y, int rowHeight)
     {
+        int row = 1;
+
         // Singleplayer
         this.alpha.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
 
         // Multiplayer
         this.alpha.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
 
+        // Mods
+        if (ModConfig.Candy.includeModsOnTitle() && ModClientUtil.Gui.modScreen != null)
+            this.alpha.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS), this::onMods));
+
         // Tutorial
-        Button tutorial = new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, Component.empty(), (button) -> {});
+        Button tutorial = new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.empty(), (button) -> {});
         tutorial.active = false;
         tutorial.setMessage(Component.translatable(NostalgicLang.Gui.CANDY_TITLE_TUTORIAL).withStyle(ChatFormatting.GRAY));
 
         this.alpha.add(tutorial);
 
         // Options
-        this.alpha.add(new Button(x, y + rowHeight * 4 - 12, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
+        this.alpha.add(new Button(x, y + rowHeight * (++row + 1) - 12, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
     }
 
     private void createBetaOptions(int x, int y, int rowHeight)
     {
+        int row = 1;
+
         // Singleplayer
         this.beta.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
 
@@ -437,35 +452,48 @@ public class NostalgicTitleScreen extends TitleScreen
         this.beta.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
 
         // Mods & Texture Packs
-        this.beta.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS), this::onMods));
+        boolean isMods = ModConfig.Candy.includeModsOnTitle() && ModClientUtil.Gui.modScreen != null;
+        if (isMods)
+            this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS), this::onMods));
+
+        this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(isMods ? NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK : NostalgicLang.Gui.CANDY_TITLE_MODS_TEXTURE), this::onResources));
 
         // Options
-        this.beta.add(new Button(x, y + rowHeight * 3, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
+        this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), this::onOptions));
     }
 
     private void createReleaseOptions(int x, int y, int rowHeight)
     {
+        int row = 1;
+
         // Singleplayer
         this.release.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
 
         // Multiplayer
         this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
 
+        // Mods
+        boolean isMods = ModConfig.Candy.includeModsOnTitle() && ModClientUtil.Gui.modScreen != null;
+        if (isMods)
+            this.release.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS), this::onMods));
+
         // Texture Packs
         if (ModConfig.Candy.getButtonLayout() == TweakVersion.TitleLayout.RELEASE_TEXTURE_PACK)
-            this.release.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onMods));
+            this.release.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onResources));
 
-        int lastRow = this.height / 4 + 48;
+        int lastRow = (this.height / 4 + 48) + 72 + 12;
+        if (this.release.size() == 4)
+            lastRow += 24;
 
         // Language
         if (this.minecraft != null && !ModConfig.Candy.removeLanguageButton())
-            this.release.add(new ImageButton(this.width / 2 - 124, lastRow + 72 + 12, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), Component.translatable("narrator.button.language")));
+            this.release.add(new ImageButton(this.width / 2 - 124, lastRow, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), Component.translatable("narrator.button.language")));
 
         // Options
-        this.release.add(new Button(this.width / 2 - 100, lastRow + 72 + 12, 98, 20, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
+        this.release.add(new Button(this.width / 2 - 100, lastRow, 98, 20, Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
 
         // Quit
-        this.release.add(new Button(this.width / 2 + 2, lastRow + 72 + 12, 98, 20, Component.translatable(NostalgicLang.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
+        this.release.add(new Button(this.width / 2 + 2, lastRow, 98, 20, Component.translatable(NostalgicLang.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
     }
 
     private void renderClassicLogo(float partialTick)

@@ -7,7 +7,7 @@ license = "${mod_license}"
 modId = "nostalgic_tweaks"
 version = "${version}"
 displayName = "${mod_name}"
-authors = "${mod_name}"
+authors = "${mod_author}"
 description = '''
 ${mod_description}
 
@@ -21,7 +21,7 @@ logoFile = "nt_forge_logo.png"
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
-versionRange = "[41,)"
+versionRange = "[41.0.94,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -2,8 +2,9 @@ package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.gui.widget.TextGroup;
+import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StateButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StateType;
@@ -46,6 +47,7 @@ public class ConfigWidgets
     public boolean focusInput = false;
     private Button[] categories;
     private EditBox input;
+    private Button list;
     private Button general;
     private Button sound;
     private Button candy;
@@ -66,6 +68,7 @@ public class ConfigWidgets
     /* Instance Getters */
 
     public Button[] getCategories() { return this.categories; }
+    public Button getList() { return this.list; }
     public Button getGeneral() { return this.general; }
     public Button getSound() { return this.sound; }
     public Button getCandy() { return this.candy; }
@@ -92,6 +95,7 @@ public class ConfigWidgets
     {
         this.configRowList = generateConfigRowList();
         this.swingSpeedPrefix = generateSwingSpeedPrefix();
+        this.list = generateListButton();
         this.general = generateGeneralButton();
         this.sound = generateSoundButton();
         this.candy = generateCandyButton();
@@ -121,7 +125,7 @@ public class ConfigWidgets
         int gap = 0;
         int width = 0;
 
-        this.categories = new Button[] { general, sound, candy, gameplay, animation, swing, search };
+        this.categories = new Button[] { list, general, sound, candy, gameplay, animation, swing, search };
         Button[] exits = new Button[] { cancel, save };
         List<Button> search = this.getSearchControls();
 
@@ -186,6 +190,20 @@ public class ConfigWidgets
             this.parent.height - ROW_LIST_BOTTOM_OFFSET,
             ROW_ITEM_HEIGHT
         );
+    }
+
+    private Button generateListButton()
+    {
+        return new OverlapButton
+        (
+            this.parent,
+            Component.empty(),
+            (button) ->
+            {
+                this.parent.setConfigTab(ConfigScreen.ConfigTab.ALL);
+                CategoryList.OVERLAY.open(this.configRowList);
+            }
+        ).setAsList();
     }
 
     private Button generateGeneralButton()
@@ -446,31 +464,12 @@ public class ConfigWidgets
                 switch (tag)
                 {
                     case ALL -> isTagged = true;
-                    case NEW ->
-                    {
-                        if (CommonReflect.getAnnotation(tweak, TweakClient.Gui.New.class) != null)
-                            isTagged = true;
-                    }
-                    case CONFLICT ->
-                    {
-                        if (tweak.getStatus() != StatusType.LOADED)
-                            isTagged = true;
-                    }
-                    case RESET ->
-                    {
-                        if (tweak.isResettable())
-                            isTagged = true;
-                    }
-                    case CLIENT ->
-                    {
-                        if (CommonReflect.getAnnotation(tweak, TweakSide.Client.class) != null)
-                            isTagged = true;
-                    }
-                    case SERVER ->
-                    {
-                        if (CommonReflect.getAnnotation(tweak, TweakSide.Server.class) != null)
-                            isTagged = true;
-                    }
+                    case NEW -> isTagged = CommonReflect.getAnnotation(tweak, TweakClient.Gui.New.class) != null;
+                    case CLIENT -> isTagged = CommonReflect.getAnnotation(tweak, TweakSide.Client.class) != null;
+                    case SERVER -> isTagged = CommonReflect.getAnnotation(tweak, TweakSide.Server.class) != null;
+                    case CONFLICT -> isTagged = tweak.getStatus() != StatusType.LOADED;
+                    case RESET -> isTagged = tweak.isResettable();
+                    case SAVE -> isTagged = tweak.isSavable();
                 }
             }
 

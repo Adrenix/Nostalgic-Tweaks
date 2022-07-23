@@ -2,7 +2,13 @@ package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupId;
+import mod.adrenix.nostalgic.client.config.gui.widget.group.RadioGroup;
+import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
@@ -16,39 +22,76 @@ import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public record ConfigRenderer(ConfigScreen parent)
 {
-    private static ConfigRowList.CategoryRow getCategory(TweakClient.Category category, ConfigRowList list)
+    private static Supplier<ArrayList<ConfigRowList.Row>> getChildren
+    (
+        ConfigRowList list,
+        @Nullable TweakClient.Category category,
+        @Nullable TweakClient.Subcategory subcategory
+    )
     {
-        return new ConfigRowList.CategoryRow(list, Component.translatable(category.getLangKey()), () -> {
+        return () ->
+        {
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
             HashMap<String, TweakClientCache<?>> translated = new HashMap<>();
             HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
             HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
+            Set<TweakClient.Subcategory> included = new HashSet<>();
 
-            TweakClientCache.all().forEach(((key, entry) -> {
+            TweakClientCache.all().forEach((key, entry) -> {
+                TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(entry, TweakClient.Gui.Cat.class);
                 TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry, TweakClient.Gui.Sub.class);
                 TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry, TweakClient.Gui.Placement.class);
 
-                if (sub != null && sub.group() == category && entry.getGroup() == category.getGroup())
+                if (category != null)
                 {
-                    if (placement == null)
-                        translated.put(entry.getTranslation(), entry);
-                    else
+                    if (cat != null && cat.group() == category && entry.getGroup() == category.getGroup())
                     {
-                        if (entry.getPosition() == TweakClient.Gui.Position.TOP)
-                            top.put(entry.getOrder(), entry);
-                        else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
-                            bottom.put(entry.getOrder(), entry);
+                        if (placement == null)
+                            translated.put(entry.getTranslation(), entry);
+                        else
+                        {
+                            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
+                                top.put(entry.getOrder(), entry);
+                            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
+                                bottom.put(entry.getOrder(), entry);
+                        }
+                    }
+                    else if (sub != null && !included.contains(sub.group()) && sub.group().getCategory() == category && entry.getGroup() == category.getGroup())
+                        included.add(sub.group());
+                }
+                else if (subcategory != null)
+                {
+                    if (sub != null && sub.group() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup())
+                    {
+                        if (placement == null)
+                            translated.put(entry.getTranslation(), entry);
+                        else
+                        {
+                            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
+                                top.put(entry.getOrder(), entry);
+                            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
+                                bottom.put(entry.getOrder(), entry);
+                        }
                     }
                 }
-            }));
+            });
+
+            EnumSet<TweakClient.Subcategory> subcategories = EnumSet.allOf(TweakClient.Subcategory.class);
+            subcategories.forEach((sub) -> {
+                if (included.contains(sub))
+                    rows.add(getSubcategory(sub, list).add());
+            });
 
             SortedMap<Integer, TweakClientCache<?>> sortTop = new TreeMap<>(top);
             SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
@@ -59,20 +102,43 @@ public record ConfigRenderer(ConfigScreen parent)
             sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
 
             return rows;
-        });
+        };
+    }
+
+    private static ConfigRowList.CategoryRow getSubcategory(TweakClient.Subcategory subcategory, ConfigRowList list)
+    {
+        return new ConfigRowList.CategoryRow
+        (
+            list,
+            Component.translatable(subcategory.getLangKey()),
+            getChildren(list, null, subcategory),
+            subcategory,
+            true
+        );
+    }
+
+    private static ConfigRowList.CategoryRow getCategory(TweakClient.Category category, ConfigRowList list)
+    {
+        return new ConfigRowList.CategoryRow
+        (
+            list,
+            Component.translatable(category.getLangKey()),
+            getChildren(list, category, null),
+            category
+        );
     }
 
     private static List<ConfigRowList.Row> getCategories(ConfigRowList list, GroupType group)
     {
-        List<ConfigRowList.Row> subs = new ArrayList<>();
+        List<ConfigRowList.Row> rows = new ArrayList<>();
 
         EnumSet<TweakClient.Category> categories = EnumSet.allOf(TweakClient.Category.class);
         categories.forEach((category) -> {
             if (category.getGroup() == group)
-                subs.add(getCategory(category, list).add());
+                rows.add(getCategory(category, list).add());
         });
 
-        return subs;
+        return rows;
     }
 
     private void addRows(GroupType group)
@@ -89,8 +155,10 @@ public record ConfigRenderer(ConfigScreen parent)
 
         all.forEach((key, value) -> {
             TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
+            TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
+            TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
 
-            if (CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class) == null)
+            if (cat == null && sub == null)
             {
                 if (placement == null)
                     middle.put(key, value);
@@ -159,163 +227,241 @@ public record ConfigRenderer(ConfigScreen parent)
             return rows;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_BINDINGS), bindings).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_BINDINGS), bindings, GroupId.BINDINGS_CONFIG).add());
 
         /* Menu Settings */
 
         Supplier<ArrayList<ConfigRowList.Row>> settings = () -> {
+            ArrayList<ConfigRowList.Row> subcategories = new ArrayList<>();
 
             // Default Screen Options
+            Supplier<ArrayList<ConfigRowList.Row>> defaultScreen = () -> {
+                TextGroup menuHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_INFO));
+                TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
+                RadioGroup<MenuOption> screens = new RadioGroup<>
+                (
+                    list,
+                    MenuOption.class,
+                    DefaultConfig.Gui.DEFAULT_SCREEN,
+                    screenCache::getCurrent,
+                    (option) -> MenuOption.getTranslation((MenuOption) option),
+                    (selected) -> screenCache.setCurrent((MenuOption) selected)
+                );
 
-            TextGroup menuHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_HELP_MENU));
-            TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
-            RadioGroup<MenuOption> screens = new RadioGroup<>(
-                list,
-                MenuOption.class,
-                DefaultConfig.Gui.DEFAULT_SCREEN,
-                screenCache::getCurrent,
-                (option) -> MenuOption.getTranslation((MenuOption) option),
-                (selected) -> screenCache.setCurrent((MenuOption) selected)
-            );
+                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(menuHelp.getRows());
+                rows.addAll(screens.getRows());
 
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(menuHelp.getRows());
-            rows.addAll(screens.getRows());
-            rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).add());
+                return rows;
+            };
 
-            // Tag Options
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, true).add());
 
-            TextGroup tagHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_HELP_TAGS));
-            rows.addAll(tagHelp.getRows());
+            // Tree Indent Options
+            Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () -> {
+                TextGroup treeHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_INFO));
+                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
 
-            // New Tags
+                TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
+                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, tree.getKey(), tree.getCurrent()).add());
 
-            TweakClientCache<Boolean> newCache = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
-            ToggleCheckbox toggleNewTags = new ToggleCheckbox(
-                this.parent,
-                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
-                newCache::getCurrent,
-                newCache::setCurrent
-            );
+                TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
+                rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getCurrent()).add());
 
-            ConfigRowList.ManualRow displayNewTag = new ConfigRowList.ManualRow(List.of(toggleNewTags));
-            rows.add(displayNewTag.add());
+                return rows;
+            };
 
-            // Sided tags
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, true).add());
 
-            TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
-            ToggleCheckbox toggleSidedTags = new ToggleCheckbox(
-                this.parent,
-                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
-                sidedCache::getCurrent,
-                sidedCache::setCurrent
-            );
+            // Row Highlighting Options
+            Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () -> {
+                TextGroup rowHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_INFO));
+                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
 
-            ConfigRowList.ManualRow displaySidedTag = new ConfigRowList.ManualRow(List.of(toggleSidedTags));
-            rows.add(displaySidedTag.add());
+                TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
+                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, highlight.getKey(), highlight.getCurrent()).add());
 
-            // Tag Tooltips
+                TweakClientCache<Boolean> fade = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE);
+                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, fade.getKey(), fade.getCurrent()).add());
 
-            TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
-            ToggleCheckbox toggleTagTooltips = new ToggleCheckbox(
-                this.parent,
-                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
-                tooltipCache::getCurrent,
-                tooltipCache::setCurrent
-            );
+                TweakClientCache<String> color = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR);
+                rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getCurrent()).add());
 
-            ConfigRowList.ManualRow displayTagTooltips = new ConfigRowList.ManualRow(List.of(toggleTagTooltips));
-            rows.add(displayTagTooltips.add());
-            rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).add());
+                return rows;
+            };
 
-            // Feature Status
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, true).add());
 
-            TextGroup statusHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
-            rows.addAll(statusHelp.getRows());
+            /* Tag Options */
+            Supplier<ArrayList<ConfigRowList.Row>> tagging = () -> {
+                TextGroup tagHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_INFO));
+                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
 
-            TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
-            ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox(
-                this.parent,
-                Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
-                featureCache::getCurrent,
-                featureCache::setCurrent
-            );
+                // New Tags
 
-            ConfigRowList.ManualRow displayFeatureStatus = new ConfigRowList.ManualRow(List.of(toggleFeatureStatus));
-            rows.add(displayFeatureStatus.add());
+                TweakClientCache<Boolean> newCache = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
+                ToggleCheckbox toggleNewTags = new ToggleCheckbox
+                (
+                    this.parent,
+                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
+                    newCache::getCurrent,
+                    newCache::setCurrent
+                );
 
-            return rows;
+                ConfigRowList.ManualRow displayNewTag = new ConfigRowList.ManualRow(List.of(toggleNewTags));
+                rows.add(displayNewTag.add());
+
+                // Sided tags
+
+                TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
+                ToggleCheckbox toggleSidedTags = new ToggleCheckbox
+                (
+                    this.parent,
+                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
+                    sidedCache::getCurrent,
+                    sidedCache::setCurrent
+                );
+
+                ConfigRowList.ManualRow displaySidedTag = new ConfigRowList.ManualRow(List.of(toggleSidedTags));
+                rows.add(displaySidedTag.add());
+
+                // Tag Tooltips
+
+                TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
+                ToggleCheckbox toggleTagTooltips = new ToggleCheckbox
+                (
+                    this.parent,
+                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
+                    tooltipCache::getCurrent,
+                    tooltipCache::setCurrent
+                );
+
+                ConfigRowList.ManualRow displayTagTooltips = new ConfigRowList.ManualRow(List.of(toggleTagTooltips));
+                rows.add(displayTagTooltips.add());
+                rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).add());
+
+                // Feature Status
+
+                TextGroup statusHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
+                rows.addAll(statusHelp.getRows());
+
+                TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
+                ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox
+                (
+                    this.parent,
+                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
+                    featureCache::getCurrent,
+                    featureCache::setCurrent
+                );
+
+                ConfigRowList.ManualRow displayFeatureStatus = new ConfigRowList.ManualRow(List.of(toggleFeatureStatus));
+                rows.add(displayFeatureStatus.add());
+
+                return rows;
+            };
+
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, true).add());
+
+            return subcategories;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TITLE), settings).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TITLE), settings, GroupId.GENERAL_CONFIG).add());
 
         /* Override Config */
 
         Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () -> {
             TextGroup help = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_HELP));
+            AtomicBoolean serverOnly = new AtomicBoolean(false);
 
-            ConfigRowList.SingleCenteredRow disable = new ConfigRowList.SingleCenteredRow(
-                this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_DISABLE),
-                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                    if (!GroupType.isManual(group))
-                    {
-                        ClientReflect.getGroup(group).forEach((key, value) -> {
-                            TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
+            Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
+                if (!GroupType.isManual(group))
+                {
+                    ClientReflect.getGroup(group).forEach((key, value) -> {
+                        TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
+
+                        boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
+                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
+                        boolean isLocked = entry.isLocked();
+                        boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
+
+                        if (!isClientIgnored && !isLocked)
                             entry.reset();
 
-                            boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
+                        if (value instanceof Boolean && isChangeable)
+                        {
+                            TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
 
-                            if (value instanceof Boolean && !isDisableIgnored)
+                            if (disabledBoolean == null && entry.getDefault())
                             {
-                                TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
-
-                                if (disabledBoolean == null && entry.getDefault())
-                                {
-                                    entry.reset();
-                                    entry.setCurrent(!entry.getCurrent());
-                                }
-                                else if (disabledBoolean != null)
-                                    entry.setCurrent(disabledBoolean.disabled());
+                                entry.reset();
+                                entry.setCurrent(!entry.getCurrent());
                             }
+                            else if (disabledBoolean != null)
+                                entry.setCurrent(disabledBoolean.disabled());
+                        }
 
-                            if (value instanceof Integer && !isDisableIgnored)
+                        if (value instanceof Integer && isChangeable)
+                        {
+                            TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
+
+                            if (disabledInteger != null)
                             {
-                                TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
-
-                                if (disabledInteger != null)
-                                {
-                                    TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
-                                    entryInteger.setCurrent(disabledInteger.disabled());
-                                }
+                                TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
+                                entryInteger.setCurrent(disabledInteger.disabled());
                             }
+                        }
 
-                            if (value instanceof IDisableTweak<?> && !isDisableIgnored)
-                            {
-                                TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
-                                version.setCurrent(((IDisableTweak<?>) value).getDisabled());
-                            }
-                        });
-                    }
-                })
-            );
+                        if (value instanceof IDisableTweak<?> && isChangeable)
+                        {
+                            TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
+                            version.setCurrent(((IDisableTweak<?>) value).getDisabled());
+                        }
+                    });
+                }
+            });
 
-            ConfigRowList.SingleCenteredRow enable = new ConfigRowList.SingleCenteredRow(
+            Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
+                if (!GroupType.isManual(group))
+                {
+                    ClientReflect.getGroup(group).forEach((key, value) -> {
+                        TweakClientCache<?> entry = TweakClientCache.get(group, key);
+
+                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
+                        boolean isLocked = entry.isLocked();
+                        boolean isChangeable = !isLocked && !isClientIgnored;
+
+                        if (isChangeable)
+                            entry.reset();
+                    });
+                }
+            });
+
+            ControlButton disableAll = new ControlButton(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
+            ControlButton enableAll = new ControlButton(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
+
+            ToggleCheckbox toggleServerOnly = new ToggleCheckbox
+            (
                 this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE),
-                (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                    if (!GroupType.isManual(group))
-                        ClientReflect.getGroup(group).forEach((key, value) -> TweakClientCache.get(group, key).reset());
-                })
+                Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_SERVER),
+                serverOnly::get,
+                serverOnly::set
             );
+
+            toggleServerOnly.setTooltip(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_SERVER_TIP));
+
+            ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
+            ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
+            ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
 
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
+
+            rows.add(server.add());
             rows.add(disable.add());
             rows.add(enable.add());
 
             return rows;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_TITLE), globalOptions).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
 
         /* Notifications */
 
@@ -325,7 +471,7 @@ public record ConfigRenderer(ConfigScreen parent)
             return new ArrayList<>(notify.getRows());
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_TITLE), notifications).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_TITLE), notifications, GroupId.NOTIFY_CONFIG).add());
 
         /* Search Tags */
 
@@ -336,14 +482,15 @@ public record ConfigRenderer(ConfigScreen parent)
             Component resetTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_RESET);
             Component clientTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_CLIENT);
             Component serverTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_SERVER);
+            Component saveTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_SAVE);
             Component allTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_ALL);
 
             return new TextGroup(list, NostalgicUtil.Text.combine(new Component[] {
-                help, newTag, conflictTag, resetTag, clientTag, serverTag, allTag
+                help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag
             })).getRows();
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_TITLE), searchTags).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_TITLE), searchTags, GroupId.SEARCH_TAGS_CONFIG).add());
 
         /* Keyboard Shortcuts */
 
@@ -352,18 +499,43 @@ public record ConfigRenderer(ConfigScreen parent)
             Component find = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_FIND);
             Component save = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_SAVE);
             Component exit = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_EXIT);
+            Component jump = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_JUMP);
+            Component all = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_ALL);
             Component group = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_GROUP);
 
-            return new TextGroup(list, NostalgicUtil.Text.combine(new Component[]{ help, find, save, exit, group })).getRows();
+            return new TextGroup(list, NostalgicUtil.Text.combine(new Component[]{ help, find, save, exit, jump, all, group })).getRows();
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_TITLE), shortcuts).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_TITLE), shortcuts, GroupId.SHORTCUTS_CONFIG).add());
+    }
+
+    public void generateAllList()
+    {
+        addRows(GroupType.SOUND);
+        addRows(GroupType.CANDY);
+        addRows(GroupType.GAMEPLAY);
+        addRows(GroupType.ANIMATION);
+        addRows(GroupType.SWING);
     }
 
     public void generateGroupList(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SWING)
+        {
             this.parent.getWidgets().getSwingSpeedPrefix().render(poseStack, mouseX, mouseY, partialTick);
+
+            ConfigRowList.SingleCenteredRow custom = new ConfigRowList.SingleCenteredRow
+            (
+                this.parent,
+                new ControlButton
+                (
+                    Component.translatable(NostalgicLang.Gui.CUSTOMIZE),
+                    (button) -> this.parent.getMinecraft().setScreen(new CustomizeScreen(this.parent))
+                )
+            );
+
+            this.parent.getWidgets().getConfigRowList().addRow(custom.add());
+        }
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
             String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
@@ -411,6 +583,7 @@ public record ConfigRenderer(ConfigScreen parent)
             case ANIMATION -> addRows(GroupType.ANIMATION);
             case SWING -> addRows(GroupType.SWING);
             case SEARCH -> addFound();
+            case ALL -> generateAllList();
         }
     }
 }

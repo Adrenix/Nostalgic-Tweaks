@@ -4,9 +4,14 @@ import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class KeyUtil
 {
     /* Key Trackers */
+
+    private static final Map<String, KeyMapping> MAPPING_CACHE = new HashMap<>();
 
     public static boolean isFogDown = false;
 
@@ -14,12 +19,19 @@ public abstract class KeyUtil
 
     public static KeyMapping find(String langKey)
     {
+        KeyMapping cache = MAPPING_CACHE.get(langKey);
+        if (cache != null)
+            return cache;
+
         KeyMapping[] allMappings = Minecraft.getInstance().options.keyMappings;
 
         for (KeyMapping keyMapping : allMappings)
         {
             if (keyMapping.getName().equals(langKey))
+            {
+                MAPPING_CACHE.put(langKey, keyMapping);
                 return keyMapping;
+            }
         }
 
         return null;

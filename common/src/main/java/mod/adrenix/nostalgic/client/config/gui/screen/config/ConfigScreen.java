@@ -6,8 +6,11 @@ import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.gui.widget.*;
+import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
@@ -34,6 +37,7 @@ public class ConfigScreen extends Screen
 
     public enum ConfigTab
     {
+        ALL(NostalgicLang.Gui.SETTINGS_ALL),
         GENERAL(NostalgicLang.Vanilla.GENERAL),
         SOUND(NostalgicLang.Cloth.SOUND_TITLE),
         CANDY(NostalgicLang.Cloth.CANDY_TITLE),
@@ -42,35 +46,20 @@ public class ConfigScreen extends Screen
         SWING(NostalgicLang.Cloth.SWING_TITLE),
         SEARCH(NostalgicLang.Vanilla.SEARCH);
 
-        ConfigTab(String langKey)
-        {
-            this.langKey = langKey;
-        }
+        ConfigTab(String langKey) { this.langKey = langKey; }
 
         private final String langKey;
-
-        String getLangKey()
-        {
-            return this.langKey;
-        }
+        public String getLangKey() { return this.langKey; }
     }
 
     /* Search Tags */
 
     public enum SearchTag
     {
-        CLIENT,
-        SERVER,
-        CONFLICT,
-        RESET,
-        NEW,
-        ALL;
+        CLIENT, SERVER, CONFLICT, RESET, NEW, SAVE, ALL;
 
         @Override
-        public String toString()
-        {
-            return super.toString().toLowerCase();
-        }
+        public String toString() { return super.toString().toLowerCase(); }
     }
 
     /* Instance Fields */
@@ -101,13 +90,27 @@ public class ConfigScreen extends Screen
 
     public void setConfigTab(ConfigTab configTab)
     {
+        if (this.configTab == configTab)
+            return;
+        else if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
+            GroupButton.collapseAll();
+
         this.configTab = configTab;
         this.getWidgets().getConfigRowList().children().clear();
         this.getWidgets().getConfigRowList().setScrollAmount(0);
-    }
+        this.getWidgets().getConfigRowList().resetLastSelection();
 
-    public boolean isScrollbarVisible() { return this.getWidgets().getConfigRowList().getMaxScroll() > 0; }
-    public void resetScrollbar() { this.getWidgets().getConfigRowList().setScrollAmount(0); }
+        if (configTab == ConfigTab.ALL)
+        {
+            if (!Overlay.isOpened())
+            {
+                this.getRenderer().generateAllList();
+                CategoryList.OVERLAY.open(this.getWidgets().getConfigRowList());
+            }
+        }
+        else if (configTab == ConfigTab.SEARCH)
+            this.getWidgets().checkSearch(this.getWidgets().getSearchInput().getValue());
+    }
 
     /* Constructor */
 
@@ -137,7 +140,7 @@ public class ConfigScreen extends Screen
         }
     }
 
-    /* Overrides */
+    /* Methods */
 
     @Override
     protected void init()
@@ -148,16 +151,19 @@ public class ConfigScreen extends Screen
     }
 
     @Override
-    public void tick()
-    {
-        this.getWidgets().getSearchInput().tick();
-    }
+    public void tick() { this.getWidgets().getSearchInput().tick(); }
 
     @Override
     public void onClose()
     {
+        // Save tweak cache and config file
         this.save();
         AutoConfig.getConfigHolder(ClientConfig.class).save();
+
+        // Clear expansion states stored in config rows
+        GroupButton.collapseAll();
+
+        // Return to parent screen
         this.minecraft.setScreen(this.parentScreen);
     }
 
@@ -211,24 +217,37 @@ public class ConfigScreen extends Screen
         return null;
     }
 
-    private boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
-    private boolean isEscaping(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
-    private boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
-    private boolean isSaving(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S; }
-    private boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
-    private boolean isGoingRight(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT; }
-    private boolean isTabbing(int key) { return key == GLFW.GLFW_KEY_TAB; }
+    public static boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
+    private static boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
+    private static boolean isAll(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_A; }
+    private static boolean isSaving(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S; }
+    private static boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
+    private static boolean isGoingRight(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT; }
+    public static boolean isEnter(int key) { return key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER; }
+    public static boolean isTab(int key) { return key == GLFW.GLFW_KEY_TAB; }
+    public static boolean isEsc(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
+        // Debugging
         if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_D)
             this.parentScreen.keyPressed(keyCode, scanCode, modifiers);
+
+        // Overlays
+        if (Overlay.isOpened())
+            return Overlay.keyPressed(keyCode, scanCode, modifiers);
+
+        // Config list key support
+        if (this.getWidgets().getConfigRowList().keyPressed(keyCode, scanCode, modifiers))
+            return true;
+
+        /* Config Screen */
 
         KeyBindButton mappingInput = this.getMappingInput();
         EditBox editBox = this.getEditBox();
 
-        if (isEscaping(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
+        if (isEsc(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
         {
             if (this.getWidgets().getSearchInput().isFocused())
                 this.getWidgets().getSearchInput().setFocus(false);
@@ -247,12 +266,12 @@ public class ConfigScreen extends Screen
             mappingInput.setKey(keyCode, scanCode);
             return true;
         }
-        else if (this.isSaving(keyCode))
+        else if (isSaving(keyCode))
         {
             this.onClose();
             return true;
         }
-        else if (this.configTab != ConfigTab.SEARCH && (this.isGoingLeft(keyCode) || this.isGoingRight(keyCode)))
+        else if ((isGoingLeft(keyCode) || isGoingRight(keyCode)) && !this.getWidgets().getSearchInput().isFocused())
         {
             ConfigTab[] tabs = ConfigTab.values();
             ConfigTab last = ConfigTab.GENERAL;
@@ -261,27 +280,27 @@ public class ConfigScreen extends Screen
             {
                 ConfigTab tab = tabs[i];
 
-                if (tab == ConfigTab.SEARCH)
+                if (tab == ConfigTab.ALL && this.configTab != ConfigTab.ALL)
                     continue;
-                if (this.isGoingLeft(keyCode) && this.configTab == tab)
+                else if (this.configTab == ConfigTab.ALL)
+                    last = ConfigTab.ALL;
+
+                if (isGoingLeft(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(this.configTab != last ? last : tabs[tabs.length - 2]);
                     break;
                 }
-                else if (this.isGoingRight(keyCode) && this.configTab == tab)
+                else if (isGoingRight(keyCode) && this.configTab == tab)
                 {
-                    this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[0]);
+                    this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[1]);
                     break;
                 }
 
                 last = tab;
             }
-
-            if (this.configTab == ConfigTab.SEARCH)
-                this.getWidgets().focusInput = true;
         }
 
-        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEscaping(keyCode))
+        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEsc(keyCode))
         {
             boolean isInputChanged = this.getWidgets().getSearchInput().keyPressed(keyCode, scanCode, modifiers);
             if (keyCode != GLFW.GLFW_KEY_LEFT && keyCode != GLFW.GLFW_KEY_RIGHT)
@@ -309,9 +328,18 @@ public class ConfigScreen extends Screen
             this.getWidgets().focusInput = true;
             return true;
         }
+        else if (isAll(keyCode))
+        {
+            this.setConfigTab(ConfigTab.ALL);
+
+            if (!Overlay.isOpened())
+                CategoryList.OVERLAY.open(this.getWidgets().getConfigRowList());
+
+            return true;
+        }
         else
         {
-            if (!this.isTabbing(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
+            if (!isTab(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
                 return true;
             return keyCode == 257 || keyCode == 335;
         }
@@ -329,14 +357,43 @@ public class ConfigScreen extends Screen
             this.getWidgets().focusInput = true;
             this.getWidgets().getSearchInput().setValue(searching);
         }
+
+        Overlay.resize();
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta)
+    {
+        if (Overlay.isOpened())
+            return Overlay.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, delta);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
+        if (Overlay.isOpened())
+            return Overlay.mouseClicked(mouseX, mouseY, button);
+
         if (this.getWidgets().getSearchInput().isFocused())
             this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
+    {
+        if (Overlay.isOpened())
+            return Overlay.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button)
+    {
+        if (Overlay.isOpened())
+            Overlay.onRelease(mouseX, mouseY, button);
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     /* On-click Handlers */
@@ -436,10 +493,11 @@ public class ConfigScreen extends Screen
         this.getWidgets().getConfigRowList().render(poseStack, mouseX, mouseY, partialTick);
 
         for (Button button : this.getWidgets().getCategories())
-            button.active = true;
+            button.active = !Overlay.isOpened();
 
         switch (this.configTab)
         {
+            case ALL -> this.getWidgets().getList().active = !Overlay.isOpened();
             case GENERAL -> this.getWidgets().getGeneral().active = false;
             case SOUND -> this.getWidgets().getSound().active = false;
             case CANDY -> this.getWidgets().getCandy().active = false;
@@ -449,7 +507,8 @@ public class ConfigScreen extends Screen
             case SEARCH -> this.getWidgets().getSearch().active = false;
         }
 
-        this.getWidgets().getSave().active = this.isSavable();
+        this.getWidgets().getSave().active = this.isSavable() && !Overlay.isOpened();
+        this.getWidgets().getCancel().active = !Overlay.isOpened();
 
         for (Widget widget : this.getWidgets().children)
         {
@@ -475,9 +534,14 @@ public class ConfigScreen extends Screen
         RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
 
-        this.renderLast.forEach(Runnable::run);
+        if (!Overlay.isOpened())
+            this.renderLast.forEach(Runnable::run);
         this.renderLast.clear();
 
+        // Overlay Rendering
+        Overlay.render(poseStack, mouseX, mouseY, partialTick);
+
+        // Debugging
         if (NostalgicTweaks.isDebugging())
             drawString(poseStack, this.font, "Debug: §2ON", 2, this.height - 10, 0xFFFF00);
     }
