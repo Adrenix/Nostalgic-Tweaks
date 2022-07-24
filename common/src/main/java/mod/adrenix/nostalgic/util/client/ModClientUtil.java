@@ -159,15 +159,15 @@ public abstract class ModClientUtil
             else if (foodLevel <= 15) foodColor = "e";
             else if (foodLevel < 20) foodColor = "2";
 
-            if (xpPercent <= 20) xpColor = "c";
-            else if (xpPercent <= 40) xpColor = "6";
-            else if (xpPercent <= 60) xpColor = "e";
-            else if (xpPercent <= 80) xpColor = "2";
+            if (xpPercent < 20) xpColor = "c";
+            else if (xpPercent < 40) xpColor = "6";
+            else if (xpPercent < 60) xpColor = "e";
+            else if (xpPercent < 80) xpColor = "2";
 
-            if (satPercent <= 20) satColor = "c";
-            else if (satPercent <= 40) satColor = "6";
-            else if (satPercent <= 60) satColor = "e";
-            else if (satPercent <= 80) satColor = "2";
+            if (satPercent < 20) satColor = "c";
+            else if (satPercent < 40) satColor = "6";
+            else if (satPercent < 60) satColor = "e";
+            else if (satPercent < 80) satColor = "2";
 
             String food = Component.translatable(NostalgicLang.Gui.HUD_FOOD, foodColor, foodLevel).getString();
             String sat = Component.translatable(NostalgicLang.Gui.HUD_SATURATION, satColor, satPercent).getString();
