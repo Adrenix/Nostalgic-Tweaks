@@ -133,12 +133,6 @@ public class ColorPicker extends Overlay
         return super.onClick(mouseX, mouseY, button);
     }
 
-    @Override
-    public boolean onMouseScrolled(double mouseX, double mouseY, double delta)
-    {
-        return super.onMouseScrolled(mouseX, mouseY, delta);
-    }
-
     private static void drawBorder(BufferBuilder buffer, Matrix4f matrix, int leftX, int topY, int color)
     {
         ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 1, topY, topY + 19, color);
