@@ -38,7 +38,7 @@ public abstract class ClientEventHandler
      * the server.
      */
     @SubscribeEvent
-    public static void onLeaveWorld(ClientPlayerNetworkEvent.LoggingOut event) { ClientEventHelper.disconnect(); }
+    public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) { ClientEventHelper.disconnect(); }
 
     /* Candy Events */
 
