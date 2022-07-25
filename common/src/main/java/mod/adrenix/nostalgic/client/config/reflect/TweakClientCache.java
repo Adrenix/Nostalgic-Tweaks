@@ -14,8 +14,10 @@ import mod.adrenix.nostalgic.network.packet.PacketC2SChangeTweak;
 import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -444,6 +446,40 @@ public class TweakClientCache<T>
         if (current instanceof Integer && cache instanceof Integer)
             return ((Integer) current).compareTo((Integer) cache) != 0;
         return !current.equals(cache);
+    }
+
+    /**
+     * Get the translated category/subcategory/embedded name for this tweak.
+     * @return The returned translated string from the tweak's closest associated category.
+     */
+    public Component getSearchGroup()
+    {
+        TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
+        TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
+        TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Emb.class);
+
+        MutableComponent group = Component.translatable(this.getGroup().getLangKey()).withStyle(ChatFormatting.GOLD);
+
+        if (cat != null || sub != null || emb != null)
+            group.append(ChatFormatting.WHITE + "/");
+
+        if (cat != null)
+            group.append(Component.translatable(cat.group().getLangKey()).withStyle(ChatFormatting.YELLOW));
+
+        if (sub != null)
+        {
+            group.append(Component.translatable(sub.group().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW)).append(ChatFormatting.WHITE + "/");
+            group.append(Component.translatable(sub.group().getLangKey()).withStyle(ChatFormatting.GREEN));
+        }
+
+        if (emb != null)
+        {
+            group.append(Component.translatable(emb.group().getSubcategory().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW)).append(ChatFormatting.WHITE + "/");
+            group.append(Component.translatable(emb.group().getSubcategory().getLangKey()).withStyle(ChatFormatting.GREEN)).append(ChatFormatting.WHITE + "/");
+            group.append(Component.translatable(emb.group().getLangKey()).withStyle(ChatFormatting.AQUA));
+        }
+
+        return group;
     }
 
     /**

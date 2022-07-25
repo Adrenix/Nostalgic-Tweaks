@@ -356,6 +356,8 @@ public class CategoryList extends Overlay
                 indent = 9;
             else if (row.getIndent() == ConfigRowList.SUB_TEXT_START)
                 indent = 18;
+            else if (row.getIndent() == ConfigRowList.EMB_TEXT_START)
+                indent = 27;
 
             Button.OnPress jump = button -> {
                 this.all.setScrollOn(row);

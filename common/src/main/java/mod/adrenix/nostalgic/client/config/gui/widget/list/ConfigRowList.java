@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.list;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -11,6 +10,7 @@ import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.IPermissionWidget;
+import mod.adrenix.nostalgic.client.config.gui.widget.TextWidget;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.StringInput;
@@ -56,6 +56,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     public static final int TEXT_START = 8;
     public static final int CAT_TEXT_START = 28;
     public static final int SUB_TEXT_START = 48;
+    public static final int EMB_TEXT_START = 68;
 
     @Nullable
     private static ConfigRowList.Row rendering = null;
@@ -179,7 +180,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             if (controller instanceof ColorInput color)
                 widgets.add(color.getWidget());
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), controller, this.cache);
+            return new ConfigRowList.Row(widgets, controller, this.cache);
         }
 
         public ConfigRowList.Row add() { return new ConfigRowList.Row(new ArrayList<>(), this.cache); }
@@ -193,7 +194,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         @Override
         public ConfigRowList.Row add()
         {
-            return new ConfigRowList.Row(ImmutableList.copyOf(new ArrayList<>()), this.cache);
+            return new ConfigRowList.Row(new ArrayList<>(), this.cache);
         }
     }
 
@@ -259,7 +260,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             widgets.add(controller);
             widgets.add(new ResetButton(null, controller));
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), controller, null);
+            return new ConfigRowList.Row(widgets, controller, null);
         }
     }
 
@@ -274,7 +275,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             widgets.add(this.center);
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), null);
+            return new ConfigRowList.Row(widgets, null);
         }
     }
 
@@ -289,17 +290,25 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             widgets.add(this.left);
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), null);
+            return new ConfigRowList.Row(widgets, null);
         }
     }
 
     // Manual Row Entry
     public record ManualRow(List<AbstractWidget> widgets)
     {
-        public ConfigRowList.Row add() { return new ConfigRowList.Row(ImmutableList.copyOf(widgets), null); }
+        public ConfigRowList.Row add() { return new ConfigRowList.Row(widgets, null); }
     }
 
     // Category & Subcategory Entry
+
+    public enum CatType
+    {
+        CATEGORY,    // The main parent (subscribes to a main group like Eye Candy)
+        SUBCATEGORY, // A child of the parent (subscribes to a category like Combat Gameplay)
+        EMBEDDED     // A category embedded within a subcategory (like 'Buttons' to 'Title Screen Candy')
+    }
+
     public static class CategoryRow
     {
         private ArrayList<ConfigRowList.Row> cache;
@@ -308,21 +317,31 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         private final ConfigRowList list;
         private final Component title;
         private final Supplier<ArrayList<ConfigRowList.Row>> childrenSupply;
-        private final boolean isSubcategory;
+        private final CatType categoryType;
         private boolean expanded = false;
 
-        public CategoryRow(ConfigRowList list, Component title, Supplier<ArrayList<ConfigRowList.Row>> childrenSupply, Enum<?> id, boolean isSubcategory)
+        public CategoryRow(ConfigRowList list, Component title, Supplier<ArrayList<ConfigRowList.Row>> childrenSupply, Enum<?> id, CatType categoryType)
         {
             this.id = id;
             this.list = list;
             this.title = title;
             this.childrenSupply = childrenSupply;
-            this.isSubcategory = isSubcategory;
+            this.categoryType = categoryType;
         }
 
         public CategoryRow(ConfigRowList list, Component title, Supplier<ArrayList<ConfigRowList.Row>> childrenSupply, Enum<?> id)
         {
-            this(list, title, childrenSupply, id, false);
+            this(list, title, childrenSupply, id, CatType.CATEGORY);
+        }
+
+        public static int getIndent(CatType categoryType)
+        {
+            return switch (categoryType)
+            {
+                case CATEGORY -> TEXT_START;
+                case SUBCATEGORY -> CAT_TEXT_START;
+                case EMBEDDED -> SUB_TEXT_START;
+            };
         }
 
         public boolean isExpanded() { return this.expanded; }
@@ -397,7 +416,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             for (ConfigRowList.Row row : this.cache)
             {
                 this.list.children().add(header, row);
-                row.setIndent(this.isSubcategory ? SUB_TEXT_START : CAT_TEXT_START);
+
+                row.setIndent(getIndent(this.categoryType) + 20);
                 row.setGroup(this.controller);
                 header++;
             }
@@ -442,10 +462,10 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         public ConfigRowList.Row add()
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            this.controller = new GroupButton(this, this.id, this.title, this.isSubcategory);
+            this.controller = new GroupButton(this, this.id, this.title, this.categoryType);
             widgets.add(this.controller);
 
-            return new ConfigRowList.Row(ImmutableList.copyOf(widgets), this.controller, null);
+            return new ConfigRowList.Row(widgets, this.controller, null);
         }
     }
 
@@ -624,14 +644,19 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
 
-            // Secondary subcategory vertical bar [ |  L ]
-            if (this.indent == SUB_TEXT_START && isSubIndented)
+            // Secondary embedded and subcategory vertical bar [ |  L ]
+            boolean isVertical = this.indent == SUB_TEXT_START || this.indent == EMB_TEXT_START;
+
+            if (isVertical && isSubIndented)
             {
                 leftX = this.indent - 36.0F;
                 rightX = leftX + 2.0F;
                 bottomY = (float) (top + height) + 3.0F;
 
                 ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
+
+                if (this.indent == EMB_TEXT_START)
+                    ModClientUtil.Render.fill(buffer, matrix, leftX - 20.0F, rightX - 20.0F, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
             }
 
             tesselator.end();
@@ -655,7 +680,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         public void render(PoseStack poseStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick)
         {
             Font font = Minecraft.getInstance().font;
-            Screen screen = Minecraft.getInstance().screen;
+            ConfigScreen screen = (ConfigScreen) Minecraft.getInstance().screen;
             if (screen == null) return;
 
             // Update renderer tracker
@@ -757,9 +782,9 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             for (AbstractWidget widget : this.children)
             {
                 // Update widget focus if a change was sent via the category list overlay
-                if (CategoryList.OVERLAY.getSelected() == this && screen instanceof ConfigScreen configScreen)
+                if (CategoryList.OVERLAY.getSelected() == this)
                 {
-                    ConfigRowList list = configScreen.getWidgets().getConfigRowList();
+                    ConfigRowList list = screen.getWidgets().getConfigRowList();
                     if (list.setSelection)
                     {
                         if (list.getLastSelection() != null)
@@ -791,7 +816,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     group.setHighlight(CategoryList.OVERLAY.getSelected() == this);
 
                 // Render row title
-                Screen.drawString(poseStack, font, title, startX, top + 6, 0xFFFFFF);
+                int dy = screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH ? 11 : 0;
+                Screen.drawString(poseStack, font, title, startX, top + 6 + dy, 0xFFFFFF);
 
                 // Realign edit boxes
                 widget.y = top;
@@ -802,6 +828,18 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     widget.x -= 1;
                     widget.y += 1;
+                }
+
+                // Realign text rows if searching
+                if (screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
+                {
+                    if (widget instanceof TextWidget text)
+                    {
+                        widget.x = text.startX;
+                        widget.y += 2;
+                    }
+                    else
+                        widget.y += 11;
                 }
 
                 // Render final widget
@@ -826,9 +864,9 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 boolean isEllipsis = tagger != null && tagger.getTitle().contains("...");
                 boolean isOverText = (mouseX >= startX && mouseX <= startX + font.width(title)) && (mouseY >= top + 6 && mouseY <= top + 6 + 8);
 
-                if (isEllipsis && isOverText && this.cache != null && screen instanceof ConfigScreen configScreen)
+                if (isEllipsis && isOverText && this.cache != null)
                 {
-                    configScreen.renderLast.add(() ->
+                    screen.renderLast.add(() ->
                         screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(this.cache.getTranslation()), 35), mouseX, mouseY))
                     ;
                 }
@@ -836,36 +874,33 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 // Debugging
                 if (NostalgicTweaks.isDebugging() && this.isMouseOver(mouseX, mouseY) && this.cache != null)
                 {
-                    if (screen instanceof ConfigScreen config)
+                    if (screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
                     {
-                        if (config.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
+                        String color = "§a";
+                        int weight = this.cache.getWeight();
+                        if (weight <= 50) color = "§4";
+                        else if (weight <= 60) color = "§c";
+                        else if (weight <= 70) color = "§6";
+                        else if (weight <= 80) color = "§e";
+                        else if (weight <= 99) color = "§2";
+
+                        screen.renderTooltip(poseStack, Component.literal(String.format("Fuzzy Weight: %s%s", color, weight)), mouseX, mouseY);
+                    }
+                    else
+                    {
+                        List<Component> lines = new ArrayList<>();
+                        Object clientCache = this.cache.getSavedValue();
+                        String clientColor = clientCache instanceof Boolean state ? state ? "§2" : "§4" : "";
+                        lines.add(Component.literal(String.format("Client Cache: %s%s", clientColor, clientCache)));
+
+                        TweakServerCache<?> serverCache = TweakServerCache.all().get(this.cache.getId());
+                        if (serverCache != null)
                         {
-                            String color = "§a";
-                            int weight = this.cache.getWeight();
-                            if (weight <= 50) color = "§4";
-                            else if (weight <= 60) color = "§c";
-                            else if (weight <= 70) color = "§6";
-                            else if (weight <= 80) color = "§e";
-                            else if (weight <= 99) color = "§2";
-
-                            screen.renderTooltip(poseStack, Component.literal(String.format("Fuzzy Weight: %s%s", color, weight)), mouseX, mouseY);
+                            String serverColor = serverCache.getServerCache() instanceof Boolean state ? state ? "§2" : "§4" : "";
+                            lines.add(Component.literal(String.format("Server Cache: %s%s", serverColor, serverCache.getServerCache())));
                         }
-                        else
-                        {
-                            List<Component> lines = new ArrayList<>();
-                            Object clientCache = this.cache.getSavedValue();
-                            String clientColor = clientCache instanceof Boolean state ? state ? "§2" : "§4" : "";
-                            lines.add(Component.literal(String.format("Client Cache: %s%s", clientColor, clientCache)));
 
-                            TweakServerCache<?> serverCache = TweakServerCache.all().get(this.cache.getId());
-                            if (serverCache != null)
-                            {
-                                String serverColor = serverCache.getServerCache() instanceof Boolean state ? state ? "§2" : "§4" : "";
-                                lines.add(Component.literal(String.format("Server Cache: %s%s", serverColor, serverCache.getServerCache())));
-                            }
-
-                            screen.renderComponentTooltip(poseStack, lines, mouseX, mouseY);
-                        }
+                        screen.renderComponentTooltip(poseStack, lines, mouseX, mouseY);
                     }
                 }
             }

@@ -45,6 +45,9 @@ public class TextGroup extends AbstractWidget
         return this.rows;
     }
 
+    @Override // Prevents the clicking sound from playing when left-clicking a text group widget
+    public boolean mouseClicked(double mouseX, double mouseY, int button) { return false; }
+
     @Override public void updateNarration(NarrationElementOutput ignored) {}
     @Override public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
@@ -62,13 +65,6 @@ public class TextGroup extends AbstractWidget
 
         if (found.size() != rows.size())
             this.getRows().forEach((row) -> this.list.children().add(row));
-    }
-
-    // Prevents the clicking sound from playing when left-clicking a text group widget
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
-    {
-        return false;
     }
 
     public class TextRow extends AbstractWidget

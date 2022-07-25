@@ -42,6 +42,16 @@ public abstract class TweakClient
         }
 
         /**
+         * The embedded subcategory a tweak is associated with.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface Emb
+        {
+            Embedded group();
+        }
+
+        /**
          * This will prevent the tooltip bubble from appearing in the configuration menu.
          */
         @Retention(RetentionPolicy.RUNTIME)
@@ -186,7 +196,6 @@ public abstract class TweakClient
         ITEM_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_ITEM),
         LIGHTING_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_LIGHTING),
         PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
-        TITLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_TITLE),
         WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD),
 
         // Gameplay Categories
@@ -230,78 +239,72 @@ public abstract class TweakClient
          * To prevent issues, subcategory names should not match any category names.
          * There will be GUI rendering issues if this occurs.
          *
-         * The best way to prevent this is to invert the naming scheme for subcategories.
-         * For example, ITEM_CANDY is already a category name. The inverse would be CANDY_ITEM.
+         * The best way to prevent this is to prefix the category name to the subcategory name.
          */
 
         /* Sound Candy */
 
         // Block Sound Subcategories
 
-        SOUND_CHEST(Category.BLOCK_SOUND, NostalgicLang.Gui.SOUND_SUBCATEGORY_CHEST),
+        BLOCK_CHEST_SOUND(Category.BLOCK_SOUND, NostalgicLang.Gui.SOUND_SUBCATEGORY_CHEST),
 
         /* Eye Candy */
 
         // Block Candy Subcategories
 
-        CANDY_CHEST(Category.BLOCK_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHEST),
+        BLOCK_CHEST_CANDY(Category.BLOCK_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHEST),
 
         // Interface Candy Subcategories
 
-        CANDY_CHAT(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
-        CANDY_ITEM(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
-        CANDY_LOADING(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOADING),
-        CANDY_PAUSE(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_PAUSE),
-        CANDY_OVERLAY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_OVERLAY),
-        CANDY_TOOLTIP(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TOOLTIP),
+        INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
+        INTERFACE_ITEM_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
+        INTERFACE_LOADING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOADING),
+        INTERFACE_PAUSE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_PAUSE),
+        INTERFACE_TITLE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TITLE),
+        INTERFACE_OVERLAY_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_OVERLAY),
+        INTERFACE_TOOLTIP_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TOOLTIP),
 
         // Item Candy Subcategories
 
-        CANDY_FLAT(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FLAT),
+        FLAT_ITEM_CANDY(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FLAT),
 
         // Lighting Candy Subcategories
 
-        CANDY_LIGHT_BLOCK(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_BLOCK_LIGHT),
-        CANDY_LIGHT_WORLD(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_WORLD_LIGHT),
+        LIGHTING_BLOCK_CANDY(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_BLOCK_LIGHT),
+        LIGHTING_WORLD_CANDY(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_WORLD_LIGHT),
 
         // Particle Candy Subcategories
 
-        CANDY_ATTACK(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ATTACK),
-        CANDY_EXPLOSION(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_EXPLOSION),
-
-        // Title Screen Candy Subcategories
-
-        CANDY_BUTTON(Category.TITLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_BUTTON),
-        CANDY_LOGO(Category.TITLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOGO),
-        CANDY_TEXT(Category.TITLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TEXT),
+        PARTICLE_ATTACK_CANDY(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ATTACK),
+        PARTICLE_EXPLOSION_CANDY(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_EXPLOSION),
 
         // World Candy Subcategories
 
-        CANDY_FOG(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FOG),
-        CANDY_SKY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_SKY),
-        CANDY_VOID(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_VOID),
+        WORLD_FOG_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FOG),
+        WORLD_SKY_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_SKY),
+        WORLD_VOID_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_VOID),
 
         /* Gameplay */
 
         // Combat System Subcategories
 
-        GAMEPLAY_BOW(Category.COMBAT_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_BOW),
+        COMBAT_BOW_GAMEPLAY(Category.COMBAT_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_BOW),
 
         // Experience System Subcategories
 
-        GAMEPLAY_EXPERIENCE_BAR(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BAR),
-        GAMEPLAY_EXPERIENCE_ORB(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB),
-        GAMEPLAY_EXPERIENCE_BLOCK(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK),
+        EXPERIENCE_BAR_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BAR),
+        EXPERIENCE_ORB_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB),
+        EXPERIENCE_BLOCK_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK),
 
         // Game Mechanics Subcategories
 
-        GAMEPLAY_FIRE(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FIRE),
-        GAMEPLAY_SWIMMING(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_SWIMMING),
+        MECHANICS_FIRE_GAMEPLAY(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FIRE),
+        MECHANICS_SWIMMING_GAMEPLAY(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_SWIMMING),
 
         // Hunger System Subcategories
 
-        GAMEPLAY_HUNGER_BAR(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_HUNGER_BAR),
-        GAMEPLAY_HUNGER_FOOD(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FOOD);
+        HUNGER_BAR_GAMEPLAY(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_HUNGER_BAR),
+        HUNGER_FOOD_GAMEPLAY(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FOOD);
 
         private final String langKey;
         private final Category category;
@@ -313,6 +316,40 @@ public abstract class TweakClient
         }
 
         public Category getCategory() { return this.category; }
+        public String getLangKey() { return this.langKey; }
+    }
+
+    /**
+     * This enumeration creates a sub-subcategory for a category.
+     */
+    public enum Embedded
+    {
+        /**
+         * IMPORTANT:
+         *
+         * To prevent issues, embedded subcategory names should not match any category or subcategory names.
+         * There will be GUI rendering issues if this occurs.
+         *
+         * The best way to prevent this is to prefix the naming scheme for embedded subcategories.
+         * For example, for the button tweaks for title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
+         */
+
+        /* Title Screen Candy - Embedded Subcategories */
+
+        TITLE_BUTTON_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_BUTTON),
+        TITLE_LOGO_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_LOGO),
+        TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_TEXT);
+
+        private final String langKey;
+        private final Subcategory subcategory;
+
+        Embedded(Subcategory subcategory, String langKey)
+        {
+            this.subcategory = subcategory;
+            this.langKey = langKey;
+        }
+
+        public Subcategory getSubcategory() { return this.subcategory; }
         public String getLangKey() { return this.langKey; }
     }
 }

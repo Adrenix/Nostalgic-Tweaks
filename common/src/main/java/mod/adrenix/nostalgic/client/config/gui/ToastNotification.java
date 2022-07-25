@@ -20,7 +20,7 @@ public abstract class ToastNotification
     private static long timeSinceLast = 0L;
 
     /**
-     * Pops up a toast on the client if the time since the last pop up is greater than 5 seconds.
+     * Pops up a toast on the client if the time since the last pop-up is greater than 5 seconds.
      * @param toast The toast to add.
      */
     public static void add(Toast toast)

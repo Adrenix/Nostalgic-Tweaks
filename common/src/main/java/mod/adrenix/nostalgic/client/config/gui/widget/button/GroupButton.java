@@ -21,8 +21,6 @@ public class GroupButton extends Button
 
     /* Fields */
 
-    private static final int CAT_TEXT_START = ConfigRowList.CAT_TEXT_START;
-    private static final int TEXT_START = ConfigRowList.TEXT_START;
     private final Enum<?> id;
     private final ConfigRowList.CategoryRow row;
     private final Component title;
@@ -31,9 +29,9 @@ public class GroupButton extends Button
 
     /* Constructor */
 
-    public GroupButton(ConfigRowList.CategoryRow row, Enum<?> id, Component title, boolean isSubcategory)
+    public GroupButton(ConfigRowList.CategoryRow row, Enum<?> id, Component title, ConfigRowList.CatType catType)
     {
-        super(isSubcategory ? CAT_TEXT_START : TEXT_START, 0, 0, 0, Component.empty(), (ignored) -> {});
+        super(ConfigRowList.CategoryRow.getIndent(catType), 0, 0, 0, Component.empty(), (ignored) -> {});
 
         this.id = id;
         this.row = row;

@@ -1,1 +1,2 @@
-accessWidener   v2  named
+accessWidener v2 named
+mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I

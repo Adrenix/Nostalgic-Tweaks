@@ -95,6 +95,11 @@ public class ConfigScreen extends Screen
         else if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
             GroupButton.collapseAll();
 
+        if (configTab == ConfigTab.SEARCH)
+            this.getWidgets().getConfigRowList().setRowHeight(36);
+        else
+            this.getWidgets().getConfigRowList().resetRowHeight();
+
         this.configTab = configTab;
         this.getWidgets().getConfigRowList().children().clear();
         this.getWidgets().getConfigRowList().setScrollAmount(0);
@@ -349,14 +354,15 @@ public class ConfigScreen extends Screen
     public void resize(Minecraft minecraft, int width, int height)
     {
         String searching = this.getWidgets().getSearchInput().getValue();
+        int rowHeight = this.getWidgets().getConfigRowList().getRowHeight();
 
         super.resize(minecraft, width, height);
 
+        this.getWidgets().getSearchInput().setValue(searching);
+        this.getWidgets().getConfigRowList().setRowHeight(rowHeight);
+
         if (this.configTab == ConfigTab.SEARCH)
-        {
             this.getWidgets().focusInput = true;
-            this.getWidgets().getSearchInput().setValue(searching);
-        }
 
         Overlay.resize();
     }

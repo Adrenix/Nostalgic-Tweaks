@@ -221,12 +221,12 @@ public abstract class NostalgicLang
         public static final String CANDY_CATEGORY_WORLD = "gui.nostalgic_tweaks.config.candy.category.world";
         public static final String CANDY_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.category.item";
         public static final String CANDY_CATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.category.interface";
-        public static final String CANDY_CATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.category.title";
         public static final String CANDY_CATEGORY_BLOCK = "gui.nostalgic_tweaks.config.candy.category.block";
 
         public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
         public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
+        public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";
         public static final String CANDY_SUBCATEGORY_OVERLAY = "gui.nostalgic_tweaks.config.candy.subcategory.overlay";
         public static final String CANDY_SUBCATEGORY_PAUSE = "gui.nostalgic_tweaks.config.candy.subcategory.pause";
@@ -236,12 +236,13 @@ public abstract class NostalgicLang
         public static final String CANDY_SUBCATEGORY_WORLD_LIGHT = "gui.nostalgic_tweaks.config.candy.subcategory.world_light";
         public static final String CANDY_SUBCATEGORY_ATTACK = "gui.nostalgic_tweaks.config.candy.subcategory.attack";
         public static final String CANDY_SUBCATEGORY_EXPLOSION = "gui.nostalgic_tweaks.config.candy.subcategory.explosion";
-        public static final String CANDY_SUBCATEGORY_LOGO = "gui.nostalgic_tweaks.config.candy.subcategory.logo";
-        public static final String CANDY_SUBCATEGORY_BUTTON = "gui.nostalgic_tweaks.config.candy.subcategory.button";
-        public static final String CANDY_SUBCATEGORY_TEXT = "gui.nostalgic_tweaks.config.candy.subcategory.text";
         public static final String CANDY_SUBCATEGORY_FOG = "gui.nostalgic_tweaks.config.candy.subcategory.fog";
         public static final String CANDY_SUBCATEGORY_SKY = "gui.nostalgic_tweaks.config.candy.subcategory.sky";
         public static final String CANDY_SUBCATEGORY_VOID = "gui.nostalgic_tweaks.config.candy.subcategory.void";
+
+        public static final String CANDY_EMBED_TITLE_LOGO = "gui.nostalgic_tweaks.config.candy.embed.title.logo";
+        public static final String CANDY_EMBED_TITLE_BUTTON = "gui.nostalgic_tweaks.config.candy.embed.title.button";
+        public static final String CANDY_EMBED_TITLE_TEXT = "gui.nostalgic_tweaks.config.candy.embed.title.text";
 
         public static final String SWING_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.swing.category.item";
         public static final String SWING_CATEGORY_POTION = "gui.nostalgic_tweaks.config.swing.category.potion";

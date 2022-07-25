@@ -24,13 +24,18 @@ import java.util.function.Supplier;
 public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Entry<R>> extends ContainerObjectSelectionList<R>
 {
     private boolean isTransparentList = true;
+    private final int originalItemHeight;
 
     public AbstractRowList(Minecraft minecraft, int width, int height, int y0, int y1, int itemHeight)
     {
         super(minecraft, width, height, y0, y1, itemHeight);
         this.centerListVertically = false;
+        this.originalItemHeight = this.itemHeight;
     }
 
+    public int getRowHeight() { return this.itemHeight; }
+    public void resetRowHeight() { this.itemHeight = this.originalItemHeight; }
+    public void setRowHeight(int height) { this.itemHeight = height; }
     public void setAsTransparentList() { this.isTransparentList = false; }
     public void setScrollOn(R entry) { this.centerScrollOn(entry); }
 

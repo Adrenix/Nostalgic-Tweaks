@@ -25,72 +25,97 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public record ConfigRenderer(ConfigScreen parent)
 {
+    private static void sort
+    (
+        TweakClientCache<?> entry,
+        TweakClient.Gui.Placement placement,
+        HashMap<String, TweakClientCache<?>> translated,
+        HashMap<Integer, TweakClientCache<?>> top,
+        HashMap<Integer, TweakClientCache<?>> bottom
+    )
+    {
+        if (placement == null)
+            translated.put(entry.getTranslation(), entry);
+        else
+        {
+            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
+                top.put(entry.getOrder(), entry);
+            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
+                bottom.put(entry.getOrder(), entry);
+        }
+    }
+
     private static Supplier<ArrayList<ConfigRowList.Row>> getChildren
     (
         ConfigRowList list,
         @Nullable TweakClient.Category category,
-        @Nullable TweakClient.Subcategory subcategory
+        @Nullable TweakClient.Subcategory subcategory,
+        @Nullable TweakClient.Embedded embedded
     )
     {
         return () ->
         {
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+
             HashMap<String, TweakClientCache<?>> translated = new HashMap<>();
             HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
             HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
-            Set<TweakClient.Subcategory> included = new HashSet<>();
+
+            Set<TweakClient.Subcategory> subcategories = new HashSet<>();
+            Set<TweakClient.Embedded> embeds = new HashSet<>();
 
             TweakClientCache.all().forEach((key, entry) -> {
                 TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(entry, TweakClient.Gui.Cat.class);
                 TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry, TweakClient.Gui.Sub.class);
+                TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(entry, TweakClient.Gui.Emb.class);
                 TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry, TweakClient.Gui.Placement.class);
 
                 if (category != null)
                 {
-                    if (cat != null && cat.group() == category && entry.getGroup() == category.getGroup())
-                    {
-                        if (placement == null)
-                            translated.put(entry.getTranslation(), entry);
-                        else
-                        {
-                            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
-                                top.put(entry.getOrder(), entry);
-                            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
-                                bottom.put(entry.getOrder(), entry);
-                        }
-                    }
-                    else if (sub != null && !included.contains(sub.group()) && sub.group().getCategory() == category && entry.getGroup() == category.getGroup())
-                        included.add(sub.group());
+                    boolean isCategory = cat != null && cat.group() == category && entry.getGroup() == category.getGroup();
+                    boolean isSubcategory = sub != null && !subcategories.contains(sub.group()) && sub.group().getCategory() == category && entry.getGroup() == category.getGroup();
+
+                    if (isCategory)
+                        sort(entry, placement, translated, top, bottom);
+                    else if (isSubcategory)
+                        subcategories.add(sub.group());
                 }
                 else if (subcategory != null)
                 {
-                    if (sub != null && sub.group() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup())
-                    {
-                        if (placement == null)
-                            translated.put(entry.getTranslation(), entry);
-                        else
-                        {
-                            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
-                                top.put(entry.getOrder(), entry);
-                            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
-                                bottom.put(entry.getOrder(), entry);
-                        }
-                    }
+                    boolean isSubcategory = sub != null && sub.group() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup();
+                    boolean isEmbed = emb != null && !embeds.contains(emb.group()) && emb.group().getSubcategory() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup();
+
+                    if (isSubcategory)
+                        sort(entry, placement, translated, top, bottom);
+                    else if (isEmbed)
+                        embeds.add(emb.group());
+                }
+                else if (embedded != null)
+                {
+                    if (emb != null && emb.group() == embedded && entry.getGroup() == embedded.getSubcategory().getCategory().getGroup())
+                        sort(entry, placement, translated, top, bottom);
                 }
             });
 
-            EnumSet<TweakClient.Subcategory> subcategories = EnumSet.allOf(TweakClient.Subcategory.class);
-            subcategories.forEach((sub) -> {
-                if (included.contains(sub))
+            EnumSet<TweakClient.Subcategory> allSubs = EnumSet.allOf(TweakClient.Subcategory.class);
+            EnumSet<TweakClient.Embedded> allEmbeds = EnumSet.allOf(TweakClient.Embedded.class);
+
+            allSubs.forEach((sub) -> {
+                if (subcategories.contains(sub))
                     rows.add(getSubcategory(sub, list).add());
+            });
+
+            allEmbeds.forEach((embed) -> {
+                if (embeds.contains(embed))
+                    rows.add(getEmbedded(embed, list).add());
             });
 
             SortedMap<Integer, TweakClientCache<?>> sortTop = new TreeMap<>(top);
@@ -111,9 +136,9 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             list,
             Component.translatable(subcategory.getLangKey()),
-            getChildren(list, null, subcategory),
+            getChildren(list, null, subcategory, null),
             subcategory,
-            true
+            ConfigRowList.CatType.SUBCATEGORY
         );
     }
 
@@ -123,8 +148,20 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             list,
             Component.translatable(category.getLangKey()),
-            getChildren(list, category, null),
+            getChildren(list, category, null, null),
             category
+        );
+    }
+
+    private static ConfigRowList.CategoryRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
+    {
+        return new ConfigRowList.CategoryRow
+        (
+            list,
+            Component.translatable(embedded.getLangKey()),
+            getChildren(list, null, null, embedded),
+            embedded,
+            ConfigRowList.CatType.EMBEDDED
         );
     }
 
@@ -157,8 +194,9 @@ public record ConfigRenderer(ConfigScreen parent)
             TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
             TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
             TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
+            TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Emb.class);
 
-            if (cat == null && sub == null)
+            if (cat == null && sub == null && emb == null)
             {
                 if (placement == null)
                     middle.put(key, value);
@@ -182,6 +220,17 @@ public record ConfigRenderer(ConfigScreen parent)
         sortBottom.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
     }
 
+    private void addSearchRows(TweakClientCache<?> tweak)
+    {
+        TextWidget text = new TextWidget(ConfigRowList.TEXT_START, tweak.getSearchGroup());
+        ConfigRowList list = this.parent.getWidgets().getConfigRowList();
+        ConfigRowList.Row row = list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent());
+
+        row.children.add(text);
+
+        this.parent.getWidgets().getConfigRowList().addRow(row);
+    }
+
     private void addFound()
     {
         if (this.parent.search.isEmpty())
@@ -199,7 +248,7 @@ public record ConfigRenderer(ConfigScreen parent)
         ;
 
         sorted.putAll(found);
-        sorted.forEach((key, tweak) -> this.parent.getWidgets().getConfigRowList().addRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent()));
+        sorted.forEach((key, tweak) -> this.addSearchRows(tweak));
     }
 
     private void addGeneral()
@@ -254,7 +303,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, true).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Tree Indent Options
             Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () -> {
@@ -270,7 +319,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, true).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Row Highlighting Options
             Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () -> {
@@ -289,7 +338,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, true).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             /* Tag Options */
             Supplier<ArrayList<ConfigRowList.Row>> tagging = () -> {
@@ -359,7 +408,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, true).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             return subcategories;
         };
