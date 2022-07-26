@@ -7,7 +7,6 @@
   "client": [
     "ItemInHandRendererForgeMixin",
     "LivingEntityForgeMixin",
-    "ProgressScreenForgeMixin",
-    "TempFogRendererMixin"
+    "ProgressScreenForgeMixin"
   ]
 }
