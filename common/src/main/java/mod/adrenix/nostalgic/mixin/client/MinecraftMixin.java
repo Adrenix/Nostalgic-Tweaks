@@ -34,6 +34,8 @@ public abstract class MinecraftMixin
     @Shadow @Nullable public LocalPlayer player;
     @Shadow public abstract Window getWindow();
 
+    /* Injections */
+
     /**
      * Prevents the hand swing animation when dropping an item.
      * Controlled the swing drop tweak.

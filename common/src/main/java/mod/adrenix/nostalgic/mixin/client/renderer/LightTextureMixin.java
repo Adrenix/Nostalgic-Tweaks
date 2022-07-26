@@ -144,7 +144,7 @@ public abstract class LightTextureMixin
 
                 double gamma = ModConfig.Candy.disableGamma() ? 0.0D : this.minecraft.options.gamma().get();
 
-                lightMultiplier = lightMultiplier * ((float) gamma + 0.25F + 1.0F);
+                lightMultiplier = lightMultiplier * ((float) gamma + 0.3F + 1.0F);
                 if (lightMultiplier > 255.0F)
                     lightMultiplier = 255.0F;
 

@@ -2,14 +2,12 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -21,14 +19,6 @@ import java.util.Optional;
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends GuiComponent
 {
-    /* Shadows */
-
-    @Shadow protected Font font;
-    @Shadow public int width;
-    @Shadow public int height;
-
-    /* Injections */
-
     /**
      * Disables tooltips from appearing when hovering over items within an inventory.
      * Controlled by the old no item tooltip tweak.
@@ -80,16 +70,10 @@ public abstract class ScreenMixin extends GuiComponent
     /* 2nd Fill Gradient - This is the actual tooltip box */
 
     @ModifyArg(method = "renderTooltipInternal", index = 7, at = @At(ordinal = 2, value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;fillGradient(Lcom/mojang/math/Matrix4f;Lcom/mojang/blaze3d/vertex/BufferBuilder;IIIIIII)V"))
-    private int NT$onFillGradientTwoSeven(int vanilla)
-    {
-        return ModConfig.Candy.oldTooltips() ? 0xc0000000 : vanilla;
-    }
+    private int NT$onFillGradientTwoSeven(int vanilla) { return ModConfig.Candy.oldTooltips() ? 0xc0000000 : vanilla; }
 
     @ModifyArg(method = "renderTooltipInternal", index = 8, at = @At(ordinal = 2, value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;fillGradient(Lcom/mojang/math/Matrix4f;Lcom/mojang/blaze3d/vertex/BufferBuilder;IIIIIII)V"))
-    private int NT$onFillGradientTwoEight(int vanilla)
-    {
-        return ModConfig.Candy.oldTooltips() ? 0xc0000000 : vanilla;
-    }
+    private int NT$onFillGradientTwoEight(int vanilla) { return ModConfig.Candy.oldTooltips() ? 0xc0000000 : vanilla; }
 
     /* 3rd Fill Gradient */
 

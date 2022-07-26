@@ -54,8 +54,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements I
     }
 
     /**
-     * Blocks the sending of the server bound swing packet if the tweak old swing dropping tweak is enabled and the
-     * client is connected to a world with Nostalgic Tweaks installed.
+     * Blocks the sending of the server bound swing packet if the old swing dropping tweak is enabled and the client
+     * is connected to a world with Nostalgic Tweaks installed.
      *
      * Controlled by the old swing dropping tweak and a verified network connection.
      */
