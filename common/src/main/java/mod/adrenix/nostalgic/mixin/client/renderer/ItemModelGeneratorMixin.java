@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Helper methods were adapted from the Item-Model-Fix mod by
+ * <a href="https://github.com/PepperCode1/Item-Model-Fix/">Pepper_Bell</a>.
+ */
+
 @Mixin(ItemModelGenerator.class)
 public abstract class ItemModelGeneratorMixin
 {
-    /**
-     * Helper methods were adapted from the Item-Model-Fix mod by Pepper_Bell.
-     * https://github.com/PepperCode1/Item-Model-Fix/
-     */
-
     private static float reduce(float start, float end, float delta) { return (start - delta * end) / (1 - delta); }
 
     private static void reduceUVs(float[] uvs, float delta)
