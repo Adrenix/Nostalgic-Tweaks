@@ -56,6 +56,7 @@ public abstract class ItemInHandRendererForgeMixin
      * This prevents reequip animation issues when going from an item in the main hand to air.
      * Controlled by reequip tweak.
      */
+    @SuppressWarnings("UnstableApiUsage")
     @Redirect
     (
         method = "tick",
