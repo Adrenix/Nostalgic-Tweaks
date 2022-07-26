@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
 import net.minecraft.client.renderer.entity.GhastRenderer;
 import net.minecraft.util.Mth;
@@ -26,7 +26,7 @@ public abstract class GhastRendererMixin
     )
     private void NT$onScale(Ghast ghast, PoseStack poseStack, float partialTickTime, CallbackInfo callback)
     {
-        if (!MixinConfig.Animation.oldGhastCharging() || !ghast.isCharging())
+        if (!ModConfig.Animation.oldGhastCharging() || !ghast.isCharging())
             return;
 
         float squish = ((((IGhastAttack) ghast).getAttackCounter() + (ghast.isAlive() ? partialTickTime : 0)) + 10) / 20.0F;

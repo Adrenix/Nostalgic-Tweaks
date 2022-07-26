@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public abstract class ForgeSoundInit
+public abstract class NostalgicSoundInit
 {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, NostalgicTweaks.MOD_ID);
 
@@ -20,7 +20,7 @@ public abstract class ForgeSoundInit
         new SoundEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
     );
 
-    public static void register()
+    public static void init()
     {
         SoundUtil.Event.BLANK = BLANK;
         SoundUtil.Event.PLAYER_HURT = PLAYER_HURT;

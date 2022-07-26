@@ -21,7 +21,7 @@ logoFile = "nt_forge_logo.png"
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
-versionRange = "[41,)"
+versionRange = "[41.0.94,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -39,9 +39,9 @@ versionRange = "[${cloth_version},)"
 ordering = "NONE"
 side = "CLIENT"
 
-#[[dependencies.${mod_id}]]
+#[[dependencies.nostalgic_tweaks]]
 #modId = "architectury"
 #mandatory = true
-#versionRange = "[5.6.22,)"
+#versionRange = "[${architectury_version},)"
 #ordering = "AFTER"
 #side = "BOTH"

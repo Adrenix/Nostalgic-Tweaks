@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.fabric;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.fabric.config.FabricRegistry;
-import mod.adrenix.nostalgic.fabric.event.FabricEventHandler;
-import mod.adrenix.nostalgic.fabric.init.FabricSoundInit;
+import mod.adrenix.nostalgic.fabric.config.KeyRegistry;
+import mod.adrenix.nostalgic.fabric.event.EventHandler;
+import mod.adrenix.nostalgic.fabric.init.NostalgicSoundInit;
 import net.fabricmc.api.ClientModInitializer;
 
 public class NostalgicClientFabric implements ClientModInitializer
@@ -15,10 +15,10 @@ public class NostalgicClientFabric implements ClientModInitializer
         NostalgicTweaks.initClient(NostalgicTweaks.Environment.FABRIC);
 
         // Subscribe configuration key
-        FabricRegistry.registerConfigurationKey();
+        KeyRegistry.registerConfigurationKey();
 
         // Register fabric sounds & events
-        FabricEventHandler.register();
-        FabricSoundInit.register();
+        EventHandler.register();
+        NostalgicSoundInit.register();
     }
 }

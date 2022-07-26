@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
@@ -22,13 +22,13 @@ public abstract class ParticleEngineMixin
     private void NT$onCreateParticle(ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> callback)
     {
         ParticleType<?> particle = particleData.getType();
-        if (MixinConfig.Candy.oldSweepParticles() && particle == ParticleTypes.SWEEP_ATTACK)
+        if (ModConfig.Candy.oldSweepParticles() && particle == ParticleTypes.SWEEP_ATTACK)
             callback.cancel();
-        else if (MixinConfig.Candy.oldNoDamageParticles() && particle == ParticleTypes.DAMAGE_INDICATOR)
+        else if (ModConfig.Candy.oldNoDamageParticles() && particle == ParticleTypes.DAMAGE_INDICATOR)
             callback.cancel();
-        else if (MixinConfig.Candy.oldNoCriticalHitParticles() && particle == ParticleTypes.CRIT)
+        else if (ModConfig.Candy.oldNoCriticalHitParticles() && particle == ParticleTypes.CRIT)
             callback.cancel();
-        else if (MixinConfig.Candy.oldNoEnchantHitParticles() && particle == ParticleTypes.ENCHANTED_HIT)
+        else if (ModConfig.Candy.oldNoEnchantHitParticles() && particle == ParticleTypes.ENCHANTED_HIT)
             callback.cancel();
     }
 }

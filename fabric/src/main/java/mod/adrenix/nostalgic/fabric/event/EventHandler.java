@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.fabric.event;
 
-public abstract class FabricEventHandler
+public abstract class EventHandler
 {
     public static void register()
     {
-        FabricCandyEvents.register();
+        CandyEvents.register();
     }
 }

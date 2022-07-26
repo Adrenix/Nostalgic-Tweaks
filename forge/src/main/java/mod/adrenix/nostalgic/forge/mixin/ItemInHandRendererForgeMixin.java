@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -32,7 +32,8 @@ public abstract class ItemInHandRendererForgeMixin
     (
         method = "renderHandsWithItems",
         index = 8,
-        at = @At(
+        at = @At
+        (
             remap = false,
             ordinal = 0,
             value = "INVOKE",
@@ -45,7 +46,7 @@ public abstract class ItemInHandRendererForgeMixin
         if (player == null)
             return itemStack;
 
-        return MixinUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return ModUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
     }
 
     /**
@@ -55,10 +56,12 @@ public abstract class ItemInHandRendererForgeMixin
      * This prevents reequip animation issues when going from an item in the main hand to air.
      * Controlled by reequip tweak.
      */
+    @SuppressWarnings("UnstableApiUsage")
     @Redirect
     (
         method = "tick",
-        at = @At(
+        at = @At
+        (
             remap = false,
             ordinal = 0,
             value = "INVOKE",
@@ -67,7 +70,7 @@ public abstract class ItemInHandRendererForgeMixin
     )
     private boolean NT$onMainItemTick(ItemStack from, ItemStack to, int slot)
     {
-        if (!MixinConfig.Animation.oldItemReequip())
+        if (!ModConfig.Animation.oldItemReequip())
             return ForgeHooksClient.shouldCauseReequipAnimation(from, to, slot);
         return true;
     }

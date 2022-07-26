@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -26,7 +26,7 @@ public abstract class ChestBlockMixin
     @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetRenderShape(BlockState state, CallbackInfoReturnable<RenderShape> callback)
     {
-        if (MixinUtil.Block.isBlockOldChest(state.getBlock()))
+        if (ModUtil.Block.isBlockOldChest(state.getBlock()))
             callback.setReturnValue(RenderShape.MODEL);
     }
 
@@ -37,11 +37,11 @@ public abstract class ChestBlockMixin
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (!MixinConfig.Candy.oldChestVoxel())
+        if (!ModConfig.Candy.oldChestVoxel())
             return;
-        else if (!MixinConfig.Candy.oldChest() && state.getBlock().getClass().equals(ChestBlock.class))
+        else if (!ModConfig.Candy.oldChest() && state.getBlock().getClass().equals(ChestBlock.class))
             return;
-        else if (!MixinConfig.Candy.oldTrappedChest() && state.getBlock().getClass().equals(TrappedChestBlock.class))
+        else if (!ModConfig.Candy.oldTrappedChest() && state.getBlock().getClass().equals(TrappedChestBlock.class))
             return;
         callback.setReturnValue(Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0));
     }

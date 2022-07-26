@@ -1,11 +1,9 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.SoundUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -59,7 +58,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     {
         AbstractClientPlayer player = Minecraft.getInstance().player;
 
-        if (MixinConfig.Swing.isOverridingSpeeds() || player == null)
+        if (ModConfig.Swing.isOverridingSpeeds() || player == null)
             return;
         else if (this.getType() == EntityType.PLAYER)
         {
@@ -68,14 +67,14 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
                 return;
         }
 
-        int mod = MixinConfig.Swing.getSwingSpeed(player);
+        int mod = ModConfig.Swing.getSwingSpeed(player);
 
-        if (MixinConfig.Swing.isSpeedGlobal())
-            callback.setReturnValue(MixinConfig.Swing.getSwingSpeed());
-        else if (MixinConfig.Swing.isOverridingHaste() && player.hasEffect(MobEffects.DIG_SPEED))
-            callback.setReturnValue(MixinConfig.Swing.getHasteSpeed());
-        else if (MixinConfig.Swing.isOverridingFatigue() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
-            callback.setReturnValue(MixinConfig.Swing.getFatigueSpeed());
+        if (ModConfig.Swing.isSpeedGlobal())
+            callback.setReturnValue(ModConfig.Swing.getSwingSpeed());
+        else if (ModConfig.Swing.isOverridingHaste() && player.hasEffect(MobEffects.DIG_SPEED))
+            callback.setReturnValue(ModConfig.Swing.getHasteSpeed());
+        else if (ModConfig.Swing.isOverridingFatigue() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
+            callback.setReturnValue(ModConfig.Swing.getFatigueSpeed());
         else if (MobEffectUtil.hasDigSpeed(player))
             callback.setReturnValue(mod - (1 + MobEffectUtil.getDigSpeedAmplification(player)));
         else
@@ -95,7 +94,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     @Inject(method = "breakItem", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onBreakItem(ItemStack itemStack, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldToolExplosion())
+        if (ModConfig.Animation.oldToolExplosion())
             callback.cancel();
     }
 
@@ -109,13 +108,19 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     }
 
     /**
-     * Redirects the vanilla falling sounds to a blank sound.
+     * Disable fall damage sound by muting the volume.
      * Controlled by the old fall sounds tweak.
      */
-    @Inject(method = "getFallDamageSound", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onGetFallDamageSound(int height, CallbackInfoReturnable<SoundEvent> callback)
+
+    @ModifyArg(method = "causeFallDamage", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"))
+    private float NT$onCauseFallDamage(float vanilla)
     {
-        if (MixinConfig.Sound.oldFall())
-            callback.setReturnValue(SoundUtil.Event.BLANK.get());
+        return ModConfig.Sound.oldFall() ? 0.0F : vanilla;
+    }
+
+    @ModifyArg(method = "travel", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"))
+    private float NT$onTravel(float vanilla)
+    {
+        return ModConfig.Sound.oldFall() ? 0.0F : vanilla;
     }
 }

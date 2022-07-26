@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.*;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.ModUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
@@ -406,7 +406,7 @@ public class ConfigScreen extends Screen
                 cache.save();
         }
 
-        MixinUtil.Run.onSave.forEach(Runnable::run);
+        ModUtil.Run.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */

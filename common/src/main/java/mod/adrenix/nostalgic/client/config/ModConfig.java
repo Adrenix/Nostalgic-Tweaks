@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public abstract class MixinConfig
+public abstract class ModConfig
 {
     /* Configuration Mixin References */
 

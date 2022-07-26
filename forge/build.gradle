@@ -61,7 +61,8 @@ processResources {
             "mod_donate": rootProject.mod_donate,
             "mod_discord": rootProject.mod_discord,
             "mod_description": rootProject.mod_description,
-            "cloth_version": rootProject.cloth_config_version
+            "cloth_version": rootProject.cloth_config_version,
+            "architectury_version": rootProject.architectury_version
     }
 }
 

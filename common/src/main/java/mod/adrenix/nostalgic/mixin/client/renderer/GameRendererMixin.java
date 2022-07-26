@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -29,7 +29,7 @@ public abstract class GameRendererMixin
     @Inject(method = "bobView", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onBobView(PoseStack mStack, float partialTicks, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
+        if (ModConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
         {
             ICameraPitch injector = (ICameraPitch) player;
 

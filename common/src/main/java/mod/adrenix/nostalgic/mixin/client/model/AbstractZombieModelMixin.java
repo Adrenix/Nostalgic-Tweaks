@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.model;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.model.AbstractZombieModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public abstract class AbstractZombieModelMixin
     )
     private boolean NT$onAnimateAggressiveZombieArms(boolean vanilla)
     {
-        return !MixinConfig.Animation.oldZombieArms() && vanilla;
+        return !ModConfig.Animation.oldZombieArms() && vanilla;
     }
 
     @ModifyArg
@@ -41,6 +41,6 @@ public abstract class AbstractZombieModelMixin
     )
     private float NT$onAnimateAttackZombieArms(float vanilla)
     {
-        return MixinConfig.Animation.oldZombieArms() ? 0.0F : vanilla;
+        return ModConfig.Animation.oldZombieArms() ? 0.0F : vanilla;
     }
 }

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.util;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicLoadingScreen;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
 import mod.adrenix.nostalgic.client.screen.ClassicTitleScreen;
@@ -33,12 +33,12 @@ public abstract class EventHelper
 
         if (screen.getClass() == TitleScreen.class)
         {
-            if (MixinConfig.Candy.overrideTitleScreen())
+            if (ModConfig.Candy.overrideTitleScreen())
                 setScreen.set(new ClassicTitleScreen());
             else
                 ClassicTitleScreen.isGameReady = true;
         }
-        else if (!MixinConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
+        else if (!ModConfig.Candy.overrideTitleScreen() && screen.getClass() == ClassicTitleScreen.class)
             setScreen.set(new TitleScreen());
     }
 
@@ -46,7 +46,7 @@ public abstract class EventHelper
     {
         Minecraft minecraft = Minecraft.getInstance();
 
-        if (screen == null || !MixinConfig.Candy.oldLoadingScreens())
+        if (screen == null || !ModConfig.Candy.oldLoadingScreens())
             return;
 
         if (screen.getClass() == LevelLoadingScreen.class)

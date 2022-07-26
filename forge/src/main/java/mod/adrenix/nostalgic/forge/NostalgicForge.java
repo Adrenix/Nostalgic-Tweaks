@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.forge;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.forge.config.ForgeRegistry;
-import mod.adrenix.nostalgic.forge.init.ForgeSoundInit;
+import mod.adrenix.nostalgic.forge.register.ClientRegistry;
+import mod.adrenix.nostalgic.forge.init.NostalgicSoundInit;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -22,17 +22,17 @@ public class NostalgicForge
             )
         );
 
+        // Register sounds
+        NostalgicSoundInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        NostalgicSoundInit.init();
+
         // Let the server know this mod isn't going to do anything in this version of the mod.
         if (FMLLoader.getDist().isDedicatedServer())
             NostalgicTweaks.initServer(NostalgicTweaks.Environment.FORGE);
         else
         {
             // Set up the config on client startup.
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(ForgeRegistry::setup);
-
-            // Register sounds
-            ForgeSoundInit.SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
-            ForgeSoundInit.register();
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientRegistry::setup);
         }
     }
 }

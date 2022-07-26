@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.Util;
@@ -49,7 +49,7 @@ public abstract class LoadingOverlayMixin
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        TweakVersion.Overlay overlay = MixinConfig.Candy.getLoadingOverlay();
+        TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
         if (overlay == TweakVersion.Overlay.MODERN)
             return;
 
@@ -105,7 +105,7 @@ public abstract class LoadingOverlayMixin
         float actualProgress = this.reload.getActualProgress();
         this.currentProgress = Mth.clamp(this.currentProgress * 0.95F + actualProgress * 0.050000012F, 0.0F, 1.0F);
 
-        if (!MixinConfig.Candy.removeLoadingBar())
+        if (!ModConfig.Candy.removeLoadingBar())
             this.drawProgressBar(poseStack, width / 2 - scaleW, barHeight - 5, width / 2 + scaleW, barHeight + 5, 1.0F);
 
         if (fadeOut >= 2.0F)
@@ -141,7 +141,7 @@ public abstract class LoadingOverlayMixin
     @Redirect(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FastColor$ARGB32;color(IIII)I"))
     private int NT$onSetProgressBarColor(int alpha, int red, int green, int blue)
     {
-        return switch(MixinConfig.Candy.getLoadingOverlay())
+        return switch(ModConfig.Candy.getLoadingOverlay())
         {
             case ALPHA -> FastColor.ARGB32.color(255, 142, 132, 255);
             case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
@@ -167,7 +167,7 @@ public abstract class LoadingOverlayMixin
     )
     private int NT$onFillInnerProgressBar(int vanilla)
     {
-        return switch (MixinConfig.Candy.getLoadingOverlay())
+        return switch (ModConfig.Candy.getLoadingOverlay())
         {
             case ALPHA, MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
             case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 246, 136, 62);

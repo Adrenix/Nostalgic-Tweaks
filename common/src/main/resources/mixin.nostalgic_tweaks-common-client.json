@@ -22,7 +22,8 @@
     "renderer.ItemFrameRendererMixin",
     "renderer.ItemInHandRendererMixin",
     "renderer.ItemModelGeneratorMixin",
-    "renderer.ItemRendererMixin",
+    "renderer.ItemRendererFirstMixin",
+    "renderer.ItemRendererLastMixin",
     "renderer.LevelRendererMixin",
     "renderer.LightTextureMixin",
     "renderer.ThrownItemRendererMixin",
@@ -32,6 +33,7 @@
     "world.BiomeMixin",
     "world.ClientLevelMixin",
     "CameraMixin",
+    "LocalPlayerMixin",
     "MinecraftMixin",
     "ModelBakeryMixin",
     "ParticleEngineMixin"

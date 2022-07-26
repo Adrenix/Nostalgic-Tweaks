@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,11 +30,11 @@ public abstract class BlockEntityRenderDispatcherMixin
     )
     private <E extends BlockEntity> void NT$onGetRenderer(E blockEntity, CallbackInfoReturnable<@Nullable BlockEntityRenderer<E>> callback)
     {
-        if (MixinConfig.Candy.oldChest() && blockEntity.getClass().equals(ChestBlockEntity.class))
+        if (ModConfig.Candy.oldChest() && blockEntity.getClass().equals(ChestBlockEntity.class))
             callback.setReturnValue(null);
-        else if (MixinConfig.Candy.oldEnderChest() && blockEntity.getClass().equals(EnderChestBlockEntity.class))
+        else if (ModConfig.Candy.oldEnderChest() && blockEntity.getClass().equals(EnderChestBlockEntity.class))
             callback.setReturnValue(null);
-        else if (MixinConfig.Candy.oldTrappedChest() && blockEntity.getClass().equals(TrappedChestBlockEntity.class))
+        else if (ModConfig.Candy.oldTrappedChest() && blockEntity.getClass().equals(TrappedChestBlockEntity.class))
             callback.setReturnValue(null);
     }
 }

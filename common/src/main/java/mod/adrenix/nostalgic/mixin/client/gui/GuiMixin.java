@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.network.chat.MutableComponent;
@@ -21,7 +21,7 @@ public abstract class GuiMixin
     @Inject(method = "renderSelectedItemName", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onRenderSelectedItemName(PoseStack poseStack, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldNoSelectedItemName())
+        if (ModConfig.Candy.oldNoSelectedItemName())
             callback.cancel();
     }
 
@@ -42,7 +42,7 @@ public abstract class GuiMixin
     )
     private void NT$onDrawSelectedItemName(PoseStack poseStack, CallbackInfo callback, MutableComponent mutableComponent)
     {
-        if (MixinConfig.Candy.oldPlainSelectedItemName())
+        if (ModConfig.Candy.oldPlainSelectedItemName())
             mutableComponent.withStyle(ChatFormatting.RESET);
     }
 }
