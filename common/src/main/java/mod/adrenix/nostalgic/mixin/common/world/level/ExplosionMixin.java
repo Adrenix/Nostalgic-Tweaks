@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +47,7 @@ public abstract class ExplosionMixin
     )
     private void NT$onFinalizeExplosion(Level instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
-        if (MixinConfig.Candy.oldExplosionParticles() && !MixinConfig.Candy.oldMixedExplosionParticles())
+        if (ModConfig.Candy.oldExplosionParticles() && !ModConfig.Candy.oldMixedExplosionParticles())
             return;
         instance.addParticle(particleData, x, y, z, xSpeed, ySpeed, zSpeed);
     }
@@ -71,7 +71,7 @@ public abstract class ExplosionMixin
     )
     private void NT$onSpawnParticles(boolean spawnParticles, CallbackInfo callback, boolean damageTerrain, ObjectArrayList<?> list, Iterator<BlockPos> iterator, BlockPos blockPos)
     {
-        if (!MixinConfig.Candy.oldExplosionParticles() || !spawnParticles)
+        if (!ModConfig.Candy.oldExplosionParticles() || !spawnParticles)
             return;
 
         double randX = (float) blockPos.getX() + this.level.getRandom().nextFloat();

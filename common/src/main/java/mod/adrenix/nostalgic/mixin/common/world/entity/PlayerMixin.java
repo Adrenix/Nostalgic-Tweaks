@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import mod.adrenix.nostalgic.util.SoundUtil;
 import net.minecraft.sounds.SoundEvent;
@@ -58,7 +59,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     @Inject(method = "getHurtSound", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetHurtSound(DamageSource damageSource, CallbackInfoReturnable<SoundEvent> callback)
     {
-        if (MixinConfig.Sound.oldDamage())
+        if (ModConfig.Sound.oldDamage() && !NostalgicTweaks.isForgeConnected.get())
             callback.setReturnValue(SoundUtil.Event.PLAYER_HURT.get());
     }
 
@@ -91,7 +92,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     @ModifyArg(method = "aiStep", index = 1, at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F"))
     private float NT$onAiBobbing(float min, float current)
     {
-        if (!MixinConfig.Animation.oldCollideBobbing())
+        if (!ModConfig.Animation.oldCollideBobbing())
             return current;
         else if (this.walkDist == this.walkDistO)
             return 0.0F;
@@ -115,7 +116,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     )
     private void NT$itemDroppingProxy(Player player, InteractionHand hand)
     {
-        if (MixinConfig.Animation.oldSwingDropping())
+        if (ModConfig.Animation.oldSwingDropping())
             return;
         player.swing(InteractionHand.MAIN_HAND);
     }

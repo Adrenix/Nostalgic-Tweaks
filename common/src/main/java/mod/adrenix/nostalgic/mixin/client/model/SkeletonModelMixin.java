@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.model;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
@@ -36,7 +36,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
     )
     private void NT$onPrepareAggressiveMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick, CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldSkeletonArms())
+        if (ModConfig.Animation.oldSkeletonArms())
             callback.cancel();
     }
 
@@ -57,10 +57,10 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
     )
     private void NT$onSetupSkeletonArms(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
-        if (!MixinConfig.Animation.oldSkeletonArms())
+        if (!ModConfig.Animation.oldSkeletonArms())
             return;
 
-        MixinUtil.Animation.setStaticArms(this.rightArm, this.leftArm);
+        ModUtil.Animation.setStaticArms(this.rightArm, this.leftArm);
         AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
 
         callback.cancel();

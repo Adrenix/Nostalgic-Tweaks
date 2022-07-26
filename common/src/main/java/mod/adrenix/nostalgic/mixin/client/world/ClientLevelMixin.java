@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -52,7 +52,7 @@ public abstract class ClientLevelMixin
     )
     private boolean NT$onGetNetherShade(DimensionSpecialEffects instance)
     {
-        if (MixinConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
+        if (ModConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;
         return instance.constantAmbientLight();
     }
@@ -85,7 +85,7 @@ public abstract class ClientLevelMixin
             sound == SoundEvents.PLAYER_ATTACK_WEAK
         ;
 
-        if (MixinConfig.Sound.oldAttack() && isAttack)
+        if (ModConfig.Sound.oldAttack() && isAttack)
         {
             callback.cancel();
             return;
@@ -104,11 +104,11 @@ public abstract class ClientLevelMixin
 
         BlockState state = level.getBlockState(pos);
 
-        if (MixinConfig.Candy.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
+        if (ModConfig.Candy.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
             isChestSound = true;
-        else if (MixinConfig.Candy.oldEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+        else if (ModConfig.Candy.oldEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
             isChestSound = true;
-        else if (MixinConfig.Candy.oldTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+        else if (ModConfig.Candy.oldTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
             isChestSound = true;
 
         if (isChestSound)
@@ -126,9 +126,9 @@ public abstract class ClientLevelMixin
 
         boolean isBlockedSound = false;
 
-        if (MixinConfig.Sound.oldDoor() && state.getBlock() instanceof DoorBlock)
+        if (ModConfig.Sound.oldDoor() && state.getBlock() instanceof DoorBlock)
             isBlockedSound = true;
-        else if (MixinConfig.Sound.oldBed() && state.getBlock() instanceof BedBlock)
+        else if (ModConfig.Sound.oldBed() && state.getBlock() instanceof BedBlock)
             isBlockedSound = true;
 
         if (isBlockedSound)
@@ -149,7 +149,7 @@ public abstract class ClientLevelMixin
 
         boolean isEntityStep = sound.getLocation().getPath().contains("entity.") && sound.getLocation().getPath().contains(".step");
 
-        if (MixinConfig.Sound.oldStep() && !Minecraft.getInstance().hasSingleplayerServer() && isEntityStep)
+        if (ModConfig.Sound.oldStep() && !Minecraft.getInstance().hasSingleplayerServer() && isEntityStep)
         {
             Entity entity = null;
 

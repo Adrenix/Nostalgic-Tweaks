@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.sounds.SoundEvent;
@@ -41,7 +41,7 @@ public abstract class ClientPacketListenerMixin
     )
     private void NT$onPlayLocalExperienceSound(ClientLevel instance, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay)
     {
-        if (MixinConfig.Sound.oldXP())
+        if (ModConfig.Sound.oldXP())
             instance.playLocalSound(x, y, z, SoundEvents.ITEM_PICKUP, category, volume, this.random.nextFloat() - this.random.nextFloat() * 0.1F + 0.01F, distanceDelay);
         else
             instance.playLocalSound(x, y, z, sound, category, volume, pitch, distanceDelay);

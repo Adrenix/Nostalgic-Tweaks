@@ -2,8 +2,9 @@ package mod.adrenix.nostalgic.mixin.client;
 
 import com.mojang.blaze3d.platform.Window;
 import mod.adrenix.nostalgic.client.config.CommonRegistry;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
+import mod.adrenix.nostalgic.mixin.duck.ILocalSwing;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
@@ -12,14 +13,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.InteractionHand;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -30,6 +29,7 @@ public abstract class MinecraftMixin
 
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
+    @Shadow @Nullable public LocalPlayer player;
     @Shadow public abstract Window getWindow();
 
     // Loading the config as early as possible to prevent NPEs during mixin applications.
@@ -39,16 +39,27 @@ public abstract class MinecraftMixin
             CommonRegistry.preloadConfiguration();
     }
 
+    /* Injections */
+
     /**
      * Prevents the hand swing animation when dropping an item.
      * Controlled the swing drop tweak.
      */
-    @Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
-    private void NT$itemDroppingProxy(LocalPlayer player, InteractionHand hand)
+    @Inject
+    (
+        method = "handleKeybinds",
+        at = @At
+        (
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
+        )
+    )
+    private void NT$onDropItem(CallbackInfo callback)
     {
-        if (MixinConfig.Animation.oldSwingDropping())
-            return;
-        player.swing(InteractionHand.MAIN_HAND);
+        ILocalSwing injector = (ILocalSwing) this.player;
+        if (ModConfig.Animation.oldSwingDropping() && injector != null)
+            injector.NT$setSwingBlocked(true);
     }
 
     /**
@@ -66,7 +77,7 @@ public abstract class MinecraftMixin
     )
     private Screen NT$onSaveScreen(Screen genericScreen)
     {
-        if (!MixinConfig.Candy.oldLoadingScreens())
+        if (!ModConfig.Candy.oldLoadingScreens())
             return genericScreen;
 
         if (genericScreen.getClass() == GenericDirtMessageScreen.class)
@@ -108,7 +119,7 @@ public abstract class MinecraftMixin
     @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)
     private void NT$onGetFramerateLimit(CallbackInfoReturnable<Integer> callback)
     {
-        if (MixinConfig.Candy.uncapTitleFPS())
+        if (ModConfig.Candy.uncapTitleFPS())
             callback.setReturnValue(this.getWindow().getFramerateLimit());
     }
 }

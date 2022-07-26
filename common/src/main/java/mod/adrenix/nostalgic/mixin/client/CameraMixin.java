@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public abstract class CameraMixin
     @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onTick(CallbackInfo callback)
     {
-        if (!MixinConfig.Animation.oldSneaking())
+        if (!ModConfig.Animation.oldSneaking())
             return;
 
         if (this.entity != null)

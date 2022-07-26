@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -34,7 +34,7 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "getLightBlock", at = @At("HEAD"), cancellable = true)
     private void NT$onGetLightBlock(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Integer> callback)
     {
-        if (!MixinConfig.Candy.oldWaterLighting() || !Minecraft.getInstance().hasSingleplayerServer())
+        if (!ModConfig.Candy.oldWaterLighting() || !Minecraft.getInstance().hasSingleplayerServer())
             return;
 
         Block block = this.getBlock();
@@ -57,7 +57,7 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (MixinUtil.Block.isBlockOldChest(this.getBlock()))
+        if (ModUtil.Block.isBlockOldChest(this.getBlock()))
             callback.setReturnValue(false);
     }
 }

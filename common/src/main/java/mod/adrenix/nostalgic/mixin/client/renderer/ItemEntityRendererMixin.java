@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
@@ -41,11 +41,11 @@ public abstract class ItemEntityRendererMixin
     )
     private void NT$rotationProxy(PoseStack poseStack, Quaternion quaternion, ItemEntity itemEntity, float entityYaw, float partialTicks)
     {
-        if (MixinConfig.Candy.oldFloatingItems())
+        if (ModConfig.Candy.oldFloatingItems())
         {
             BakedModel model = this.itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
 
-            if (MixinUtil.Item.isModelFlat(model))
+            if (ModUtil.Item.isModelFlat(model))
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
             else
                 poseStack.mulPose(Vector3f.YP.rotation(itemEntity.getSpin(partialTicks)));
@@ -70,13 +70,13 @@ public abstract class ItemEntityRendererMixin
     )
     private void NT$onRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldFloatingItems())
+        if (ModConfig.Candy.oldFloatingItems())
         {
             BakedModel model = itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
-            if (MixinUtil.Item.isModelFlat(model))
+            if (ModUtil.Item.isModelFlat(model))
             {
-                MixinUtil.Item.flatten(poseStack);
-                MixinUtil.Item.disableDiffusedLighting();
+                ModUtil.Item.flatten(poseStack);
+                ModUtil.Item.disableDiffusedLighting();
             }
         }
     }
@@ -97,6 +97,6 @@ public abstract class ItemEntityRendererMixin
     )
     private void NT$onFinishRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        MixinUtil.Item.enableDiffusedLighting();
+        ModUtil.Item.enableDiffusedLighting();
     }
 }

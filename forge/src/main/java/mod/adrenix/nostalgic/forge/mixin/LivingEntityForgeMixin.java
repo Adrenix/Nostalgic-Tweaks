@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +19,6 @@ public abstract class LivingEntityForgeMixin
     @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V"))
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return MixinUtil.Item.explodeStack(consumer);
+        return ModUtil.Item.explodeStack(consumer);
     }
 }

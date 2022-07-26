@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -50,7 +50,7 @@ public abstract class LightTextureMixin
     @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onTick(CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldLightFlicker())
+        if (ModConfig.Candy.oldLightFlicker())
         {
             this.updateLightTexture = true;
             callback.cancel();
@@ -64,7 +64,7 @@ public abstract class LightTextureMixin
     @Inject(method = "updateLightTexture", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!MixinConfig.Candy.oldLighting() || !this.updateLightTexture)
+        if (!ModConfig.Candy.oldLighting() || !this.updateLightTexture)
             return;
 
         this.updateLightTexture = false;
@@ -84,14 +84,14 @@ public abstract class LightTextureMixin
         boolean isFlashPresent = clientLevel.getSkyFlashTime() > 0 && !this.minecraft.options.hideLightningFlashes;
         boolean isWorldDarkening = darkenAmount > 0;
 
-        int skylightSubtracted = calculateSkylightSubtracted(clientLevel);
+        float skylightSubtracted = calculateSkylightSubtracted(clientLevel);
 
         if (isFlashPresent)
             skylightSubtracted = 1;
         else if (isWorldDarkening)
         {
-            skylightSubtracted += (int) Math.ceil(3 * darkenAmount);
-            skylightSubtracted = Mth.clamp(skylightSubtracted, 1, 15);
+            skylightSubtracted += Math.ceil(3 * darkenAmount);
+            skylightSubtracted = Mth.clamp(skylightSubtracted, 1.0F, 15.0F);
         }
 
         for (int i = 0; i < 16; i++)
@@ -99,12 +99,12 @@ public abstract class LightTextureMixin
             for (int j = 0; j < 16; j++)
             {
                 float lightBrightness = this.getBrightness(clientLevel, j);
-                int diffSkylight = i - skylightSubtracted;
+                float diffSkylight = i - skylightSubtracted;
 
                 if (diffSkylight < 0)
                     diffSkylight = 0;
 
-                float fromSkylight = this.getBrightness(clientLevel, diffSkylight);
+                float fromSkylight = this.getBrightness(clientLevel, (int) diffSkylight);
                 if (clientLevel.dimension() == Level.END)
                     fromSkylight = 0.22F + fromSkylight * 0.75F;
 
@@ -118,26 +118,23 @@ public abstract class LightTextureMixin
                     fromSkylight += skyAdjust;
                 }
 
-                int lightMultiplier = (int) (lightBrightness * 255.0F);
-                int skyMultiplier = (int) (fromSkylight * 255.0F);
+                float lightMultiplier = lightBrightness * 255.0F;
+                float skyMultiplier = fromSkylight * 255.0F;
 
-                float gamma = (float) this.minecraft.options.gamma;
-                float r = 1.0F;
-                float g = 1.0F;
-                float b = 1.0F;
+                double gamma = this.minecraft.options.gamma;
 
-                lightMultiplier = (int) ((float) lightMultiplier * (gamma + 1.0F));
-                if (lightMultiplier > 255)
-                    lightMultiplier = 255;
+                lightMultiplier = lightMultiplier * ((float) gamma + 0.3F + 1.0F);
+                if (lightMultiplier > 255.0F)
+                    lightMultiplier = 255.0F;
 
-                skyMultiplier = (int) ((float) skyMultiplier * (gamma + 1.0F));
-                if (skyMultiplier > 255)
-                    skyMultiplier = 255;
+                skyMultiplier = skyMultiplier * ((float) gamma + 1.0F);
+                if (skyMultiplier > 255.0F)
+                    skyMultiplier = 255.0F;
 
                 if (lightBrightness > fromSkylight)
-                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) ((float) lightMultiplier * r) << 16 | (int) ((float) lightMultiplier * g) << 8 | (int) ((float) lightMultiplier * b));
+                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) (lightMultiplier) << 16 | (int) (lightMultiplier) << 8 | (int) (lightMultiplier));
                 else
-                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) ((float) skyMultiplier * r) << 16 | (int) ((float) skyMultiplier * g) << 8 | (int) ((float) skyMultiplier * b));
+                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) (skyMultiplier) << 16 | (int) (skyMultiplier) << 8 | (int) (skyMultiplier));
             }
         }
 

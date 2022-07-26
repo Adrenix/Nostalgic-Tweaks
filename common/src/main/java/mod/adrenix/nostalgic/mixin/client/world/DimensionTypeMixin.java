@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +45,7 @@ public abstract class DimensionTypeMixin
     @Inject(method = "brightness", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetBrightness(int light, CallbackInfoReturnable<Float> callback)
     {
-        if (MixinConfig.Candy.oldLighting())
+        if (ModConfig.Candy.oldLighting())
             callback.setReturnValue(this.NT$moddedBrightnessRamp[light]);
         else
             callback.setReturnValue(this.NT$vanillaBrightnessRamp[light]);

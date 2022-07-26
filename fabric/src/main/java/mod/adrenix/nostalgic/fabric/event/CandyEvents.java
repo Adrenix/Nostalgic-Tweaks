@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.util.EventHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Minecraft;
 
-public abstract class FabricCandyEvents
+public abstract class CandyEvents
 {
     public static void register()
     {

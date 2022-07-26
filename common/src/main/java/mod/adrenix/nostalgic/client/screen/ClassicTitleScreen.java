@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
@@ -121,14 +121,14 @@ public class ClassicTitleScreen extends TitleScreen
         this.createBetaOptions(x, y, rowHeight);
         this.createReleaseOptions(x, y, rowHeight);
 
-        List<Widget> widgets = switch (MixinConfig.Candy.getButtonLayout())
+        List<Widget> widgets = switch (ModConfig.Candy.getButtonLayout())
         {
             case ALPHA -> this.alpha;
             case BETA -> this.beta;
             default -> this.release;
         };
 
-        if (MixinConfig.Candy.getButtonLayout() != TweakVersion.ButtonLayout.MODERN)
+        if (ModConfig.Candy.getButtonLayout() != TweakVersion.ButtonLayout.MODERN)
             widgets.forEach((widget) -> super.addRenderableWidget((AbstractWidget) widget));
 
         super.init();
@@ -159,7 +159,7 @@ public class ClassicTitleScreen extends TitleScreen
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        if (MixinConfig.Candy.oldTitleBackground())
+        if (ModConfig.Candy.oldTitleBackground())
             this.renderDirtBackground(0);
         else
         {
@@ -175,12 +175,12 @@ public class ClassicTitleScreen extends TitleScreen
         if (this.updateScreenDelay == 0L)
             this.updateScreenDelay = Util.getMillis();
 
-        boolean isModern = MixinConfig.Candy.getLoadingOverlay() == TweakVersion.Overlay.MODERN;
+        boolean isModern = ModConfig.Candy.getLoadingOverlay() == TweakVersion.Overlay.MODERN;
         boolean isDelayed = !ClassicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
         if (this.minecraft == null || (isModern && isDelayed))
             return;
 
-        if (MixinConfig.Candy.oldAlphaLogo())
+        if (ModConfig.Candy.oldAlphaLogo())
             this.renderClassicLogo(partialTick);
         else
         {
@@ -191,7 +191,7 @@ public class ClassicTitleScreen extends TitleScreen
             int width = this.width / 2 - 137;
             int height = 30;
 
-            if (MixinConfig.Candy.oldLogoOutline())
+            if (ModConfig.Candy.oldLogoOutline())
             {
                 if (this.isEasterEgged)
                 {
@@ -229,7 +229,7 @@ public class ClassicTitleScreen extends TitleScreen
             }
         }
 
-        TweakVersion.ButtonLayout layout = MixinConfig.Candy.getButtonLayout();
+        TweakVersion.ButtonLayout layout = ModConfig.Candy.getButtonLayout();
         ClassicTitleScreen.isGameReady = true;
         IMixinTitleScreen accessor = (IMixinTitleScreen) this;
         IMixinScreen screen = (IMixinScreen) this;
@@ -250,7 +250,7 @@ public class ClassicTitleScreen extends TitleScreen
             poseStack.popPose();
         }
 
-        String minecraft = MixinConfig.Candy.getVersionText();
+        String minecraft = ModConfig.Candy.getVersionText();
         Component copyright = switch (layout)
         {
             case ALPHA -> new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_COPYRIGHT_ALPHA);
@@ -258,11 +258,11 @@ public class ClassicTitleScreen extends TitleScreen
             default -> COPYRIGHT_TEXT;
         };
 
-        if (Minecraft.checkModStatus().shouldReportAsModified() && !MixinConfig.Candy.removeTitleModLoaderText())
+        if (Minecraft.checkModStatus().shouldReportAsModified() && !ModConfig.Candy.removeTitleModLoaderText())
             minecraft = minecraft + "/" + this.minecraft.getVersionType() + I18n.get("menu.modded");
 
-        int versionColor = MixinConfig.Candy.oldTitleBackground() && !minecraft.contains("§") ? 5263440 : 0xFFFFFF;
-        int height = MixinConfig.Candy.titleBottomLeftText() ? this.height - 10 : 2;
+        int versionColor = ModConfig.Candy.oldTitleBackground() && !minecraft.contains("§") ? 5263440 : 0xFFFFFF;
+        int height = ModConfig.Candy.titleBottomLeftText() ? this.height - 10 : 2;
 
         TitleScreen.drawString(poseStack, this.font, minecraft, 2, height, versionColor);
         TitleScreen.drawString(poseStack, this.font, copyright, this.width - this.font.width(copyright) - 2, this.height - 10, 0xFFFFFF);
@@ -301,7 +301,7 @@ public class ClassicTitleScreen extends TitleScreen
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        return switch (MixinConfig.Candy.getButtonLayout())
+        return switch (ModConfig.Candy.getButtonLayout())
         {
             case ALPHA -> getClicked(this.alpha, mouseX, mouseY, button);
             case BETA -> getClicked(this.beta, mouseX, mouseY, button);
@@ -318,9 +318,9 @@ public class ClassicTitleScreen extends TitleScreen
         for (Widget widget : screen.NT$getRenderables())
         {
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
-                ((ImageButton) widget).visible = !MixinConfig.Candy.removeLanguageButton();
+                ((ImageButton) widget).visible = !ModConfig.Candy.removeLanguageButton();
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
-                ((ImageButton) widget).visible = !MixinConfig.Candy.removeAccessibilityButton();
+                ((ImageButton) widget).visible = !ModConfig.Candy.removeAccessibilityButton();
         }
     }
 
@@ -447,13 +447,13 @@ public class ClassicTitleScreen extends TitleScreen
         this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
 
         // Texture Packs
-        if (MixinConfig.Candy.getButtonLayout() == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK)
+        if (ModConfig.Candy.getButtonLayout() == TweakVersion.ButtonLayout.RELEASE_TEXTURE_PACK)
             this.release.add(new Button(x, y + rowHeight * 2, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslatableComponent(NostalgicLang.Gui.CANDY_TITLE_TEXTURE_PACK), this::onMods));
 
         int lastRow = this.height / 4 + 48;
 
         // Language
-        if (this.minecraft != null && !MixinConfig.Candy.removeLanguageButton())
+        if (this.minecraft != null && !ModConfig.Candy.removeLanguageButton())
             this.release.add(new ImageButton(this.width / 2 - 124, lastRow + 72 + 12, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), new TranslatableComponent("narrator.button.language")));
 
         // Options

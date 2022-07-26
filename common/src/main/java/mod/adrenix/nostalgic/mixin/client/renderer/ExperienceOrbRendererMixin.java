@@ -1,13 +1,13 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModUtil;
 import net.minecraft.client.renderer.entity.ExperienceOrbRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(value = ExperienceOrbRenderer.class, priority = MixinUtil.APPLY_FIRST)
+@Mixin(value = ExperienceOrbRenderer.class, priority = ModUtil.APPLY_FIRST)
 public abstract class ExperienceOrbRendererMixin
 {
     /**
@@ -28,7 +28,7 @@ public abstract class ExperienceOrbRendererMixin
     )
     private static int NT$onRenderOpaqueOrb(int vanilla)
     {
-        return MixinConfig.Candy.oldOpaqueExperience() ? 255 : vanilla;
+        return ModConfig.Candy.oldOpaqueExperience() ? 255 : vanilla;
     }
 
     // Override Brightness
@@ -44,6 +44,6 @@ public abstract class ExperienceOrbRendererMixin
     )
     private static int NT$onRenderFullBrightOrb(int vanilla)
     {
-        return MixinConfig.Candy.oldOpaqueExperience() ? 0xF000F0 : vanilla;
+        return ModConfig.Candy.oldOpaqueExperience() ? 0xF000F0 : vanilla;
     }
 }

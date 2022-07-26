@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -28,7 +28,7 @@ public abstract class EnderChestBlockMixin
     @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetRenderShape(BlockState state, CallbackInfoReturnable<RenderShape> callback)
     {
-        if (MixinConfig.Candy.oldEnderChest())
+        if (ModConfig.Candy.oldEnderChest())
             callback.setReturnValue(RenderShape.MODEL);
     }
 
@@ -39,7 +39,7 @@ public abstract class EnderChestBlockMixin
     @Inject(method = "animateTick", at = @At("HEAD"), cancellable = true)
     private void NT$onAnimateTick(BlockState state, Level level, BlockPos pos, Random random, CallbackInfo callback)
     {
-        if (MixinConfig.Candy.oldEnderChest())
+        if (ModConfig.Candy.oldEnderChest())
             callback.cancel();
     }
 
@@ -50,7 +50,7 @@ public abstract class EnderChestBlockMixin
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (!MixinConfig.Candy.oldChestVoxel() || !MixinConfig.Candy.oldEnderChest())
+        if (!ModConfig.Candy.oldChestVoxel() || !ModConfig.Candy.oldEnderChest())
             return;
         callback.setReturnValue(Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0));
     }

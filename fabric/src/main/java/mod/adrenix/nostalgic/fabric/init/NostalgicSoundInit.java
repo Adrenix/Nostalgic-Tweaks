@@ -6,7 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
-public abstract class FabricSoundInit
+public abstract class NostalgicSoundInit
 {
     private static final ResourceLocation BLANK_RESOURCE = new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.BLANK);
     private static final SoundEvent BLANK_EVENT = new SoundEvent(BLANK_RESOURCE);

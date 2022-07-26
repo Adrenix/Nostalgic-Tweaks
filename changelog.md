@@ -1,3 +1,15 @@
+# N.T (Forge & Fabric): 1.18.2-v1.0.5
+This update fixes reported issues and adjusts current tweaks.
+- Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
+- Fixed a crash that occurs when the MoreBlockPredicates mod is installed.
+- Fixed swinging animations not working correctly in multiplayer.
+- Fixed Esc key not working properly when changing a key binding in the mod's setting screen.
+- Fixed old fog rendering by making the fog shape a sphere instead of a cylinder.
+- Fixed old item holding positions changing block holding positions.
+- Added composter blocks and piston base blocks to the fixed ambient occlusion list.
+- Redid the old tooltip rendering.
+- Readjusted old lighting rendering.
+
 # N.T (Forge & Fabric): 1.18.2-v1.0.4
 This update fixes reported issues, adjusts current tweaks, and adds a lot of new tweaks.
 - Fixed opaque experience orbs not rendering correctly when colormatic is installed.

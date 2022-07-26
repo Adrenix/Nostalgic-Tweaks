@@ -4,12 +4,18 @@ import mod.adrenix.nostalgic.client.config.CommonRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.function.Supplier;
+
 public class NostalgicTweaks
 {
     /* Mod ID & Logger */
 
     public static final String MOD_ID = "nostalgic_tweaks";
     public static final Logger LOGGER = LogManager.getLogger();
+
+    /* Networking */
+
+    public static Supplier<Boolean> isForgeConnected = () -> false;
 
     /* Side & Environment States */
 

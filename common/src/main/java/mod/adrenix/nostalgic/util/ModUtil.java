@@ -1,10 +1,11 @@
 package mod.adrenix.nostalgic.util;
 
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.MixinConfig;
+import mod.adrenix.nostalgic.client.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -20,13 +21,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public abstract class MixinUtil
+public abstract class ModUtil
 {
     /* Mixin Utility Constants */
 
@@ -79,9 +81,9 @@ public abstract class MixinUtil
     {
         public static boolean isBlockOldChest(net.minecraft.world.level.block.Block block)
         {
-            boolean isOldChest = MixinConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);
-            boolean isOldEnder = MixinConfig.Candy.oldEnderChest() && block.getClass().equals(EnderChestBlock.class);
-            boolean isOldTrap = MixinConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
+            boolean isOldChest = ModConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);
+            boolean isOldEnder = ModConfig.Candy.oldEnderChest() && block.getClass().equals(EnderChestBlock.class);
+            boolean isOldTrap = ModConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
 
             return isOldChest || isOldEnder || isOldTrap;
         }
@@ -89,11 +91,13 @@ public abstract class MixinUtil
         public static boolean isBlockFullShape(net.minecraft.world.level.block.Block block)
         {
             boolean isChest = isBlockOldChest(block);
-            boolean isAOFixed = MixinConfig.Candy.fixAmbientOcclusion();
+            boolean isAOFixed = ModConfig.Candy.fixAmbientOcclusion();
             boolean isSoulSand = isAOFixed && block.getClass().equals(SoulSandBlock.class);
             boolean isPowderedSnow = isAOFixed && block.getClass().equals(PowderSnowBlock.class);
+            boolean isComposter = isAOFixed && block.getClass().equals(ComposterBlock.class);
+            boolean isPiston = isAOFixed && block.getClass().equals(PistonBaseBlock.class);
 
-            return isChest || isSoulSand || isPowderedSnow;
+            return isChest || isSoulSand || isPowderedSnow || isComposter || isPiston;
         }
     }
 
@@ -104,7 +108,7 @@ public abstract class MixinUtil
         // Determines where the sun/moon should be rotated when rendering it.
         public static float getSunriseRotation(float vanilla)
         {
-            return MixinConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
+            return ModConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
         }
 
         // Checks if a chunk is on the edge of a square border render distance.
@@ -218,9 +222,9 @@ public abstract class MixinUtil
             return renderDistance * multiplier;
         }
 
-        private static void setTerrainFog(FogRenderer.FogMode fogType)
+        private static void setTerrainFog(FogRenderer.FogMode fogMode)
         {
-            if (fogType != FogRenderer.FogMode.FOG_TERRAIN)
+            if (fogMode != FogRenderer.FogMode.FOG_TERRAIN)
                 return;
 
             float distance = Math.min(1024, getRenderDistance());
@@ -228,9 +232,9 @@ public abstract class MixinUtil
             RenderSystem.setShaderFogEnd(distance * 0.8F);
         }
 
-        private static void setHorizonFog(FogRenderer.FogMode fogType)
+        private static void setHorizonFog(FogRenderer.FogMode fogMode)
         {
-            if (fogType != FogRenderer.FogMode.FOG_SKY)
+            if (fogMode != FogRenderer.FogMode.FOG_SKY)
                 return;
 
             float distance = Math.min(512, getRenderDistance());
@@ -238,29 +242,30 @@ public abstract class MixinUtil
             RenderSystem.setShaderFogEnd(distance);
         }
 
-        private static void renderFog(FogRenderer.FogMode fogType)
+        private static void renderFog(FogRenderer.FogMode fogMode)
         {
-            if (MixinConfig.Candy.oldTerrainFog())
-                setTerrainFog(fogType);
-            if (MixinConfig.Candy.oldHorizonFog())
-                setHorizonFog(fogType);
+            if (ModConfig.Candy.oldTerrainFog())
+                setTerrainFog(fogMode);
+            if (ModConfig.Candy.oldHorizonFog())
+                setHorizonFog(fogMode);
+            RenderSystem.setShaderFogShape(FogShape.SPHERE);
         }
 
         // Overrides fog in the overworld
-        public static void setupFog(Camera camera, FogRenderer.FogMode fogType)
+        public static void setupFog(Camera camera, FogRenderer.FogMode fogMode)
         {
             if (isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera))
                 return;
-            renderFog(fogType);
+            renderFog(fogMode);
         }
 
         // Overrides fog in the nether
-        public static void setupNetherFog(Camera camera, FogRenderer.FogMode fogType)
+        public static void setupNetherFog(Camera camera, FogRenderer.FogMode fogMode)
         {
-            if (!MixinConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
+            if (!ModConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
                 return;
 
-            renderFog(fogType);
+            renderFog(fogMode);
             RenderSystem.setShaderFogStart(0.0F);
         }
     }
@@ -272,7 +277,7 @@ public abstract class MixinUtil
         // Used to handle differences between forge and fabric when separating merged items
         public static Consumer<ItemStack> explodeStack(Consumer<ItemStack> consumer)
         {
-            if (!MixinConfig.Candy.oldItemMerging())
+            if (!ModConfig.Candy.oldItemMerging())
                 return consumer;
             return stack -> {
                 ItemStack instance = stack.copy();
@@ -288,7 +293,7 @@ public abstract class MixinUtil
         {
             // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
             boolean isUnequipped = rendererItemStack.toString().equals("0 air") && playerItemStack.toString().equals("1 air");
-            if (!MixinConfig.Animation.oldItemReequip() || !isUnequipped)
+            if (!ModConfig.Animation.oldItemReequip() || !isUnequipped)
                 return originalItemStack;
 
             return player.getLastItem();

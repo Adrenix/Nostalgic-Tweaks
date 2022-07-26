@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.reflect.*;
-import mod.adrenix.nostalgic.util.MixinUtil;
+import mod.adrenix.nostalgic.util.ModUtil;
 import mod.adrenix.nostalgic.util.NostalgicLang;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Minecraft;
@@ -37,17 +37,10 @@ public class ConfigScreen extends Screen
         SWING(NostalgicLang.Cloth.SWING_TITLE),
         SEARCH(NostalgicLang.Vanilla.SEARCH);
 
-        ConfigTab(String langKey)
-        {
-            this.langKey = langKey;
-        }
+        ConfigTab(String langKey) { this.langKey = langKey; }
 
         private final String langKey;
-
-        String getLangKey()
-        {
-            return this.langKey;
-        }
+        String getLangKey() { return this.langKey; }
     }
 
     /* Search Tags */
@@ -61,10 +54,7 @@ public class ConfigScreen extends Screen
         SERVER;
 
         @Override
-        public String toString()
-        {
-            return super.toString().toLowerCase();
-        }
+        public String toString() { return super.toString().toLowerCase(); }
     }
 
     /* Instance Fields */
@@ -139,10 +129,7 @@ public class ConfigScreen extends Screen
     }
 
     @Override
-    public void tick()
-    {
-        this.getWidgets().getSearchInput().tick();
-    }
+    public void tick() { this.getWidgets().getSearchInput().tick(); }
 
     @Override
     public void onClose()
@@ -202,13 +189,13 @@ public class ConfigScreen extends Screen
         return null;
     }
 
-    private boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
-    private boolean isEscaping(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
-    private boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
-    private boolean isSaving(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S; }
-    private boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
-    private boolean isGoingRight(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT; }
-    private boolean isTabbing(int key) { return key == GLFW.GLFW_KEY_TAB; }
+    public static boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
+    private static boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
+    private static boolean isSaving(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S; }
+    private static boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
+    private static boolean isGoingRight(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT; }
+    public static boolean isTab(int key) { return key == GLFW.GLFW_KEY_TAB; }
+    public static boolean isEsc(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
@@ -216,7 +203,7 @@ public class ConfigScreen extends Screen
         KeyBindButton mappingInput = this.getMappingInput();
         EditBox editBox = this.getEditBox();
 
-        if (isEscaping(keyCode) && this.shouldCloseOnEsc())
+        if (isEsc(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
         {
             if (this.getWidgets().getSearchInput().isFocused())
                 this.getWidgets().getSearchInput().setFocus(false);
@@ -235,12 +222,12 @@ public class ConfigScreen extends Screen
             mappingInput.setKey(keyCode, scanCode);
             return true;
         }
-        else if (this.isSaving(keyCode))
+        else if (isSaving(keyCode))
         {
             this.onClose();
             return true;
         }
-        else if (this.configTab != ConfigTab.SEARCH && (this.isGoingLeft(keyCode) || this.isGoingRight(keyCode)))
+        else if (this.configTab != ConfigTab.SEARCH && (isGoingLeft(keyCode) || isGoingRight(keyCode)))
         {
             ConfigTab[] tabs = ConfigTab.values();
             ConfigTab last = ConfigTab.GENERAL;
@@ -251,12 +238,12 @@ public class ConfigScreen extends Screen
 
                 if (tab == ConfigTab.SEARCH)
                     continue;
-                if (this.isGoingLeft(keyCode) && this.configTab == tab)
+                if (isGoingLeft(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(this.configTab != last ? last : tabs[tabs.length - 2]);
                     break;
                 }
-                else if (this.isGoingRight(keyCode) && this.configTab == tab)
+                else if (isGoingRight(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[0]);
                     break;
@@ -269,7 +256,7 @@ public class ConfigScreen extends Screen
                 this.getWidgets().focusInput = true;
         }
 
-        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEscaping(keyCode))
+        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEsc(keyCode))
         {
             boolean isInputChanged = this.getWidgets().getSearchInput().keyPressed(keyCode, scanCode, modifiers);
             if (keyCode != GLFW.GLFW_KEY_LEFT && keyCode != GLFW.GLFW_KEY_RIGHT)
@@ -302,7 +289,7 @@ public class ConfigScreen extends Screen
         }
         else
         {
-            if (!this.isTabbing(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
+            if (!isTab(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
                 return true;
             return keyCode == 257 || keyCode == 335;
         }
@@ -406,7 +393,7 @@ public class ConfigScreen extends Screen
                 cache.save();
         }
 
-        MixinUtil.Run.onSave.forEach(Runnable::run);
+        ModUtil.Run.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */

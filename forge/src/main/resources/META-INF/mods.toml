@@ -39,7 +39,7 @@ versionRange="[6.2.57,)"
 ordering="NONE"
 side="CLIENT"
 
-#[[dependencies.oseca]]
+#[[dependencies.nostalgic_tweaks]]
 #modId = "architectury"
 #mandatory = true
 #versionRange = "[3.1.44,)"
