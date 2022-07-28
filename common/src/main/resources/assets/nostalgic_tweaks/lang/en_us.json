@@ -524,7 +524,7 @@
   "text.autoconfig.nostalgic_tweaks.option.animation.oldCreativeCrouch": "Old Creative Crouching",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldCreativeCrouch.@Tooltip": "Bring back the old crouch animation that plays when the player sneaks while in creative.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking": "Old Sneaking",
-  "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking.@Tooltip": "Remove the smooth animation that is applied when sneaking.",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking.@Tooltip": "Remove the smooth animation that is applied when sneaking. This will also bring back the old crouching eye height.",
 
   "text.autoconfig.nostalgic_tweaks.option.swing": "Swing",
   "text.autoconfig.nostalgic_tweaks.option.swing.overrideSpeeds": "§rOverride Speeds",

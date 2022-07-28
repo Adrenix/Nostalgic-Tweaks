@@ -31,13 +31,18 @@ public abstract class CameraMixin
 
         if (this.entity != null)
         {
-            this.eyeHeightOld = this.eyeHeight;
-            this.eyeHeight = this.entity.getEyeHeight();
+            float newEyeHeight = this.entity.getEyeHeight();
 
-            if (this.entity instanceof Player player && this.eyeHeight == 1.62F)
+            this.eyeHeightOld = this.eyeHeight;
+            if (this.eyeHeight < newEyeHeight)
+                this.eyeHeight += (newEyeHeight - this.eyeHeight) * 0.7F;
+            else
+                this.eyeHeight = newEyeHeight;
+
+            if (this.entity instanceof Player player && newEyeHeight == 1.62F)
             {
                 if (!player.getAbilities().flying && player.isCrouching())
-                    this.eyeHeight = 1.27F;
+                    this.eyeHeight = ModConfig.Animation.getSneakHeight();
             }
         }
 
