@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer implements ILocalSwing
@@ -32,6 +33,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements I
     /* Shadows */
 
     @Shadow private boolean crouching;
+    @Shadow private boolean startedUsingItem;
     @Shadow public abstract boolean isShiftKeyDown();
 
     /* Client Side Swing Ducking */
@@ -88,5 +90,16 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements I
     {
         if (ModConfig.Animation.oldCreativeCrouch() && this.getAbilities().flying)
             this.crouching = !this.isSwimming() && this.canEnterPose(Pose.CROUCHING) && (this.isShiftKeyDown() || !this.isSleeping() && !this.canEnterPose(Pose.STANDING));
+    }
+
+    /**
+     * Prevents player movement issues when consuming items while the instant eat tweak is active.
+     * Controlled by the instant eat tweak.
+     */
+    @Inject(method = "isUsingItem", at = @At("HEAD"), cancellable = true)
+    private void NT$onIsUsingItem(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Gameplay.instantEat() && this.startedUsingItem && this.getUseItem().isEdible())
+            callback.setReturnValue(false);
     }
 }
