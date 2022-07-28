@@ -383,6 +383,7 @@ public class ConfigScreen extends Screen
 
         if (this.getWidgets().getSearchInput().isFocused())
             this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
+
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -255,6 +256,22 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
 
     @Override
     protected int getScrollbarPosition() { return this.width - 4; }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        for (R row : this.children())
+        {
+            for (GuiEventListener listener : row.children())
+            {
+                if (listener instanceof EditBox box)
+                    if (!box.mouseClicked(mouseX, mouseY, button))
+                        box.setFocus(false);
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
