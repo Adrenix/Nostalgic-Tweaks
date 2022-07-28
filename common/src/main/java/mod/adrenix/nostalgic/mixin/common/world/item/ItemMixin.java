@@ -95,7 +95,7 @@ public abstract class ItemMixin
     @Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
     private void NT$onGetUseDuration(ItemStack stack, CallbackInfoReturnable<Integer> callback)
     {
-        if (ModConfig.Gameplay.instantEat())
+        if (ModConfig.Gameplay.instantEat() && stack.isEdible())
             callback.setReturnValue(1);
     }
 }
