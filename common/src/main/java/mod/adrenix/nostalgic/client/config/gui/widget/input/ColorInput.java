@@ -62,7 +62,7 @@ public class ColorInput extends AbstractWidget
 
     public String validate(String input)
     {
-        input = input.replaceAll("[[^a-fA-F0-9]]", "");
+        input = input.replaceAll("[^a-fA-F\\d]", "");
         return "#" + input;
     }
 
@@ -71,11 +71,18 @@ public class ColorInput extends AbstractWidget
         if (input.equals("#"))
             return true;
         else
-            return input.matches("^#[a-fA-F0-9]+$");
+        {
+            if (!input.startsWith("#"))
+                input = "#" + input;
+            return input.matches("^#[a-fA-F\\d]+$");
+        }
     }
 
     public void update(String input)
     {
+        if (!input.startsWith("#"))
+            input = "#" + input;
+
         String cached = ClientReflect.getCurrent(this.cache.getGroup(), this.cache.getKey());
         if (cached.equals(input))
             this.cache.setCurrent(cached);
