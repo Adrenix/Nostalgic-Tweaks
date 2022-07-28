@@ -11,11 +11,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
@@ -37,6 +39,7 @@ public abstract class PlayerMixin extends LivingEntity
 
     /* Shadows */
 
+    @Shadow @Final private Abilities abilities;
     @Shadow protected FoodData foodData;
     @Shadow public abstract float getCurrentItemAttackStrengthDelay();
 
@@ -124,12 +127,16 @@ public abstract class PlayerMixin extends LivingEntity
     }
 
     /**
-     * Changes the camera position when the crouch pose is in use.
-     * Controlled by the old sneaking animation tweak.
+     * Changes the camera position when the crouch pose is in use and prevents jittery camera movement in creative mode
+     * when the old crouching tweak is enabled.
+     *
+     * Controlled by the old sneaking tweak and old crouching tweak.
      */
     @ModifyConstant(method = "getStandingEyeHeight", constant = @Constant(floatValue = 1.27F))
     private float NT$onGetStandingEyeHeight(float vanilla)
     {
+        if (ModConfig.Animation.oldCreativeCrouch() && this.abilities.flying)
+            return 1.62F;
         return ModConfig.Animation.oldSneaking() ? ModConfig.Animation.getSneakHeight() : 1.27F;
     }
 }
