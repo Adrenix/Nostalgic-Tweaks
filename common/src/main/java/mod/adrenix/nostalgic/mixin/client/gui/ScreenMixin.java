@@ -4,17 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
-import java.util.Optional;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends GuiComponent
@@ -28,22 +23,6 @@ public abstract class ScreenMixin extends GuiComponent
     {
         if (ModConfig.Candy.oldNoItemTooltips())
             callback.cancel();
-    }
-
-    /**
-     * Converts multiline tooltips into a single line when hovering over items within an inventory.
-     * Controlled by the old simple tooltips tweak.
-     */
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    @Inject(method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V", at = @At("HEAD"))
-    private void NT$onRenderMultilineTooltip(PoseStack poseStack, List<Component> tooltips, Optional<TooltipComponent> visualTooltipComponent, int mouseX, int mouseY, CallbackInfo callback)
-    {
-        if (ModConfig.Candy.oldSimpleTooltips() && tooltips.size() > 0)
-        {
-            Component first = tooltips.get(0);
-            tooltips.clear();
-            tooltips.add(first);
-        }
     }
 
     /**

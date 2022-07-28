@@ -49,15 +49,19 @@ public abstract class DefaultConfig
         public static final boolean OLD_CHAT_BOX = true;
         public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;
-        public static final boolean OLD_TOOLTIP_BOXES = true;
-        public static final boolean OLD_NO_ITEM_TOOLTIPS = false;
-        public static final boolean OLD_SIMPLE_ITEM_TOOLTIPS = true;
         public static final boolean OLD_DURABILITY_COLORS = true;
         public static final boolean OLD_LOADING_SCREENS = true;
         public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
         public static final boolean INCLUDE_MODS_ON_PAUSE = true;
         public static final boolean INCLUDE_MODS_ON_TITLE = true;
+
+        // Interface - Tooltip Candy
+        public static final boolean OLD_TOOLTIP_BOXES = true;
+        public static final boolean OLD_NO_ITEM_TOOLTIPS = false;
+        public static final boolean SHOW_ENCHANTMENTS_TIP = true;
+        public static final boolean SHOW_MODIFIERS_TIP = false;
+        public static final boolean SHOW_DYE_TIP = false;
 
         // Item Candy
         public static final boolean FIX_ITEM_MODEL_GAP = true;

@@ -25,13 +25,17 @@ public enum CandyTweak implements ITweak
     CHAT_INPUT,
     CHAT_BOX,
     BUTTON_HOVER,
-    TOOLTIP_BOXES,
-    SIMPLE_TOOLTIP,
-    NO_ITEM_TOOLTIPS,
     DURABILITY_COLORS,
     LOADING_SCREENS,
     NO_SELECTED_ITEM_NAME,
     PLAIN_SELECTED_ITEM_NAME,
+
+    // Interface Candy - Tooltips
+    TOOLTIP_BOXES,
+    NO_ITEM_TOOLTIPS,
+    ENCHANTMENT_TIP,
+    MODIFIERS_TIP,
+    DYE_TIP,
 
     // Item Candy
     FIX_ITEM_MODEL_GAP,

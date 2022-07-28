@@ -340,6 +340,10 @@ public abstract class TweakClient
         TITLE_LOGO_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_LOGO),
         TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_TEXT),
 
+        /* Interface Tooltips (Eye Candy) - Embedded Subcategories */
+
+        TOOLTIP_PARTS_CANDY(Subcategory.INTERFACE_TOOLTIP_CANDY, NostalgicLang.Gui.CANDY_EMBED_TOOLTIP_PARTS),
+
         /* Experience Bar (Gameplay) - Embedded Subcategories */
 
         ALT_XP_LEVEL_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_XP_LEVEL),

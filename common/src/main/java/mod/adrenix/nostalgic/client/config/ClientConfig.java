@@ -291,26 +291,44 @@ public class ClientConfig implements ConfigData
         public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
         static { CandyTweak.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
-        // Interface - Tooltip Candy
+        /* Interface - Tooltip Candy */
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.FAIL)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_TOOLTIP_CANDY)
         public boolean oldTooltipBoxes = DefaultConfig.Candy.OLD_TOOLTIP_BOXES;
         static { CandyTweak.TOOLTIP_BOXES.setKey("oldTooltipBoxes"); }
 
-        @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_TOOLTIP_CANDY)
-        public boolean oldSimpleTooltips = DefaultConfig.Candy.OLD_SIMPLE_ITEM_TOOLTIPS;
-        static { CandyTweak.SIMPLE_TOOLTIP.setKey("oldSimpleTooltips"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_TOOLTIP_CANDY)
         public boolean oldNoItemTooltips = DefaultConfig.Candy.OLD_NO_ITEM_TOOLTIPS;
         static { CandyTweak.NO_ITEM_TOOLTIPS.setKey("oldNoItemTooltips"); }
+
+        // Tooltip Candy - Tooltip Parts
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
+        public boolean showEnchantmentTip = DefaultConfig.Candy.SHOW_ENCHANTMENTS_TIP;
+        static { CandyTweak.ENCHANTMENT_TIP.setKey("showEnchantmentTip"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
+        public boolean showModifiersTip = DefaultConfig.Candy.SHOW_MODIFIERS_TIP;
+        static { CandyTweak.MODIFIERS_TIP.setKey("showModifiersTip"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
+        public boolean showDyeTip = DefaultConfig.Candy.SHOW_DYE_TIP;
+        static { CandyTweak.DYE_TIP.setKey("showDyeTip"); }
 
         /**
          * Item Candy

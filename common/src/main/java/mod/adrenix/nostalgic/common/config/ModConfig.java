@@ -225,15 +225,19 @@ public abstract class ModConfig
         public static boolean oldNoSelectedItemName() { return getBoolTweak(CandyTweak.NO_SELECTED_ITEM_NAME, CANDY.oldNoSelectedItemName); }
         public static boolean oldDurabilityColors() { return getBoolTweak(CandyTweak.DURABILITY_COLORS, CANDY.oldDurabilityColors); }
         public static boolean includeModsOnPause() { return getBoolTweak(CandyTweak.PAUSE_MODS, CANDY.includeModsOnPause); }
-        public static boolean oldNoItemTooltips() { return getBoolTweak(CandyTweak.NO_ITEM_TOOLTIPS, CANDY.oldNoItemTooltips); }
         public static boolean oldVersionOverlay() { return getBoolTweak(CandyTweak.VERSION_OVERLAY, CANDY.oldVersionOverlay); }
         public static boolean oldLoadingScreens() { return getBoolTweak(CandyTweak.LOADING_SCREENS, CANDY.oldLoadingScreens); }
-        public static boolean oldSimpleTooltips() { return getBoolTweak(CandyTweak.SIMPLE_TOOLTIP, CANDY.oldSimpleTooltips); }
         public static boolean removeLoadingBar() { return getBoolTweak(CandyTweak.REMOVE_LOADING_BAR, CANDY.removeLoadingBar); }
         public static boolean oldButtonHover() { return getBoolTweak(CandyTweak.BUTTON_HOVER, CANDY.oldButtonHover); }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
-        public static boolean oldTooltips() { return getBoolTweak(CandyTweak.TOOLTIP_BOXES, CANDY.oldTooltipBoxes); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
+
+        // Interface - Tooltip Candy
+        public static boolean addDyeTip() { return getBoolTweak(CandyTweak.DYE_TIP, CANDY.showDyeTip); }
+        public static boolean oldTooltips() { return getBoolTweak(CandyTweak.TOOLTIP_BOXES, CANDY.oldTooltipBoxes); }
+        public static boolean addModifiersTip() { return getBoolTweak(CandyTweak.MODIFIERS_TIP, CANDY.showModifiersTip); }
+        public static boolean addEnchantmentTip() { return getBoolTweak(CandyTweak.ENCHANTMENT_TIP, CANDY.showEnchantmentTip); }
+        public static boolean oldNoItemTooltips() { return getBoolTweak(CandyTweak.NO_ITEM_TOOLTIPS, CANDY.oldNoItemTooltips); }
 
         // Item Candy
         public static boolean fixItemModelGaps() { return getBoolTweak(CandyTweak.FIX_ITEM_MODEL_GAP, CANDY.fixItemModelGap); }

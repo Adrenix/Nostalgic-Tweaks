@@ -8,6 +8,7 @@
     "ClientPacketListenerMixin",
     "world.entity.EntityMixin",
     "world.entity.MobMixin",
+    "world.item.ItemStackMixin",
     "world.level.ExplosionMixin",
     "world.level.block.BlockBehaviourMixin",
     "world.level.block.LeavesBlockMixin"
