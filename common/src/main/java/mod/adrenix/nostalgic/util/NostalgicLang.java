@@ -33,11 +33,6 @@ public abstract class NostalgicLang
 
     public static class Gui
     {
-        public static final String HUD_FOOD = "hud.nostalgic_tweaks.food";
-        public static final String HUD_LEVEL = "hud.nostalgic_tweaks.level";
-        public static final String HUD_EXPERIENCE = "hud.nostalgic_tweaks.experience";
-        public static final String HUD_SATURATION = "hud.nostalgic_tweaks.saturation";
-
         public static final String GUI_OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
         public static final String GUI_OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
         public static final String GUI_OVERLAY_COLOR = "gui.nostalgic_tweaks.overlay.color";
@@ -210,6 +205,11 @@ public abstract class NostalgicLang
         public static final String GAMEPLAY_SUBCATEGORY_SWIMMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.swimming";
         public static final String GAMEPLAY_SUBCATEGORY_HUNGER_BAR = "gui.nostalgic_tweaks.config.gameplay.subcategory.hunger_bar";
         public static final String GAMEPLAY_SUBCATEGORY_FOOD = "gui.nostalgic_tweaks.config.gameplay.subcategory.food";
+
+        public static final String GAMEPLAY_EMBED_XP_LEVEL = "gui.nostalgic_tweaks.config.gameplay.embed.experience.level";
+        public static final String GAMEPLAY_EMBED_XP_PROGRESS = "gui.nostalgic_tweaks.config.gameplay.embed.experience.progress";
+        public static final String GAMEPLAY_EMBED_HUNGER_FOOD = "gui.nostalgic_tweaks.config.gameplay.embed.hunger.food";
+        public static final String GAMEPLAY_EMBED_HUNGER_SATURATION = "gui.nostalgic_tweaks.config.gameplay.embed.hunger.saturation";
 
         public static final String ANIMATION_CATEGORY_ARM = "gui.nostalgic_tweaks.config.animation.category.arm";
         public static final String ANIMATION_CATEGORY_MOB = "gui.nostalgic_tweaks.config.animation.category.mob";

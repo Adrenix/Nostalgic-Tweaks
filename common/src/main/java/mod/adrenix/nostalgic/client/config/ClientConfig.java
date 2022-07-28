@@ -219,15 +219,26 @@ public class ClientConfig implements ConfigData
         // Interface - Overlay Candy
 
         @TweakSide.Client
-        @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
-        public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
-
-        @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean oldVersionOverlay = DefaultConfig.Candy.OLD_VERSION_OVERLAY;
         static { CandyTweak.VERSION_OVERLAY.setKey("oldVersionOverlay"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public TweakType.Corner oldOverlayCorner = DefaultConfig.Candy.OLD_OVERLAY_CORNER;
+        static { CandyTweak.VERSION_CORNER.setKey("oldOverlayCorner"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
+        static { CandyTweak.VERSION_TEXT.setKey("oldOverlayText"); }
 
         // Interface - Pause Menu
 
@@ -707,31 +718,74 @@ public class ClientConfig implements ConfigData
          * Experience System
          */
 
-        // Experience - Bar
+        /* Experience - Bar */
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.EXPERIENCE_BAR_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean disableExperienceBar = DefaultConfig.Gameplay.DISABLE_EXPERIENCE_BAR;
         static { GameplayTweak.DISABLE_EXP_BAR.setKey("disableExperienceBar"); }
 
-        @TweakClient.Gui.New
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.EXPERIENCE_BAR_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
-        public boolean alternativeExperienceBar = DefaultConfig.Gameplay.ALTERNATIVE_EXPERIENCE_BAR;
-        static { GameplayTweak.ALT_EXPERIENCE_BAR.setKey("alternativeExperienceBar"); }
+        // Alternative Level Text
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.EXPERIENCE_BAR_GAMEPLAY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_LEVEL_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean showXpLevelText = DefaultConfig.Gameplay.SHOW_XP_LEVEL_TEXT;
+        static { GameplayTweak.SHOW_XP_LEVEL.setKey("showXpLevelText"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_LEVEL_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public TweakType.Corner altXpLevelCorner = DefaultConfig.Gameplay.XP_LEVEL_CORNER;
+        static { GameplayTweak.XP_LEVEL_CORNER.setKey("altXpLevelCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_LEVEL_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
-        public TweakType.Corner alternativeExperienceCorner = DefaultConfig.Gameplay.ALTERNATIVE_EXPERIENCE_CORNER;
-        static { GameplayTweak.ALT_EXPERIENCE_CORNER.setKey("alternativeExperienceCorner"); }
+        public String altXpLevelText = DefaultConfig.Gameplay.XP_LEVEL_TEXT;
+        static { GameplayTweak.XP_LEVEL_TEXT.setKey("altXpLevelText"); }
+
+        // Alternative Progress Text
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_PROGRESS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean showXpProgressText = DefaultConfig.Gameplay.SHOW_XP_PROGRESS_TEXT;
+        static { GameplayTweak.SHOW_XP_PROGRESS.setKey("showXpProgressText"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_PROGRESS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean useDynamicProgressColor = DefaultConfig.Gameplay.USE_DYNAMIC_PROGRESS_COLOR;
+        static { GameplayTweak.USE_DYNAMIC_PROGRESS_COLOR.setKey("useDynamicProgressColor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_PROGRESS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public TweakType.Corner altXpProgressCorner = DefaultConfig.Gameplay.XP_PROGRESS_CORNER;
+        static { GameplayTweak.XP_PROGRESS_CORNER.setKey("altXpProgressCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_XP_PROGRESS_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public String altXpProgressText = DefaultConfig.Gameplay.XP_PROGRESS_TEXT;
+        static { GameplayTweak.XP_PROGRESS_TEXT.setKey("altXpProgressText"); }
 
         // Experience - Orb
 
@@ -817,31 +871,82 @@ public class ClientConfig implements ConfigData
          * Hunger System
          */
 
-        // Hunger - Bar
+        /* Hunger - Bar */
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.HUNGER_BAR_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean disableHungerBar = DefaultConfig.Gameplay.DISABLE_HUNGER_BAR;
         static { GameplayTweak.DISABLE_HUNGER_BAR.setKey("disableHungerBar"); }
 
-        @TweakClient.Gui.New
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.HUNGER_BAR_GAMEPLAY)
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
-        public boolean alternativeHungerBar = DefaultConfig.Gameplay.ALTERNATIVE_HUNGER_BAR;
-        static { GameplayTweak.ALT_HUNGER_BAR.setKey("alternativeHungerBar"); }
+        // Alternative Food Text
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.HUNGER_BAR_GAMEPLAY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_FOOD_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean showHungerFoodText = DefaultConfig.Gameplay.SHOW_HUNGER_FOOD_TEXT;
+        static { GameplayTweak.SHOW_HUNGER_FOOD.setKey("showHungerFoodText"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_FOOD_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean useDynamicFoodColor = DefaultConfig.Gameplay.USE_DYNAMIC_FOOD_COLOR;
+        static { GameplayTweak.USE_DYNAMIC_FOOD_COLOR.setKey("useDynamicFoodColor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_FOOD_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
-        public TweakType.Corner alternativeHungerCorner = DefaultConfig.Gameplay.ALTERNATIVE_HUNGER_CORNER;
-        static { GameplayTweak.ALT_HUNGER_CORNER.setKey("alternativeHungerCorner"); }
+        public TweakType.Corner altHungerFoodCorner = DefaultConfig.Gameplay.HUNGER_FOOD_CORNER;
+        static { GameplayTweak.HUNGER_FOOD_CORNER.setKey("altHungerFoodCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_FOOD_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public String altHungerFoodText = DefaultConfig.Gameplay.HUNGER_FOOD_TEXT;
+        static { GameplayTweak.HUNGER_FOOD_TEXT.setKey("altHungerFoodText"); }
+
+        // Alternative Saturation Text
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_SATURATION_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean showHungerSaturationText = DefaultConfig.Gameplay.SHOW_HUNGER_SATURATION_TEXT;
+        static { GameplayTweak.SHOW_HUNGER_SATURATION.setKey("showHungerSaturationText"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_SATURATION_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean useDynamicSaturationColor = DefaultConfig.Gameplay.USE_DYNAMIC_SATURATION_COLOR;
+        static { GameplayTweak.USE_DYNAMIC_SATURATION_COLOR.setKey("useDynamicSaturationColor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_SATURATION_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public TweakType.Corner altHungerSaturationCorner = DefaultConfig.Gameplay.HUNGER_SATURATION_CORNER;
+        static { GameplayTweak.HUNGER_SATURATION_CORNER.setKey("altHungerSaturationCorner"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ALT_HUNGER_SATURATION_GAMEPLAY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public String altHungerSaturationText = DefaultConfig.Gameplay.HUNGER_SATURATION_TEXT;
+        static { GameplayTweak.HUNGER_SATURATION_TEXT.setKey("altHungerSaturationText"); }
 
         // Hunger - Food
 

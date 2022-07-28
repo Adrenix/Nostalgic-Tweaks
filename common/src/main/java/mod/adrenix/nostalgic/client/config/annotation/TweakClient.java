@@ -334,11 +334,21 @@ public abstract class TweakClient
          * For example, for the button tweaks for title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
          */
 
-        /* Title Screen Candy - Embedded Subcategories */
+        /* Title Screen (Eye Candy) - Embedded Subcategories */
 
         TITLE_BUTTON_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_BUTTON),
         TITLE_LOGO_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_LOGO),
-        TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_TEXT);
+        TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_TEXT),
+
+        /* Experience Bar (Gameplay) - Embedded Subcategories */
+
+        ALT_XP_LEVEL_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_XP_LEVEL),
+        ALT_XP_PROGRESS_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_XP_PROGRESS),
+
+        /* Hunger Bar (Gameplay) - Embedded Subcategories */
+
+        ALT_HUNGER_FOOD_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_HUNGER_FOOD),
+        ALT_HUNGER_SATURATION_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_HUNGER_SATURATION);
 
         private final String langKey;
         private final Subcategory subcategory;

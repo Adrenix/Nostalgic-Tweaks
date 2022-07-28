@@ -171,6 +171,19 @@ public abstract class ModConfig
         return NostalgicTweaks.isClient() ? getEnum(tweak, client) : server;
     }
 
+    /**
+     * Get a parsed colored string with placeholders replaced with the given text and value.
+     * @param text The input text to parse.
+     * @param value The value to replace %v with.
+     * @return A parsed color string with the given value included.
+     */
+    private static String parseColor(String text, String value)
+    {
+        text = text.replaceAll("%([a-fA-F\\d])", "§$1");
+        text = text.replaceAll("%v", value);
+        return text;
+    }
+
     /* Root Tweaks */
 
     public static boolean isModEnabled() { return CONFIG.isModEnabled; }
@@ -207,6 +220,7 @@ public abstract class ModConfig
         public static boolean oldChest() { return getBoolTweak(CandyTweak.CHEST, CANDY.oldChest); }
 
         // Interface Candy
+        public static TweakType.Corner oldOverlayCorner() { return getEnum(CandyTweak.VERSION_CORNER, CANDY.oldOverlayCorner); }
         public static boolean oldPlainSelectedItemName() { return getBoolTweak(CandyTweak.PLAIN_SELECTED_ITEM_NAME, CANDY.oldPlainSelectedItemName); }
         public static boolean oldNoSelectedItemName() { return getBoolTweak(CandyTweak.NO_SELECTED_ITEM_NAME, CANDY.oldNoSelectedItemName); }
         public static boolean oldDurabilityColors() { return getBoolTweak(CandyTweak.DURABILITY_COLORS, CANDY.oldDurabilityColors); }
@@ -285,15 +299,10 @@ public abstract class ModConfig
 
         /* String Tweaks */
 
-        private static String parseColor(String text)
-        {
-            text = text.replaceAll("%v", SharedConstants.getCurrentVersion().getName());
-            text = text.replaceAll("%", "§");
-            return text;
-        }
+        private static final String MINECRAFT_VERSION = SharedConstants.getCurrentVersion().getName();
 
-        public static String getOverlayText() { return parseColor(CANDY.oldOverlayText); }
-        public static String getVersionText() { return parseColor(CANDY.titleVersionText); }
+        public static String getOverlayText() { return parseColor(CANDY.oldOverlayText, MINECRAFT_VERSION); }
+        public static String getVersionText() { return parseColor(CANDY.titleVersionText, MINECRAFT_VERSION); }
 
         /* Integer Tweaks */
 
@@ -316,8 +325,11 @@ public abstract class ModConfig
         public static boolean instantBow() { return getSidedBoolTweak(GameplayTweak.INSTANT_BOW, GAMEPLAY.instantBow, SERVER_GAMEPLAY.instantBow); }
 
         // Experience System
-        public static TweakType.Corner alternativeExperienceCorner() { return getEnum(GameplayTweak.ALT_EXPERIENCE_CORNER, GAMEPLAY.alternativeExperienceCorner); }
-        public static boolean alternativeExperienceBar() { return getBoolTweak(GameplayTweak.ALT_EXPERIENCE_BAR, GAMEPLAY.alternativeExperienceBar); }
+        public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }
+        public static TweakType.Corner alternativeLevelCorner() { return getEnum(GameplayTweak.XP_LEVEL_CORNER, GAMEPLAY.altXpLevelCorner); }
+        public static boolean displayAlternativeProgressText() { return getBoolTweak(GameplayTweak.SHOW_XP_PROGRESS, GAMEPLAY.showXpProgressText); }
+        public static boolean displayAlternativeLevelText() { return getBoolTweak(GameplayTweak.SHOW_XP_LEVEL, GAMEPLAY.showXpLevelText); }
+        public static boolean useDynamicProgressColor() { return getBoolTweak(GameplayTweak.USE_DYNAMIC_PROGRESS_COLOR, GAMEPLAY.useDynamicProgressColor); }
         public static boolean disableExperienceBar() { return getBoolTweak(GameplayTweak.DISABLE_EXP_BAR, GAMEPLAY.disableExperienceBar); }
         public static boolean disableOrbRendering() { return getBoolTweak(GameplayTweak.ORB_RENDERING, GAMEPLAY.disableOrbRendering); }
         public static boolean disableEnchantTable() { return getSidedBoolTweak(GameplayTweak.ENCHANT_TABLE, GAMEPLAY.disableEnchantTable, SERVER_GAMEPLAY.disableEnchantTable); }
@@ -332,12 +344,23 @@ public abstract class ModConfig
         public static boolean oldFire() { return getSidedBoolTweak(GameplayTweak.FIRE_SPREAD, GAMEPLAY.oldFire, SERVER_GAMEPLAY.oldFire); }
 
         // Hunger System
-        public static TweakType.Corner alternativeHungerCorner() { return getEnum(GameplayTweak.ALT_HUNGER_CORNER, GAMEPLAY.alternativeHungerCorner); }
-        public static boolean alternativeHungerBar() { return getBoolTweak(GameplayTweak.ALT_HUNGER_BAR, GAMEPLAY.alternativeHungerBar); }
+        public static TweakType.Corner alternativeSaturationCorner() { return getEnum(GameplayTweak.HUNGER_SATURATION_CORNER, GAMEPLAY.altHungerSaturationCorner); }
+        public static TweakType.Corner alternativeFoodCorner() { return getEnum(GameplayTweak.HUNGER_FOOD_CORNER, GAMEPLAY.altHungerFoodCorner); }
+        public static boolean displayAlternativeSatText() { return getBoolTweak(GameplayTweak.SHOW_HUNGER_SATURATION, GAMEPLAY.showHungerSaturationText); }
+        public static boolean displayAlternativeFoodText() { return getBoolTweak(GameplayTweak.SHOW_HUNGER_FOOD, GAMEPLAY.showHungerFoodText); }
+        public static boolean useDynamicFoodColor() { return getBoolTweak(GameplayTweak.USE_DYNAMIC_FOOD_COLOR, GAMEPLAY.useDynamicFoodColor); }
+        public static boolean useDynamicSatColor() { return getBoolTweak(GameplayTweak.USE_DYNAMIC_SATURATION_COLOR, GAMEPLAY.useDynamicSaturationColor); }
         public static boolean disableHungerBar() { return getBoolTweak(GameplayTweak.DISABLE_HUNGER_BAR, GAMEPLAY.disableHungerBar); }
         public static boolean oldFoodStacking() { return getSidedBoolTweak(GameplayTweak.FOOD_STACKING, GAMEPLAY.oldFoodStacking, SERVER_GAMEPLAY.oldFoodStacking); }
         public static boolean disableHunger() { return getSidedBoolTweak(GameplayTweak.HUNGER, GAMEPLAY.disableHunger, SERVER_GAMEPLAY.disableHunger); }
         public static boolean instantEat() { return getSidedBoolTweak(GameplayTweak.INSTANT_EAT, GAMEPLAY.instantEat, SERVER_GAMEPLAY.instantEat); }
+
+        /* String Tweaks */
+
+        public static String getAlternativeSaturationText(String saturation) { return parseColor(GAMEPLAY.altHungerSaturationText, saturation); }
+        public static String getAlternativeProgressText(String progress) { return parseColor(GAMEPLAY.altXpProgressText, progress); }
+        public static String getAlternativeLevelText(String level) { return parseColor(GAMEPLAY.altXpLevelText, level); }
+        public static String getAlternativeFoodText(String food) { return parseColor(GAMEPLAY.altHungerFoodText, food); }
     }
 
     /* Animation Tweaks */

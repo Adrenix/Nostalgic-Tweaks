@@ -42,6 +42,7 @@ public abstract class DefaultConfig
         public static final TweakVersion.PauseLayout OLD_PAUSE_MENU = TweakVersion.PauseLayout.MODERN;
         public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
         public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
+        public static final TweakType.Corner OLD_OVERLAY_CORNER = TweakType.Corner.TOP_LEFT;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
         public static final boolean REMOVE_LOADING_BAR = false;
         public static final boolean OLD_CHAT_INPUT = true;
@@ -127,8 +128,14 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SWEEP = true;
 
         // Experience System
-        public static final TweakType.Corner ALTERNATIVE_EXPERIENCE_CORNER = TweakType.Corner.TOP_LEFT;
-        public static final boolean ALTERNATIVE_EXPERIENCE_BAR = false;
+        public static final String XP_LEVEL_TEXT = "Level: %a%v";
+        public static final String XP_PROGRESS_TEXT = "Experience: %v%";
+        public static final TweakType.Corner XP_LEVEL_CORNER = TweakType.Corner.TOP_LEFT;
+        public static final TweakType.Corner XP_PROGRESS_CORNER = TweakType.Corner.TOP_LEFT;
+        public static final boolean SHOW_XP_LEVEL_TEXT = false;
+        public static final boolean SHOW_XP_PROGRESS_TEXT = false;
+        public static final boolean USE_DYNAMIC_PROGRESS_COLOR = true;
+
         public static final boolean DISABLE_EXPERIENCE_BAR = true;
         public static final boolean DISABLE_ORB_SPAWN = true;
         public static final boolean DISABLE_ORB_RENDERING = false;
@@ -143,8 +150,15 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SPRINT = true;
 
         // Hunger System
-        public static final TweakType.Corner ALTERNATIVE_HUNGER_CORNER = TweakType.Corner.TOP_LEFT;
-        public static final boolean ALTERNATIVE_HUNGER_BAR = false;
+        public static final String HUNGER_FOOD_TEXT = "Food: %v";
+        public static final String HUNGER_SATURATION_TEXT = "Saturation: %v%";
+        public static final TweakType.Corner HUNGER_FOOD_CORNER = TweakType.Corner.TOP_LEFT;
+        public static final TweakType.Corner HUNGER_SATURATION_CORNER = TweakType.Corner.TOP_LEFT;
+        public static final boolean SHOW_HUNGER_FOOD_TEXT = false;
+        public static final boolean SHOW_HUNGER_SATURATION_TEXT = false;
+        public static final boolean USE_DYNAMIC_FOOD_COLOR = true;
+        public static final boolean USE_DYNAMIC_SATURATION_COLOR = true;
+
         public static final boolean DISABLE_HUNGER_BAR = true;
         public static final boolean DISABLE_HUNGER = true;
         public static final boolean INSTANT_EAT = true;

@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.client;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,10 +9,8 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,7 +18,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -103,11 +101,57 @@ public abstract class ModClientUtil
         @Nullable
         public static Function<Screen, Screen> modScreen = null;
 
-        // Gets right side x position for the given text
+        /* In-game HUD Overlays */
+
         private static int getRightX(String text)
         {
             Minecraft mc = Minecraft.getInstance();
             return mc.getWindow().getGuiScaledWidth() - mc.font.width(text) - 2;
+        }
+
+        private static String getFoodColor(int food)
+        {
+            if (food <= 2) return "§4";
+            else if (food <= 6) return "§c";
+            else if (food <= 10) return "§6";
+            else if (food <= 15) return "§e";
+            else if (food < 20) return "§2";
+            return "§a";
+        }
+
+        private static String getPercentColor(int percent)
+        {
+            if (percent < 20) return "§c";
+            else if (percent < 40) return "§6";
+            else if (percent < 60) return "§e";
+            else if (percent < 80) return "§2";
+            return "§a";
+        }
+
+        private static class CornerManager
+        {
+            private final float height = (float) Minecraft.getInstance().getWindow().getGuiScaledHeight();
+            private final AtomicDouble topLeft = new AtomicDouble(2.0D);
+            private final AtomicDouble topRight = new AtomicDouble(2.0D);
+            private final AtomicDouble bottomLeft = new AtomicDouble(this.height - 10.0D);
+            private final AtomicDouble bottomRight = new AtomicDouble(this.height - 10.0D);
+
+            public float getAndAdd(TweakType.Corner corner)
+            {
+                return switch (corner)
+                {
+                    case TOP_LEFT -> (float) topLeft.getAndAdd(10.0D);
+                    case TOP_RIGHT -> (float) topRight.getAndAdd(10.0D);
+                    case BOTTOM_LEFT -> (float) bottomLeft.getAndAdd(-10.0D);
+                    case BOTTOM_RIGHT -> (float) bottomRight.getAndAdd(-10.0D);
+                };
+            }
+        }
+
+        private static void drawText(PoseStack poseStack, String text, TweakType.Corner corner, CornerManager manager)
+        {
+            boolean isLeft = corner.equals(TweakType.Corner.TOP_LEFT) || corner.equals(TweakType.Corner.BOTTOM_LEFT);
+            Minecraft.getInstance().font.drawShadow(poseStack, text, isLeft ? 2.0F : getRightX(text), manager.getAndAdd(corner), 0xFFFFFF);
         }
 
         // Renders in-game HUD text overlays - game version, food, experience, etc.
@@ -117,119 +161,48 @@ public abstract class ModClientUtil
             if (minecraft.options.renderDebug)
                 return;
 
-            Font font = minecraft.font;
             Player player = minecraft.player;
-
             if (player == null)
                 return;
 
-            TweakType.Corner expCorner = ModConfig.Gameplay.alternativeExperienceCorner();
-            TweakType.Corner foodCorner = ModConfig.Gameplay.alternativeHungerCorner();
+            CornerManager manager = new CornerManager();
 
-            boolean isVersion = ModConfig.Candy.oldVersionOverlay();
-            boolean isExperience = ModConfig.Gameplay.alternativeExperienceBar();
-            boolean isFood = ModConfig.Gameplay.alternativeHungerBar();
-
-            boolean isExpTop = expCorner.equals(TweakType.Corner.TOP_LEFT) || expCorner.equals(TweakType.Corner.TOP_RIGHT);
-            boolean isExpRight = expCorner.equals(TweakType.Corner.TOP_RIGHT) || expCorner.equals(TweakType.Corner.BOTTOM_RIGHT);
-            boolean isFoodTop = foodCorner.equals(TweakType.Corner.TOP_LEFT) || foodCorner.equals(TweakType.Corner.TOP_RIGHT);
-            boolean isFoodRight = foodCorner.equals(TweakType.Corner.TOP_RIGHT) || foodCorner.equals(TweakType.Corner.BOTTOM_RIGHT);
-
-            float foodSat = player.getFoodData().getSaturationLevel();
             int foodLevel = player.getFoodData().getFoodLevel();
             int xpPercent = (int) (player.experienceProgress * 100.0F);
-            int satPercent = (int) ((foodSat / 20.0F) * 100.0F);
+            int satPercent = (int) ((player.getFoodData().getSaturationLevel() / 20.0F) * 100.0F);
 
-            int white = 0xFFFFFF;
-            float height = (float) minecraft.getWindow().getGuiScaledHeight();
-            float leftX = 2.0F;
-            float topLeftY = 0.0F;
-            float topRightY = 0.0F;
-            float bottomLeftY = height - 10.0F;
-            float bottomRightY = bottomLeftY;
-            float dy = 10.0F;
+            if (ModConfig.Candy.oldVersionOverlay())
+                drawText(poseStack, ModConfig.Candy.getOverlayText(), ModConfig.Candy.oldOverlayCorner(), manager);
 
-            String foodColor = "a";
-            String satColor = "a";
-            String xpColor = "a";
-
-            if (foodLevel <= 2) foodColor = "4";
-            else if (foodLevel <= 6) foodColor = "c";
-            else if (foodLevel <= 10) foodColor = "6";
-            else if (foodLevel <= 15) foodColor = "e";
-            else if (foodLevel < 20) foodColor = "2";
-
-            if (xpPercent < 20) xpColor = "c";
-            else if (xpPercent < 40) xpColor = "6";
-            else if (xpPercent < 60) xpColor = "e";
-            else if (xpPercent < 80) xpColor = "2";
-
-            if (satPercent < 20) satColor = "c";
-            else if (satPercent < 40) satColor = "6";
-            else if (satPercent < 60) satColor = "e";
-            else if (satPercent < 80) satColor = "2";
-
-            String food = Component.translatable(NostalgicLang.Gui.HUD_FOOD, foodColor, foodLevel).getString();
-            String sat = Component.translatable(NostalgicLang.Gui.HUD_SATURATION, satColor, satPercent).getString();
-            String xp = Component.translatable(NostalgicLang.Gui.HUD_EXPERIENCE, xpColor, xpPercent).getString();
-            String level = Component.translatable(NostalgicLang.Gui.HUD_LEVEL, player.experienceLevel).getString();
-
-            if (isVersion)
-                font.drawShadow(poseStack, ModConfig.Candy.getOverlayText(), 2.0F, topLeftY += 2.0F, white);
-
-            if (isExperience)
+            if (ModConfig.Gameplay.displayAlternativeLevelText())
             {
-                float xpX = isExpRight ? getRightX(xp) : leftX;
-                float levelX = isExpRight ? getRightX(level) : leftX;
-                float levelY;
-                float xpY;
-
-                if (isExpRight)
-                {
-                    xpY = isExpTop ? topRightY += 2.0F : bottomRightY;
-                    levelY = isExpTop ? (topRightY += topRightY == 0.0F ? 2.0F : dy) : (bottomRightY -= 10.0F);
-                }
-                else
-                {
-                    xpY = isExpTop ? (topLeftY += topLeftY == 0.0F ? 2.0F : dy) : bottomLeftY;
-                    levelY = isExpTop ? (topLeftY += topLeftY == 0.0F ? 2.0F : dy) : (bottomLeftY -= 10.0F);
-                }
-
-                font.drawShadow(poseStack, xp, xpX, xpY, white);
-                font.drawShadow(poseStack, level, levelX, levelY, white);
+                TweakType.Corner levelCorner = ModConfig.Gameplay.alternativeLevelCorner();
+                String level = ModConfig.Gameplay.getAlternativeLevelText(Integer.toString(player.experienceLevel));
+                drawText(poseStack, level, levelCorner, manager);
             }
 
-            if (isFood)
+            if (ModConfig.Gameplay.displayAlternativeProgressText())
             {
-                float foodX = isFoodRight ? getRightX(food) : leftX;
-                float satX = isFoodRight ? getRightX(sat) : leftX;
-                float satY;
-                float foodY;
+                boolean useColor = ModConfig.Gameplay.useDynamicProgressColor();
+                TweakType.Corner xpCorner = ModConfig.Gameplay.alternativeProgressCorner();
+                String xp = ModConfig.Gameplay.getAlternativeProgressText((useColor ? getPercentColor(xpPercent) : "") + xpPercent);
+                drawText(poseStack, xp, xpCorner, manager);
+            }
 
-                if (isFoodRight)
-                {
-                    foodY = isFoodTop ? (topRightY += topRightY == 0.0F ? 2.0F : dy) : (isExpTop ? bottomRightY : (bottomRightY -= 10.0F));
-                    satY = isFoodTop ? topRightY + dy : isExpTop ? bottomRightY - 10.0F : bottomRightY + 10.0F;
-                }
-                else
-                {
-                    foodY = isFoodTop ? (topLeftY += topLeftY == 0.0F ? 2.0F : dy) : (bottomLeftY -= 10.0F);
-                    satY = isFoodTop ? topLeftY + dy : bottomLeftY;
-                }
+            if (ModConfig.Gameplay.displayAlternativeFoodText())
+            {
+                boolean useColor = ModConfig.Gameplay.useDynamicFoodColor();
+                TweakType.Corner foodCorner = ModConfig.Gameplay.alternativeFoodCorner();
+                String food = ModConfig.Gameplay.getAlternativeFoodText((useColor ? getFoodColor(foodLevel) : "") + foodLevel);
+                drawText(poseStack, food, foodCorner, manager);
+            }
 
-                if (isExperience && !isExpTop && !isFoodTop)
-                {
-                    satY = height - 30.0F;
-                    foodY = satY - 10.0F;
-                }
-                else if (!isExperience && !isExpTop && !isFoodTop)
-                {
-                    satY = height - 10.0F;
-                    foodY = satY - 10.0F;
-                }
-
-                font.drawShadow(poseStack, food, foodX, foodY, white);
-                font.drawShadow(poseStack, sat, satX, satY, white);
+            if (ModConfig.Gameplay.displayAlternativeSatText())
+            {
+                boolean useColor = ModConfig.Gameplay.useDynamicSatColor();
+                TweakType.Corner satCorner = ModConfig.Gameplay.alternativeSaturationCorner();
+                String sat = ModConfig.Gameplay.getAlternativeSaturationText((useColor ? getPercentColor(satPercent) : "") + satPercent);
+                drawText(poseStack, sat, satCorner, manager);
             }
         }
 
