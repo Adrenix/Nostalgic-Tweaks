@@ -819,7 +819,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 int dy = screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH ? 11 : 0;
                 Screen.drawString(poseStack, font, title, startX, top + 6 + dy, 0xFFFFFF);
 
-                // Realign edit boxes
+                // Realign widgets
                 widget.y = top;
                 int cacheX = widget.x;
                 int cacheY = widget.y;
@@ -840,6 +840,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     }
                     else
                         widget.y += 11;
+
+                    cacheY = widget.y + (widget instanceof EditBox ? -1 : 0);
                 }
 
                 // Render final widget
