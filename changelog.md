@@ -1,3 +1,30 @@
+## Version 1.1.1 (1.19)
+This release has been designed to work with new Forge refactoring, you will need to update the following:
+
+- Forge to `>= 41.0.94`
+- Cloth Config to `>= 7.0.73`
+
+This update also fixes reported issues and adjusts current tweaks.
+- Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
+- Fixed a crash that occurs when the MoreBlockPredicates mod is installed.
+- Fixed item model gap correctional values for Forge.
+- Fixed swinging animations not working correctly in multiplayer.
+- Fixed the darkness effect not working correctly with the Old Fog tweak.
+- Fixed the darkness effect not working correctly with the Old Lighting tweak.
+- Readjusted old lighting rendering.
+
+## Version 1.0.5 (1.18.2)
+This update fixes reported issues and adjusts current tweaks.
+- Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
+- Fixed a crash that occurs when the MoreBlockPredicates mod is installed.
+- Fixed swinging animations not working correctly in multiplayer.
+- Fixed Esc key not working properly when changing a key binding in the mod's setting screen.
+- Fixed old fog rendering by making the fog shape a sphere instead of a cylinder.
+- Fixed old item holding positions changing block holding positions.
+- Added composter blocks and piston base blocks to the fixed ambient occlusion list.
+- Redid the old tooltip rendering.
+- Readjusted old lighting rendering.
+
 ## Version 1.0.4 (1.18, 1.18.1, and 1.18.2)
 This update fixes reported issues, adjusts current tweaks, and adds a lot of new tweaks.
 - Fixed opaque experience orbs not rendering correctly when colormatic is installed.
