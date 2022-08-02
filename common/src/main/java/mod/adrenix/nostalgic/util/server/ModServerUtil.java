@@ -29,6 +29,9 @@ public abstract class ModServerUtil
 
     public static class Item
     {
+        // Used to disable old food stacking when food is being dropped from a loot table
+        public static boolean isDroppingLoot = false;
+
         // Used to handle differences between forge and fabric when separating merged items
         public static Consumer<ItemStack> explodeStack(Consumer<ItemStack> consumer)
         {

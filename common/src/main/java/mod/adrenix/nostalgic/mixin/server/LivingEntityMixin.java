@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
  * All mixins within this class are injected into the server.
  * Do not class load any vanilla client code here.
  * @see mod.adrenix.nostalgic.mixin.client.world.entity.LivingEntityMixin
- * @see mod.adrenix.nostalgic.mixin.server.LivingEntityMixin
+ * @see mod.adrenix.nostalgic.mixin.common.world.entity.LivingEntityMixin
  */
 
 @Mixin(LivingEntity.class)

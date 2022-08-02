@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.server.ModServerUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * All mixins within this class are injected into both client and server.
  * Do not class load any vanilla client code here.
  * @see mod.adrenix.nostalgic.mixin.client.world.entity.LivingEntityMixin
- * @see mod.adrenix.nostalgic.mixin.common.world.entity.LivingEntityMixin
+ * @see mod.adrenix.nostalgic.mixin.server.LivingEntityMixin
  */
 
 @Mixin(LivingEntity.class)
@@ -116,5 +118,22 @@ public abstract class LivingEntityMixin extends Entity
 
         if (isEffectOverride)
             callback.cancel();
+    }
+
+    /**
+     * Ensures that any food loot dropped doesn't get overridden by the old food stacking tweaking.
+     * Not controlled by any tweak.
+     */
+
+    @Inject(method = "dropFromLootTable", at = @At("HEAD"))
+    private void NT$onStartDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
+    {
+        ModServerUtil.Item.isDroppingLoot = true;
+    }
+
+    @Inject(method = "dropFromLootTable", at = @At("TAIL"))
+    private void NT$onEndDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
+    {
+        ModServerUtil.Item.isDroppingLoot = false;
     }
 }

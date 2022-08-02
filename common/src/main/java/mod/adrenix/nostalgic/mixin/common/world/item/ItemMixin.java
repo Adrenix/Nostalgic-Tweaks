@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.item;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.server.ModServerUtil;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +32,8 @@ public abstract class ItemMixin
 
         boolean isFlesh = item.equals(Items.ROTTEN_FLESH);
         boolean isSpiderEye = item.equals(Items.SPIDER_EYE);
-        boolean isIgnored = isFlesh || isSpiderEye;
+        boolean isLootDrop = ModServerUtil.Item.isDroppingLoot;
+        boolean isIgnored = isFlesh || isSpiderEye || isLootDrop;
 
         if (!ModConfig.Gameplay.oldFoodStacking() || this.foodProperties == null || isIgnored)
             return;
