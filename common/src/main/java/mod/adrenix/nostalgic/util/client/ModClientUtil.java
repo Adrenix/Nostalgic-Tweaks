@@ -83,13 +83,13 @@ public abstract class ModClientUtil
 
     public static class Render
     {
-        public static void fill(BufferBuilder buffer, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int rgba)
+        public static void fill(BufferBuilder builder, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int rgba)
         {
             float z = 0.0F;
-            buffer.vertex(matrix, leftX, bottomY, z).color(rgba).endVertex();
-            buffer.vertex(matrix, rightX, bottomY, z).color(rgba).endVertex();
-            buffer.vertex(matrix, rightX, topY, z).color(rgba).endVertex();
-            buffer.vertex(matrix, leftX, topY, z).color(rgba).endVertex();
+            builder.vertex(matrix, leftX, bottomY, z).color(rgba).endVertex();
+            builder.vertex(matrix, rightX, bottomY, z).color(rgba).endVertex();
+            builder.vertex(matrix, rightX, topY, z).color(rgba).endVertex();
+            builder.vertex(matrix, leftX, topY, z).color(rgba).endVertex();
         }
     }
 
