@@ -517,14 +517,12 @@ public class NostalgicTitleScreen extends TitleScreen
         model.translate(-0.05F, 1.0F, 1987.0F);
         model.scale(1.59F, 1.59F, 1.59F);
 
+        BakedModel stone = this.itemRenderer.getItemModelShaper().getItemModel(Blocks.STONE.asItem());
+
         RenderSystem.applyModelViewMatrix();
         RenderSystem.enableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.depthMask(true);
-
-        BakedModel stone = this.itemRenderer.getItemModelShaper().getItemModel(Blocks.STONE.asItem());
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.getBuilder();
 
         for (int pass = 0; pass < 3; pass++)
         {
@@ -589,7 +587,7 @@ public class NostalgicTitleScreen extends TitleScreen
 
                     model.translate(x, y, z);
                     model.scale(scale, scale, scale);
-                    renderBlock(model, builder, stone, pass, alpha);
+                    renderBlock(model, stone, pass, alpha);
                     model.popPose();
                 }
             }
@@ -646,11 +644,11 @@ public class NostalgicTitleScreen extends TitleScreen
         }
     }
 
-    private void renderBlock(PoseStack modelView, BufferBuilder builder, BakedModel stone, int pass, float alpha)
+    private void renderBlock(PoseStack modelView, BakedModel stone, int pass, float alpha)
     {
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+        BufferBuilder builder = tesselator.getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 
         for (Direction direction : Direction.values())
         {
