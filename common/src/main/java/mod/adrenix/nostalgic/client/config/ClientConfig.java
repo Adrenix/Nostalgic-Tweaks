@@ -451,6 +451,13 @@ public class ClientConfig implements ConfigData
         public boolean oldOpaqueExperience = DefaultConfig.Candy.OLD_OPAQUE_EXPERIENCE;
         static { CandyTweak.OPAQUE_EXPERIENCE.setKey("oldOpaqueExperience"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.PARTICLE_CANDY)
+        public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
+        static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
+
         // Particle - Attack Candy
 
         @TweakSide.Client

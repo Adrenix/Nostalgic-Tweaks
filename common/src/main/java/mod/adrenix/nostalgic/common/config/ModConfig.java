@@ -262,6 +262,7 @@ public abstract class ModConfig
         public static boolean oldNoCriticalHitParticles() { return getBoolTweak(CandyTweak.NO_CRIT_PARTICLES, CANDY.oldNoCritParticles); }
         public static boolean oldMixedExplosionParticles() { return getBoolTweak(CandyTweak.MIXED_EXPLOSION_PARTICLES, CANDY.oldMixedExplosionParticles); }
         public static boolean oldNoEnchantHitParticles() { return getBoolTweak(CandyTweak.NO_MAGIC_HIT_PARTICLES, CANDY.oldNoMagicHitParticles); }
+        public static boolean disableNetherParticles() { return getBoolTweak(CandyTweak.NO_NETHER_PARTICLES, CANDY.disableNetherParticles); }
         public static boolean oldExplosionParticles() { return getBoolTweak(CandyTweak.EXPLOSION_PARTICLES, CANDY.oldExplosionParticles); }
         public static boolean oldNoDamageParticles() { return getBoolTweak(CandyTweak.NO_DAMAGE_PARTICLES, CANDY.oldNoDamageParticles); }
         public static boolean oldOpaqueExperience() { return getBoolTweak(CandyTweak.OPAQUE_EXPERIENCE, CANDY.oldOpaqueExperience); }

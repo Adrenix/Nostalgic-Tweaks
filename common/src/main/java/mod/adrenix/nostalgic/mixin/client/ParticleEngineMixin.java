@@ -30,5 +30,16 @@ public abstract class ParticleEngineMixin
             callback.cancel();
         else if (ModConfig.Candy.oldNoEnchantHitParticles() && particle == ParticleTypes.ENCHANTED_HIT)
             callback.cancel();
+        else if (ModConfig.Candy.disableNetherParticles())
+        {
+            boolean isNether = particle == ParticleTypes.ASH ||
+                particle == ParticleTypes.WHITE_ASH ||
+                particle == ParticleTypes.WARPED_SPORE ||
+                particle == ParticleTypes.CRIMSON_SPORE
+            ;
+
+            if (isNether)
+                callback.cancel();
+        }
     }
 }

@@ -83,6 +83,7 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_GAMMA = true;
 
         // Particle Candy
+        public static final boolean DISABLE_NETHER_PARTICLES = true;
         public static final boolean OLD_SWEEP_PARTICLES = true;
         public static final boolean OLD_OPAQUE_EXPERIENCE = true;
         public static final boolean OLD_NO_DAMAGE_PARTICLES = true;
