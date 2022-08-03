@@ -712,6 +712,13 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.COMBAT_GAMEPLAY)
+        public boolean disableMissTimer = DefaultConfig.Gameplay.DISABLE_MISS_TIMER;
+        static { GameplayTweak.DISABLE_MISS_TIMER.setKey("disableMissTimer"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.COMBAT_GAMEPLAY)
         public boolean disableSweep = DefaultConfig.Gameplay.DISABLE_SWEEP;
         static { GameplayTweak.DISABLE_SWEEP.setKey("disableSweep"); }
 

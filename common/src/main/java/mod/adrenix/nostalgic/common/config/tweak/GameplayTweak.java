@@ -14,6 +14,7 @@ public enum GameplayTweak implements ITweak
     INVINCIBLE_BOW,
     ARROW_SPEED,
     DISABLE_COOLDOWN,
+    DISABLE_MISS_TIMER,
     DISABLE_SWEEP,
 
     // Experience System

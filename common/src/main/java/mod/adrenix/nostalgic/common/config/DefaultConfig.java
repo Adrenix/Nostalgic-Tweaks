@@ -132,6 +132,7 @@ public abstract class DefaultConfig
         public static final boolean INSTANT_BOW = true;
         public static final boolean INVINCIBLE_BOW = true;
         public static final boolean DISABLE_COOLDOWN = true;
+        public static final boolean DISABLE_MISS_TIMER = true;
         public static final boolean DISABLE_SWEEP = true;
 
         // Experience System

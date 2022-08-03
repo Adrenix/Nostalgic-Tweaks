@@ -323,6 +323,7 @@ public abstract class ModConfig
             return isTweakOn(GameplayTweak.ARROW_SPEED) ? getSidedTweak(GameplayTweak.ARROW_SPEED, GAMEPLAY.arrowSpeed, SERVER_GAMEPLAY.arrowSpeed) : 0;
         }
 
+        public static boolean disableMissTime() { return getSidedBoolTweak(GameplayTweak.DISABLE_MISS_TIMER, GAMEPLAY.disableMissTimer, SERVER_GAMEPLAY.disableMissTimer); }
         public static boolean disableCooldown() { return getSidedBoolTweak(GameplayTweak.DISABLE_COOLDOWN, GAMEPLAY.disableCooldown, SERVER_GAMEPLAY.disableCooldown); }
         public static boolean invincibleBow() { return getSidedBoolTweak(GameplayTweak.INVINCIBLE_BOW, GAMEPLAY.invincibleBow, SERVER_GAMEPLAY.invincibleBow); }
         public static boolean disableSweep() { return getSidedBoolTweak(GameplayTweak.DISABLE_SWEEP, GAMEPLAY.disableSweep, SERVER_GAMEPLAY.disableSweep); }

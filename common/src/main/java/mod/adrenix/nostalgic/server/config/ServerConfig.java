@@ -40,6 +40,7 @@ public class ServerConfig implements ConfigData
         public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;
         public boolean invincibleBow = DefaultConfig.Gameplay.INVINCIBLE_BOW;
         public boolean disableCooldown = DefaultConfig.Gameplay.DISABLE_COOLDOWN;
+        public boolean disableMissTimer = DefaultConfig.Gameplay.DISABLE_MISS_TIMER;
         public boolean disableSweep = DefaultConfig.Gameplay.DISABLE_SWEEP;
 
         // Experience System

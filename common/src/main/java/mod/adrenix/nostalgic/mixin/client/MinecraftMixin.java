@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -33,6 +34,7 @@ public abstract class MinecraftMixin
     @Shadow @Nullable public ClientLevel level;
     @Shadow @Nullable public LocalPlayer player;
     @Shadow public abstract Window getWindow();
+    @Shadow protected int missTime;
 
     /* Injections */
 
@@ -131,5 +133,34 @@ public abstract class MinecraftMixin
             return new NostalgicPauseScreen();
 
         return vanilla;
+    }
+
+    /**
+     * The following injections reset the miss time tracker when attacking.
+     * Controlled by the disabled miss timer tweak.
+     */
+
+    @Inject(method = "continueAttack", at = @At("HEAD"))
+    private void NT$onContinueAttack(boolean leftClick, CallbackInfo callback)
+    {
+        if (ModConfig.Gameplay.disableMissTime())
+            this.missTime = 0;
+    }
+
+    @Inject(method = "startAttack", at = @At("HEAD"))
+    private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Gameplay.disableMissTime())
+            this.missTime = 0;
+    }
+
+    /**
+     * Removes the player hands busy check.
+     * Controlled by the disabled miss timer tweak.
+     */
+    @Redirect(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isHandsBusy()Z"))
+    private boolean NT$onCheckBusyHands(LocalPlayer instance)
+    {
+        return !ModConfig.Gameplay.disableMissTime() && instance.isHandsBusy();
     }
 }

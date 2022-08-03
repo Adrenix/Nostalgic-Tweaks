@@ -428,6 +428,8 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.invincibleBow.@Tooltip": "Disable bow damage.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableCooldown": "Disable Cooldown",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableCooldown.@Tooltip": "Remove attack power cooldown.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableMissTimer": "Disable Miss Timer",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableMissTimer.@Tooltip": "Removes the timer that prevents continual left clicking.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSweep": "Disable Sweep",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSweep.@Tooltip": "Disable sweep attacks.",
 
