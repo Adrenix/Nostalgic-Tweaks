@@ -163,6 +163,7 @@
 
   "gui.nostalgic_tweaks.config.sound.subcategory.chest": "Chest Sounds",
 
+  "gui.nostalgic_tweaks.config.gameplay.category.bug": "Bugs",
   "gui.nostalgic_tweaks.config.gameplay.category.combat": "Combat System",
   "gui.nostalgic_tweaks.config.gameplay.category.experience": "Experience System",
   "gui.nostalgic_tweaks.config.gameplay.category.mechanics": "Game Mechanics",
@@ -416,6 +417,9 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old chunkier stars.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay": "Gameplay",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldLadderGap": "Old Ladder Gaps",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldLadderGap.@Tooltip": "Bring back the old bug that allowed players to continually climb when there is a single space between two ladders.",
+
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed": "Arrow Speed",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed.@Tooltip": "How fast the arrow will fire out of the bow when instant bow is enabled.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.instantBow": "Instant Bow",

@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin;
+package mod.adrenix.nostalgic.forge.mixin.client;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.ModClientUtil;

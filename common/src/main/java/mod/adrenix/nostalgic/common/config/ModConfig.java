@@ -328,6 +328,9 @@ public abstract class ModConfig
         public static boolean disableSweep() { return getSidedBoolTweak(GameplayTweak.DISABLE_SWEEP, GAMEPLAY.disableSweep, SERVER_GAMEPLAY.disableSweep); }
         public static boolean instantBow() { return getSidedBoolTweak(GameplayTweak.INSTANT_BOW, GAMEPLAY.instantBow, SERVER_GAMEPLAY.instantBow); }
 
+        // Bugs
+        public static boolean oldLadderGap() { return getSidedBoolTweak(GameplayTweak.LADDER_GAP, GAMEPLAY.oldLadderGap, SERVER_GAMEPLAY.oldLadderGap); }
+
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }
         public static TweakType.Corner alternativeLevelCorner() { return getEnum(GameplayTweak.XP_LEVEL_CORNER, GAMEPLAY.altXpLevelCorner); }

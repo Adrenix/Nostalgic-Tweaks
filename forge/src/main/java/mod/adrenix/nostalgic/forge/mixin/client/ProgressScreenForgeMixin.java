@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin;
+package mod.adrenix.nostalgic.forge.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;

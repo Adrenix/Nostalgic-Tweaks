@@ -1,7 +1,11 @@
 package mod.adrenix.nostalgic.util.server;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Consumer;
 
@@ -12,6 +16,20 @@ import java.util.function.Consumer;
 
 public abstract class ModServerUtil
 {
+    /* Gameplay Helpers */
+
+    public static class Gameplay
+    {
+        public static boolean isClimbable(Level level, BlockState state, BlockPos pos)
+        {
+            boolean isClimbable = state.is(BlockTags.CLIMBABLE);
+
+            if (!ModConfig.Gameplay.oldLadderGap())
+                return isClimbable;
+            return isClimbable || level.getBlockState(pos.above()).is(BlockTags.CLIMBABLE);
+        }
+    }
+
     /* World Candy Helpers */
 
     public static class World

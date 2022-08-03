@@ -192,6 +192,7 @@ public abstract class NostalgicLang
 
         public static final String SOUND_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.sound.subcategory.chest";
 
+        public static final String GAMEPLAY_CATEGORY_BUG = "gui.nostalgic_tweaks.config.gameplay.category.bug";
         public static final String GAMEPLAY_CATEGORY_COMBAT = "gui.nostalgic_tweaks.config.gameplay.category.combat";
         public static final String GAMEPLAY_CATEGORY_EXPERIENCE = "gui.nostalgic_tweaks.config.gameplay.category.experience";
         public static final String GAMEPLAY_CATEGORY_HUNGER = "gui.nostalgic_tweaks.config.gameplay.category.hunger";

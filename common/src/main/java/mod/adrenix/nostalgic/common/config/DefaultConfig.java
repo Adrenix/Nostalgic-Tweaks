@@ -124,6 +124,9 @@ public abstract class DefaultConfig
 
     public static class Gameplay
     {
+        // Bugs
+        public static final boolean OLD_LADDER_GAP = true;
+
         // Combat System
         public static final int ARROW_SPEED = 70;
         public static final boolean INSTANT_BOW = true;

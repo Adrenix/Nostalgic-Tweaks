@@ -32,6 +32,9 @@ public class ServerConfig implements ConfigData
     public Gameplay gameplay = new Gameplay();
     public static class Gameplay
     {
+        // Bugs
+        public boolean oldLadderGap = DefaultConfig.Gameplay.OLD_LADDER_GAP;
+
         // Combat System
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
         public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;

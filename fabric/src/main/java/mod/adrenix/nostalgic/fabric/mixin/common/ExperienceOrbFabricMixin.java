@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.fabric.mixin;
+package mod.adrenix.nostalgic.fabric.mixin.common;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.world.entity.Entity;

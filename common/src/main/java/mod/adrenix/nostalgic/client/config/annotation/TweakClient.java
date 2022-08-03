@@ -199,6 +199,7 @@ public abstract class TweakClient
         WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD),
 
         // Gameplay Categories
+        BUG_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_BUG),
         COMBAT_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_COMBAT),
         EXPERIENCE_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_EXPERIENCE),
         MECHANICS_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_MECHANICS),

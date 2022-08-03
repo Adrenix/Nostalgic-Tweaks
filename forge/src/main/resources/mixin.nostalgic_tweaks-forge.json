@@ -5,11 +5,11 @@
   "compatibilityLevel": "JAVA_16",
   "priority": 1001,
   "client": [
-    "ItemInHandRendererForgeMixin",
-    "ProgressScreenForgeMixin",
-    "OptifineFogRendererMixin"
+    "client.ItemInHandRendererForgeMixin",
+    "client.ProgressScreenForgeMixin",
+    "client.OptifineFogRendererMixin"
   ],
   "mixins": [
-    "LivingEntityForgeMixin"
+    "common.LivingEntityForgeMixin"
   ]
 }

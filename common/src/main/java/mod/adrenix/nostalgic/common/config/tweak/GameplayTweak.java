@@ -6,6 +6,9 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 public enum GameplayTweak implements ITweak
 {
+    // Bugs
+    LADDER_GAP,
+
     // Combat System
     INSTANT_BOW,
     INVINCIBLE_BOW,

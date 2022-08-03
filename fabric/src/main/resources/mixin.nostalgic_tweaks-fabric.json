@@ -5,11 +5,11 @@
   "compatibilityLevel": "JAVA_16",
   "priority": 1001,
   "client": [
-    "FogRendererFabricMixin",
-    "GuiFabricMixin"
+    "client.FogRendererFabricMixin",
+    "client.GuiFabricMixin"
   ],
   "mixins": [
-    "ExperienceOrbFabricMixin",
-    "LivingEntityFabricMixin"
+    "common.ExperienceOrbFabricMixin",
+    "common.LivingEntityFabricMixin"
   ]
 }

@@ -687,6 +687,17 @@ public class ClientConfig implements ConfigData
     public static class Gameplay
     {
         /**
+         * Bugs
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.BUG_GAMEPLAY)
+        public boolean oldLadderGap = DefaultConfig.Gameplay.OLD_LADDER_GAP;
+        static { GameplayTweak.LADDER_GAP.setKey("oldLadderGap"); }
+
+        /**
          * Combat System
          */
 

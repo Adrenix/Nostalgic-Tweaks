@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.fabric.mixin;
+package mod.adrenix.nostalgic.fabric.mixin.client;
 
 import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.common.ModCommonUtil;
