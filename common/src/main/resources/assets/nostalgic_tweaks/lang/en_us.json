@@ -202,6 +202,7 @@
   "gui.nostalgic_tweaks.config.candy.subcategory.chest": "Chest Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.chat": "Chat Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.gui": "Gui Candy",
+  "gui.nostalgic_tweaks.config.candy.subcategory.inventory": "Inventory Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.item": "Item Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.title": "Title Screen",
   "gui.nostalgic_tweaks.config.candy.subcategory.loading": "Loading Screen",
@@ -355,6 +356,11 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.showModifiersTip.@Tooltip": "Show item modifier information in hovered item tooltips.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.showDyeTip": "Show Dye",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.showDyeTip.@Tooltip": "Show dye color information in hovered item tooltips.",
+
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.invertedPlayerLighting": "Inverted Player Lighting",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.invertedPlayerLighting.@Tooltip": "Bring back the old inverted lighting casted onto the player entity in the inventory screen.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.invertedBlockLighting": "Inverted Block Lighting",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.invertedBlockLighting.@Tooltip": "Bring back the old inverted lighting casted onto blocks in the inventory screen.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding": "Old Item Holding",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding.@Tooltip": "Bring back the old item holding and swinging position.",

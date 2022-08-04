@@ -57,6 +57,10 @@ public abstract class DefaultConfig
         public static final boolean INCLUDE_MODS_ON_TITLE = true;
         public static final boolean DEBUG_ENTITY_ID = true;
 
+        // Interface - Inventory Candy
+        public static final boolean INVERTED_PLAYER_LIGHTING = true;
+        public static final boolean INVERTED_BLOCK_LIGHTING = true;
+
         // Interface - Gui Background
         public static final TweakVersion.GuiBackground OLD_GUI_BACKGROUND = TweakVersion.GuiBackground.SOLID_BLACK;
         public static final String CUSTOM_TOP_GRADIENT = "#00000000";

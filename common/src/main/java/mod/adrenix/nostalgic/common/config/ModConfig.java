@@ -233,6 +233,10 @@ public abstract class ModConfig
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 
+        // Interface - Inventory Candy
+        public static boolean invertPlayerLight() { return getBoolTweak(CandyTweak.INVERTED_PLAYER_LIGHTING, CANDY.invertedPlayerLighting); }
+        public static boolean invertBlockLight() { return getBoolTweak(CandyTweak.INVERTED_BLOCK_LIGHTING, CANDY.invertedBlockLighting); }
+
         // Interface - Gui Background
         public static TweakVersion.GuiBackground oldGuiBackground() { return getEnum(CandyTweak.OLD_GUI_BACKGROUND, CANDY.oldGuiBackground); }
         public static boolean customGuiBackground() { return getBoolTweak(CandyTweak.CUSTOM_GUI_BACKGROUND, CANDY.customGuiBackground); }

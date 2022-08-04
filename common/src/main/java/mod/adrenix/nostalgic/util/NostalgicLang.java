@@ -231,6 +231,7 @@ public abstract class NostalgicLang
         public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
         public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
         public static final String CANDY_SUBCATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.subcategory.gui";
+        public static final String CANDY_SUBCATEGORY_INVENTORY = "gui.nostalgic_tweaks.config.candy.subcategory.inventory";
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";

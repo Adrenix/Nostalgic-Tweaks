@@ -201,6 +201,22 @@ public class ClientConfig implements ConfigData
         public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
         static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
 
+        // Interface - Inventory Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public boolean invertedPlayerLighting = DefaultConfig.Candy.INVERTED_PLAYER_LIGHTING;
+        static { CandyTweak.INVERTED_PLAYER_LIGHTING.setKey("invertedPlayerLighting"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public boolean invertedBlockLighting = DefaultConfig.Candy.INVERTED_BLOCK_LIGHTING;
+        static { CandyTweak.INVERTED_BLOCK_LIGHTING.setKey("invertedBlockLighting"); }
+
         // Interface - Gui Background Candy
 
         @TweakClient.Gui.New

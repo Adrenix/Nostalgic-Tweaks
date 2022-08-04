@@ -31,6 +31,10 @@ public enum CandyTweak implements ITweak
     PLAIN_SELECTED_ITEM_NAME,
     DEBUG_ENTITY_ID,
 
+    // Interface Candy - Inventory
+    INVERTED_PLAYER_LIGHTING,
+    INVERTED_BLOCK_LIGHTING,
+
     // Interface Candy - Gui Background
     OLD_GUI_BACKGROUND,
     CUSTOM_GUI_BACKGROUND,
