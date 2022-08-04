@@ -146,6 +146,16 @@ public abstract class LevelRendererMixin
     }
 
     /**
+     * Disables the change in sky color when the sun is rising or setting.
+     * Controlled by the disabled sunrise/sunset color tweak.
+     */
+    @Redirect(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;getSunriseColor(FF)[F"))
+    private float[] NT$onGetSunriseColor(DimensionSpecialEffects instance, float timeOfDay, float partialTicks)
+    {
+        return ModConfig.Candy.disableSunriseSunsetColor() ? null : instance.getSunriseColor(timeOfDay, partialTicks);
+    }
+
+    /**
      * Disables the rendering of the dark void if the blue void is enabled and its respective override is enabled.
      * Controlled by both old blue void and old blue void override tweaks.
      */
@@ -215,6 +225,7 @@ public abstract class LevelRendererMixin
      * Renders the old big stars in the skybox.
      * Controlled by the old stars tweak.
      */
+
     @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.15F))
     private float NT$onDrawStarsWidth(float vanilla)
     {

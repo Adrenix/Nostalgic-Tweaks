@@ -124,6 +124,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_SQUARE_BORDER = true;
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
         public static final boolean OLD_STARS = true;
+        public static final boolean DISABLE_SUNRISE_SUNSET_COLORS = false;
 
         public static final TweakVersion.Generic OLD_SKY_COLOR = TweakVersion.Generic.ALPHA;
         public static final TweakVersion.Generic OLD_FOG_COLOR = TweakVersion.Generic.ALPHA;

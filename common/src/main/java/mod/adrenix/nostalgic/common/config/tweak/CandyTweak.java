@@ -91,6 +91,7 @@ public enum CandyTweak implements ITweak
     TERRAIN_FOG,
     HORIZON_FOG,
     NETHER_FOG,
+    DISABLE_SUNRISE_SUNSET_COLOR,
     SUNRISE_SUNSET_FOG,
     SUNRISE_AT_NORTH,
     FOG_COLOR,

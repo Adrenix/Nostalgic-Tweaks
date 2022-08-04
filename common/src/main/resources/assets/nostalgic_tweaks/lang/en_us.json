@@ -408,6 +408,8 @@
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSquareBorder": "Old Square Border",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSquareBorder.@Tooltip": "Replaces the disc chunk border with a square border.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableSunriseSunsetColors": "Disable Sunrise/Sunset Colors",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableSunriseSunsetColors.@Tooltip": "Disable the change in sky color when the sun is rising or setting.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSunriseAtNorth": "Old Sunrise at North",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSunriseAtNorth.@Tooltip": "Bring back the old north/south sunrise/sunset. This also rotates the moon and sky fog.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSunriseSunsetFog": "Old Sunrise/Sunset Fog",

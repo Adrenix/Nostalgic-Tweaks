@@ -289,6 +289,7 @@ public abstract class ModConfig
         public static boolean uncapTitleFPS() { return getBoolTweak(CandyTweak.UNCAP_TITLE_FPS, CANDY.uncapTitleFPS); }
 
         // World Candy
+        public static boolean disableSunriseSunsetColor() { return getBoolTweak(CandyTweak.DISABLE_SUNRISE_SUNSET_COLOR, CANDY.disableSunriseSunsetColors); }
         public static boolean oldSunriseSunsetFog() { return getBoolTweak(CandyTweak.SUNRISE_SUNSET_FOG, CANDY.oldSunriseSunsetFog); }
         public static boolean oldBlueVoidOverride() { return getBoolTweak(CandyTweak.BLUE_VOID_OVERRIDE, CANDY.oldBlueVoidOverride); }
         public static boolean oldDarkVoidHeight() { return getBoolTweak(CandyTweak.DARK_VOID_HEIGHT, CANDY.oldDarkVoidHeight); }

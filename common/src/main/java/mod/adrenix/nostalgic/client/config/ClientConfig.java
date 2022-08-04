@@ -684,6 +684,13 @@ public class ClientConfig implements ConfigData
 
         // World - Sky Candy
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_SKY_CANDY)
+        public boolean disableSunriseSunsetColors = DefaultConfig.Candy.DISABLE_SUNRISE_SUNSET_COLORS;
+        static { CandyTweak.DISABLE_SUNRISE_SUNSET_COLOR.setKey("disableSunriseSunsetColors"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_SKY_CANDY)
