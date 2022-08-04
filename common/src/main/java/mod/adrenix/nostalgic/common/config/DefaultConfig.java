@@ -57,6 +57,12 @@ public abstract class DefaultConfig
         public static final boolean INCLUDE_MODS_ON_TITLE = true;
         public static final boolean DEBUG_ENTITY_ID = true;
 
+        // Interface - Gui Background
+        public static final TweakVersion.GuiBackground OLD_GUI_BACKGROUND = TweakVersion.GuiBackground.SOLID_BLACK;
+        public static final String CUSTOM_TOP_GRADIENT = "#00000000";
+        public static final String CUSTOM_BOTTOM_GRADIENT = "#00000000";
+        public static final boolean CUSTOM_GUI_BACKGROUND = false;
+
         // Interface - Tooltip Candy
         public static final boolean OLD_TOOLTIP_BOXES = true;
         public static final boolean OLD_NO_ITEM_TOOLTIPS = false;

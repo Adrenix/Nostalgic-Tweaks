@@ -31,6 +31,12 @@ public enum CandyTweak implements ITweak
     PLAIN_SELECTED_ITEM_NAME,
     DEBUG_ENTITY_ID,
 
+    // Interface Candy - Gui Background
+    OLD_GUI_BACKGROUND,
+    CUSTOM_GUI_BACKGROUND,
+    CUSTOM_TOP_GRADIENT,
+    CUSTOM_BOTTOM_GRADIENT,
+
     // Interface Candy - Tooltips
     TOOLTIP_BOXES,
     NO_ITEM_TOOLTIPS,

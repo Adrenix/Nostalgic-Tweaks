@@ -174,10 +174,10 @@ public abstract class NostalgicUtil
         }
 
         /**
-         * Converts a hexadecimal string (e.g., #8B8B8BFF) into an RGBA integer (e.g., -7631989).
+         * Converts a hexadecimal string (e.g., #8B8B8BFF) into an ARGB integer (e.g., -7631989).
          * Any invalid input strings will have a malformed color.
          * @param convert The hexadecimal string to convert.
-         * @return An RGBA integer.
+         * @return An ARGB integer.
          */
         public static int toHexInt(String convert)
         {

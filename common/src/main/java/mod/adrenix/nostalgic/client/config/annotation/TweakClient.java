@@ -258,6 +258,7 @@ public abstract class TweakClient
         // Interface Candy Subcategories
 
         INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
+        INTERFACE_GUI_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_GUI),
         INTERFACE_ITEM_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
         INTERFACE_LOADING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOADING),
         INTERFACE_PAUSE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_PAUSE),

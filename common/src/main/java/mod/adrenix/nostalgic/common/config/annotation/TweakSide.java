@@ -53,4 +53,11 @@ public abstract class TweakSide
     {
         StatusType status() default StatusType.WAIT;
     }
+
+    /**
+     * Instructs the mod that this configuration entry is a hex string input.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD})
+    public @interface Color {}
 }

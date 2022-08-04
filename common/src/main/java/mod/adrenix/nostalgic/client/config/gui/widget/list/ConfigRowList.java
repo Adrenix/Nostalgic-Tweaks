@@ -18,6 +18,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.CycleButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
+import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
@@ -135,10 +136,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             return new BooleanRow(group, key, (Boolean) value).add();
         else if (value instanceof Integer)
             return new IntSliderRow(group, key, (Integer) value).add();
-        else if (value instanceof String)
-            return new StringRow(group, key, (String) value).add();
         else if (value instanceof Enum)
             return new EnumRow<E>(group, key, value).add();
+        else if (value instanceof String)
+        {
+            if (CommonReflect.getAnnotation(group, key, TweakSide.Color.class) != null)
+                return new ColorRow(group, key, (String) value).add();
+            return new StringRow(group, key, (String) value).add();
+        }
         else
             return new InvalidRow(group, key, value).add();
     }

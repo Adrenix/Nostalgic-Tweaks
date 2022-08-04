@@ -33,6 +33,10 @@ public abstract class NostalgicLang
 
     public static class Gui
     {
+        public static final String BACKGROUND_SOLID_BLACK = "gui.nostalgic_tweaks.background.solid_black";
+        public static final String BACKGROUND_SOLID_BLUE = "gui.nostalgic_tweaks.background.solid_blue";
+        public static final String BACKGROUND_GRADIENT_BLUE = "gui.nostalgic_tweaks.background.gradient_blue";
+
         public static final String GUI_OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
         public static final String GUI_OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
         public static final String GUI_OVERLAY_COLOR = "gui.nostalgic_tweaks.overlay.color";
@@ -226,6 +230,7 @@ public abstract class NostalgicLang
 
         public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
         public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
+        public static final String CANDY_SUBCATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.subcategory.gui";
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";

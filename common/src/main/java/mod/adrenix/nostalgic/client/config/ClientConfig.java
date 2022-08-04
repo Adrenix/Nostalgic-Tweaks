@@ -201,6 +201,42 @@ public class ClientConfig implements ConfigData
         public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
         static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
 
+        // Interface - Gui Background Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_GUI_CANDY)
+        public TweakVersion.GuiBackground oldGuiBackground = DefaultConfig.Candy.OLD_GUI_BACKGROUND;
+        static { CandyTweak.OLD_GUI_BACKGROUND.setKey("oldGuiBackground"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_GUI_CANDY)
+        public boolean customGuiBackground = DefaultConfig.Candy.CUSTOM_GUI_BACKGROUND;
+        static { CandyTweak.CUSTOM_GUI_BACKGROUND.setKey("customGuiBackground"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.Color
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_GUI_CANDY)
+        public String customTopGradient = DefaultConfig.Candy.CUSTOM_TOP_GRADIENT;
+        static { CandyTweak.CUSTOM_TOP_GRADIENT.setKey("customTopGradient"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.Color
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_GUI_CANDY)
+        public String customBottomGradient = DefaultConfig.Candy.CUSTOM_BOTTOM_GRADIENT;
+        static { CandyTweak.CUSTOM_BOTTOM_GRADIENT.setKey("customBottomGradient"); }
+
         // Interface - Loading Candy
 
         @TweakSide.Client
