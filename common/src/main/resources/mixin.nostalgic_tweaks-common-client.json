@@ -26,6 +26,7 @@
     "renderer.ItemRendererLastMixin",
     "renderer.LevelRendererMixin",
     "renderer.LightTextureMixin",
+    "renderer.LivingEntityRendererMixin",
     "renderer.ThrownItemRendererMixin",
     "model.AbstractZombieModelMixin",
     "model.AnimationUtilsMixin",

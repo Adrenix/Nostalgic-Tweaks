@@ -1187,6 +1187,13 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
         public boolean oldSneaking = DefaultConfig.Animation.OLD_SNEAKING;
         static { AnimationTweak.SNEAK_SMOOTH.setKey("oldSneaking"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldDeath = DefaultConfig.Animation.OLD_DEATH;
+        static { AnimationTweak.DEATH.setKey("oldDeath"); }
     }
 
     @TweakSide.Ignore
