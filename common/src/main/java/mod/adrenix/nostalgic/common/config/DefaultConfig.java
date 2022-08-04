@@ -55,6 +55,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
         public static final boolean INCLUDE_MODS_ON_PAUSE = true;
         public static final boolean INCLUDE_MODS_ON_TITLE = true;
+        public static final boolean DEBUG_ENTITY_ID = true;
 
         // Interface - Tooltip Candy
         public static final boolean OLD_TOOLTIP_BOXES = true;

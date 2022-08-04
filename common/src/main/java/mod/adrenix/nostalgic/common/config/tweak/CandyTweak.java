@@ -29,6 +29,7 @@ public enum CandyTweak implements ITweak
     LOADING_SCREENS,
     NO_SELECTED_ITEM_NAME,
     PLAIN_SELECTED_ITEM_NAME,
+    DEBUG_ENTITY_ID,
 
     // Interface Candy - Tooltips
     TOOLTIP_BOXES,

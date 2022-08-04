@@ -229,6 +229,7 @@ public abstract class ModConfig
         public static boolean oldLoadingScreens() { return getBoolTweak(CandyTweak.LOADING_SCREENS, CANDY.oldLoadingScreens); }
         public static boolean removeLoadingBar() { return getBoolTweak(CandyTweak.REMOVE_LOADING_BAR, CANDY.removeLoadingBar); }
         public static boolean oldButtonHover() { return getBoolTweak(CandyTweak.BUTTON_HOVER, CANDY.oldButtonHover); }
+        public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 

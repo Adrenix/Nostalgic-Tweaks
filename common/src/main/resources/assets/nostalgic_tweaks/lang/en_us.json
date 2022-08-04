@@ -329,6 +329,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldPauseMenu.@Tooltip": "Bring back the old pause menus throughout various versions of Minecraft.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.includeModsOnPause": "Include Mods Button",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.includeModsOnPause.@Tooltip": "Add a§e Mods§r button to§a every§r old pause screen layout.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.debugEntityId": "Debug Entity Id",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.debugEntityId.@Tooltip": "Show entity identification numbers when the§e F3§r debug screen is active.\n\nThis tweak will§c not§r work on servers.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTooltipBoxes": "Old Tooltip Boxes",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTooltipBoxes.@Tooltip": "Bring back the old tooltip boxes.",

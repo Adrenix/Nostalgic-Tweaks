@@ -194,6 +194,13 @@ public class ClientConfig implements ConfigData
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.INTERFACE_CANDY)
+        public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
+        static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
+
         // Interface - Loading Candy
 
         @TweakSide.Client
