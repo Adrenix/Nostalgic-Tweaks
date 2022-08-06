@@ -206,7 +206,7 @@
   "gui.nostalgic_tweaks.config.candy.subcategory.item": "Item Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.title": "Title Screen",
   "gui.nostalgic_tweaks.config.candy.subcategory.loading": "Loading Screen",
-  "gui.nostalgic_tweaks.config.candy.subcategory.overlay": "Version Overlay",
+  "gui.nostalgic_tweaks.config.candy.subcategory.version": "Version Overlay",
   "gui.nostalgic_tweaks.config.candy.subcategory.pause": "Pause Screen",
   "gui.nostalgic_tweaks.config.candy.subcategory.tooltip": "Tooltips",
   "gui.nostalgic_tweaks.config.candy.subcategory.flat": "2D Items",

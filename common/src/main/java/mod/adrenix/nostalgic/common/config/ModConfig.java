@@ -411,7 +411,7 @@ public abstract class ModConfig
         public static boolean oldZombieArms() { return getBoolTweak(AnimationTweak.ZOMBIE_ARMS, ANIMATION.oldZombieArms); }
 
         // Player Animations
-        public static boolean disablePlayerTopple() { return getBoolTweak(AnimationTweak.DEATH, ANIMATION.disableDeathTopple); }
+        public static boolean disablePlayerTopple() { return getBoolTweak(AnimationTweak.DEATH_TOPPLE, ANIMATION.disableDeathTopple); }
         public static boolean oldBackwardsWalking() { return getBoolTweak(AnimationTweak.BACKWARD_WALK, ANIMATION.oldBackwardWalking); }
         public static boolean oldVerticalBobbing() { return getBoolTweak(AnimationTweak.BOB_VERTICAL, ANIMATION.oldVerticalBobbing); }
         public static boolean oldCollideBobbing() { return getBoolTweak(AnimationTweak.COLLIDE_BOB, ANIMATION.oldCollideBobbing); }

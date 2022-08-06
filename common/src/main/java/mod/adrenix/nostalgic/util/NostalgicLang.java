@@ -235,7 +235,7 @@ public abstract class NostalgicLang
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";
-        public static final String CANDY_SUBCATEGORY_OVERLAY = "gui.nostalgic_tweaks.config.candy.subcategory.overlay";
+        public static final String CANDY_SUBCATEGORY_VERSION = "gui.nostalgic_tweaks.config.candy.subcategory.version";
         public static final String CANDY_SUBCATEGORY_PAUSE = "gui.nostalgic_tweaks.config.candy.subcategory.pause";
         public static final String CANDY_SUBCATEGORY_TOOLTIP = "gui.nostalgic_tweaks.config.candy.subcategory.tooltip";
         public static final String CANDY_SUBCATEGORY_FLAT = "gui.nostalgic_tweaks.config.candy.subcategory.flat";

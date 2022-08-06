@@ -9,10 +9,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.function.Supplier;
 
 /**
- * This packet is sent to the client with details about a player's last entity attacker.
+ * This packet is sent to the client with the server player's calculated hurt direction angle.
  *
  * If the client never receives this packet, then the mod will play the regular hurt animation.
- * The animation will still simulate the old random tilt direction effect.
+ * The client-side animation can still calculate a random tilt direction effect.
  */
 
 public class PacketS2CHurtDirection

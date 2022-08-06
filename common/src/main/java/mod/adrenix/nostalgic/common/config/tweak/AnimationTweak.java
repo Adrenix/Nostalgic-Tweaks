@@ -24,7 +24,7 @@ public enum AnimationTweak implements ITweak
     GHAST_CHARGING,
 
     // Player Animations
-    DEATH,
+    DEATH_TOPPLE,
     BACKWARD_WALK,
     COLLIDE_BOB,
     RANDOM_DAMAGE,

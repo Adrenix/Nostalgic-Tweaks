@@ -275,11 +275,11 @@ public class ClientConfig implements ConfigData
         public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
         static { CandyTweak.LOADING_SCREENS.setKey("oldLoadingScreens"); }
 
-        // Interface - Overlay Candy
+        // Interface - Version Candy
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_VERSION_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean oldVersionOverlay = DefaultConfig.Candy.OLD_VERSION_OVERLAY;
         static { CandyTweak.VERSION_OVERLAY.setKey("oldVersionOverlay"); }
@@ -287,14 +287,14 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_VERSION_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         public TweakType.Corner oldOverlayCorner = DefaultConfig.Candy.OLD_OVERLAY_CORNER;
         static { CandyTweak.VERSION_CORNER.setKey("oldOverlayCorner"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_OVERLAY_CANDY)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_VERSION_CANDY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
         static { CandyTweak.VERSION_TEXT.setKey("oldOverlayText"); }
@@ -1223,7 +1223,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
         public boolean disableDeathTopple = DefaultConfig.Animation.DISABLE_DEATH_TOPPLE;
-        static { AnimationTweak.DEATH.setKey("disableDeathTopple"); }
+        static { AnimationTweak.DEATH_TOPPLE.setKey("disableDeathTopple"); }
     }
 
     @TweakSide.Ignore
