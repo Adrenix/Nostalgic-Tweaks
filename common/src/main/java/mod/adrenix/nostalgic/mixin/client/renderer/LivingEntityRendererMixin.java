@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class LivingEntityRendererMixin
 {
     /**
-     * Prevents the death animation from playing for player entities.
+     * Prevents the death fall-over animation for player entities.
      * Controlled by the old death animation tweak.
      */
     @Redirect
@@ -27,6 +27,6 @@ public abstract class LivingEntityRendererMixin
     )
     private int NT$onSetupRotations(LivingEntity entity)
     {
-        return ModConfig.Animation.oldDeath() && entity instanceof Player ? 0 : entity.deathTime;
+        return ModConfig.Animation.disablePlayerTopple() && entity instanceof Player ? 0 : entity.deathTime;
     }
 }

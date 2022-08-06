@@ -37,6 +37,7 @@
     "world.entity.LivingEntityMixin",
     "world.entity.PlayerMixin",
     "CameraMixin",
+    "ClientPacketListenerMixin",
     "LightingMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",

@@ -27,7 +27,7 @@ public class NostalgicTweaks
     /* Networking */
 
     public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));
-    public static final String PROTOCOL = "1.0";
+    public static final String PROTOCOL = "1.1";
     private static MinecraftServer server;
     private static boolean isNetworkSupported = false;
 

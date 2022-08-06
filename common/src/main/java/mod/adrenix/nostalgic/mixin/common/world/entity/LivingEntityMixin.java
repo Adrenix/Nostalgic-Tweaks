@@ -1,7 +1,10 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.network.packet.PacketS2CHurtDirection;
+import mod.adrenix.nostalgic.util.common.PacketUtil;
 import mod.adrenix.nostalgic.util.server.ModServerUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -38,7 +42,24 @@ public abstract class LivingEntityMixin extends Entity
         super(entity, level);
     }
 
+    /* Shadows */
+
+    @Shadow public float hurtDir;
+
     /* Injections */
+
+    /**
+     * Sends a last hurt source packet to the client so the damage tilt animation can be applied.
+     * Controlled by the old damage tilt tweak.
+     */
+    @Inject(method = "hurt", at = @At("TAIL"))
+    private void NT$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback)
+    {
+        LivingEntity living = (LivingEntity) (Object) this;
+
+        if (ModConfig.Animation.oldDirectionTilt() && living instanceof ServerPlayer player)
+            PacketUtil.sendToPlayer(player, new PacketS2CHurtDirection(this.hurtDir));
+    }
 
     /**
      * Prevents living entities from playing the food consumption sound.

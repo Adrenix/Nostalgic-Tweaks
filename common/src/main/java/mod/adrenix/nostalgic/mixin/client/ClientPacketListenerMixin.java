@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.common;
+package mod.adrenix.nostalgic.mixin.client;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,8 +22,6 @@ public abstract class ClientPacketListenerMixin
     /* Injections */
 
     /**
-     * Client:
-     *
      * Replaces the experience orb pickup sound with the early beta experience orb pickup sound.
      * This is just the item pickup sound with a deeper pitch.
      *

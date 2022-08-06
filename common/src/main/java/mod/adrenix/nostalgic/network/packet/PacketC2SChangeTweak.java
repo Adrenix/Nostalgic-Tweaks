@@ -37,28 +37,25 @@ public class PacketC2SChangeTweak
 
     public PacketC2SChangeTweak(TweakServerCache<?> tweak)
     {
-        // Packet Creation
-
+        // Packet creation
         this.json = new TweakSerializer(tweak).serialize();
     }
 
     public PacketC2SChangeTweak(FriendlyByteBuf buffer)
     {
-        // Decode Packet into Data
-
+        // Decode packet into data
         this.json = buffer.readUtf();
     }
 
     public void encode(FriendlyByteBuf buffer)
     {
-        // Encode Data into Packet
-
+        // Encode data into packet
         buffer.writeUtf(this.json);
     }
 
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
-        // Server Received Packet Data
+        // Server received packet data
 
         NetworkManager.PacketContext context = supplier.get();
         context.queue(() -> {

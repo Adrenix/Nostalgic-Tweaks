@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
     @Override public float NT$getCameraPitch() { return NT$cameraPitch; }
     @Override public float NT$getPrevCameraPitch() { return NT$prevCameraPitch; }
 
-    /* Mixin Injections */
+    /* Injections */
 
     /**
      * Controls how fast the swinging animation is.
@@ -85,7 +85,8 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
             callback.setReturnValue(mod - (1 + MobEffectUtil.getDigSpeedAmplification(player)));
         else
         {
-            callback.setReturnValue(
+            callback.setReturnValue
+            (
                 player.hasEffect(MobEffects.DIG_SLOWDOWN) ?
                     mod + (1 + Objects.requireNonNull(player.getEffect(MobEffects.DIG_SLOWDOWN)).getAmplifier()) * 2 :
                     mod
@@ -129,8 +130,8 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
      *
      * Prevents the ability for the client player to sprint or the ability to 'sprint swim'.
      *
-     * Although this tweak is being mixed into the client, a server running the N.T. mod will dictate when these
-     * gameplay elements should be active.
+     * Although this tweak is being mixed into the client, a server running N.T will control when these gameplay
+     * elements should be active.
      */
     @ModifyVariable(method = "setSprinting", at = @At("HEAD"), argsOnly = true)
     private boolean NT$onSetSprinting(boolean vanilla)

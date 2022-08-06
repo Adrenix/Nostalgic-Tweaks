@@ -66,5 +66,6 @@ public class ServerConfig implements ConfigData
     {
         // Player Animations
         public boolean oldCreativeCrouch = DefaultConfig.Animation.OLD_CREATIVE_CROUCH;
+        public boolean oldDirectionalDamage = DefaultConfig.Animation.OLD_DIRECTIONAL_DAMAGE;
     }
 }

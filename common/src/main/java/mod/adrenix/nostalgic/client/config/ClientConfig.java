@@ -1198,6 +1198,20 @@ public class ClientConfig implements ConfigData
         public boolean oldCreativeCrouch = DefaultConfig.Animation.OLD_CREATIVE_CROUCH;
         static { AnimationTweak.CREATIVE_CROUCH.setKey("oldCreativeCrouch"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldDirectionalDamage = DefaultConfig.Animation.OLD_DIRECTIONAL_DAMAGE;
+        static { AnimationTweak.DIRECTIONAL_DAMAGE.setKey("oldDirectionalDamage"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
+        public boolean oldRandomDamage = DefaultConfig.Animation.OLD_RANDOM_DAMAGE;
+        static { AnimationTweak.RANDOM_DAMAGE.setKey("oldRandomDamage"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
@@ -1208,8 +1222,8 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.PLAYER_ANIMATION)
-        public boolean oldDeath = DefaultConfig.Animation.OLD_DEATH;
-        static { AnimationTweak.DEATH.setKey("oldDeath"); }
+        public boolean disableDeathTopple = DefaultConfig.Animation.DISABLE_DEATH_TOPPLE;
+        static { AnimationTweak.DEATH.setKey("disableDeathTopple"); }
     }
 
     @TweakSide.Ignore

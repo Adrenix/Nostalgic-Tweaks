@@ -27,7 +27,8 @@ public class PacketS2CTweakUpdate
 {
     public static void register()
     {
-        NostalgicTweaks.NETWORK.register(
+        NostalgicTweaks.NETWORK.register
+        (
             PacketS2CTweakUpdate.class,
             PacketS2CTweakUpdate::encode,
             PacketS2CTweakUpdate::new,
@@ -39,28 +40,25 @@ public class PacketS2CTweakUpdate
 
     public PacketS2CTweakUpdate(TweakServerCache<?> tweak)
     {
-        // Packet Creation
-
+        // Packet creation
         this.json = new TweakSerializer(tweak).serialize();
     }
 
     public PacketS2CTweakUpdate(FriendlyByteBuf buffer)
     {
-        // Decode Packet into Data
-
+        // Decode packet into data
         this.json = buffer.readUtf();
     }
 
     public void encode(FriendlyByteBuf buffer)
     {
-        // Encode Data into Packet
-
+        // Encode data into packet
         buffer.writeUtf(this.json);
     }
 
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
-        // Client Received Packet Data
+        // Client received packet data
         /*
             WARNING:
 

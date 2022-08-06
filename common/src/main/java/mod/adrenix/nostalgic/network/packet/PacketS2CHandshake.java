@@ -21,7 +21,8 @@ public class PacketS2CHandshake
 {
     public static void register()
     {
-        NostalgicTweaks.NETWORK.register(
+        NostalgicTweaks.NETWORK.register
+        (
             PacketS2CHandshake.class,
             PacketS2CHandshake::encode,
             PacketS2CHandshake::new,
@@ -33,28 +34,25 @@ public class PacketS2CHandshake
 
     public PacketS2CHandshake()
     {
-        // Packet Creation
-
+        // Packet creation
         this.protocol = NostalgicTweaks.PROTOCOL;
     }
 
     public PacketS2CHandshake(FriendlyByteBuf buffer)
     {
-        // Decode Packet into Data
-
+        // Decode packet into data
         this.protocol = buffer.readUtf();
     }
 
     public void encode(FriendlyByteBuf buffer)
     {
-        // Encode Data into Packet
-
+        // Encode data into packet
         buffer.writeUtf(this.protocol);
     }
 
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
-        // Client Received Packet Data
+        // Client received packet data
         /*
             WARNING:
 

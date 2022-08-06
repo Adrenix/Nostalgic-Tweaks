@@ -411,12 +411,14 @@ public abstract class ModConfig
         public static boolean oldZombieArms() { return getBoolTweak(AnimationTweak.ZOMBIE_ARMS, ANIMATION.oldZombieArms); }
 
         // Player Animations
+        public static boolean disablePlayerTopple() { return getBoolTweak(AnimationTweak.DEATH, ANIMATION.disableDeathTopple); }
         public static boolean oldBackwardsWalking() { return getBoolTweak(AnimationTweak.BACKWARD_WALK, ANIMATION.oldBackwardWalking); }
         public static boolean oldVerticalBobbing() { return getBoolTweak(AnimationTweak.BOB_VERTICAL, ANIMATION.oldVerticalBobbing); }
         public static boolean oldCollideBobbing() { return getBoolTweak(AnimationTweak.COLLIDE_BOB, ANIMATION.oldCollideBobbing); }
         public static boolean oldCreativeCrouch() { return getSidedBoolTweak(AnimationTweak.CREATIVE_CROUCH, ANIMATION.oldCreativeCrouch, SERVER_ANIMATION.oldCreativeCrouch); }
+        public static boolean oldDirectionTilt() { return getSidedBoolTweak(AnimationTweak.DIRECTIONAL_DAMAGE, ANIMATION.oldDirectionalDamage, SERVER_ANIMATION.oldDirectionalDamage); }
+        public static boolean oldRandomTilt() { return getBoolTweak(AnimationTweak.RANDOM_DAMAGE, ANIMATION.oldRandomDamage); }
         public static boolean oldSneaking() { return getBoolTweak(AnimationTweak.SNEAK_SMOOTH, ANIMATION.oldSneaking); }
-        public static boolean oldDeath() { return getBoolTweak(AnimationTweak.DEATH, ANIMATION.oldDeath); }
 
         // Animation Constants
         public static float getSneakHeight() { return 1.41F; }

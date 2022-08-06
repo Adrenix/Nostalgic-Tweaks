@@ -206,12 +206,14 @@ public abstract class DefaultConfig
         public static final boolean OLD_GHAST_CHARGING = true;
 
         // Player Animations
+        public static final boolean DISABLE_DEATH_TOPPLE = true;
         public static final boolean OLD_BACKWARD_WALKING = true;
         public static final boolean OLD_COLLIDE_BOBBING = true;
         public static final boolean OLD_VERTICAL_BOBBING = true;
         public static final boolean OLD_CREATIVE_CROUCH = true;
+        public static final boolean OLD_DIRECTIONAL_DAMAGE = true;
+        public static final boolean OLD_RANDOM_DAMAGE = true;
         public static final boolean OLD_SNEAKING = true;
-        public static final boolean OLD_DEATH = true;
     }
 
     public static class Swing
