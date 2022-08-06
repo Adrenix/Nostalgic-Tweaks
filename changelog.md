@@ -34,14 +34,18 @@ All updates that start with a 2.x.x version number will support multiplayer.
 
 - Redid the mod's console output.
 - Redid the mod's config runtime and loader system. Some users may see about a 10-20 FPS increase. 
+- Redid the old alpha logo, so it refreshes at the game's FPS.
 - Readjusted the settings screen's category button positions.
 - Readjusted item model gap correctional values for Forge.
+- Readjusted animation for the old sneaking tweak.
+- Readjusted old alpha logo positioning.
 - Added debugging functionality, it can be activated/deactivated with Ctrl + Shift + D in the mod's home settings screen.
 - Added new tweak category: Gameplay
 - Added new Combat System subcategory for Gameplay
 - Added new tweak: (Combat System) Instant Bow
-- Added new tweak: (Combat System) Arrow Speed - Used in conjunction with the Instant Bow tweak.
+- Added new tweak: (Combat System) Arrow Speed - Used in conjunction with the Instant Bow tweak
 - Added new tweak: (Combat System) Invincible Bow
+- Added new tweak: (Combat System) Disable Miss Timer
 - Added new tweak: (Combat System) Disable Cooldown
 - Added new tweak: (Combat System) Disable Sweep
 - Added new Experience System subcategory for Gameplay
@@ -65,17 +69,29 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Added new tweak: (Hunger System) Instant Eat
 - Added new tweak: (Hunger System) Old Food Stacking
 > Only vanilla items will be impacted. Foods that restore half a heart can stack up to 8 like potatoes and carrots.
+- Added new tweak: (Player Animation) Disable Death Topple
 - Added new tweak: (Player Animation) Old Backwards Walking
 - Added new tweak: (Player Animation) Old Creative Crouching
+- Added new tweak: (Player Animation) Old Directional Damage
+- Added new tweak: (Player Animation) Old Random Damage
+- Added new tweak: (Particle Candy) Disable Nether Biome Particles
 - Added new tweak: (Lighting Candy) Disable Gamma
 - Added new tweak: (Lighting Candy) Old Lighting Brightness
+- Added new tweak: (Tooltip Parts) Show Dye Information
+- Added new tweak: (Tooltip Parts) Show Enchantment Information
+- Added new tweak: (Tooltip Parts) Show Modifier Information
+- Added new tweak: (Gui Interface) Old Gui Backgrounds
+- Added new tweak: (Gui Interface) Custom Gui Backgrounds
+- Added new tweak: (Interface Candy) Show Debug Entity IDs
 - Added new tweak: (Interface Candy) Old Pause Screen
-- Added new tweak: (Interface Candy) Simple Tooltips
 - Added new tweak: (Interface Candy) Include Mods Button for Pause Screen
 - Added new tweak: (Interface Candy) Include Mods Button for Title Screen
 > The "Mods" button will only appear in Fabric when Mod Menu is installed.
 - Added new tweak: (Title Screen Candy) Remove Realms Button
+- Added new tweak: (Inventory Candy) Inverted Player Lighting
+- Added new tweak: (Inventory Candy) Inverted Block Lighting
+- Added new tweak: (Sky Candy) Disable Sunrise/Sunset Colors
+- Added new tweak: (Bugs) Old Ladder Gap
 - Added new tweak: (Sound) Ignore Modded Mob Steps - Prevents the mod from overriding the footstep sounds for modded entities.
 - Added new tweak: (Sound) Disable Chest Sounds
 - Added new tweak: (Sound) Old Chest Sounds
-- Fixed the old fog rendering from overriding the dark fog caused by the darkness effect.
