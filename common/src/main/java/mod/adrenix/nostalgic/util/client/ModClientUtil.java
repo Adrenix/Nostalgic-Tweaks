@@ -158,7 +158,7 @@ public abstract class ModClientUtil
         public static void renderOverlays(PoseStack poseStack)
         {
             Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.options.renderDebug)
+            if (minecraft.options.renderDebug || minecraft.options.hideGui)
                 return;
 
             Player player = minecraft.player;
