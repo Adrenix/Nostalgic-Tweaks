@@ -36,15 +36,15 @@ public abstract class GameRendererMixin
         {
             ICameraPitch injector = (ICameraPitch) player;
 
-            float f = player.walkDist - player.walkDistO;
-            float f1 = -(player.walkDist + f * partialTicks);
-            float f2 = Mth.lerp(partialTicks, player.oBob, player.bob);
-            float f3 = Mth.lerp(partialTicks, injector.NT$getPrevCameraPitch(), injector.NT$getCameraPitch());
+            float distDelta = player.walkDist - player.walkDistO;
+            float walkDist = -(player.walkDist + distDelta * partialTicks);
+            float bob = Mth.lerp(partialTicks, player.oBob, player.bob);
+            float pitch = Mth.lerp(partialTicks, injector.NT$getPrevCameraPitch(), injector.NT$getCameraPitch());
 
-            poseStack.translate(Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, -Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(f3));
+            poseStack.translate(Mth.sin(walkDist * (float) Math.PI) * bob * 0.5F, -Math.abs(Mth.cos(walkDist * (float) Math.PI) * bob), 0.0F);
+            poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(walkDist * (float) Math.PI) * bob * 3.0F));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(Math.abs(Mth.cos(walkDist * (float) Math.PI - 0.2F) * bob) * 5.0F));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
             callback.cancel();
         }
