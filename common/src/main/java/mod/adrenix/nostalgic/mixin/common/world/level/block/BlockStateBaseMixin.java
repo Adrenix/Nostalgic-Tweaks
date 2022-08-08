@@ -65,18 +65,23 @@ public abstract class BlockStateBaseMixin
     }
 
     /**
-     * Client:
+     * Multiplayer:
      *
-     * Occlusion needs to be disabled to prevent rendering issues if the old chest voxel tweak gets disabled after being enabled.
-     * This is because the occlusion block property cannot be changed during runtime.
+     * Occlusion and solid rendering needs to be enabled to prevent rendering issues such as light coming through chests.
+     * Controlled by the old chest voxel tweak since this will change block behavior.
      */
+
+    @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
+    private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Candy.oldChestVoxel() && ModClientUtil.Block.isBlockOldChest(this.getBlock()))
+            callback.setReturnValue(true);
+    }
+
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (NostalgicTweaks.isServer())
-            return;
-
-        if (ModClientUtil.Block.isBlockOldChest(this.getBlock()))
-            callback.setReturnValue(false);
+        if (ModConfig.Candy.oldChestVoxel() && ModClientUtil.Block.isBlockOldChest(this.getBlock()))
+            callback.setReturnValue(true);
     }
 }

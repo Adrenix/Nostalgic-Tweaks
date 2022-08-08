@@ -8,12 +8,12 @@ import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import mod.adrenix.nostalgic.util.client.NetClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,7 +49,7 @@ public abstract class ChestBlockMixin
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
         TweakServerCache<Boolean> cache = TweakServerCache.get(CandyTweak.CHEST_VOXEL);
-        VoxelShape shape = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+        VoxelShape shape = Shapes.block();
 
         if (NostalgicTweaks.isServer() && ModConfig.Candy.oldChestVoxel())
             callback.setReturnValue(shape);

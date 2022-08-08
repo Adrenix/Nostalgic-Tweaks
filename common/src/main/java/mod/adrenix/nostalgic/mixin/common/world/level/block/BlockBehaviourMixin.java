@@ -26,10 +26,10 @@ public abstract class BlockBehaviourMixin
     }
 
     /**
-     * Tricks the shade calculator thinking that chests are full-sized blocks.
+     * Tricks the shade calculator thinking that a block is full-sized.
      * This is needed so ambient occlusion can be applied correctly.
      *
-     * Controlled by various old chest tweaks.
+     * Controlled by various tweaks.
      */
     @Redirect
     (
