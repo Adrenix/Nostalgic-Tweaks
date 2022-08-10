@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "nostalgic_tweaks",
+  "version": "${version}",
+  "name": "Nostalgic Tweaks",
+  "description": "Brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.",
+  "authors": [
+    "Adrenix"
+  ],
+
+  "contributors": [
+    {
+      "name": "See Source Contributors",
+      "contact": {
+        "homepage": "https://github.com/Adrenix/Nostalgic-Tweaks/blob/main/contributors.md"
+      }
+    }
+  ],
+
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/nostalgic-tweaks",
+    "sources": "https://github.com/Adrenix/Nostalgic-Tweaks",
+    "issues": "https://github.com/Adrenix/Nostalgic-Tweaks/issues"
+  },
+  "license": "See Source License",
+  "icon": "assets/nostalgic_tweaks/logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "modmenu": [
+      "mod.adrenix.nostalgic.fabric.config.gui.ModMenuIntegration"
+    ],
+    "client": [
+      "mod.adrenix.nostalgic.fabric.NostalgicClientFabric"
+    ],
+    "server": [
+      "mod.adrenix.nostalgic.fabric.NostalgicServerFabric"
+    ]
+  },
+  "mixins": [
+    "mixin.nostalgic_tweaks-common.json",
+    "mixin.nostalgic_tweaks-common-client.json",
+    "mixin.nostalgic_tweaks-common-widen.json",
+    "mixin.nostalgic_tweaks-fabric.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.2",
+    "cloth-config": ">=6.2.57"
+  },
+  "breaks": {
+    "optifabric": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/jWdfVh3",
+        "gui.nostalgic_tweaks.settings.support": "https://ko-fi.com/adrenix"
+      }
+    }
+  }
+}
