@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.world.entity;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ public abstract class EntityMixin
     @Inject(method = "getCustomName", at = @At("HEAD"), cancellable = true)
     private void NT$onGetCustomName(CallbackInfoReturnable<Component> callback)
     {
-        if (ModConfig.Candy.debugEntityId() && this.level.isClientSide && Minecraft.getInstance().options.renderDebug)
+        if (ModConfig.Candy.debugEntityId() && NostalgicTweaks.isNetworkVerified() && Minecraft.getInstance().options.renderDebug)
             callback.setReturnValue(Component.literal(Integer.toString(this.getId())));
     }
 
@@ -39,7 +40,7 @@ public abstract class EntityMixin
     @Inject(method = "isCustomNameVisible", at = @At("HEAD"), cancellable = true)
     private void NT$onIsCustomNameVisible(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.debugEntityId() && this.level.isClientSide && Minecraft.getInstance().options.renderDebug)
+        if (ModConfig.Candy.debugEntityId() && NostalgicTweaks.isNetworkVerified() && Minecraft.getInstance().options.renderDebug)
             callback.setReturnValue(true);
     }
 }
