@@ -112,7 +112,7 @@ public abstract class ModClientUtil
             return new ImageButton
             (
                 screen.NT$getLeftPos() + 151,
-                screen.NT$getTopPos() + 7,//screen.height / 2 - 76,
+                screen.NT$getTopPos() + 7,
                 18,
                 18,
                 178,
@@ -120,7 +120,7 @@ public abstract class ModClientUtil
                 NostalgicUtil.Resource.OLD_INVENTORY,
                 (button) -> {
                     parent.onPress();
-                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 151, screen.NT$getTopPos() + 7); //screen.height / 2 - 76
+                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 151, screen.NT$getTopPos() + 7);
                 }
             );
         }
@@ -130,7 +130,7 @@ public abstract class ModClientUtil
             return new ImageButton
             (
                 screen.NT$getLeftPos() + 160,
-                screen.NT$getTopPos() + 7,//this.height / 2 - 76,
+                screen.NT$getTopPos() + 7,
                 9,
                 10,
                 178,
@@ -138,7 +138,7 @@ public abstract class ModClientUtil
                 NostalgicUtil.Resource.OLD_INVENTORY,
                 (button) -> {
                     parent.onPress();
-                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 160, screen.NT$getTopPos() + 7); //this.height / 2 - 76
+                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 160, screen.NT$getTopPos() + 7);
                 }
             );
         }

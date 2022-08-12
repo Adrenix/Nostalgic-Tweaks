@@ -32,8 +32,6 @@ public enum SlotTracker
 
     public boolean isEqualTo(Slot slot) { return slot.x == this.x && slot.y == this.y; }
     public void reset(Slot slot) { this.move(slot, this.vanillaX, this.vanillaY); }
-    public int getX() { return this.x; }
-    public int getY() { return this.y; }
 
     public void move(Slot slot, int x, int y)
     {
