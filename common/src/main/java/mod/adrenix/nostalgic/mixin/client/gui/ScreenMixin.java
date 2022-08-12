@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
@@ -55,7 +55,7 @@ public abstract class ScreenMixin extends GuiComponent
 
             this.fillGradient(poseStack, x, y, w, h, top, bottom);
         }
-        else if (!ModConfig.Candy.oldGuiBackground().equals(TweakVersion.GuiBackground.SOLID_BLACK))
+        else if (!ModConfig.Candy.oldGuiBackground().equals(TweakType.GuiBackground.SOLID_BLACK))
         {
             switch (ModConfig.Candy.oldGuiBackground())
             {

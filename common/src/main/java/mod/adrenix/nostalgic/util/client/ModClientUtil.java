@@ -9,8 +9,13 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractContainerScreen;
+import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
+import mod.adrenix.nostalgic.util.NostalgicUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,8 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.material.FogType;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -98,8 +103,77 @@ public abstract class ModClientUtil
     public static class Gui
     {
         // A mod screen supplier (defined in mod loaders)
-        @Nullable
-        public static Function<Screen, Screen> modScreen = null;
+        @Nullable public static Function<Screen, Screen> modScreen = null;
+
+        /* Recipe Button Helpers */
+
+        public static ImageButton getLargeBook(IMixinAbstractContainerScreen screen, ImageButton parent)
+        {
+            return new ImageButton
+            (
+                screen.NT$getLeftPos() + 151,
+                screen.NT$getTopPos() + 7,//screen.height / 2 - 76,
+                18,
+                18,
+                178,
+                20,
+                NostalgicUtil.Resource.OLD_INVENTORY,
+                (button) -> {
+                    parent.onPress();
+                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 151, screen.NT$getTopPos() + 7); //screen.height / 2 - 76
+                }
+            );
+        }
+
+        public static ImageButton getSmallBook(IMixinAbstractContainerScreen screen, ImageButton parent)
+        {
+            return new ImageButton
+            (
+                screen.NT$getLeftPos() + 160,
+                screen.NT$getTopPos() + 7,//this.height / 2 - 76,
+                9,
+                10,
+                178,
+                0,
+                NostalgicUtil.Resource.OLD_INVENTORY,
+                (button) -> {
+                    parent.onPress();
+                    ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 160, screen.NT$getTopPos() + 7); //this.height / 2 - 76
+                }
+            );
+        }
+
+        public static void createRecipeButton(IMixinAbstractContainerScreen screen, TweakType.RecipeBook book)
+        {
+            ImageButton recipeButton = null;
+
+            for (Widget widget : ((IMixinScreen) screen).NT$getRenderables())
+            {
+                if (widget instanceof ImageButton imageButton)
+                {
+                    recipeButton = imageButton;
+                    break;
+                }
+            }
+
+            if (recipeButton != null)
+            {
+                switch (book)
+                {
+                    case DISABLED -> recipeButton.setPosition(-9999, -9999);
+                    case LARGE ->
+                    {
+                        ((IMixinScreen) screen).NT$removeWidget(recipeButton);
+                        ((IMixinScreen) screen).NT$addRenderableWidget(getLargeBook(screen, recipeButton));
+                    }
+                    case SMALL ->
+                    {
+                        ((IMixinScreen) screen).NT$removeWidget(recipeButton);
+                        ((IMixinScreen) screen).NT$addRenderableWidget(getSmallBook(screen, recipeButton));
+                    }
+                }
+            }
+        }
 
         /* In-game HUD Overlays */
 

@@ -4,6 +4,7 @@ public abstract class NostalgicLang
 {
     public static class Vanilla
     {
+        public static final String INVENTORY = "container.inventory";
         public static final String GENERAL = "stat.generalButton";
         public static final String SEARCH = "gui.socialInteractions.search_hint";
         public static final String GUI_ADVANCEMENTS = "gui.advancements";
@@ -36,6 +37,14 @@ public abstract class NostalgicLang
         public static final String BACKGROUND_SOLID_BLACK = "gui.nostalgic_tweaks.background.solid_black";
         public static final String BACKGROUND_SOLID_BLUE = "gui.nostalgic_tweaks.background.solid_blue";
         public static final String BACKGROUND_GRADIENT_BLUE = "gui.nostalgic_tweaks.background.gradient_blue";
+
+        public static final String RECIPE_BOOK_DISABLED = "gui.nostalgic_tweaks.recipe_book.disabled";
+        public static final String RECIPE_BOOK_LARGE = "gui.nostalgic_tweaks.recipe_book.large";
+        public static final String RECIPE_BOOK_SMALL = "gui.nostalgic_tweaks.recipe_book.small";
+
+        public static final String INVENTORY_SHIELD_INVISIBLE = "gui.nostalgic_tweaks.inventory.shield.invisible";
+        public static final String INVENTORY_SHIELD_MIDDLE_RIGHT = "gui.nostalgic_tweaks.inventory.shield.middle_right";
+        public static final String INVENTORY_SHIELD_BOTTOM_LEFT = "gui.nostalgic_tweaks.inventory.shield.bottom_left";
 
         public static final String GUI_OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
         public static final String GUI_OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
@@ -231,6 +240,8 @@ public abstract class NostalgicLang
         public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
         public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
         public static final String CANDY_SUBCATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.subcategory.gui";
+        public static final String CANDY_SUBCATEGORY_CRAFTING = "gui.nostalgic_tweaks.config.candy.subcategory.crafting";
+        public static final String CANDY_SUBCATEGORY_FURNACE = "gui.nostalgic_tweaks.config.candy.subcategory.furnace";
         public static final String CANDY_SUBCATEGORY_INVENTORY = "gui.nostalgic_tweaks.config.candy.subcategory.inventory";
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";

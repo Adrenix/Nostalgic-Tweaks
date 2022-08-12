@@ -4,8 +4,8 @@ import mod.adrenix.nostalgic.util.NostalgicLang;
 import net.minecraft.network.chat.Component;
 
 /**
- * Any enumeration type that is not considered a "version" enumeration.
- * This enumeration should be kept server safe, so keep vanilla code out.
+ * Any enumeration type that is not considered a "change by Minecraft version" enumeration.
+ * This enumeration should be kept server safe, so keep vanilla client-only code out.
  *
  * For version enumerations see {@link mod.adrenix.nostalgic.common.config.tweak.TweakVersion}.
  */
@@ -25,5 +25,49 @@ public abstract class TweakType
 
         public String toString() { return Component.translatable(this.langKey).getString(); }
         public Corner getDisabled() { return TOP_LEFT; }
+    }
+
+    public enum GuiBackground implements IDisableTweak<GuiBackground>
+    {
+        SOLID_BLACK(NostalgicLang.Gui.BACKGROUND_SOLID_BLACK),
+        SOLID_BLUE(NostalgicLang.Gui.BACKGROUND_SOLID_BLUE),
+        GRADIENT_BLUE(NostalgicLang.Gui.BACKGROUND_GRADIENT_BLUE);
+
+        private final String langKey;
+
+        GuiBackground(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public GuiBackground getDisabled() { return SOLID_BLACK; }
+    }
+
+    public enum RecipeBook implements IDisableTweak<RecipeBook>
+    {
+        MODERN(NostalgicLang.Gui.SETTINGS_MODERN),
+        DISABLED(NostalgicLang.Gui.RECIPE_BOOK_DISABLED),
+        LARGE(NostalgicLang.Gui.RECIPE_BOOK_LARGE),
+        SMALL(NostalgicLang.Gui.RECIPE_BOOK_SMALL);
+
+        private final String langKey;
+
+        RecipeBook(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public RecipeBook getDisabled() { return MODERN; }
+    }
+
+    public enum InventoryShield implements IDisableTweak<InventoryShield>
+    {
+        MODERN(NostalgicLang.Gui.SETTINGS_MODERN),
+        INVISIBLE(NostalgicLang.Gui.INVENTORY_SHIELD_INVISIBLE),
+        MIDDLE_RIGHT(NostalgicLang.Gui.INVENTORY_SHIELD_MIDDLE_RIGHT),
+        BOTTOM_LEFT(NostalgicLang.Gui.INVENTORY_SHIELD_BOTTOM_LEFT);
+
+        private final String langKey;
+
+        InventoryShield(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public InventoryShield getDisabled() { return MODERN; }
     }
 }

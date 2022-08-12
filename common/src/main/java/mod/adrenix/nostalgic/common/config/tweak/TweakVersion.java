@@ -76,20 +76,6 @@ public abstract class TweakVersion
         public PauseLayout getDisabled() { return MODERN; }
     }
 
-    public enum GuiBackground implements IDisableTweak<GuiBackground>
-    {
-        SOLID_BLACK(NostalgicLang.Gui.BACKGROUND_SOLID_BLACK),
-        SOLID_BLUE(NostalgicLang.Gui.BACKGROUND_SOLID_BLUE),
-        GRADIENT_BLUE(NostalgicLang.Gui.BACKGROUND_GRADIENT_BLUE);
-
-        private final String langKey;
-
-        GuiBackground(String langKey) { this.langKey = langKey; }
-
-        public String toString() { return Component.translatable(this.langKey).getString(); }
-        public GuiBackground getDisabled() { return SOLID_BLACK; }
-    }
-
     public enum Hotbar implements IDisableTweak<Hotbar>
     {
         CLASSIC(NostalgicLang.Gui.SETTINGS_CLASSIC),

@@ -4,6 +4,7 @@
   "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
   "compatibilityLevel": "JAVA_16",
   "client": [
+    "IMixinAbstractContainerScreen",
     "IMixinAbstractSelectionList",
     "IMixinAbstractWidget",
     "IMixinEntity",

@@ -234,11 +234,22 @@ public abstract class ModConfig
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 
         // Interface - Inventory Candy
+        public static TweakType.RecipeBook getInventoryBook() { return getEnum(CandyTweak.INVENTORY_BOOK, CANDY.inventoryBook); }
+        public static TweakType.InventoryShield getInventoryShield() { return getEnum(CandyTweak.INVENTORY_SHIELD, CANDY.inventoryShield); }
+        public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
+        public static boolean disableEmptyShield() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_SHIELD, CANDY.disableEmptyShieldTexture); }
+        public static boolean disableEmptyArmor() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_ARMOR, CANDY.disableEmptyArmorTexture); }
         public static boolean invertPlayerLight() { return getBoolTweak(CandyTweak.INVERTED_PLAYER_LIGHTING, CANDY.invertedPlayerLighting); }
         public static boolean invertBlockLight() { return getBoolTweak(CandyTweak.INVERTED_BLOCK_LIGHTING, CANDY.invertedBlockLighting); }
 
-        // Interface - Gui Background
-        public static TweakVersion.GuiBackground oldGuiBackground() { return getEnum(CandyTweak.OLD_GUI_BACKGROUND, CANDY.oldGuiBackground); }
+        // Interface - Crafting & Furnace Screen
+        public static TweakType.RecipeBook getCraftingBook() { return getEnum(CandyTweak.CRAFTING_RECIPE, CANDY.craftingBook); }
+        public static TweakType.RecipeBook getFurnaceBook() { return getEnum(CandyTweak.FURNACE_RECIPE, CANDY.furnaceBook); }
+        public static boolean oldCraftingScreen() { return getBoolTweak(CandyTweak.CRAFTING_SCREEN, CANDY.oldCraftingScreen); }
+        public static boolean oldFurnaceScreen() { return getBoolTweak(CandyTweak.FURNACE_SCREEN, CANDY.oldFurnaceScreen); }
+
+        // Interface - Screen Candy
+        public static TweakType.GuiBackground oldGuiBackground() { return getEnum(CandyTweak.OLD_GUI_BACKGROUND, CANDY.oldGuiBackground); }
         public static boolean customGuiBackground() { return getBoolTweak(CandyTweak.CUSTOM_GUI_BACKGROUND, CANDY.customGuiBackground); }
         public static String customTopGradient() { return CANDY.customTopGradient; }
         public static String customBottomGradient() { return CANDY.customBottomGradient; }

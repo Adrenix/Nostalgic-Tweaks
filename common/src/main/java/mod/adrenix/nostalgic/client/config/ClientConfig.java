@@ -206,25 +206,67 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
-        public boolean invertedPlayerLighting = DefaultConfig.Candy.INVERTED_PLAYER_LIGHTING;
-        static { CandyTweak.INVERTED_PLAYER_LIGHTING.setKey("invertedPlayerLighting"); }
+        public boolean oldInventory = DefaultConfig.Candy.OLD_INVENTORY;
+        static { CandyTweak.OLD_INVENTORY.setKey("oldInventory"); }
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public TweakType.RecipeBook inventoryBook = DefaultConfig.Candy.INVENTORY_BOOK;
+        static { CandyTweak.INVENTORY_BOOK.setKey("inventoryBook"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public TweakType.InventoryShield inventoryShield = DefaultConfig.Candy.INVENTORY_SHIELD;
+        static { CandyTweak.INVENTORY_SHIELD.setKey("inventoryShield"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public boolean disableEmptyArmorTexture = DefaultConfig.Candy.DISABLE_EMPTY_ARMOR_TEXTURE;
+        static { CandyTweak.DISABLE_EMPTY_ARMOR.setKey("disableEmptyArmorTexture"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public boolean disableEmptyShieldTexture = DefaultConfig.Candy.DISABLE_EMPTY_SHIELD_TEXTURE;
+        static { CandyTweak.DISABLE_EMPTY_SHIELD.setKey("disableEmptyShieldTexture"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
         public boolean invertedBlockLighting = DefaultConfig.Candy.INVERTED_BLOCK_LIGHTING;
         static { CandyTweak.INVERTED_BLOCK_LIGHTING.setKey("invertedBlockLighting"); }
 
-        // Interface - Gui Background Candy
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
+        public boolean invertedPlayerLighting = DefaultConfig.Candy.INVERTED_PLAYER_LIGHTING;
+        static { CandyTweak.INVERTED_PLAYER_LIGHTING.setKey("invertedPlayerLighting"); }
+
+        // Interface - Screen Candy
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_GUI_CANDY)
-        public TweakVersion.GuiBackground oldGuiBackground = DefaultConfig.Candy.OLD_GUI_BACKGROUND;
+        public TweakType.GuiBackground oldGuiBackground = DefaultConfig.Candy.OLD_GUI_BACKGROUND;
         static { CandyTweak.OLD_GUI_BACKGROUND.setKey("oldGuiBackground"); }
 
         @TweakClient.Gui.New
@@ -253,7 +295,7 @@ public class ClientConfig implements ConfigData
         public String customBottomGradient = DefaultConfig.Candy.CUSTOM_BOTTOM_GRADIENT;
         static { CandyTweak.CUSTOM_BOTTOM_GRADIENT.setKey("customBottomGradient"); }
 
-        // Interface - Loading Candy
+        // Interface - Loading Screen
 
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
@@ -275,7 +317,7 @@ public class ClientConfig implements ConfigData
         public boolean oldLoadingScreens = DefaultConfig.Candy.OLD_LOADING_SCREENS;
         static { CandyTweak.LOADING_SCREENS.setKey("oldLoadingScreens"); }
 
-        // Interface - Version Candy
+        // Interface - Version Overlay
 
         @TweakSide.Client
         @TweakSide.EntryStatus
@@ -299,7 +341,7 @@ public class ClientConfig implements ConfigData
         public String oldOverlayText = DefaultConfig.Candy.OLD_OVERLAY_TEXT;
         static { CandyTweak.VERSION_TEXT.setKey("oldOverlayText"); }
 
-        // Interface - Pause Menu
+        // Interface - Pause Screen
 
         @TweakClient.Gui.New
         @TweakSide.Client
@@ -316,7 +358,43 @@ public class ClientConfig implements ConfigData
         public boolean includeModsOnPause = DefaultConfig.Candy.INCLUDE_MODS_ON_PAUSE;
         static { CandyTweak.PAUSE_MODS.setKey("includeModsOnPause"); }
 
-        // Interface - Chat Candy
+        // Interface - Crafting Screen
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_CRAFTING_CANDY)
+        public boolean oldCraftingScreen = DefaultConfig.Candy.OLD_CRAFTING_SCREEN;
+        static { CandyTweak.CRAFTING_SCREEN.setKey("oldCraftingScreen"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_CRAFTING_CANDY)
+        public TweakType.RecipeBook craftingBook = DefaultConfig.Candy.CRAFTING_BOOK;
+        static { CandyTweak.CRAFTING_RECIPE.setKey("craftingBook"); }
+
+        // Interface - Furnace Screen
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_FURNACE_CANDY)
+        public boolean oldFurnaceScreen = DefaultConfig.Candy.OLD_FURNACE_SCREEN;
+        static { CandyTweak.FURNACE_SCREEN.setKey("oldFurnaceScreen"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_FURNACE_CANDY)
+        public TweakType.RecipeBook furnaceBook = DefaultConfig.Candy.FURNACE_BOOK;
+        static { CandyTweak.FURNACE_RECIPE.setKey("furnaceBook"); }
+
+        // Interface - Chat Screen
 
         @TweakSide.Client
         @TweakSide.EntryStatus
@@ -329,26 +407,6 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_CHAT_CANDY)
         public boolean oldChatBox = DefaultConfig.Candy.OLD_CHAT_BOX;
         static { CandyTweak.CHAT_BOX.setKey("oldChatBox"); }
-
-        // Interface - Item Candy
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_ITEM_CANDY)
-        public boolean oldDurabilityColors = DefaultConfig.Candy.OLD_DURABILITY_COLORS;
-        static { CandyTweak.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_ITEM_CANDY)
-        public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
-        static { CandyTweak.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_ITEM_CANDY)
-        public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
-        static { CandyTweak.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
         /* Interface - Tooltip Candy */
 
@@ -438,6 +496,26 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.FLAT_ITEM_CANDY)
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
         static { CandyTweak.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
+
+        // Item - Interface
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.DISPLAY_ITEM_CANDY)
+        public boolean oldDurabilityColors = DefaultConfig.Candy.OLD_DURABILITY_COLORS;
+        static { CandyTweak.DURABILITY_COLORS.setKey("oldDurabilityColors"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.DISPLAY_ITEM_CANDY)
+        public boolean oldNoSelectedItemName = DefaultConfig.Candy.OLD_NO_SELECTED_ITEM_NAME;
+        static { CandyTweak.NO_SELECTED_ITEM_NAME.setKey("oldNoSelectedItemName"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.DISPLAY_ITEM_CANDY)
+        public boolean oldPlainSelectedItemName = DefaultConfig.Candy.OLD_PLAIN_SELECTED_ITEM_NAME;
+        static { CandyTweak.PLAIN_SELECTED_ITEM_NAME.setKey("oldPlainSelectedItemName"); }
 
         /**
          * Lighting Candy

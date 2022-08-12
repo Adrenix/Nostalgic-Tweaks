@@ -38,34 +38,58 @@ public abstract class DefaultConfig
         public static final boolean OLD_ENDER_CHEST = true;
         public static final boolean OLD_TRAPPED_CHEST = true;
 
-        // Interface Candy
-        public static final TweakVersion.PauseLayout OLD_PAUSE_MENU = TweakVersion.PauseLayout.MODERN;
-        public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
+        /* Interface Candy */
+
         public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
-        public static final TweakType.Corner OLD_OVERLAY_CORNER = TweakType.Corner.TOP_LEFT;
-        public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
-        public static final boolean REMOVE_LOADING_BAR = false;
-        public static final boolean OLD_CHAT_INPUT = true;
-        public static final boolean OLD_CHAT_BOX = true;
-        public static final boolean OLD_VERSION_OVERLAY = true;
         public static final boolean OLD_BUTTON_HOVER = true;
-        public static final boolean OLD_DURABILITY_COLORS = true;
-        public static final boolean OLD_LOADING_SCREENS = true;
-        public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
-        public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
-        public static final boolean INCLUDE_MODS_ON_PAUSE = true;
-        public static final boolean INCLUDE_MODS_ON_TITLE = true;
         public static final boolean DEBUG_ENTITY_ID = true;
 
-        // Interface - Inventory Candy
+        // Interface - Chat Screen
+        public static final boolean OLD_CHAT_INPUT = true;
+        public static final boolean OLD_CHAT_BOX = true;
+
+        // Interface - Crafting & Furnace Screen
+        public static final TweakType.RecipeBook CRAFTING_BOOK = TweakType.RecipeBook.DISABLED;
+        public static final TweakType.RecipeBook FURNACE_BOOK = TweakType.RecipeBook.DISABLED;
+        public static final boolean OLD_CRAFTING_SCREEN = true;
+        public static final boolean OLD_FURNACE_SCREEN = true;
+
+        // Interface - Loading & Pause Screen
+        public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
+        public static final TweakVersion.PauseLayout OLD_PAUSE_MENU = TweakVersion.PauseLayout.MODERN;
+        public static final boolean INCLUDE_MODS_ON_PAUSE = true;
+        public static final boolean OLD_LOADING_SCREENS = true;
+        public static final boolean REMOVE_LOADING_BAR = false;
+
+        // Interface - Inventory Screen
+        public static final TweakType.RecipeBook INVENTORY_BOOK = TweakType.RecipeBook.DISABLED;
+        public static final TweakType.InventoryShield INVENTORY_SHIELD = TweakType.InventoryShield.INVISIBLE;
+        public static final boolean OLD_INVENTORY = true;
+        public static final boolean DISABLE_EMPTY_ARMOR_TEXTURE = false;
+        public static final boolean DISABLE_EMPTY_SHIELD_TEXTURE = false;
         public static final boolean INVERTED_PLAYER_LIGHTING = true;
         public static final boolean INVERTED_BLOCK_LIGHTING = true;
 
-        // Interface - Gui Background
-        public static final TweakVersion.GuiBackground OLD_GUI_BACKGROUND = TweakVersion.GuiBackground.SOLID_BLACK;
+        // Interface - Screen Candy
+        public static final TweakType.GuiBackground OLD_GUI_BACKGROUND = TweakType.GuiBackground.SOLID_BLACK;
         public static final String CUSTOM_TOP_GRADIENT = "#00000000";
         public static final String CUSTOM_BOTTOM_GRADIENT = "#00000000";
         public static final boolean CUSTOM_GUI_BACKGROUND = false;
+
+        // Interface - Title Screen
+        public static final TweakVersion.TitleLayout TITLE_BUTTON_LAYOUT = TweakVersion.TitleLayout.MODERN;
+        public static final String TITLE_VERSION_TEXT = "Minecraft %v";
+        public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
+        public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
+        public static final boolean REMOVE_TITLE_ACCESSIBILITY = false;
+        public static final boolean REMOVE_TITLE_LANGUAGE = false;
+        public static final boolean REMOVE_TITLE_REALMS = false;
+        public static final boolean INCLUDE_MODS_ON_TITLE = true;
+        public static final boolean OVERRIDE_TITLE_SCREEN = true;
+        public static final boolean OLD_TITLE_BACKGROUND = true;
+        public static final boolean OLD_ALPHA_LOGO = true;
+        public static final boolean OLD_LOGO_OUTLINE = true;
+        public static final boolean UNCAP_TITLE_FPS = true;
 
         // Interface - Tooltip Candy
         public static final boolean OLD_TOOLTIP_BOXES = true;
@@ -73,6 +97,11 @@ public abstract class DefaultConfig
         public static final boolean SHOW_ENCHANTMENTS_TIP = true;
         public static final boolean SHOW_MODIFIERS_TIP = false;
         public static final boolean SHOW_DYE_TIP = false;
+
+        // Interface - Version Overlay
+        public static final TweakType.Corner OLD_OVERLAY_CORNER = TweakType.Corner.TOP_LEFT;
+        public static final String OLD_OVERLAY_TEXT = "Minecraft %v";
+        public static final boolean OLD_VERSION_OVERLAY = true;
 
         // Item Candy
         public static final boolean FIX_ITEM_MODEL_GAP = true;
@@ -82,6 +111,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_2D_FRAMES = true;
         public static final boolean OLD_2D_THROWN_ITEMS = true;
         public static final boolean OLD_2D_ENCHANTED_ITEMS = false;
+        public static final boolean OLD_DURABILITY_COLORS = true;
+        public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
+        public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
 
         // Lighting Candy
         public static final boolean OLD_LIGHTING = true;
@@ -102,20 +134,6 @@ public abstract class DefaultConfig
         public static final boolean OLD_NO_MAGIC_HIT_PARTICLES = true;
         public static final boolean OLD_EXPLOSION_PARTICLES = true;
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
-
-        // Title Screen Candy
-        public static final TweakVersion.TitleLayout TITLE_BUTTON_LAYOUT = TweakVersion.TitleLayout.MODERN;
-        public static final String TITLE_VERSION_TEXT = "Minecraft %v";
-        public static final boolean TITLE_BOTTOM_LEFT_TEXT = false;
-        public static final boolean REMOVE_TITLE_MOD_LOADER_TEXT = true;
-        public static final boolean REMOVE_TITLE_ACCESSIBILITY = false;
-        public static final boolean REMOVE_TITLE_LANGUAGE = false;
-        public static final boolean REMOVE_TITLE_REALMS = false;
-        public static final boolean OVERRIDE_TITLE_SCREEN = true;
-        public static final boolean OLD_TITLE_BACKGROUND = true;
-        public static final boolean OLD_ALPHA_LOGO = true;
-        public static final boolean OLD_LOGO_OUTLINE = true;
-        public static final boolean UNCAP_TITLE_FPS = true;
 
         // World Candy
         public static final int OLD_CLOUD_HEIGHT = 108;

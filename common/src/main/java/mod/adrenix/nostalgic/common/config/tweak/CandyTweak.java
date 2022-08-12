@@ -13,29 +13,43 @@ public enum CandyTweak implements ITweak
     ENDER_CHEST,
     TRAPPED_CHEST,
 
-    // Interface Candy
-    LOADING_OVERLAY,
+    /* Interface Candy */
+
     CREATIVE_HOTBAR,
-    REMOVE_LOADING_BAR,
-    VERSION_OVERLAY,
-    VERSION_CORNER,
-    VERSION_TEXT,
-    PAUSE_LAYOUT,
-    PAUSE_MODS,
-    CHAT_INPUT,
-    CHAT_BOX,
     BUTTON_HOVER,
-    DURABILITY_COLORS,
-    LOADING_SCREENS,
-    NO_SELECTED_ITEM_NAME,
-    PLAIN_SELECTED_ITEM_NAME,
     DEBUG_ENTITY_ID,
 
-    // Interface Candy - Inventory
+    // Interface Candy - Chat Screen
+    CHAT_INPUT,
+    CHAT_BOX,
+
+    // Interface Candy - Crafting Screen
+    CRAFTING_SCREEN,
+    CRAFTING_RECIPE,
+
+    // Interface Candy - Furnace Screen
+    FURNACE_SCREEN,
+    FURNACE_RECIPE,
+
+    // Interface Candy - Inventory Screen
+    OLD_INVENTORY,
+    INVENTORY_BOOK,
+    INVENTORY_SHIELD,
+    DISABLE_EMPTY_ARMOR,
+    DISABLE_EMPTY_SHIELD,
     INVERTED_PLAYER_LIGHTING,
     INVERTED_BLOCK_LIGHTING,
 
-    // Interface Candy - Gui Background
+    // Interface Candy - Loading Screen
+    LOADING_OVERLAY,
+    LOADING_SCREENS,
+    REMOVE_LOADING_BAR,
+
+    // Interface Candy - Pause Screen
+    PAUSE_LAYOUT,
+    PAUSE_MODS,
+
+    // Interface Candy - Screen Candy
     OLD_GUI_BACKGROUND,
     CUSTOM_GUI_BACKGROUND,
     CUSTOM_TOP_GRADIENT,
@@ -48,14 +62,26 @@ public enum CandyTweak implements ITweak
     MODIFIERS_TIP,
     DYE_TIP,
 
+    // Interface Candy - Version Overlay
+    VERSION_OVERLAY,
+    VERSION_CORNER,
+    VERSION_TEXT,
+
     // Item Candy
     FIX_ITEM_MODEL_GAP,
     ITEM_HOLDING,
     ITEM_MERGING,
+
+    // Item Candy - 2D Items
     FLAT_ITEMS,
     FLAT_FRAMES,
     FLAT_THROW_ITEMS,
     FLAT_ENCHANTED_ITEMS,
+
+    // Item Candy - Display
+    DURABILITY_COLORS,
+    NO_SELECTED_ITEM_NAME,
+    PLAIN_SELECTED_ITEM_NAME,
 
     // Lighting Candy
     LIGHT_FLICKER,

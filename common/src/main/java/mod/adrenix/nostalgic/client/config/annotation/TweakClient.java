@@ -257,10 +257,11 @@ public abstract class TweakClient
 
         // Interface Candy Subcategories
 
-        INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
         INTERFACE_GUI_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_GUI),
+        INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
+        INTERFACE_CRAFTING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CRAFTING),
+        INTERFACE_FURNACE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FURNACE),
         INTERFACE_INVENTORY_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_INVENTORY),
-        INTERFACE_ITEM_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
         INTERFACE_LOADING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOADING),
         INTERFACE_PAUSE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_PAUSE),
         INTERFACE_TITLE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TITLE),
@@ -270,6 +271,7 @@ public abstract class TweakClient
         // Item Candy Subcategories
 
         FLAT_ITEM_CANDY(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FLAT),
+        DISPLAY_ITEM_CANDY(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
 
         // Lighting Candy Subcategories
 
