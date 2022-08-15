@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
 import mod.adrenix.nostalgic.util.client.ModClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -39,6 +40,7 @@ public abstract class LevelRendererMixin
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private RenderBuffers renderBuffers;
     @Unique @Nullable private VertexBuffer blueBuffer;
+    @Shadow @Nullable private ClientLevel level;
 
     /* Unique Injected Fields */
 
@@ -236,6 +238,23 @@ public abstract class LevelRendererMixin
     private float NT$onDrawStarsHeight(float vanilla)
     {
         return ModConfig.Candy.oldStars() ? 0.25F : 0.1F;
+    }
+
+    /**
+     * Brings back the old star brightness values.
+     * Controlled by the old stars tweak.
+     */
+    @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupNoFog()V"))
+    private void NT$onSetupStarColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    {
+        if (!ModConfig.Candy.oldStars() || this.level == null)
+            return;
+
+        float rain = 1.0F - this.level.getRainLevel(partialTick);
+        float transparency = this.level.getStarBrightness(partialTick) * rain;
+        float color = transparency / 0.5F;
+
+        RenderSystem.setShaderColor(color, color, color, transparency);
     }
 
     /**

@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -56,6 +57,16 @@ public abstract class ClientLevelMixin
         if (ModConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;
         return instance.constantAmbientLight();
+    }
+
+    /**
+     * Adjusts the darkness of the sky color at night to match the old star colors.
+     * Controlled by the old stars tweak.
+     */
+    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    private float NT$onClampSkyColor(float vanilla)
+    {
+        return ModConfig.Candy.oldStars() ? 0.005F : vanilla;
     }
 
     /**
