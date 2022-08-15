@@ -185,7 +185,11 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     @Inject(method = "hasClickedOutside", at = @At("HEAD"), cancellable = true)
     private void NT$onHasClickedOutSide(double mouseX, double mouseY, int guiLeft, int guiTop, int mouseButton, CallbackInfoReturnable<Boolean> callback)
     {
-        if (this.hoveredSlot != null)
+        int x = guiLeft + (this.recipeBookComponent.isVisible() ? this.imageWidth : -25);
+        int y = guiTop + this.imageHeight - 32;
+        boolean isNearShield = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, x, y, 25, 32);
+
+        if (isNearShield)
             callback.setReturnValue(false);
     }
 }
