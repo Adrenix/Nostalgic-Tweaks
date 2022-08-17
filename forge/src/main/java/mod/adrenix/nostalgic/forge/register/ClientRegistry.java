@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.forge.register;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.gui.ModListScreen;
@@ -22,8 +22,8 @@ public abstract class ClientRegistry
             new ConfigScreenHandler.ConfigScreenFactory(((minecraft, screen) -> new SettingsScreen(screen, false)))
         );
 
-        // Define mods screen
-        ModClientUtil.Gui.modScreen = ModListScreen::new;
+        // Define mod screen
+        GuiUtil.modScreen = ModListScreen::new;
 
         // Initialize the client
         NostalgicTweaks.initClient(NostalgicTweaks.Environment.FORGE);

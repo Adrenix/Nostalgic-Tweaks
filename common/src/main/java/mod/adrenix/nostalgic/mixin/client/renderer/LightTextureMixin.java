@@ -45,18 +45,18 @@ public abstract class LightTextureMixin
         return skyDarken * (forceBrightness - 4.0F) + (15.0F - forceBrightness);
     }
 
-    private static float getBrightness(int i)
+    private static float getOldBrightness(int i)
     {
         float mod = ModConfig.Candy.oldLightBrightness() ? 0.05F : 0.0F;
-        float brightness = 1.0F - (float) i / 15.0F;
-        return ((1.0F - brightness) / (brightness * 3.0F + 1.0F)) * (1.0F - mod) + mod;
+        float light = 1.0F - (float) i / 15.0F;
+        return ((1.0F - light) / (light * 3.0F + 1.0F)) * (1.0F - mod) + mod;
     }
 
     /**
      * Disables the light flickering from light emitting sources.
      * Controlled by the old light flicker tweak.
      */
-    @Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void NT$onTick(CallbackInfo callback)
     {
         if (ModConfig.Candy.oldLightFlicker())
@@ -67,22 +67,23 @@ public abstract class LightTextureMixin
     }
 
     /**
-     * Brings back the old lighting colors along with using the old brightness table.
-     * Controlled by the old lighting tweak.
+     * Simulates the old lighting engine by bringing back old light colors and abrupt skylight transitioning.
+     * Controlled by the old light rendering tweak.
      */
-    @Inject(method = "updateLightTexture", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldLighting() || !this.updateLightTexture)
+        if (!ModConfig.Candy.oldLightRendering() || !this.updateLightTexture)
             return;
 
         this.updateLightTexture = false;
         this.minecraft.getProfiler().push("lightTex");
 
-        ClientLevel clientLevel = this.minecraft.level;
-        if (clientLevel == null || this.minecraft.player == null)
+        ClientLevel level = this.minecraft.level;
+        if (level == null || this.minecraft.player == null)
             return;
 
+        double gammaSetting = this.minecraft.options.gamma().get();
         float darknessScale = this.minecraft.options.darknessEffectScale().get().floatValue();
         float darknessGamma = this.getDarknessGamma(partialTicks) * darknessScale;
         float darknessEffect = this.calculateDarknessScale(this.minecraft.player, darknessGamma, partialTicks) * darknessScale;
@@ -93,10 +94,11 @@ public abstract class LightTextureMixin
             (waterVision > 0.0F && this.minecraft.player.hasEffect(MobEffects.CONDUIT_POWER) ? waterVision : 0.0F)
         ;
 
-        boolean isFlashPresent = clientLevel.getSkyFlashTime() > 0 && !this.minecraft.options.hideLightningFlash().get();
+        boolean isGammaDisabled = ModConfig.Candy.disableGamma();
+        boolean isFlashPresent = level.getSkyFlashTime() > 0 && !this.minecraft.options.hideLightningFlash().get();
         boolean isWorldDarkening = darkenAmount > 0;
 
-        float skylightSubtracted = calculateSkylightSubtracted(clientLevel);
+        float skylightSubtracted = calculateSkylightSubtracted(level);
 
         if (isFlashPresent)
             skylightSubtracted = 1;
@@ -106,56 +108,41 @@ public abstract class LightTextureMixin
             skylightSubtracted = Mth.clamp(skylightSubtracted, 1.0F, 15.0F);
         }
 
-        for (int i = 0; i < 16; i++)
+        for (int y = 0; y < 16; y++)
         {
-            for (int j = 0; j < 16; j++)
+            for (int x = 0; x < 16; x++)
             {
-                float lightBrightness = getBrightness(j);
-                float diffSkylight = i - skylightSubtracted;
+                float fromBlockLight = getOldBrightness(x);
+                float fromSkyLight = getOldBrightness((int) Math.max(y - skylightSubtracted, 0));
 
-                if (diffSkylight < 0)
-                    diffSkylight = 0;
-
-                float fromSkylight = getBrightness((int) diffSkylight);
-                if (clientLevel.dimension() == Level.END)
-                    fromSkylight = 0.22F + fromSkylight * 0.75F;
+                if (level.dimension() == Level.END)
+                    fromSkyLight = 0.22F + fromSkyLight * 0.75F;
 
                 if (potionEffect > 0.0F)
                 {
                     float shiftBrightness = potionEffect * 0.7F;
-                    float adjustBlockColor = ((1.0F - lightBrightness - 0.5F) * (shiftBrightness * lightBrightness)) + (0.5F * potionEffect);
-                    float skyAdjust = ((1.0F - fromSkylight - 0.5F) * (shiftBrightness * fromSkylight)) + (0.5F * potionEffect);
+                    float adjustBlockColor = ((1.0F - fromBlockLight - 0.5F) * (shiftBrightness * fromBlockLight)) + (0.5F * potionEffect);
+                    float skyAdjust = ((1.0F - fromSkyLight - 0.5F) * (shiftBrightness * fromSkyLight)) + (0.5F * potionEffect);
 
-                    lightBrightness += adjustBlockColor;
-                    fromSkylight += skyAdjust;
+                    fromBlockLight += adjustBlockColor;
+                    fromSkyLight += skyAdjust;
                 }
 
                 if (darknessEffect > 0.0F)
                 {
-                    lightBrightness -= darknessEffect;
-                    fromSkylight -= darknessEffect;
+                    fromBlockLight -= darknessEffect;
+                    fromSkyLight -= darknessEffect;
 
-                    lightBrightness = Mth.clamp(lightBrightness, 0.0F, 1.0F);
-                    fromSkylight = Mth.clamp(fromSkylight, 0.0F, 1.0F);
+                    fromBlockLight = Mth.clamp(fromBlockLight, 0.0F, 1.0F);
+                    fromSkyLight = Mth.clamp(fromSkyLight, 0.0F, 1.0F);
                 }
 
-                float lightMultiplier = lightBrightness * 255.0F;
-                float skyMultiplier = fromSkylight * 255.0F;
+                double gamma = isGammaDisabled ? 0.0D : gammaSetting;
+                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 0.3F + 1.0F), 0.0F, 255.0F);
+                float skylight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
+                float light = fromBlockLight > fromSkyLight ? blockLight : skylight;
 
-                double gamma = ModConfig.Candy.disableGamma() ? 0.0D : this.minecraft.options.gamma().get();
-
-                lightMultiplier = lightMultiplier * ((float) gamma + 0.3F + 1.0F);
-                if (lightMultiplier > 255.0F)
-                    lightMultiplier = 255.0F;
-
-                skyMultiplier = skyMultiplier * ((float) gamma + 1.0F);
-                if (skyMultiplier > 255.0F)
-                    skyMultiplier = 255.0F;
-
-                if (lightBrightness > fromSkylight)
-                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) (lightMultiplier) << 16 | (int) (lightMultiplier) << 8 | (int) (lightMultiplier));
-                else
-                    this.lightPixels.setPixelRGBA(j, i, 255 << 24 | (int) (skyMultiplier) << 16 | (int) (skyMultiplier) << 8 | (int) (skyMultiplier));
+                this.lightPixels.setPixelRGBA(x, y, 255 << 24 | (int) light << 16 | (int) light << 8 | (int) light);
             }
         }
 

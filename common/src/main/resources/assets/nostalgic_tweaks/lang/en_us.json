@@ -232,6 +232,7 @@
   "gui.nostalgic_tweaks.config.candy.embed.title.button": "Buttons",
   "gui.nostalgic_tweaks.config.candy.embed.title.text": "Text",
   "gui.nostalgic_tweaks.config.candy.embed.tooltip.parts": "Parts",
+  "gui.nostalgic_tweaks.config.candy.embed.void.fog": "Fog",
 
   "gui.nostalgic_tweaks.config.swing.category.item": "Item Speeds",
   "gui.nostalgic_tweaks.config.swing.category.potion": "Potion Speeds",
@@ -469,7 +470,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight": "Old Cloud Height",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight.@Tooltip": "Change the cloud height (y-level). The old heights are;§a alpha§r y-§a108§r,§e beta§r y-§e128§r, and§6 modern§r y-§6192§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars": "Old Stars",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old chunkier stars.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old chunkier and brighter stars.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay": "Gameplay",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldLadderGap": "Old Ladder Gaps",

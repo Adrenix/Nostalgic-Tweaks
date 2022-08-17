@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.gui.Gui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,6 +18,6 @@ public abstract class GuiFabricMixin
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderEffects(Lcom/mojang/blaze3d/vertex/PoseStack;)V"))
     private void NT$onRender(PoseStack poseStack, float f, CallbackInfo callback)
     {
-        ModClientUtil.Gui.renderOverlays(poseStack);
+        GuiUtil.renderOverlays(poseStack);
     }
 }

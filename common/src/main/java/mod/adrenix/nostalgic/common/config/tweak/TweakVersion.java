@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -14,9 +14,9 @@ public abstract class TweakVersion
 {
     public enum Generic implements IDisableTweak<Generic>
     {
-        ALPHA(NostalgicLang.Gui.SETTINGS_ALPHA),
-        BETA(NostalgicLang.Gui.SETTINGS_BETA),
-        MODERN(NostalgicLang.Gui.SETTINGS_MODERN);
+        ALPHA(LangUtil.Gui.SETTINGS_ALPHA),
+        BETA(LangUtil.Gui.SETTINGS_BETA),
+        MODERN(LangUtil.Gui.SETTINGS_MODERN);
 
         private final String langKey;
 
@@ -78,7 +78,7 @@ public abstract class TweakVersion
 
     public enum Hotbar implements IDisableTweak<Hotbar>
     {
-        CLASSIC(NostalgicLang.Gui.SETTINGS_CLASSIC),
+        CLASSIC(LangUtil.Gui.SETTINGS_CLASSIC),
         BETA(Generic.BETA.getLangKey()),
         MODERN(Generic.MODERN.getLangKey());
 

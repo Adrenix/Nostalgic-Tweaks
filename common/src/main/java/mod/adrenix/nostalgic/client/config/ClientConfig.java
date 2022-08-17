@@ -538,8 +538,8 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
-        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHTING;
-        static { CandyTweak.LIGHTING.setKey("oldLighting"); }
+        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHT_RENDERING;
+        static { CandyTweak.LIGHT_RENDERING.setKey("oldLighting"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
@@ -553,7 +553,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
         public boolean oldLightBrightness = DefaultConfig.Candy.OLD_LIGHT_BRIGHTNESS;
-        static { CandyTweak.BRIGHTNESS.setKey("oldLightBrightness"); }
+        static { CandyTweak.LIGHT_BRIGHTNESS.setKey("oldLightBrightness"); }
 
         @TweakClient.Gui.New
         @TweakSide.Client
@@ -807,8 +807,8 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_SKY_CANDY)
         @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.CLOUD_SLIDER)
-        @TweakClient.Gui.DisabledInteger(disabled = 192)
-        @ConfigEntry.BoundedDiscrete(min = 108, max = 192)
+        @TweakClient.Gui.DisabledInteger(value = DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT)
+        @ConfigEntry.BoundedDiscrete(min = 108, max = DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT)
         public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
         static { CandyTweak.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
 
@@ -1310,7 +1310,7 @@ public class ClientConfig implements ConfigData
     {
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.DisabledBoolean(disabled = true)
+        @TweakClient.Gui.DisabledBoolean(value = true)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean overrideSpeeds = DefaultConfig.Swing.OVERRIDE_SPEEDS;
         static { SwingTweak.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }

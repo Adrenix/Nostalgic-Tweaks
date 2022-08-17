@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import mod.adrenix.nostalgic.client.config.gui.widget.IPermissionWidget;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.network.chat.Component;
 
 public class BooleanButton extends ControlButton implements IPermissionWidget
@@ -18,6 +18,6 @@ public class BooleanButton extends ControlButton implements IPermissionWidget
     @Override
     public Component getMessage()
     {
-        return Component.translatable(this.cache.getCurrent() ? NostalgicLang.Cloth.YES : NostalgicLang.Cloth.NO);
+        return Component.translatable(this.cache.getCurrent() ? LangUtil.Cloth.YES : LangUtil.Cloth.NO);
     }
 }

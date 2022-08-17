@@ -11,9 +11,9 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -43,7 +43,7 @@ public class StatusButton extends Button
         if (this.cache.isClient())
             return false;
         else if (Minecraft.getInstance().player != null)
-            return !NetClientUtil.isPlayerOp(Minecraft.getInstance().player);
+            return !NetUtil.isPlayerOp(Minecraft.getInstance().player);
         return false;
     }
 
@@ -58,7 +58,7 @@ public class StatusButton extends Button
             cacheStatus = serverStatus;
 
         TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
-        boolean isTweakDynamic = dynamic != null && minecraft.level != null && cacheStatus != StatusType.FAIL && NetClientUtil.isMultiplayer();
+        boolean isTweakDynamic = dynamic != null && minecraft.level != null && cacheStatus != StatusType.FAIL && NetUtil.isMultiplayer();
         boolean isTweakLocked = this.isTweakLocked();
         boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.cache.isClient() || Minecraft.getInstance().level == null;
         boolean isStatusProblem = !isNetVerified || isTweakLocked;
@@ -73,11 +73,11 @@ public class StatusButton extends Button
                 return;
         }
 
-        if (NetClientUtil.isMultiplayer() && cacheStatus == StatusType.WAIT)
+        if (NetUtil.isMultiplayer() && cacheStatus == StatusType.WAIT)
             cacheStatus = StatusType.FAIL;
 
         StatusType status = flipState ? StatusType.LOADED : cacheStatus;
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
         Screen screen = minecraft.screen;
 
         if (screen == null) return;
@@ -114,23 +114,23 @@ public class StatusButton extends Button
             if (!isNetVerified)
             {
                 ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.STATUS_NET), 40), mouseX, mouseY));
+                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_NET), 40), mouseX, mouseY));
                 return;
             }
             else if (isTweakLocked)
             {
                 ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.STATUS_PERM), 40), mouseX, mouseY));
+                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_PERM), 40), mouseX, mouseY));
                 return;
             }
             else if (isTweakDynamic)
             {
-                String state = NostalgicTweaks.isNetworkVerified() && NetClientUtil.isPlayerOp() ? NostalgicLang.Gui.STATUS_DYNAMIC_OP :
-                    NostalgicTweaks.isNetworkVerified() ? NostalgicLang.Gui.STATUS_DYNAMIC_OFF : NostalgicLang.Gui.STATUS_DYNAMIC_ON
+                String state = NostalgicTweaks.isNetworkVerified() && NetUtil.isPlayerOp() ? LangUtil.Gui.STATUS_DYNAMIC_OP :
+                    NostalgicTweaks.isNetworkVerified() ? LangUtil.Gui.STATUS_DYNAMIC_OFF : LangUtil.Gui.STATUS_DYNAMIC_ON
                 ;
 
                 ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(state), 40), mouseX, mouseY));
+                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(state), 40), mouseX, mouseY));
                 return;
             }
 
@@ -138,13 +138,13 @@ public class StatusButton extends Button
             {
                 case WAIT ->
                     ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.STATUS_WAIT), 40), mouseX, mouseY));
+                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_WAIT), 40), mouseX, mouseY));
                 case WARN ->
                     ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.STATUS_WARN), 40), mouseX, mouseY));
+                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_WARN), 40), mouseX, mouseY));
                 case FAIL ->
                     ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.STATUS_FAIL), 40), mouseX, mouseY));
+                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_FAIL), 40), mouseX, mouseY));
             }
         }
     }

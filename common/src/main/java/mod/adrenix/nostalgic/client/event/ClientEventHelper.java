@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.client.screen.NostalgicLoadingScreen;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.screen.NostalgicTitleScreen;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
@@ -65,8 +65,8 @@ public abstract class ClientEventHelper
 
         if (screen.getClass() == LevelLoadingScreen.class)
         {
-            Component title = Component.translatable(NostalgicLang.Gui.LEVEL_LOADING);
-            Component subtitle = Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING);
+            Component title = Component.translatable(LangUtil.Gui.LEVEL_LOADING);
+            Component subtitle = Component.translatable(LangUtil.Gui.LEVEL_BUILDING);
             setScreen.set(new NostalgicLoadingScreen(minecraft.getProgressListener(), title, subtitle));
         }
 
@@ -85,8 +85,8 @@ public abstract class ClientEventHelper
                 else if (screen.getClass() == ReceivingLevelScreen.class)
                 {
                     progressScreen = new NostalgicProgressScreen(new ProgressScreen(true));
-                    progressScreen.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LOADING));
-                    progressScreen.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_SIMULATE));
+                    progressScreen.setHeader(Component.translatable(LangUtil.Gui.LEVEL_LOADING));
+                    progressScreen.setStage(Component.translatable(LangUtil.Gui.LEVEL_SIMULATE));
                     progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
                     progressScreen.setRenderProgressBar(false);
                     progressScreen.renderProgress();

@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.common.ModCommonUtil;
+import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = FogRenderer.class, priority = ModCommonUtil.APPLY_FIRST)
+@Mixin(value = FogRenderer.class, priority = MixinPriority.APPLY_FIRST)
 public abstract class FogRendererMixin
 {
     /**
@@ -24,7 +24,7 @@ public abstract class FogRendererMixin
     @Inject(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer$MobEffectFogFunction;setupFog(Lnet/minecraft/client/renderer/FogRenderer$FogData;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/effect/MobEffectInstance;FF)V"))
     private static void NT$onMobEffectFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        ModClientUtil.Fog.isMobEffectActive = true;
+        FogUtil.isMobEffectActive = true;
     }
 
     /**

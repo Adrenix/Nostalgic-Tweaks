@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.network.packet.PacketS2CHurtDirection;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
-import mod.adrenix.nostalgic.util.server.ModServerUtil;
+import mod.adrenix.nostalgic.util.server.ItemServerUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -149,12 +149,12 @@ public abstract class LivingEntityMixin extends Entity
     @Inject(method = "dropFromLootTable", at = @At("HEAD"))
     private void NT$onStartDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
-        ModServerUtil.Item.isDroppingLoot = true;
+        ItemServerUtil.isDroppingLoot = true;
     }
 
     @Inject(method = "dropFromLootTable", at = @At("TAIL"))
     private void NT$onEndDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
-        ModServerUtil.Item.isDroppingLoot = false;
+        ItemServerUtil.isDroppingLoot = false;
     }
 }

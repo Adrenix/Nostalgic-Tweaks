@@ -10,8 +10,8 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
-import mod.adrenix.nostalgic.util.LogColor;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.common.log.LogColor;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -91,7 +91,7 @@ public class PacketS2CTweakUpdate
                     ToastNotification.addTweakUpdate();
 
                 // Update the client's config if this is a LAN session
-                if (NetClientUtil.isLocalHost())
+                if (NetUtil.isLocalHost())
                 {
                     TweakClientCache<?> clientCache = TweakClientCache.get(serializer.getGroup(), serializer.getKey());
                     if (clientCache != null)

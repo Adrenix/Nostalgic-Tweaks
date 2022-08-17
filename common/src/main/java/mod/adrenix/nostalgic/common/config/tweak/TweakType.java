@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -14,10 +14,10 @@ public abstract class TweakType
 {
     public enum Corner implements IDisableTweak<Corner>
     {
-        TOP_LEFT(NostalgicLang.Gui.CORNER_TOP_LEFT),
-        TOP_RIGHT(NostalgicLang.Gui.CORNER_TOP_RIGHT),
-        BOTTOM_LEFT(NostalgicLang.Gui.CORNER_BOTTOM_LEFT),
-        BOTTOM_RIGHT(NostalgicLang.Gui.CORNER_BOTTOM_RIGHT);
+        TOP_LEFT(LangUtil.Gui.CORNER_TOP_LEFT),
+        TOP_RIGHT(LangUtil.Gui.CORNER_TOP_RIGHT),
+        BOTTOM_LEFT(LangUtil.Gui.CORNER_BOTTOM_LEFT),
+        BOTTOM_RIGHT(LangUtil.Gui.CORNER_BOTTOM_RIGHT);
 
         private final String langKey;
 
@@ -29,9 +29,9 @@ public abstract class TweakType
 
     public enum GuiBackground implements IDisableTweak<GuiBackground>
     {
-        SOLID_BLACK(NostalgicLang.Gui.BACKGROUND_SOLID_BLACK),
-        SOLID_BLUE(NostalgicLang.Gui.BACKGROUND_SOLID_BLUE),
-        GRADIENT_BLUE(NostalgicLang.Gui.BACKGROUND_GRADIENT_BLUE);
+        SOLID_BLACK(LangUtil.Gui.BACKGROUND_SOLID_BLACK),
+        SOLID_BLUE(LangUtil.Gui.BACKGROUND_SOLID_BLUE),
+        GRADIENT_BLUE(LangUtil.Gui.BACKGROUND_GRADIENT_BLUE);
 
         private final String langKey;
 
@@ -43,10 +43,10 @@ public abstract class TweakType
 
     public enum RecipeBook implements IDisableTweak<RecipeBook>
     {
-        MODERN(NostalgicLang.Gui.SETTINGS_MODERN),
-        DISABLED(NostalgicLang.Gui.RECIPE_BOOK_DISABLED),
-        LARGE(NostalgicLang.Gui.RECIPE_BOOK_LARGE),
-        SMALL(NostalgicLang.Gui.RECIPE_BOOK_SMALL);
+        MODERN(LangUtil.Gui.SETTINGS_MODERN),
+        DISABLED(LangUtil.Gui.RECIPE_BOOK_DISABLED),
+        LARGE(LangUtil.Gui.RECIPE_BOOK_LARGE),
+        SMALL(LangUtil.Gui.RECIPE_BOOK_SMALL);
 
         private final String langKey;
 
@@ -58,10 +58,10 @@ public abstract class TweakType
 
     public enum InventoryShield implements IDisableTweak<InventoryShield>
     {
-        MODERN(NostalgicLang.Gui.SETTINGS_MODERN),
-        INVISIBLE(NostalgicLang.Gui.INVENTORY_SHIELD_INVISIBLE),
-        MIDDLE_RIGHT(NostalgicLang.Gui.INVENTORY_SHIELD_MIDDLE_RIGHT),
-        BOTTOM_LEFT(NostalgicLang.Gui.INVENTORY_SHIELD_BOTTOM_LEFT);
+        MODERN(LangUtil.Gui.SETTINGS_MODERN),
+        INVISIBLE(LangUtil.Gui.INVENTORY_SHIELD_INVISIBLE),
+        MIDDLE_RIGHT(LangUtil.Gui.INVENTORY_SHIELD_MIDDLE_RIGHT),
+        BOTTOM_LEFT(LangUtil.Gui.INVENTORY_SHIELD_BOTTOM_LEFT);
 
         private final String langKey;
 

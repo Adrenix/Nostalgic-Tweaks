@@ -16,9 +16,9 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.*;
@@ -37,14 +37,14 @@ public class ConfigScreen extends Screen
 
     public enum ConfigTab
     {
-        ALL(NostalgicLang.Gui.SETTINGS_ALL),
-        GENERAL(NostalgicLang.Vanilla.GENERAL),
-        SOUND(NostalgicLang.Cloth.SOUND_TITLE),
-        CANDY(NostalgicLang.Cloth.CANDY_TITLE),
-        GAMEPLAY(NostalgicLang.Cloth.GAMEPLAY_TITLE),
-        ANIMATION(NostalgicLang.Cloth.ANIMATION_TITLE),
-        SWING(NostalgicLang.Cloth.SWING_TITLE),
-        SEARCH(NostalgicLang.Vanilla.SEARCH);
+        ALL(LangUtil.Gui.SETTINGS_ALL),
+        GENERAL(LangUtil.Vanilla.GENERAL),
+        SOUND(LangUtil.Cloth.SOUND_TITLE),
+        CANDY(LangUtil.Cloth.CANDY_TITLE),
+        GAMEPLAY(LangUtil.Cloth.GAMEPLAY_TITLE),
+        ANIMATION(LangUtil.Cloth.ANIMATION_TITLE),
+        SWING(LangUtil.Cloth.SWING_TITLE),
+        SEARCH(LangUtil.Vanilla.SEARCH);
 
         ConfigTab(String langKey) { this.langKey = langKey; }
 
@@ -121,7 +121,7 @@ public class ConfigScreen extends Screen
 
     public ConfigScreen(Screen parentScreen)
     {
-        super(Component.translatable(NostalgicLang.Cloth.CONFIG_TITLE));
+        super(Component.translatable(LangUtil.Cloth.CONFIG_TITLE));
 
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
@@ -416,10 +416,10 @@ public class ConfigScreen extends Screen
         this.minecraft.setScreen(
             new ConfirmScreen(
                 new CancelConsumer(),
-                Component.translatable(NostalgicLang.Cloth.QUIT_CONFIG),
-                Component.translatable(NostalgicLang.Cloth.QUIT_CONFIG_SURE),
-                Component.translatable(NostalgicLang.Cloth.QUIT_DISCARD),
-                Component.translatable(NostalgicLang.Vanilla.GUI_CANCEL)
+                Component.translatable(LangUtil.Cloth.QUIT_CONFIG),
+                Component.translatable(LangUtil.Cloth.QUIT_CONFIG_SURE),
+                Component.translatable(LangUtil.Cloth.QUIT_DISCARD),
+                Component.translatable(LangUtil.Vanilla.GUI_CANCEL)
             )
         );
     }
@@ -479,7 +479,7 @@ public class ConfigScreen extends Screen
                 cache.save();
         }
 
-        ModClientUtil.Run.onSave.forEach(Runnable::run);
+        RunUtil.onSave.forEach(Runnable::run);
     }
 
     /* Rendering */
@@ -487,7 +487,7 @@ public class ConfigScreen extends Screen
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        String title = Component.translatable(this.configTab.getLangKey()).getString() + " " + Component.translatable(NostalgicLang.Cloth.CONFIG_TITLE).getString();
+        String title = Component.translatable(this.configTab.getLangKey()).getString() + " " + Component.translatable(LangUtil.Cloth.CONFIG_TITLE).getString();
 
         if (this.minecraft.level != null)
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
@@ -538,7 +538,7 @@ public class ConfigScreen extends Screen
         this.getWidgets().getSearchControls().forEach((button) -> button.visible = this.configTab == ConfigTab.SEARCH);
         this.getWidgets().getSearchInput().render(poseStack, mouseX, mouseY, partialTick);
 
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
 
         if (!Overlay.isOpened())

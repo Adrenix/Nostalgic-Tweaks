@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.config.annotation;
 
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -77,7 +77,7 @@ public abstract class TweakClient
         @Target({ElementType.FIELD})
         public @interface DisabledInteger
         {
-            int disabled();
+            int value();
         }
 
         /**
@@ -88,7 +88,7 @@ public abstract class TweakClient
         @Target({ElementType.FIELD})
         public @interface DisabledBoolean
         {
-            boolean disabled();
+            boolean value();
         }
 
         /**
@@ -185,35 +185,35 @@ public abstract class TweakClient
     public enum Category
     {
         // Sound Categories
-        BLOCK_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_BLOCK),
-        DAMAGE_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_DAMAGE),
-        EXPERIENCE_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_EXPERIENCE),
-        MOB_SOUND(GroupType.SOUND, NostalgicLang.Gui.SOUND_CATEGORY_MOB),
+        BLOCK_SOUND(GroupType.SOUND, LangUtil.Gui.SOUND_CATEGORY_BLOCK),
+        DAMAGE_SOUND(GroupType.SOUND, LangUtil.Gui.SOUND_CATEGORY_DAMAGE),
+        EXPERIENCE_SOUND(GroupType.SOUND, LangUtil.Gui.SOUND_CATEGORY_EXPERIENCE),
+        MOB_SOUND(GroupType.SOUND, LangUtil.Gui.SOUND_CATEGORY_MOB),
 
         // Candy Categories
-        BLOCK_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_BLOCK),
-        INTERFACE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_GUI),
-        ITEM_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_ITEM),
-        LIGHTING_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_LIGHTING),
-        PARTICLE_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_PARTICLE),
-        WORLD_CANDY(GroupType.CANDY, NostalgicLang.Gui.CANDY_CATEGORY_WORLD),
+        BLOCK_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_BLOCK),
+        INTERFACE_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_GUI),
+        ITEM_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_ITEM),
+        LIGHTING_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_LIGHTING),
+        PARTICLE_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_PARTICLE),
+        WORLD_CANDY(GroupType.CANDY, LangUtil.Gui.CANDY_CATEGORY_WORLD),
 
         // Gameplay Categories
-        BUG_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_BUG),
-        COMBAT_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_COMBAT),
-        EXPERIENCE_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_EXPERIENCE),
-        MECHANICS_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_MECHANICS),
-        HUNGER_GAMEPLAY(GroupType.GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_CATEGORY_HUNGER),
+        BUG_GAMEPLAY(GroupType.GAMEPLAY, LangUtil.Gui.GAMEPLAY_CATEGORY_BUG),
+        COMBAT_GAMEPLAY(GroupType.GAMEPLAY, LangUtil.Gui.GAMEPLAY_CATEGORY_COMBAT),
+        EXPERIENCE_GAMEPLAY(GroupType.GAMEPLAY, LangUtil.Gui.GAMEPLAY_CATEGORY_EXPERIENCE),
+        MECHANICS_GAMEPLAY(GroupType.GAMEPLAY, LangUtil.Gui.GAMEPLAY_CATEGORY_MECHANICS),
+        HUNGER_GAMEPLAY(GroupType.GAMEPLAY, LangUtil.Gui.GAMEPLAY_CATEGORY_HUNGER),
 
         // Animation Categories
-        ARM_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_ARM),
-        ITEM_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_ITEM),
-        MOB_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_MOB),
-        PLAYER_ANIMATION(GroupType.ANIMATION, NostalgicLang.Gui.ANIMATION_CATEGORY_PLAYER),
+        ARM_ANIMATION(GroupType.ANIMATION, LangUtil.Gui.ANIMATION_CATEGORY_ARM),
+        ITEM_ANIMATION(GroupType.ANIMATION, LangUtil.Gui.ANIMATION_CATEGORY_ITEM),
+        MOB_ANIMATION(GroupType.ANIMATION, LangUtil.Gui.ANIMATION_CATEGORY_MOB),
+        PLAYER_ANIMATION(GroupType.ANIMATION, LangUtil.Gui.ANIMATION_CATEGORY_PLAYER),
 
         // Swing Categories
-        ITEM_SWING(GroupType.SWING, NostalgicLang.Gui.SWING_CATEGORY_ITEM),
-        POTION_SWING(GroupType.SWING, NostalgicLang.Gui.SWING_CATEGORY_POTION);
+        ITEM_SWING(GroupType.SWING, LangUtil.Gui.SWING_CATEGORY_ITEM),
+        POTION_SWING(GroupType.SWING, LangUtil.Gui.SWING_CATEGORY_POTION);
 
         private final String langKey;
         private final GroupType groupType;
@@ -247,69 +247,69 @@ public abstract class TweakClient
 
         // Block Sound Subcategories
 
-        BLOCK_CHEST_SOUND(Category.BLOCK_SOUND, NostalgicLang.Gui.SOUND_SUBCATEGORY_CHEST),
+        BLOCK_CHEST_SOUND(Category.BLOCK_SOUND, LangUtil.Gui.SOUND_SUBCATEGORY_CHEST),
 
         /* Eye Candy */
 
         // Block Candy Subcategories
 
-        BLOCK_CHEST_CANDY(Category.BLOCK_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHEST),
+        BLOCK_CHEST_CANDY(Category.BLOCK_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_CHEST),
 
         // Interface Candy Subcategories
 
-        INTERFACE_GUI_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_GUI),
-        INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CHAT),
-        INTERFACE_CRAFTING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_CRAFTING),
-        INTERFACE_FURNACE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FURNACE),
-        INTERFACE_INVENTORY_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_INVENTORY),
-        INTERFACE_LOADING_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_LOADING),
-        INTERFACE_PAUSE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_PAUSE),
-        INTERFACE_TITLE_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TITLE),
-        INTERFACE_TOOLTIP_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_TOOLTIP),
-        INTERFACE_VERSION_CANDY(Category.INTERFACE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_VERSION),
+        INTERFACE_GUI_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_GUI),
+        INTERFACE_CHAT_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_CHAT),
+        INTERFACE_CRAFTING_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_CRAFTING),
+        INTERFACE_FURNACE_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_FURNACE),
+        INTERFACE_INVENTORY_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_INVENTORY),
+        INTERFACE_LOADING_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_LOADING),
+        INTERFACE_PAUSE_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_PAUSE),
+        INTERFACE_TITLE_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_TITLE),
+        INTERFACE_TOOLTIP_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_TOOLTIP),
+        INTERFACE_VERSION_CANDY(Category.INTERFACE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_VERSION),
 
         // Item Candy Subcategories
 
-        FLAT_ITEM_CANDY(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FLAT),
-        DISPLAY_ITEM_CANDY(Category.ITEM_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ITEM),
+        FLAT_ITEM_CANDY(Category.ITEM_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_FLAT),
+        DISPLAY_ITEM_CANDY(Category.ITEM_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_ITEM),
 
         // Lighting Candy Subcategories
 
-        LIGHTING_BLOCK_CANDY(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_BLOCK_LIGHT),
-        LIGHTING_WORLD_CANDY(Category.LIGHTING_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_WORLD_LIGHT),
+        LIGHTING_BLOCK_CANDY(Category.LIGHTING_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_BLOCK_LIGHT),
+        LIGHTING_WORLD_CANDY(Category.LIGHTING_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_WORLD_LIGHT),
 
         // Particle Candy Subcategories
 
-        PARTICLE_ATTACK_CANDY(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_ATTACK),
-        PARTICLE_EXPLOSION_CANDY(Category.PARTICLE_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_EXPLOSION),
+        PARTICLE_ATTACK_CANDY(Category.PARTICLE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_ATTACK),
+        PARTICLE_EXPLOSION_CANDY(Category.PARTICLE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_EXPLOSION),
 
         // World Candy Subcategories
 
-        WORLD_FOG_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_FOG),
-        WORLD_SKY_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_SKY),
-        WORLD_VOID_CANDY(Category.WORLD_CANDY, NostalgicLang.Gui.CANDY_SUBCATEGORY_VOID),
+        WORLD_FOG_CANDY(Category.WORLD_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_FOG),
+        WORLD_SKY_CANDY(Category.WORLD_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_SKY),
+        WORLD_VOID_CANDY(Category.WORLD_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_VOID),
 
         /* Gameplay */
 
         // Combat System Subcategories
 
-        COMBAT_BOW_GAMEPLAY(Category.COMBAT_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_BOW),
+        COMBAT_BOW_GAMEPLAY(Category.COMBAT_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_BOW),
 
         // Experience System Subcategories
 
-        EXPERIENCE_BAR_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BAR),
-        EXPERIENCE_ORB_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB),
-        EXPERIENCE_BLOCK_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK),
+        EXPERIENCE_BAR_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BAR),
+        EXPERIENCE_ORB_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB),
+        EXPERIENCE_BLOCK_GAMEPLAY(Category.EXPERIENCE_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK),
 
         // Game Mechanics Subcategories
 
-        MECHANICS_FIRE_GAMEPLAY(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FIRE),
-        MECHANICS_SWIMMING_GAMEPLAY(Category.MECHANICS_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_SWIMMING),
+        MECHANICS_FIRE_GAMEPLAY(Category.MECHANICS_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_FIRE),
+        MECHANICS_SWIMMING_GAMEPLAY(Category.MECHANICS_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_SWIMMING),
 
         // Hunger System Subcategories
 
-        HUNGER_BAR_GAMEPLAY(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_HUNGER_BAR),
-        HUNGER_FOOD_GAMEPLAY(Category.HUNGER_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_SUBCATEGORY_FOOD);
+        HUNGER_BAR_GAMEPLAY(Category.HUNGER_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_HUNGER_BAR),
+        HUNGER_FOOD_GAMEPLAY(Category.HUNGER_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_FOOD);
 
         private final String langKey;
         private final Category category;
@@ -339,25 +339,29 @@ public abstract class TweakClient
          * For example, for the button tweaks for title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
          */
 
-        /* Title Screen (Eye Candy) - Embedded Subcategories */
+        // Title Screen (Eye Candy) - Embedded Subcategories
 
-        TITLE_BUTTON_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_BUTTON),
-        TITLE_LOGO_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_LOGO),
-        TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, NostalgicLang.Gui.CANDY_EMBED_TITLE_TEXT),
+        TITLE_BUTTON_CANDY(Subcategory.INTERFACE_TITLE_CANDY, LangUtil.Gui.CANDY_EMBED_TITLE_BUTTON),
+        TITLE_LOGO_CANDY(Subcategory.INTERFACE_TITLE_CANDY, LangUtil.Gui.CANDY_EMBED_TITLE_LOGO),
+        TITLE_TEXT_CANDY(Subcategory.INTERFACE_TITLE_CANDY, LangUtil.Gui.CANDY_EMBED_TITLE_TEXT),
 
-        /* Interface Tooltips (Eye Candy) - Embedded Subcategories */
+        // Interface Tooltips (Eye Candy) - Embedded Subcategories
 
-        TOOLTIP_PARTS_CANDY(Subcategory.INTERFACE_TOOLTIP_CANDY, NostalgicLang.Gui.CANDY_EMBED_TOOLTIP_PARTS),
+        TOOLTIP_PARTS_CANDY(Subcategory.INTERFACE_TOOLTIP_CANDY, LangUtil.Gui.CANDY_EMBED_TOOLTIP_PARTS),
 
-        /* Experience Bar (Gameplay) - Embedded Subcategories */
+        // Void Fog (Eye Candy) - Embedded Subcategories
 
-        ALT_XP_LEVEL_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_XP_LEVEL),
-        ALT_XP_PROGRESS_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_XP_PROGRESS),
+        VOID_FOG_CANDY(Subcategory.WORLD_VOID_CANDY, LangUtil.Gui.CANDY_EMBED_VOID_FOG),
 
-        /* Hunger Bar (Gameplay) - Embedded Subcategories */
+        // Experience Bar (Gameplay) - Embedded Subcategories
 
-        ALT_HUNGER_FOOD_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_HUNGER_FOOD),
-        ALT_HUNGER_SATURATION_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, NostalgicLang.Gui.GAMEPLAY_EMBED_HUNGER_SATURATION);
+        ALT_XP_LEVEL_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_XP_LEVEL),
+        ALT_XP_PROGRESS_GAMEPLAY(Subcategory.EXPERIENCE_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_XP_PROGRESS),
+
+        // Hunger Bar (Gameplay) - Embedded Subcategories
+
+        ALT_HUNGER_FOOD_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_HUNGER_FOOD),
+        ALT_HUNGER_SATURATION_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_HUNGER_SATURATION);
 
         private final String langKey;
         private final Subcategory subcategory;

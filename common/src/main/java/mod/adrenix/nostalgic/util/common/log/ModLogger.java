@@ -1,15 +1,15 @@
-package mod.adrenix.nostalgic.util;
+package mod.adrenix.nostalgic.util.common.log;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public record NostalgicLogger(String prefix)
+public record ModLogger(String prefix)
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static boolean isDebugging = true;
 
-    public boolean isDebugMode() { return NostalgicLogger.isDebugging; }
-    public void setDebug(boolean state) { NostalgicLogger.isDebugging = state; }
+    public boolean isDebugMode() { return ModLogger.isDebugging; }
+    public void setDebug(boolean state) { ModLogger.isDebugging = state; }
 
     private String getPrefix() { return String.format("[%s] ", LogColor.apply(LogColor.GREEN, this.prefix)); }
     private String getOutput(String input)
@@ -36,7 +36,7 @@ public record NostalgicLogger(String prefix)
 
     public void debug(String message)
     {
-        if (NostalgicLogger.isDebugging)
+        if (ModLogger.isDebugging)
         {
             String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.LIGHT_PURPLE, "DEBUG"));
             LOGGER.info(getOutput(input));

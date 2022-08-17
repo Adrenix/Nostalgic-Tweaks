@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.CustomizedRowList;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -122,9 +122,9 @@ public abstract class CustomSwings
 
         if (getItemKey(item).equals("minecraft:air"))
             if (isValidEntry(item, entry))
-                return Component.translatable(NostalgicLang.Gui.CUSTOMIZE_HAND).getString();
+                return Component.translatable(LangUtil.Gui.CUSTOMIZE_HAND).getString();
             else
-                return Component.translatable(NostalgicLang.Gui.CUSTOMIZE_UNKNOWN).getString();
+                return Component.translatable(LangUtil.Gui.CUSTOMIZE_UNKNOWN).getString();
 
         return localized;
     }
@@ -144,9 +144,9 @@ public abstract class CustomSwings
     {
         List<Component> tooltip = new ArrayList<>();
 
-        Component alpha = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RANGE_TOOLTIP_0);
-        Component modern = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RANGE_TOOLTIP_1);
-        Component photo = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RANGE_TOOLTIP_2);
+        Component alpha = Component.translatable(LangUtil.Gui.CUSTOMIZE_RANGE_TOOLTIP_0);
+        Component modern = Component.translatable(LangUtil.Gui.CUSTOMIZE_RANGE_TOOLTIP_1);
+        Component photo = Component.translatable(LangUtil.Gui.CUSTOMIZE_RANGE_TOOLTIP_2);
 
         String top = ChatFormatting.GREEN + alpha.getString() + ChatFormatting.WHITE + ": " + ChatFormatting.AQUA + DefaultConfig.Swing.OLD_SPEED;
         String middle = ChatFormatting.GOLD + modern.getString() + ChatFormatting.WHITE + ": " + ChatFormatting.AQUA + DefaultConfig.Swing.NEW_SPEED;
@@ -162,12 +162,12 @@ public abstract class CustomSwings
     public static Component removeTooltip(Map.Entry<String, Integer> entry)
     {
         Component item = Component.literal(getLocalizedItem(entry)).withStyle(ChatFormatting.WHITE);
-        return Component.translatable(NostalgicLang.Gui.CUSTOMIZE_REMOVE_TOOLTIP, item).withStyle(ChatFormatting.RED);
+        return Component.translatable(LangUtil.Gui.CUSTOMIZE_REMOVE_TOOLTIP, item).withStyle(ChatFormatting.RED);
     }
 
     public static Component undoTooltip(Map.Entry<String, Integer> entry)
     {
         Component item = Component.literal(getLocalizedItem(entry)).withStyle(ChatFormatting.WHITE);
-        return Component.translatable(NostalgicLang.Gui.CUSTOMIZE_UNDO_TOOLTIP, item).withStyle(ChatFormatting.GREEN);
+        return Component.translatable(LangUtil.Gui.CUSTOMIZE_UNDO_TOOLTIP, item).withStyle(ChatFormatting.GREEN);
     }
 }

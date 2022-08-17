@@ -4,8 +4,8 @@ import dev.architectury.networking.NetworkChannel;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
-import mod.adrenix.nostalgic.util.LogColor;
-import mod.adrenix.nostalgic.util.NostalgicLogger;
+import mod.adrenix.nostalgic.util.common.log.LogColor;
+import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +16,7 @@ public class NostalgicTweaks
 
     public static final String MOD_ID = "nostalgic_tweaks";
     public static final String MOD_NAME = "Nostalgic Tweaks";
-    public static final NostalgicLogger LOGGER = new NostalgicLogger(MOD_NAME);
+    public static final ModLogger LOGGER = new ModLogger(MOD_NAME);
     public static boolean isDebugging() { return LOGGER.isDebugMode(); }
 
     /* Other Mod Tracking */

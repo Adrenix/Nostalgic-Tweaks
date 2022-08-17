@@ -116,9 +116,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
 
         // Lighting Candy
-        public static final boolean OLD_LIGHTING = true;
-        public static final boolean OLD_LIGHT_FLICKER = true;
+        public static final boolean OLD_LIGHT_RENDERING = true;
         public static final boolean OLD_LIGHT_BRIGHTNESS = true;
+        public static final boolean OLD_LIGHT_FLICKER = true;
         public static final boolean OLD_NETHER_LIGHTING = true;
         public static final boolean OLD_LEAVES_LIGHTING = true;
         public static final boolean OLD_SMOOTH_LIGHTING = true;
@@ -137,6 +137,7 @@ public abstract class DefaultConfig
 
         // World Candy
         public static final int OLD_CLOUD_HEIGHT = 108;
+        public static final int DISABLED_CLOUD_HEIGHT = 192;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_DARK_VOID_HEIGHT = true;
@@ -147,6 +148,9 @@ public abstract class DefaultConfig
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
         public static final boolean OLD_STARS = true;
         public static final boolean DISABLE_SUNRISE_SUNSET_COLORS = false;
+
+        // World Candy - Void Fog
+        public static final int PARTICLE_RADIUS = 16;
 
         public static final TweakVersion.Generic OLD_SKY_COLOR = TweakVersion.Generic.ALPHA;
         public static final TweakVersion.Generic OLD_FOG_COLOR = TweakVersion.Generic.ALPHA;

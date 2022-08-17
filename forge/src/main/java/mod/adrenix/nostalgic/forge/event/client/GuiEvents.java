@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.forge.event.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -24,7 +24,7 @@ public abstract class GuiEvents
     {
         // Old Version & Alternative HUD Elements
 
-        ModClientUtil.Gui.renderOverlays(event.getPoseStack());
+        GuiUtil.renderOverlays(event.getPoseStack());
 
         // Overlay Overrides
 
@@ -150,7 +150,7 @@ public abstract class GuiEvents
             if (isHungerDisabled)
             {
                 if (i == level) // Half armor
-                    ModClientUtil.Gui.renderInverseArmor(poseStack, gui.getBlitOffset(), x, top + dy, 25, 9, 9, 9);
+                    GuiUtil.renderInverseArmor(poseStack, gui.getBlitOffset(), x, top + dy, 25, 9, 9, 9);
                 else if (i < level) // Full armor
                     gui.blit(poseStack, x, top + dy, 34, 9, 9, 9);
                 else // No armor

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.common.config.reflect;
 
-import mod.adrenix.nostalgic.util.LogColor;
+import mod.adrenix.nostalgic.util.common.log.LogColor;
 
 /**
  * There are numerous states a tweak can be in. Some tweaks will start in different states than others.

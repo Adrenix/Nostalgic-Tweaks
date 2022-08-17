@@ -10,9 +10,9 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractWidget;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -163,7 +163,7 @@ public class CategoryList extends Overlay
             boolean isControl = this.title.getString().length() == 1;
             boolean isSelected = this.row.equals(CategoryList.OVERLAY.getSelected()) && isControl;
             boolean isTabbed = this.isFocused() && !isTweak;
-            boolean isHover = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
+            boolean isHover = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
             int highlight = isHover ? 0xFFD800 : this.color;
 
             if (isTabbed)
@@ -285,7 +285,7 @@ public class CategoryList extends Overlay
                 Matrix4f matrix = poseStack.last().pose();
 
                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                ModClientUtil.Render.fill(buffer, matrix, left - 6, left + DEFAULT_WIDTH - 13, top - 1, top + height + 2, 0x32FFFFFF);
+                RenderUtil.fill(buffer, matrix, left - 6, left + DEFAULT_WIDTH - 13, top - 1, top + height + 2, 0x32FFFFFF);
                 tesselator.end();
             }
 
@@ -422,7 +422,7 @@ public class CategoryList extends Overlay
     {
         int startX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth() - 10;
         int startY = (int) this.y + 4;
-        if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, HINT_SQUARE, HINT_SQUARE))
+        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
 
         this.list.mouseClicked(mouseX, mouseY, button);
@@ -482,7 +482,7 @@ public class CategoryList extends Overlay
         float bottomY = (float) this.y + this.height - 10;
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY, bottomY, 0xC6000000);
+        RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, 0xC6000000);
         tesselator.end();
 
         // Render category list
@@ -492,7 +492,7 @@ public class CategoryList extends Overlay
         // Render border
 
         RenderSystem.enableTexture();
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.CATEGORY_LIST);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
 
         int startX = (int) this.x;
         int startY = (int) this.y;
@@ -529,30 +529,30 @@ public class CategoryList extends Overlay
         // Render close and hint button
         int closeX = startX + W_TOP_LEFT_CORNER + drawWidth;
         int closeY = startY + 4;
-        this.isOverClose = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
+        this.isOverClose = ModUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         int hintX = closeX - 10;
-        boolean isOverHint = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, closeY, HINT_SQUARE, HINT_SQUARE);
+        boolean isOverHint = ModUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, closeY, HINT_SQUARE, HINT_SQUARE);
 
         blit(poseStack, hintX, closeY, isOverHint ? U_HINT_ON : U_HINT_OFF, isOverHint ? V_HINT_ON : V_HINT_OFF, HINT_SQUARE, HINT_SQUARE);
 
         // Text needs to be rendered last since it will interfere with alpha rendering
         int color = this.isMouseOverTitle(mouseX, mouseY) && !this.isOverClose && !isOverHint ? 0xFFF65B : 0xFFFFFF;
-        drawString(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_LIST), startX + 20, startY + 4, color);
+        drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST), startX + 20, startY + 4, color);
 
         // Render dragging and tooltip hints
-        boolean isOverIcon = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
+        boolean isOverIcon = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
         if (isOverIcon)
         {
-            List<Component> tooltip = NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_DRAG_TIP), 36);
+            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 
         if (isOverHint && this.hint)
         {
-            List<Component> tooltip = NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_LIST_HINT), 36);
+            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST_HINT), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 

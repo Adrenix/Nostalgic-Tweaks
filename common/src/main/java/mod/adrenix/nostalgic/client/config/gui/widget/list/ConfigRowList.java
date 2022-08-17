@@ -25,9 +25,9 @@ import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractWidget;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -505,8 +505,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     this.reset = button;
             }
 
-            if (this.controller instanceof GroupButton group)
-                this.group = group;
+            if (this.controller instanceof GroupButton groupButton)
+                this.group = groupButton;
             else
                 this.group = null;
         }
@@ -547,12 +547,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             if ((isClient && !isDynamic) || !NostalgicTweaks.isNetworkVerified())
                 return false;
 
-            if (this.cache.isDynamic() && NostalgicTweaks.isNetworkVerified() && !NetClientUtil.isPlayerOp())
+            if (this.cache.isDynamic() && NostalgicTweaks.isNetworkVerified() && !NetUtil.isPlayerOp())
                 return true;
 
             for (AbstractWidget widget : this.children)
                 if (widget instanceof IPermissionWidget && Minecraft.getInstance().player != null)
-                    return !NetClientUtil.isPlayerOp(Minecraft.getInstance().player);
+                    return !NetUtil.isPlayerOp(Minecraft.getInstance().player);
 
             return false;
         }
@@ -576,7 +576,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             float z = 0.0F;
             boolean isFaded = (Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getCurrent();
-            int[] rgba = NostalgicUtil.Text.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getCurrent());
+            int[] rgba = ModUtil.Text.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getCurrent());
             int r = rgba[0];
             int g = rgba[1];
             int b = rgba[2];
@@ -628,7 +628,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-            int rgba = NostalgicUtil.Text.toHexInt(color.getCurrent());
+            int rgba = ModUtil.Text.toHexInt(color.getCurrent());
             float leftX = this.indent - 16.0F;
             float rightX = leftX + 10.0F;
             float topY = (float) top + (height / 2.0F) - 2.0F;
@@ -639,7 +639,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             // Horizontal bar [ - ]
 
             if (!isTextRow && !isRowEmpty)
-                ModClientUtil.Render.fill(buffer, matrix, leftX + 2.0F, rightX, topY, bottomY, rgba);
+                RenderUtil.fill(buffer, matrix, leftX + 2.0F, rightX, topY, bottomY, rgba);
 
             // Vertical bar [ | ]
 
@@ -647,7 +647,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             topY = this.isFirst() ? top - 6.0F : top - 1.0F;
             bottomY = this.isLast() ? (float) top + (height / 2.0F) : (float) (top + height) + 3.0F;
 
-            ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
+            RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
 
             // Secondary embedded and subcategory vertical bar [ |  L ]
             boolean isVertical = this.indent == SUB_TEXT_START || this.indent == EMB_TEXT_START;
@@ -658,10 +658,10 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 rightX = leftX + 2.0F;
                 bottomY = (float) (top + height) + 3.0F;
 
-                ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
+                RenderUtil.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
 
                 if (this.indent == EMB_TEXT_START)
-                    ModClientUtil.Render.fill(buffer, matrix, leftX - 20.0F, rightX - 20.0F, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
+                    RenderUtil.fill(buffer, matrix, leftX - 20.0F, rightX - 20.0F, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
             }
 
             tesselator.end();
@@ -759,7 +759,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
                             while (tag.x + tag.getWidth() >= this.controller.x - 6)
                             {
-                                tag.setTitle(NostalgicUtil.Text.ellipsis(tag.getTitle()));
+                                tag.setTitle(ModUtil.Text.ellipsis(tag.getTitle()));
                                 tag.render(poseStack, mouseX, mouseY, partialTick);
 
                                 if (tag.getTitle() == null || tag.getTitle().length() < 3)
@@ -817,8 +817,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     Component translation = Component.translatable(((KeyBindButton) widget).getMapping().getName());
                     title = KeyBindButton.isMappingConflicted(((KeyBindButton) widget).getMapping()) ? translation.copy().withStyle(ChatFormatting.RED) : translation.copy().withStyle(ChatFormatting.RESET);
                 }
-                else if (widget instanceof GroupButton group)
-                    group.setHighlight(CategoryList.OVERLAY.getSelected() == this);
+                else if (widget instanceof GroupButton groupButton)
+                    groupButton.setHighlight(CategoryList.OVERLAY.getSelected() == this);
 
                 // Render row title
                 int dy = screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH ? 11 : 0;
@@ -874,7 +874,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 if (isEllipsis && isOverText && this.cache != null)
                 {
                     screen.renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(this.cache.getTranslation()), 35), mouseX, mouseY))
+                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(this.cache.getTranslation()), 35), mouseX, mouseY))
                     ;
                 }
 

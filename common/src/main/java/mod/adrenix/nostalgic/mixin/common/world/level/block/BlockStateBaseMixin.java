@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -74,14 +74,14 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
     private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.oldChestVoxel() && ModClientUtil.Block.isBlockOldChest(this.getBlock()))
+        if (ModConfig.Candy.oldChestVoxel() && BlockClientUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(true);
     }
 
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.oldChestVoxel() && ModClientUtil.Block.isBlockOldChest(this.getBlock()))
+        if (ModConfig.Candy.oldChestVoxel() && BlockClientUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(true);
     }
 }

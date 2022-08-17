@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * This class must not be used by the server.
  */
 
-public abstract class NetClientUtil
+public abstract class NetUtil
 {
     /* Minecraft Instance */
 

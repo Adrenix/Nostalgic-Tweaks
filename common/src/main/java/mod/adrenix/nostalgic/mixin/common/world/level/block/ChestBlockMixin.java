@@ -4,8 +4,8 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ChestBlock;
@@ -35,7 +35,7 @@ public abstract class ChestBlockMixin
         if (NostalgicTweaks.isServer())
             return;
 
-        if (ModClientUtil.Block.isBlockOldChest(state.getBlock()))
+        if (BlockClientUtil.isOldChest(state.getBlock()))
             callback.setReturnValue(RenderShape.MODEL);
     }
 
@@ -57,7 +57,7 @@ public abstract class ChestBlockMixin
         {
             boolean isServerVoxel = cache != null && cache.getServerCache();
 
-            if (NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer() && isServerVoxel)
+            if (NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer() && isServerVoxel)
             {
                 callback.setReturnValue(shape);
                 return;

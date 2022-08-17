@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
@@ -33,8 +33,8 @@ public abstract class WorldListEntryMixin
             return genericScreen;
 
         NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
-        progressScreen.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LOADING));
-        progressScreen.setStage(Component.translatable(NostalgicLang.Vanilla.READ_WORLD_DATA));
+        progressScreen.setHeader(Component.translatable(LangUtil.Gui.LEVEL_LOADING));
+        progressScreen.setStage(Component.translatable(LangUtil.Vanilla.READ_WORLD_DATA));
         progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
 
         return progressScreen;

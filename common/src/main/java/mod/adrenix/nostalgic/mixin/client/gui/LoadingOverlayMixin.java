@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LoadingOverlay;
@@ -69,10 +69,10 @@ public abstract class LoadingOverlayMixin
 
         final ResourceLocation BACKGROUND = switch (overlay)
         {
-            case ALPHA -> NostalgicUtil.Resource.MOJANG_ALPHA;
-            case BETA -> NostalgicUtil.Resource.MOJANG_BETA;
-            case RELEASE_ORANGE -> NostalgicUtil.Resource.MOJANG_RELEASE_ORANGE;
-            case RELEASE_BLACK -> NostalgicUtil.Resource.MOJANG_RELEASE_BLACK;
+            case ALPHA -> ModUtil.Resource.MOJANG_ALPHA;
+            case BETA -> ModUtil.Resource.MOJANG_BETA;
+            case RELEASE_ORANGE -> ModUtil.Resource.MOJANG_RELEASE_ORANGE;
+            case RELEASE_BLACK -> ModUtil.Resource.MOJANG_RELEASE_BLACK;
             default -> MOJANG_STUDIOS_LOGO_LOCATION;
         };
 

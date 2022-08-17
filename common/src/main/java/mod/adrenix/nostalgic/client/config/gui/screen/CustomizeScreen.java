@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.client.config.gui.ItemSuggestionHelper;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.CustomizedRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.ToggleCheckbox;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.*;
@@ -61,16 +61,16 @@ public class CustomizeScreen extends SettingsScreen
     // Constructor
     public CustomizeScreen(Screen parent)
     {
-        super(parent, Component.translatable(NostalgicLang.Gui.CUSTOMIZE), false);
+        super(parent, Component.translatable(LangUtil.Gui.CUSTOMIZE), false);
 
         this.parent = parent;
         this.undo = Maps.newHashMap(config.custom);
 
         int x = 2, y = TOP_ROW_Y, w = CHECKBOX_W, h = CHECKBOX_H;
-        this.toolsCheckbox = new ToggleCheckbox(this, x, y + 27, w, h, Component.translatable(NostalgicLang.Gui.CUSTOMIZE_TOOL), true);
-        this.blocksCheckbox = new ToggleCheckbox(this, x, y + 52, w, h, Component.translatable(NostalgicLang.Gui.CUSTOMIZE_BLOCK), true);
-        this.itemsCheckbox = new ToggleCheckbox(this, x, y + 77, w, h, Component.translatable(NostalgicLang.Gui.CUSTOMIZE_ITEM), true);
-        this.resetCheckbox = new ToggleCheckbox(this, x, y - 1, w, h, Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RESET), false);
+        this.toolsCheckbox = new ToggleCheckbox(this, x, y + 27, w, h, Component.translatable(LangUtil.Gui.CUSTOMIZE_TOOL), true);
+        this.blocksCheckbox = new ToggleCheckbox(this, x, y + 52, w, h, Component.translatable(LangUtil.Gui.CUSTOMIZE_BLOCK), true);
+        this.itemsCheckbox = new ToggleCheckbox(this, x, y + 77, w, h, Component.translatable(LangUtil.Gui.CUSTOMIZE_ITEM), true);
+        this.resetCheckbox = new ToggleCheckbox(this, x, y - 1, w, h, Component.translatable(LangUtil.Gui.CUSTOMIZE_RESET), false);
     }
 
     /* Getters */
@@ -102,7 +102,7 @@ public class CustomizeScreen extends SettingsScreen
 
     private void openToast(Item item)
     {
-        Component message = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_ADD).withStyle(ChatFormatting.WHITE);
+        Component message = Component.translatable(LangUtil.Gui.CUSTOMIZE_ADD).withStyle(ChatFormatting.WHITE);
         Component display = Component.translatable(item.getName(item.getDefaultInstance()).getString()).withStyle(ChatFormatting.GREEN);
         this.minecraft.getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.TUTORIAL_HINT, message, display));
     }
@@ -329,10 +329,10 @@ public class CustomizeScreen extends SettingsScreen
         this.minecraft.setScreen(
             new ConfirmScreen(
                 new CancelConsumer(),
-                    Component.translatable(NostalgicLang.Cloth.QUIT_CONFIG),
-                    Component.translatable(NostalgicLang.Cloth.QUIT_CONFIG_SURE),
-                    Component.translatable(NostalgicLang.Cloth.QUIT_DISCARD),
-                    Component.translatable(NostalgicLang.Vanilla.GUI_CANCEL)
+                    Component.translatable(LangUtil.Cloth.QUIT_CONFIG),
+                    Component.translatable(LangUtil.Cloth.QUIT_CONFIG_SURE),
+                    Component.translatable(LangUtil.Cloth.QUIT_DISCARD),
+                    Component.translatable(LangUtil.Vanilla.GUI_CANCEL)
             )
         );
     }
@@ -387,7 +387,7 @@ public class CustomizeScreen extends SettingsScreen
 
         public Button createAddButton()
         {
-            Component tooltip = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_ADD_TOOLTIP).withStyle(ChatFormatting.GREEN);
+            Component tooltip = Component.translatable(LangUtil.Gui.CUSTOMIZE_ADD_TOOLTIP).withStyle(ChatFormatting.GREEN);
             return new Button(
                 CustomizeScreen.this.width / 2 + 116,
                 TOP_ROW_Y - 1,
@@ -401,7 +401,7 @@ public class CustomizeScreen extends SettingsScreen
 
         public Button createAutofillButton()
         {
-            Component tooltip = Component.translatable(NostalgicLang.Gui.CUSTOMIZE_AUTOFILL_TOOLTIP).withStyle(ChatFormatting.YELLOW);
+            Component tooltip = Component.translatable(LangUtil.Gui.CUSTOMIZE_AUTOFILL_TOOLTIP).withStyle(ChatFormatting.YELLOW);
             return new Button(
                 CustomizeScreen.this.width / 2 - 134,
                 TOP_ROW_Y - 1,
@@ -416,8 +416,8 @@ public class CustomizeScreen extends SettingsScreen
         public Button createResetButton()
         {
             List<Component> tooltip = Lists.newArrayList(
-                    Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RESET_TOOLTIP_0).withStyle(ChatFormatting.RED),
-                    Component.translatable(NostalgicLang.Gui.CUSTOMIZE_RESET_TOOLTIP_1).withStyle(ChatFormatting.WHITE)
+                    Component.translatable(LangUtil.Gui.CUSTOMIZE_RESET_TOOLTIP_0).withStyle(ChatFormatting.RED),
+                    Component.translatable(LangUtil.Gui.CUSTOMIZE_RESET_TOOLTIP_1).withStyle(ChatFormatting.WHITE)
             );
 
             return new Button(
@@ -438,7 +438,7 @@ public class CustomizeScreen extends SettingsScreen
                 CustomizeScreen.this.height - DONE_BUTTON_TOP_OFFSET,
                 this.getSmallWidth(),
                 BUTTON_HEIGHT,
-                Component.translatable(NostalgicLang.Cloth.SAVE_AND_DONE),
+                Component.translatable(LangUtil.Cloth.SAVE_AND_DONE),
                 (button) -> CustomizeScreen.this.onClose(false)
             );
         }
@@ -450,7 +450,7 @@ public class CustomizeScreen extends SettingsScreen
                 CustomizeScreen.this.height - DONE_BUTTON_TOP_OFFSET,
                 this.getSmallWidth(),
                 BUTTON_HEIGHT,
-                Component.translatable(NostalgicLang.Vanilla.GUI_CANCEL),
+                Component.translatable(LangUtil.Vanilla.GUI_CANCEL),
                 (button) -> CustomizeScreen.this.onCancel()
             );
         }

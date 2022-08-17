@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
@@ -85,19 +85,19 @@ public class GenericSlider extends AbstractSliderButton
         if (this.text != null)
             header = this.text.get();
         else if (this.slider == TweakClient.Gui.Slider.SWING_SLIDER)
-            header = Component.translatable(NostalgicLang.Gui.SETTINGS_SPEED).getString();
+            header = Component.translatable(LangUtil.Gui.SETTINGS_SPEED).getString();
         else if (this.slider == TweakClient.Gui.Slider.INTENSITY_SLIDER)
         {
-            header = Component.translatable(NostalgicLang.Gui.SETTINGS_INTENSITY).getString();
+            header = Component.translatable(LangUtil.Gui.SETTINGS_INTENSITY).getString();
             suffix = "%";
         }
         else if (this.slider == TweakClient.Gui.Slider.CLOUD_SLIDER)
         {
             int height = this.current.get();
-            if (height == 108) header = Component.translatable(NostalgicLang.Gui.SETTINGS_ALPHA).getString();
-            else if (height == 128) header = Component.translatable(NostalgicLang.Gui.SETTINGS_BETA).getString();
-            else if (height == 192) header = Component.translatable(NostalgicLang.Gui.SETTINGS_MODERN).getString();
-            else header = Component.translatable(NostalgicLang.Gui.SETTINGS_CUSTOM).getString();
+            if (height == 108) header = Component.translatable(LangUtil.Gui.SETTINGS_ALPHA).getString();
+            else if (height == 128) header = Component.translatable(LangUtil.Gui.SETTINGS_BETA).getString();
+            else if (height == 192) header = Component.translatable(LangUtil.Gui.SETTINGS_MODERN).getString();
+            else header = Component.translatable(LangUtil.Gui.SETTINGS_CUSTOM).getString();
         }
 
         String text = header + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;

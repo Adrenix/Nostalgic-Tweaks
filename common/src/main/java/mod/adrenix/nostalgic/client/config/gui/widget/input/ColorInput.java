@@ -9,9 +9,9 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -95,7 +95,7 @@ public class ColorInput extends AbstractWidget
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
+        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
         {
             ColorPicker.OVERLAY.open(this.cache);
             this.playDownSound(Minecraft.getInstance().getSoundManager());
@@ -112,7 +112,7 @@ public class ColorInput extends AbstractWidget
         if (screen == null)
             return;
 
-        int color = NostalgicUtil.Text.toHexInt(this.cache.getCurrent());
+        int color = ModUtil.Text.toHexInt(this.cache.getCurrent());
         int border = this.input.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0;
 
         float leftX = this.x;
@@ -133,17 +133,17 @@ public class ColorInput extends AbstractWidget
 
         // Bordering is used so users can see alpha transparency
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, topY, topY + 1, border);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, rightX, bottomY - 1, bottomY, border);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 1, topY, bottomY, border);
-        ModClientUtil.Render.fill(buffer, matrix, leftX + 1, rightX - 1, topY + 1, bottomY - 1, color);
+        RenderUtil.fill(buffer, matrix, leftX, rightX, topY, topY + 1, border);
+        RenderUtil.fill(buffer, matrix, leftX, rightX, bottomY - 1, bottomY, border);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 1, topY, bottomY, border);
+        RenderUtil.fill(buffer, matrix, leftX + 1, rightX - 1, topY + 1, bottomY - 1, color);
         tesselator.end();
 
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
 
-        if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20) && screen instanceof ConfigScreen configScreen)
-            configScreen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_INPUT_TIP), mouseX, mouseY));
+        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20) && screen instanceof ConfigScreen configScreen)
+            configScreen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(LangUtil.Gui.GUI_OVERLAY_INPUT_TIP), mouseX, mouseY));
 
         this.input.x = this.x + 21;
         this.input.y = this.y + 1;

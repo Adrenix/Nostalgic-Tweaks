@@ -19,8 +19,8 @@ import mod.adrenix.nostalgic.common.config.tweak.IDisableTweak;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -237,7 +237,7 @@ public record ConfigRenderer(ConfigScreen parent)
             return;
 
         String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
-        String first = NostalgicUtil.Array.get(words, 0);
+        String first = ModUtil.Array.get(words, 0);
 
         boolean isTagOnly = first != null && first.startsWith("@") && words.length == 1;
 
@@ -265,8 +265,8 @@ public record ConfigRenderer(ConfigScreen parent)
         Supplier<ArrayList<ConfigRowList.Row>> bindings = () -> {
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
 
-            KeyMapping openConfig = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
-            KeyMapping toggleFog = KeyUtil.find(NostalgicLang.Key.TOGGLE_FOG);
+            KeyMapping openConfig = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
+            KeyMapping toggleFog = KeyUtil.find(LangUtil.Key.TOGGLE_FOG);
 
             if (openConfig != null)
                 rows.add(new ConfigRowList.BindingRow(openConfig).add());
@@ -276,7 +276,7 @@ public record ConfigRenderer(ConfigScreen parent)
             return rows;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_BINDINGS), bindings, GroupId.BINDINGS_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_BINDINGS), bindings, GroupId.BINDINGS_CONFIG).add());
 
         /* Menu Settings */
 
@@ -285,7 +285,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             // Default Screen Options
             Supplier<ArrayList<ConfigRowList.Row>> defaultScreen = () -> {
-                TextGroup menuHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_INFO));
+                TextGroup menuHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_INFO));
                 TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
                 RadioGroup<MenuOption> screens = new RadioGroup<>
                 (
@@ -303,11 +303,11 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Tree Indent Options
             Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () -> {
-                TextGroup treeHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_INFO));
+                TextGroup treeHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
 
                 TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
@@ -319,11 +319,11 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Row Highlighting Options
             Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () -> {
-                TextGroup rowHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_INFO));
+                TextGroup rowHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
 
                 TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
@@ -338,11 +338,11 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             /* Tag Options */
             Supplier<ArrayList<ConfigRowList.Row>> tagging = () -> {
-                TextGroup tagHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_INFO));
+                TextGroup tagHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
 
                 // New Tags
@@ -351,7 +351,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 ToggleCheckbox toggleNewTags = new ToggleCheckbox
                 (
                     this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
+                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
                     newCache::getCurrent,
                     newCache::setCurrent
                 );
@@ -365,7 +365,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 ToggleCheckbox toggleSidedTags = new ToggleCheckbox
                 (
                     this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
+                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
                     sidedCache::getCurrent,
                     sidedCache::setCurrent
                 );
@@ -379,7 +379,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 ToggleCheckbox toggleTagTooltips = new ToggleCheckbox
                 (
                     this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
+                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
                     tooltipCache::getCurrent,
                     tooltipCache::setCurrent
                 );
@@ -390,14 +390,14 @@ public record ConfigRenderer(ConfigScreen parent)
 
                 // Feature Status
 
-                TextGroup statusHelp = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
+                TextGroup statusHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
                 rows.addAll(statusHelp.getRows());
 
                 TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
                 ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox
                 (
                     this.parent,
-                    Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
+                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
                     featureCache::getCurrent,
                     featureCache::setCurrent
                 );
@@ -408,17 +408,17 @@ public record ConfigRenderer(ConfigScreen parent)
                 return rows;
             };
 
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
+            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             return subcategories;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_CONFIG_TITLE), settings, GroupId.GENERAL_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE), settings, GroupId.GENERAL_CONFIG).add());
 
         /* Override Config */
 
         Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () -> {
-            TextGroup help = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_HELP));
+            TextGroup help = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
             AtomicBoolean serverOnly = new AtomicBoolean(false);
 
             Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
@@ -445,7 +445,7 @@ public record ConfigRenderer(ConfigScreen parent)
                                 entry.setCurrent(!entry.getCurrent());
                             }
                             else if (disabledBoolean != null)
-                                entry.setCurrent(disabledBoolean.disabled());
+                                entry.setCurrent(disabledBoolean.value());
                         }
 
                         if (value instanceof Integer && isChangeable)
@@ -455,7 +455,7 @@ public record ConfigRenderer(ConfigScreen parent)
                             if (disabledInteger != null)
                             {
                                 TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
-                                entryInteger.setCurrent(disabledInteger.disabled());
+                                entryInteger.setCurrent(disabledInteger.value());
                             }
                         }
 
@@ -484,18 +484,18 @@ public record ConfigRenderer(ConfigScreen parent)
                 }
             });
 
-            ControlButton disableAll = new ControlButton(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
-            ControlButton enableAll = new ControlButton(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
+            ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
+            ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
 
             ToggleCheckbox toggleServerOnly = new ToggleCheckbox
             (
                 this.parent,
-                Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_SERVER),
+                Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER),
                 serverOnly::get,
                 serverOnly::set
             );
 
-            toggleServerOnly.setTooltip(Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_SERVER_TIP));
+            toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
 
             ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
             ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
@@ -510,52 +510,52 @@ public record ConfigRenderer(ConfigScreen parent)
             return rows;
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
 
         /* Notifications */
 
         Supplier<ArrayList<ConfigRowList.Row>> notifications = () ->
         {
-            TextGroup notify = new TextGroup(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
+            TextGroup notify = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
             return new ArrayList<>(notify.getRows());
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_NOTIFY_TITLE), notifications, GroupId.NOTIFY_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE), notifications, GroupId.NOTIFY_CONFIG).add());
 
         /* Search Tags */
 
         Supplier<ArrayList<ConfigRowList.Row>> searchTags = () -> {
-            Component help = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_HELP);
-            Component newTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_NEW);
-            Component conflictTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_CONFLICT);
-            Component resetTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_RESET);
-            Component clientTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_CLIENT);
-            Component serverTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_SERVER);
-            Component saveTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_SAVE);
-            Component allTag = Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_ALL);
+            Component help = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_HELP);
+            Component newTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_NEW);
+            Component conflictTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CONFLICT);
+            Component resetTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_RESET);
+            Component clientTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CLIENT);
+            Component serverTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SERVER);
+            Component saveTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SAVE);
+            Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
 
-            return new TextGroup(list, NostalgicUtil.Text.combine(new Component[] {
+            return new TextGroup(list, ModUtil.Text.combine(new Component[] {
                 help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag
             })).getRows();
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SEARCH_TITLE), searchTags, GroupId.SEARCH_TAGS_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE), searchTags, GroupId.SEARCH_TAGS_CONFIG).add());
 
         /* Keyboard Shortcuts */
 
         Supplier<ArrayList<ConfigRowList.Row>> shortcuts = () -> {
-            Component help = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_HELP);
-            Component find = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_FIND);
-            Component save = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_SAVE);
-            Component exit = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_EXIT);
-            Component jump = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_JUMP);
-            Component all = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_ALL);
-            Component group = Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_GROUP);
+            Component help = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_HELP);
+            Component find = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_FIND);
+            Component save = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_SAVE);
+            Component exit = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_EXIT);
+            Component jump = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_JUMP);
+            Component all = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_ALL);
+            Component group = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_GROUP);
 
-            return new TextGroup(list, NostalgicUtil.Text.combine(new Component[]{ help, find, save, exit, jump, all, group })).getRows();
+            return new TextGroup(list, ModUtil.Text.combine(new Component[]{ help, find, save, exit, jump, all, group })).getRows();
         };
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(NostalgicLang.Gui.GENERAL_SHORTCUT_TITLE), shortcuts, GroupId.SHORTCUTS_CONFIG).add());
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_TITLE), shortcuts, GroupId.SHORTCUTS_CONFIG).add());
     }
 
     public void generateAllList()
@@ -578,7 +578,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 this.parent,
                 new ControlButton
                 (
-                    Component.translatable(NostalgicLang.Gui.CUSTOMIZE),
+                    Component.translatable(LangUtil.Gui.CUSTOMIZE),
                     (button) -> this.parent.getMinecraft().setScreen(new CustomizeScreen(this.parent))
                 )
             );
@@ -588,7 +588,7 @@ public record ConfigRenderer(ConfigScreen parent)
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
             String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
-            String first = NostalgicUtil.Array.get(words, 0);
+            String first = ModUtil.Array.get(words, 0);
 
             boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("@");
 
@@ -605,7 +605,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 this.parent.renderLast.add(() -> Screen.drawCenteredString(
                     poseStack,
                     this.parent.getFont(),
-                    Component.translatable(NostalgicLang.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
+                    Component.translatable(LangUtil.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
                     this.parent.width / 2,
                     this.parent.height / 2,
                     0xFFFFFF
@@ -615,7 +615,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 this.parent.renderLast.add(() -> Screen.drawCenteredString(
                     poseStack,
                     this.parent.getFont(),
-                    Component.translatable(NostalgicLang.Gui.SEARCH_EMPTY),
+                    Component.translatable(LangUtil.Gui.SEARCH_EMPTY),
                     this.parent.width / 2,
                     this.parent.height / 2,
                     0xFFFFFF

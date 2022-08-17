@@ -8,9 +8,9 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -54,7 +54,7 @@ public class SettingsScreen extends Screen
 
     public SettingsScreen(Screen parent, boolean isRedirected)
     {
-        this(parent, Component.translatable(NostalgicLang.Gui.SETTINGS_TITLE), isRedirected);
+        this(parent, Component.translatable(LangUtil.Gui.SETTINGS_TITLE), isRedirected);
     }
 
     /* Button Helpers */
@@ -134,26 +134,26 @@ public class SettingsScreen extends Screen
         this.buttons.clear();
 
         // General Settings
-        this.addButton(Component.translatable(NostalgicLang.Cloth.CONFIG_TITLE), (button) ->
+        this.addButton(Component.translatable(LangUtil.Cloth.CONFIG_TITLE), (button) ->
             this.minecraft.setScreen(new ConfigScreen(this))
         );
 
         // Config Presets (WIP)
-        Button preset = new Button(0, 0, SMALL_WIDTH, BUTTON_HEIGHT, Component.translatable(NostalgicLang.Gui.SETTINGS_PRESETS), (button) -> {});
+        Button preset = new Button(0, 0, SMALL_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.SETTINGS_PRESETS), (button) -> {});
         preset.active = false;
         this.buttons.add(preset);
 
         // Support
-        this.addButton(Component.translatable(NostalgicLang.Gui.SETTINGS_SUPPORT), this.setLink(NostalgicUtil.Link.KO_FI));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_SUPPORT), this.setLink(ModUtil.Link.KO_FI));
 
         // Discord
-        this.addButton(Component.translatable(NostalgicLang.Gui.SETTINGS_DISCORD), this.setLink(NostalgicUtil.Link.DISCORD));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_DISCORD), this.setLink(ModUtil.Link.DISCORD));
 
         // Golden Days Button
-        this.addButton(Component.translatable(NostalgicLang.Gui.SETTINGS_GOLDEN_DAYS), this.setLink(NostalgicUtil.Link.GOLDEN_DAYS));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_GOLDEN_DAYS), this.setLink(ModUtil.Link.GOLDEN_DAYS));
 
         // Done Button
-        this.addButton(Component.translatable(NostalgicLang.Vanilla.GUI_DONE), (button) -> this.onClose());
+        this.addButton(Component.translatable(LangUtil.Vanilla.GUI_DONE), (button) -> this.onClose());
 
         // Setup Buttons
         this.setupButtons();
@@ -229,19 +229,19 @@ public class SettingsScreen extends Screen
     private void renderDebug(PoseStack poseStack)
     {
         drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 5, 0xFFFF00);
-        drawString(poseStack, this.font, String.format("LAN: %s", getColored(NetClientUtil.isLocalHost())), 2, height - 70, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("LAN: %s", getColored(NetUtil.isLocalHost())), 2, height - 70, 0xFFFFFF);
         drawString(poseStack, this.font, String.format("Verified: %s", getColored(NostalgicTweaks.isNetworkVerified())), 2, height - 60, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Operator: %s", getColored(NetClientUtil.isPlayerOp())), 2, height - 50, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Connection: %s", getColored(NetClientUtil.isConnected())), 2, height - 40, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Multiplayer: %s", getColored(NetClientUtil.isMultiplayer())), 2, height - 30, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Integration: %s", getColored(NetClientUtil.getIntegratedServer())), 2, height - 20, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Singleplayer: %s", getColored(NetClientUtil.isSingleplayer())), 2, height - 10, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Operator: %s", getColored(NetUtil.isPlayerOp())), 2, height - 50, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Connection: %s", getColored(NetUtil.isConnected())), 2, height - 40, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Multiplayer: %s", getColored(NetUtil.isMultiplayer())), 2, height - 30, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Integration: %s", getColored(NetUtil.getIntegratedServer())), 2, height - 20, 0xFFFFFF);
+        drawString(poseStack, this.font, String.format("Singleplayer: %s", getColored(NetUtil.isSingleplayer())), 2, height - 10, 0xFFFFFF);
     }
 
     private void renderLogo(PoseStack poseStack)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.GEAR_LOGO);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.GEAR_LOGO);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         SettingsScreen.blit(poseStack, this.width / 2 - 16, this.height / 4 - 24, 0, 0, 32, 32, 32, 32);

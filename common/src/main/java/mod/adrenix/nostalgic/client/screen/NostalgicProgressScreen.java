@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.widen.IMixinProgressScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
@@ -118,7 +118,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
             double wait = (long) ((Math.random()) + (pause > pauseTicking ? Math.random() * 1000 : 0));
 
             while (Util.getMillis() - start < wait)
-                NostalgicUtil.Run.nothing();
+                ModUtil.Run.nothing();
 
             this.progress++;
             minecraft.forceSetScreen(this);
@@ -137,7 +137,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         if (header != null && header.getString().equals(Component.translatable("menu.savingLevel").getString()))
         {
             this.setHeader(null);
-            this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_SAVING));
+            this.setStage(Component.translatable(LangUtil.Gui.LEVEL_SAVING));
             this.setPauseTicking(NO_PAUSES);
         }
 
@@ -150,32 +150,32 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         {
             if (currentLevel == Level.NETHER)
             {
-                this.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_ENTER_NETHER));
-                this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING));
+                this.setHeader(Component.translatable(LangUtil.Gui.LEVEL_ENTER_NETHER));
+                this.setStage(Component.translatable(LangUtil.Gui.LEVEL_BUILDING));
             }
             else if (currentLevel == Level.END)
             {
-                this.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_ENTER_END));
-                this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING));
+                this.setHeader(Component.translatable(LangUtil.Gui.LEVEL_ENTER_END));
+                this.setStage(Component.translatable(LangUtil.Gui.LEVEL_BUILDING));
             }
             else if (currentLevel == Level.OVERWORLD)
             {
                 if (previousLevel == Level.NETHER)
                 {
-                    this.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LEAVING_NETHER));
-                    this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING));
+                    this.setHeader(Component.translatable(LangUtil.Gui.LEVEL_LEAVING_NETHER));
+                    this.setStage(Component.translatable(LangUtil.Gui.LEVEL_BUILDING));
                 }
                 else if (previousLevel == Level.END)
                 {
-                    this.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LEAVING_END));
-                    this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING));
+                    this.setHeader(Component.translatable(LangUtil.Gui.LEVEL_LEAVING_END));
+                    this.setStage(Component.translatable(LangUtil.Gui.LEVEL_BUILDING));
                 }
             }
 
             if (this.stage == null)
             {
-                this.setHeader(Component.translatable(NostalgicLang.Gui.LEVEL_LOADING));
-                this.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_BUILDING));
+                this.setHeader(Component.translatable(LangUtil.Gui.LEVEL_LOADING));
+                this.setStage(Component.translatable(LangUtil.Gui.LEVEL_BUILDING));
             }
         }
     }

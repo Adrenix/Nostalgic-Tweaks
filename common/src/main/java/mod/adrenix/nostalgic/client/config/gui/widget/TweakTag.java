@@ -9,8 +9,8 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -68,7 +68,7 @@ public class TweakTag extends AbstractWidget
 
     public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
         Font font = Minecraft.getInstance().font;
 
         int tagWidth = font.width(tag);
@@ -98,7 +98,7 @@ public class TweakTag extends AbstractWidget
 
         if (isMouseOver && screen instanceof ConfigScreen)
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
+                screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
 
     @Override
@@ -117,19 +117,19 @@ public class TweakTag extends AbstractWidget
         TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
 
         Component title = Component.literal(this.title);
-        Component newTag = Component.translatable(NostalgicLang.Gui.TAG_NEW);
-        Component clientTag = Component.translatable(NostalgicLang.Gui.TAG_CLIENT);
-        Component serverTag = Component.translatable(NostalgicLang.Gui.TAG_SERVER);
-        Component dynamicTag = Component.translatable(NostalgicLang.Gui.TAG_DYNAMIC);
-        Component reloadTag = Component.translatable(NostalgicLang.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
-        Component restartTag = Component.translatable(NostalgicLang.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
-        Component warningTag = Component.translatable(NostalgicLang.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
-        Component newTooltip = Component.translatable(NostalgicLang.Gui.TAG_NEW_TOOLTIP);
-        Component clientTooltip = Component.translatable(NostalgicLang.Gui.TAG_CLIENT_TOOLTIP);
-        Component serverTooltip = Component.translatable(NostalgicLang.Gui.TAG_SERVER_TOOLTIP);
-        Component dynamicTooltip = Component.translatable(NostalgicLang.Gui.TAG_DYNAMIC_TOOLTIP);
-        Component reloadTooltip = Component.translatable(NostalgicLang.Gui.TAG_RELOAD_TOOLTIP);
-        Component restartTooltip = Component.translatable(NostalgicLang.Gui.TAG_RESTART_TOOLTIP);
+        Component newTag = Component.translatable(LangUtil.Gui.TAG_NEW);
+        Component clientTag = Component.translatable(LangUtil.Gui.TAG_CLIENT);
+        Component serverTag = Component.translatable(LangUtil.Gui.TAG_SERVER);
+        Component dynamicTag = Component.translatable(LangUtil.Gui.TAG_DYNAMIC);
+        Component reloadTag = Component.translatable(LangUtil.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
+        Component restartTag = Component.translatable(LangUtil.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
+        Component warningTag = Component.translatable(LangUtil.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
+        Component newTooltip = Component.translatable(LangUtil.Gui.TAG_NEW_TOOLTIP);
+        Component clientTooltip = Component.translatable(LangUtil.Gui.TAG_CLIENT_TOOLTIP);
+        Component serverTooltip = Component.translatable(LangUtil.Gui.TAG_SERVER_TOOLTIP);
+        Component dynamicTooltip = Component.translatable(LangUtil.Gui.TAG_DYNAMIC_TOOLTIP);
+        Component reloadTooltip = Component.translatable(LangUtil.Gui.TAG_RELOAD_TOOLTIP);
+        Component restartTooltip = Component.translatable(LangUtil.Gui.TAG_RESTART_TOOLTIP);
         Component warningTooltip = Component.translatable(this.cache.getWarningKey());
 
         boolean isNewRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS).getCurrent();

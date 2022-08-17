@@ -1,6 +1,6 @@
-package mod.adrenix.nostalgic.util;
+package mod.adrenix.nostalgic.util.common;
 
-public abstract class NostalgicLang
+public abstract class LangUtil
 {
     public static class Vanilla
     {
@@ -262,6 +262,7 @@ public abstract class NostalgicLang
         public static final String CANDY_EMBED_TITLE_BUTTON = "gui.nostalgic_tweaks.config.candy.embed.title.button";
         public static final String CANDY_EMBED_TITLE_TEXT = "gui.nostalgic_tweaks.config.candy.embed.title.text";
         public static final String CANDY_EMBED_TOOLTIP_PARTS = "gui.nostalgic_tweaks.config.candy.embed.tooltip.parts";
+        public static final String CANDY_EMBED_VOID_FOG = "gui.nostalgic_tweaks.config.candy.embed.void.fog";
 
         public static final String SWING_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.swing.category.item";
         public static final String SWING_CATEGORY_POTION = "gui.nostalgic_tweaks.config.swing.category.potion";

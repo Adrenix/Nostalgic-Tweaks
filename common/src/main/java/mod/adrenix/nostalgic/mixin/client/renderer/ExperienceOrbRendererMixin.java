@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.common.ModCommonUtil;
+import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ExperienceOrbRenderer.class, priority = ModCommonUtil.APPLY_FIRST)
+@Mixin(value = ExperienceOrbRenderer.class, priority = MixinPriority.APPLY_FIRST)
 public abstract class ExperienceOrbRendererMixin extends EntityRenderer<ExperienceOrb>
 {
     /* Dummy Constructor */

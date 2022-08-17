@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric.mixin.client;
 
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.common.ModCommonUtil;
+import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = FogRenderer.class, priority = ModCommonUtil.APPLY_FIRST)
+@Mixin(value = FogRenderer.class, priority = MixinPriority.APPLY_FIRST)
 public abstract class FogRendererFabricMixin
 {
     /**
@@ -20,7 +20,7 @@ public abstract class FogRendererFabricMixin
     @Inject(method = "setupFog", at = @At(value = "RETURN"))
     private static void NT$onSetupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        ModClientUtil.Fog.setupFog(camera, fogMode);
+        FogUtil.setupFog(camera, fogMode);
     }
 
     /**
@@ -30,6 +30,6 @@ public abstract class FogRendererFabricMixin
     @Inject(method = "setupFog", at = @At(value = "RETURN"))
     private static void NT$onSetupNetherFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        ModClientUtil.Fog.setupNetherFog(camera, fogMode);
+        FogUtil.setupNetherFog(camera, fogMode);
     }
 }

@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.server.config.ServerConfig;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.SharedConstants;
 
@@ -52,7 +52,7 @@ public abstract class ModConfig
         // The server does not need to use a universal enabled/disable state.
         if (NostalgicTweaks.isServer())
             return true;
-        else if (NetClientUtil.isLocalHost())
+        else if (NetUtil.isLocalHost())
             return true;
 
         TweakServerCache<?> cache = TweakServerCache.get(tweak);
@@ -89,8 +89,8 @@ public abstract class ModConfig
                     PacketUtil.sendToAll(new PacketS2CTweakUpdate(cache));
                 else if (NostalgicTweaks.isClient())
                 {
-                    if (NetClientUtil.getIntegratedServer() != null)
-                        PacketUtil.sendToAll(NetClientUtil.getIntegratedServer().getPlayerList().getPlayers(), new PacketS2CTweakUpdate(cache));
+                    if (NetUtil.getIntegratedServer() != null)
+                        PacketUtil.sendToAll(NetUtil.getIntegratedServer().getPlayerList().getPlayers(), new PacketS2CTweakUpdate(cache));
                 }
             }
         }
@@ -108,13 +108,13 @@ public abstract class ModConfig
     {
         if (NostalgicTweaks.isServer())
             return server;
-        else if (NetClientUtil.isSingleplayer())
+        else if (NetUtil.isSingleplayer())
             return client;
 
         TweakServerCache<T> cache = TweakServerCache.get(tweak);
         boolean isDynamic = cache != null && cache.isDynamic();
 
-        if (isDynamic && NetClientUtil.isMultiplayer() && !NostalgicTweaks.isNetworkVerified())
+        if (isDynamic && NetUtil.isMultiplayer() && !NostalgicTweaks.isNetworkVerified())
             return client;
 
         if (isDynamic || (cache != null && NostalgicTweaks.isNetworkVerified()))
@@ -271,13 +271,13 @@ public abstract class ModConfig
         public static boolean oldFlatFrames() { return getBoolTweak(CandyTweak.FLAT_FRAMES, CANDY.old2dFrames); }
 
         // Lighting Candy
-        public static boolean oldLightBrightness() { return getBoolTweak(CandyTweak.BRIGHTNESS, CANDY.oldLightBrightness); }
+        public static boolean oldLightBrightness() { return getBoolTweak(CandyTweak.LIGHT_BRIGHTNESS, CANDY.oldLightBrightness); }
+        public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLighting); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
         public static boolean oldWaterLighting() { return getSidedBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting, SERVER_CANDY.oldWaterLighting); }
         public static boolean oldLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.oldLightFlicker); }
-        public static boolean oldLighting() { return getBoolTweak(CandyTweak.LIGHTING, CANDY.oldLighting); }
         public static boolean disableGamma() { return getBoolTweak(CandyTweak.DISABLE_GAMMA, CANDY.disableGamma); }
 
         // Particle Candy

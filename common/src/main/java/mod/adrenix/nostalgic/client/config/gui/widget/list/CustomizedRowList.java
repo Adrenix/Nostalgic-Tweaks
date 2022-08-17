@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ItemButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.GenericSlider;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -132,7 +132,7 @@ public class CustomizedRowList extends AbstractRowList<CustomizedRowList.Row>
                     widget.setMessage(Component.literal(Widgets.REMOVE).withStyle(widget.active ? ChatFormatting.DARK_RED : ChatFormatting.GRAY).withStyle(ChatFormatting.BOLD));
                 else if (title != null && title.equals(Widgets.UNDO))
                     widget.setMessage(Component.literal(Widgets.UNDO).withStyle(widget.active ? ChatFormatting.RED : ChatFormatting.GRAY));
-                else if (title != null && title.equals(Component.translatable(NostalgicLang.Cloth.RESET).getString()))
+                else if (title != null && title.equals(Component.translatable(LangUtil.Cloth.RESET).getString()))
                     widget.active = !CustomizedRowList.deleted.contains(entry) && this.entry.getValue() != DefaultConfig.Swing.OLD_SPEED;
             }
 
@@ -245,7 +245,7 @@ public class CustomizedRowList extends AbstractRowList<CustomizedRowList.Row>
 
             public static Button createReset(CustomizeScreen screen, Map.Entry<String, Integer> entry, GenericSlider slider)
             {
-                Component title = Component.translatable(NostalgicLang.Cloth.RESET);
+                Component title = Component.translatable(LangUtil.Cloth.RESET);
                 return new Button(
                     screen.width / 2 + 158,
                     0,

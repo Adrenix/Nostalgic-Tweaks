@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -159,7 +159,7 @@ public abstract class Overlay extends GuiComponent implements IScreenOverlay
 
     protected boolean isMouseOverTitle(double mouseX, double mouseY)
     {
-        return NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, 15);
+        return ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, 15);
     }
 
     @Override
@@ -179,7 +179,7 @@ public abstract class Overlay extends GuiComponent implements IScreenOverlay
     {
         // Send scroll to widgets
         this.widgets.forEach((widget) -> {
-            if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseScrolled(mouseX, mouseY, delta);
         });
 
@@ -191,7 +191,7 @@ public abstract class Overlay extends GuiComponent implements IScreenOverlay
     {
         // Send drag to widgets
         this.widgets.forEach((widget) -> {
-            if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseDragged(mouseX, mouseY, button, dragX, dragY);
         });
 
@@ -218,7 +218,7 @@ public abstract class Overlay extends GuiComponent implements IScreenOverlay
         if (button != LEFT_CLICK)
             return false;
 
-        boolean isClickIn = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height);
+        boolean isClickIn = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height);
 
         if (!isClickIn)
             this.onClose();
@@ -254,7 +254,7 @@ public abstract class Overlay extends GuiComponent implements IScreenOverlay
 
         // Send mouse release to widgets
         this.widgets.forEach((widget) -> {
-            if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseReleased(mouseX, mouseY, button);
         });
     }

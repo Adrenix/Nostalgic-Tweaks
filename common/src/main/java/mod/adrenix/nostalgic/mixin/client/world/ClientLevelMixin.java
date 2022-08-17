@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -192,9 +192,9 @@ public abstract class ClientLevelMixin
                 if (next instanceof ItemEntity)
                     continue;
 
-                boolean isX = NostalgicUtil.Numbers.tolerance((int) next.getX(), (int) x);
-                boolean isY = NostalgicUtil.Numbers.tolerance((int) next.getY(), (int) y);
-                boolean isZ = NostalgicUtil.Numbers.tolerance((int) next.getZ(), (int) z);
+                boolean isX = ModUtil.Numbers.tolerance((int) next.getX(), (int) x);
+                boolean isY = ModUtil.Numbers.tolerance((int) next.getY(), (int) y);
+                boolean isZ = ModUtil.Numbers.tolerance((int) next.getZ(), (int) z);
 
                 if (isX && isY && isZ)
                 {

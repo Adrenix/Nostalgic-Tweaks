@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.forge.mixin.common;
 
-import mod.adrenix.nostalgic.util.server.ModServerUtil;
+import mod.adrenix.nostalgic.util.server.BlockServerUtil;
+import mod.adrenix.nostalgic.util.server.ItemServerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +38,7 @@ public abstract class LivingEntityForgeMixin extends Entity
     @Redirect(method = "onClimbable", at = @At(value = "INVOKE", target = "Ljava/util/Optional;isPresent()Z"))
     private boolean NT$onClimbable(Optional<BlockPos> ladderPos)
     {
-        return ModServerUtil.Gameplay.isClimbable(this.level, this.getFeetBlockState(), this.blockPosition());
+        return BlockServerUtil.isClimbable(this.level, this.getFeetBlockState(), this.blockPosition());
     }
 
     /**
@@ -49,6 +50,6 @@ public abstract class LivingEntityForgeMixin extends Entity
     @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"))
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return ModServerUtil.Item.explodeStack(consumer);
+        return ItemServerUtil.explodeStack(consumer);
     }
 }

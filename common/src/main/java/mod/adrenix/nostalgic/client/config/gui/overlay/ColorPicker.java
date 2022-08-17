@@ -7,9 +7,9 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ColorSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
@@ -106,7 +106,7 @@ public class ColorPicker extends Overlay
         this.x = (screen.width / 2.0D) - (this.width / 2.0D);
         this.y = (screen.height / 2.0D) - (this.height / 2.0D);
 
-        int[] rgba = NostalgicUtil.Text.toHexRGBA(this.cache.getCurrent());
+        int[] rgba = ModUtil.Text.toHexRGBA(this.cache.getCurrent());
         this.r = rgba[0];
         this.g = rgba[1];
         this.b = rgba[2];
@@ -128,17 +128,17 @@ public class ColorPicker extends Overlay
     @Override
     public boolean onClick(double mouseX, double mouseY, int button)
     {
-        if (NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, getHintX(), getHintY(), HINT_SQUARE, HINT_SQUARE))
+        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, getHintX(), getHintY(), HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
         return super.onClick(mouseX, mouseY, button);
     }
 
     private static void drawBorder(BufferBuilder buffer, Matrix4f matrix, int leftX, int topY, int color)
     {
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 1, topY, topY + 19, color);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 125, topY, topY + 1, color);
-        ModClientUtil.Render.fill(buffer, matrix, leftX + 125, leftX + 126, topY, topY + 20, color);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 125, topY + 19, topY + 20, color);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 1, topY, topY + 19, color);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 125, topY, topY + 1, color);
+        RenderUtil.fill(buffer, matrix, leftX + 125, leftX + 126, topY, topY + 20, color);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 125, topY + 19, topY + 20, color);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class ColorPicker extends Overlay
         if (screen == null || !this.isOpen())
             return;
 
-        this.cache.setCurrent(NostalgicUtil.Text.toHexString(new int[] {this.r, this.g, this.b, this.a}));
+        this.cache.setCurrent(ModUtil.Text.toHexString(new int[] {this.r, this.g, this.b, this.a}));
 
         int startX = (int) this.x;
         int startY = (int) this.y;
@@ -158,8 +158,8 @@ public class ColorPicker extends Overlay
         int hintX = this.getHintX();
         int hintY = this.getHintY();
 
-        boolean isOverHint = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, hintY, HINT_SQUARE, HINT_SQUARE);
-        this.isOverClose = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
+        boolean isOverHint = ModUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, hintY, HINT_SQUARE, HINT_SQUARE);
+        this.isOverClose = ModUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
@@ -169,7 +169,7 @@ public class ColorPicker extends Overlay
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.COLOR_PICKER);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.COLOR_PICKER);
 
         blit(poseStack, startX, startY, 0, 0, this.width, this.height);
         blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);
@@ -181,17 +181,17 @@ public class ColorPicker extends Overlay
         int leftX = startX + 14;
         int topY = startY + 21;
 
-        int[] rgba = NostalgicUtil.Text.toHexRGBA(this.cache.getCurrent());
-        int r = NostalgicUtil.Text.toHexInt("#" + (rgba[0] < 16 ? "0" : "") + Integer.toHexString(rgba[0]) + "0000FF");
-        int g = NostalgicUtil.Text.toHexInt("#00" + (rgba[1] < 16 ? "0" : "") + Integer.toHexString(rgba[1]) + "00FF");
-        int b = NostalgicUtil.Text.toHexInt("#0000" + (rgba[2] < 16 ? "0" : "") + Integer.toHexString(rgba[2]) + "FF");
-        int a = NostalgicUtil.Text.toHexInt(this.cache.getCurrent());
+        int[] rgba = ModUtil.Text.toHexRGBA(this.cache.getCurrent());
+        int r = ModUtil.Text.toHexInt("#" + (rgba[0] < 16 ? "0" : "") + Integer.toHexString(rgba[0]) + "0000FF");
+        int g = ModUtil.Text.toHexInt("#00" + (rgba[1] < 16 ? "0" : "") + Integer.toHexString(rgba[1]) + "00FF");
+        int b = ModUtil.Text.toHexInt("#0000" + (rgba[2] < 16 ? "0" : "") + Integer.toHexString(rgba[2]) + "FF");
+        int a = ModUtil.Text.toHexInt(this.cache.getCurrent());
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 18, topY, topY + 18, r);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 18, topY + 24, topY + 24 + 18, g);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 18, topY + 48, topY + 48 + 18, b);
-        ModClientUtil.Render.fill(buffer, matrix, leftX, leftX + 18, topY + 72, topY + 72 + 18, a);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY, topY + 18, r);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY + 24, topY + 24 + 18, g);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY + 48, topY + 48 + 18, b);
+        RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY + 72, topY + 72 + 18, a);
         tesselator.end();
 
         // Render widgets
@@ -217,19 +217,19 @@ public class ColorPicker extends Overlay
 
         // Text needs to be rendered last since it will interfere with alpha rendering
         int color = this.isMouseOverTitle(mouseX, mouseY) && !this.isOverClose && !isOverHint ? 0xFFF65B : 0xFFFFFF;
-        drawString(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_COLOR), startX + 19, startY + 5, color);
+        drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_COLOR), startX + 19, startY + 5, color);
 
         // Render dragging and tooltip hints
-        boolean isOverIcon = NostalgicUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
+        boolean isOverIcon = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
         if (isOverIcon)
         {
-            List<Component> tooltip = NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_DRAG_TIP), 36);
+            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 
         if (isOverHint && this.hint)
         {
-            List<Component> tooltip = NostalgicUtil.Wrap.tooltip(Component.translatable(NostalgicLang.Gui.GUI_OVERLAY_COLOR_HINT), 36);
+            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_COLOR_HINT), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 

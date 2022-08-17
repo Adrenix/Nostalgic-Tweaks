@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.client.config.gui.widget.group;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -115,7 +115,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
         @Override
         public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
         {
-            RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
             Minecraft minecraft = Minecraft.getInstance();
             Screen screen = minecraft.screen;
             if (screen == null) return;
@@ -135,7 +135,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
 
             screen.blit(poseStack, this.x, this.y, uOffset, vOffset, uWidth, vHeight);
 
-            Component defaultText = Component.literal(this.isDefault() ? String.format(" (%s)", Component.translatable(NostalgicLang.Gui.DEFAULT).getString()) : "");
+            Component defaultText = Component.literal(this.isDefault() ? String.format(" (%s)", Component.translatable(LangUtil.Gui.DEFAULT).getString()) : "");
             Component optionText = Component.literal(this.label.apply(this.instance).getString() + defaultText.getString());
 
             RadioGroup.drawString(poseStack, Minecraft.getInstance().font, optionText, this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFF);

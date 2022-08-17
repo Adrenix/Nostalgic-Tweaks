@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
@@ -78,7 +78,7 @@ public class OverlapButton extends Button
         super.render(poseStack, mouseX, mouseY, partialTick);
         if (this.isListButton)
         {
-            RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
             blit(poseStack, this.x, this.y, this.isHovered && this.active ? 20 : 0, 163, 20, 20);
         }
     }

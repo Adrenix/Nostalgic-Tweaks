@@ -13,8 +13,8 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -149,8 +149,8 @@ public class ConfigWidgets
         for (int i = 0; i < this.categories.length; i++)
         {
             boolean adjust = false;
-            Button first = NostalgicUtil.Array.get(this.categories, i);
-            Button second = NostalgicUtil.Array.get(this.categories, i + 1);
+            Button first = ModUtil.Array.get(this.categories, i);
+            Button second = ModUtil.Array.get(this.categories, i + 1);
             if (first == null || second == null)
                 break;
 
@@ -163,7 +163,7 @@ public class ConfigWidgets
             if (adjust)
             {
                 second.x -= 1;
-                if (NostalgicUtil.Array.get(this.categories, i + 2) != null)
+                if (ModUtil.Array.get(this.categories, i + 2) != null)
                 {
                     for (int j = i + 2; j < this.categories.length; j++)
                         this.categories[j].x -= 1;
@@ -287,7 +287,7 @@ public class ConfigWidgets
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
             BUTTON_HEIGHT,
-            Component.translatable(NostalgicLang.Vanilla.GUI_CANCEL),
+            Component.translatable(LangUtil.Vanilla.GUI_CANCEL),
             (button) -> this.parent.onCancel()
         );
     }
@@ -300,7 +300,7 @@ public class ConfigWidgets
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
             BUTTON_HEIGHT,
-            Component.translatable(NostalgicLang.Cloth.SAVE_AND_DONE),
+            Component.translatable(LangUtil.Cloth.SAVE_AND_DONE),
             (button) -> this.parent.onClose(false)
         );
     }
@@ -310,12 +310,12 @@ public class ConfigWidgets
     private EditBox generateInputBox()
     {
         int x = (this.parent.width / 2) - (INPUT_WIDTH / 2);
-        return new EditBox(this.parent.getFont(), x, 3, INPUT_WIDTH, INPUT_HEIGHT, Component.translatable(NostalgicLang.Vanilla.SEARCH).withStyle(ChatFormatting.ITALIC));
+        return new EditBox(this.parent.getFont(), x, 3, INPUT_WIDTH, INPUT_HEIGHT, Component.translatable(LangUtil.Vanilla.SEARCH).withStyle(ChatFormatting.ITALIC));
     }
 
     private TextGroup generateSwingSpeedPrefix()
     {
-        return new TextGroup(this.configRowList, Component.translatable(NostalgicLang.Gui.SETTINGS_SPEED_HELP));
+        return new TextGroup(this.configRowList, Component.translatable(LangUtil.Gui.SETTINGS_SPEED_HELP));
     }
 
     private StateButton generateBubbleState()
@@ -360,7 +360,7 @@ public class ConfigWidgets
     {
         StringBuilder query = new StringBuilder();
         String[] words = search.getValue().split(" ");
-        String atTag = NostalgicUtil.Array.get(words, 0);
+        String atTag = ModUtil.Array.get(words, 0);
 
         for (String word : words)
         {
@@ -388,7 +388,7 @@ public class ConfigWidgets
                     if (Screen.hasShiftDown())
                     {
                         // Go back one if shift is down
-                        if (NostalgicUtil.Array.get(searchTags, i - 1) != null)
+                        if (ModUtil.Array.get(searchTags, i - 1) != null)
                             next = searchTags[i - 1];
                         else // We're at the front of the array, so get the last one
                             next = searchTags[searchTags.length - 1];
@@ -396,7 +396,7 @@ public class ConfigWidgets
                     else
                     {
                         // Go forward one
-                        if (NostalgicUtil.Array.get(searchTags, i + 1) != null)
+                        if (ModUtil.Array.get(searchTags, i + 1) != null)
                             next = searchTags[i + 1];
                         else // We're at the end of the array, so get the first one
                             next = searchTags[0];
@@ -436,7 +436,7 @@ public class ConfigWidgets
         ConfigScreen.SearchTag tag = null;
         StringBuilder query = new StringBuilder();
         String[] words = search.split(" ");
-        String atTag = NostalgicUtil.Array.get(words, 0);
+        String atTag = ModUtil.Array.get(words, 0);
         String requestedTag = atTag != null ? atTag.replace("@", "").toLowerCase() : "";
 
         for (String word : words)

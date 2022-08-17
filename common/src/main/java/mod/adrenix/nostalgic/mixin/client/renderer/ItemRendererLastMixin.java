@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.*;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.common.ModCommonUtil;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
  * Mixin injections here will occur after all other mods have finished their required modifications.
  */
 
-@Mixin(value = ItemRenderer.class, priority = ModCommonUtil.APPLY_LAST)
+@Mixin(value = ItemRenderer.class, priority = MixinPriority.APPLY_LAST)
 public abstract class ItemRendererLastMixin
 {
     /* Shadows */
@@ -35,8 +35,8 @@ public abstract class ItemRendererLastMixin
     @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
     private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
     {
-        if (ModClientUtil.Item.isLightingFlat())
-            ModClientUtil.Item.setNormalQuad(poseStack.last(), quad);
+        if (ItemClientUtil.isLightingFlat())
+            ItemClientUtil.setNormalQuad(poseStack.last(), quad);
         return quad;
     }
 }

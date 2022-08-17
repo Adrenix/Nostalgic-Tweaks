@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.server;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.server.ModServerUtil;
+import mod.adrenix.nostalgic.util.server.WorldServerUtil;
 import net.minecraft.server.level.ChunkMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +19,6 @@ public abstract class ChunkMapMixin
     private static void NT$onIsChunkRangeBorder(int chunkX, int chunkZ, int secX, int secZ, int viewDistance, CallbackInfoReturnable<Boolean> callback)
     {
         if (ModConfig.Candy.oldSquareBorder())
-            callback.setReturnValue(ModServerUtil.World.squareDistance(chunkX, chunkZ, secX, secZ) <= viewDistance);
+            callback.setReturnValue(WorldServerUtil.squareDistance(chunkX, chunkZ, secX, secZ) <= viewDistance);
     }
 }

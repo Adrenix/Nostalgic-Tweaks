@@ -6,7 +6,7 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -60,7 +59,7 @@ public abstract class LevelRendererMixin
         };
 
         this.blueBuffer = new VertexBuffer();
-        BufferBuilder.RenderedBuffer renderedBuffer = ModClientUtil.World.buildSkyDisc(builder, height);
+        BufferBuilder.RenderedBuffer renderedBuffer = WorldClientUtil.buildSkyDisc(builder, height);
         this.blueBuffer.bind();
         this.blueBuffer.upload(renderedBuffer);
         VertexBuffer.unbind();
@@ -79,13 +78,13 @@ public abstract class LevelRendererMixin
         if (!isStarRunnableSaved)
         {
             isStarRunnableSaved = true;
-            ModClientUtil.Run.onSave.add(this::createStars);
+            RunUtil.onSave.add(this::createStars);
         }
 
         if (!isBlueRunnableSaved)
         {
             isBlueRunnableSaved = true;
-            ModClientUtil.Run.onSave.add(this::NT$createBlueBuffer);
+            RunUtil.onSave.add(this::NT$createBlueBuffer);
         }
     }
 
@@ -96,8 +95,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderSky", at = @At(value = "HEAD"))
     private void NT$onCacheSkyPose(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        ModClientUtil.World.blueModelView = poseStack.last().pose().copy();
-        ModClientUtil.World.blueProjection = projectionMatrix.copy();
+        WorldClientUtil.blueModelView = poseStack.last().pose().copy();
+        WorldClientUtil.blueProjection = projectionMatrix.copy();
     }
 
     /**
@@ -121,13 +120,13 @@ public abstract class LevelRendererMixin
     {
         if (ModConfig.Candy.getBlueVoid() != TweakVersion.Generic.MODERN)
         {
-            ModClientUtil.World.setBlueVoidColor();
+            WorldClientUtil.setBlueVoidColor();
             ShaderInstance shader = RenderSystem.getShader();
 
             if (this.blueBuffer != null && shader != null)
             {
                 this.blueBuffer.bind();
-                this.blueBuffer.drawWithShader(ModClientUtil.World.blueModelView, ModClientUtil.World.blueProjection, shader);
+                this.blueBuffer.drawWithShader(WorldClientUtil.blueModelView, WorldClientUtil.blueProjection, shader);
                 VertexBuffer.unbind();
             }
         }
@@ -187,20 +186,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderLevel", at = @At(value = "HEAD"))
     private void NT$onStartLevelRendering(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        ModClientUtil.Item.levelPoseStack = poseStack.last();
-        ModClientUtil.Item.levelBufferSource = this.renderBuffers.bufferSource();
-    }
-
-    /**
-     * Changes the cloud height, which is dynamically set by the user.
-     * Controlled by the old cloud height tweak.
-     */
-    @Redirect(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;getCloudHeight()F"))
-    private float NT$onGetCloudHeight(DimensionSpecialEffects instance)
-    {
-        if (this.minecraft.level != null && this.minecraft.level.dimension() == Level.OVERWORLD)
-            return ModConfig.Candy.getCloudHeight();
-        return instance.getCloudHeight();
+        ItemClientUtil.levelPoseStack = poseStack.last();
+        ItemClientUtil.levelBufferSource = this.renderBuffers.bufferSource();
     }
 
     /**
@@ -210,7 +197,7 @@ public abstract class LevelRendererMixin
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 2, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
     private float NT$onRenderSkyDiscColor(float vanilla)
     {
-        return ModClientUtil.World.getSunriseRotation(vanilla);
+        return WorldClientUtil.getSunriseRotation(vanilla);
     }
 
     /**
@@ -220,7 +207,7 @@ public abstract class LevelRendererMixin
     @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
     private float NT$onRenderSun(float vanilla)
     {
-        return ModClientUtil.World.getSunriseRotation(vanilla);
+        return WorldClientUtil.getSunriseRotation(vanilla);
     }
 
     /**
@@ -267,7 +254,7 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void NT$onRenderHitOutline(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo callback)
     {
-        if (!ModClientUtil.Block.isBlockOldChest(state.getBlock()))
+        if (!BlockClientUtil.isOldChest(state.getBlock()))
             return;
 
         IMixinLevelRenderer.NT$invokeRenderShape

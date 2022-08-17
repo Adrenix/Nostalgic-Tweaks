@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.network.packet;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
-import mod.adrenix.nostalgic.util.LogColor;
+import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;

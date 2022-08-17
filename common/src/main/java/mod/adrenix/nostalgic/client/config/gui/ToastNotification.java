@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.client.config.gui;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -47,10 +47,10 @@ public abstract class ToastNotification
      */
     public static void addTweakUpdate()
     {
-        if (!NetClientUtil.isMultiplayer())
+        if (!NetUtil.isMultiplayer())
             return;
 
-        add(NostalgicLang.Gui.TOAST_TWEAK_UPDATE_HEADER, NostalgicLang.Gui.TOAST_TWEAK_UPDATE_BODY);
+        add(LangUtil.Gui.TOAST_TWEAK_UPDATE_HEADER, LangUtil.Gui.TOAST_TWEAK_UPDATE_BODY);
     }
 
     /**
@@ -58,10 +58,10 @@ public abstract class ToastNotification
      */
     public static void addTweakChange()
     {
-        if (!NetClientUtil.isMultiplayer())
+        if (!NetUtil.isMultiplayer())
             return;
 
-        add(NostalgicLang.Gui.TOAST_TWEAK_SENT_HEADER, NostalgicLang.Gui.TOAST_TWEAK_SENT_BODY);
+        add(LangUtil.Gui.TOAST_TWEAK_SENT_HEADER, LangUtil.Gui.TOAST_TWEAK_SENT_BODY);
     }
 
     /**
@@ -69,9 +69,9 @@ public abstract class ToastNotification
      */
     public static void addServerHandshake()
     {
-        if (!NostalgicTweaks.isNetworkVerified() || NetClientUtil.isSingleplayer())
+        if (!NostalgicTweaks.isNetworkVerified() || NetUtil.isSingleplayer())
             return;
 
-        add(NostalgicLang.Gui.TOAST_SYNC_HEADER, NostalgicLang.Gui.TOAST_SYNC_BODY);
+        add(LangUtil.Gui.TOAST_SYNC_HEADER, LangUtil.Gui.TOAST_SYNC_BODY);
     }
 }

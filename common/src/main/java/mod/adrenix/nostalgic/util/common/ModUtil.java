@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.util;
+package mod.adrenix.nostalgic.util.common;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.minecraft.network.chat.Component;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class NostalgicUtil
+public abstract class ModUtil
 {
     public static class Resource
     {

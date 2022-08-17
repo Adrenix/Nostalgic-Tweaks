@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.util;
+package mod.adrenix.nostalgic.util.common.log;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 

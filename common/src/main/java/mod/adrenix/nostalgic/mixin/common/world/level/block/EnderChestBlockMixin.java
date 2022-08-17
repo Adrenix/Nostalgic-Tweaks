@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -64,7 +64,7 @@ public abstract class EnderChestBlockMixin
         {
             boolean isServerVoxel = cache != null && cache.getServerCache();
 
-            if (NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer() && isServerVoxel)
+            if (NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer() && isServerVoxel)
             {
                 callback.setReturnValue(shape);
                 return;

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -42,7 +42,7 @@ public abstract class BlockBehaviourMixin
     )
     private boolean NT$onGetShadeFromShape(BlockState instance, BlockGetter blockGetter, BlockPos blockPos)
     {
-        if (ModClientUtil.Block.isBlockFullShape(instance.getBlock()))
+        if (BlockClientUtil.isFullShape(instance.getBlock()))
             return true;
         return instance.isCollisionShapeFullBlock(blockGetter, blockPos);
     }

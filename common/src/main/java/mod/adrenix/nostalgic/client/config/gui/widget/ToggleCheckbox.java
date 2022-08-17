@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
@@ -69,7 +69,7 @@ public class ToggleCheckbox extends Checkbox
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
 
         int uOffset = 0;
         int vOffset = 103;
@@ -89,7 +89,7 @@ public class ToggleCheckbox extends Checkbox
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
         {
-            List<Component> tip = NostalgicUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth);
+            List<Component> tip = ModUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth);
             this.screen.renderComponentTooltip(poseStack, tip, mouseX, mouseY);
         }
     }

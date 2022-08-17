@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -31,7 +31,7 @@ public class TooltipButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
         if (screen == null) return;
@@ -46,7 +46,7 @@ public class TooltipButton extends Button
         if (isMouseOver && screen instanceof ConfigScreen)
         {
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, NostalgicUtil.Wrap.tooltip(Component.translatable(cache.getTooltipKey()), 38), mouseX, mouseY));
+                screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(cache.getTooltipKey()), 38), mouseX, mouseY));
         }
     }
 }

@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.fabric.mixin.common;
 
-import mod.adrenix.nostalgic.util.server.ModServerUtil;
+import mod.adrenix.nostalgic.util.server.BlockServerUtil;
+import mod.adrenix.nostalgic.util.server.ItemServerUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +38,7 @@ public abstract class LivingEntityFabricMixin extends Entity
     @Redirect(method = "onClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z"))
     private boolean NT$onClimbable(BlockState instance, TagKey<Block> tagKey)
     {
-        return ModServerUtil.Gameplay.isClimbable(this.level, instance, this.blockPosition());
+        return BlockServerUtil.isClimbable(this.level, instance, this.blockPosition());
     }
 
     /**
@@ -57,6 +58,6 @@ public abstract class LivingEntityFabricMixin extends Entity
     )
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return ModServerUtil.Item.explodeStack(consumer);
+        return ItemServerUtil.explodeStack(consumer);
     }
 }

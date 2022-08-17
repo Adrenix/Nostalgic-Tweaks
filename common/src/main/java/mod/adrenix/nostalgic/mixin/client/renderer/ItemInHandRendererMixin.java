@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -104,7 +104,7 @@ public abstract class ItemInHandRendererMixin
     )
     private ItemStack NT$onRenderItem(AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack itemStack, float equippedProgress, PoseStack matrix, MultiBufferSource buffer, int combinedLight)
     {
-        return ModClientUtil.Item.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
     }
 
     /**

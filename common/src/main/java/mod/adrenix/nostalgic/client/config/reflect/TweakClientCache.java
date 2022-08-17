@@ -11,8 +11,8 @@ import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
 import mod.adrenix.nostalgic.common.config.tweak.ITweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.network.packet.PacketC2SChangeTweak;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -138,7 +138,7 @@ public class TweakClientCache<T>
      */
     private boolean isClientHandled()
     {
-        if (!NostalgicTweaks.isNetworkVerified() || NetClientUtil.isSingleplayer() || Minecraft.getInstance().level == null)
+        if (!NostalgicTweaks.isNetworkVerified() || NetUtil.isSingleplayer() || Minecraft.getInstance().level == null)
             return true;
         return !this.isDynamic() && this.isClient();
     }
@@ -342,17 +342,17 @@ public class TweakClientCache<T>
             return;
 
         if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadChunks.class) != null)
-            ModClientUtil.Run.reloadChunks = true;
+            RunUtil.reloadChunks = true;
 
         if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null)
-            ModClientUtil.Run.reloadResources = true;
+            RunUtil.reloadResources = true;
 
         boolean isClient = this.isClient();
-        boolean isDynamic = this.isDynamic() && NetClientUtil.isPlayerOp();
+        boolean isDynamic = this.isDynamic() && NetUtil.isPlayerOp();
         boolean isServerTweak = isDynamic || !isClient;
-        boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetClientUtil.isMultiplayer();
+        boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer();
 
-        if (NetClientUtil.isSingleplayer() && isServerTweak)
+        if (NetUtil.isSingleplayer() && isServerTweak)
         {
             this.getServerTweak().setValue(this.value);
             this.getServerTweak().setServerCache(this.value);
@@ -366,7 +366,7 @@ public class TweakClientCache<T>
 
         T value = isDynamic && isMultiplayer ? this.getServerTweak().getValue() : this.value;
 
-        if (NetClientUtil.isLocalHost() || this.isClientHandled() || isDynamic)
+        if (NetUtil.isLocalHost() || this.isClientHandled() || isDynamic)
             ClientReflect.setConfig(this.group, this.key, value);
     }
 
@@ -412,7 +412,7 @@ public class TweakClientCache<T>
         if (this.isClient() && !this.isDynamic())
             return false;
 
-        return NostalgicTweaks.isNetworkVerified() && !NetClientUtil.isPlayerOp();
+        return NostalgicTweaks.isNetworkVerified() && !NetUtil.isPlayerOp();
     }
 
     /**
@@ -422,7 +422,7 @@ public class TweakClientCache<T>
      */
     public boolean isResettable()
     {
-        if (!this.isClientHandled() && !NetClientUtil.isPlayerOp())
+        if (!this.isClientHandled() && !NetUtil.isPlayerOp())
             return false;
 
         T current = this.getCurrent();

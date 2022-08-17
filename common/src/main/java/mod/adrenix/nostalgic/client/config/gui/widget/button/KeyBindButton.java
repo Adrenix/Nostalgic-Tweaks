@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -74,10 +74,10 @@ public class KeyBindButton extends ControlButton
         if (screen == null) return;
 
         Component title = Component.translatable(this.mapping.getName());
-        Component syncTag = Component.translatable(NostalgicLang.Gui.TAG_SYNC);
-        Component syncTooltip = Component.translatable(NostalgicLang.Gui.TAG_SYNC_TOOLTIP);
-        Component autoTag = Component.translatable(NostalgicLang.Gui.TAG_AUTO);
-        Component autoTooltip = Component.translatable(NostalgicLang.Gui.TAG_AUTO_TOOLTIP);
+        Component syncTag = Component.translatable(LangUtil.Gui.TAG_SYNC);
+        Component syncTooltip = Component.translatable(LangUtil.Gui.TAG_SYNC_TOOLTIP);
+        Component autoTag = Component.translatable(LangUtil.Gui.TAG_AUTO);
+        Component autoTooltip = Component.translatable(LangUtil.Gui.TAG_AUTO_TOOLTIP);
 
         int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + 4;
         int startY = this.y + 4;
@@ -97,7 +97,7 @@ public class KeyBindButton extends ControlButton
         if (this.isModifying)
             this.setMessage((Component.literal("> ")).append(this.mapping.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
         else if (this.mapping.isUnbound())
-            this.setMessage(Component.translatable(NostalgicLang.Key.UNBOUND).withStyle(ChatFormatting.RED).withStyle(ChatFormatting.ITALIC));
+            this.setMessage(Component.translatable(LangUtil.Key.UNBOUND).withStyle(ChatFormatting.RED).withStyle(ChatFormatting.ITALIC));
         else if (isMappingConflicted(this.mapping))
             this.setMessage(this.mapping.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.RED));
 

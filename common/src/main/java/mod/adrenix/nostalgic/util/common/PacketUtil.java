@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.util.common;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -81,7 +81,7 @@ public abstract class PacketUtil
 
     /**
      * This is a server safe method to check if a player is an operator.
-     * For client network utility see {@link NetClientUtil}.
+     * For client network utility see {@link NetUtil}.
      * @param player The server player to check permissions on.
      * @return Whether the server player is an operator. (level >= 2)
      */

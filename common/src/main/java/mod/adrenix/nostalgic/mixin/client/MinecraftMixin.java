@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.duck.ILocalSwing;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.ProgressScreen;
@@ -80,7 +80,7 @@ public abstract class MinecraftMixin
         if (genericScreen.getClass() == GenericDirtMessageScreen.class)
         {
             NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
-            progressScreen.setStage(Component.translatable(NostalgicLang.Gui.LEVEL_SAVING));
+            progressScreen.setStage(Component.translatable(LangUtil.Gui.LEVEL_SAVING));
             progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
             return progressScreen;
         }

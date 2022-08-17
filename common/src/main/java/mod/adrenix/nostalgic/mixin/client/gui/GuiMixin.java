@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
@@ -98,7 +98,7 @@ public abstract class GuiMixin extends GuiComponent
         {
             // Half armor texture flip
             if (uOffset == 25)
-                ModClientUtil.Gui.renderInverseArmor(poseStack, this.getBlitOffset(), mirrorX, y + armorY, uOffset, vOffset, uWidth, vHeight);
+                GuiUtil.renderInverseArmor(poseStack, this.getBlitOffset(), mirrorX, y + armorY, uOffset, vOffset, uWidth, vHeight);
             else
                 instance.blit(poseStack, mirrorX, y + armorY, uOffset, vOffset, uWidth, vHeight);
         }

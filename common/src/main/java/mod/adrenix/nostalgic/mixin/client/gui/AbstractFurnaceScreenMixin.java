@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractContainerScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.network.chat.Component;
@@ -37,7 +37,7 @@ public abstract class AbstractFurnaceScreenMixin extends AbstractContainerScreen
         if (ModConfig.Candy.oldFurnaceScreen())
         {
             this.font.draw(poseStack, this.title, 60.0F, 6.0F, 0x404040);
-            this.font.draw(poseStack, Component.translatable(NostalgicLang.Vanilla.INVENTORY), 8.0F, 72.0F, 0x404040);
+            this.font.draw(poseStack, Component.translatable(LangUtil.Vanilla.INVENTORY), 8.0F, 72.0F, 0x404040);
         }
         else
             super.renderLabels(poseStack, mouseX, mouseY);
@@ -52,6 +52,6 @@ public abstract class AbstractFurnaceScreenMixin extends AbstractContainerScreen
     @Inject(method = "init", at = @At("TAIL"))
     private void NT$onInit(CallbackInfo callback)
     {
-        ModClientUtil.Gui.createRecipeButton((IMixinAbstractContainerScreen) this, ModConfig.Candy.getFurnaceBook());
+        GuiUtil.createRecipeButton((IMixinAbstractContainerScreen) this, ModConfig.Candy.getFurnaceBook());
     }
 }

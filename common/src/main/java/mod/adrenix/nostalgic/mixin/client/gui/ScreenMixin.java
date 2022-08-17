@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
@@ -50,8 +50,8 @@ public abstract class ScreenMixin extends GuiComponent
     {
         if (ModConfig.Candy.customGuiBackground())
         {
-            int top = NostalgicUtil.Text.toHexInt(ModConfig.Candy.customTopGradient());
-            int bottom = NostalgicUtil.Text.toHexInt(ModConfig.Candy.customBottomGradient());
+            int top = ModUtil.Text.toHexInt(ModConfig.Candy.customTopGradient());
+            int bottom = ModUtil.Text.toHexInt(ModConfig.Candy.customBottomGradient());
 
             this.fillGradient(poseStack, x, y, w, h, top, bottom);
         }

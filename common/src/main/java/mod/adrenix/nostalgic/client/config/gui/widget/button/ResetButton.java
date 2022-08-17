@@ -5,7 +5,7 @@ import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ResetButton extends Button
 {
-    protected static final Component TITLE = Component.translatable(NostalgicLang.Cloth.RESET);
+    protected static final Component TITLE = Component.translatable(LangUtil.Cloth.RESET);
     protected final AbstractWidget anchor;
     @Nullable protected final TweakClientCache<?> cache;
 

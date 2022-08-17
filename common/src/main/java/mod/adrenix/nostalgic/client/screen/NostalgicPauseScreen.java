@@ -5,9 +5,9 @@ import com.mojang.realmsclient.RealmsMainScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.client.ModClientUtil;
-import mod.adrenix.nostalgic.util.client.NetClientUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.*;
@@ -21,14 +21,14 @@ public class NostalgicPauseScreen extends Screen
     /* Fields */
 
     private final TweakVersion.PauseLayout layout;
-    private final Component mods = Component.translatable(NostalgicLang.Gui.CANDY_TITLE_MODS);
-    private final Component lan = Component.translatable(NostalgicLang.Vanilla.MENU_LAN);
-    private final Component stats = Component.translatable(NostalgicLang.Vanilla.GUI_STATS);
-    private final Component options = Component.translatable(NostalgicLang.Vanilla.MENU_OPTIONS);
-    private final Component disconnect = Component.translatable(NostalgicLang.Vanilla.MENU_DISCONNECT);
-    private final Component toUpperBack = Component.translatable(NostalgicLang.Vanilla.MENU_RETURN_TO_GAME);
-    private final Component toLowerBack = Component.translatable(NostalgicLang.Gui.PAUSE_RETURN_LOWER);
-    private final Component achievements = Component.translatable(NostalgicLang.Gui.PAUSE_ACHIEVEMENTS);
+    private final Component mods = Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS);
+    private final Component lan = Component.translatable(LangUtil.Vanilla.MENU_LAN);
+    private final Component stats = Component.translatable(LangUtil.Vanilla.GUI_STATS);
+    private final Component options = Component.translatable(LangUtil.Vanilla.MENU_OPTIONS);
+    private final Component disconnect = Component.translatable(LangUtil.Vanilla.MENU_DISCONNECT);
+    private final Component toUpperBack = Component.translatable(LangUtil.Vanilla.MENU_RETURN_TO_GAME);
+    private final Component toLowerBack = Component.translatable(LangUtil.Gui.PAUSE_RETURN_LOWER);
+    private final Component achievements = Component.translatable(LangUtil.Gui.PAUSE_ACHIEVEMENTS);
 
     /* Constructor Helper */
 
@@ -36,8 +36,8 @@ public class NostalgicPauseScreen extends Screen
     {
         return switch (ModConfig.Candy.getPauseLayout())
         {
-            case ALPHA_BETA, ACHIEVE_LOWER, ACHIEVE_UPPER, LAN -> NostalgicLang.Gui.PAUSE_GAME;
-            case ADVANCEMENT, MODERN -> NostalgicLang.Vanilla.MENU_GAME;
+            case ALPHA_BETA, ACHIEVE_LOWER, ACHIEVE_UPPER, LAN -> LangUtil.Gui.PAUSE_GAME;
+            case ADVANCEMENT, MODERN -> LangUtil.Vanilla.MENU_GAME;
         };
     }
 
@@ -83,19 +83,19 @@ public class NostalgicPauseScreen extends Screen
         for (Widget widget : ((IMixinScreen) this).NT$getRenderables())
         {
             if (widget instanceof Button button && button.getMessage().getString().equals(this.lan.getString()))
-                ((Button) widget).active = !NetClientUtil.isMultiplayer();
+                ((Button) widget).active = !NetUtil.isMultiplayer();
         }
     }
 
     private boolean isMultiplayer()
     {
-        return NetClientUtil.isMultiplayer() && !NetClientUtil.isLocalHost();
+        return NetUtil.isMultiplayer() && !NetUtil.isLocalHost();
     }
 
     private Component getSave(boolean isLower)
     {
-        String lower = NostalgicLang.Gui.PAUSE_SAVE_LOWER;
-        String upper = NostalgicLang.Vanilla.MENU_RETURN_TO_TITLE;
+        String lower = LangUtil.Gui.PAUSE_SAVE_LOWER;
+        String upper = LangUtil.Vanilla.MENU_RETURN_TO_TITLE;
         return this.isMultiplayer() ? this.disconnect : Component.translatable(isLower ? lower : upper);
     }
 
@@ -122,7 +122,7 @@ public class NostalgicPauseScreen extends Screen
         this.minecraft.level.disconnect();
 
         if (isLocalServer)
-            this.minecraft.clearLevel(new GenericDirtMessageScreen(Component.translatable(NostalgicLang.Vanilla.SAVE_LEVEL)));
+            this.minecraft.clearLevel(new GenericDirtMessageScreen(Component.translatable(LangUtil.Vanilla.SAVE_LEVEL)));
         else
             this.minecraft.clearLevel();
 
@@ -162,8 +162,8 @@ public class NostalgicPauseScreen extends Screen
 
     private void gotoMods(Button ignored)
     {
-        if (this.minecraft != null && ModClientUtil.Gui.modScreen != null)
-            this.minecraft.setScreen(ModClientUtil.Gui.modScreen.apply(this.minecraft.screen));
+        if (this.minecraft != null && GuiUtil.modScreen != null)
+            this.minecraft.setScreen(GuiUtil.modScreen.apply(this.minecraft.screen));
     }
 
     /* Positioning */
@@ -193,7 +193,7 @@ public class NostalgicPauseScreen extends Screen
         this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 2), this.getBigWidth(), this.getHeight(), this.getSave(true), this::returnToTitle));
 
         // Mods and/or Options...
-        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
             this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
             this.addRenderableWidget(new Button(this.getSmallX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
@@ -214,7 +214,7 @@ public class NostalgicPauseScreen extends Screen
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods and/or Options...
-        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
             this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
             this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
@@ -238,7 +238,7 @@ public class NostalgicPauseScreen extends Screen
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight() , this.stats, this::gotoStats));
 
         // Mods and/or Options...
-        if (ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null)
+        if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
             this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
             this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
@@ -262,7 +262,7 @@ public class NostalgicPauseScreen extends Screen
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods
-        boolean isMods = ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null;
+        boolean isMods = ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null;
         if (isMods)
             this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
 
@@ -278,7 +278,7 @@ public class NostalgicPauseScreen extends Screen
 
     private void getAdvancementLayout()
     {
-        Component advance = Component.translatable(NostalgicLang.Vanilla.GUI_ADVANCEMENTS);
+        Component advance = Component.translatable(LangUtil.Vanilla.GUI_ADVANCEMENTS);
 
         // Back to Game
         this.addRenderableWidget(new Button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
@@ -290,7 +290,7 @@ public class NostalgicPauseScreen extends Screen
         this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods
-        boolean isMods = ModConfig.Candy.includeModsOnPause() && ModClientUtil.Gui.modScreen != null;
+        boolean isMods = ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null;
         if (isMods)
             this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
 
