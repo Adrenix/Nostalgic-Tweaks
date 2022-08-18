@@ -82,11 +82,14 @@ public record ConfigRenderer(ConfigScreen parent)
                 {
                     boolean isCategory = cat != null && cat.group() == category && entry.getGroup() == category.getGroup();
                     boolean isSubcategory = sub != null && !subcategories.contains(sub.group()) && sub.group().getCategory() == category && entry.getGroup() == category.getGroup();
+                    boolean isEmptySub = emb != null && !subcategories.contains(emb.group().getSubcategory()) && emb.group().getSubcategory().getCategory() == category;
 
                     if (isCategory)
                         sort(entry, placement, translated, top, bottom);
                     else if (isSubcategory)
                         subcategories.add(sub.group());
+                    else if (isEmptySub)
+                        subcategories.add(emb.group().getSubcategory());
                 }
                 else if (subcategory != null)
                 {
@@ -130,6 +133,18 @@ public record ConfigRenderer(ConfigScreen parent)
         };
     }
 
+    private static ConfigRowList.CategoryRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
+    {
+        return new ConfigRowList.CategoryRow
+        (
+            list,
+            Component.translatable(embedded.getLangKey()),
+            getChildren(list, null, null, embedded),
+            embedded,
+            ConfigRowList.CatType.EMBEDDED
+        );
+    }
+
     private static ConfigRowList.CategoryRow getSubcategory(TweakClient.Subcategory subcategory, ConfigRowList list)
     {
         return new ConfigRowList.CategoryRow
@@ -150,18 +165,6 @@ public record ConfigRenderer(ConfigScreen parent)
             Component.translatable(category.getLangKey()),
             getChildren(list, category, null, null),
             category
-        );
-    }
-
-    private static ConfigRowList.CategoryRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
-    {
-        return new ConfigRowList.CategoryRow
-        (
-            list,
-            Component.translatable(embedded.getLangKey()),
-            getChildren(list, null, null, embedded),
-            embedded,
-            ConfigRowList.CatType.EMBEDDED
         );
     }
 
