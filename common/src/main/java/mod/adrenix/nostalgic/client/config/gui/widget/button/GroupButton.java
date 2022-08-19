@@ -24,6 +24,7 @@ public class GroupButton extends Button
     private final Enum<?> id;
     private final ConfigRowList.CategoryRow row;
     private final Component title;
+    private boolean parentTreeNeeded;
     private boolean lastSubcategory;
     private boolean highlighted;
 
@@ -55,9 +56,13 @@ public class GroupButton extends Button
 
     public Component getTitle() { return this.title; }
 
+    public void setParentTreeNeeded(boolean state) { this.parentTreeNeeded = state; }
+
     public void setLastSubcategory(boolean state) { this.lastSubcategory = state; }
 
     public void setHighlight(boolean state) { this.highlighted = state; }
+
+    public boolean isParentTreeNeeded() { return this.parentTreeNeeded; }
 
     public boolean isLastSubcategory() { return this.lastSubcategory; }
 

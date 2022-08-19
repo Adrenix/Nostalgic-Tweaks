@@ -385,6 +385,10 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                         // If parent group only has subcategories, then tell the last subgroup to not display pipe bars
                         if (isSubOnly && last != null)
                             last.setLastSubcategory(true);
+
+                        // If category group has tweaks at the end, a category bar is needed for embedded tree rendering
+                        if ((!isSubOnly || group.isParentTreeNeeded()) && last != null)
+                            last.setParentTreeNeeded(true);
                     }
                 }
             }
@@ -662,6 +666,15 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
                 if (this.indent == EMB_TEXT_START)
                     RenderUtil.fill(buffer, matrix, leftX - 20.0F, rightX - 20.0F, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
+            }
+
+            if (this.indent == EMB_TEXT_START && this.group.isParentTreeNeeded() && this.group.isLastSubcategory())
+            {
+                leftX = this.indent - 56.0F;
+                rightX = leftX + 2.0F;
+                bottomY = (float) (top + height) + 3.0F;
+
+                RenderUtil.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
             }
 
             tesselator.end();
