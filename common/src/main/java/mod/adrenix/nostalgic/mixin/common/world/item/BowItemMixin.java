@@ -32,7 +32,8 @@ public abstract class BowItemMixin
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void NT$onUse(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback)
     {
-        if (!ModConfig.Gameplay.instantBow())
+        // It is important to not now allow instant-fire with a bow in the off-hand to prevent glitches
+        if (!ModConfig.Gameplay.instantBow() || hand.equals(InteractionHand.OFF_HAND))
             return;
 
         // 72000 charge won't fire, a charge < 71980 has no change on arrow speed, therefore range is 71980 to 72000
