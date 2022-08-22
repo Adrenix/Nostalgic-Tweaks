@@ -3,11 +3,15 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
+import mod.adrenix.nostalgic.mixin.duck.IWidgetManager;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -15,8 +19,29 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
-public abstract class ScreenMixin extends GuiComponent
+public abstract class ScreenMixin extends GuiComponent implements IWidgetManager
 {
+    /* Shadows */
+
+    @Shadow protected abstract void removeWidget(GuiEventListener listener);
+    @Shadow protected abstract GuiEventListener addRenderableWidget(GuiEventListener widget);
+
+    /* Widget Manager Overrides */
+
+    @Override
+    public <T extends GuiEventListener & Widget> void NT$addRenderableWidget(T widget)
+    {
+        this.addRenderableWidget(widget);
+    }
+
+    @Override
+    public void NT$removeWidget(GuiEventListener listener)
+    {
+        this.removeWidget(listener);
+    }
+
+    /* Injections */
+
     /**
      * Disables tooltips from appearing when hovering over items within an inventory.
      * Controlled by the old no item tooltip tweak.

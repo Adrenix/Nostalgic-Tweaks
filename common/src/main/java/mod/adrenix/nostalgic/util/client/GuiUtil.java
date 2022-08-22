@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
+import mod.adrenix.nostalgic.mixin.duck.IWidgetManager;
 import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractContainerScreen;
 import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
 import mod.adrenix.nostalgic.util.common.ModUtil;
@@ -69,6 +70,7 @@ public abstract class GuiUtil
     public static void createRecipeButton(IMixinAbstractContainerScreen screen, TweakType.RecipeBook book)
     {
         ImageButton recipeButton = null;
+        IWidgetManager injector = (IWidgetManager) Minecraft.getInstance().screen;
 
         for (Widget widget : ((IMixinScreen) screen).NT$getRenderables())
         {
@@ -79,20 +81,20 @@ public abstract class GuiUtil
             }
         }
 
-        if (recipeButton != null)
+        if (injector != null && recipeButton != null)
         {
             switch (book)
             {
                 case DISABLED -> recipeButton.setPosition(-9999, -9999);
                 case LARGE ->
                 {
-                    ((IMixinScreen) screen).NT$removeWidget(recipeButton);
-                    ((IMixinScreen) screen).NT$addRenderableWidget(getLargeBook(screen, recipeButton));
+                    injector.NT$removeWidget(recipeButton);
+                    injector.NT$addRenderableWidget(getLargeBook(screen, recipeButton));
                 }
                 case SMALL ->
                 {
-                    ((IMixinScreen) screen).NT$removeWidget(recipeButton);
-                    ((IMixinScreen) screen).NT$addRenderableWidget(getSmallBook(screen, recipeButton));
+                    injector.NT$removeWidget(recipeButton);
+                    injector.NT$addRenderableWidget(getSmallBook(screen, recipeButton));
                 }
             }
         }
