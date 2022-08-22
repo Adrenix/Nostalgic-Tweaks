@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.FogUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +18,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = FogRenderer.class, priority = MixinPriority.APPLY_FIRST)
 public abstract class FogRendererMixin
 {
+    /**
+     * Changes the level fog color to match the current void/cave fog color.
+     * Controlled by the void fog tweak.
+     */
+    @Inject(method = "levelFogColor", at = @At("TAIL"))
+    private static void NT$onLevelFogColor(CallbackInfo callback)
+    {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (FogUtil.VoidFog.isRendering())
+            FogUtil.VoidFog.setColor(minecraft.gameRenderer.getMainCamera(), minecraft.getDeltaFrameTime());
+    }
+
     /**
      * Keeps track as to when the mob effect fog is active. If it is active, then we should not render any old fog.
      * Not controlled by any tweaks since this is a state tracker.
@@ -34,9 +47,7 @@ public abstract class FogRendererMixin
     @Redirect(method = "setupColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;getSunriseColor(FF)[F"))
     private static float[] NT$onGetFogColor(DimensionSpecialEffects instance, float timeOfDay, float partialTicks)
     {
-        if (ModConfig.Candy.oldSunriseSunsetFog())
-            return null;
-        return instance.getSunriseColor(timeOfDay, partialTicks);
+        return ModConfig.Candy.oldSunriseSunsetFog() ? null : instance.getSunriseColor(timeOfDay, partialTicks);
     }
 
     /**

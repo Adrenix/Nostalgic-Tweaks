@@ -2,25 +2,42 @@ package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class GenericSlider extends AbstractSliderButton
 {
-    protected TweakClient.Gui.Slider slider = TweakClient.Gui.Slider.SWING_SLIDER;
+    protected TweakClient.Gui.Slider slider = TweakClient.Gui.Slider.SWING;
     protected int min = ClientConfig.MIN;
     protected int max = ClientConfig.MAX;
     protected final Consumer<Integer> setCurrent;
     protected final Supplier<Integer> current;
     @Nullable protected final Supplier<String> text;
+    @Nullable protected final TweakClientCache<Integer> cache;
+    @Nullable protected final TweakClient.Gui.SliderType sliderType;
+
+    public GenericSlider(TweakClientCache<Integer> cache, @Nullable Supplier<String> text, int x, int y, int width, int height)
+    {
+        super(x, y, width, height, Component.empty(), (double) cache.getCurrent());
+
+        this.sliderType = CommonReflect.getAnnotation(cache, TweakClient.Gui.SliderType.class);
+        this.setCurrent = cache::setCurrent;
+        this.current = cache::getCurrent;
+        this.cache = cache;
+        this.text = text;
+        this.updateMessage();
+        this.setValue(current.get());
+    }
 
     public GenericSlider(Consumer<Integer> setCurrent, Supplier<Integer> current, @Nullable Supplier<String> text, int x, int y, int width, int height)
     {
@@ -29,6 +46,8 @@ public class GenericSlider extends AbstractSliderButton
         this.setCurrent = setCurrent;
         this.current = current;
         this.text = text;
+        this.cache = null;
+        this.sliderType = null;
         this.updateMessage();
         this.setValue(current.get());
     }
@@ -52,24 +71,26 @@ public class GenericSlider extends AbstractSliderButton
         ChatFormatting color = ChatFormatting.GREEN;
         int integer = this.current.get();
 
-        if (this.slider == TweakClient.Gui.Slider.SWING_SLIDER)
+        if (this.slider == TweakClient.Gui.Slider.SWING)
         {
             if (integer == DefaultConfig.Swing.DISABLED) color = ChatFormatting.RED;
             else if (integer == DefaultConfig.Swing.PHOTOSENSITIVE) color = ChatFormatting.YELLOW;
             else if (integer <= DefaultConfig.Swing.NEW_SPEED) color = ChatFormatting.GOLD;
         }
-        else if (this.slider == TweakClient.Gui.Slider.INTENSITY_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.INTENSITY)
         {
             if (integer == 0) color = ChatFormatting.RED;
             else if (integer <= 50) color = ChatFormatting.GOLD;
             else if (integer > 100) color = ChatFormatting.AQUA;
         }
-        else if (this.slider == TweakClient.Gui.Slider.CLOUD_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.CLOUD)
         {
             if (integer == 128) color = ChatFormatting.YELLOW;
             else if (integer == 192) color = ChatFormatting.GOLD;
             else color = ChatFormatting.LIGHT_PURPLE;
         }
+        else if (this.slider == TweakClient.Gui.Slider.GENERIC)
+            color = ChatFormatting.RESET;
 
         return color;
     }
@@ -79,28 +100,34 @@ public class GenericSlider extends AbstractSliderButton
     public void updateMessage()
     {
         ChatFormatting color = this.getColorFromInt();
-        String header = "";
+        String title = "";
         String suffix = "";
 
         if (this.text != null)
-            header = this.text.get();
-        else if (this.slider == TweakClient.Gui.Slider.SWING_SLIDER)
-            header = Component.translatable(LangUtil.Gui.SETTINGS_SPEED).getString();
-        else if (this.slider == TweakClient.Gui.Slider.INTENSITY_SLIDER)
+            title = this.text.get();
+        else if (this.slider == TweakClient.Gui.Slider.SWING)
+            title = Component.translatable(LangUtil.Gui.SETTINGS_SPEED).getString();
+        else if (this.slider == TweakClient.Gui.Slider.INTENSITY)
         {
-            header = Component.translatable(LangUtil.Gui.SETTINGS_INTENSITY).getString();
+            title = Component.translatable(LangUtil.Gui.SETTINGS_INTENSITY).getString();
             suffix = "%";
         }
-        else if (this.slider == TweakClient.Gui.Slider.CLOUD_SLIDER)
+        else if (this.slider == TweakClient.Gui.Slider.CLOUD)
         {
             int height = this.current.get();
-            if (height == 108) header = Component.translatable(LangUtil.Gui.SETTINGS_ALPHA).getString();
-            else if (height == 128) header = Component.translatable(LangUtil.Gui.SETTINGS_BETA).getString();
-            else if (height == 192) header = Component.translatable(LangUtil.Gui.SETTINGS_MODERN).getString();
-            else header = Component.translatable(LangUtil.Gui.SETTINGS_CUSTOM).getString();
+            if (height == 108) title = Component.translatable(LangUtil.Gui.SETTINGS_ALPHA).getString();
+            else if (height == 128) title = Component.translatable(LangUtil.Gui.SETTINGS_BETA).getString();
+            else if (height == 192) title = Component.translatable(LangUtil.Gui.SETTINGS_MODERN).getString();
+            else title = Component.translatable(LangUtil.Gui.SETTINGS_CUSTOM).getString();
         }
 
-        String text = header + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;
+        if (this.sliderType != null && !this.sliderType.langKey().isEmpty())
+            title = Component.translatable(this.sliderType.langKey()).getString();
+
+        if (this.sliderType != null && !this.sliderType.suffix().isEmpty())
+            suffix = this.sliderType.suffix();
+
+        String text = title + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;
         this.setMessage(Component.literal(text));
     }
 

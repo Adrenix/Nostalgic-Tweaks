@@ -146,9 +146,10 @@ public abstract class TweakClient
          */
         public enum Slider
         {
-            SWING_SLIDER,
-            CLOUD_SLIDER,
-            INTENSITY_SLIDER
+            GENERIC,
+            SWING,
+            CLOUD,
+            INTENSITY
         }
 
         /**
@@ -159,7 +160,9 @@ public abstract class TweakClient
         @Target({ElementType.FIELD})
         public @interface SliderType
         {
-            Slider slider() default Slider.SWING_SLIDER;
+            Slider slider() default Slider.SWING;
+            String langKey() default "";
+            String suffix() default "";
         }
     }
 
@@ -349,9 +352,10 @@ public abstract class TweakClient
 
         TOOLTIP_PARTS_CANDY(Subcategory.INTERFACE_TOOLTIP_CANDY, LangUtil.Gui.CANDY_EMBED_TOOLTIP_PARTS),
 
-        // Void Fog (Eye Candy) - Embedded Subcategories
+        // Void (Eye Candy) - Embedded Subcategories
 
         VOID_FOG_CANDY(Subcategory.WORLD_VOID_CANDY, LangUtil.Gui.CANDY_EMBED_VOID_FOG),
+        VOID_SKY_CANDY(Subcategory.WORLD_VOID_CANDY, LangUtil.Gui.CANDY_EMBED_VOID_SKY),
 
         // Experience Bar (Gameplay) - Embedded Subcategories
 

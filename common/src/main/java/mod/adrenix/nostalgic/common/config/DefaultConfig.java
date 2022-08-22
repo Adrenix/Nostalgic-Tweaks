@@ -150,7 +150,16 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SUNRISE_SUNSET_COLORS = false;
 
         // World Candy - Void Fog
-        public static final int PARTICLE_RADIUS = 16;
+        public static final String VOID_FOG_COLOR = "#0C0C0CFF";
+        public static final int VOID_PARTICLE_RADIUS = 16;
+        public static final int VOID_PARTICLE_DENSITY = 20;
+        public static final int VOID_PARTICLE_START = -47;
+        public static final int VOID_FOG_ENCROACH = 100;
+        public static final int VOID_FOG_START = 50;
+        public static final boolean DISABLE_VOID_FOG = false;
+        public static final boolean CREATIVE_VOID_FOG = true;
+        public static final boolean CREATIVE_VOID_PARTICLE = true;
+        public static final boolean LIGHT_REMOVES_VOID_FOG = true;
 
         public static final TweakVersion.Generic OLD_SKY_COLOR = TweakVersion.Generic.ALPHA;
         public static final TweakVersion.Generic OLD_FOG_COLOR = TweakVersion.Generic.ALPHA;

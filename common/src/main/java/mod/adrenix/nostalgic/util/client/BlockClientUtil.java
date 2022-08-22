@@ -1,6 +1,9 @@
 package mod.adrenix.nostalgic.util.client;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 
@@ -11,6 +14,16 @@ import net.minecraft.world.level.block.piston.PistonBaseBlock;
 
 public abstract class BlockClientUtil
 {
+    public static BlockPos getRandomPos(RandomSource randomSource, int bound)
+    {
+        return new BlockPos(randomSource.nextInt(bound), randomSource.nextInt(bound), randomSource.nextInt(bound));
+    }
+
+    public static boolean isNearBedrock(BlockPos pos, Level level)
+    {
+        return pos.getY() < level.getMinBuildHeight() + 5;
+    }
+
     public static boolean isOldChest(Block block)
     {
         boolean isOldChest = ModConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);

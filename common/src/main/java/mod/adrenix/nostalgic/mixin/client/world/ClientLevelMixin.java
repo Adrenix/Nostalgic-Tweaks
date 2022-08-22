@@ -1,11 +1,14 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
+import mod.adrenix.nostalgic.util.client.FogUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,10 +20,7 @@ import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -67,6 +67,67 @@ public abstract class ClientLevelMixin
     private float NT$onClampSkyColor(float vanilla)
     {
         return ModConfig.Candy.oldStars() ? 0.005F : vanilla;
+    }
+
+    /**
+     * Adds void fog particles to the client level if conditions are met.
+     * Controlled by various void fog particle tweaks.
+     */
+    @Inject
+    (
+        method = "doAnimateTick",
+        at = @At
+        (
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBiome(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;"
+        )
+    )
+    private void NT$onAddBiomeParticles(int x, int y, int z, int randomBound, RandomSource randomSource, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo callback)
+    {
+        Entity entity = Minecraft.getInstance().getCameraEntity();
+        ClientLevel level = Minecraft.getInstance().level;
+
+        boolean isFogDisabled = ModConfig.Candy.disableVoidFog() || !FogUtil.VoidFog.isBelowHorizon();
+        boolean isCreativeDisabled = !ModConfig.Candy.creativeVoidParticles() && entity instanceof Player player && player.isCreative();
+        boolean isDisabled = isFogDisabled || isCreativeDisabled;
+
+        if (isDisabled || entity == null || level == null)
+            return;
+
+        BlockPos playerPos = entity.blockPosition();
+        int radius = ModConfig.Candy.getVoidParticleRadius();
+        int particleStart = ModConfig.Candy.getVoidParticleStart();
+
+        float density = (float) ModConfig.Candy.getVoidParticleDensity() / 100.0F;
+        float yLevel = (float) FogUtil.VoidFog.getYLevel(entity);
+
+        if (Math.random() <= density && yLevel <= particleStart)
+        {
+            BlockPos randX = BlockClientUtil.getRandomPos(randomSource, radius);
+            BlockPos randY = BlockClientUtil.getRandomPos(randomSource, radius);
+            BlockPos randomPos = randX.subtract(randY).offset(playerPos);
+            BlockState state = level.getBlockState(randomPos);
+
+            if (state.isAir() && level.getFluidState(randomPos).isEmpty() && randomPos.getY() - level.getMinBuildHeight() <= particleStart)
+            {
+                if (randomSource.nextInt(8) <= particleStart)
+                {
+                    boolean nearBedrock = BlockClientUtil.isNearBedrock(randomPos, level);
+
+                    level.addParticle
+                    (
+                        nearBedrock ? ParticleTypes.ASH : ParticleTypes.MYCELIUM,
+                        randomPos.getX() + randomSource.nextFloat(),
+                        randomPos.getY() + randomSource.nextFloat(),
+                        randomPos.getZ() + randomSource.nextFloat(),
+                        0,
+                        nearBedrock ? randomSource.nextFloat() : 0,
+                        0
+                    );
+                }
+            }
+        }
     }
 
     /**

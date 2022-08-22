@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.common.config.tweak.*;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 
 import java.util.Map;
 
@@ -806,31 +807,127 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_SKY_CANDY)
-        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.CLOUD_SLIDER)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.CLOUD)
         @TweakClient.Gui.DisabledInteger(value = DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT)
         @ConfigEntry.BoundedDiscrete(min = 108, max = DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT)
         public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
         static { CandyTweak.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
 
-        // World - Void Candy
+        /* World - Void Candy */
+
+        // Void Sky Candy
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_VOID_CANDY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
         public boolean oldBlueVoidOverride = DefaultConfig.Candy.OLD_BLUE_VOID_OVERRIDE;
         static { CandyTweak.BLUE_VOID_OVERRIDE.setKey("oldBlueVoidOverride"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_VOID_CANDY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
         public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
         static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_VOID_CANDY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
         public TweakVersion.Generic oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
         static { CandyTweak.BLUE_VOID.setKey("oldBlueVoid"); }
+
+        // Void Fog Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        public boolean disableVoidFog = DefaultConfig.Candy.DISABLE_VOID_FOG;
+        static { CandyTweak.DISABLE_VOID_FOG.setKey("disableVoidFog"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        public boolean creativeVoidFog = DefaultConfig.Candy.CREATIVE_VOID_FOG;
+        static { CandyTweak.CREATIVE_VOID_FOG.setKey("creativeVoidFog"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        public boolean creativeVoidParticles = DefaultConfig.Candy.CREATIVE_VOID_PARTICLE;
+        static { CandyTweak.CREATIVE_VOID_PARTICLE.setKey("creativeVoidParticles"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.DisabledBoolean(value = true)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        public boolean lightRemovesVoidFog = DefaultConfig.Candy.LIGHT_REMOVES_VOID_FOG;
+        static { CandyTweak.LIGHT_REMOVES_VOID_FOG.setKey("lightRemovesVoidFog"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.Color
+        @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        public String voidFogColor = DefaultConfig.Candy.VOID_FOG_COLOR;
+        static { CandyTweak.VOID_FOG_COLOR.setKey("voidFogColor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, suffix = "%", langKey = LangUtil.Gui.SLIDER_ENCROACH)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 6)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int voidFogEncroach = DefaultConfig.Candy.VOID_FOG_ENCROACH;
+        static { CandyTweak.VOID_FOG_ENCROACH.setKey("voidFogEncroach"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_Y_LEVEL)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = -64, max = 320)
+        public int voidFogStart = DefaultConfig.Candy.VOID_FOG_START;
+        static { CandyTweak.VOID_FOG_START.setKey("voidFogStart"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_Y_LEVEL)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 2)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = -64, max = 320)
+        public int voidParticleStart = DefaultConfig.Candy.VOID_PARTICLE_START;
+        static { CandyTweak.VOID_PARTICLE_START.setKey("voidParticleStart"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_RADIUS)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 3)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 32)
+        public int voidParticleRadius = DefaultConfig.Candy.VOID_PARTICLE_RADIUS;
+        static { CandyTweak.VOID_PARTICLE_RADIUS.setKey("voidParticleRadius"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, suffix = "%", langKey = LangUtil.Gui.SLIDER_DENSITY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 4)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int voidParticleDensity = DefaultConfig.Candy.VOID_PARTICLE_DENSITY;
+        static { CandyTweak.VOID_PARTICLE_DENSITY.setKey("voidParticleDensity"); }
     }
 
     @TweakSide.Ignore
@@ -880,7 +977,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.COMBAT_BOW_GAMEPLAY)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
-        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY_SLIDER)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
         static { GameplayTweak.ARROW_SPEED.setKey("arrowSpeed"); }
@@ -1185,7 +1282,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
         @TweakClient.Gui.Cat(group = TweakClient.Category.ARM_ANIMATION)
-        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY_SLIDER)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.INTENSITY)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 300)
         public int armSwayIntensity = DefaultConfig.Animation.ARM_SWAY_INTENSITY;
         static { AnimationTweak.ARM_SWAY_INTENSITY.setKey("armSwayIntensity"); }

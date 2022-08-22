@@ -14,9 +14,9 @@ public class ConfigSlider extends GenericSlider implements IPermissionWidget
 
     public ConfigSlider(TweakClientCache<Integer> cache)
     {
-        super(
-            cache::setCurrent,
-            cache::getCurrent,
+        super
+        (
+            cache,
             null,
             ConfigRowList.getControlStartX(),
             0,

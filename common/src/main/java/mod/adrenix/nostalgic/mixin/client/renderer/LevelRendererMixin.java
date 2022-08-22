@@ -241,6 +241,10 @@ public abstract class LevelRendererMixin
         float transparency = this.level.getStarBrightness(partialTick) * rain;
         float color = transparency / 0.5F;
 
+        FogUtil.VoidFog.setStarAlpha(transparency);
+        if (FogUtil.VoidFog.isRendering())
+            transparency = FogUtil.VoidFog.getStarAlpha();
+
         RenderSystem.setShaderColor(color, color, color, transparency);
     }
 

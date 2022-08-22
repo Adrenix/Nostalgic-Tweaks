@@ -109,6 +109,11 @@ public abstract class LangUtil
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
         public static final String DEFAULT = "gui.nostalgic_tweaks.config.default";
 
+        public static final String SLIDER_RADIUS = "gui.nostalgic_tweaks.config.slider.radius";
+        public static final String SLIDER_DENSITY = "gui.nostalgic_tweaks.config.slider.density";
+        public static final String SLIDER_ENCROACH = "gui.nostalgic_tweaks.config.slider.encroach";
+        public static final String SLIDER_Y_LEVEL = "gui.nostalgic_tweaks.config.slider.y_level";
+
         public static final String CORNER_TOP_LEFT = "gui.nostalgic_tweaks.config.corner.top_left";
         public static final String CORNER_TOP_RIGHT = "gui.nostalgic_tweaks.config.corner.top_right";
         public static final String CORNER_BOTTOM_LEFT = "gui.nostalgic_tweaks.config.corner.bottom_left";
@@ -263,6 +268,7 @@ public abstract class LangUtil
         public static final String CANDY_EMBED_TITLE_TEXT = "gui.nostalgic_tweaks.config.candy.embed.title.text";
         public static final String CANDY_EMBED_TOOLTIP_PARTS = "gui.nostalgic_tweaks.config.candy.embed.tooltip.parts";
         public static final String CANDY_EMBED_VOID_FOG = "gui.nostalgic_tweaks.config.candy.embed.void.fog";
+        public static final String CANDY_EMBED_VOID_SKY = "gui.nostalgic_tweaks.config.candy.embed.void.sky";
 
         public static final String SWING_CATEGORY_ITEM = "gui.nostalgic_tweaks.config.swing.category.item";
         public static final String SWING_CATEGORY_POTION = "gui.nostalgic_tweaks.config.swing.category.potion";

@@ -315,6 +315,13 @@ public abstract class ModConfig
         public static boolean oldNetherFog() { return getBoolTweak(CandyTweak.NETHER_FOG, CANDY.oldNetherFog); }
         public static boolean oldStars() { return getBoolTweak(CandyTweak.STARS, CANDY.oldStars); }
 
+        // Void Fog
+        public static String getVoidFogColor() { return CANDY.voidFogColor; }
+        public static boolean disableVoidFog() { return getBoolTweak(CandyTweak.DISABLE_VOID_FOG, CANDY.disableVoidFog); }
+        public static boolean creativeVoidFog() { return getBoolTweak(CandyTweak.CREATIVE_VOID_FOG, CANDY.creativeVoidFog); }
+        public static boolean creativeVoidParticles() { return getBoolTweak(CandyTweak.CREATIVE_VOID_PARTICLE, CANDY.creativeVoidParticles); }
+        public static boolean shouldLightRemoveVoidFog() { return getBoolTweak(CandyTweak.LIGHT_REMOVES_VOID_FOG, CANDY.lightRemovesVoidFog); }
+
         /* Version Tweaks */
 
         public static TweakVersion.TitleLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
@@ -334,7 +341,12 @@ public abstract class ModConfig
 
         /* Integer Tweaks */
 
-        public static int getCloudHeight() { return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : 192; }
+        public static int getVoidParticleDensity() { return isTweakOn(CandyTweak.VOID_PARTICLE_DENSITY) ? CANDY.voidParticleDensity : DefaultConfig.Candy.VOID_PARTICLE_DENSITY; }
+        public static int getVoidParticleRadius() { return isTweakOn(CandyTweak.VOID_PARTICLE_RADIUS) ? CANDY.voidParticleRadius : DefaultConfig.Candy.VOID_PARTICLE_RADIUS; }
+        public static int getVoidParticleStart() { return isTweakOn(CandyTweak.VOID_PARTICLE_START) ? CANDY.voidParticleStart + 64 : DefaultConfig.Candy.VOID_PARTICLE_START + 64; }
+        public static int getVoidFogEncroach() { return isTweakOn(CandyTweak.VOID_FOG_ENCROACH) ? CANDY.voidFogEncroach : DefaultConfig.Candy.VOID_FOG_ENCROACH; }
+        public static int getVoidFogStart() { return isTweakOn(CandyTweak.VOID_FOG_START) ? CANDY.voidFogStart + 64 : DefaultConfig.Candy.VOID_FOG_START + 64; }
+        public static int getCloudHeight() { return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT; }
     }
 
     /* Gameplay Tweaks */
