@@ -188,8 +188,9 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
         int x = guiLeft + (this.recipeBookComponent.isVisible() ? this.imageWidth : -25);
         int y = guiTop + this.imageHeight - 32;
         boolean isNearShield = ModUtil.Numbers.isWithinBox(mouseX, mouseY, x, y, 25, 32);
+        boolean isBottomLeft = ModConfig.Candy.getInventoryShield().equals(TweakType.InventoryShield.BOTTOM_LEFT);
 
-        if (isNearShield)
+        if (isNearShield && isBottomLeft)
             callback.setReturnValue(false);
     }
 }
