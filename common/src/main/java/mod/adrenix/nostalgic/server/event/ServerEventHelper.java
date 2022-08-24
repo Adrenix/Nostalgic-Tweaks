@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.network.packet.PacketS2CHandshake;
 import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
+import mod.adrenix.nostalgic.util.server.PlayerServerUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +34,8 @@ public abstract class ServerEventHelper
 
                 PacketUtil.sendToPlayer((ServerPlayer) player, new PacketS2CTweakUpdate(tweak));
             });
+
+            PlayerServerUtil.setCreativeHotbar((ServerPlayer) player);
         }
     }
 

@@ -27,7 +27,6 @@
     "world.level.block.EnderChestBlockMixin",
     "world.level.block.FireBlockMixin",
     "server.ChunkMapMixin",
-    "server.PlayerListMixin",
     "server.ServerLevelMixin"
   ]
 }

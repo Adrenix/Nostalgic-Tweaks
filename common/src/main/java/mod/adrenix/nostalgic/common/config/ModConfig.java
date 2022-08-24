@@ -54,6 +54,8 @@ public abstract class ModConfig
             return true;
         else if (NetUtil.isLocalHost())
             return true;
+        else if (isTweakExempt(tweak))
+            return true;
 
         TweakServerCache<?> cache = TweakServerCache.get(tweak);
 
@@ -62,6 +64,16 @@ public abstract class ModConfig
             return false;
 
         return CONFIG.isModEnabled;
+    }
+
+    /**
+     * Some tweaks need a special exception if their code fires before the connection verification is synced.
+     * @param tweak The tweak to check against.
+     * @return Whether the tweak is exempt from network verification checks.
+     */
+    private static boolean isTweakExempt(ITweak tweak)
+    {
+        return CONFIG.isModEnabled && tweak.equals(CandyTweak.CREATIVE_HOTBAR);
     }
 
     /**

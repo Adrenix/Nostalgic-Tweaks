@@ -1,45 +1,24 @@
-package mod.adrenix.nostalgic.mixin.common.server;
+package mod.adrenix.nostalgic.util.server;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerList.class)
-public abstract class PlayerListMixin
+/**
+ * This utility is used only by the server. For safety, keep vanilla client-only code out.
+ */
+
+public abstract class PlayerServerUtil
 {
-    /* Helpers */
-
     private static void add(ServerPlayer player, int slot, Block block)
     {
         player.getInventory().add(slot, block.asItem().getDefaultInstance());
     }
 
-    /* Injections */
-
-    /**
-     * Adds the default blocks from classic or beta.
-     * Controlled by the old classic hotbar tweak.
-     */
-    @Inject
-    (
-        method = "placeNewPlayer",
-        at = @At
-        (
-            shift = At.Shift.AFTER,
-            value = "INVOKE",
-            target = "Lnet/minecraft/server/level/ServerPlayer;initInventoryMenu()V"
-        )
-    )
-    private void NT$onPlayerJoinWorld(Connection netManager, ServerPlayer player, CallbackInfo callback)
+    public static void setCreativeHotbar(ServerPlayer player)
     {
         TweakVersion.Hotbar hotbar = ModConfig.Candy.getHotbar();
 
