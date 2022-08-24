@@ -39,6 +39,8 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Readjusted item model gap correctional values for Forge.
 - Readjusted animation for the old sneaking tweak.
 - Readjusted old alpha logo positioning.
+- Readjusted star brightness.
+- Readjusted night sky color.
 - Added debugging functionality, it can be activated/deactivated with Ctrl + Shift + D in the mod's home settings screen.
 - Added new tweak category: Gameplay
 - Added new Combat System subcategory for Gameplay
@@ -88,10 +90,28 @@ All updates that start with a 2.x.x version number will support multiplayer.
 - Added new tweak: (Interface Candy) Include Mods Button for Title Screen
 > The "Mods" button will only appear in Fabric when Mod Menu is installed.
 - Added new tweak: (Title Screen Candy) Remove Realms Button
+- Added new tweak: (Inventory Candy) Modify Recipe Button
+- Added new tweak: (Inventory Candy) Modify Armor Slot
 - Added new tweak: (Inventory Candy) Inverted Player Lighting
 - Added new tweak: (Inventory Candy) Inverted Block Lighting
+- Added new tweak: (Crafting Screen) Old Crafting Table Screen
+- Added new tweak: (Crafting Screen) Modify Recipe Button
+- Added new tweak: (Furnace Screen) Old Furnace Screen
+- Added new tweak: (Furnace Screen) Modify Recipe Button
 - Added new tweak: (Sky Candy) Disable Sunrise/Sunset Colors
 - Added new tweak: (Bugs) Old Ladder Gap
 - Added new tweak: (Sound) Ignore Modded Mob Steps - Prevents the mod from overriding the footstep sounds for modded entities.
 - Added new tweak: (Sound) Disable Chest Sounds
 - Added new tweak: (Sound) Old Chest Sounds
+- Added new void candy subcategory: Void Fog
+- Added new tweak: (Void Fog) Creative Void Fog
+- Added new tweak: (Void Fog) Creative Void Particles
+- Added new tweak: (Void Fog) Light Removes Void Fog
+- Added new tweak: (Void Fog) Void Fog Color
+- Added new tweak: (Void Fog) Fog Encroachment Amount
+- Added new tweak: (Void Fog) Fog Starting Level
+- Added new tweak: (Void Fog) Void Particle Starting Level
+- Added new tweak: (Void Fog) Void Particle Radius
+- Added new tweak: (Void Fog) Void Particle Density
+- Added new tweak: (World Candy) Old Name Tag Rendering
+- Added new tweak: (Player Animation) Old Swing Interrupt
