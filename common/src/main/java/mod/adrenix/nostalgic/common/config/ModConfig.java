@@ -434,6 +434,7 @@ public abstract class ModConfig
         public static boolean oldSwing() { return getBoolTweak(AnimationTweak.ITEM_SWING, ANIMATION.oldSwing); }
         public static boolean oldArmSway() { return getBoolTweak(AnimationTweak.ARM_SWAY, ANIMATION.oldArmSway); }
         public static boolean oldSwingDropping() { return getBoolTweak(AnimationTweak.SWING_DROP, ANIMATION.oldSwingDropping); }
+        public static boolean oldInterruptSwing() { return getBoolTweak(AnimationTweak.SWING_INTERRUPT, ANIMATION.oldSwingInterrupt); }
         public static boolean shouldMirrorArmSway() { return getBoolTweak(AnimationTweak.ARM_SWAY_MIRROR, ANIMATION.armSwayMirror); }
 
         // Item Animations

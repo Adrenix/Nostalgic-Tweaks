@@ -225,6 +225,7 @@ public abstract class DefaultConfig
         public static final boolean ARM_SWAY_MIRROR = false;
         public static final boolean OLD_ARM_SWAY = true;
         public static final boolean OLD_SWING = true;
+        public static final boolean OLD_SWING_INTERRUPT = true;
         public static final boolean OLD_SWING_DROPPING = true;
 
         // Item Animations

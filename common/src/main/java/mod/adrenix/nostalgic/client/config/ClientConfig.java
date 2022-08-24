@@ -1300,6 +1300,13 @@ public class ClientConfig implements ConfigData
         public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
         static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.ARM_ANIMATION)
+        public boolean oldSwingInterrupt = DefaultConfig.Animation.OLD_SWING_INTERRUPT;
+        static { AnimationTweak.SWING_INTERRUPT.setKey("oldSwingInterrupt"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.ARM_ANIMATION)

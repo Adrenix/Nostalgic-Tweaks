@@ -11,6 +11,7 @@ public enum AnimationTweak implements ITweak
     ARM_SWAY_MIRROR,
     ARM_SWAY_INTENSITY,
     ITEM_SWING,
+    SWING_INTERRUPT,
     SWING_DROP,
 
     // Item Animations
