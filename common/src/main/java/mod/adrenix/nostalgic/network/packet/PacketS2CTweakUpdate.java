@@ -87,7 +87,7 @@ public class PacketS2CTweakUpdate
                 serverCache.setServerCache(serializer.getValue());
 
                 // Notify client that a tweak was updated
-                if (isValueChanged)
+                if (NostalgicTweaks.isNetworkVerified() && isValueChanged)
                     ToastNotification.addTweakUpdate();
 
                 // Update the client's config if this is a LAN session
