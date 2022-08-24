@@ -138,6 +138,7 @@ public abstract class DefaultConfig
         // World Candy
         public static final int OLD_CLOUD_HEIGHT = 108;
         public static final int DISABLED_CLOUD_HEIGHT = 192;
+        public static final boolean OLD_NAME_TAGS = true;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_DARK_VOID_HEIGHT = true;

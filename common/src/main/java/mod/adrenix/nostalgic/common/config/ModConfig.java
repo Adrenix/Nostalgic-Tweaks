@@ -325,6 +325,7 @@ public abstract class ModConfig
         public static boolean oldTerrainFog() { return getBoolTweak(CandyTweak.TERRAIN_FOG, CANDY.oldTerrainFog); }
         public static boolean oldHorizonFog() { return getBoolTweak(CandyTweak.HORIZON_FOG, CANDY.oldHorizonFog); }
         public static boolean oldNetherFog() { return getBoolTweak(CandyTweak.NETHER_FOG, CANDY.oldNetherFog); }
+        public static boolean oldNameTags() { return getBoolTweak(CandyTweak.NAME_TAGS, CANDY.oldNameTags); }
         public static boolean oldStars() { return getBoolTweak(CandyTweak.STARS, CANDY.oldStars); }
 
         // Void Fog

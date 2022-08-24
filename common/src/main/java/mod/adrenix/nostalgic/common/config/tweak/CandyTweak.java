@@ -118,6 +118,7 @@ public enum CandyTweak implements ITweak
     UNCAP_TITLE_FPS,
 
     // World Candy
+    NAME_TAGS,
     TERRAIN_FOG,
     HORIZON_FOG,
     NETHER_FOG,

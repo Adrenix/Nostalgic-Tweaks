@@ -745,6 +745,13 @@ public class ClientConfig implements ConfigData
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
         static { CandyTweak.SQUARE_BORDER.setKey("oldSquareBorder"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.WORLD_CANDY)
+        public boolean oldNameTags = DefaultConfig.Candy.OLD_NAME_TAGS;
+        static { CandyTweak.NAME_TAGS.setKey("oldNameTags"); }
+
         // World - Fog Candy
 
         @TweakSide.Client
