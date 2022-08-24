@@ -42,7 +42,8 @@ public abstract class EntityRendererMixin
     }
 
     /**
-     *
+     * Renders the entity's name tag bigger the further away the player is from the entity.
+     * Controlled by the old name tag tweak.
      */
     @Redirect(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"))
     private void NT$onTagScale(PoseStack instance, float x, float y, float z, Entity entity)
