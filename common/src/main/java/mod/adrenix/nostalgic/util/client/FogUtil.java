@@ -184,7 +184,7 @@ public abstract class FogUtil
 
             if (isFogModified(camera))
                 colorSpeedShift = fogSpeedShift = Float.MAX_VALUE;
-            else if (getYLevel(camera.getEntity()) > ModConfig.Candy.getVoidFogStart())
+            else if (getYLevel(camera.getEntity()) > ModConfig.Candy.getVoidFogStart() || !isBelowHorizon())
             {
                 if (shift == Shift.COLOR)
                     colorSpeedShift = Mth.clamp(colorSpeedShift + 0.01F, 1.0F, 1.0e5F);
