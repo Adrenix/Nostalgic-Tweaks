@@ -70,6 +70,32 @@ public abstract class ClientLevelMixin
     }
 
     /**
+     * Tracks and changes the current sky color, so it can be properly updated by cave/void fog.
+     * Updates controlled by the void fog tweak.
+     */
+
+    @ModifyArg(method = "getSkyColor", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorRed(double red)
+    {
+        FogUtil.VoidFog.setSkyRed((float) red);
+        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyRed() : red;
+    }
+
+    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorGreen(double green)
+    {
+        FogUtil.VoidFog.setSkyGreen((float) green);
+        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyGreen() : green;
+    }
+
+    @ModifyArg(method = "getSkyColor", index = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorBlue(double blue)
+    {
+        FogUtil.VoidFog.setSkyBlue((float) blue);
+        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyBlue() : blue;
+    }
+
+    /**
      * Adds void fog particles to the client level if conditions are met.
      * Controlled by various void fog particle tweaks.
      */

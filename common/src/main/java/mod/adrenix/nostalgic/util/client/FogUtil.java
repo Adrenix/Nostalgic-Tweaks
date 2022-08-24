@@ -66,28 +66,39 @@ public abstract class FogUtil
 
     private static void renderFog(FogRenderer.FogMode fogMode)
     {
-        if (ModConfig.Candy.oldTerrainFog())
+        boolean isTerrain = ModConfig.Candy.oldTerrainFog();
+        boolean isHorizon = ModConfig.Candy.oldHorizonFog();
+
+        if (isTerrain)
             setTerrainFog(fogMode);
-        if (ModConfig.Candy.oldHorizonFog())
+
+        if (isHorizon)
             setHorizonFog(fogMode);
-        RenderSystem.setShaderFogShape(FogShape.SPHERE);
+
+        if (isTerrain || isHorizon)
+            RenderSystem.setShaderFogShape(FogShape.SPHERE);
+    }
+
+    private static boolean isFogModified(Camera camera)
+    {
+        return isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera) || isMobEffectActive;
     }
 
     // Overrides fog in the overworld
     public static void setupFog(Camera camera, FogRenderer.FogMode fogMode)
     {
-        if (isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera))
-            return;
-        else if (isMobEffectActive)
-        {
+        if (isMobEffectActive)
             isMobEffectActive = false;
-            return;
-        }
 
-        renderFog(fogMode);
+        if (!isFogModified(camera))
+            renderFog(fogMode);
 
         if (!ModConfig.Candy.disableVoidFog() && fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
+        {
+            VoidFog.setFogStart(RenderSystem.getShaderFogStart());
+            VoidFog.setFogEnd(RenderSystem.getShaderFogEnd());
             VoidFog.render(camera);
+        }
     }
 
     // Overrides fog in the nether
@@ -109,18 +120,98 @@ public abstract class FogUtil
 
     public static class VoidFog
     {
-        private static final float[] lastFogRGBA = new float[] { 0.0F, 0.0F, 0.0F, 0.0F };
-        private static float starAlpha = 0.0F;
-        private static float lastStarAlpha = 0.0F;
-        private static float lastFogDistance = 0.0F;
-        private static float lastFogStart = 0.0F;
-        private static float lastFogEnd = 0.0F;
-        private static double lastBrightness = 0.0D;
+        /* Interpolation Trackers */
+
         private static boolean isInitialized = false;
 
-        public static void setStarAlpha(float value) { starAlpha = value; }
+        private static double currentBrightness;
+        private static float currentFogStart;
+        private static float currentFogEnd;
+        private static float currentStarAlpha;
+        private static float targetStarAlpha;
+        private static float targetFogStart;
+        private static float targetFogEnd;
+        private static float fogSpeedShift;
+        private static float colorSpeedShift;
 
-        public static float getStarAlpha() { return lastStarAlpha; }
+        private static final float[] CURRENT_VOID_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] CURRENT_FOG_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] CURRENT_SKY_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_SKY_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_FOG_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_VOID_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+
+        /* Interpolation Setters/Getters */
+
+        public static void setSkyRed(float red) { TARGET_SKY_RGB[0] = red; }
+        public static void setSkyGreen(float green) { TARGET_SKY_RGB[1] = green; }
+        public static void setSkyBlue(float blue) { TARGET_SKY_RGB[2] = blue; }
+
+        public static float getSkyRed() { return CURRENT_SKY_RGB[0]; }
+        public static float getSkyGreen() { return CURRENT_SKY_RGB[1]; }
+        public static float getSkyBlue() { return CURRENT_SKY_RGB[2]; }
+
+        public static void setFogStart(float start) { targetFogStart = start; }
+        public static void setFogEnd(float end) { targetFogEnd = end; }
+
+        public static void setFogRGB(float r, float g, float b)
+        {
+            TARGET_FOG_RGB[0] = r;
+            TARGET_FOG_RGB[1] = g;
+            TARGET_FOG_RGB[2] = b;
+        }
+
+        public static float[] getVoidRGB() { return CURRENT_VOID_RGB; }
+        public static void setVoidRGB(float r, float g, float b)
+        {
+            TARGET_VOID_RGB[0] = r;
+            TARGET_VOID_RGB[1] = g;
+            TARGET_VOID_RGB[2] = b;
+        }
+
+
+        public static void setStarAlpha(float value) { targetStarAlpha = value; }
+        public static float getStarAlpha() { return currentStarAlpha; }
+
+        /* Altitude Speed Shift */
+
+        private enum Shift { NONE, COLOR, FOG }
+
+        private static float getSpeed(float modifier, Shift shift)
+        {
+            Minecraft minecraft = Minecraft.getInstance();
+            Camera camera = minecraft.gameRenderer.getMainCamera();
+
+            if (isFogModified(camera))
+                colorSpeedShift = fogSpeedShift = Float.MAX_VALUE;
+            else if (getYLevel(camera.getEntity()) > ModConfig.Candy.getVoidFogStart())
+            {
+                if (shift == Shift.COLOR)
+                    colorSpeedShift = Mth.clamp(colorSpeedShift + 0.01F, 1.0F, 1.0e5F);
+
+                if (shift == Shift.FOG)
+                    fogSpeedShift = Mth.clamp(fogSpeedShift + 0.05F, 1.0F, 1.0e5F);
+            }
+            else
+            {
+                if (shift == Shift.COLOR)
+                    colorSpeedShift = colorSpeedShift == Float.MAX_VALUE ? 1.0e5F : 1.0F;
+
+                if (shift == Shift.FOG)
+                    fogSpeedShift = fogSpeedShift == Float.MAX_VALUE ? 1.0e5F : 1.0F;
+            }
+
+            float speedShift = switch (shift)
+            {
+                case FOG -> fogSpeedShift;
+                case COLOR -> colorSpeedShift;
+                case NONE -> 1.0F;
+            };
+
+            return modifier * minecraft.getDeltaFrameTime() * speedShift;
+        }
+
+        /* Cave/Void Fog Methods */
 
         public static boolean isBelowHorizon()
         {
@@ -133,9 +224,14 @@ public abstract class FogUtil
             return player.getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level) < 0.0D;
         }
 
+        public static double getYLevel(Entity entity)
+        {
+            return entity.getY() - entity.level.getMinBuildHeight();
+        }
+
         public static boolean isIgnored(Camera camera)
         {
-            return ModConfig.Candy.disableVoidFog() || ModConfig.Candy.getVoidFogStart() < getYLevel(camera.getEntity()) ||
+            return ModConfig.Candy.disableVoidFog() || ModConfig.Candy.getVoidFogStart() < getYLevel(camera.getEntity()) + 0.5D ||
                 !ModConfig.Candy.creativeVoidFog() && camera.getEntity() instanceof Player player && player.isCreative() ||
                 !isBelowHorizon()
             ;
@@ -146,27 +242,35 @@ public abstract class FogUtil
             return !ModConfig.Candy.disableVoidFog() && isInitialized;
         }
 
-        public static double getYLevel(Entity entity)
-        {
-            return entity.getY() - entity.level.getMinBuildHeight();
-        }
-
         public static int getSkylight(Entity entity)
         {
             return entity.level.getBrightness(LightLayer.SKY, entity.blockPosition());
         }
 
-        private static int getBrightness(Entity entity)
+        private static int getLocalBrightness(Entity entity)
         {
-            return ModConfig.Candy.shouldLightRemoveVoidFog() ? entity.level.getMaxLocalRawBrightness(entity.blockPosition()) : getSkylight(entity);
+            int encroachment = (int) ((1 - (ModConfig.Candy.getVoidFogEncroach() / 100.0F)) * 15);
+            int brightness = ModConfig.Candy.shouldLightRemoveVoidFog() ?
+                entity.level.getMaxLocalRawBrightness(entity.blockPosition()) :
+                getSkylight(entity)
+            ;
+
+            return Mth.clamp(brightness + encroachment, 0, 15);
         }
 
         private static float getDistance(Entity entity)
         {
             float renderDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
             double fogStart = ModConfig.Candy.getVoidFogStart();
-            double fogDistance = getBrightness(entity) / 16.0D + getYLevel(entity) / fogStart;
+            double fogDistance = getLocalBrightness(entity) / 16.0D + getYLevel(entity) / (fogStart == 0 ? 1 : fogStart);
             return fogDistance >= 1 ? renderDistance : (float) Mth.clamp(100.0D * Math.pow(Math.max(fogDistance, 0.0D), 2.0D), 5.0D, renderDistance);
+        }
+
+        private static float getDistanceDelta(Entity entity)
+        {
+            float distanceOffset = 15.0F;
+            float distanceEnd = ModConfig.Candy.getVoidFogStart() - distanceOffset;
+            return Math.max(1.0F, Math.min(1.0F, (1.0F - ((float) getYLevel(entity) - distanceEnd) / distanceOffset)));
         }
 
         private static boolean isThick(Camera camera)
@@ -191,135 +295,88 @@ public abstract class FogUtil
             return isThick(camera) ? Math.min(distance, 192.0F) / 2.0F : distance;
         }
 
-        private static float getEntityDelta(Entity entity)
+        private static double getBrightness(Entity entity)
         {
-            float distanceOffset = 15.0F;
-            float distanceEnd = ModConfig.Candy.getVoidFogStart() - distanceOffset;
-            return Math.max(0.0F, Math.min(1.0F, (1.0F - ((float) getYLevel(entity) - distanceEnd) / distanceOffset)));
+            double brightness = Math.max(15.0D - (ModConfig.Candy.getVoidFogStart() - getYLevel(entity)), getSkylight(entity)) / 15.0F;
+            currentBrightness = ModUtil.Numbers.moveClampTowards(currentBrightness, brightness, getSpeed(0.002F, Shift.NONE), 0.0D, 1.0D);
+            return currentBrightness;
         }
 
-        private static double calculateBrightness(Entity entity, float partialTicks)
+        public static void setColor(Camera camera)
         {
-            double yLevel = Mth.lerp(partialTicks, entity.yOld, entity.getY());
-            double brightness = (yLevel * ((ClientLevel) entity.level).getLevelData().getClearColorScale()) * (getSkylight(entity) / 15.0F);
-            return brightness >= 1.0D ? 1.0D : Math.pow(Math.max(0.0D, brightness), 3);
-        }
+            final float SPEED = getSpeed(0.005F, Shift.COLOR);
 
-        private static float getFinalBrightness(Camera camera, float partialTicks)
-        {
-            double brightness = calculateBrightness(camera.getEntity(), partialTicks);
-            brightness = Mth.lerp(partialTicks / 50.0D, lastBrightness, brightness);
-            lastBrightness = brightness;
-            return (float) brightness;
-        }
-
-        public static void setColor(Camera camera, float partialTicks)
-        {
-            float r, g, b, a;
-
-            if (isIgnored(camera))
+            if (isIgnored(camera) || isFogModified(camera) || getSkylight(camera.getEntity()) == 15)
             {
-                float[] rgba = RenderSystem.getShaderFogColor();
-                r = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[0], rgba[0]);
-                g = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[1], rgba[1]);
-                b = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[2], rgba[2]);
-                a = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[3], rgba[3]);
+                ModUtil.Numbers.moveTowardsColor(CURRENT_FOG_RGB, TARGET_FOG_RGB, SPEED);
+                ModUtil.Numbers.moveTowardsColor(CURRENT_SKY_RGB, TARGET_SKY_RGB, SPEED);
+                ModUtil.Numbers.moveTowardsColor(CURRENT_VOID_RGB, TARGET_VOID_RGB, SPEED);
             }
             else
             {
-                final int[] NT_RGBA = ModUtil.Text.toHexRGBA(ModConfig.Candy.getVoidFogColor());
-                final float[] V_RGBA = RenderSystem.getShaderFogColor();
-                float brightness = getFinalBrightness(camera, partialTicks);
-                r = Mth.clamp(V_RGBA[0] * brightness + (NT_RGBA[0] / 255.0F), 0.0F, 1.0F);
-                g = Mth.clamp(V_RGBA[1] * brightness + (NT_RGBA[1] / 255.0F), 0.0F, 1.0F);
-                b = Mth.clamp(V_RGBA[2] * brightness + (NT_RGBA[2] / 255.0F), 0.0F, 1.0F);
-                a = Mth.clamp(V_RGBA[3] * brightness + (NT_RGBA[3] / 255.0F), 0.0F, 1.0F);
+                final float[] CURRENT_FOG = RenderSystem.getShaderFogColor();
+                final int[] CUSTOM_FOG = ModUtil.Text.toHexRGBA(ModConfig.Candy.getVoidFogColor());
 
-                r = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[0], r);
-                g = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[1], g);
-                b = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[2], b);
-                a = Mth.lerp(partialTicks / 10.0F, lastFogRGBA[3], a);
+                final float LIGHT = (float) getBrightness(camera.getEntity());
+                final float FOG_R = Mth.clamp(CURRENT_FOG[0] * LIGHT + (CUSTOM_FOG[0] / 255.0F), 0.0F, 1.0F);
+                final float FOG_G = Mth.clamp(CURRENT_FOG[1] * LIGHT + (CUSTOM_FOG[1] / 255.0F), 0.0F, 1.0F);
+                final float FOG_B = Mth.clamp(CURRENT_FOG[2] * LIGHT + (CUSTOM_FOG[2] / 255.0F), 0.0F, 1.0F);
+                final float[] TARGET_RGB = new float[] { FOG_R, FOG_G, FOG_B };
+
+                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_FOG_RGB, TARGET_RGB, SPEED);
+                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_SKY_RGB, TARGET_RGB, SPEED);
+                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_VOID_RGB, TARGET_RGB, SPEED);
             }
 
-            lastFogRGBA[0] = r;
-            lastFogRGBA[1] = g;
-            lastFogRGBA[2] = b;
-            lastFogRGBA[3] = a;
-
-            RenderSystem.clearColor(r, g, b, a);
-            RenderSystem.setShaderFogColor(r, g, b, a);
+            RenderSystem.clearColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2], 1.0F);
+            RenderSystem.setShaderFogColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2]);
         }
 
-        private static void initialize(Camera camera, float partialTicks)
+        public static void reset() { isInitialized = false; }
+
+        private static void initialize(Camera camera)
         {
             if (isInitialized)
                 return;
 
-            float[] rgba = RenderSystem.getShaderFogColor();
-            lastFogRGBA[0] = rgba[0];
-            lastFogRGBA[1] = rgba[1];
-            lastFogRGBA[2] = rgba[2];
-            lastFogRGBA[3] = rgba[3];
-            lastBrightness = getFinalBrightness(camera, partialTicks);
+            ModUtil.Array.copy(TARGET_VOID_RGB, CURRENT_VOID_RGB);
+            ModUtil.Array.copy(TARGET_FOG_RGB, CURRENT_FOG_RGB);
+            ModUtil.Array.copy(TARGET_SKY_RGB, CURRENT_SKY_RGB);
 
-            lastFogDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
-            lastFogStart = RenderSystem.getShaderFogStart();
-            lastFogEnd = RenderSystem.getShaderFogEnd();
-            lastStarAlpha = starAlpha;
+            currentBrightness = getBrightness(camera.getEntity());
+            currentStarAlpha = targetStarAlpha;
+            currentFogStart = 0.0F;
+            currentFogEnd = 0.0F;
+            fogSpeedShift = 1.0e5F;
+            colorSpeedShift = 1.0e5F;
 
             isInitialized = true;
-        }
-
-        public static void reset()
-        {
-            lastFogRGBA[0] = 0.0F;
-            lastFogRGBA[1] = 0.0F;
-            lastFogRGBA[2] = 0.0F;
-            lastFogRGBA[3] = 0.0F;
-
-            lastFogDistance = 0.0F;
-            lastFogStart = 0.0F;
-            lastFogEnd = 0.0F;
-            lastStarAlpha = 0.0F;
-
-            isInitialized = false;
         }
 
         private static void render(Camera camera)
         {
             Entity entity = camera.getEntity();
+            boolean isIgnored = isIgnored(camera) || isFogModified(camera);
             float partialTicks = Minecraft.getInstance().getDeltaFrameTime();
 
-            initialize(camera, partialTicks);
-
-            if (isIgnored(camera))
-            {
-                float start = Mth.lerp(partialTicks / 10.0F, lastFogStart, RenderSystem.getShaderFogStart());
-                float end = Mth.lerp(partialTicks / 10.0F, lastFogEnd, RenderSystem.getShaderFogEnd());
-                lastStarAlpha = Mth.lerp(partialTicks / 10.0F, lastStarAlpha, starAlpha);
-                lastFogStart = start;
-                lastFogEnd = end;
-
-                RenderSystem.setShaderFogStart(start);
-                RenderSystem.setShaderFogEnd(end);
-
-                return;
-            }
-
-            lastStarAlpha = Mth.lerp(partialTicks / 10.0F, lastStarAlpha, getSkylight(entity) == 0 ? 0.0F : starAlpha);
-
-            float encroach = ModConfig.Candy.getVoidFogEncroach() / 100.0F;
             float distance = getDistance(entity);
-            float entityDelta = getEntityDelta(entity) * encroach;
+            float encroach = getDistanceDelta(entity);
+            float speed = getSpeed(1.0F, Shift.FOG);
 
             if (entity instanceof LivingEntity living && living.hasEffect(MobEffects.NIGHT_VISION))
                 distance *= 4 * GameRenderer.getNightVisionScale(living, partialTicks);
 
-            distance = Mth.lerp(partialTicks / 100.0F, lastFogDistance, distance);
-            lastFogDistance = distance;
+            float fogStartTarget = isIgnored ? targetFogStart : getFogStart(camera, distance) * encroach;
+            float fogEndTarget = isIgnored ? targetFogEnd : getFogEnd(camera, distance) * encroach;
+            float starTarget = !isIgnored && getSkylight(entity) == 0 ? 0.0F : targetStarAlpha;
 
-            RenderSystem.setShaderFogStart(Mth.lerp(entityDelta, RenderSystem.getShaderFogStart(), getFogStart(camera, distance)));
-            RenderSystem.setShaderFogEnd(Mth.lerp(entityDelta, RenderSystem.getShaderFogEnd(), getFogEnd(camera, distance)));
+            initialize(camera);
+            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.01F, Shift.NONE));
+            currentFogStart = ModUtil.Numbers.moveTowards(currentFogStart, fogStartTarget, speed);
+            currentFogEnd = ModUtil.Numbers.moveTowards(currentFogEnd, fogEndTarget, speed);
+
+            RenderSystem.setShaderFogStart(currentFogStart);
+            RenderSystem.setShaderFogEnd(currentFogEnd);
         }
     }
 }

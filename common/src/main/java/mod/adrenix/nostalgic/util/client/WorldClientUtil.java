@@ -82,11 +82,21 @@ public abstract class WorldClientUtil
             b = b * thunderModifier + weatherModifier * (1.0F - thunderModifier);
         }
 
-        r = Mth.clamp(r, 0.1F, 1.0F);
-        g = Mth.clamp(g, 0.1F, 1.0F);
-        b = Mth.clamp(b, 0.1F, 1.0F);
+        r = Mth.clamp(r, 0.1F, 1.0F) * 0.13F;
+        g = Mth.clamp(g, 0.1F, 1.0F) * 0.17F;
+        b = Mth.clamp(b, 0.1F, 1.0F) * 0.7F;
+
+        FogUtil.VoidFog.setVoidRGB(r, g, b);
+
+        if (FogUtil.VoidFog.isRendering())
+        {
+            final float[] VOID_RGB = FogUtil.VoidFog.getVoidRGB();
+            r = VOID_RGB[0];
+            g = VOID_RGB[1];
+            b = VOID_RGB[2];
+        }
 
         RenderSystem.setShader(GameRenderer::getPositionShader);
-        RenderSystem.setShaderColor(0.13F * r, 0.17F * g, 0.7F * b, 1.0F);
+        RenderSystem.setShaderColor(r, g, b, 1.0F);
     }
 }

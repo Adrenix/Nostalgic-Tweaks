@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -18,16 +19,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = FogRenderer.class, priority = MixinPriority.APPLY_FIRST)
 public abstract class FogRendererMixin
 {
+    /* Shadows */
+
+    @Shadow private static float fogRed;
+    @Shadow private static float fogGreen;
+    @Shadow private static float fogBlue;
+
+    /* Injections */
+
     /**
-     * Changes the level fog color to match the current void/cave fog color.
+     * Tracks and changes the level fog color to match the current void/cave fog color.
      * Controlled by the void fog tweak.
      */
     @Inject(method = "levelFogColor", at = @At("TAIL"))
     private static void NT$onLevelFogColor(CallbackInfo callback)
     {
-        Minecraft minecraft = Minecraft.getInstance();
+        FogUtil.VoidFog.setFogRGB(fogRed, fogGreen, fogBlue);
+
         if (FogUtil.VoidFog.isRendering())
-            FogUtil.VoidFog.setColor(minecraft.gameRenderer.getMainCamera(), minecraft.getDeltaFrameTime());
+            FogUtil.VoidFog.setColor(Minecraft.getInstance().gameRenderer.getMainCamera());
     }
 
     /**

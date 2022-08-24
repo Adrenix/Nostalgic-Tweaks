@@ -154,7 +154,7 @@ public abstract class DefaultConfig
         public static final int VOID_PARTICLE_RADIUS = 16;
         public static final int VOID_PARTICLE_DENSITY = 20;
         public static final int VOID_PARTICLE_START = -47;
-        public static final int VOID_FOG_ENCROACH = 100;
+        public static final int VOID_FOG_ENCROACH = 50;
         public static final int VOID_FOG_START = 50;
         public static final boolean DISABLE_VOID_FOG = false;
         public static final boolean CREATIVE_VOID_FOG = true;

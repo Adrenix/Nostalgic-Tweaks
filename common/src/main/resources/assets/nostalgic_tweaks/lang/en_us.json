@@ -486,7 +486,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.creativeVoidParticles": "Creative Void Particles",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.creativeVoidParticles.@Tooltip": "Should void particles render when the player is in creative mode.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogColor": "Void Fog Color",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogColor.@Tooltip": "Change the color of cave/void fog.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogColor.@Tooltip": "Change the color of cave/void fog. This tweak does§c not§r support alpha transparency.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogStart": "Fog Starting Level",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogStart.@Tooltip": "Choose the y-level where cave/void fog starts changing the surrounding environment.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.voidFogEncroach": "Fog Encroachment Amount",

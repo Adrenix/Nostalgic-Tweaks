@@ -177,7 +177,17 @@ public abstract class LevelRendererMixin
         boolean isDarkOverride = ModConfig.Candy.oldBlueVoidOverride();
 
         if (!isBlueRendered || !isDarkOverride)
+        {
+            final float[] DARK_RGB = RenderSystem.getShaderColor();
+            final float[] VOID_RGB = FogUtil.VoidFog.getVoidRGB();
+
+            FogUtil.VoidFog.setVoidRGB(DARK_RGB[0], DARK_RGB[1], DARK_RGB[2]);
+
+            if (FogUtil.VoidFog.isRendering())
+                RenderSystem.setShaderColor(VOID_RGB[0], VOID_RGB[1], VOID_RGB[2], DARK_RGB[3]);
+
             instance.drawWithShader(modelViewMatrix, projectionMatrix, shaderInstance);
+        }
     }
 
     /**
