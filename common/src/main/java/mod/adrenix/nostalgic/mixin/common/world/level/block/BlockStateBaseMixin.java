@@ -81,21 +81,21 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
     private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
     {
-        if (BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(true);
     }
 
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(true);
     }
 
     @Inject(method = "getFaceOcclusionShape", at = @At("HEAD") , cancellable = true)
     private void NT$onGetFaceOcclusionShape(BlockGetter level, BlockPos pos, Direction direction, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
     }
 
@@ -116,7 +116,7 @@ public abstract class BlockStateBaseMixin
     )
     private void NT$onGetShape(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
     }
 }
