@@ -6,10 +6,14 @@ import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.server.BlockServerUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,23 +69,54 @@ public abstract class BlockStateBaseMixin
     }
 
     /**
-     * Multiplayer:
+     * Client:
      *
-     * Occlusion and solid rendering needs to be enabled to prevent rendering issues such as light coming through chests.
-     * Controlled by the old chest voxel tweak since this will change block behavior.
+     * The following injections only impact the rendering aspects of chests. Therefore, there is no need to restrict
+     * these injections to server-side only. The purpose of the injections is to improve performance and prevent light
+     * from coming through chests when they are shaped like blocks.
+     *
+     * Controlled by various old chest tweaks.
      */
 
     @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
     private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
+        if (BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(true);
     }
 
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
+        if (BlockServerUtil.isChest(this.getBlock()))
             callback.setReturnValue(true);
+    }
+
+    @Inject(method = "getFaceOcclusionShape", at = @At("HEAD") , cancellable = true)
+    private void NT$onGetFaceOcclusionShape(BlockGetter level, BlockPos pos, Direction direction, CallbackInfoReturnable<VoxelShape> callback)
+    {
+        if (BlockServerUtil.isChest(this.getBlock()))
+            callback.setReturnValue(Shapes.block());
+    }
+
+    /**
+     * Multiplayer:
+     *
+     * Setting the shape to a full block prevents light from coming through chests. Because chests are being changed to
+     * a full-block voxel shape, this should be restricted by a server-only tweak to prevent vanilla multiplayer issues.
+     *
+     * Controlled by the old chest voxel tweak and various old chest tweaks.
+     */
+
+    @Inject
+    (
+        cancellable = true,
+        method = "getShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
+        at = @At("HEAD")
+    )
+    private void NT$onGetShape(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
+    {
+        if (ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
+            callback.setReturnValue(Shapes.block());
     }
 }
