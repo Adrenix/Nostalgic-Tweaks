@@ -127,6 +127,7 @@ public abstract class FogUtil
         private static double currentBrightness;
         private static float currentFogStart;
         private static float currentFogEnd;
+        private static float currentCelestial;
         private static float currentStarAlpha;
         private static float targetStarAlpha;
         private static float targetFogStart;
@@ -172,6 +173,7 @@ public abstract class FogUtil
 
         public static void setStarAlpha(float value) { targetStarAlpha = value; }
         public static float getStarAlpha() { return currentStarAlpha; }
+        public static float getCelestial() { return currentCelestial; }
 
         /* Altitude Speed Shift */
 
@@ -212,6 +214,14 @@ public abstract class FogUtil
         }
 
         /* Cave/Void Fog Methods */
+
+        public static void setCelestialTransparency()
+        {
+            final float[] RGB = RenderSystem.getShaderColor();
+
+            if (FogUtil.VoidFog.isRendering())
+                RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], FogUtil.VoidFog.getCelestial());
+        }
 
         public static boolean isBelowHorizon()
         {
@@ -349,6 +359,7 @@ public abstract class FogUtil
             currentFogEnd = 0.0F;
             fogSpeedShift = 1.0e5F;
             colorSpeedShift = 1.0e5F;
+            currentCelestial = 1.0F;
 
             isInitialized = true;
         }
@@ -366,11 +377,13 @@ public abstract class FogUtil
             if (entity instanceof LivingEntity living && living.hasEffect(MobEffects.NIGHT_VISION))
                 distance *= 4 * GameRenderer.getNightVisionScale(living, partialTicks);
 
+            float celestialTarget = !isIgnored && getSkylight(entity) == 0 ? 0.0F : 1.0F;
             float fogStartTarget = isIgnored ? targetFogStart : getFogStart(camera, distance) * encroach;
             float fogEndTarget = isIgnored ? targetFogEnd : getFogEnd(camera, distance) * encroach;
             float starTarget = !isIgnored && getSkylight(entity) == 0 ? 0.0F : targetStarAlpha;
 
             initialize(camera);
+            currentCelestial = ModUtil.Numbers.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.NONE));
             currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.01F, Shift.NONE));
             currentFogStart = ModUtil.Numbers.moveTowards(currentFogStart, fogStartTarget, speed);
             currentFogEnd = ModUtil.Numbers.moveTowards(currentFogEnd, fogEndTarget, speed);

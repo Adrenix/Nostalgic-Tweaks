@@ -157,6 +157,45 @@ public abstract class LevelRendererMixin
     }
 
     /**
+     * Sets the transparency of the sunrise/sunset colors when void fog is rendering.
+     */
+    @Inject
+    (
+        method = "renderSky",
+        at = @At
+        (
+            ordinal = 1,
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"
+        )
+    )
+    private void NT$onSetSunriseColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    {
+        FogUtil.VoidFog.setCelestialTransparency();
+    }
+
+    /**
+     * Sets the transparency of the sun/moon when void fog is rendering.
+     */
+    @Inject
+    (
+        method = "renderSky",
+        slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getRainLevel(F)F")),
+        at = @At
+        (
+            ordinal = 0,
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"
+        )
+    )
+    private void NT$onSetSunMoonShading(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    {
+        FogUtil.VoidFog.setCelestialTransparency();
+    }
+
+    /**
      * Disables the rendering of the dark void if the blue void is enabled and its respective override is enabled.
      * Controlled by both old blue void and old blue void override tweaks.
      */
