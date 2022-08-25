@@ -384,7 +384,7 @@ public abstract class FogUtil
 
             initialize(camera);
             currentCelestial = ModUtil.Numbers.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.NONE));
-            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.01F, Shift.NONE));
+            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.03F, Shift.NONE));
             currentFogStart = ModUtil.Numbers.moveTowards(currentFogStart, fogStartTarget, speed);
             currentFogEnd = ModUtil.Numbers.moveTowards(currentFogEnd, fogEndTarget, speed);
 
