@@ -472,7 +472,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight": "Old Cloud Height",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight.@Tooltip": "Change the cloud height (y-level). The old heights are;§a alpha§r y-§a108§r,§e beta§r y-§e128§r, and§6 modern§r y-§6192§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars": "Old Stars",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old chunkier and brighter stars.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old§l chunkier§r stars. §aAlpha§r has brighter stars and§e beta§r has§7 dimmer§r stars.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid": "Old Blue Void",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid.@Tooltip": "Bring back the old§1 blue§r void color in the far plane.",

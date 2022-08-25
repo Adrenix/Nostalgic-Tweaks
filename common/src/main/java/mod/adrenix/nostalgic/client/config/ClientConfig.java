@@ -802,7 +802,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_SKY_CANDY)
-        public boolean oldStars = DefaultConfig.Candy.OLD_STARS;
+        public TweakVersion.Generic oldStars = DefaultConfig.Candy.OLD_STARS;
         static { CandyTweak.STARS.setKey("oldStars"); }
 
         @TweakSide.Client

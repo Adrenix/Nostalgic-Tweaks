@@ -66,7 +66,7 @@ public abstract class ClientLevelMixin
     @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
     private float NT$onClampSkyColor(float vanilla)
     {
-        return ModConfig.Candy.oldStars() ? 0.005F : vanilla;
+        return switch(ModConfig.Candy.getStars()) { case ALPHA, BETA -> 0.005F; default -> vanilla; };
     }
 
     /**

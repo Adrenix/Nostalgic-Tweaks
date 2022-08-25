@@ -267,13 +267,13 @@ public abstract class LevelRendererMixin
     @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.15F))
     private float NT$onDrawStarsWidth(float vanilla)
     {
-        return ModConfig.Candy.oldStars() ? 0.25F : 0.15F;
+        return switch(ModConfig.Candy.getStars()) { case ALPHA, BETA -> 0.25F; default -> 0.15F; };
     }
 
     @ModifyConstant(method = "drawStars", constant = @Constant(floatValue = 0.1F))
     private float NT$onDrawStarsHeight(float vanilla)
     {
-        return ModConfig.Candy.oldStars() ? 0.25F : 0.1F;
+        return switch(ModConfig.Candy.getStars()) { case ALPHA, BETA -> 0.25F; default -> 0.1F; };
     }
 
     /**
@@ -283,14 +283,18 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupNoFog()V"))
     private void NT$onSetupStarColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldStars() || this.level == null)
+        TweakVersion.Generic stars = ModConfig.Candy.getStars();
+        boolean isDimmed = stars.equals(TweakVersion.Generic.MODERN) || stars.equals(TweakVersion.Generic.BETA);
+
+        if (this.level == null)
             return;
 
         float rain = 1.0F - this.level.getRainLevel(partialTick);
         float transparency = this.level.getStarBrightness(partialTick) * rain;
-        float color = transparency / 0.5F;
+        float color = isDimmed ? transparency : transparency / 0.5F;
 
         FogUtil.VoidFog.setStarAlpha(transparency);
+
         if (FogUtil.VoidFog.isRendering())
             transparency = FogUtil.VoidFog.getStarAlpha();
 

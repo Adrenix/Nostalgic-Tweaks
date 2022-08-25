@@ -326,7 +326,6 @@ public abstract class ModConfig
         public static boolean oldHorizonFog() { return getBoolTweak(CandyTweak.HORIZON_FOG, CANDY.oldHorizonFog); }
         public static boolean oldNetherFog() { return getBoolTweak(CandyTweak.NETHER_FOG, CANDY.oldNetherFog); }
         public static boolean oldNameTags() { return getBoolTweak(CandyTweak.NAME_TAGS, CANDY.oldNameTags); }
-        public static boolean oldStars() { return getBoolTweak(CandyTweak.STARS, CANDY.oldStars); }
 
         // Void Fog
         public static String getVoidFogColor() { return CANDY.voidFogColor; }
@@ -343,6 +342,7 @@ public abstract class ModConfig
         public static TweakVersion.Generic getSkyColor() { return getEnum(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
         public static TweakVersion.Generic getFogColor() { return getEnum(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
         public static TweakVersion.Generic getBlueVoid() { return getEnum(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
+        public static TweakVersion.Generic getStars() { return getEnum(CandyTweak.STARS, CANDY.oldStars); }
         public static TweakVersion.Hotbar getHotbar() { return getSidedEnum(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar, SERVER_CANDY.oldCreativeHotbar); }
 
         /* String Tweaks */
