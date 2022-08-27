@@ -17,7 +17,6 @@ public enum CandyTweak implements ITweak
 
     CREATIVE_HOTBAR,
     BUTTON_HOVER,
-    DEBUG_ENTITY_ID,
 
     // Interface Candy - Chat Screen
     CHAT_INPUT,
@@ -26,6 +25,14 @@ public enum CandyTweak implements ITweak
     // Interface Candy - Crafting Screen
     CRAFTING_SCREEN,
     CRAFTING_RECIPE,
+
+    // Interface Candy - Debug Screen
+    DEBUG_SCREEN,
+    DEBUG_FPS_CHART,
+    DEBUG_PIE_CHART,
+    DEBUG_ENTITY_ID,
+    DEBUG_LIGHT,
+    OLD_PIE_BACKGROUND,
 
     // Interface Candy - Furnace Screen
     FURNACE_SCREEN,

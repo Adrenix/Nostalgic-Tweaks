@@ -17,4 +17,13 @@ public abstract class RenderUtil
         builder.vertex(matrix, rightX, topY, z).color(rgba).endVertex();
         builder.vertex(matrix, leftX, topY, z).color(rgba).endVertex();
     }
+
+    public static void fill(BufferBuilder builder, float leftX, float rightX, float topY, float bottomY, int rgba)
+    {
+        float z = 0.0F;
+        builder.vertex(leftX, bottomY, z).color(rgba).endVertex();
+        builder.vertex(rightX, bottomY, z).color(rgba).endVertex();
+        builder.vertex(rightX, topY, z).color(rgba).endVertex();
+        builder.vertex(leftX, topY, z).color(rgba).endVertex();
+    }
 }

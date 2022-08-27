@@ -2,13 +2,16 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -59,6 +62,18 @@ public abstract class GuiMixin extends GuiComponent
     {
         if (ModConfig.Candy.oldPlainSelectedItemName())
             mutableComponent.withStyle(ChatFormatting.RESET);
+    }
+
+    /**
+     * Prevents the axis crosshair from overriding the default crosshair.
+     * Controlled by the old debug screen tweak.
+     */
+    @Redirect(method = "renderCrosshair", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;renderDebug:Z", opcode = Opcodes.GETFIELD))
+    private boolean NT$onRenderDebugCrosshair(Options instance)
+    {
+        if (ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN))
+            return instance.renderDebug;
+        return false;
     }
 
     /**

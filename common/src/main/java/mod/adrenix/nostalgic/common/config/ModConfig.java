@@ -15,18 +15,18 @@ import net.minecraft.SharedConstants;
 
 /**
  * This utility class acts as the interface for parts of the mod that need to know the state of tweaks.
- * This is used by both the client and server, so it is recommended to keep vanilla client code out.
+ * This is used by both the client and server, so it is a requirement to keep vanilla client code out.
  */
 
 public abstract class ModConfig
 {
-    /* Server Config References */
+    /* Server Config Caches */
 
     private static final ServerConfig.EyeCandy SERVER_CANDY = ServerConfigCache.getCandy();
     private static final ServerConfig.Gameplay SERVER_GAMEPLAY = ServerConfigCache.getGameplay();
     private static final ServerConfig.Animation SERVER_ANIMATION = ServerConfigCache.getAnimation();
 
-    /* Client Config References */
+    /* Client Config Caches */
 
     private static final ClientConfig.Animation ANIMATION = ClientConfigCache.getAnimation();
     private static final ClientConfig.Gameplay GAMEPLAY = ClientConfigCache.getGameplay();
@@ -231,7 +231,7 @@ public abstract class ModConfig
         public static boolean oldChestVoxel() { return getSidedBoolTweak(CandyTweak.CHEST_VOXEL, CANDY.oldChestVoxel, SERVER_CANDY.oldChestVoxel); }
         public static boolean oldChest() { return getBoolTweak(CandyTweak.CHEST, CANDY.oldChest); }
 
-        // Interface Candy
+        // Interface - Generic & Title Candy
         public static TweakType.Corner oldOverlayCorner() { return getEnum(CandyTweak.VERSION_CORNER, CANDY.oldOverlayCorner); }
         public static boolean oldPlainSelectedItemName() { return getBoolTweak(CandyTweak.PLAIN_SELECTED_ITEM_NAME, CANDY.oldPlainSelectedItemName); }
         public static boolean oldNoSelectedItemName() { return getBoolTweak(CandyTweak.NO_SELECTED_ITEM_NAME, CANDY.oldNoSelectedItemName); }
@@ -241,30 +241,30 @@ public abstract class ModConfig
         public static boolean oldLoadingScreens() { return getBoolTweak(CandyTweak.LOADING_SCREENS, CANDY.oldLoadingScreens); }
         public static boolean removeLoadingBar() { return getBoolTweak(CandyTweak.REMOVE_LOADING_BAR, CANDY.removeLoadingBar); }
         public static boolean oldButtonHover() { return getBoolTweak(CandyTweak.BUTTON_HOVER, CANDY.oldButtonHover); }
-        public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 
-        // Interface - Inventory Candy
-        public static TweakType.RecipeBook getInventoryBook() { return getEnum(CandyTweak.INVENTORY_BOOK, CANDY.inventoryBook); }
+        // Interface - Screen Candy
         public static TweakType.InventoryShield getInventoryShield() { return getEnum(CandyTweak.INVENTORY_SHIELD, CANDY.inventoryShield); }
-        public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
+        public static TweakType.GuiBackground oldGuiBackground() { return getEnum(CandyTweak.OLD_GUI_BACKGROUND, CANDY.oldGuiBackground); }
+        public static TweakType.RecipeBook getInventoryBook() { return getEnum(CandyTweak.INVENTORY_BOOK, CANDY.inventoryBook); }
+        public static TweakType.RecipeBook getCraftingBook() { return getEnum(CandyTweak.CRAFTING_RECIPE, CANDY.craftingBook); }
+        public static TweakType.RecipeBook getFurnaceBook() { return getEnum(CandyTweak.FURNACE_RECIPE, CANDY.furnaceBook); }
+        public static TweakType.DebugChart getDebugChart() { return getEnum(CandyTweak.DEBUG_FPS_CHART, CANDY.fpsChart); }
+        public static String customTopGradient() { return CANDY.customTopGradient; }
+        public static String customBottomGradient() { return CANDY.customBottomGradient; }
+        public static boolean customGuiBackground() { return getBoolTweak(CandyTweak.CUSTOM_GUI_BACKGROUND, CANDY.customGuiBackground); }
+        public static boolean displayLightLevels() { return getBoolTweak(CandyTweak.DEBUG_LIGHT, CANDY.displayLightLevels); }
         public static boolean disableEmptyShield() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_SHIELD, CANDY.disableEmptyShieldTexture); }
         public static boolean disableEmptyArmor() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_ARMOR, CANDY.disableEmptyArmorTexture); }
         public static boolean invertPlayerLight() { return getBoolTweak(CandyTweak.INVERTED_PLAYER_LIGHTING, CANDY.invertedPlayerLighting); }
-        public static boolean invertBlockLight() { return getBoolTweak(CandyTweak.INVERTED_BLOCK_LIGHTING, CANDY.invertedBlockLighting); }
-
-        // Interface - Crafting & Furnace Screen
-        public static TweakType.RecipeBook getCraftingBook() { return getEnum(CandyTweak.CRAFTING_RECIPE, CANDY.craftingBook); }
-        public static TweakType.RecipeBook getFurnaceBook() { return getEnum(CandyTweak.FURNACE_RECIPE, CANDY.furnaceBook); }
         public static boolean oldCraftingScreen() { return getBoolTweak(CandyTweak.CRAFTING_SCREEN, CANDY.oldCraftingScreen); }
+        public static boolean invertBlockLight() { return getBoolTweak(CandyTweak.INVERTED_BLOCK_LIGHTING, CANDY.invertedBlockLighting); }
+        public static boolean oldPieBackground() { return getBoolTweak(CandyTweak.OLD_PIE_BACKGROUND, CANDY.oldPieChartBackground); }
         public static boolean oldFurnaceScreen() { return getBoolTweak(CandyTweak.FURNACE_SCREEN, CANDY.oldFurnaceScreen); }
-
-        // Interface - Screen Candy
-        public static TweakType.GuiBackground oldGuiBackground() { return getEnum(CandyTweak.OLD_GUI_BACKGROUND, CANDY.oldGuiBackground); }
-        public static boolean customGuiBackground() { return getBoolTweak(CandyTweak.CUSTOM_GUI_BACKGROUND, CANDY.customGuiBackground); }
-        public static String customTopGradient() { return CANDY.customTopGradient; }
-        public static String customBottomGradient() { return CANDY.customBottomGradient; }
+        public static boolean displayPieChart() { return getBoolTweak(CandyTweak.DEBUG_PIE_CHART, CANDY.displayPieChart); }
+        public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
+        public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
 
         // Interface - Tooltip Candy
         public static boolean addDyeTip() { return getBoolTweak(CandyTweak.DYE_TIP, CANDY.showDyeTip); }
@@ -339,6 +339,7 @@ public abstract class ModConfig
         public static TweakVersion.TitleLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
         public static TweakVersion.PauseLayout getPauseLayout() { return getEnum(CandyTweak.PAUSE_LAYOUT, CANDY.oldPauseMenu); }
         public static TweakVersion.Overlay getLoadingOverlay() { return getEnum(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
+        public static TweakVersion.Generic getDebugScreen() { return getEnum(CandyTweak.DEBUG_SCREEN, CANDY.oldDebug); }
         public static TweakVersion.Generic getSkyColor() { return getEnum(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
         public static TweakVersion.Generic getFogColor() { return getEnum(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
         public static TweakVersion.Generic getBlueVoid() { return getEnum(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }

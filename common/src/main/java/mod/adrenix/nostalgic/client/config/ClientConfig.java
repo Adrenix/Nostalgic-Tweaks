@@ -195,14 +195,57 @@ public class ClientConfig implements ConfigData
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
 
+        // Interface - Debug Screen Candy
+
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Cat(group = TweakClient.Category.INTERFACE_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public TweakVersion.Generic oldDebug = DefaultConfig.Candy.OLD_DEBUG;
+        static { CandyTweak.DEBUG_SCREEN.setKey("oldDebug"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public TweakType.DebugChart fpsChart = DefaultConfig.Candy.FPS_CHART;
+        static { CandyTweak.DEBUG_FPS_CHART.setKey("fpsChart"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public boolean displayLightLevels = DefaultConfig.Candy.DISPLAY_LIGHT_LEVELS;
+        static { CandyTweak.DEBUG_LIGHT.setKey("displayLightLevels"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public boolean displayPieChart = DefaultConfig.Candy.DISPLAY_PIE_CHART;
+        static { CandyTweak.DEBUG_PIE_CHART.setKey("displayPieChart"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public boolean oldPieChartBackground = DefaultConfig.Candy.OLD_PIE_CHART_BACKGROUND;
+        static { CandyTweak.OLD_PIE_BACKGROUND.setKey("oldPieChartBackground"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
         public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
         static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
 
-        // Interface - Inventory Candy
+        // Interface - Inventory Screen Candy
 
         @TweakClient.Gui.New
         @TweakSide.Client

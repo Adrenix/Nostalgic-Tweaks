@@ -9,6 +9,7 @@
     "IMixinAbstractWidget",
     "IMixinEntity",
     "IMixinLevelRenderer",
+    "IMixinMinecraft",
     "IMixinProgressScreen",
     "IMixinScreen",
     "IMixinTitleScreen"

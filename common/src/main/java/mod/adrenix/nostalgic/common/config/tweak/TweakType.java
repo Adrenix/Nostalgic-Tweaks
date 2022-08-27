@@ -70,4 +70,18 @@ public abstract class TweakType
         public String toString() { return Component.translatable(this.langKey).getString(); }
         public InventoryShield getDisabled() { return MODERN; }
     }
+
+    public enum DebugChart implements IDisableTweak<DebugChart>
+    {
+        MODERN(LangUtil.Gui.DEBUG_CHART_MODERN),
+        CLASSIC(LangUtil.Gui.DEBUG_CHART_CLASSIC),
+        DISABLED(LangUtil.Gui.DEBUG_CHART_DISABLED);
+
+        private final String langKey;
+
+        DebugChart(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public DebugChart getDisabled() { return CLASSIC; }
+    }
 }

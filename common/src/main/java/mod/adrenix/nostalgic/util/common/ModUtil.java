@@ -47,16 +47,20 @@ public abstract class ModUtil
     public static class Numbers
     {
         /**
+         * Turns given <code>bytes</code> into megabytes.
+         * @param bytes The bytes to turn into megabytes.
+         * @return Bytes turned into megabytes.
+         */
+        public static long bytesToMegabytes(long bytes) { return bytes / 1024L / 1024L; }
+
+        /**
          * Determine if two integers are within a given <code>tolerance</code>.
          * @param a First integer.
          * @param b Second integer.
          * @param tolerance The allowed distance between <code>a</code> and <code>b</code>.
          * @return If the two integers are within the given <code>tolerance</code>.
          */
-        public static boolean tolerance(int a, int b, int tolerance)
-        {
-            return Math.abs(a - b) < tolerance;
-        }
+        public static boolean tolerance(int a, int b, int tolerance) { return Math.abs(a - b) < tolerance; }
 
         /**
          * This is an overload method for {@link Numbers#tolerance(int, int, int)} with a default <code>tolerance</code> of 3.
@@ -64,10 +68,7 @@ public abstract class ModUtil
          * @param b Second integer.
          * @return If the two integers are within a <code>tolerance</code> of 3.
          */
-        public static boolean tolerance(int a, int b)
-        {
-            return tolerance(a, b, 3);
-        }
+        public static boolean tolerance(int a, int b) { return tolerance(a, b, 3); }
 
         /**
          * Checks if the two floats are within a given <code>tolerance</code>.
@@ -76,10 +77,7 @@ public abstract class ModUtil
          * @param tolerance The allowed distance between <code>a</code> and <code>b</code>.
          * @return If the two floats are within the given <code>tolerance</code>.
          */
-        public static boolean tolerance(float a, float b, float tolerance)
-        {
-            return Math.abs(a - b) < tolerance;
-        }
+        public static boolean tolerance(float a, float b, float tolerance) { return Math.abs(a - b) < tolerance; }
 
         /**
          * Checks if <code>a</code>, <code>b</code>, and <code>c</code> are within the given <code>tolerance</code>.
@@ -114,18 +112,12 @@ public abstract class ModUtil
          * @param input The input to check for its sign.
          * @return A <code>1</code> when the input is positive or zero, <code>-1</code> when the input is negative.
          */
-        public static float sign(float input)
-        {
-            return input < 0.0F ? -1.0F : 1.0F;
-        }
+        public static float sign(float input) { return input < 0.0F ? -1.0F : 1.0F; }
 
         /**
          * Overload method as <code>double</code> for {@link Numbers#sign(float)}.
          */
-        public static double sign(double input)
-        {
-            return input < 0.0D ? -1.0D : 1.0D;
-        }
+        public static double sign(double input) { return input < 0.0D ? -1.0D : 1.0D; }
 
         /**
          * Moves <code>current</code> towards <code>target</code>.

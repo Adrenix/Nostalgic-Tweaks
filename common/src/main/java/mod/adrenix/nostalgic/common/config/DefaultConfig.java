@@ -42,7 +42,6 @@ public abstract class DefaultConfig
 
         public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
         public static final boolean OLD_BUTTON_HOVER = true;
-        public static final boolean DEBUG_ENTITY_ID = true;
 
         // Interface - Chat Screen
         public static final boolean OLD_CHAT_INPUT = true;
@@ -53,6 +52,14 @@ public abstract class DefaultConfig
         public static final TweakType.RecipeBook FURNACE_BOOK = TweakType.RecipeBook.DISABLED;
         public static final boolean OLD_CRAFTING_SCREEN = true;
         public static final boolean OLD_FURNACE_SCREEN = true;
+
+        // Interface - Debugging Screen
+        public static final TweakType.DebugChart FPS_CHART = TweakType.DebugChart.CLASSIC;
+        public static final TweakVersion.Generic OLD_DEBUG = TweakVersion.Generic.BETA;
+        public static final boolean OLD_PIE_CHART_BACKGROUND = false;
+        public static final boolean DISPLAY_LIGHT_LEVELS = false;
+        public static final boolean DISPLAY_PIE_CHART = false;
+        public static final boolean DEBUG_ENTITY_ID = true;
 
         // Interface - Loading & Pause Screen
         public static final TweakVersion.Overlay OLD_LOADING_OVERLAY = TweakVersion.Overlay.ALPHA;
@@ -138,7 +145,7 @@ public abstract class DefaultConfig
         // World Candy
         public static final int OLD_CLOUD_HEIGHT = 108;
         public static final int DISABLED_CLOUD_HEIGHT = 192;
-        public static final boolean OLD_NAME_TAGS = true;
+        public static final boolean OLD_NAME_TAGS = false;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_DARK_VOID_HEIGHT = true;

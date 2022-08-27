@@ -11,6 +11,7 @@
     "gui.ChatComponentMixin",
     "gui.ChatScreenMixin",
     "gui.CraftingScreenMixin",
+    "gui.DebugScreenOverlayMixin",
     "gui.GuiMixin",
     "gui.InventoryArmorSlotMixin",
     "gui.InventoryScreenMixin",

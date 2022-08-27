@@ -2,20 +2,26 @@ package mod.adrenix.nostalgic.mixin.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import mod.adrenix.nostalgic.client.screen.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.duck.ILocalSwing;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.profiling.ProfileResults;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,6 +39,8 @@ public abstract class MinecraftMixin
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
     @Shadow @Nullable public LocalPlayer player;
+    @Shadow @Final private Window window;
+    @Shadow @Final public Options options;
     @Shadow public abstract Window getWindow();
     @Shadow protected int missTime;
 
@@ -174,5 +182,44 @@ public abstract class MinecraftMixin
     private boolean NT$onCheckBusyHands(LocalPlayer instance)
     {
         return !ModConfig.Gameplay.disableMissTime() && instance.isHandsBusy();
+    }
+
+    /**
+     * Overrides the logic for rendering the FPS pie.
+     * Controlled by the old debug screen and debug pie tweak.
+     */
+    @Inject(method = "shouldRenderFpsPie", at = @At("HEAD"), cancellable = true)
+    private void NT$onShouldRenderFpsPie(CallbackInfoReturnable<Boolean> callback)
+    {
+        boolean isDebugging = !ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN);
+
+        if (ModConfig.Candy.displayPieChart() && isDebugging && this.options.renderDebug && !this.options.hideGui)
+            callback.setReturnValue(true);
+    }
+
+    /**
+     * Adds a semitransparent black background to the FPS pie chart.
+     * Controlled by the old FPS pie background tweak.
+     */
+    @Inject
+    (
+        method = "renderFpsMeter",
+        at = @At
+        (
+            shift = At.Shift.AFTER,
+            ordinal = 0,
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;begin(Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;Lcom/mojang/blaze3d/vertex/VertexFormat;)V"
+        )
+    )
+    private void NT$onRenderFpsMeter(PoseStack poseStack, ProfileResults profilerResults, CallbackInfo callback)
+    {
+        if (!ModConfig.Candy.oldPieBackground())
+            return;
+
+        int color = 0xCF000000;
+        int x = this.window.getWidth() - 160 - 10;
+        int y = this.window.getHeight() - 320;
+        RenderUtil.fill(Tesselator.getInstance().getBuilder(), x - 176.0F, x + 176.0F, y - 96.0f - 16.0f, y + 320.0F, color);
     }
 }
