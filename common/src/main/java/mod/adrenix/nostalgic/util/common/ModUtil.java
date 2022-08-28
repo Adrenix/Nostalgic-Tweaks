@@ -120,6 +120,19 @@ public abstract class ModUtil
         public static double sign(double input) { return input < 0.0D ? -1.0D : 1.0D; }
 
         /**
+         * Checks if the distance between the <code>current</code> value and the <code>target</code> exceeds the given
+         * speed (<code>delta</code>).
+         * @param current The current value.
+         * @param target The target value.
+         * @param delta The change in value, or speed of movement.
+         * @return Checks if the distance between the given points is greater than the given speed.
+         */
+        private static boolean isTargetImmediate(float current, float target, float delta)
+        {
+            return Math.abs(target - current) <= delta;
+        }
+
+        /**
          * Moves <code>current</code> towards <code>target</code>.
          * This is essentially {@link Mth#lerp(float, float, float) Mth.lerp(delta, start, end)} but instead the method
          * ensures that the speed never exceeds the given <code>delta</code>. Negative values of <code>delta</code>
@@ -191,9 +204,9 @@ public abstract class ModUtil
             boolean isR = tolerance(CURRENT_RGB[0], TARGET_RGB[0], 0.1F);
             boolean isG = tolerance(CURRENT_RGB[1], TARGET_RGB[1], 0.1F);
             boolean isB = tolerance(CURRENT_RGB[2], TARGET_RGB[2], 0.1F);
-            boolean isTargeted = isR && isG && isB;
+            boolean isImmediate = isTargetImmediate(CURRENT_RGB[0], TARGET_RGB[0], SPEED) || (isR && isG && isB);
 
-            if (isTargeted || tolerance(CURRENT_RGB[0], CURRENT_RGB[1], CURRENT_RGB[2], 0.05F))
+            if (isImmediate || tolerance(CURRENT_RGB[0], CURRENT_RGB[1], CURRENT_RGB[2], 0.05F))
                 moveTowardsColor(CURRENT_RGB, TARGET_RGB, SPEED);
             else
             {

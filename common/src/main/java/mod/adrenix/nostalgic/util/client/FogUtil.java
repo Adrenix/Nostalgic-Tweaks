@@ -133,8 +133,12 @@ public abstract class FogUtil
         private static float targetFogStart;
         private static float targetFogEnd;
         private static float fogSpeedShift;
+        private static float starSpeedShift;
         private static float colorSpeedShift;
+        private static float celestialSpeedShift;
+        private static float brightnessSpeedShift;
 
+        private static final float MAX_SHIFT = 1.0e5F;
         private static final float[] CURRENT_VOID_RGB = new float[] { 0.0F, 0.0F, 0.0F };
         private static final float[] CURRENT_FOG_RGB = new float[] { 0.0F, 0.0F, 0.0F };
         private static final float[] CURRENT_SKY_RGB = new float[] { 0.0F, 0.0F, 0.0F };
@@ -177,7 +181,7 @@ public abstract class FogUtil
 
         /* Altitude Speed Shift */
 
-        private enum Shift { NONE, COLOR, FOG }
+        private enum Shift { STAR, COLOR, FOG, CELESTIAL, BRIGHTNESS }
 
         private static float getSpeed(float modifier, Shift shift)
         {
@@ -185,29 +189,43 @@ public abstract class FogUtil
             Camera camera = minecraft.gameRenderer.getMainCamera();
 
             if (isFogModified(camera))
-                colorSpeedShift = fogSpeedShift = Float.MAX_VALUE;
+            {
+                fogSpeedShift = Float.MAX_VALUE;
+                starSpeedShift = Float.MAX_VALUE;
+                colorSpeedShift = Float.MAX_VALUE;
+                celestialSpeedShift = Float.MAX_VALUE;
+                brightnessSpeedShift = Float.MAX_VALUE;
+            }
             else if (getYLevel(camera.getEntity()) > ModConfig.Candy.getVoidFogStart() || !isBelowHorizon())
             {
-                if (shift == Shift.COLOR)
-                    colorSpeedShift = Mth.clamp(colorSpeedShift + 0.01F, 1.0F, 1.0e5F);
-
-                if (shift == Shift.FOG)
-                    fogSpeedShift = Mth.clamp(fogSpeedShift + 0.05F, 1.0F, 1.0e5F);
+                switch (shift)
+                {
+                    case BRIGHTNESS -> brightnessSpeedShift = Mth.clamp(brightnessSpeedShift + 0.002F, 1.0F, MAX_SHIFT);
+                    case CELESTIAL -> celestialSpeedShift = Mth.clamp(celestialSpeedShift + 0.07F, 1.0F, MAX_SHIFT);
+                    case COLOR -> colorSpeedShift = Mth.clamp(colorSpeedShift + 0.01F, 1.0F, MAX_SHIFT);
+                    case STAR -> starSpeedShift = Mth.clamp(starSpeedShift + 0.03F, 1.0F, MAX_SHIFT);
+                    case FOG -> fogSpeedShift = Mth.clamp(fogSpeedShift + 0.05F, 1.0F, MAX_SHIFT);
+                }
             }
             else
             {
-                if (shift == Shift.COLOR)
-                    colorSpeedShift = colorSpeedShift == Float.MAX_VALUE ? 1.0e5F : 1.0F;
-
-                if (shift == Shift.FOG)
-                    fogSpeedShift = fogSpeedShift == Float.MAX_VALUE ? 1.0e5F : 1.0F;
+                switch (shift)
+                {
+                    case BRIGHTNESS -> brightnessSpeedShift = Float.MAX_VALUE == brightnessSpeedShift ? MAX_SHIFT : 1.0F;
+                    case CELESTIAL -> celestialSpeedShift = Float.MAX_VALUE == celestialSpeedShift ? MAX_SHIFT : 1.0F;
+                    case COLOR -> colorSpeedShift = Float.MAX_VALUE == colorSpeedShift ? MAX_SHIFT : 1.0F;
+                    case STAR -> starSpeedShift = Float.MAX_VALUE == starSpeedShift ? MAX_SHIFT : 1.0F;
+                    case FOG -> fogSpeedShift = Float.MAX_VALUE == fogSpeedShift ? MAX_SHIFT : 1.0F;
+                }
             }
 
             float speedShift = switch (shift)
             {
-                case FOG -> fogSpeedShift;
+                case BRIGHTNESS -> brightnessSpeedShift;
+                case CELESTIAL -> celestialSpeedShift;
                 case COLOR -> colorSpeedShift;
-                case NONE -> 1.0F;
+                case STAR -> starSpeedShift;
+                case FOG -> fogSpeedShift;
             };
 
             return modifier * minecraft.getDeltaFrameTime() * speedShift;
@@ -308,7 +326,7 @@ public abstract class FogUtil
         private static double getBrightness(Entity entity)
         {
             double brightness = Math.max(15.0D - (ModConfig.Candy.getVoidFogStart() - getYLevel(entity)), getSkylight(entity)) / 15.0F;
-            currentBrightness = ModUtil.Numbers.moveClampTowards(currentBrightness, brightness, getSpeed(0.002F, Shift.NONE), 0.0D, 1.0D);
+            currentBrightness = ModUtil.Numbers.moveClampTowards(currentBrightness, brightness, getSpeed(0.002F, Shift.BRIGHTNESS), 0.0D, 1.0D);
             return currentBrightness;
         }
 
@@ -357,8 +375,11 @@ public abstract class FogUtil
             currentStarAlpha = targetStarAlpha;
             currentFogStart = 0.0F;
             currentFogEnd = 0.0F;
-            fogSpeedShift = 1.0e5F;
-            colorSpeedShift = 1.0e5F;
+            fogSpeedShift = MAX_SHIFT;
+            starSpeedShift = MAX_SHIFT;
+            colorSpeedShift = MAX_SHIFT;
+            celestialSpeedShift = MAX_SHIFT;
+            brightnessSpeedShift = MAX_SHIFT;
             currentCelestial = 1.0F;
 
             isInitialized = true;
@@ -383,8 +404,8 @@ public abstract class FogUtil
             float starTarget = !isIgnored && getSkylight(entity) == 0 ? 0.0F : targetStarAlpha;
 
             initialize(camera);
-            currentCelestial = ModUtil.Numbers.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.NONE));
-            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.03F, Shift.NONE));
+            currentCelestial = ModUtil.Numbers.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.CELESTIAL));
+            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.03F, Shift.STAR));
             currentFogStart = ModUtil.Numbers.moveTowards(currentFogStart, fogStartTarget, speed);
             currentFogEnd = ModUtil.Numbers.moveTowards(currentFogEnd, fogEndTarget, speed);
 
