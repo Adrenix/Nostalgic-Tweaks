@@ -201,9 +201,9 @@ public abstract class FogUtil
                 switch (shift)
                 {
                     case BRIGHTNESS -> brightnessSpeedShift = Mth.clamp(brightnessSpeedShift + 0.002F, 1.0F, MAX_SHIFT);
-                    case CELESTIAL -> celestialSpeedShift = Mth.clamp(celestialSpeedShift + 0.07F, 1.0F, MAX_SHIFT);
+                    case CELESTIAL -> celestialSpeedShift = Mth.clamp(celestialSpeedShift + 0.001F, 1.0F, MAX_SHIFT);
                     case COLOR -> colorSpeedShift = Mth.clamp(colorSpeedShift + 0.01F, 1.0F, MAX_SHIFT);
-                    case STAR -> starSpeedShift = Mth.clamp(starSpeedShift + 0.03F, 1.0F, MAX_SHIFT);
+                    case STAR -> starSpeedShift = Mth.clamp(starSpeedShift + 0.001F, 1.0F, MAX_SHIFT);
                     case FOG -> fogSpeedShift = Mth.clamp(fogSpeedShift + 0.05F, 1.0F, MAX_SHIFT);
                 }
             }
