@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "nostalgic_tweaks",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+
+  "contributors": [
+    {
+      "name": "See Source Contributors",
+      "contact": {
+        "homepage": "${mod_credits}"
+      }
+    }
+  ],
+
+  "contact": {
+    "homepage": "${mod_curse}",
+    "sources": "${mod_source}",
+    "issues": "${mod_issues}"
+  },
+
+  "license": "${mod_license}",
+  "icon": "assets/nostalgic_tweaks/nt_fabric_logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "modmenu": [
+      "mod.adrenix.nostalgic.fabric.config.gui.ModMenuIntegration"
+    ],
+    "client": [
+      "mod.adrenix.nostalgic.fabric.NostalgicClientFabric"
+    ],
+    "server": [
+      "mod.adrenix.nostalgic.fabric.NostalgicServerFabric"
+    ]
+  },
+
+  "mixins": [
+    "mixin.nostalgic_tweaks-common.json",
+    "mixin.nostalgic_tweaks-common-client.json",
+    "mixin.nostalgic_tweaks-common-widen.json",
+    "mixin.nostalgic_tweaks-fabric.json"
+  ],
+
+  "depends": {
+    "fabric-api": "*",
+    "minecraft": ">=1.19.2",
+    "cloth-config": ">=${cloth_version}"
+  },
+
+  "breaks": {
+    "optifabric": "*"
+  },
+
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "${mod_discord}",
+        "gui.nostalgic_tweaks.settings.support": "${mod_donate}"
+      }
+    }
+  }
+}

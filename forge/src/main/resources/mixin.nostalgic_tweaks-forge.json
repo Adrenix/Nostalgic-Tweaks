@@ -1,0 +1,12 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.forge.mixin",
+  "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "client": [
+    "ItemInHandRendererForgeMixin",
+    "LivingEntityForgeMixin",
+    "ProgressScreenForgeMixin"
+  ]
+}
