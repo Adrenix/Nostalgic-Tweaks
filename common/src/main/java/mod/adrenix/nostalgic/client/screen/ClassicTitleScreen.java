@@ -55,7 +55,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ClassicTitleScreen extends TitleScreen
 {
@@ -74,16 +73,15 @@ public class ClassicTitleScreen extends TitleScreen
     };
 
     private final boolean isEasterEgged;
-    private final float updateCounter;
     private long updateScreenDelay;
     private LogoEffectRandomizer[][] logoEffects;
 
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 20;
-    private static final Random RANDOM = new Random();
     private static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
     private final KeyMapping optionsKey = KeyUtil.find(NostalgicLang.Key.OPEN_CONFIG);
+    private final RandomSource random = RandomSource.create();
 
     private final List<Widget> alpha = new ArrayList<>();
     private final List<Widget> beta = new ArrayList<>();
@@ -93,8 +91,7 @@ public class ClassicTitleScreen extends TitleScreen
 
     public ClassicTitleScreen()
     {
-        this.isEasterEgged = (double) this.getRand().nextFloat() < 1.0E-4;
-        this.updateCounter = this.getRand().nextFloat();
+        this.isEasterEgged = random.nextFloat() < 1.0E-4;
         this.updateScreenDelay = 0L;
 
         if (this.isEasterEgged)
@@ -143,16 +140,6 @@ public class ClassicTitleScreen extends TitleScreen
         else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
             this.minecraft.setScreen(new SettingsScreen(this, true));
         return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
-    public void tick()
-    {
-        if (this.logoEffects != null)
-            for (LogoEffectRandomizer[] logoEffect : this.logoEffects)
-                for (LogoEffectRandomizer logoEffectRandomizer : logoEffect)
-                    logoEffectRandomizer.run();
-        super.tick();
     }
 
     @Override
@@ -462,53 +449,63 @@ public class ClassicTitleScreen extends TitleScreen
         this.release.add(new Button(this.width / 2 + 2, lastRow + 72 + 12, 98, 20, Component.translatable(NostalgicLang.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
     }
 
+    /* Classic Logo */
+
     private void renderClassicLogo(float partialTick)
     {
-        if (this.minecraft == null) return;
+        if (this.minecraft == null)
+            return;
+
         if (this.logoEffects == null)
         {
             this.logoEffects = new LogoEffectRandomizer[MINECRAFT[0].length()][MINECRAFT.length];
-            for (int horizontal = 0; horizontal < this.logoEffects.length; horizontal++)
-                for (int vertical = 0; vertical < this.logoEffects[horizontal].length; vertical++)
-                    logoEffects[horizontal][vertical] = new LogoEffectRandomizer(this, horizontal, vertical);
+
+            for (int x = 0; x < this.logoEffects.length; x++)
+                for (int y = 0; y < this.logoEffects[x].length; y++)
+                    logoEffects[x][y] = new LogoEffectRandomizer(x, y);
         }
 
-        RenderSystem.enableDepthTest();
+        for (LogoEffectRandomizer[] logoEffect : this.logoEffects)
+            for (LogoEffectRandomizer logoEffectRandomizer : logoEffect)
+                logoEffectRandomizer.update(partialTick);
 
         Window window = this.minecraft.getWindow();
         int scaleHeight = (int) (120 * window.getGuiScale());
 
-        RenderSystem.setProjectionMatrix(Matrix4f.perspective(70, (float) window.getWidth() / (float) scaleHeight, 0.05F, 100F));
+        RenderSystem.setProjectionMatrix(Matrix4f.perspective(70.0D, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F));
         RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
 
         PoseStack model = RenderSystem.getModelViewStack();
-        model.translate(0.0, 0.0, 2001.0);
+        model.translate(-0.05F, 1.0F, 1987.0F);
+        model.scale(1.59F, 1.59F, 1.59F);
+
+        BakedModel stone = this.itemRenderer.getItemModelShaper().getItemModel(Blocks.STONE.asItem());
 
         RenderSystem.applyModelViewMatrix();
+        RenderSystem.enableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.depthMask(true);
 
-        for (int row = 0; row < 3; row++)
+        for (int pass = 0; pass < 3; pass++)
         {
             model.pushPose();
-            model.translate(0.4F, 0.6F, -13F);
 
-            if (row == 0)
+            if (pass == 0)
             {
                 RenderSystem.clear(256, Minecraft.ON_OSX);
                 model.translate(0.0F, -0.4F, 0.0F);
                 model.scale(0.98F, 1.0F, 1.0F);
                 RenderSystem.enableBlend();
-                RenderSystem.blendFunc(770, 771);
+                RenderSystem.defaultBlendFunc();
             }
 
-            if (row == 1)
+            if (pass == 1)
             {
                 RenderSystem.disableBlend();
                 RenderSystem.clear(256, Minecraft.ON_OSX);
             }
 
-            if (row == 2)
+            if (pass == 2)
             {
                 RenderSystem.enableBlend();
                 RenderSystem.blendFunc(768, 1);
@@ -519,7 +516,7 @@ public class ClassicTitleScreen extends TitleScreen
             model.scale(0.89F, 1.0F, 0.4F);
             model.translate((float) (-MINECRAFT[0].length()) * 0.5F, (float) (-MINECRAFT.length) * 0.5F, 0.0F);
 
-            if (row == 0)
+            if (pass == 0)
             {
                 RenderSystem.setShader(GameRenderer::getRendertypeCutoutShader);
                 RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.BLACK_RESOURCE);
@@ -530,35 +527,29 @@ public class ClassicTitleScreen extends TitleScreen
                 RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
             }
 
-            for (int horizontal = 0; horizontal < MINECRAFT.length; horizontal++)
+            for (int y = 0; y < MINECRAFT.length; y++)
             {
-                for (int vertical = 0; vertical < MINECRAFT[horizontal].length(); vertical++)
+                for (int x = 0; x < MINECRAFT[y].length(); x++)
                 {
-                    char symbol = MINECRAFT[horizontal].charAt(vertical);
-                    if (horizontal == 2 && ((double) this.updateCounter < 0.0001D))
-                        symbol = MINECRAFT[horizontal].charAt(vertical == 20 ? vertical - 1 : (vertical == 16 ? vertical + 1 : vertical));
-
-                    if (symbol == ' ')
+                    if (MINECRAFT[y].charAt(x) == ' ')
                         continue;
 
                     model.pushPose();
 
-                    LogoEffectRandomizer logo = logoEffects[vertical][horizontal];
-
-                    float depth = (float) (logo.vertical + (logo.horizontal - logo.vertical) * (double) partialTick);
+                    float z = logoEffects[x][y].position;
                     float scale = 1.0F;
                     float alpha = 1.0F;
 
-                    if (row == 0)
+                    if (pass == 0)
                     {
-                        scale = depth * 0.04F + 1.0F;
+                        scale = z * 0.04F + 1.0F;
                         alpha = 1.0F / scale;
-                        depth = 0.0F;
+                        z = 0.0F;
                     }
 
-                    model.translate(vertical, horizontal, depth);
+                    model.translate(x, y, z);
                     model.scale(scale, scale, scale);
-                    renderBlock(model, row, alpha);
+                    renderBlock(model, stone, pass, alpha);
                     model.popPose();
                 }
             }
@@ -567,7 +558,7 @@ public class ClassicTitleScreen extends TitleScreen
         }
 
         RenderSystem.disableBlend();
-        RenderSystem.setProjectionMatrix(Matrix4f.orthographic(0F, (float) ((double) window.getWidth() / window.getGuiScale()), 0F, (float) ((double) window.getHeight() / window.getGuiScale()), 1000F, 3000F));
+        RenderSystem.setProjectionMatrix(Matrix4f.orthographic(0.0F, (float) window.getGuiScaledWidth(), 0.0F, (float) window.getGuiScaledHeight(), 1000.0F, 3000.0F));
         RenderSystem.viewport(0, 0, window.getWidth(), window.getHeight());
         model.setIdentity();
         model.translate(0, 0, -2000);
@@ -575,29 +566,24 @@ public class ClassicTitleScreen extends TitleScreen
         RenderSystem.enableCull();
     }
 
-    private Random getRand()
-    {
-        return RANDOM;
-    }
-
-    private static int getColorFromRGBA(float red, float green, float blue, float alpha)
+    private int getColorFromRGBA(float red, float green, float blue, float alpha)
     {
         return (int) (alpha * 255.0F) << 24 | (int) (red * 255.0F) << 16 | (int) (green * 255.0F) << 8 | (int) (blue * 255.0F);
     }
 
-    private static int getColorFromBrightness(float brightness, float alpha)
+    private int getColorFromBrightness(float brightness, float alpha)
     {
-        return getColorFromRGBA(brightness, brightness, brightness, alpha);
+        return this.getColorFromRGBA(brightness, brightness, brightness, alpha);
     }
 
-    private void renderQuad(PoseStack.Pose pose, BufferBuilder bufferbuilder, BakedQuad quad, float brightness, float alpha)
+    private void renderQuad(PoseStack.Pose modelPose, BufferBuilder builder, BakedQuad quad, float brightness, float alpha)
     {
-        int combinedLight = getColorFromBrightness(brightness, alpha);
+        int combinedLight = this.getColorFromBrightness(brightness, alpha);
         int[] vertices = quad.getVertices();
         Vec3i vec = quad.getDirection().getNormal();
         Vector3f vec3f = new Vector3f(vec.getX(), vec.getY(), vec.getZ());
-        Matrix4f matrix = pose.pose();
-        vec3f.transform(pose.normal());
+        Matrix4f matrix = modelPose.pose();
+        vec3f.transform(modelPose.normal());
 
         try (MemoryStack memoryStack = MemoryStack.stackPush())
         {
@@ -615,19 +601,16 @@ public class ClassicTitleScreen extends TitleScreen
                 Vector4f vec4f = new Vector4f(x, y, z, 1.0F);
                 vec4f.transform(matrix);
 
-                bufferbuilder.vertex(vec4f.x(), vec4f.y(), vec4f.z(), 1.0F, 1.0F, 1.0F, alpha, byteBuffer.getFloat(16), byteBuffer.getFloat(20), OverlayTexture.NO_OVERLAY, combinedLight, vec3f.x(), vec3f.y(), vec3f.z());
+                builder.vertex(vec4f.x(), vec4f.y(), vec4f.z(), 1.0F, 1.0F, 1.0F, alpha, byteBuffer.getFloat(16), byteBuffer.getFloat(20), OverlayTexture.NO_OVERLAY, combinedLight, vec3f.x(), vec3f.y(), vec3f.z());
             }
         }
     }
 
-    private void renderBlock(PoseStack modelView, int row, float alpha)
+    private void renderBlock(PoseStack modelView, BakedModel stone, int pass, float alpha)
     {
-        modelView.translate(-0.5F, -0.5F, -0.5F);
-        BakedModel model = this.itemRenderer.getItemModelShaper().getItemModel(Blocks.STONE.asItem().getDefaultInstance());
-
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+        BufferBuilder builder = tesselator.getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 
         for (Direction direction : Direction.values())
         {
@@ -640,48 +623,44 @@ public class ClassicTitleScreen extends TitleScreen
                 case WEST, EAST -> 0.6F;
             };
 
-            int color = getColorFromBrightness(brightness, alpha);
+            int color = this.getColorFromBrightness(brightness, alpha);
 
-            for (BakedQuad quad : model.getQuads(null, direction, RandomSource.create()))
+            for (BakedQuad quad : stone.getQuads(null, direction, random))
             {
-                if (row == 0)
-                    renderQuad(modelView.last(), bufferbuilder, quad, brightness, alpha);
+                if (pass == 0)
+                    renderQuad(modelView.last(), builder, quad, brightness, alpha);
                 else
-                    bufferbuilder.putBulkData(modelView.last(), quad, brightness, brightness, brightness, color, OverlayTexture.NO_OVERLAY);
+                    builder.putBulkData(modelView.last(), quad, brightness, brightness, brightness, color, OverlayTexture.NO_OVERLAY);
             }
         }
 
         tesselator.end();
-        modelView.translate(0.5F, 0.5F, 0.5F);
     }
 
     /* Logo Effect Randomizer */
 
     private static class LogoEffectRandomizer
     {
-        public double horizontal;
-        public double vertical;
-        public double depth;
+        public float position;
+        public float speed;
 
-        public LogoEffectRandomizer(ClassicTitleScreen screen, int horizontal, int vertical)
+        public LogoEffectRandomizer(int x, int y)
         {
-            this.horizontal = this.vertical = (double) (10 + vertical) + screen.getRand().nextDouble() * 32D + (double) horizontal;
+            this.position = (10 + y) + RandomSource.create().nextFloat() * 32.0F + x;
         }
 
-        public void run()
+        public void update(float partialTick)
         {
-            this.vertical = this.horizontal;
+            if (this.position > 0.0F)
+                this.speed -= 0.4F;
 
-            if (this.horizontal > 0.0D)
-                this.depth -= 0.59D;
+            this.position += this.speed * partialTick;
+            this.speed *= 0.9F;
 
-            this.horizontal += this.depth;
-            this.depth *= 0.9D;
-
-            if (this.horizontal < 0.0D)
+            if (this.position < 0.0F)
             {
-                this.horizontal = 0.0D;
-                this.depth = 0.0D;
+                this.position = 0.0F;
+                this.speed = 0.0F;
             }
         }
     }
