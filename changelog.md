@@ -2,6 +2,7 @@
 This release fixes reported crashes and bug fixes.
 - Fixed crash when using the extended clouds mod.
 - Readjusted old alpha logo animation to match the game's FPS framerate.
+- Readjusted old sneaking tweak to better match older versions of the game.
 
 # N.T (Forge & Fabric): 1.19-v1.1.1
 This release has been designed to work with new Forge refactoring, you will need to update the following:
