@@ -322,7 +322,9 @@ public abstract class ModUtil
         // Turns off diffused lighting.
         public static void disableDiffusedLighting()
         {
-            levelBufferSource.endBatch();
+            if (levelBufferSource != null)
+                levelBufferSource.endBatch();
+
             Lighting.setupForFlatItems();
             isRenderingFlat = true;
         }
@@ -331,7 +333,9 @@ public abstract class ModUtil
         public static void enableDiffusedLighting()
         {
             isRenderingFlat = false;
-            levelBufferSource.endBatch();
+
+            if (levelBufferSource != null)
+                levelBufferSource.endBatch();
 
             if (Minecraft.getInstance().level == null || levelPoseStack == null)
                 return;

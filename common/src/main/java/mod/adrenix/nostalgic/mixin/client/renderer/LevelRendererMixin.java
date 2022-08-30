@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -169,18 +168,6 @@ public abstract class LevelRendererMixin
     {
         ModUtil.Item.levelPoseStack = poseStack.last();
         ModUtil.Item.levelBufferSource = this.renderBuffers.bufferSource();
-    }
-
-    /**
-     * Changes the cloud height, which is dynamically set by the user.
-     * Controlled by the old cloud height tweak.
-     */
-    @Redirect(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;getCloudHeight()F"))
-    private float NT$onGetCloudHeight(DimensionSpecialEffects instance)
-    {
-        if (this.minecraft.level != null && this.minecraft.level.dimension() == Level.OVERWORLD)
-            return ModConfig.Candy.getCloudHeight();
-        return instance.getCloudHeight();
     }
 
     /**
