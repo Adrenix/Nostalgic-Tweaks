@@ -284,7 +284,7 @@
   "text.autoconfig.nostalgic_tweaks.option.animation.armSwayIntensity": "Arm Sway Intensity",
   "text.autoconfig.nostalgic_tweaks.option.animation.armSwayIntensity.@Tooltip": "Change the intensity of the arm sway animation with§a 100%§r being§a full sway§r,§e 50%§r being§e half sway§r, and§c 0%§r being§c no sway§r.\n\nFor a more intense sway, you can go up to§b 300%§r.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking": "Old Sneaking",
-  "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking.@Tooltip": "Remove the smooth animation that is applied when sneaking.",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldSneaking.@Tooltip": "Remove the smooth animation that is applied when sneaking. This will also bring back the old crouching eye height.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldCollideBobbing": "Remove Collision Bobbing",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldCollideBobbing.@Tooltip": "Remove the subtle animation that is applied to the arm and viewing distance when trying to move while colliding with a block.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldVerticalBobbing": "Old Vertical Bobbing",
