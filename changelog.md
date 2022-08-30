@@ -1,3 +1,9 @@
+# N.T (Forge & Fabric): 1.18.2-v1.0.6
+This release fixes reported crashes and bug fixes.
+- Fixed crash when using the extended clouds mod.
+- Readjusted old alpha logo animation to match the game's FPS framerate.
+- Readjusted old sneaking tweak to better match older versions of the game.
+
 # N.T (Forge & Fabric): 1.18.2-v1.0.5
 This update fixes reported issues and adjusts current tweaks.
 - Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
