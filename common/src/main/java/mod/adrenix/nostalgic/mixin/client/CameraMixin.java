@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.client;
 import mod.adrenix.nostalgic.client.config.ModConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,8 +31,19 @@ public abstract class CameraMixin
 
         if (this.entity != null)
         {
+            float newEyeHeight = this.entity.getEyeHeight();
+
             this.eyeHeightOld = this.eyeHeight;
-            this.eyeHeight = this.entity.getEyeHeight();
+            if (this.eyeHeight < newEyeHeight)
+                this.eyeHeight += (newEyeHeight - this.eyeHeight) * 0.7F;
+            else
+                this.eyeHeight = newEyeHeight;
+
+            if (this.entity instanceof Player player && newEyeHeight == 1.62F)
+            {
+                if (!player.getAbilities().flying && player.isCrouching())
+                    this.eyeHeight = 1.27F;
+            }
         }
 
         callback.cancel();
