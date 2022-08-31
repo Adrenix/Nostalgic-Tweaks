@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
@@ -19,6 +20,9 @@ import net.minecraftforge.common.ForgeMod;
 
 public abstract class GuiEvents
 {
+    // Vanilla debug overlay reference
+    private static final DebugScreenOverlay DEBUG_OVERLAY = new DebugScreenOverlay(Minecraft.getInstance());
+
     // In Game Overlay Override
     public static void overlayOverride(RenderGuiOverlayEvent.Pre event)
     {
@@ -28,7 +32,9 @@ public abstract class GuiEvents
 
         // Overlay Overrides
 
+        Minecraft minecraft = Minecraft.getInstance();
         NamedGuiOverlay overlay = event.getOverlay();
+        boolean isDebug = overlay.equals(VanillaGuiOverlay.DEBUG_TEXT.type());
         boolean isArmor = overlay.equals(VanillaGuiOverlay.ARMOR_LEVEL.type());
         boolean isFood = overlay.equals(VanillaGuiOverlay.FOOD_LEVEL.type());
         boolean isAir = overlay.equals(VanillaGuiOverlay.AIR_LEVEL.type());
@@ -36,7 +42,7 @@ public abstract class GuiEvents
         boolean isVehiclePresent = false;
         boolean isSurvivalMode = true;
 
-        if (Minecraft.getInstance().getCameraEntity() instanceof Player player)
+        if (minecraft.getCameraEntity() instanceof Player player)
         {
             if (player.isCreative() || player.isSpectator())
                 isSurvivalMode = false;
@@ -47,10 +53,17 @@ public abstract class GuiEvents
 
         // Run Modified Vanilla Overlays and Cancel Event
 
+        if (minecraft.options.renderDebug && isDebug)
+        {
+            DEBUG_OVERLAY.render(event.getPoseStack());
+            event.setCanceled(true);
+        }
+
         if (isOverlay && isSurvivalMode && !isVehiclePresent)
         {
             PoseStack poseStack = event.getPoseStack();
-            ForgeGui gui = (ForgeGui) Minecraft.getInstance().gui;
+            ForgeGui gui = (ForgeGui) minecraft.gui;
+
             gui.setupOverlayRenderState(true, false);
 
             int width = event.getWindow().getGuiScaledWidth();
