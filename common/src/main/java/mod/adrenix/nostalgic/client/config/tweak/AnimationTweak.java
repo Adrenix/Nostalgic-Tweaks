@@ -14,6 +14,7 @@ public enum AnimationTweak implements ITweak
     BOB_VERTICAL,
     SNEAK_SMOOTH,
     SWING_DROP,
+    SWING_INTERRUPT,
     ZOMBIE_ARMS,
     SKELETON_ARMS,
     GHAST_CHARGING,
