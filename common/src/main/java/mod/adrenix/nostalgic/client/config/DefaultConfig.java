@@ -104,12 +104,12 @@ public abstract class DefaultConfig
         public static final boolean OLD_ARM_SWAY = true;
         public static final boolean OLD_SWING = true;
         public static final boolean OLD_SWING_INTERRUPT = true;
+        public static final boolean OLD_SWING_DROPPING = true;
         public static final boolean OLD_ITEM_COOLDOWN = true;
         public static final boolean OLD_ITEM_REEQUIP = true;
         public static final boolean OLD_COLLIDE_BOBBING = true;
         public static final boolean OLD_VERTICAL_BOBBING = true;
         public static final boolean OLD_SNEAKING = true;
-        public static final boolean OLD_SWING_DROPPING = true;
         public static final boolean OLD_TOOL_EXPLOSION = true;
         public static final boolean OLD_ZOMBIE_ARMS = true;
         public static final boolean OLD_SKELETON_ARMS = true;

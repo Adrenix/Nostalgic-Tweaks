@@ -63,22 +63,6 @@ public abstract class MinecraftMixin
     }
 
     /**
-     * The following injection resets the miss time tracker when staring an attack and resets the swing attack
-     * animation tracker.
-     *
-     * Both changes are controlled respectively by the disabled miss timer tweak and old swing interrupt tweak.
-     */
-    @Inject(method = "startAttack", at = @At("HEAD"))
-    private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback)
-    {
-        if (ModConfig.Animation.oldInterruptSwing() && this.player != null)
-        {
-            this.player.attackAnim = 0.0F;
-            this.player.swingTime = 0;
-        }
-    }
-
-    /**
      * Redirects the "Saving world" generic screen to static classic progress saving screen.
      * Controlled by the old loading screen tweak.
      */
@@ -137,5 +121,19 @@ public abstract class MinecraftMixin
     {
         if (ModConfig.Candy.uncapTitleFPS())
             callback.setReturnValue(this.getWindow().getFramerateLimit());
+    }
+
+    /**
+     * The following injection resets the swing attack animation tracker.
+     * Controlled by the old swing interrupt tweak.
+     */
+    @Inject(method = "startAttack", at = @At("HEAD"))
+    private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Animation.oldInterruptSwing() && this.player != null)
+        {
+            this.player.attackAnim = 0.0F;
+            this.player.swingTime = 0;
+        }
     }
 }

@@ -5,7 +5,6 @@ import mod.adrenix.nostalgic.client.config.reflect.GroupType;
 public enum AnimationTweak implements ITweak
 {
     ITEM_SWING,
-    SWING_INTERRUPT,
     COOLDOWN,
     REEQUIP,
     ARM_SWAY,
@@ -15,6 +14,7 @@ public enum AnimationTweak implements ITweak
     BOB_VERTICAL,
     SNEAK_SMOOTH,
     SWING_DROP,
+    SWING_INTERRUPT,
     ZOMBIE_ARMS,
     SKELETON_ARMS,
     GHAST_CHARGING,
