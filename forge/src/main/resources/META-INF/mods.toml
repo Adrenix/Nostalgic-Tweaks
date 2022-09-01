@@ -7,7 +7,7 @@ license = "${mod_license}"
 modId = "nostalgic_tweaks"
 version = "${version}"
 displayName = "${mod_name}"
-authors = "${mod_name}"
+authors = "${mod_author}"
 description = '''
 ${mod_description}
 
