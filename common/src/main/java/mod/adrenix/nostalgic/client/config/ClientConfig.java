@@ -553,6 +553,7 @@ public class ClientConfig implements ConfigData
         public boolean oldSwingDropping = DefaultConfig.Animation.OLD_SWING_DROPPING;
         static { AnimationTweak.SWING_DROP.setKey("oldSwingDropping"); }
 
+        @TweakEntry.Gui.New
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
         public boolean oldSwingInterrupt = DefaultConfig.Animation.OLD_SWING_INTERRUPT;
