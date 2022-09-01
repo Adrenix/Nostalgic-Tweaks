@@ -3,10 +3,10 @@
 This is the 1.19 development branch for N.T.
 
 ### Current In-Development Version
-v1.1.3
+v1.1.4
 
 ### Current Released Version
-v1.1.2
+v1.1.3
 
 ### Related Development Branches
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
