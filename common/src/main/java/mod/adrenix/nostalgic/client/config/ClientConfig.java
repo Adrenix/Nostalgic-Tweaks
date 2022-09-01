@@ -502,11 +502,6 @@ public class ClientConfig implements ConfigData
     {
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
-        public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
-        static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
-
-        @TweakEntry.Gui.Client
-        @TweakEntry.Gui.EntryStatus
         public boolean oldItemCooldown = DefaultConfig.Animation.OLD_ITEM_COOLDOWN;
         static { AnimationTweak.COOLDOWN.setKey("oldItemCooldown"); }
 
@@ -550,8 +545,18 @@ public class ClientConfig implements ConfigData
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
+        public boolean oldSwing = DefaultConfig.Animation.OLD_SWING;
+        static { AnimationTweak.ITEM_SWING.setKey("oldSwing"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
         public boolean oldSwingDropping = DefaultConfig.Animation.OLD_SWING_DROPPING;
         static { AnimationTweak.SWING_DROP.setKey("oldSwingDropping"); }
+
+        @TweakEntry.Gui.Client
+        @TweakEntry.Gui.EntryStatus
+        public boolean oldSwingInterrupt = DefaultConfig.Animation.OLD_SWING_INTERRUPT;
+        static { AnimationTweak.SWING_INTERRUPT.setKey("oldSwingInterrupt"); }
 
         @TweakEntry.Gui.Client
         @TweakEntry.Gui.EntryStatus
