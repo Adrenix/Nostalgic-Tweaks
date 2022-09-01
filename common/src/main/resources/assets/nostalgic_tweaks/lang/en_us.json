@@ -291,6 +291,8 @@
   "text.autoconfig.nostalgic_tweaks.option.animation.oldVerticalBobbing.@Tooltip": "A subtle animation that is applied to the arm and viewing distance when jumping or falling.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSwingDropping": "Old Dropping Animation",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldSwingDropping.@Tooltip": "Disable the swinging animation that occurs when dropping an item on the ground.",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldSwingInterrupt": "Old Swing Interrupt",
+  "text.autoconfig.nostalgic_tweaks.option.animation.oldSwingInterrupt.@Tooltip": "Reset the swing animation every time the player attacks, regardless of whether or not the player is in the middle of a swing animation.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldToolExplosion": "Old Tool Explosion",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldToolExplosion.@Tooltip": "Disable the disintegration animation and breaking sound that happens when a tool runs out of durability.",
   "text.autoconfig.nostalgic_tweaks.option.animation.oldZombieArms": "Old Zombie Arms",

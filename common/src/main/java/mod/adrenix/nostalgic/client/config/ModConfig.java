@@ -204,5 +204,6 @@ public abstract class ModConfig
         public static boolean oldSneaking() { return isModEnabled(AnimationTweak.SNEAK_SMOOTH) && ANIMATION.oldSneaking; }
         public static boolean oldArmSway() { return isModEnabled(AnimationTweak.ARM_SWAY) && ANIMATION.oldArmSway; }
         public static boolean oldSwing() { return isModEnabled(AnimationTweak.ITEM_SWING) && ANIMATION.oldSwing; }
+        public static boolean oldInterruptSwing() { return isModEnabled(AnimationTweak.SWING_INTERRUPT) && ANIMATION.oldSwingInterrupt; }
     }
 }
