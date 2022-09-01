@@ -46,7 +46,7 @@ public abstract class LoadingOverlayMixin
      * Overrides the overlay renderer, so we can display a retro loading screen.
      * Controlled by various interface tweaks.
      */
-    @Inject(method = "render", at = @At("TAIL"), cancellable = true)
+    @Inject(method = "render", at = @At("RETURN"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
         TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
