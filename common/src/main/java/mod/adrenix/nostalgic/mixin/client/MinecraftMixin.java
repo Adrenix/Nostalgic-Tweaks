@@ -23,25 +23,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
-public abstract class MinecraftMixin {
+public abstract class MinecraftMixin
+{
     /* Shadows */
 
-    @Shadow
-    @Nullable
-    public Screen screen;
-    @Shadow
-    @Nullable
-    public ClientLevel level;
-    @Shadow
-    @Nullable
-    public LocalPlayer player;
+    @Shadow @Nullable public Screen screen;
+    @Shadow @Nullable public ClientLevel level;
+    @Shadow @Nullable public LocalPlayer player;
+    @Shadow public abstract Window getWindow();
 
-    @Shadow
-    public abstract Window getWindow();
-
-    // Loading the config as early as possible to prevent NPEs during mixin
-    // applications.
-    static {
+    // Loading the config as early as possible to prevent NPEs during mixin applications.
+    static
+    {
         if (CommonRegistry.cache == null)
             CommonRegistry.preloadConfiguration();
     }
@@ -52,40 +45,59 @@ public abstract class MinecraftMixin {
      * Prevents the hand swing animation when dropping an item.
      * Controlled the swing drop tweak.
      */
-    @Inject(method = "handleKeybinds", at = @At(shift = At.Shift.BEFORE, value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
-    private void NT$onDropItem(CallbackInfo callback) {
+    @Inject
+    (
+        method = "handleKeybinds",
+        at = @At
+        (
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
+        )
+    )
+    private void NT$onDropItem(CallbackInfo callback)
+    {
         ILocalSwing injector = (ILocalSwing) this.player;
         if (ModConfig.Animation.oldSwingDropping() && injector != null)
             injector.NT$setSwingBlocked(true);
     }
 
     /**
-     * The following injection resets the miss time tracker when staring an attack
-     * and resets the swing attack
+     * The following injection resets the miss time tracker when staring an attack and resets the swing attack
      * animation tracker.
      *
-     * Both changes are controlled respectively by the disabled miss timer tweak and
-     * old swing interrupt tweak.
+     * Both changes are controlled respectively by the disabled miss timer tweak and old swing interrupt tweak.
      */
     @Inject(method = "startAttack", at = @At("HEAD"))
-    private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback) {
-        if (ModConfig.Animation.oldInterruptSwing() && this.player != null) {
+    private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Animation.oldInterruptSwing() && this.player != null)
+        {
             this.player.attackAnim = 0.0F;
             this.player.swingTime = 0;
         }
     }
 
     /**
-     * Redirects the "Saving world" generic screen to static classic progress saving
-     * screen.
+     * Redirects the "Saving world" generic screen to static classic progress saving screen.
      * Controlled by the old loading screen tweak.
      */
-    @ModifyArg(method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;updateScreenAndTick(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    private Screen NT$onSaveScreen(Screen genericScreen) {
+    @ModifyArg
+    (
+        method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V",
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/Minecraft;updateScreenAndTick(Lnet/minecraft/client/gui/screens/Screen;)V"
+        )
+    )
+    private Screen NT$onSaveScreen(Screen genericScreen)
+    {
         if (!ModConfig.Candy.oldLoadingScreens())
             return genericScreen;
 
-        if (genericScreen.getClass() == GenericDirtMessageScreen.class) {
+        if (genericScreen.getClass() == GenericDirtMessageScreen.class)
+        {
             ClassicProgressScreen progressScreen = new ClassicProgressScreen(new ProgressScreen(false));
             progressScreen.setStage(new TranslatableComponent(NostalgicLang.Gui.LEVEL_SAVING));
             progressScreen.setPauseTicking(ClassicProgressScreen.NO_PAUSES);
@@ -96,21 +108,22 @@ public abstract class MinecraftMixin {
     }
 
     /**
-     * The following injections insert dimension trackers in these two level methods
-     * so the classic loading screens can
+     * The following injections insert dimension trackers in these two level methods so the classic loading screens can
      * properly display dimension info.
      *
      * Not controlled by any tweak since this injection is used for level tracking.
      */
     @Inject(method = "setLevel", at = @At(value = "HEAD"))
-    private void NT$onSetLevel(ClientLevel levelClient, CallbackInfo callback) {
+    private void NT$onSetLevel(ClientLevel levelClient, CallbackInfo callback)
+    {
         if (this.level != null)
             ClassicProgressScreen.setPreviousDimension(this.level.dimension());
         ClassicProgressScreen.setCurrentDimension(levelClient.dimension());
     }
 
     @Inject(method = "clearLevel()V", at = @At(value = "TAIL"))
-    private void NT$onClearLevel(CallbackInfo callback) {
+    private void NT$onClearLevel(CallbackInfo callback)
+    {
         ClassicProgressScreen.setCurrentDimension(null);
         ClassicProgressScreen.setPreviousDimension(null);
     }
@@ -120,7 +133,8 @@ public abstract class MinecraftMixin {
      * Controlled by the unlimited title FPS tweak.
      */
     @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)
-    private void NT$onGetFramerateLimit(CallbackInfoReturnable<Integer> callback) {
+    private void NT$onGetFramerateLimit(CallbackInfoReturnable<Integer> callback)
+    {
         if (ModConfig.Candy.uncapTitleFPS())
             callback.setReturnValue(this.getWindow().getFramerateLimit());
     }
