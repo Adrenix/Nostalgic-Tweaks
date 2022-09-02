@@ -128,7 +128,7 @@ public abstract class ClientLevelMixin
         float density = (float) ModConfig.Candy.getVoidParticleDensity() / 100.0F;
         float yLevel = (float) FogUtil.VoidFog.getYLevel(entity);
 
-        if (Math.random() <= density && yLevel <= particleStart)
+        if (Math.random() <= density && yLevel <= particleStart && level.dimension().equals(Level.OVERWORLD))
         {
             BlockPos randX = BlockClientUtil.getRandomPos(randomSource, radius);
             BlockPos randY = BlockClientUtil.getRandomPos(randomSource, radius);
