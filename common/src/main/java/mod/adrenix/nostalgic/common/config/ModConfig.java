@@ -281,6 +281,7 @@ public abstract class ModConfig
         public static boolean oldItemHolding() { return getBoolTweak(CandyTweak.ITEM_HOLDING, CANDY.oldItemHolding); }
         public static boolean oldItemMerging() { return getSidedBoolTweak(CandyTweak.ITEM_MERGING, CANDY.oldItemMerging, SERVER_CANDY.oldItemMerging); }
         public static boolean oldFlatFrames() { return getBoolTweak(CandyTweak.FLAT_FRAMES, CANDY.old2dFrames); }
+        public static boolean oldFlatColors() { return getBoolTweak(CandyTweak.FLAT_COLORS, CANDY.old2dColors); }
 
         // Lighting Candy
         public static boolean oldLightBrightness() { return getBoolTweak(CandyTweak.LIGHT_BRIGHTNESS, CANDY.oldLightBrightness); }

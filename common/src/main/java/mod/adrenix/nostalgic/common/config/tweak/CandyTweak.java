@@ -82,6 +82,7 @@ public enum CandyTweak implements ITweak
     // Item Candy - 2D Items
     FLAT_ITEMS,
     FLAT_FRAMES,
+    FLAT_COLORS,
     FLAT_THROW_ITEMS,
     FLAT_ENCHANTED_ITEMS,
 

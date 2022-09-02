@@ -1,5 +1,6 @@
-package mod.adrenix.nostalgic.mixin;
+package mod.adrenix.nostalgic.fabric.mixin;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -7,35 +8,22 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-/**
- * This plugin allows Forge to reach the "missing dependencies" startup screen.
- *
- * Some configuration entries need to be known when mixins are applied.
- * If the cloth-config API is missing, then mixins will be loaded with missing
- * classes which will prevent Forge from reaching this screen.
- */
-
-public class MixinPlugin implements IMixinConfigPlugin
+public class MixinFabricPlugin implements IMixinConfigPlugin
 {
-    private boolean isClothPresent = true;
+    private boolean isSodiumPresent = true;
 
     @Override
     public void onLoad(String mixinPackage)
     {
-        try
-        {
-            Class.forName("me.shedaniel.autoconfig.AutoConfig");
-        }
-        catch (ClassNotFoundException ignored)
-        {
-            isClothPresent = false;
-        }
+        isSodiumPresent = FabricLoader.getInstance().getModContainer("sodium").isPresent();
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return isClothPresent;
+        if (mixinClassName.equals("mod.adrenix.nostalgic.fabric.mixin.client.ItemColorsSodiumMixin"))
+            return isSodiumPresent;
+        return true;
     }
 
     @Override public List<String> getMixins() { return null; }

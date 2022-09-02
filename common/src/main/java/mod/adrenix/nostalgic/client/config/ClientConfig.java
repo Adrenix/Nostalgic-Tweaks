@@ -517,6 +517,13 @@ public class ClientConfig implements ConfigData
 
         // Item - 2D Candy
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.FLAT_ITEM_CANDY)
+        public boolean old2dColors = DefaultConfig.Candy.OLD_2D_COLORS;
+        static { CandyTweak.FLAT_COLORS.setKey("old2dColors"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.FLAT_ITEM_CANDY)

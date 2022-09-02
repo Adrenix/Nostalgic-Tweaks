@@ -5,11 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.*;
 
 import javax.annotation.Nullable;
 
@@ -89,5 +91,49 @@ public abstract class ItemClientUtil
         pose.normal().setIdentity();
         if (quad.getDirection() == Direction.NORTH)
             pose.normal().mul(-1.0F);
+    }
+
+    // Checks if an item stack can be colored
+    public static boolean isValidColorItem(ItemStack stack)
+    {
+        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
+        return ModConfig.Candy.oldFlatColors() && isModelFlat(model);
+    }
+
+    private static void shiftItemColor(final float[] SHIFT_RGB, final float SHIFT)
+    {
+        SHIFT_RGB[0] = Mth.clamp(SHIFT_RGB[0] + (SHIFT_RGB[0] * SHIFT), 0.0F, 255.0F);
+        SHIFT_RGB[1] = Mth.clamp(SHIFT_RGB[1] + (SHIFT_RGB[1] * SHIFT), 0.0F, 255.0F);
+        SHIFT_RGB[2] = Mth.clamp(SHIFT_RGB[2] + (SHIFT_RGB[2] * SHIFT), 0.0F, 255.0F);
+    }
+
+    private static void shiftLeatherItemColor(final float[] SHIFT_RGB)
+    {
+        final float LIGHT = 0.3F * SHIFT_RGB[0] + 0.6F * SHIFT_RGB[1] + 0.1F * SHIFT_RGB[2];
+
+        SHIFT_RGB[0] = Mth.clamp(SHIFT_RGB[0] + 0.1F * (LIGHT - SHIFT_RGB[0]), 0.0F, 255.0F);
+        SHIFT_RGB[1] = Mth.clamp(SHIFT_RGB[1] + 0.1F * (LIGHT - SHIFT_RGB[1]), 0.0F, 255.0F);
+        SHIFT_RGB[2] = Mth.clamp(SHIFT_RGB[2] + 0.1F * (LIGHT - SHIFT_RGB[2]), 0.0F, 255.0F);
+
+        shiftItemColor(SHIFT_RGB, 0.3F);
+    }
+
+    // Gets a modified color for old 2D item colors
+    public static int getOldColor(ItemColor itemColor, ItemStack stack, int tintIndex)
+    {
+        final int COLOR = itemColor.getColor(stack, tintIndex);
+        final int[] ITEM_RGB = new int[] { (COLOR & 0xFF0000) >> 16, (COLOR & 0xFF00) >> 8, COLOR & 0xFF };
+        final float[] SHIFT_RGB = new float[] { ITEM_RGB[0], ITEM_RGB[1], ITEM_RGB[2] };
+
+        if (stack.getItem() instanceof SpawnEggItem)
+            shiftItemColor(SHIFT_RGB, 0.35F);
+        else if (stack.getItem() instanceof PotionItem)
+            shiftItemColor(SHIFT_RGB, 0.37F);
+        else if (stack.getItem() instanceof DyeableLeatherItem)
+            shiftLeatherItemColor(SHIFT_RGB);
+        else
+            shiftItemColor(SHIFT_RGB, 0.15F);
+
+        return (int) SHIFT_RGB[0] << 16 | (int) SHIFT_RGB[1] << 8 | (int) SHIFT_RGB[2];
     }
 }

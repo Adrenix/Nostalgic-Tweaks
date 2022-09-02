@@ -116,6 +116,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_ITEM_MERGING = true;
         public static final boolean OLD_2D_ITEMS = true;
         public static final boolean OLD_2D_FRAMES = true;
+        public static final boolean OLD_2D_COLORS = false;
         public static final boolean OLD_2D_THROWN_ITEMS = true;
         public static final boolean OLD_2D_ENCHANTED_ITEMS = false;
         public static final boolean OLD_DURABILITY_COLORS = true;
