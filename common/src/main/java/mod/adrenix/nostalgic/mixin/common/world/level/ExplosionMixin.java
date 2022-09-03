@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -32,6 +33,7 @@ public abstract class ExplosionMixin
 
     /* Unique Helpers */
 
+    @Unique
     private void NT$setExplosionParticles(BlockPos blockPos)
     {
         double randX = (float) blockPos.getX() + this.level.getRandom().nextFloat();
