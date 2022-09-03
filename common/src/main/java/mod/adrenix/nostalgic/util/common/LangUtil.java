@@ -113,6 +113,7 @@ public abstract class LangUtil
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
         public static final String DEFAULT = "gui.nostalgic_tweaks.config.default";
 
+        public static final String SLIDER_LIMIT = "gui.nostalgic_tweaks.config.slider.limit";
         public static final String SLIDER_RADIUS = "gui.nostalgic_tweaks.config.slider.radius";
         public static final String SLIDER_DENSITY = "gui.nostalgic_tweaks.config.slider.density";
         public static final String SLIDER_ENCROACH = "gui.nostalgic_tweaks.config.slider.encroach";
@@ -254,6 +255,7 @@ public abstract class LangUtil
         public static final String CANDY_SUBCATEGORY_FURNACE = "gui.nostalgic_tweaks.config.candy.subcategory.furnace";
         public static final String CANDY_SUBCATEGORY_INVENTORY = "gui.nostalgic_tweaks.config.candy.subcategory.inventory";
         public static final String CANDY_SUBCATEGORY_ITEM = "gui.nostalgic_tweaks.config.candy.subcategory.item";
+        public static final String CANDY_SUBCATEGORY_MERGE = "gui.nostalgic_tweaks.config.candy.subcategory.merge";
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";
         public static final String CANDY_SUBCATEGORY_VERSION = "gui.nostalgic_tweaks.config.candy.subcategory.version";

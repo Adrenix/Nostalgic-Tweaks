@@ -276,6 +276,7 @@ public abstract class TweakClient
 
         FLAT_ITEM_CANDY(Category.ITEM_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_FLAT),
         DISPLAY_ITEM_CANDY(Category.ITEM_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_ITEM),
+        MERGING_ITEM_CANDY(Category.ITEM_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_MERGE),
 
         // Lighting Candy Subcategories
 

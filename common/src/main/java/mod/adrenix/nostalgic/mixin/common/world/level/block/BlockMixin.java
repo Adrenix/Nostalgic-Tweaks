@@ -32,17 +32,19 @@ public abstract class BlockMixin
     )
     private static void NT$onPopResource(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldItemMerging())
+        int count = itemStack.getCount();
+
+        if (!ModConfig.Candy.oldItemMerging() || count >= ModConfig.Candy.getItemMergeLimit())
             return;
 
         ItemEntity entity = supplier.get();
         ArrayList<ItemEntity> entities = new ArrayList<>();
 
-        for (int i = 0; i < itemStack.getCount(); i++)
+        for (int i = 0; i < count; i++)
         {
-            double x = (double) ((float) entity.getX() + 0.01f) + Mth.nextDouble(level.random, -0.04, 0.04);
-            double y = (double) ((float) entity.getY() + 0.01f) + Mth.nextDouble(level.random, -0.04, 0.04) - (double) EntityType.ITEM.getHeight() / 2.0f;
-            double z = (double) ((float) entity.getZ() + 0.01f) + Mth.nextDouble(level.random, -0.04, 0.04);
+            double x = (double) ((float) entity.getX() + 0.01F) + Mth.nextDouble(level.random, -0.04, 0.04);
+            double y = (double) ((float) entity.getY() + 0.01F) + Mth.nextDouble(level.random, -0.04, 0.04) - (double) EntityType.ITEM.getHeight() / 2.0F;
+            double z = (double) ((float) entity.getZ() + 0.01F) + Mth.nextDouble(level.random, -0.04, 0.04);
 
             entities.add(new ItemEntity(level, x, y, z, itemStack));
         }

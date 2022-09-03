@@ -363,6 +363,7 @@ public abstract class ModConfig
         public static int getVoidFogEncroach() { return isTweakOn(CandyTweak.VOID_FOG_ENCROACH) ? CANDY.voidFogEncroach : DefaultConfig.Candy.VOID_FOG_ENCROACH; }
         public static int getVoidFogStart() { return isTweakOn(CandyTweak.VOID_FOG_START) ? CANDY.voidFogStart + 64 : DefaultConfig.Candy.VOID_FOG_START + 64; }
         public static int getCloudHeight() { return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT; }
+        public static int getItemMergeLimit() { return isTweakOn(CandyTweak.ITEM_MERGE_LIMIT) ? getSidedTweak(CandyTweak.ITEM_MERGE_LIMIT, CANDY.itemMergeLimit, SERVER_CANDY.itemMergeLimit) : 1; }
     }
 
     /* Gameplay Tweaks */

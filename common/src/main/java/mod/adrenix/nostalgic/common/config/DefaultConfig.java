@@ -111,6 +111,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_VERSION_OVERLAY = true;
 
         // Item Candy
+        public static final int ITEM_MERGE_LIMIT = 16;
         public static final boolean FIX_ITEM_MODEL_GAP = true;
         public static final boolean OLD_ITEM_HOLDING = true;
         public static final boolean OLD_ITEM_MERGING = true;

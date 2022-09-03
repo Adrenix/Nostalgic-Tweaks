@@ -78,6 +78,7 @@ public enum CandyTweak implements ITweak
     FIX_ITEM_MODEL_GAP,
     ITEM_HOLDING,
     ITEM_MERGING,
+    ITEM_MERGE_LIMIT,
 
     // Item Candy - 2D Items
     FLAT_ITEMS,

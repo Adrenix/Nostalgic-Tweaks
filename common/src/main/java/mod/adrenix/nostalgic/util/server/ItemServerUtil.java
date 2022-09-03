@@ -22,11 +22,18 @@ public abstract class ItemServerUtil
             return consumer;
         return stack ->
         {
-            ItemStack instance = stack.copy();
-            instance.setCount(1);
+            int count = stack.getCount();
 
-            for (int i = 0; i < stack.getCount(); i++)
-                consumer.accept(instance);
+            if (count >= ModConfig.Candy.getItemMergeLimit())
+                consumer.accept(stack);
+            else
+            {
+                ItemStack instance = stack.copy();
+                instance.setCount(1);
+
+                for (int i = 0; i < count; i++)
+                    consumer.accept(instance);
+            }
         };
     }
 }

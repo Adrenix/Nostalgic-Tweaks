@@ -23,6 +23,7 @@ public class ServerConfig implements ConfigData
     public static class EyeCandy
     {
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
+        public int itemMergeLimit = DefaultConfig.Candy.ITEM_MERGE_LIMIT;
         public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
         public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;

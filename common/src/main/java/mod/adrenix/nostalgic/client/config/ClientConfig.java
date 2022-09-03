@@ -509,9 +509,21 @@ public class ClientConfig implements ConfigData
         public boolean oldItemHolding = DefaultConfig.Candy.OLD_ITEM_HOLDING;
         static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
 
+        // Item - Merging
+
+        @TweakClient.Gui.New
         @TweakSide.Server
-        @TweakSide.EntryStatus(status = StatusType.LOADED)
-        @TweakClient.Gui.Cat(group = TweakClient.Category.ITEM_CANDY)
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_LIMIT)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MERGING_ITEM_CANDY)
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 64)
+        public int itemMergeLimit = DefaultConfig.Candy.ITEM_MERGE_LIMIT;
+        static { CandyTweak.ITEM_MERGE_LIMIT.setKey("itemMergeLimit"); }
+
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MERGING_ITEM_CANDY)
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
         static { CandyTweak.ITEM_MERGING.setKey("oldItemMerging"); }
 
