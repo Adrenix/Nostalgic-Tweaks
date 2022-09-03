@@ -447,6 +447,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldOpaqueExperience.@Tooltip": "Bring back the old non-transparent experience orbs.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableNetherParticles": "Disable Nether Particles",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableNetherParticles.@Tooltip": "Disable particles that are created by Nether biomes.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles": "Unoptimized Explosion Particles",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles.@Tooltip": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightFlicker": "Disable Light Flickering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightFlicker.@Tooltip": "Disable the flickering of light from light emitting sources.",

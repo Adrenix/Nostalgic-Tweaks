@@ -686,6 +686,13 @@ public class ClientConfig implements ConfigData
         public boolean oldMixedExplosionParticles = DefaultConfig.Candy.OLD_MIXED_EXPLOSION_PARTICLES;
         static { CandyTweak.MIXED_EXPLOSION_PARTICLES.setKey("oldMixedExplosionParticles"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_EXPLOSION_CANDY)
+        public boolean unoptimizedExplosionParticles = DefaultConfig.Candy.UNOPTIMIZED_EXPLOSION_PARTICLES;
+        static { CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES.setKey("unoptimizedExplosionParticles"); }
+
         /**
          * Title Screen Candy (Embedded in Interface Candy)
          */

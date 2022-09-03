@@ -142,6 +142,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_NO_MAGIC_HIT_PARTICLES = true;
         public static final boolean OLD_EXPLOSION_PARTICLES = true;
         public static final boolean OLD_MIXED_EXPLOSION_PARTICLES = false;
+        public static final boolean UNOPTIMIZED_EXPLOSION_PARTICLES = false;
 
         // World Candy
         public static final int OLD_CLOUD_HEIGHT = 108;
