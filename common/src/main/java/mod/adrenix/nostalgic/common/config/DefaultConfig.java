@@ -182,6 +182,7 @@ public abstract class DefaultConfig
     {
         // Bugs
         public static final boolean OLD_LADDER_GAP = true;
+        public static final boolean OLD_SQUID_MILKING = true;
 
         // Combat System
         public static final int ARROW_SPEED = 70;

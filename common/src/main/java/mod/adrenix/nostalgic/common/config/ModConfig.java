@@ -385,6 +385,7 @@ public abstract class ModConfig
 
         // Bugs
         public static boolean oldLadderGap() { return getSidedBoolTweak(GameplayTweak.LADDER_GAP, GAMEPLAY.oldLadderGap, SERVER_GAMEPLAY.oldLadderGap); }
+        public static boolean oldSquidMilk() { return getSidedBoolTweak(GameplayTweak.SQUID_MILK, GAMEPLAY.oldSquidMilking, SERVER_GAMEPLAY.oldSquidMilking); }
 
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }

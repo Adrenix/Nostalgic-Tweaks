@@ -8,6 +8,7 @@ public enum GameplayTweak implements ITweak
 {
     // Bugs
     LADDER_GAP,
+    SQUID_MILK,
 
     // Combat System
     INSTANT_BOW,

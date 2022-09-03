@@ -530,6 +530,8 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay": "Gameplay",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldLadderGap": "Old Ladder Gaps",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldLadderGap.@Tooltip": "Bring back the old bug that allowed players to continually climb when there is a single space between two ladders.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSquidMilking": "Old Squid Milking",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSquidMilking.@Tooltip": "Bring back the old bug that allows players to milk squids.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed": "Arrow Speed",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed.@Tooltip": "How fast the arrow will fire out of the bow when instant bow is enabled.",

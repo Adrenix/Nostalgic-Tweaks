@@ -1028,6 +1028,13 @@ public class ClientConfig implements ConfigData
         public boolean oldLadderGap = DefaultConfig.Gameplay.OLD_LADDER_GAP;
         static { GameplayTweak.LADDER_GAP.setKey("oldLadderGap"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.BUG_GAMEPLAY)
+        public boolean oldSquidMilking = DefaultConfig.Gameplay.OLD_SQUID_MILKING;
+        static { GameplayTweak.SQUID_MILK.setKey("oldSquidMilking"); }
+
         /**
          * Combat System
          */

@@ -35,6 +35,7 @@ public class ServerConfig implements ConfigData
     {
         // Bugs
         public boolean oldLadderGap = DefaultConfig.Gameplay.OLD_LADDER_GAP;
+        public boolean oldSquidMilking = DefaultConfig.Gameplay.OLD_SQUID_MILKING;
 
         // Combat System
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
