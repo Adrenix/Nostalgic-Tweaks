@@ -6,8 +6,10 @@ import mod.adrenix.nostalgic.util.client.FogUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -93,6 +95,30 @@ public abstract class ClientLevelMixin
     {
         FogUtil.VoidFog.setSkyBlue((float) blue);
         return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyBlue() : blue;
+    }
+
+    /**
+     * Attempts to block the spawning of falling particles.
+     * Controlled by the disable falling particles tweak.
+     */
+    @Inject(method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V", at = @At("HEAD"), cancellable = true)
+    private void NT$onAddParticle(ParticleOptions options, boolean alwaysRender, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfo callback)
+    {
+        LocalPlayer player = Minecraft.getInstance().player;
+        boolean isDisabled = ModConfig.Candy.disableFallingParticles() && options.getType().equals(ParticleTypes.BLOCK);
+        boolean isSprinting = player != null && player.canSpawnSprintParticle();
+
+        if (!isDisabled || isSprinting || player == null)
+            return;
+
+        boolean isParticleAtPlayer =
+            ModUtil.Numbers.tolerance(player.getX(), x, 0.01F) &&
+            ModUtil.Numbers.tolerance(player.getY(), y, 0.01F) &&
+            ModUtil.Numbers.tolerance(player.getZ(), z, 0.01F)
+        ;
+
+        if (isParticleAtPlayer)
+            callback.cancel();
     }
 
     /**

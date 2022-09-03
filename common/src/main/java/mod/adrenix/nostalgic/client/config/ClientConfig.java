@@ -655,6 +655,13 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.PARTICLE_CANDY)
+        public boolean disableFallingParticles = DefaultConfig.Candy.DISABLE_FALLING_PARTICLES;
+        static { CandyTweak.NO_FALLING_PARTICLES.setKey("disableFallingParticles"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.PARTICLE_CANDY)
         public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
         static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
 

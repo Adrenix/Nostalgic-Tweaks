@@ -80,6 +80,15 @@ public abstract class ModUtil
         public static boolean tolerance(float a, float b, float tolerance) { return Math.abs(a - b) < tolerance; }
 
         /**
+         * Checks if the two doubles are within a given <code>tolerance</code>.
+         * @param a First double.
+         * @param b Second double.
+         * @param tolerance The allowed distance between <code>a</code> and <code>b</code>.
+         * @return If the two doubles are within the given <code>tolerance</code>.
+         */
+        public static boolean tolerance(double a, double b, double tolerance) { return Math.abs(a - b) < tolerance; }
+
+        /**
          * Checks if <code>a</code>, <code>b</code>, and <code>c</code> are within the given <code>tolerance</code>.
          * @param a The first float to compare.
          * @param b The second float to compare.

@@ -449,6 +449,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNoMagicHitParticles.@Tooltip": "Disables the enchantment hit particles that appear when attacking an entity.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldOpaqueExperience": "Old Opaque Experience",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldOpaqueExperience.@Tooltip": "Bring back the old non-transparent experience orbs.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableFallingParticles": "Disable Falling Particles",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableFallingParticles.@Tooltip": "Disable particles that are created after falling a great distance.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableNetherParticles": "Disable Nether Particles",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableNetherParticles.@Tooltip": "Disable particles that are created by Nether biomes.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles": "Unoptimized Explosion Particles",
