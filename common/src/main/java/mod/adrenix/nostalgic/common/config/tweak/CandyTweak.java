@@ -105,6 +105,7 @@ public enum CandyTweak implements ITweak
     // Particle Candy
     SWEEP,
     OPAQUE_EXPERIENCE,
+    NO_SPRINTING_PARTICLES,
     NO_FALLING_PARTICLES,
     NO_NETHER_PARTICLES,
     NO_DAMAGE_PARTICLES,

@@ -297,6 +297,7 @@ public abstract class ModConfig
         public static boolean unoptimizedExplosionParticles() { return getBoolTweak(CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES, CANDY.unoptimizedExplosionParticles); }
         public static boolean oldNoCriticalHitParticles() { return getBoolTweak(CandyTweak.NO_CRIT_PARTICLES, CANDY.oldNoCritParticles); }
         public static boolean oldMixedExplosionParticles() { return getBoolTweak(CandyTweak.MIXED_EXPLOSION_PARTICLES, CANDY.oldMixedExplosionParticles); }
+        public static boolean disableSprintingParticles() { return getBoolTweak(CandyTweak.NO_SPRINTING_PARTICLES, CANDY.disableSprintingParticles); }
         public static boolean oldNoEnchantHitParticles() { return getBoolTweak(CandyTweak.NO_MAGIC_HIT_PARTICLES, CANDY.oldNoMagicHitParticles); }
         public static boolean disableFallingParticles() { return getBoolTweak(CandyTweak.NO_FALLING_PARTICLES, CANDY.disableFallingParticles); }
         public static boolean disableNetherParticles() { return getBoolTweak(CandyTweak.NO_NETHER_PARTICLES, CANDY.disableNetherParticles); }

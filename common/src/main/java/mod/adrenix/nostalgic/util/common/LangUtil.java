@@ -266,6 +266,7 @@ public abstract class LangUtil
         public static final String CANDY_SUBCATEGORY_WORLD_LIGHT = "gui.nostalgic_tweaks.config.candy.subcategory.world_light";
         public static final String CANDY_SUBCATEGORY_ATTACK = "gui.nostalgic_tweaks.config.candy.subcategory.attack";
         public static final String CANDY_SUBCATEGORY_EXPLOSION = "gui.nostalgic_tweaks.config.candy.subcategory.explosion";
+        public static final String CANDY_SUBCATEGORY_PLAYER = "gui.nostalgic_tweaks.config.candy.subcategory.player";
         public static final String CANDY_SUBCATEGORY_FOG = "gui.nostalgic_tweaks.config.candy.subcategory.fog";
         public static final String CANDY_SUBCATEGORY_SKY = "gui.nostalgic_tweaks.config.candy.subcategory.sky";
         public static final String CANDY_SUBCATEGORY_VOID = "gui.nostalgic_tweaks.config.candy.subcategory.void";

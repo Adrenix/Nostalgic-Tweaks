@@ -287,6 +287,7 @@ public abstract class TweakClient
 
         PARTICLE_ATTACK_CANDY(Category.PARTICLE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_ATTACK),
         PARTICLE_EXPLOSION_CANDY(Category.PARTICLE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_EXPLOSION),
+        PARTICLE_PLAYER_CANDY(Category.PARTICLE_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_PLAYER),
 
         // World Candy Subcategories
 

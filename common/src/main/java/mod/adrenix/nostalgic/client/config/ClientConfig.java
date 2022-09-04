@@ -655,15 +655,24 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.PARTICLE_CANDY)
+        public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
+        static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
+
+        // Particle - Player Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_PLAYER_CANDY)
         public boolean disableFallingParticles = DefaultConfig.Candy.DISABLE_FALLING_PARTICLES;
         static { CandyTweak.NO_FALLING_PARTICLES.setKey("disableFallingParticles"); }
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Cat(group = TweakClient.Category.PARTICLE_CANDY)
-        public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
-        static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_PLAYER_CANDY)
+        public boolean disableSprintingParticles = DefaultConfig.Candy.DISABLE_SPRINTING_PARTICLES;
+        static { CandyTweak.NO_SPRINTING_PARTICLES.setKey("disableSprintingParticles"); }
 
         // Particle - Attack Candy
 

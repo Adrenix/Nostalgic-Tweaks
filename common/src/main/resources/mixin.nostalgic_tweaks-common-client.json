@@ -41,6 +41,7 @@
     "model.SkeletonModelMixin",
     "world.BiomeMixin",
     "world.ClientLevelMixin",
+    "world.entity.EntityMixin",
     "world.entity.LivingEntityMixin",
     "world.entity.PlayerMixin",
     "CameraMixin",
