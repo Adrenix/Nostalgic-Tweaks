@@ -12,6 +12,7 @@
   ],
   "mixins": [
     "common.ExperienceOrbFabricMixin",
+    "common.ItemEntityFabricMixin",
     "common.LivingEntityFabricMixin"
   ]
 }

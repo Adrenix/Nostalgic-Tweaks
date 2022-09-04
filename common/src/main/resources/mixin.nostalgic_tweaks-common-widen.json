@@ -8,6 +8,7 @@
     "IMixinAbstractSelectionList",
     "IMixinAbstractWidget",
     "IMixinEntity",
+    "IMixinItemEntity",
     "IMixinLevelRenderer",
     "IMixinMinecraft",
     "IMixinProgressScreen",

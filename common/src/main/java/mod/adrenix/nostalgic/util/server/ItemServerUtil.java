@@ -1,8 +1,11 @@
 package mod.adrenix.nostalgic.util.server;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -35,5 +38,21 @@ public abstract class ItemServerUtil
                     consumer.accept(instance);
             }
         };
+    }
+
+    // Used to handle item merging
+    public static void mergeWithNeighbors(CallbackInfo callback, List<ItemEntity> entities, ItemEntity entity)
+    {
+        boolean isBelowLimit = entities.size() + 1 < ModConfig.Candy.getItemMergeLimit() && entity.getItem().getCount() == 1;
+        boolean isNeighborStacked = false;
+
+        for (ItemEntity neighbor : entities)
+        {
+            if (neighbor.getItem().getCount() > 1)
+                isNeighborStacked = true;
+        }
+
+        if (ModConfig.Candy.oldItemMerging() && isBelowLimit && !isNeighborStacked)
+            callback.cancel();
     }
 }
