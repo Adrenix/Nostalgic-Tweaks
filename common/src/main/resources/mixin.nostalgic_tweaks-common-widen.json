@@ -8,7 +8,6 @@
     "IMixinAbstractSelectionList",
     "IMixinAbstractWidget",
     "IMixinEntity",
-    "IMixinItemEntity",
     "IMixinLevelRenderer",
     "IMixinMinecraft",
     "IMixinProgressScreen",
@@ -17,6 +16,7 @@
   ],
 
   "mixins": [
+    "IMixinItemEntity",
     "IMixinLivingEntity"
   ]
 }
