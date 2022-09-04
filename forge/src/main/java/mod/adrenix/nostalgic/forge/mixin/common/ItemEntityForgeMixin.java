@@ -8,6 +8,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,13 +22,14 @@ public abstract class ItemEntityForgeMixin extends Entity
 {
     /* Dummy Constructor */
 
-    private ItemEntityForgeMixin(EntityType<?> arg, Level arg2)
+    private ItemEntityForgeMixin(EntityType<?> type, Level level)
     {
-        super(arg, arg2);
+        super(type, level);
     }
 
     /* Uniques */
 
+    @Unique
     private boolean NT$getNeighbors(ItemEntity item)
     {
         return (item != (Object) this) && ((IMixinItemEntity) item).NT$isMergable();
