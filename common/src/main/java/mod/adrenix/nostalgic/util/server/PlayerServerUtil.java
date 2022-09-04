@@ -3,12 +3,21 @@ package mod.adrenix.nostalgic.util.server;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 /**
- * This utility is used only by the server. For safety, keep vanilla client-only code out.
+ * This utility is used by the server.
+ * For safety, keep vanilla client-only code out.
  */
 
 public abstract class PlayerServerUtil
@@ -52,5 +61,18 @@ public abstract class PlayerServerUtil
                 add(player, 8, Blocks.RED_MUSHROOM);
             }
         }
+    }
+
+    public static InteractionResult milkSquid(Player player, InteractionHand hand, Entity entityToInteractOn)
+    {
+        ItemStack holding = player.getItemInHand(hand);
+
+        if (ModConfig.Gameplay.oldSquidMilk() && holding.is(Items.BUCKET) && entityToInteractOn instanceof Squid)
+        {
+            player.setItemInHand(hand, ItemUtils.createFilledResult(holding, player, Items.MILK_BUCKET.getDefaultInstance()));
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
     }
 }

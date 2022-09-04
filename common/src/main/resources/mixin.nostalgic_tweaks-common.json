@@ -17,7 +17,6 @@
     "world.entity.ItemEntityMixin",
     "world.entity.LivingEntityMixin",
     "world.entity.PlayerMixin",
-    "world.entity.SquidMixin",
     "world.item.ItemMixin",
     "world.item.BowItemMixin",
     "world.level.block.AnvilBlockMixin",
