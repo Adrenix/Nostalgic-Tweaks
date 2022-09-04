@@ -142,8 +142,13 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         boolean isModern = chart.equals(TweakType.DebugChart.MODERN);
         boolean isOld = chart.equals(TweakType.DebugChart.CLASSIC);
 
-        if (isDisabled || debug.equals(TweakVersion.Generic.MODERN) || !drawForFps)
+        if (debug.equals(TweakVersion.Generic.MODERN))
             return;
+        else if (isDisabled || !drawForFps)
+        {
+            callback.cancel();
+            return;
+        }
 
         RenderSystem.disableDepthTest();
 
