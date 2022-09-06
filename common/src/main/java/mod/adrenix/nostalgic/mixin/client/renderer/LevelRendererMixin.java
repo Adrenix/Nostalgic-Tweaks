@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
 import mod.adrenix.nostalgic.util.client.*;
+import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -311,7 +312,7 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void NT$onRenderHitOutline(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo callback)
     {
-        if (!BlockClientUtil.isOldChest(state.getBlock()))
+        if (!BlockCommonUtil.isOldChest(state.getBlock()))
             return;
 
         IMixinLevelRenderer.NT$invokeRenderShape

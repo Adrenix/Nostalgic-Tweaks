@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
-import mod.adrenix.nostalgic.util.server.BlockServerUtil;
+import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -49,7 +49,7 @@ public abstract class BlockStateBaseMixin
         {
             TweakServerCache<Boolean> cache = TweakServerCache.get(CandyTweak.WATER_LIGHTING);
             boolean isVanilla = !NostalgicTweaks.isNetworkVerified();
-            boolean isDisabled = cache == null || cache.getServerCache();
+            boolean isDisabled = cache == null || !cache.getServerCache();
 
             if (isVanilla || isDisabled)
                 return;
@@ -72,30 +72,23 @@ public abstract class BlockStateBaseMixin
      * Client:
      *
      * The following injections only impact the rendering aspects of chests. Therefore, there is no need to restrict
-     * these injections to server-side only. The purpose of the injections is to improve performance and prevent light
-     * from coming through chests when they are shaped like blocks.
+     * these injections to server-side only. The purpose of these injections is to improve performance when chests are
+     * shaped like blocks.
      *
      * Controlled by various old chest tweaks.
      */
 
-    @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
-    private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
-    {
-        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
-            callback.setReturnValue(true);
-    }
-
     @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
-        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
-            callback.setReturnValue(true);
+        if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
+            callback.setReturnValue(false);
     }
 
     @Inject(method = "getFaceOcclusionShape", at = @At("HEAD") , cancellable = true)
     private void NT$onGetFaceOcclusionShape(BlockGetter level, BlockPos pos, Direction direction, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (NostalgicTweaks.isClient() && BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
     }
 
@@ -108,6 +101,13 @@ public abstract class BlockStateBaseMixin
      * Controlled by the old chest voxel tweak and various old chest tweaks.
      */
 
+    @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
+    private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
+    {
+        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock()))
+            callback.setReturnValue(true);
+    }
+
     @Inject
     (
         cancellable = true,
@@ -116,7 +116,7 @@ public abstract class BlockStateBaseMixin
     )
     private void NT$onGetShape(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockServerUtil.isChest(this.getBlock()))
+        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
     }
 }

@@ -4,10 +4,6 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.EnderChestBlock;
-import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -24,14 +20,5 @@ public abstract class BlockServerUtil
         if (!ModConfig.Gameplay.oldLadderGap())
             return isClimbable;
         return isClimbable || level.getBlockState(pos.above()).is(BlockTags.CLIMBABLE);
-    }
-
-    public static boolean isChest(Block block)
-    {
-        boolean isChest = block.getClass().equals(ChestBlock.class);
-        boolean isEnderChest = block.getClass().equals(EnderChestBlock.class);
-        boolean isTrappedChest = block.getClass().equals(TrappedChestBlock.class);
-
-        return isChest || isEnderChest || isTrappedChest;
     }
 }

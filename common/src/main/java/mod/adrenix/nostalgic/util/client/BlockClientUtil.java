@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.client;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -24,18 +25,9 @@ public abstract class BlockClientUtil
         return pos.getY() < level.getMinBuildHeight() + 5;
     }
 
-    public static boolean isOldChest(Block block)
-    {
-        boolean isOldChest = ModConfig.Candy.oldChest() && block.getClass().equals(ChestBlock.class);
-        boolean isOldEnder = ModConfig.Candy.oldEnderChest() && block.getClass().equals(EnderChestBlock.class);
-        boolean isOldTrap = ModConfig.Candy.oldTrappedChest() && block.getClass().equals(TrappedChestBlock.class);
-
-        return isOldChest || isOldEnder || isOldTrap;
-    }
-
     public static boolean isFullShape(Block block)
     {
-        boolean isChest = isOldChest(block);
+        boolean isChest = BlockCommonUtil.isOldChest(block);
         boolean isAOFixed = ModConfig.Candy.fixAmbientOcclusion();
         boolean isSoulSand = isAOFixed && block.getClass().equals(SoulSandBlock.class);
         boolean isPowderedSnow = isAOFixed && block.getClass().equals(PowderSnowBlock.class);
