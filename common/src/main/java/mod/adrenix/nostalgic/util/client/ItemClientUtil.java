@@ -136,7 +136,7 @@ public abstract class ItemClientUtil
         else if (stack.getItem() instanceof DyeableLeatherItem)
             shiftLeatherItemColor(SHIFT_RGB);
         else
-            shiftItemColor(SHIFT_RGB, 0.15F);
+            shiftItemColor(SHIFT_RGB, 0.35F);
 
         return (int) SHIFT_RGB[0] << 16 | (int) SHIFT_RGB[1] << 8 | (int) SHIFT_RGB[2];
     }
