@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin.common;
 
-import mod.adrenix.nostalgic.mixin.widen.IMixinItemEntity;
+import mod.adrenix.nostalgic.mixin.widen.ItemEntityAccessor;
 import mod.adrenix.nostalgic.util.server.ItemServerUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -32,7 +32,7 @@ public abstract class ItemEntityForgeMixin extends Entity
     @Unique
     private boolean NT$getNeighbors(ItemEntity item)
     {
-        return (item != (Object) this) && ((IMixinItemEntity) item).NT$isMergable();
+        return (item != (Object) this) && ((ItemEntityAccessor) item).NT$isMergable();
     }
 
     /* Injections */

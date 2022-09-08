@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
+import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
 import mod.adrenix.nostalgic.util.client.*;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.client.Camera;
@@ -318,7 +318,7 @@ public abstract class LevelRendererMixin
         if (!BlockCommonUtil.isOldChest(state.getBlock()))
             return;
 
-        IMixinLevelRenderer.NT$invokeRenderShape
+        LevelRendererAccessor.NT$renderShape
         (
             poseStack,
             consumer,

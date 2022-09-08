@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractContainerScreen;
+import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -52,6 +52,6 @@ public abstract class CraftingScreenMixin extends AbstractContainerScreen<Crafti
     @Inject(method = "init", at = @At("TAIL"))
     private void NT$onInit(CallbackInfo callback)
     {
-        GuiUtil.createRecipeButton((IMixinAbstractContainerScreen) this, ModConfig.Candy.getCraftingBook());
+        GuiUtil.createRecipeButton((AbstractContainerScreenAccessor) this, ModConfig.Candy.getCraftingBook());
     }
 }

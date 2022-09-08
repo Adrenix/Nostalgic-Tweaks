@@ -6,8 +6,8 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.IWidgetManager;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractContainerScreen;
-import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
+import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
+import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
@@ -38,7 +38,7 @@ public abstract class GuiUtil
      * @param parent The original image button to get data from.
      * @return A new recipe image button as a large square button.
      */
-    public static ImageButton getLargeBook(IMixinAbstractContainerScreen screen, ImageButton parent)
+    public static ImageButton getLargeBook(AbstractContainerScreenAccessor screen, ImageButton parent)
     {
         return new ImageButton
         (
@@ -63,7 +63,7 @@ public abstract class GuiUtil
      * @param parent The original image button to get data from.
      * @return A new recipe image button as a small button with a question mark in it.
      */
-    public static ImageButton getSmallBook(IMixinAbstractContainerScreen screen, ImageButton parent)
+    public static ImageButton getSmallBook(AbstractContainerScreenAccessor screen, ImageButton parent)
     {
         return new ImageButton
         (
@@ -87,12 +87,12 @@ public abstract class GuiUtil
      * @param screen The current container screen.
      * @param book The type of recipe button the user wants.
      */
-    public static void createRecipeButton(IMixinAbstractContainerScreen screen, TweakType.RecipeBook book)
+    public static void createRecipeButton(AbstractContainerScreenAccessor screen, TweakType.RecipeBook book)
     {
         ImageButton recipeButton = null;
         IWidgetManager injector = (IWidgetManager) Minecraft.getInstance().screen;
 
-        for (Widget widget : ((IMixinScreen) screen).NT$getRenderables())
+        for (Widget widget : ((ScreenAccessor) screen).NT$getRenderables())
         {
             if (widget instanceof ImageButton imageButton)
             {

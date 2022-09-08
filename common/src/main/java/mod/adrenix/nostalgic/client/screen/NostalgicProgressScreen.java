@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.widen.IMixinProgressScreen;
+import mod.adrenix.nostalgic.mixin.widen.ProgressScreenAccessor;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
@@ -27,7 +27,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     protected boolean renderProgressBar = true;
     protected boolean ticking = false;
     protected boolean stop;
-    protected IMixinProgressScreen progressScreen;
+    protected ProgressScreenAccessor progressScreen;
     protected static ResourceKey<Level> previousDimension;
     protected static ResourceKey<Level> currentDimension;
     protected static final int MAX = 100;
@@ -38,7 +38,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     public NostalgicProgressScreen(ProgressScreen progressScreen)
     {
         super(NarratorChatListener.NO_TITLE);
-        this.progressScreen = (IMixinProgressScreen) progressScreen;
+        this.progressScreen = (ProgressScreenAccessor) progressScreen;
     }
 
     /* Setters / Getters */

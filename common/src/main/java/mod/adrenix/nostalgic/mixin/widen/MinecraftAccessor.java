@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(Minecraft.class)
-public interface IMixinMinecraft
+public interface MinecraftAccessor
 {
     @Accessor("fps") static int NT$getFPS() { throw new AssertionError(); }
 }

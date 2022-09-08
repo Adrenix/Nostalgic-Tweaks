@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractWidget;
+import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
@@ -244,7 +244,7 @@ public class CategoryList extends Overlay
                     if (position < OVERLAY.list.children().size())
                     {
                         AbstractWidget widget = OVERLAY.list.children().get(position).children.get(0);
-                        ((IMixinAbstractWidget) widget).NT$setFocus(true);
+                        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
                         OVERLAY.list.setLastSelection(widget);
                     }
                 }

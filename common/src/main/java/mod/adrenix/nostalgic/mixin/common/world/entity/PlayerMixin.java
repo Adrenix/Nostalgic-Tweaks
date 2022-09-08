@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 import com.mojang.authlib.GameProfile;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.gameplay.OldFoodData;
-import mod.adrenix.nostalgic.mixin.widen.IMixinLivingEntity;
+import mod.adrenix.nostalgic.mixin.widen.LivingEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -77,7 +77,7 @@ public abstract class PlayerMixin extends LivingEntity
         if (!ModConfig.Gameplay.disableCooldown())
             return;
 
-        ((IMixinLivingEntity) this).NT$setAttackStrengthTicker((int) Math.ceil(this.getCurrentItemAttackStrengthDelay()));
+        ((LivingEntityAccessor) this).NT$setAttackStrengthTicker((int) Math.ceil(this.getCurrentItemAttackStrengthDelay()));
     }
 
     /**

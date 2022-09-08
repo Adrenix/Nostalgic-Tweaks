@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ItemEntity.class)
-public interface IMixinItemEntity
+public interface ItemEntityAccessor
 {
     @Invoker("isMergable") boolean NT$isMergable();
 }

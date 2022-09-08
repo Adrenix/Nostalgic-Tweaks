@@ -11,8 +11,8 @@ import com.mojang.math.Vector4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
-import mod.adrenix.nostalgic.mixin.widen.IMixinTitleScreen;
+import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
+import mod.adrenix.nostalgic.mixin.widen.TitleScreenAccessor;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -218,21 +218,21 @@ public class NostalgicTitleScreen extends TitleScreen
 
         TweakVersion.TitleLayout layout = ModConfig.Candy.getButtonLayout();
         NostalgicTitleScreen.isGameReady = true;
-        IMixinTitleScreen accessor = (IMixinTitleScreen) this;
-        IMixinScreen screen = (IMixinScreen) this;
+        TitleScreenAccessor titleAccessor = (TitleScreenAccessor) this;
+        ScreenAccessor screenAccessor = (ScreenAccessor) this;
         int color = Mth.ceil(255.0F) << 24;
 
-        if (accessor.NT$getSplash() != null)
+        if (titleAccessor.NT$getSplash() != null)
         {
             poseStack.pushPose();
             poseStack.translate((float) this.width / 2 + 90, 70.0, 0.0);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
 
             float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
-            scale = scale * 100.0F / (float) (this.font.width(accessor.NT$getSplash()) + 32);
+            scale = scale * 100.0F / (float) (this.font.width(titleAccessor.NT$getSplash()) + 32);
             poseStack.scale(scale, scale, scale);
 
-            TitleScreen.drawCenteredString(poseStack, this.font, accessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
+            TitleScreen.drawCenteredString(poseStack, this.font, titleAccessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
 
             poseStack.popPose();
         }
@@ -256,7 +256,7 @@ public class NostalgicTitleScreen extends TitleScreen
 
         boolean isRelease = layout == TweakVersion.TitleLayout.RELEASE_TEXTURE_PACK || layout == TweakVersion.TitleLayout.RELEASE_NO_TEXTURE_PACK;
 
-        setLayoutVisibility(screen.NT$getRenderables(), layout == TweakVersion.TitleLayout.MODERN);
+        setLayoutVisibility(screenAccessor.NT$getRenderables(), layout == TweakVersion.TitleLayout.MODERN);
         setLayoutVisibility(this.alpha, layout == TweakVersion.TitleLayout.ALPHA);
         setLayoutVisibility(this.beta, layout == TweakVersion.TitleLayout.BETA);
         setLayoutVisibility(this.release, isRelease);
@@ -273,11 +273,11 @@ public class NostalgicTitleScreen extends TitleScreen
 
                 this.setButtonVisibility();
 
-                for (Widget widget : screen.NT$getRenderables())
+                for (Widget widget : screenAccessor.NT$getRenderables())
                     widget.render(poseStack, mouseX, mouseY, partialTick);
 
-                if (accessor.NT$getRealmsNotificationsEnabled())
-                    accessor.NT$getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
+                if (titleAccessor.NT$getRealmsNotificationsEnabled())
+                    titleAccessor.NT$getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
             }
             case ALPHA -> this.alpha.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
             case BETA -> this.beta.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
@@ -305,7 +305,7 @@ public class NostalgicTitleScreen extends TitleScreen
 
     private void setButtonVisibility()
     {
-        IMixinScreen screen = (IMixinScreen) this;
+        ScreenAccessor screen = (ScreenAccessor) this;
         for (Widget widget : screen.NT$getRenderables())
         {
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)

@@ -9,8 +9,8 @@ import com.mojang.math.Transformation;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.widen.IMixinLevelRenderer;
-import mod.adrenix.nostalgic.mixin.widen.IMixinMinecraft;
+import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
+import mod.adrenix.nostalgic.mixin.widen.MinecraftAccessor;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
@@ -57,11 +57,11 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
         String overlay = ModConfig.Candy.getOverlayText();
         String title = overlay.isEmpty() ? "Minecraft " + SharedConstants.getCurrentVersion().getName() : overlay;
-        String fps = String.format(" (%s fps, %s chunk updates)", IMixinMinecraft.NT$getFPS(), minecraft.levelRenderer.getChunkRenderDispatcher().getToUpload());
+        String fps = String.format(" (%s fps, %s chunk updates)", MinecraftAccessor.NT$getFPS(), minecraft.levelRenderer.getChunkRenderDispatcher().getToUpload());
         String chunks = String.format("C: %d/%d. F: 0, O: 0, E: 0", minecraft.levelRenderer.countRenderedChunks(), (long) minecraft.levelRenderer.getTotalChunks());
-        String entities = String.format("E: %s/%s. B: %s, I: 0", ((IMixinLevelRenderer) minecraft.levelRenderer).NT$getRenderedEntities(), minecraft.level.getEntityCount(), ((IMixinLevelRenderer) minecraft.levelRenderer).NT$getCulledEntities());
+        String entities = String.format("E: %s/%s. B: %s, I: 0", ((LevelRendererAccessor) minecraft.levelRenderer).NT$getRenderedEntities(), minecraft.level.getEntityCount(), ((LevelRendererAccessor) minecraft.levelRenderer).NT$getCulledEntities());
         String particles = String.format("P: %s. T: All: %s", minecraft.particleEngine.countParticles(), minecraft.level.getEntityCount());
-        String overflow = String.format(" (%s fps)", IMixinMinecraft.NT$getFPS());
+        String overflow = String.format(" (%s fps)", MinecraftAccessor.NT$getFPS());
 
         BlockPos blockPos = minecraft.getCameraEntity().blockPosition();
         int clientLight = minecraft.level.getChunkSource().getLightEngine().getRawBrightness(blockPos, 0);

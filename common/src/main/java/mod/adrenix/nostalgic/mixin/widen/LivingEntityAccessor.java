@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(LivingEntity.class)
-public interface IMixinLivingEntity
+public interface LivingEntityAccessor
 {
     @Accessor("attackStrengthTicker") void NT$setAttackStrengthTicker(int attackStrengthTicker);
 }

@@ -4,19 +4,19 @@
   "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "IMixinAbstractContainerScreen",
-    "IMixinAbstractSelectionList",
-    "IMixinAbstractWidget",
-    "IMixinEntity",
-    "IMixinLevelRenderer",
-    "IMixinMinecraft",
-    "IMixinProgressScreen",
-    "IMixinScreen",
-    "IMixinTitleScreen"
+    "AbstractContainerScreenAccessor",
+    "AbstractSelectionListAccessor",
+    "AbstractWidgetAccessor",
+    "EntityAccessor",
+    "LevelRendererAccessor",
+    "MinecraftAccessor",
+    "ProgressScreenAccessor",
+    "ScreenAccessor",
+    "TitleScreenAccessor"
   ],
 
   "mixins": [
-    "IMixinItemEntity",
-    "IMixinLivingEntity"
+    "ItemEntityAccessor",
+    "LivingEntityAccessor"
   ]
 }

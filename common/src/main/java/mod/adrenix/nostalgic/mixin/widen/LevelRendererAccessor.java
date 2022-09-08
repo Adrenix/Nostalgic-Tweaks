@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LevelRenderer.class)
-public interface IMixinLevelRenderer
+public interface LevelRendererAccessor
 {
     @Invoker("renderShape") @SuppressWarnings("unused")
-    static void NT$invokeRenderShape(PoseStack poseStack, VertexConsumer consumer, VoxelShape shape, double x, double y, double z, float red, float green, float blue, float alpha)
+    static void NT$renderShape(PoseStack poseStack, VertexConsumer consumer, VoxelShape shape, double x, double y, double z, float red, float green, float blue, float alpha)
     {
         throw new AssertionError();
     }

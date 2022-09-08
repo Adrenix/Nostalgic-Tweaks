@@ -4,8 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractSelectionList;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractWidget;
+import mod.adrenix.nostalgic.mixin.widen.AbstractSelectionListAccessor;
+import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -54,7 +54,7 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
     {
         if (this.tabLastSelectedWidget != null)
         {
-            ((IMixinAbstractWidget) this.tabLastSelectedWidget).NT$setFocus(false);
+            ((AbstractWidgetAccessor) this.tabLastSelectedWidget).NT$setFocus(false);
             this.tabLastSelectedWidget = null;
             return true;
         }
@@ -199,42 +199,42 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
             if (Screen.hasShiftDown() && tabLastWidget != null)
             {
                 scrollSelection = tabLastRow;
-                ((IMixinAbstractWidget) tabLastWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabLastWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabLastWidget;
             }
             else if (tabFirstWidget != null)
             {
                 scrollSelection = tabFirstRow;
-                ((IMixinAbstractWidget) tabFirstWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabFirstWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabFirstWidget;
             }
         }
         else
         {
-            ((IMixinAbstractWidget) this.tabLastSelectedWidget).NT$setFocus(false);
+            ((AbstractWidgetAccessor) this.tabLastSelectedWidget).NT$setFocus(false);
 
             if (Screen.hasShiftDown() && tabPreviousWidget != null)
             {
                 scrollSelection = tabPreviousRow;
-                ((IMixinAbstractWidget) tabPreviousWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabPreviousWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabPreviousWidget;
             }
             else if (Screen.hasShiftDown() && tabLastWidget != null)
             {
                 scrollSelection = tabLastRow;
-                ((IMixinAbstractWidget) tabLastWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabLastWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabLastWidget;
             }
             else if (tabNextWidget != null)
             {
                 scrollSelection = tabNextRow;
-                ((IMixinAbstractWidget) tabNextWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabNextWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabNextWidget;
             }
             else if (tabFirstWidget != null)
             {
                 scrollSelection = tabFirstRow;
-                ((IMixinAbstractWidget) tabFirstWidget).NT$setFocus(true);
+                ((AbstractWidgetAccessor) tabFirstWidget).NT$setFocus(true);
                 this.tabLastSelectedWidget = tabFirstWidget;
             }
         }
@@ -406,7 +406,7 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
             int height = this.itemHeight - 4;
             int width = this.getRowWidth();
 
-            if (((IMixinAbstractSelectionList) this).NT$getRenderSelection() && this.isSelectedItem(i))
+            if (((AbstractSelectionListAccessor) this).NT$getRenderSelection() && this.isSelectedItem(i))
             {
                 left = this.x0 + this.width / 2 - width / 2;
                 int startX = this.x0 + this.width / 2 + width / 2;

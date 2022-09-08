@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.widen.IMixinEntity;
+import mod.adrenix.nostalgic.mixin.widen.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -58,9 +58,6 @@ public abstract class EntityMixin
             }
         }
         else
-        {
-            IMixinEntity accessor = (IMixinEntity) instance;
-            accessor.NT$invokeStepSound(pos, state);
-        }
+            ((EntityAccessor) instance).NT$stepSound(pos, state);
     }
 }

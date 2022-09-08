@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ProgressScreen.class)
-public interface IMixinProgressScreen
+public interface ProgressScreenAccessor
 {
     @Accessor("clearScreenAfterStop") boolean NT$getClearScreenAfterStop();
 }

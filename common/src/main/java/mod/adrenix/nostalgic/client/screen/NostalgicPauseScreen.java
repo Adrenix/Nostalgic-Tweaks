@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.realmsclient.RealmsMainScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.widen.IMixinScreen;
+import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
@@ -80,7 +80,7 @@ public class NostalgicPauseScreen extends Screen
         else if (this.layout.equals(TweakVersion.PauseLayout.ADVANCEMENT))
             this.getAdvancementLayout();
 
-        for (Widget widget : ((IMixinScreen) this).NT$getRenderables())
+        for (Widget widget : ((ScreenAccessor) this).NT$getRenderables())
         {
             if (widget instanceof Button button && button.getMessage().getString().equals(this.lan.getString()))
                 ((Button) widget).active = !NetUtil.isMultiplayer();

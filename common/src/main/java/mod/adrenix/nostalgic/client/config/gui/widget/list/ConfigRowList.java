@@ -23,7 +23,7 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
-import mod.adrenix.nostalgic.mixin.widen.IMixinAbstractWidget;
+import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
@@ -806,11 +806,11 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     if (list.setSelection)
                     {
                         if (list.getLastSelection() != null)
-                            ((IMixinAbstractWidget) list.getLastSelection()).NT$setFocus(false);
+                            ((AbstractWidgetAccessor) list.getLastSelection()).NT$setFocus(false);
 
                         list.setSelection = false;
                         list.setLastSelection(widget);
-                        ((IMixinAbstractWidget) widget).NT$setFocus(true);
+                        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
                     }
                 }
 
