@@ -25,6 +25,7 @@ public abstract class PacketUtil
     public static <Packet> void sendToPlayer(ServerPlayer player, Packet packet)
     {
         NostalgicTweaks.NETWORK.sendToPlayer(player, packet);
+        NostalgicTweaks.LOGGER.debug(String.format("(S2C) Sent (%s) to (%s)", packet, player));
     }
 
     /**
@@ -40,6 +41,7 @@ public abstract class PacketUtil
     public static <Packet> void sendToAll(Iterable<ServerPlayer> players, Packet packet)
     {
         NostalgicTweaks.NETWORK.sendToPlayers(players, packet);
+        NostalgicTweaks.LOGGER.debug(String.format("(S2C) Sent (%s) to all players", packet));
     }
 
     /**
@@ -74,7 +76,10 @@ public abstract class PacketUtil
     public static <Packet> void sendToServer(Packet packet)
     {
         if (NostalgicTweaks.isNetworkVerified())
+        {
             NostalgicTweaks.NETWORK.sendToServer(packet);
+            NostalgicTweaks.LOGGER.debug(String.format("(C2S) Sent (%s) to server", packet));
+        }
         else
             NostalgicTweaks.LOGGER.info(String.format("N.T network is unverified - not sending %s", packet.getClass()));
     }
