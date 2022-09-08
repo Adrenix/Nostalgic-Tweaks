@@ -219,7 +219,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
         public boolean displayTpsChart = DefaultConfig.Candy.DISPLAY_TPS_CHART;
-        static { CandyTweak.TPS_CHART.setKey("displayTpsChart"); }
+        static { CandyTweak.DEBUG_TPS_CHART.setKey("displayTpsChart"); }
 
         @TweakClient.Gui.New
         @TweakSide.Client
