@@ -15,7 +15,10 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -330,5 +333,30 @@ public abstract class LevelRendererMixin
         );
 
         callback.cancel();
+    }
+
+    /**
+     * Drops the skylight brightness from water related blocks by 2 levels.
+     * Controlled by the old water lighting tweak.
+     */
+    @Redirect
+    (
+        method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I",
+        at = @At
+        (
+            ordinal = 0,
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBrightness(Lnet/minecraft/world/level/LightLayer;Lnet/minecraft/core/BlockPos;)I"
+        )
+    )
+    private static int NT$onGetLightColor(BlockAndTintGetter instance, LightLayer layer, BlockPos pos)
+    {
+        ClientLevel level = Minecraft.getInstance().level;
+        boolean isWatered = BlockCommonUtil.isWaterRelated(BlockClientUtil.getState(pos)) || BlockCommonUtil.isInWater(level, pos);
+
+        if (ModConfig.Candy.oldWaterLighting() && isWatered)
+            return Mth.clamp(instance.getBrightness(layer, pos) - 2, 0, 15);
+
+        return instance.getBrightness(layer, pos);
     }
 }

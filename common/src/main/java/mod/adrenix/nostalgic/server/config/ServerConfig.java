@@ -26,7 +26,6 @@ public class ServerConfig implements ConfigData
         public int itemMergeLimit = DefaultConfig.Candy.ITEM_MERGE_LIMIT;
         public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
-        public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
     }
 

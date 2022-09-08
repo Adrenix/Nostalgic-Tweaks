@@ -13,6 +13,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BlockServerUtil
 {
+    /**
+     * This is used by the old ladder gaps tweak and checks if a block should be considered climbable by the server.
+     * If there is a single gap between two ladders, then the gap in-between should be considered climbable.
+     * @param level The level to get block states from.
+     * @param state The block state to check if a climbable tag is present.
+     * @param pos The block position of the climbable block.
+     * @return Whether the block above the given position should be considered climbable.
+     */
     public static boolean isClimbable(Level level, BlockState state, BlockPos pos)
     {
         boolean isClimbable = state.is(BlockTags.CLIMBABLE);

@@ -289,7 +289,7 @@ public abstract class ModConfig
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
-        public static boolean oldWaterLighting() { return getSidedBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting, SERVER_CANDY.oldWaterLighting); }
+        public static boolean oldWaterLighting() { return getBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting); }
         public static boolean oldLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.oldLightFlicker); }
         public static boolean disableGamma() { return getBoolTweak(CandyTweak.DISABLE_GAMMA, CANDY.disableGamma); }
 

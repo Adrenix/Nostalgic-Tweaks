@@ -1,4 +1,7 @@
 accessWidener v2 named
+
+accessible class net/minecraft/client/renderer/chunk/RenderChunk
+
 mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
 mutable field net/minecraft/world/inventory/Slot x I
 mutable field net/minecraft/world/inventory/Slot y I

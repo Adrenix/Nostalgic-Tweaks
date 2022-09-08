@@ -131,7 +131,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_NETHER_LIGHTING = true;
         public static final boolean OLD_LEAVES_LIGHTING = true;
         public static final boolean OLD_SMOOTH_LIGHTING = true;
-        public static final boolean OLD_WATER_LIGHTING = false;
+        public static final boolean OLD_WATER_LIGHTING = true;
         public static final boolean DISABLE_GAMMA = true;
 
         // Particle Candy

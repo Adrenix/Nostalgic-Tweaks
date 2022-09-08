@@ -469,7 +469,6 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNetherLighting.@Tooltip": "Bring back the old Nether lighting. This tweak changes the brightness and light shading directions in the Nether.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterLighting": "Old Water Lighting",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterLighting.@Tooltip": "Bring back the old water lighting so that water blocks 3 light levels instead of 1.",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterLighting.@Warning": "This tweak will§c make changes to new chunks§r.\n\nTo change existing chunks, you will need to§e optimize the world§r.\n\nAt the world selection screen, click the §bEdit§r button. Next, click the §bOptimize World§r button.\n\n§cImportant§r, make sure you§a check§r the §dErase cached data§r option.\n\nLastly, click the §bCreate Backup and Load§r button.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting": "Old Leaves Lighting",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting.@Tooltip": "Bring back the old leaves lighting from beta. This will remove ambient occlusion casting on touching non-leaves blocks.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightBrightness": "Old Light Brightness",

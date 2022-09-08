@@ -634,9 +634,9 @@ public class ClientConfig implements ConfigData
         public boolean oldLeavesLighting = DefaultConfig.Candy.OLD_LEAVES_LIGHTING;
         static { CandyTweak.LEAVES_LIGHTING.setKey("oldLeavesLighting"); }
 
-        @TweakSide.Server
+        @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Warning
+        @TweakClient.Run.ReloadChunks
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_BLOCK_CANDY)
         public boolean oldWaterLighting = DefaultConfig.Candy.OLD_WATER_LIGHTING;
         static { CandyTweak.WATER_LIGHTING.setKey("oldWaterLighting"); }
