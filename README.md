@@ -18,17 +18,17 @@ To see the changes made across all versions, please see the [changelog](https://
 
 This mod is also available on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks)!
 
-Nostalgic Tweaks brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.
+Inspired by Exalm's Old Days mod, Nostalgic Tweaks brings back a plethora of Minecraft Alpha, Beta, and Post Release lost or changed gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft Java edition by tweaking the mod to their nostalgic preference.
 
 ![Nostalgic Tweaks Banner](https://i.imgur.com/UfVIKHF.png)
 
 ## Mod Description
-Nostalgic Tweaks in version 1.0 comes with four major categories; Sounds, Eye Candies, Animations, and Swing Speeds. Some of these categories will have their own subcategories that clump together related tweaks. To achieve the most nostalgic experience, it is recommend to have the [Golden Days](https://github.com/PoeticRainbow/golden-days/releases) resource pack by PoeticRainbow installed. The order of your resource packs matters. Make sure Programmer Art is first, followed by the order of resource packs listed in the instructions from the Golden Days resource pack. To achieve the most accurate old fog rendering, you will need to use the Golden Days resource pack since it uses my modified vanilla GLSL fog shader that reverts the cylinder fog back to spherical fog.
+Nostalgic Tweaks in version 1.0 comes with four major categories; Sounds, Eye Candies, Animations, and Swing Speeds. Some of these categories will have their own subcategories that clump together related tweaks. To achieve the most nostalgic experience, it is recommend to use the [Golden Days](https://github.com/PoeticRainbow/golden-days/releases) resource pack by PoeticRainbow.
 
-The mod currently has over 60+ nostalgic tweaks that can all be used in singleplayer. Tweaks that are controlled by the server are tagged as such in the mod's config menu. Multiplayer support is the next priority on the mod's project road map. Until then, tweaks that are controlled by the server will only run on singleplayer or LAN in version 1.0.
+The mod currently has over 70+ nostalgic tweaks that can all be used in singleplayer. Tweaks that are controlled by the server are tagged as such in the mod's config menu. Multiplayer support is the next priority on the mod's project road map. Until then, tweaks that are controlled by the server will only run on singleplayer in version 1.x.x. See the `-multiplayer` appended branches for current server related development. To download beta builds, join the mod's [Discord](https://discordapp.com/invite/jWdfVh3) server.
  
 ## Configuration
-To open the mod's configuration menu, press O for "Old" while in-game. This hotkey can be changed in the vanilla controls menu. Alternatively, if you have [mod menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) installed for Fabric, then you can also access the configuration screen through the Mods button. You can change the page that opens when pressing this hotkey by clicking the Settings button on the mod's settings homepage. The first category that appears when this button is clicked is the General category. Under the Menu Settings subcategory, you can pick which menu that opens by default.
+To open the mod's configuration menu, press O for "Old" while in-game or at the game's title screen. Alternatively, if you have [mod menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) installed for Fabric, then you can also access the configuration screen through the Mods button. You can change the page that opens when pressing this hotkey by clicking the Settings button on the mod's settings homepage. The first category that appears when this button is clicked is the General category. Under the Menu Settings subcategory, you can pick which menu that opens by default. The config hotkey can be also changed in the vanilla controls menu or the mod's General config menu.
 
 The Custom Speeds button on the mod's settings homepage allows a user to define swing speeds for individual items. To change the speed of different categories (e.g., blocks, tools, items, etc.), or to define a global swing speed, access the Settings menu and click on the Swing category button. Further instructions are displayed on the configuration screen.
 
@@ -56,4 +56,5 @@ Not for Nostalgic Tweaks. Use my previous mod OSECA, for versions 1.12, 1.16, an
 Please submit an issue at our Github or Discord.
 
 ### The mod loaded, but some features are not working.
-This means there is a mod conflict. A possible solution is to make sure Nostalgic Tweaks loads last (or first) and see if that fixes the issue.
+This means there is a mod conflict.
+The only solution is to uninstall the conflicting mod, or report the issue so it can be fixed.
