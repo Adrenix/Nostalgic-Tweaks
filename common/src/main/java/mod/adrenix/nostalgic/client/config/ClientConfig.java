@@ -218,13 +218,21 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
+        public boolean displayTpsChart = DefaultConfig.Candy.DISPLAY_TPS_CHART;
+        static { CandyTweak.TPS_CHART.setKey("displayTpsChart"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
         public boolean displayLightLevels = DefaultConfig.Candy.DISPLAY_LIGHT_LEVELS;
         static { CandyTweak.DEBUG_LIGHT.setKey("displayLightLevels"); }
 
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
         public boolean displayPieChart = DefaultConfig.Candy.DISPLAY_PIE_CHART;
         static { CandyTweak.DEBUG_PIE_CHART.setKey("displayPieChart"); }
@@ -232,7 +240,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 6)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_DEBUG_CANDY)
         public boolean oldPieChartBackground = DefaultConfig.Candy.OLD_PIE_CHART_BACKGROUND;
         static { CandyTweak.OLD_PIE_BACKGROUND.setKey("oldPieChartBackground"); }

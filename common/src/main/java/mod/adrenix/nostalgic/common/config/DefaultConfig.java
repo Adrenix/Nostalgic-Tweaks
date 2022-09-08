@@ -59,6 +59,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_PIE_CHART_BACKGROUND = false;
         public static final boolean DISPLAY_LIGHT_LEVELS = false;
         public static final boolean DISPLAY_PIE_CHART = false;
+        public static final boolean DISPLAY_TPS_CHART = false;
         public static final boolean DEBUG_ENTITY_ID = true;
 
         // Interface - Loading & Pause Screen

@@ -32,6 +32,7 @@ public enum CandyTweak implements ITweak
     DEBUG_PIE_CHART,
     DEBUG_ENTITY_ID,
     DEBUG_LIGHT,
+    TPS_CHART,
     OLD_PIE_BACKGROUND,
 
     // Interface Candy - Furnace Screen

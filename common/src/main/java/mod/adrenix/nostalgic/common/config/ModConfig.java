@@ -263,6 +263,7 @@ public abstract class ModConfig
         public static boolean oldPieBackground() { return getBoolTweak(CandyTweak.OLD_PIE_BACKGROUND, CANDY.oldPieChartBackground); }
         public static boolean oldFurnaceScreen() { return getBoolTweak(CandyTweak.FURNACE_SCREEN, CANDY.oldFurnaceScreen); }
         public static boolean displayPieChart() { return getBoolTweak(CandyTweak.DEBUG_PIE_CHART, CANDY.displayPieChart); }
+        public static boolean displayTpsChart() { return getBoolTweak(CandyTweak.TPS_CHART, CANDY.displayTpsChart); }
         public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
         public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
 
