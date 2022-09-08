@@ -8,7 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 
 public abstract class AnimationUtil
 {
-    // Makes arm models parallel to the ground like in the old days.
+    /**
+     * Makes arm models parallel to the ground like in the old days.
+     * @param rightArm The right arm of the model.
+     * @param leftArm The left arm of the model.
+     */
     public static void setStaticArms(ModelPart rightArm, ModelPart leftArm)
     {
         rightArm.xRot = -1.57F;

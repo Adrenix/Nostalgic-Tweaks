@@ -24,11 +24,20 @@ import java.util.function.Function;
 
 public abstract class GuiUtil
 {
-    // A mod screen supplier (defined in mod loaders)
-    @Nullable public static Function<Screen, Screen> modScreen = null;
+    /**
+     * A mod screen supplier (defined in mod loaders)
+     */
+    @Nullable
+    public static Function<Screen, Screen> modScreen = null;
 
     /* Recipe Button Helpers */
 
+    /**
+     * Get a new image button that represents a 'large' recipe button but with a square border.
+     * @param screen The current container screen.
+     * @param parent The original image button to get data from.
+     * @return A new recipe image button as a large square button.
+     */
     public static ImageButton getLargeBook(IMixinAbstractContainerScreen screen, ImageButton parent)
     {
         return new ImageButton
@@ -48,6 +57,12 @@ public abstract class GuiUtil
         );
     }
 
+    /**
+     * Get a new image button that represents a 'small' recipe button as a square with a question mark in it.
+     * @param screen The current container screen.
+     * @param parent The original image button to get data from.
+     * @return A new recipe image button as a small button with a question mark in it.
+     */
     public static ImageButton getSmallBook(IMixinAbstractContainerScreen screen, ImageButton parent)
     {
         return new ImageButton
@@ -67,6 +82,11 @@ public abstract class GuiUtil
         );
     }
 
+    /**
+     * Create a new recipe button instance based on the status of recipe button tweaks.
+     * @param screen The current container screen.
+     * @param book The type of recipe button the user wants.
+     */
     public static void createRecipeButton(IMixinAbstractContainerScreen screen, TweakType.RecipeBook book)
     {
         ImageButton recipeButton = null;
@@ -102,12 +122,22 @@ public abstract class GuiUtil
 
     /* In-game HUD Overlays */
 
+    /**
+     * Calculates where text rendering from the right side of the screen should start.
+     * @param text The text to render.
+     * @return The starting point of where the given text should render.
+     */
     private static int getRightX(String text)
     {
         Minecraft mc = Minecraft.getInstance();
         return mc.getWindow().getGuiScaledWidth() - mc.font.width(text) - 2;
     }
 
+    /**
+     * Gets a color based on the current food status of the player.
+     * @param food The current food level.
+     * @return A color code based on the given food level.
+     */
     private static String getFoodColor(int food)
     {
         if (food <= 2) return "§4";
@@ -118,6 +148,11 @@ public abstract class GuiUtil
         return "§a";
     }
 
+    /**
+     * Gets a color based on a given percentage.
+     * @param percent The current percentage.
+     * @return A color code based on the given percentage.
+     */
     private static String getPercentColor(int percent)
     {
         if (percent < 20) return "§c";
@@ -127,6 +162,10 @@ public abstract class GuiUtil
         return "§a";
     }
 
+    /**
+     * The class will manage and keep track of where given text should render.
+     * This greatly simplifies the rendering process of in-game HUD text.
+     */
     private static class CornerManager
     {
         private final float height = (float) Minecraft.getInstance().getWindow().getGuiScaledHeight();
@@ -147,6 +186,13 @@ public abstract class GuiUtil
         }
     }
 
+    /**
+     * Draws the given text to the in-game HUD.
+     * @param poseStack The current pose stack.
+     * @param text The text to render.
+     * @param corner The corner to render the text to.
+     * @param manager The corner manager for this render cycle.
+     */
     private static void drawText(PoseStack poseStack, String text, TweakType.Corner corner, CornerManager manager)
     {
         Minecraft mc = Minecraft.getInstance();
@@ -154,7 +200,10 @@ public abstract class GuiUtil
         mc.font.drawShadow(poseStack, text, isLeft ? 2.0F : getRightX(text), manager.getAndAdd(corner), 0xFFFFFF);
     }
 
-    // Renders in-game HUD text overlays - game version, food, experience, etc.
+    /**
+     * Renders in-game HUD text overlays - game version, food, experience, etc.
+     * @param poseStack The current pose stack.
+     */
     public static void renderOverlays(PoseStack poseStack)
     {
         Minecraft minecraft = Minecraft.getInstance();
@@ -206,7 +255,17 @@ public abstract class GuiUtil
         }
     }
 
-    // Render an inverse half-armor texture
+    /**
+     * Renders an inverse half-armor texture.
+     * @param poseStack The current pose stack.
+     * @param offset The z-offset.
+     * @param x The x-position.
+     * @param y The y-position.
+     * @param uOffset The u-coordinate (horizontal) on the texture sheet.
+     * @param vOffset The v-coordinate (vertical) on the texture sheet.
+     * @param uWidth The horizontal width of the texture.
+     * @param vHeight The vertical height of the texture.
+     */
     public static void renderInverseArmor(PoseStack poseStack, float offset, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         // Flip the vertex’s u texture coordinates so the half armor texture rendering goes from right to left

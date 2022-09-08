@@ -60,7 +60,7 @@ public abstract class NetUtil
     }
 
     /**
-     * Checks if the loaded world is current a LAN session.
+     * Checks if the loaded world is currently hosting a LAN session.
      * @return Whether the current session is an integrated server.
      */
     public static boolean isLocalHost()

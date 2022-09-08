@@ -15,10 +15,16 @@ import java.util.function.Consumer;
 
 public abstract class ItemServerUtil
 {
-    // Used to disable old food stacking when food is being dropped from a loot table
+    /**
+     * Used to disable old food stacking when food is being dropped from a loot table.
+     */
     public static boolean isDroppingLoot = false;
 
-    // Used to handle differences between forge and fabric when separating merged items
+    /**
+     * Used to handle differences between forge and fabric when separating merged items.
+     * @param consumer The current item stack consumer.
+     * @return A modified consumer if the old item merging tweak is enabled.
+     */
     public static Consumer<ItemStack> explodeStack(Consumer<ItemStack> consumer)
     {
         if (!ModConfig.Candy.oldItemMerging())
@@ -40,7 +46,12 @@ public abstract class ItemServerUtil
         };
     }
 
-    // Used to handle item merging
+    /**
+     * Used to handle item merging with similar neighbors nearby.
+     * @param callback The mixin callback.
+     * @param entities A list of entities near the given <code>entity</code>.
+     * @param entity The entity to check for nearby neighbors.
+     */
     public static void mergeWithNeighbors(CallbackInfo callback, List<ItemEntity> entities, ItemEntity entity)
     {
         boolean isBelowLimit = entities.size() + 1 < ModConfig.Candy.getItemMergeLimit() && entity.getItem().getCount() == 1;

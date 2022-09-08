@@ -22,11 +22,21 @@ import net.minecraft.world.level.block.Blocks;
 
 public abstract class PlayerServerUtil
 {
+    /**
+     * Utility method for {@link PlayerServerUtil#setCreativeHotbar(ServerPlayer)}.
+     * @param player The server player to modify.
+     * @param slot The slot to place the given block in.
+     * @param block The block to place in the given slot.
+     */
     private static void add(ServerPlayer player, int slot, Block block)
     {
         player.getInventory().add(slot, block.asItem().getDefaultInstance());
     }
 
+    /**
+     * Changes the player's hotbar in creative mode based on the defined hotbar version.
+     * @param player A server player instance.
+     */
     public static void setCreativeHotbar(ServerPlayer player)
     {
         TweakVersion.Hotbar hotbar = ModConfig.Candy.getHotbar();
@@ -63,6 +73,13 @@ public abstract class PlayerServerUtil
         }
     }
 
+    /**
+     * Allows squids to be milked by players with empty buckets in their hand.
+     * @param player A player instance.
+     * @param hand The current interaction hand.
+     * @param entityToInteractOn The entity the player is interacting with.
+     * @return A <code>SUCCESS</code> code if a squid was milked, <code>PASS</code> otherwise.
+     */
     public static InteractionResult milkSquid(Player player, InteractionHand hand, Entity entityToInteractOn)
     {
         ItemStack holding = player.getItemInHand(hand);

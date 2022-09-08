@@ -2,6 +2,11 @@ package mod.adrenix.nostalgic.util.common.log;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 
+/**
+ * This enumeration is only used in development environments since the terminal supports ANSI coloring.
+ * Production builds will not be using log colors.
+ */
+
 public enum LogColor
 {
     BLACK("\u001B[0;30m", "0"),          // Black §0
@@ -29,15 +34,56 @@ public enum LogColor
 
     RESET("\u001B[m", "r");              // Reset §r
 
+    /**
+     * The ANSI color string for this enumeration.
+     */
+    private final String ansi;
+
+    /**
+     * The Minecraft color code for this enumeration.
+     */
+    private final String mc;
+
+    /**
+     * Color enumeration.
+     * @param ansi The ANSI color string.
+     * @param mc The Minecraft color code.
+     */
     LogColor(String ansi, String mc)
     {
         this.ansi = ansi;
         this.mc = mc;
     }
 
-    public static String apply(LogColor color, String to) { return color + to + LogColor.RESET; }
-    private final String ansi;
-    private final String mc;
-    public String convert(String in) { return NostalgicTweaks.isDevelopmentEnvironment() ? in.replaceAll("§" + this.mc, this.ansi) : in; }
-    @Override public String toString() { return NostalgicTweaks.isDevelopmentEnvironment() ? this.ansi : ""; }
+    /**
+     * Applies a log color to the given string.
+     * @param color The desired color.
+     * @param to The string to apply the color to.
+     * @return A modified string with color applied and appended <code>RESET</code> code.
+     */
+    public static String apply(LogColor color, String to)
+    {
+        return color + to + LogColor.RESET;
+    }
+
+    /**
+     * Converts Minecraft color codes to ANSI color strings when the mod is in a development environment.
+     * @param in The string to modify.
+     * @return A modified string with Minecraft color codes replaced with ANSI strings.
+     */
+    public String convert(String in)
+    {
+        return NostalgicTweaks.isDevelopmentEnvironment() ? in.replaceAll("§" + this.mc, this.ansi) : in;
+    }
+
+    /**
+     * An override of the <code>toString</code> method that replaces ANSI strings with empty strings if the mod is
+     * loaded in a production environment.
+     * @return A modified string based on what environment the mod is loaded in.
+     */
+    @Override
+    public String toString()
+    {
+        return NostalgicTweaks.isDevelopmentEnvironment() ? this.ansi : "";
+    }
 }

@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.util.client;
 
 import net.minecraft.client.Minecraft;
-
 import java.util.ArrayList;
 
 /**
@@ -18,18 +17,32 @@ import java.util.ArrayList;
 
 public abstract class RunUtil
 {
-    // On-save Runnables
+    /**
+     * On-save Runnables:
+     *
+     * This is an array list of functions to run after the user updates the config values saved on disk.
+     * The standard runnables are defined in the static block below. Other runnables are defined elsewhere.
+     */
     public static final ArrayList<Runnable> onSave = new ArrayList<>();
 
-    // Reload States
+    /* Standard Reload States */
 
+    /**
+     * This flag controls whether chunks should be reloaded after the config has been saved.
+     * To prevent this from occurring after every save, only tweaks that require chunk reloading will toggle this flag.
+     */
     public static boolean reloadChunks = false;
+
+    /**
+     * This flag controls whether the game's resources should be reloaded after the config has been saved.
+     * To prevent this from occurring after every save, only tweaks that require reloaded resource will toggle this flag.
+     */
     public static boolean reloadResources = false;
 
+    /* Standard Reload Runnable */
     static
     {
-        onSave.add(() ->
-        {
+        onSave.add(() -> {
             Minecraft minecraft = Minecraft.getInstance();
 
             if (reloadResources)

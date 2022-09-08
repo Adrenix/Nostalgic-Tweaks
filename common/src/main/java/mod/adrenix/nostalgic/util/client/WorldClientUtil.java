@@ -18,13 +18,22 @@ import net.minecraft.util.Mth;
 
 public abstract class WorldClientUtil
 {
-    // Determines where the sun/moon should be rotated when rendering it.
+    /**
+     * Determines where the sun/moon should be rotated when rendering it.
+     * @param vanilla The vanilla rotation of the sun/moon.
+     * @return The new value to use when rotating the sun/moon.
+     */
     public static float getSunriseRotation(float vanilla)
     {
         return ModConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
     }
 
-    // Builds a sky disc for the far plane.
+    /**
+     * Builds a sky disc for the far plane.
+     * @param builder The current buffer builder.
+     * @param y The y-level of the sky disc.
+     * @return The finished rendered buffer.
+     */
     public static BufferBuilder.RenderedBuffer buildSkyDisc(BufferBuilder builder, float y)
     {
         float x = Math.signum(y) * 512.0F;
@@ -37,11 +46,19 @@ public abstract class WorldClientUtil
         return builder.end();
     }
 
-    // Caches the model view matrix and the projection matrix so the sky can be overlaid with the blue void correctly.
+    /**
+     * Caches the blue model view matrix so the sky can be overlaid with the blue void correctly.
+     */
     public static Matrix4f blueModelView = new Matrix4f();
+
+    /**
+     * Caches the blue projection matrix so the sky can be overlaid with the blue void correctly.
+     */
     public static Matrix4f blueProjection = new Matrix4f();
 
-    // Creates the correct blue color for the void based on the environment.
+    /**
+     * Creates the correct blue void color based on the level's current environment.
+     */
     public static void setBlueVoidColor()
     {
         Minecraft minecraft = Minecraft.getInstance();

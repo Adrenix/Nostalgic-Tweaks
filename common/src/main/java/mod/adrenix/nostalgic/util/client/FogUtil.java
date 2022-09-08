@@ -24,19 +24,55 @@ import net.minecraft.world.level.material.FogType;
 
 public abstract class FogUtil
 {
+    /**
+     * Checks of there is a mob present that is changing the fog.
+     */
     public static boolean isMobEffectActive = false;
 
-    public static boolean isOverworld(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.OVERWORLD; }
+    /**
+     * Checks if the camera is currently in the overworld.
+     * @param camera The game's camera.
+     * @return Whether the camera entity is in the overworld dimension.
+     */
+    public static boolean isOverworld(Camera camera)
+    {
+        return camera.getEntity().getLevel().dimension() == Level.OVERWORLD;
+    }
 
-    public static boolean isNether(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.NETHER; }
+    /**
+     * Checks if the camera is currently in the nether.
+     * @param camera The game's camera.
+     * @return Whether the camera entity is in the nether dimension.
+     */
+    public static boolean isNether(Camera camera)
+    {
+        return camera.getEntity().getLevel().dimension() == Level.NETHER;
+    }
 
-    private static boolean isFluidFog(Camera camera) { return camera.getFluidInCamera() != FogType.NONE; }
+    /**
+     * Checks if the camera is in some type of fluid.
+     * @param camera The game's camera.
+     * @return Whether the camera is within a fluid like water or lava.
+     */
+    private static boolean isFluidFog(Camera camera)
+    {
+        return camera.getFluidInCamera() != FogType.NONE;
+    }
 
+    /**
+     * Checks if the camera entity currently has the blindness effect.
+     * @param camera The game's camera.
+     * @return Whether the camera entity has a blindness effect applied.
+     */
     private static boolean isEntityBlind(Camera camera)
     {
         return camera.getEntity() instanceof LivingEntity && ((LivingEntity) camera.getEntity()).hasEffect(MobEffects.BLINDNESS);
     }
 
+    /**
+     * Gets a modified render distance to help simulate the old fog rendering.
+     * @return The game's render distance multiplied by a modifier based on the current distance.
+     */
     private static int getRenderDistance()
     {
         int renderDistance = Minecraft.getInstance().options.renderDistance().get();
@@ -44,6 +80,10 @@ public abstract class FogUtil
         return renderDistance * multiplier;
     }
 
+    /**
+     * Changes the game's terrain fog starting and ending points.
+     * @param fogMode The fog mode that is rendering.
+     */
     private static void setTerrainFog(FogRenderer.FogMode fogMode)
     {
         if (fogMode != FogRenderer.FogMode.FOG_TERRAIN)
@@ -54,6 +94,10 @@ public abstract class FogUtil
         RenderSystem.setShaderFogEnd(distance * 0.8F);
     }
 
+    /**
+     * Changes the game's horizon fog starting and ending points.
+     * @param fogMode The fog mode that is rendering.
+     */
     private static void setHorizonFog(FogRenderer.FogMode fogMode)
     {
         if (fogMode != FogRenderer.FogMode.FOG_SKY)
@@ -64,6 +108,10 @@ public abstract class FogUtil
         RenderSystem.setShaderFogEnd(distance);
     }
 
+    /**
+     * Renders fog based on the current state of fog related tweaks.
+     * @param fogMode The fog mode that is rendering.
+     */
     private static void renderFog(FogRenderer.FogMode fogMode)
     {
         boolean isTerrain = ModConfig.Candy.oldTerrainFog();
@@ -79,12 +127,21 @@ public abstract class FogUtil
             RenderSystem.setShaderFogShape(FogShape.SPHERE);
     }
 
+    /**
+     * Checks if the fog is currently being modified by another process such as a fluid or blindness effect.
+     * @param camera The game's camera.
+     * @return Whether the fog is currently being modified by a fluid, blindness, not overworld, or active mob effect.
+     */
     private static boolean isFogModified(Camera camera)
     {
         return isFluidFog(camera) || isEntityBlind(camera) || !isOverworld(camera) || isMobEffectActive;
     }
 
-    // Overrides fog in the overworld
+    /**
+     * Overrides fog in the overworld.
+     * @param camera The game's camera.
+     * @param fogMode The fog mode currently being rendered.
+     */
     public static void setupFog(Camera camera, FogRenderer.FogMode fogMode)
     {
         if (isMobEffectActive)
@@ -101,7 +158,11 @@ public abstract class FogUtil
         }
     }
 
-    // Overrides fog in the nether
+    /**
+     * Overrides fog in the nether
+     * @param camera The game's camera.
+     * @param fogMode The fog mode currently being rendered.
+     */
     public static void setupNetherFog(Camera camera, FogRenderer.FogMode fogMode)
     {
         if (!ModConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
@@ -122,42 +183,109 @@ public abstract class FogUtil
     {
         /* Interpolation Trackers */
 
+        /**
+         * This initializer is changed when entering/exiting a world.
+         * An active initialization state signifies that we can start modifying interpolation values.
+         */
         private static boolean isInitialized = false;
 
+        /**
+         * The fog color when lighten/darken based on the camera's received skylight and y-level.
+         */
         private static double currentBrightness;
+
+        /**
+         * The fog starting position will shift based on surrounding block light and y-level.
+         */
         private static float currentFogStart;
+
+        /**
+         * The fog ending position will shift based on surrounding block light and y-level.
+         */
         private static float currentFogEnd;
+
+        /**
+         * This field will shift the sun/moon and sky fog transparency based on cave/void fog environment changes.
+         */
         private static float currentCelestial;
+
+        /**
+         * This field will shift the star buffer transparency based on cave/void fog environment changes.
+         */
         private static float currentStarAlpha;
+
+        /**
+         * This field tells the interpolation function the final transparency value for the star buffer.
+         */
         private static float targetStarAlpha;
+
+        /**
+         * This field tells the interpolation function the stopping point for where fog should start.
+         */
         private static float targetFogStart;
+
+        /**
+         * This field tells the interpolation function the stopping point for where fog should end.
+         */
         private static float targetFogEnd;
+
+        /**
+         * This field tells the interpolation function how fast it should transition the fog start/end positions.
+         * Using <code>Float.MAX_VALUE</code> will force an immediate shift.
+         */
         private static float fogSpeedShift;
+
+        /**
+         * This field tells the interpolation function how fast it should transition star transparency.
+         * Using <code>Float.MAX_VALUE</code> will force an immediate shift.
+         */
         private static float starSpeedShift;
+
+        /**
+         * This field tells the interpolation function how fast it should transition the fog color.
+         * Using <code>Float.MAX_VALUE</code> will force an immediate shift.
+         */
         private static float colorSpeedShift;
+
+        /**
+         * This field tells the interpolation function how fast it should transition sun/moon and sky fog transparency.
+         * Using <code>Float.MAX_VALUE</code> will force an immediate shift.
+         */
         private static float celestialSpeedShift;
+
+        /**
+         * This field tells the interpolation function how fast it should transition fog brightness.
+         * Using <code>Float.MAX_VALUE</code> will force an immediate shift.
+         */
         private static float brightnessSpeedShift;
 
+        /**
+         * This is the ending point for all interpolation speed shifts.
+         * The longer a player stays above the ground the faster transition speeds will get.
+         */
         private static final float MAX_SHIFT = 1.0e5F;
+
+        /* Void, Fog, and Sky Color Tracking  */
+
         private static final float[] CURRENT_VOID_RGB = new float[] { 0.0F, 0.0F, 0.0F };
-        private static final float[] CURRENT_FOG_RGB = new float[] { 0.0F, 0.0F, 0.0F };
-        private static final float[] CURRENT_SKY_RGB = new float[] { 0.0F, 0.0F, 0.0F };
-        private static final float[] TARGET_SKY_RGB = new float[] { 0.0F, 0.0F, 0.0F };
-        private static final float[] TARGET_FOG_RGB = new float[] { 0.0F, 0.0F, 0.0F };
-        private static final float[] TARGET_VOID_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] CURRENT_FOG_RGB  = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] CURRENT_SKY_RGB  = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_SKY_RGB   = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_FOG_RGB   = new float[] { 0.0F, 0.0F, 0.0F };
+        private static final float[] TARGET_VOID_RGB  = new float[] { 0.0F, 0.0F, 0.0F };
 
-        /* Interpolation Setters/Getters */
+        /* Void, Fog, and Sky Color Setters/Getters */
 
-        public static void setSkyRed(float red) { TARGET_SKY_RGB[0] = red; }
+        public static void setSkyRed(float red)     { TARGET_SKY_RGB[0] = red; }
         public static void setSkyGreen(float green) { TARGET_SKY_RGB[1] = green; }
-        public static void setSkyBlue(float blue) { TARGET_SKY_RGB[2] = blue; }
+        public static void setSkyBlue(float blue)   { TARGET_SKY_RGB[2] = blue; }
 
-        public static float getSkyRed() { return CURRENT_SKY_RGB[0]; }
+        public static float getSkyRed()   { return CURRENT_SKY_RGB[0]; }
         public static float getSkyGreen() { return CURRENT_SKY_RGB[1]; }
-        public static float getSkyBlue() { return CURRENT_SKY_RGB[2]; }
+        public static float getSkyBlue()  { return CURRENT_SKY_RGB[2]; }
 
         public static void setFogStart(float start) { targetFogStart = start; }
-        public static void setFogEnd(float end) { targetFogEnd = end; }
+        public static void setFogEnd(float end)     { targetFogEnd = end; }
 
         public static void setFogRGB(float r, float g, float b)
         {
@@ -174,6 +302,7 @@ public abstract class FogUtil
             TARGET_VOID_RGB[2] = b;
         }
 
+        /* Star & Celestial Setters/Getters */
 
         public static void setStarAlpha(float value) { targetStarAlpha = value; }
         public static float getStarAlpha() { return currentStarAlpha; }
@@ -181,8 +310,18 @@ public abstract class FogUtil
 
         /* Altitude Speed Shift */
 
+        /**
+         * This enumeration tells the speed function which interpolation speed to shift.
+         * Separating out the shift speeds is required to prevent visual artifacts.
+         */
         private enum Shift { STAR, COLOR, FOG, CELESTIAL, BRIGHTNESS }
 
+        /**
+         * Get how fast interpolation should go.
+         * @param modifier Used to slow down or speed up the current delta frame time.
+         * @param shift A shift enumeration that tells this function which speed to change.
+         * @return The speed of interpolation.
+         */
         private static float getSpeed(float modifier, Shift shift)
         {
             Minecraft minecraft = Minecraft.getInstance();
@@ -231,8 +370,11 @@ public abstract class FogUtil
             return modifier * minecraft.getDeltaFrameTime() * speedShift;
         }
 
-        /* Cave/Void Fog Methods */
+        /* Cave/Void Fog Rendering */
 
+        /**
+         * Set the current transparency for the sun/moon and sky fog.
+         */
         public static void setCelestialTransparency()
         {
             final float[] RGB = RenderSystem.getShaderColor();
@@ -241,6 +383,10 @@ public abstract class FogUtil
                 RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], FogUtil.VoidFog.getCelestial());
         }
 
+        /**
+         * This checks if a player is below a level's horizon height.
+         * @return Whether the player is currently below the level's horizon height.
+         */
         public static boolean isBelowHorizon()
         {
             Player player = Minecraft.getInstance().player;
@@ -252,11 +398,21 @@ public abstract class FogUtil
             return player.getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level) < 0.0D;
         }
 
+        /**
+         * Get an entity's current y-level position.
+         * @param entity The entity to get a y-level from.
+         * @return The entity's current y-level as a <code>double</code>.
+         */
         public static double getYLevel(Entity entity)
         {
             return entity.getY() - entity.level.getMinBuildHeight();
         }
 
+        /**
+         * Checks if cave/void fog should be rendered. This is controlled by tweaks and other level environmental factors.
+         * @param camera The game's camera.
+         * @return Whether cave/void fog should render.
+         */
         public static boolean isIgnored(Camera camera)
         {
             return ModConfig.Candy.disableVoidFog() || ModConfig.Candy.getVoidFogStart() < getYLevel(camera.getEntity()) + 0.5D ||
@@ -265,16 +421,31 @@ public abstract class FogUtil
             ;
         }
 
+        /**
+         * Used by various interpolation setters to check if cave/void fog is currently rendering or should render.
+         * @return If cave/void fog is enabled and initialized.
+         */
         public static boolean isRendering()
         {
             return !ModConfig.Candy.disableVoidFog() && isInitialized;
         }
 
+        /**
+         * Gets the current skylight above the given entity.
+         * @param entity The entity to check.
+         * @return The current skylight value (0-15) above the given entity.
+         */
         public static int getSkylight(Entity entity)
         {
             return entity.level.getBrightness(LightLayer.SKY, entity.blockPosition());
         }
 
+        /**
+         * Gets the greatest brightness value from block light or skylight.
+         * The encroachment tweak will add onto the calculated brightness.
+         * @param entity The entity to check.
+         * @return The greatest brightness value (0-15) emitted from block light or skylight.
+         */
         private static int getLocalBrightness(Entity entity)
         {
             int encroachment = (int) ((1 - (ModConfig.Candy.getVoidFogEncroach() / 100.0F)) * 15);
@@ -286,6 +457,11 @@ public abstract class FogUtil
             return Mth.clamp(brightness + encroachment, 0, 15);
         }
 
+        /**
+         * Based on current render distance and modified by local brightness and y-level starting position.
+         * @param entity The entity to get brightness and y-level data from.
+         * @return A cave/void fog distance value based on local brightness and the player's y-level.
+         */
         private static float getDistance(Entity entity)
         {
             float renderDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
@@ -294,13 +470,21 @@ public abstract class FogUtil
             return fogDistance >= 1 ? renderDistance : (float) Mth.clamp(100.0D * Math.pow(Math.max(fogDistance, 0.0D), 2.0D), 5.0D, renderDistance);
         }
 
+        /**
+         * The change in cave/void fog distance based on y-level.
+         * @param entity The entity to get y-level data from.
+         * @return A delta value (0.0F-1.0F) based on where cave/void fog should start and the player's current y-level.
+         */
         private static float getDistanceDelta(Entity entity)
         {
-            float distanceOffset = 15.0F;
-            float distanceEnd = ModConfig.Candy.getVoidFogStart() - distanceOffset;
-            return Math.max(1.0F, Math.min(1.0F, (1.0F - ((float) getYLevel(entity) - distanceEnd) / distanceOffset)));
+            return Math.max(1.0F, Math.min(1.0F, (1.0F - ((float) getYLevel(entity) - ModConfig.Candy.getVoidFogStart() - 15.0F) / 15.0F)));
         }
 
+        /**
+         * Checks if the current fog is 'thick' such as the fog generated by a warden.
+         * @param camera The game's camera.
+         * @return Whether the current fog should be considered 'thick'.
+         */
         private static boolean isThick(Camera camera)
         {
             Minecraft mc = Minecraft.getInstance();
@@ -313,16 +497,33 @@ public abstract class FogUtil
             return mc.level.effects().isFoggyAt(x, y) || mc.gui.getBossOverlay().shouldCreateWorldFog();
         }
 
+        /**
+         * Gets where cave/void fog should start based on fog thickness and current cave/void fog distance.
+         * @param camera The game's camera.
+         * @param distance The calculated distance based on local brightness and y-level
+         * @return Where cave/void fog should start.
+         */
         private static float getFogStart(Camera camera, float distance)
         {
             return isThick(camera) ? distance * 0.05F : distance * Math.max(0.0F, 0.55F * (1.0F - (distance - 5.0F) / 127.0F));
         }
 
+        /**
+         * Gets where cave/void fog should end based on fog thickness and current cave/void fog distance.
+         * @param camera The game's camera.
+         * @param distance The calculated distance based on local brightness and y-level.
+         * @return Where cave/void fog should end.
+         */
         private static float getFogEnd(Camera camera, float distance)
         {
             return isThick(camera) ? Math.min(distance, 192.0F) / 2.0F : distance;
         }
 
+        /**
+         * Gets how bright the cave/void fog color should be based on skylight and y-level.
+         * @param entity The entity to get y-level and skylight data from.
+         * @return The current interpolation brightness value.
+         */
         private static double getBrightness(Entity entity)
         {
             double brightness = Math.max(15.0D - (ModConfig.Candy.getVoidFogStart() - getYLevel(entity)), getSkylight(entity)) / 15.0F;
@@ -330,6 +531,10 @@ public abstract class FogUtil
             return currentBrightness;
         }
 
+        /**
+         * Changes fog, sky, and void colors.
+         * @param camera The game's camera.
+         */
         public static void setColor(Camera camera)
         {
             final float SPEED = getSpeed(0.005F, Shift.COLOR);
@@ -360,8 +565,19 @@ public abstract class FogUtil
             RenderSystem.setShaderFogColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2]);
         }
 
-        public static void reset() { isInitialized = false; }
+        /**
+         * Resets the interpolation tracker initializer.
+         * This occurs when the player exits a world.
+         */
+        public static void reset()
+        {
+            isInitialized = false;
+        }
 
+        /**
+         * Initializes interpolation values to an acceptable starting point when joining a world.
+         * @param camera The game's camera.
+         */
         private static void initialize(Camera camera)
         {
             if (isInitialized)
@@ -385,6 +601,10 @@ public abstract class FogUtil
             isInitialized = true;
         }
 
+        /**
+         * Renders cave/void fog.
+         * @param camera The game's camera.
+         */
         private static void render(Camera camera)
         {
             Entity entity = camera.getEntity();
