@@ -87,8 +87,8 @@ public class TweakServerCache<T>
     /**
      * This field is used by both the client and server.
      *
-     * The client changes this field at will by the user in the config menu.
-     * It will not always be in sync with the server.
+     * The client can change this field within the config menu.
+     * Therefore, this field will not always be in sync with the server.
      *
      * The server uses this field to ensure values received from clients matches this cache.
      */
