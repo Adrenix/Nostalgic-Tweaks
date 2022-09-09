@@ -150,12 +150,12 @@ public abstract class FogUtil
         if (!isFogModified(camera))
             renderFog(fogMode);
 
-        if (!ModConfig.Candy.disableVoidFog() && ModConfig.isModEnabled() && fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
-        {
-            VoidFog.setFogStart(RenderSystem.getShaderFogStart());
-            VoidFog.setFogEnd(RenderSystem.getShaderFogEnd());
-            VoidFog.render(camera);
-        }
+        if (ModConfig.Candy.disableVoidFog() || !ModConfig.isModEnabled() || !fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
+            return;
+
+        VoidFog.setFogStart(RenderSystem.getShaderFogStart());
+        VoidFog.setFogEnd(RenderSystem.getShaderFogEnd());
+        VoidFog.render(camera);
     }
 
     /**
@@ -427,7 +427,7 @@ public abstract class FogUtil
          */
         public static boolean isRendering()
         {
-            return !ModConfig.Candy.disableVoidFog() && isInitialized;
+            return !ModConfig.Candy.disableVoidFog() && ModConfig.isModEnabled() && isInitialized;
         }
 
         /**
