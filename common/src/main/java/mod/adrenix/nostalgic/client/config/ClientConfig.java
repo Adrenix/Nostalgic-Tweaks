@@ -32,6 +32,7 @@ public class ClientConfig implements ConfigData
     @TweakSide.Client
     @TweakSide.EntryStatus(status = StatusType.LOADED)
     @TweakClient.Gui.NoTooltip
+    @TweakClient.Run.ReloadResources
     public boolean isModEnabled = true;
 
     @TweakSide.Ignore
@@ -940,6 +941,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.DisabledBoolean(value = true)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_FOG_CANDY)
         public boolean disableVoidFog = DefaultConfig.Candy.DISABLE_VOID_FOG;

@@ -150,7 +150,7 @@ public abstract class FogUtil
         if (!isFogModified(camera))
             renderFog(fogMode);
 
-        if (!ModConfig.Candy.disableVoidFog() && fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
+        if (!ModConfig.Candy.disableVoidFog() && ModConfig.isModEnabled() && fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
         {
             VoidFog.setFogStart(RenderSystem.getShaderFogStart());
             VoidFog.setFogEnd(RenderSystem.getShaderFogEnd());
