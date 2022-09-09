@@ -480,6 +480,7 @@ public class ConfigScreen extends Screen
         }
 
         RunUtil.onSave.forEach(Runnable::run);
+        NostalgicTweaks.LOGGER.debug(String.format("Ran (%s) onSave functions", RunUtil.onSave.size()));
     }
 
     /* Rendering */

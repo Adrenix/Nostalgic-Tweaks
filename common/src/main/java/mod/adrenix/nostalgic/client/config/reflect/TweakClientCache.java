@@ -51,14 +51,38 @@ public class TweakClientCache<T>
         );
     }
 
+    /**
+     * Get a hash map of all tweaks.
+     * @return A map of tweak keys to their client cached value.
+     */
     public static HashMap<String, TweakClientCache<?>> all() { return cache; }
 
+    /**
+     * Get a tweak.
+     * @param group The group a tweak is associated with.
+     * @param key The key used to identify the tweak.
+     * @return The current tweak value kept in the cache.
+     * @param <T> The type associated with the tweak.
+     * @throws AssertionError Will throw if the tweak is not available in the cache.
+     */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
-    public static <T> TweakClientCache<T> get(GroupType group, String key)
+    public static <T> TweakClientCache<T> get(GroupType group, String key) throws AssertionError
     {
-        return (TweakClientCache<T>) cache.get(generateKey(group, key));
+        TweakClientCache<T> instance = (TweakClientCache<T>) cache.get(generateKey(group, key));
+
+        if (instance == null)
+            throw new AssertionError(String.format("Tweak [group=%s, key=%s] was not found in client-cache", group, key));
+
+        return instance;
     }
 
+    /**
+     * An overload method for {@link TweakClientCache#get(GroupType, String)}.
+     * This will <b>throw</b> an {@link AssertionError} if the tweak is not in the cache.
+     * @param tweak The tweak to fetch from cache.
+     * @return The current value kept in the cache.
+     * @param <T> The type associated with the tweak.
+     */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakClientCache<T> get(ITweak tweak)
     {

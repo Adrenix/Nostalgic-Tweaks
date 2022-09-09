@@ -24,7 +24,7 @@ public class TweakServerCache<T>
 {
     /**
      * This cache keeps a record of server only tweaks reducing the amount of tweaks to cycle through when the server
-     * sends current config values to the client.
+     * sends current config values to the client. Dynamic tweaks will also be kept in this cache.
      *
      * It will reference the default client config to see which tweaks are currently marked as server controlled.
      */
@@ -59,14 +59,31 @@ public class TweakServerCache<T>
         }
     }
 
+    /**
+     * Get a hash map of all server-only tweaks.
+     * @return A map of tweak keys to their server cached value.
+     */
     public static HashMap<String, TweakServerCache<?>> all() { return cache; }
 
-    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
+    /**
+     * Get a server-side tweak.
+     * @param group The group a tweak is associated with.
+     * @param key The key used to identify the tweak.
+     * @return The current tweak value kept in the cache.
+     * @param <T> The type associated with the tweak.
+     */
+    @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks and asserted, their returned type is assured.
     public static <T> TweakServerCache<T> get(GroupType group, String key)
     {
         return (TweakServerCache<T>) cache.get(generateKey(group, key));
     }
 
+    /**
+     * An overload method for {@link TweakServerCache#get(GroupType, String)}.
+     * @param tweak The tweak to fetch from cache.
+     * @return The current value kept in the server tweak cache.
+     * @param <T> The type associated with the tweak.
+     */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakServerCache<T> get(ITweak tweak)
     {
