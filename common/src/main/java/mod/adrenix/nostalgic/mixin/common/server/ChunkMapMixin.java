@@ -19,6 +19,6 @@ public abstract class ChunkMapMixin
     private static void NT$onIsChunkRangeBorder(int chunkX, int chunkZ, int secX, int secZ, int viewDistance, CallbackInfoReturnable<Boolean> callback)
     {
         if (ModConfig.Candy.oldSquareBorder())
-            callback.setReturnValue(WorldServerUtil.squareDistance(chunkX, chunkZ, secX, secZ) <= viewDistance);
+            callback.setReturnValue(WorldServerUtil.isChunkInRange(chunkX, chunkZ, secX, secZ, viewDistance));
     }
 }

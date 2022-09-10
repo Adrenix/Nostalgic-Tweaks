@@ -8,17 +8,18 @@ package mod.adrenix.nostalgic.util.server;
 public abstract class WorldServerUtil
 {
     /**
-     * Checks if a chunk is on the edge of a square border render distance.
+     * Checks if the given chunk x,z and section x,z are within the defined view distance.
      * @param chunkX The x-position of the chunk.
      * @param chunkZ The y-position of the chunk.
      * @param secX The x-position of the section.
      * @param secZ The y-position of the section.
+     * @param viewDistance The current viewing distance.
      * @return If the given positions are within the defined chessboard.
      */
-    public static int squareDistance(int chunkX, int chunkZ, int secX, int secZ)
+    public static boolean isChunkInRange(int chunkX, int chunkZ, int secX, int secZ, int viewDistance)
     {
-        int diffX = chunkX - secX;
-        int diffY = chunkZ - secZ;
-        return Math.max(Math.abs(diffX), Math.abs(diffY));
+        int dx = Math.max(0, Math.abs(chunkX - secX) - 1);
+        int dz = Math.max(0, Math.abs(chunkZ - secZ) - 1);
+        return Math.max(dx, dz) <= viewDistance;
     }
 }
