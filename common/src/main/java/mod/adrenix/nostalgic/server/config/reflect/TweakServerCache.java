@@ -87,6 +87,9 @@ public class TweakServerCache<T>
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakServerCache<T> get(ITweak tweak)
     {
+        if (tweak.getSide() == NostalgicTweaks.Side.CLIENT)
+            return null;
+
         if (tweak.getServerCache() == null)
             tweak.setServerCache(get(tweak.getGroup(), tweak.getKey()));
         return (TweakServerCache<T>) tweak.getServerCache();

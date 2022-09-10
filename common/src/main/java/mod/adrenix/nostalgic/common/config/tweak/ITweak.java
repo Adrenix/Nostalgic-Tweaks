@@ -19,10 +19,12 @@ public interface ITweak
     String getKey();
     GroupType getGroup();
 
+    NostalgicTweaks.Side getSide();
     TweakClientCache<?> getClientCache();
     TweakServerCache<?> getServerCache();
     void setServerCache(TweakServerCache<?> cache);
     void setClientCache(TweakClientCache<?> cache);
+    void setSide(NostalgicTweaks.Side side);
 
     void setKey(String key);
     void setLoaded(boolean state);
@@ -36,13 +38,16 @@ public interface ITweak
         TweakClientCache<Object> clientCache = TweakClientCache.get(this);
         TweakServerCache<Object> serverCache = TweakServerCache.get(this);
 
+        this.setSide(clientCache != null && serverCache == null ? NostalgicTweaks.Side.CLIENT : NostalgicTweaks.Side.SERVER);
+
         if (NostalgicTweaks.isClient())
         {
             if (clientCache != null)
                 clientCache.setStatus(StatusType.LOADED);
             else
             {
-                String fail = String.format(
+                String fail = String.format
+                (
                     "[%s] Unable to set status of client tweak '%s' in tweak group '%s'.\nThis is a fault of the mod dev. Please report this key mismatch!",
                     NostalgicTweaks.MOD_NAME,
                     this.getKey(),
@@ -59,7 +64,8 @@ public interface ITweak
                 serverCache.setStatus(StatusType.LOADED);
             else if (clientCache == null)
             {
-                String fail = String.format(
+                String fail = String.format
+                (
                     "[%s] Unable to set status of server tweak '%s' in tweak group '%s'.\nThis is a fault of the mod dev. Please report this key mismatch!",
                     NostalgicTweaks.MOD_NAME,
                     this.getKey(),

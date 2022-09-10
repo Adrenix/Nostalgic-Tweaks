@@ -25,8 +25,10 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * This cache is used exclusively by the client. The server should never interface with this class.
- * Therefore, using client code here is safe.
+ * This cache is used exclusively by the client. The server should not interface with this class, the server may
+ * however access the client hashmap cache.
+ *
+ * Therefore, using vanilla client code here is safe.
  */
 
 public class TweakClientCache<T>
