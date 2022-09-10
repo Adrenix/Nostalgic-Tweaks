@@ -10,7 +10,8 @@
     "world.item.ItemStackMixin",
     "world.level.ExplosionMixin",
     "world.level.block.BlockBehaviourMixin",
-    "world.level.block.LeavesBlockMixin"
+    "world.level.block.LeavesBlockMixin",
+    "world.level.block.LeverBlockMixin"
   ],
 
   "mixins": [

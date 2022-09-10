@@ -667,6 +667,15 @@ public class ClientConfig implements ConfigData
         public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
         static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
 
+        // Particle - Block Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_BLOCK_CANDY)
+        public boolean disableLeverParticles = DefaultConfig.Candy.DISABLE_LEVER_PARTICLES;
+        static { CandyTweak.NO_LEVER_PARTICLES.setKey("disableLeverParticles"); }
+
         // Particle - Player Candy
 
         @TweakClient.Gui.New
