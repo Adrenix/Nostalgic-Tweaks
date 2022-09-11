@@ -842,8 +842,9 @@ public class ClientConfig implements ConfigData
          */
 
         @TweakSide.Server
-        @TweakClient.Run.ReloadChunks
         @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Warning
         @TweakClient.Gui.Cat(group = TweakClient.Category.WORLD_CANDY)
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
         static { CandyTweak.SQUARE_BORDER.setKey("oldSquareBorder"); }
