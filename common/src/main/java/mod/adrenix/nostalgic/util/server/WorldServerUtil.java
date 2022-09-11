@@ -18,8 +18,6 @@ public abstract class WorldServerUtil
      */
     public static boolean isChunkInRange(int chunkX, int chunkZ, int secX, int secZ, int viewDistance)
     {
-        int dx = Math.max(0, Math.abs(chunkX - secX) - 1);
-        int dz = Math.max(0, Math.abs(chunkZ - secZ) - 1);
-        return Math.max(dx, dz) <= viewDistance;
+        return Math.max(Math.abs(chunkX - secX), Math.abs(chunkZ - secZ)) <= viewDistance;
     }
 }
