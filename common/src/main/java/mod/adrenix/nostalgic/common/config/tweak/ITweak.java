@@ -40,6 +40,9 @@ public interface ITweak
 
         this.setSide(clientCache != null && serverCache == null ? NostalgicTweaks.Side.CLIENT : NostalgicTweaks.Side.SERVER);
 
+        if (clientCache != null)
+            clientCache.setTweak(this);
+
         if (NostalgicTweaks.isClient())
         {
             if (clientCache != null)

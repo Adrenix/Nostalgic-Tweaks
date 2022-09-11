@@ -66,7 +66,8 @@ public class TweakServerCache<T>
     public static HashMap<String, TweakServerCache<?>> all() { return cache; }
 
     /**
-     * Get a server-side tweak.
+     * Get a server-side tweak. This should <b>only</b> be used if a tweak enumeration is not available.
+     * For the best performance, use {@link TweakServerCache#get(ITweak)} since it retrieves cached hashmap pointers.
      * @param group The group a tweak is associated with.
      * @param key The key used to identify the tweak.
      * @return The current tweak value kept in the cache.
@@ -79,7 +80,9 @@ public class TweakServerCache<T>
     }
 
     /**
-     * An overload method for {@link TweakServerCache#get(GroupType, String)}.
+     * An overload method for {@link TweakServerCache#get(GroupType, String)}. This should be the primary way of
+     * retrieving cached tweak values. When each tweak loads, a pointer is cached in the tweak's enumeration instance.
+     * This method will use that pointer instead of looping through the hashmap to get a tweak's value.
      * @param tweak The tweak to fetch from cache.
      * @return The current value kept in the server tweak cache.
      * @param <T> The type associated with the tweak.
@@ -103,6 +106,12 @@ public class TweakServerCache<T>
     private final String key;
     private final GroupType group;
     private StatusType status;
+
+    /**
+     * Caches the dynamic annotation status of each tweak. Since this metadata never changes, it is best to cache the
+     * known values than constantly using reflection to find metadata.
+     */
+    private final boolean isAnnotatedDynamic;
 
     /**
      * This field is used by both the client and server.
@@ -137,8 +146,10 @@ public class TweakServerCache<T>
         this.value = value;
         this.server = value;
         this.status = StatusType.FAIL;
+        this.isAnnotatedDynamic = CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
 
-        TweakSide.EntryStatus status = CommonReflect.getAnnotation(group, key, TweakSide.EntryStatus.class);
+        TweakSide.EntryStatus status = CommonReflect.getAnnotation(this, TweakSide.EntryStatus.class);
+
         if (status != null)
             this.status = status.status();
     }
@@ -153,10 +164,7 @@ public class TweakServerCache<T>
      * should be. If a client is connected to a server without N.T., then the client will take over the state.
      * @return Whether the tweak is annotated with a dynamic side.
      */
-    public boolean isDynamic()
-    {
-        return CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
-    }
+    public boolean isDynamic() { return this.isAnnotatedDynamic; }
 
     /**
      * The status of a tweak is updated when its code is executed.

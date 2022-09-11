@@ -18,8 +18,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,7 +60,8 @@ public class TweakClientCache<T>
     public static HashMap<String, TweakClientCache<?>> all() { return cache; }
 
     /**
-     * Get a tweak.
+     * Get a tweak. This should <b>only</b> be used with if a tweak enumeration is not available.
+     * For the best performance, use {@link TweakClientCache#get(ITweak)} since it retrieves cached hashmap pointers.
      * @param group The group a tweak is associated with.
      * @param key The key used to identify the tweak.
      * @return The current tweak value kept in the cache.
@@ -79,7 +80,10 @@ public class TweakClientCache<T>
     }
 
     /**
-     * An overload method for {@link TweakClientCache#get(GroupType, String)}.
+     * An overload method for {@link TweakClientCache#get(GroupType, String)}. This should be the primary way of
+     * retrieving cached tweak values. When each tweak loads, a pointer is cached in the tweak's enumeration instance.
+     * This method will use that pointer instead of looping through the hashmap to get a tweak's value.
+     *
      * This will <b>throw</b> an {@link AssertionError} if the tweak is not in the cache.
      * @param tweak The tweak to fetch from cache.
      * @return The current value kept in the cache.
@@ -149,7 +153,12 @@ public class TweakClientCache<T>
      *
      * @see TweakServerCache
      */
-    public TweakServerCache<T> getServerTweak() { return TweakServerCache.get(this.group, this.key); }
+    public TweakServerCache<T> getServerTweak()
+    {
+        if (this.tweak != null)
+            return TweakServerCache.get(this.tweak);
+        return TweakServerCache.get(this.group, this.key);
+    }
 
     /**
      * A shortcut for {@link TweakClientCache#getServerTweak()} that gets the current server cache.
@@ -185,6 +194,27 @@ public class TweakClientCache<T>
     private StatusType status;
 
     /**
+     * Caches the annotation status of each tweak. Since this metadata never changes, it is best to cache the known
+     * values than constantly using reflection to find metadata.
+     */
+
+    private final boolean isAnnotatedClient;
+    private final boolean isAnnotatedServer;
+    private final boolean isAnnotatedDynamic;
+    private final boolean isAnnotatedReloadChunks;
+    private final boolean isAnnotatedReloadResources;
+
+    @Nullable private final TweakClient.Gui.Cat category;
+    @Nullable private final TweakClient.Gui.Sub subcategory;
+    @Nullable private final TweakClient.Gui.Emb embedded;
+
+    /**
+     * This field will track the tweak enumeration associated with this cache. Once defined, this will speed up value
+     * retrieval significantly.
+     */
+    private ITweak tweak;
+
+    /**
      * This field will not be in sync with the config saved on disk. That is done through reflection.
      * The state of this field is toggled via the configuration menu.
      *
@@ -210,23 +240,41 @@ public class TweakClientCache<T>
      */
     private TweakClientCache(GroupType group, String key, T value)
     {
+        this.tweak = null;
         this.group = group;
         this.key = key;
         this.value = value;
         this.status = StatusType.FAIL;
         this.id = generateKey(group, key);
 
+        this.isAnnotatedClient = CommonReflect.getAnnotation(this, TweakSide.Server.class) == null;
+        this.isAnnotatedServer = CommonReflect.getAnnotation(this, TweakSide.Server.class) != null;
+        this.isAnnotatedDynamic = CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
+        this.isAnnotatedReloadChunks = CommonReflect.getAnnotation(this, TweakClient.Run.ReloadChunks.class) != null;
+        this.isAnnotatedReloadResources = CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null;
+
+        this.category = CommonReflect.getAnnotation(this, TweakClient.Gui.Cat.class);
+        this.subcategory = CommonReflect.getAnnotation(this, TweakClient.Gui.Sub.class);
+        this.embedded = CommonReflect.getAnnotation(this, TweakClient.Gui.Emb.class);
+
         TweakSide.EntryStatus status = CommonReflect.getAnnotation(this, TweakSide.EntryStatus.class);
+        TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(this, TweakClient.Gui.Placement.class);
+
         if (status != null)
             this.status = status.status();
 
-        TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(this, TweakClient.Gui.Placement.class);
         if (placement != null)
         {
             this.position = placement.pos();
             this.order = placement.order();
         }
     }
+
+    /**
+     * Define the tweak enumeration associated with this cache.
+     * @param tweak A tweak instance.
+     */
+    public void setTweak(ITweak tweak) { this.tweak = tweak; }
 
     /**
      * Get a tweak's ID which is its key in the {@link TweakClientCache#cache} map.
@@ -367,10 +415,10 @@ public class TweakClientCache<T>
         if (!this.isSavable())
             return;
 
-        if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadChunks.class) != null)
+        if (this.isAnnotatedReloadChunks)
             RunUtil.reloadChunks = true;
 
-        if (CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null)
+        if (this.isAnnotatedReloadResources)
             RunUtil.reloadResources = true;
 
         boolean isClient = this.isClient();
@@ -402,10 +450,7 @@ public class TweakClientCache<T>
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return If the client side annotation is attached to a tweak.
      */
-    public boolean isClient()
-    {
-        return CommonReflect.getAnnotation(this, TweakSide.Server.class) == null;
-    }
+    public boolean isClient() { return this.isAnnotatedClient; }
 
     /**
      * Checks the annotations defined in the client's configuration class if a tweak is server sided.
@@ -413,20 +458,14 @@ public class TweakClientCache<T>
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return If the server annotation is attached to a tweak.
      */
-    public boolean isServer()
-    {
-        return CommonReflect.getAnnotation(this, TweakSide.Server.class) != null;
-    }
+    public boolean isServer() { return this.isAnnotatedServer; }
 
     /**
      * Checks the annotations defined in the client's configuration class if a tweak is dynamically sided.
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return If the dynamic annotation is attached to a tweak.
      */
-    public boolean isDynamic()
-    {
-        return CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
-    }
+    public boolean isDynamic() { return this.isAnnotatedDynamic; }
 
     /**
      * Cache utility that checks if a tweak can be changed by the client. Useful to prevent issues of changing tweaks
@@ -480,29 +519,37 @@ public class TweakClientCache<T>
      */
     public Component getSearchGroup()
     {
-        TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
-        TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
-        TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Emb.class);
-
         MutableComponent group = Component.translatable(this.getGroup().getLangKey()).withStyle(ChatFormatting.GOLD);
 
-        if (cat != null || sub != null || emb != null)
+        if (this.category != null || this.subcategory != null || this.embedded != null)
             group.append(ChatFormatting.WHITE + "/");
 
-        if (cat != null)
-            group.append(Component.translatable(cat.group().getLangKey()).withStyle(ChatFormatting.YELLOW));
+        if (this.category != null)
+            group.append(Component.translatable(this.category.group().getLangKey()).withStyle(ChatFormatting.YELLOW));
 
-        if (sub != null)
+        if (this.subcategory != null)
         {
-            group.append(Component.translatable(sub.group().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW)).append(ChatFormatting.WHITE + "/");
-            group.append(Component.translatable(sub.group().getLangKey()).withStyle(ChatFormatting.GREEN));
+            group
+                .append(Component.translatable(this.subcategory.group().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW))
+                .append(ChatFormatting.WHITE + "/")
+            ;
+
+            group.append(Component.translatable(this.subcategory.group().getLangKey()).withStyle(ChatFormatting.GREEN));
         }
 
-        if (emb != null)
+        if (this.embedded != null)
         {
-            group.append(Component.translatable(emb.group().getSubcategory().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW)).append(ChatFormatting.WHITE + "/");
-            group.append(Component.translatable(emb.group().getSubcategory().getLangKey()).withStyle(ChatFormatting.GREEN)).append(ChatFormatting.WHITE + "/");
-            group.append(Component.translatable(emb.group().getLangKey()).withStyle(ChatFormatting.AQUA));
+            group
+                .append(Component.translatable(this.embedded.group().getSubcategory().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW))
+                .append(ChatFormatting.WHITE + "/")
+            ;
+
+            group
+                .append(Component.translatable(this.embedded.group().getSubcategory().getLangKey()).withStyle(ChatFormatting.GREEN))
+                .append(ChatFormatting.WHITE + "/")
+            ;
+
+            group.append(Component.translatable(this.embedded.group().getLangKey()).withStyle(ChatFormatting.AQUA));
         }
 
         return group;

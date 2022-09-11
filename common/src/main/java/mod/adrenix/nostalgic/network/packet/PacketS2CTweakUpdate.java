@@ -91,15 +91,11 @@ public class PacketS2CTweakUpdate
                     ToastNotification.addTweakUpdate();
 
                 // Update the client's config if this is a LAN session
-                if (NetUtil.isLocalHost())
+                if (NetUtil.isLocalHost() && isValueChanged)
                 {
-                    TweakClientCache<?> clientCache = TweakClientCache.get(serializer.getGroup(), serializer.getKey());
-                    if (clientCache != null)
-                    {
-                        clientCache.setCurrent(serializer.getValue(), true);
-                        ClientReflect.setConfig(serializer.getGroup(), serializer.getKey(), serializer.getValue());
-                        AutoConfig.getConfigHolder(ClientConfig.class).save();
-                    }
+                    TweakClientCache.get(serializer.getGroup(), serializer.getKey()).setCurrent(serializer.getValue(), true);
+                    ClientReflect.setConfig(serializer.getGroup(), serializer.getKey(), serializer.getValue());
+                    AutoConfig.getConfigHolder(ClientConfig.class).save();
                 }
 
                 // Add debug information to console
