@@ -60,8 +60,8 @@ public class TweakClientCache<T>
     public static HashMap<String, TweakClientCache<?>> all() { return cache; }
 
     /**
-     * Get a tweak. This should <b>only</b> be used with if a tweak enumeration is not available.
-     * For the best performance, use {@link TweakClientCache#get(ITweak)} since it retrieves cached hashmap pointers.
+     * Get a tweak. This should <b>only</b> be used if a tweak enumeration is not available.
+     * For best performance, use {@link TweakClientCache#get(ITweak)} since it retrieves cached hashmap pointers.
      * @param group The group a tweak is associated with.
      * @param key The key used to identify the tweak.
      * @return The current tweak value kept in the cache.
