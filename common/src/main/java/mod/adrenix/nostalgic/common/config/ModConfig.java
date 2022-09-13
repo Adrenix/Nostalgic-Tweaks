@@ -120,8 +120,6 @@ public abstract class ModConfig
     {
         if (NostalgicTweaks.isServer())
             return server;
-        else if (NetUtil.isLocalHost())
-            return server;
         else if (NetUtil.isSingleplayer())
             return client;
 
