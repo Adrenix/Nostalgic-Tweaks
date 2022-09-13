@@ -39,6 +39,13 @@ public abstract class BlockCommonUtil
      */
     public static boolean isInWater(BlockGetter level, BlockPos pos)
     {
+        BlockState block = level.getBlockState(pos);
+
+        if (isBlockEqualTo(block, Blocks.AIR))
+            return false;
+        else if (isBlockEqualTo(block, Blocks.WATER))
+            return true;
+
         boolean up = false;
         boolean down = false;
         boolean east = false;
@@ -82,15 +89,5 @@ public abstract class BlockCommonUtil
         }
 
         return false;
-    }
-
-    /**
-     * Checks if the given <code>block state</code> matches a vanilla water-like block such as ice.
-     * @param block The block to see if it is water related.
-     * @return Whether the given <code>block</code> is a water-like block.
-     */
-    public static boolean isWaterRelated(BlockState block)
-    {
-        return isBlockEqualTo(block, Blocks.WATER, Blocks.ICE, Blocks.FROSTED_ICE, Blocks.BLUE_ICE, Blocks.PACKED_ICE);
     }
 }

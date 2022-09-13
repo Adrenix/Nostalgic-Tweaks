@@ -349,14 +349,11 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBrightness(Lnet/minecraft/world/level/LightLayer;Lnet/minecraft/core/BlockPos;)I"
         )
     )
-    private static int NT$onGetLightColor(BlockAndTintGetter instance, LightLayer layer, BlockPos pos)
+    private static int NT$onGetLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
     {
-        ClientLevel level = Minecraft.getInstance().level;
-        boolean isWatered = BlockCommonUtil.isWaterRelated(BlockClientUtil.getState(pos)) || BlockCommonUtil.isInWater(level, pos);
+        if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, pos))
+            return Mth.clamp(level.getBrightness(layer, pos) - 2, 0, 15);
 
-        if (ModConfig.Candy.oldWaterLighting() && isWatered)
-            return Mth.clamp(instance.getBrightness(layer, pos) - 2, 0, 15);
-
-        return instance.getBrightness(layer, pos);
+        return level.getBrightness(layer, pos);
     }
 }
