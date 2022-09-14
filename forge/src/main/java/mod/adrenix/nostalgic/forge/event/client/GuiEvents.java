@@ -26,13 +26,21 @@ public abstract class GuiEvents
     // In Game Overlay Override
     public static void overlayOverride(RenderGuiOverlayEvent.Pre event)
     {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        // Prevent Rendering in F1 Mode
+        if (minecraft.options.hideGui)
+        {
+            event.setCanceled(true);
+            return;
+        }
+
         // Old Version & Alternative HUD Elements
 
         GuiUtil.renderOverlays(event.getPoseStack());
 
         // Overlay Overrides
 
-        Minecraft minecraft = Minecraft.getInstance();
         NamedGuiOverlay overlay = event.getOverlay();
         boolean isDebug = overlay.equals(VanillaGuiOverlay.DEBUG_TEXT.type());
         boolean isArmor = overlay.equals(VanillaGuiOverlay.ARMOR_LEVEL.type());
