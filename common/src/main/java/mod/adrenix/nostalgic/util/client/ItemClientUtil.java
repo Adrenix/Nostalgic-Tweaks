@@ -136,7 +136,7 @@ public abstract class ItemClientUtil
     public static boolean isValidColorItem(ItemStack stack)
     {
         BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
-        return ModConfig.Candy.oldFlatColors() && isModelFlat(model);
+        return ModConfig.Candy.oldFlatColors() && isModelFlat(model) && isRenderingFlat;
     }
 
     /**
