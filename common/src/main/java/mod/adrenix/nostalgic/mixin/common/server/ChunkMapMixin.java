@@ -14,10 +14,10 @@ public abstract class ChunkMapMixin
      * Forces the chunk border to render as a square instead of a disc.
      * Controlled by the old square chunk border tweak.
      */
-//    @Inject(method = "isChunkInRange", at = @At(value = "HEAD"), cancellable = true)
-//    private static void NT$onIsChunkRange(int chunkX, int chunkZ, int secX, int secZ, int viewDistance, CallbackInfoReturnable<Boolean> callback)
-//    {
-//        if (ModConfig.Candy.oldSquareBorder())
-//            callback.setReturnValue(WorldServerUtil.isChunkInRange(chunkX, chunkZ, secX, secZ, viewDistance));
-//    }
+    @Inject(method = "isChunkInRange", at = @At(value = "HEAD"), cancellable = true)
+    private static void NT$onIsChunkRange(int chunkX, int chunkZ, int secX, int secZ, int viewDistance, CallbackInfoReturnable<Boolean> callback)
+    {
+        if (ModConfig.Candy.oldSquareBorder())
+            callback.setReturnValue(WorldServerUtil.isChunkInRange(chunkX, chunkZ, secX, secZ, viewDistance));
+    }
 }

@@ -485,7 +485,6 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNameTags.@Tooltip": "Bring back the old name tag rendering for entities. This will make tags bigger as you move further away.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSquareBorder": "Old Square Border",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSquareBorder.@Tooltip": "Replaces the disc chunk border with a square border.",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSquareBorder.@Warning": "This tweak has been§c disabled§r for this update since there is a known rendering issue that has not yet been resolved.\n\nChanging this tweak will have§c no§r effect.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableSunriseSunsetColors": "Disable Sunrise/Sunset Colors",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableSunriseSunsetColors.@Tooltip": "Disable the change in sky color when the sun is rising or setting.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSunriseAtNorth": "Old Sunrise at North",
