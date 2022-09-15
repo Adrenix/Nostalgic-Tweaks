@@ -29,7 +29,7 @@ public abstract class ItemColorsFabricMixin
     {
         ItemColor itemColor = this.itemColors.byId(Registry.ITEM.getId(stack.getItem()));
 
-        if (ItemClientUtil.isValidColorItem(stack) && itemColor != null)
+        if (ItemClientUtil.isValidColorItem() && itemColor != null)
             callback.setReturnValue(ItemClientUtil.getOldColor(itemColor, stack, tintIndex));
     }
 }

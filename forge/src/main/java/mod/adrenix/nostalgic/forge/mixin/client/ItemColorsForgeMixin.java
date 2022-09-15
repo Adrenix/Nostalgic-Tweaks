@@ -34,7 +34,7 @@ public abstract class ItemColorsForgeMixin
     {
         ItemColor itemColor = this.f_92674_.get(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem()));
 
-        if (ItemClientUtil.isValidColorItem(stack) && itemColor != null)
+        if (ItemClientUtil.isValidColorItem() && itemColor != null)
             callback.setReturnValue(ItemClientUtil.getOldColor(itemColor, stack, tintIndex));
     }
 }

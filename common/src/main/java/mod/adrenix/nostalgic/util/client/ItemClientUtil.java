@@ -130,13 +130,11 @@ public abstract class ItemClientUtil
 
     /**
      * Checks if an item stack can be colored.
-     * @param stack The item stack to check.
      * @return Whether the given item stack should have its color modified.
      */
-    public static boolean isValidColorItem(ItemStack stack)
+    public static boolean isValidColorItem()
     {
-        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
-        return ModConfig.Candy.oldFlatColors() && isModelFlat(model) && isRenderingFlat;
+        return ModConfig.Candy.oldFlatColors() && isRenderingFlat;
     }
 
     /**

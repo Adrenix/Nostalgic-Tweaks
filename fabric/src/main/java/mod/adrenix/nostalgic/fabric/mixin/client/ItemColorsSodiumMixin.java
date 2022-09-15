@@ -33,7 +33,7 @@ public abstract class ItemColorsSodiumMixin
     {
         ItemColor itemColor = this.itemColors.byId(Registry.ITEM.getId(itemStack.getItem()));
 
-        if (ItemClientUtil.isValidColorItem(itemStack) && itemColor != null)
+        if (ItemClientUtil.isValidColorItem() && itemColor != null)
             callback.setReturnValue((stack, tintIndex) -> ItemClientUtil.getOldColor(itemColor, stack, tintIndex));
     }
 }
