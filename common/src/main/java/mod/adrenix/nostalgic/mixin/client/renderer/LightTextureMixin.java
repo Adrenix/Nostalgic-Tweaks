@@ -98,14 +98,14 @@ public abstract class LightTextureMixin
         boolean isFlashPresent = level.getSkyFlashTime() > 0 && !this.minecraft.options.hideLightningFlash().get();
         boolean isWorldDarkening = darkenAmount > 0;
 
-        float skylightSubtracted = calculateSkylightSubtracted(level);
+        float skyLightSubtracted = calculateSkylightSubtracted(level);
 
         if (isFlashPresent)
-            skylightSubtracted = 1;
+            skyLightSubtracted = 1;
         else if (isWorldDarkening)
         {
-            skylightSubtracted += Math.ceil(3 * darkenAmount);
-            skylightSubtracted = Mth.clamp(skylightSubtracted, 1.0F, 15.0F);
+            skyLightSubtracted += Math.ceil(3 * darkenAmount);
+            skyLightSubtracted = Mth.clamp(skyLightSubtracted, 1.0F, 15.0F);
         }
 
         for (int y = 0; y < 16; y++)
@@ -113,7 +113,7 @@ public abstract class LightTextureMixin
             for (int x = 0; x < 16; x++)
             {
                 float fromBlockLight = getOldBrightness(x);
-                float fromSkyLight = getOldBrightness((int) Math.max(y - skylightSubtracted, 0));
+                float fromSkyLight = getOldBrightness((int) Math.max(y - skyLightSubtracted, 0));
 
                 if (level.dimension() == Level.END)
                     fromSkyLight = 0.22F + fromSkyLight * 0.75F;
@@ -138,9 +138,10 @@ public abstract class LightTextureMixin
                 }
 
                 double gamma = isGammaDisabled ? 0.0D : gammaSetting;
-                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 0.3F + 1.0F), 0.0F, 255.0F);
-                float skylight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
-                float light = fromBlockLight > fromSkyLight ? blockLight : skylight;
+                float blockShift = (x == 15 || x == 14) ? 0.3F : 0.1F;
+                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + blockShift + 1.0F), 0.0F, 255.0F);
+                float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
+                float light = fromBlockLight > fromSkyLight ? blockLight : skyLight;
 
                 this.lightPixels.setPixelRGBA(x, y, 255 << 24 | (int) light << 16 | (int) light << 8 | (int) light);
             }
