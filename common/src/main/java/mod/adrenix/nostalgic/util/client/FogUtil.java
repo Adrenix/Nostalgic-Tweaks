@@ -154,9 +154,9 @@ public abstract class FogUtil
         if (ModConfig.Candy.disableVoidFog() || !ModConfig.isModEnabled() || !fogMode.equals(FogRenderer.FogMode.FOG_TERRAIN))
             return;
 
-        VoidFog.setFogStart(RenderSystem.getShaderFogStart());
-        VoidFog.setFogEnd(RenderSystem.getShaderFogEnd());
-        VoidFog.render(camera);
+        Void.setFogStart(RenderSystem.getShaderFogStart());
+        Void.setFogEnd(RenderSystem.getShaderFogEnd());
+        Void.render(camera);
     }
 
     /**
@@ -232,7 +232,6 @@ public abstract class FogUtil
                 case 15, 14, 13, 12 -> 9.0F;
                 case 11, 10, 9 -> 6.0F;
                 case 8, 7, 6, 5, 4, 3 -> 5.0F;
-                case 2, 1, 0 -> 8.0F;
                 default -> 4.0F;
             };
 
@@ -302,12 +301,11 @@ public abstract class FogUtil
 
             return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[2] : TARGET;
         }
-
     }
 
     /* Void Fog */
 
-    public static class VoidFog
+    public static class Void
     {
         /* Interpolation Trackers */
 
@@ -507,8 +505,8 @@ public abstract class FogUtil
         {
             final float[] RGB = RenderSystem.getShaderColor();
 
-            if (FogUtil.VoidFog.isRendering())
-                RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], FogUtil.VoidFog.getCelestial());
+            if (Void.isRendering())
+                RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], Void.getCelestial());
         }
 
         /**

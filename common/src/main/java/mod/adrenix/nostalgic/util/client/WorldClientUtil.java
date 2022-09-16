@@ -103,11 +103,11 @@ public abstract class WorldClientUtil
         g = Mth.clamp(g, 0.1F, 1.0F) * 0.17F;
         b = Mth.clamp(b, 0.1F, 1.0F) * 0.7F;
 
-        FogUtil.VoidFog.setVoidRGB(r, g, b);
+        FogUtil.Void.setVoidRGB(r, g, b);
 
-        if (FogUtil.VoidFog.isRendering())
+        if (FogUtil.Void.isRendering())
         {
-            final float[] VOID_RGB = FogUtil.VoidFog.getVoidRGB();
+            final float[] VOID_RGB = FogUtil.Void.getVoidRGB();
             r = VOID_RGB[0];
             g = VOID_RGB[1];
             b = VOID_RGB[2];

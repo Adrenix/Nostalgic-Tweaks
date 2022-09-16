@@ -79,22 +79,22 @@ public abstract class ClientLevelMixin
     @ModifyArg(method = "getSkyColor", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
     private double NT$onSetSkyColorRed(double red)
     {
-        FogUtil.VoidFog.setSkyRed((float) red);
-        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyRed() : red;
+        FogUtil.Void.setSkyRed((float) red);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyRed() : red;
     }
 
     @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
     private double NT$onSetSkyColorGreen(double green)
     {
-        FogUtil.VoidFog.setSkyGreen((float) green);
-        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyGreen() : green;
+        FogUtil.Void.setSkyGreen((float) green);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyGreen() : green;
     }
 
     @ModifyArg(method = "getSkyColor", index = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
     private double NT$onSetSkyColorBlue(double blue)
     {
-        FogUtil.VoidFog.setSkyBlue((float) blue);
-        return FogUtil.VoidFog.isRendering() ? FogUtil.VoidFog.getSkyBlue() : blue;
+        FogUtil.Void.setSkyBlue((float) blue);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyBlue() : blue;
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class ClientLevelMixin
         Entity entity = Minecraft.getInstance().getCameraEntity();
         ClientLevel level = Minecraft.getInstance().level;
 
-        boolean isFogDisabled = ModConfig.Candy.disableVoidFog() || !FogUtil.VoidFog.isBelowHorizon();
+        boolean isFogDisabled = ModConfig.Candy.disableVoidFog() || !FogUtil.Void.isBelowHorizon();
         boolean isCreativeDisabled = !ModConfig.Candy.creativeVoidParticles() && entity instanceof Player player && player.isCreative();
         boolean isDisabled = isFogDisabled || isCreativeDisabled;
 
@@ -152,7 +152,7 @@ public abstract class ClientLevelMixin
         int particleStart = ModConfig.Candy.getVoidParticleStart();
 
         float density = (float) ModConfig.Candy.getVoidParticleDensity() / 100.0F;
-        float yLevel = (float) FogUtil.VoidFog.getYLevel(entity);
+        float yLevel = (float) FogUtil.Void.getYLevel(entity);
 
         if (Math.random() <= density && yLevel <= particleStart && level.dimension().equals(Level.OVERWORLD))
         {

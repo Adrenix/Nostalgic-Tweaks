@@ -175,7 +175,7 @@ public abstract class LevelRendererMixin
     )
     private void NT$onSetSunriseColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        FogUtil.VoidFog.setCelestialTransparency();
+        FogUtil.Void.setCelestialTransparency();
     }
 
     /**
@@ -195,7 +195,7 @@ public abstract class LevelRendererMixin
     )
     private void NT$onSetSunMoonShading(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        FogUtil.VoidFog.setCelestialTransparency();
+        FogUtil.Void.setCelestialTransparency();
     }
 
     /**
@@ -221,11 +221,11 @@ public abstract class LevelRendererMixin
         if (!isBlueRendered || !isDarkOverride)
         {
             final float[] DARK_RGB = RenderSystem.getShaderColor();
-            final float[] VOID_RGB = FogUtil.VoidFog.getVoidRGB();
+            final float[] VOID_RGB = FogUtil.Void.getVoidRGB();
 
-            FogUtil.VoidFog.setVoidRGB(DARK_RGB[0], DARK_RGB[1], DARK_RGB[2]);
+            FogUtil.Void.setVoidRGB(DARK_RGB[0], DARK_RGB[1], DARK_RGB[2]);
 
-            if (FogUtil.VoidFog.isRendering())
+            if (FogUtil.Void.isRendering())
                 RenderSystem.setShaderColor(VOID_RGB[0], VOID_RGB[1], VOID_RGB[2], DARK_RGB[3]);
 
             instance.drawWithShader(modelViewMatrix, projectionMatrix, shaderInstance);
@@ -296,10 +296,10 @@ public abstract class LevelRendererMixin
         float transparency = this.level.getStarBrightness(partialTick) * rain;
         float color = isDimmed ? transparency : transparency / 0.5F;
 
-        FogUtil.VoidFog.setStarAlpha(transparency);
+        FogUtil.Void.setStarAlpha(transparency);
 
-        if (FogUtil.VoidFog.isRendering())
-            transparency = FogUtil.VoidFog.getStarAlpha();
+        if (FogUtil.Void.isRendering())
+            transparency = FogUtil.Void.getStarAlpha();
 
         RenderSystem.setShaderColor(color, color, color, transparency);
     }

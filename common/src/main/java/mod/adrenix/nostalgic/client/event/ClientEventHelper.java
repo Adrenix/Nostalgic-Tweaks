@@ -22,7 +22,7 @@ public abstract class ClientEventHelper
         if (NostalgicTweaks.isClient())
         {
             // Reset static fog utility trackers
-            FogUtil.VoidFog.reset();
+            FogUtil.Void.reset();
 
             // Reset network verification and server cache
             NostalgicTweaks.setNetworkVerification(false);

@@ -57,10 +57,10 @@ public abstract class FogRendererMixin
     @Inject(method = "levelFogColor", at = @At("TAIL"))
     private static void NT$onLevelFogColor(CallbackInfo callback)
     {
-        FogUtil.VoidFog.setFogRGB(fogRed, fogGreen, fogBlue);
+        FogUtil.Void.setFogRGB(fogRed, fogGreen, fogBlue);
 
-        if (FogUtil.VoidFog.isRendering())
-            FogUtil.VoidFog.setColor(Minecraft.getInstance().gameRenderer.getMainCamera());
+        if (FogUtil.Void.isRendering())
+            FogUtil.Void.setColor(Minecraft.getInstance().gameRenderer.getMainCamera());
     }
 
     /**
