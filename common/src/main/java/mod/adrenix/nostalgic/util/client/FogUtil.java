@@ -503,10 +503,17 @@ public abstract class FogUtil
          */
         public static void setCelestialTransparency()
         {
+            ClientLevel level = Minecraft.getInstance().level;
+
+            if (level == null)
+                return;
+
             final float[] RGB = RenderSystem.getShaderColor();
+            final float RAIN = level.getRainLevel(Minecraft.getInstance().getDeltaFrameTime());
+            final float ALPHA = Math.min(1.0F - RAIN, Void.getCelestial());
 
             if (Void.isRendering())
-                RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], Void.getCelestial());
+                RenderSystem.setShaderColor(RGB[0], RGB[1], RGB[2], ALPHA);
         }
 
         /**
