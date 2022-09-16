@@ -860,32 +860,71 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
         static { CandyTweak.TERRAIN_FOG.setKey("oldTerrainFog"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         public boolean oldHorizonFog = DefaultConfig.Candy.OLD_HORIZON_FOG;
         static { CandyTweak.HORIZON_FOG.setKey("oldHorizonFog"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         public boolean oldNetherFog = DefaultConfig.Candy.OLD_NETHER_FOG;
         static { CandyTweak.NETHER_FOG.setKey("oldNetherFog"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
         static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.WORLD_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 5)
         public TweakVersion.Generic oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
         static { CandyTweak.FOG_COLOR.setKey("oldFogColor"); }
+
+        // World - Fog Candy - Water
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.WATER_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        public boolean oldWaterFogDensity = DefaultConfig.Candy.OLD_WATER_FOG_DENSITY;
+        static { CandyTweak.WATER_FOG_DENSITY.setKey("oldWaterFogDensity"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.WATER_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        public boolean oldWaterFogColor = DefaultConfig.Candy.OLD_WATER_FOG_COLOR;
+        static { CandyTweak.WATER_FOG_COLOR.setKey("oldWaterFogColor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.WATER_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        public boolean smoothWaterDensity = DefaultConfig.Candy.SMOOTH_WATER_DENSITY;
+        static { CandyTweak.SMOOTH_WATER_DENSITY.setKey("smoothWaterDensity"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.WATER_FOG_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        public boolean smoothWaterColor = DefaultConfig.Candy.SMOOTH_WATER_COLOR;
+        static { CandyTweak.SMOOTH_WATER_COLOR.setKey("smoothWaterColor"); }
 
         // World - Sky Candy
 

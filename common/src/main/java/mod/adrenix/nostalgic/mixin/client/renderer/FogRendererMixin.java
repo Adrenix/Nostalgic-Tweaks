@@ -6,8 +6,13 @@ import mod.adrenix.nostalgic.util.client.FogUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.material.FogType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,6 +31,24 @@ public abstract class FogRendererMixin
     @Shadow private static float fogBlue;
 
     /* Injections */
+
+    /**
+     * Changes the color of fog while the camera is in water.
+     * Controlled by the old water fog tweak.
+     */
+    @Inject(method = "setupColor", at = @At("RETURN"))
+    private static void NT$onWaterFogColor(Camera camera, float partialTicks, ClientLevel level, int renderDistanceChunks, float bossColorModifier, CallbackInfo callback)
+    {
+        if (ModConfig.Candy.oldWaterFogColor() && camera.getFluidInCamera() == FogType.WATER)
+        {
+            float respiration = (float) EnchantmentHelper.getRespiration((LivingEntity) camera.getEntity()) * 0.2F;
+            int brightness = level.getBrightness(LightLayer.SKY, camera.getBlockPosition());
+
+            fogRed = FogUtil.Water.getRed(brightness, respiration);
+            fogGreen = FogUtil.Water.getGreen(brightness, respiration);
+            fogBlue = FogUtil.Water.getBlue(brightness, respiration);
+        }
+    }
 
     /**
      * Tracks and changes the level fog color to match the current void/cave fog color.
@@ -48,6 +71,17 @@ public abstract class FogRendererMixin
     private static void NT$onMobEffectFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
         FogUtil.isMobEffectActive = true;
+    }
+
+    /**
+     * Changes the fog start, end, and shape when the camera is within water.
+     * Controlled by the old water fog tweak.
+     */
+    @Inject(method = "setupFog", at = @At("RETURN"))
+    private static void NT$onSetupWaterFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
+    {
+        if (ModConfig.Candy.oldWaterFogDensity() && camera.getFluidInCamera() == FogType.WATER)
+            FogUtil.Water.setupFog(farPlaneDistance);
     }
 
     /**

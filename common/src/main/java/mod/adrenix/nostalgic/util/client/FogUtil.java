@@ -14,12 +14,13 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.FogType;
 
 /**
- * Terrain, sky, and void fog utility.
+ * Terrain, sky, nether, water, cave, and void fog utility.
  */
 
 public abstract class FogUtil
@@ -175,6 +176,133 @@ public abstract class FogUtil
 
         renderFog(fogMode);
         RenderSystem.setShaderFogStart(0.0F);
+    }
+
+    /* Water Fog */
+
+    public static class Water
+    {
+        /* Interpolation Trackers */
+
+        private static float currentDensity = 0.0F;
+        private static final float[] CURRENT_RGB = new float[] { 0.0F, 0.0F, 0.0F };
+
+        /* Water Fog Rendering */
+
+        /**
+         * Overrides fog rendering while the camera is in water.
+         * @param farPlaneDistance Render distance.
+         */
+        public static void setupFog(float farPlaneDistance)
+        {
+            float density = 0.15F;
+            float deltaTime = Minecraft.getInstance().getDeltaFrameTime();
+            Entity entity = Minecraft.getInstance().getCameraEntity();
+            RenderSystem.setShaderFogShape(FogShape.SPHERE);
+            RenderSystem.setShaderFogStart(-8.0F);
+
+            if (entity instanceof LivingEntity living)
+            {
+                if (living.hasEffect(MobEffects.WATER_BREATHING))
+                    density = 0.8F;
+                else
+                    density = 0.15F + (float) EnchantmentHelper.getRespiration(living) * 0.1F;
+            }
+
+            float target = farPlaneDistance * Mth.clamp(density, 0.0F, 1.0F);
+
+            if (currentDensity == 0.0F)
+                currentDensity = target;
+
+            currentDensity = ModUtil.Numbers.moveTowards(currentDensity, target, deltaTime);
+
+            RenderSystem.setShaderFogEnd(ModConfig.Candy.smoothWaterDensity() ? currentDensity : target);
+        }
+
+        /**
+         * Gets a red value for water fog.
+         * @param brightness The skylight brightness at camera's position.
+         * @param respiration A respiration value if the enchantment is enabled.
+         * @return A red fog color value (#.#F/255.0F).
+         */
+        public static float getRed(int brightness, float respiration)
+        {
+            float red = switch (brightness)
+            {
+                case 15, 14, 13, 12 -> 9.0F;
+                case 11, 10, 9 -> 6.0F;
+                case 8, 7, 6, 5, 4, 3 -> 5.0F;
+                case 2, 1, 0 -> 8.0F;
+                default -> 4.0F;
+            };
+
+            final float TARGET = (respiration > 0.0F ? 19.0F : red) / 255.0F;
+            final float SPEED = Minecraft.getInstance().getDeltaFrameTime() * 0.005F;
+
+            if (CURRENT_RGB[0] == 0.0F)
+                CURRENT_RGB[0] = TARGET;
+
+            CURRENT_RGB[0] = ModUtil.Numbers.moveTowards(CURRENT_RGB[0], TARGET, SPEED);
+
+            return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[0] : TARGET;
+        }
+
+        /**
+         * Gets a green value for water fog.
+         * @param brightness The skylight brightness at camera's position.
+         * @param respiration A respiration value if the enchantment is enabled.
+         * @return A green fog color value (#.#F/255.0F).
+         */
+        public static float getGreen(int brightness, float respiration)
+        {
+            float green = switch (brightness)
+            {
+                case 15, 14, 13, 12 -> 16.0F;
+                case 11, 10, 9 -> 11.0F;
+                case 8, 7, 6 -> 8.0F;
+                case 5, 4, 3 -> 7.0F;
+                default -> 5.0F;
+            };
+
+            final float TARGET = (respiration > 0.0F ? 35.0F : green) / 255.0F;
+            final float SPEED = Minecraft.getInstance().getDeltaFrameTime() * 0.005F;
+
+            if (CURRENT_RGB[1] == 0.0F)
+                CURRENT_RGB[1] = TARGET;
+
+            CURRENT_RGB[1] = ModUtil.Numbers.moveTowards(CURRENT_RGB[1], TARGET, SPEED);
+
+            return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[1] : TARGET;
+        }
+
+        /**
+         * Gets a blue value for water fog.
+         * @param brightness The skylight brightness at camera's position.
+         * @param respiration A respiration value if the enchantment is enabled.
+         * @return A blue fog color value (#.#F/255.0F).
+         */
+        public static float getBlue(int brightness, float respiration)
+        {
+            float blue = switch (brightness)
+            {
+                case 15, 14, 13, 12 -> 73.0F;
+                case 11, 10, 9 -> 58.0F;
+                case 8, 7, 6 -> 50.0F;
+                case 5, 4, 3 -> 45.0F;
+                default -> 41.0F;
+            };
+
+            final float TARGET = (respiration > 0.0F ? 150.0F : blue) / 255.0F;
+            final float SPEED = Minecraft.getInstance().getDeltaFrameTime() * 0.005F;
+
+            if (CURRENT_RGB[2] == 0.0F)
+                CURRENT_RGB[2] = TARGET;
+
+            CURRENT_RGB[2] = ModUtil.Numbers.moveTowards(CURRENT_RGB[2], TARGET, SPEED);
+
+            return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[2] : TARGET;
+        }
+
     }
 
     /* Void Fog */

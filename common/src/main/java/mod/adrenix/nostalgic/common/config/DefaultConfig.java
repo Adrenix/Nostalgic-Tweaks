@@ -158,9 +158,13 @@ public abstract class DefaultConfig
         public static final boolean OLD_DARK_VOID_HEIGHT = true;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
+        public static final boolean OLD_WATER_FOG_COLOR = true;
+        public static final boolean OLD_WATER_FOG_DENSITY = true;
         public static final boolean OLD_SUNRISE_AT_NORTH = true;
         public static final boolean OLD_SQUARE_BORDER = true;
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
+        public static final boolean SMOOTH_WATER_COLOR = true;
+        public static final boolean SMOOTH_WATER_DENSITY = true;
         public static final boolean DISABLE_SUNRISE_SUNSET_COLORS = false;
 
         // World Candy - Void Fog

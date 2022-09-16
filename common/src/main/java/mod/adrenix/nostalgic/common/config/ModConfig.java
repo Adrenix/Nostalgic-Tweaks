@@ -325,8 +325,12 @@ public abstract class ModConfig
         public static boolean disableSunriseSunsetColor() { return getBoolTweak(CandyTweak.DISABLE_SUNRISE_SUNSET_COLOR, CANDY.disableSunriseSunsetColors); }
         public static boolean oldSunriseSunsetFog() { return getBoolTweak(CandyTweak.SUNRISE_SUNSET_FOG, CANDY.oldSunriseSunsetFog); }
         public static boolean oldBlueVoidOverride() { return getBoolTweak(CandyTweak.BLUE_VOID_OVERRIDE, CANDY.oldBlueVoidOverride); }
+        public static boolean smoothWaterDensity() { return getBoolTweak(CandyTweak.SMOOTH_WATER_DENSITY, CANDY.smoothWaterDensity); }
+        public static boolean oldWaterFogDensity() { return getBoolTweak(CandyTweak.WATER_FOG_DENSITY, CANDY.oldWaterFogDensity); }
         public static boolean oldDarkVoidHeight() { return getBoolTweak(CandyTweak.DARK_VOID_HEIGHT, CANDY.oldDarkVoidHeight); }
         public static boolean oldSunriseAtNorth() { return getBoolTweak(CandyTweak.SUNRISE_AT_NORTH, CANDY.oldSunriseAtNorth); }
+        public static boolean smoothWaterColor() { return getBoolTweak(CandyTweak.SMOOTH_WATER_COLOR, CANDY.smoothWaterColor); }
+        public static boolean oldWaterFogColor() { return getBoolTweak(CandyTweak.WATER_FOG_COLOR, CANDY.oldWaterFogColor); }
         public static boolean oldSquareBorder() { return getSidedBoolTweak(CandyTweak.SQUARE_BORDER, CANDY.oldSquareBorder, SERVER_CANDY.oldSquareBorder); }
         public static boolean oldTerrainFog() { return getBoolTweak(CandyTweak.TERRAIN_FOG, CANDY.oldTerrainFog); }
         public static boolean oldHorizonFog() { return getBoolTweak(CandyTweak.HORIZON_FOG, CANDY.oldHorizonFog); }

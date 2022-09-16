@@ -246,6 +246,7 @@
   "gui.nostalgic_tweaks.config.candy.embed.title.button": "Buttons",
   "gui.nostalgic_tweaks.config.candy.embed.title.text": "Text",
   "gui.nostalgic_tweaks.config.candy.embed.tooltip.parts": "Parts",
+  "gui.nostalgic_tweaks.config.candy.embed.void.water": "Water Fog",
   "gui.nostalgic_tweaks.config.candy.embed.void.fog": "Fog",
   "gui.nostalgic_tweaks.config.candy.embed.void.sky": "Sky",
 
@@ -505,6 +506,14 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldCloudHeight.@Tooltip": "Change the cloud height (y-level). The old heights are;§a alpha§r y-§a108§r,§e beta§r y-§e128§r, and§6 modern§r y-§6192§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars": "Old Stars",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldStars.@Tooltip": "Bring back the old§l chunkier§r stars. §aAlpha§r has brighter stars and§e beta§r has§7 dimmer§r stars.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterFogDensity": "Old Density",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterFogDensity.@Tooltip": "Bring back the old water fog density from alpha/beta.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterFogColor": "Old Color",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldWaterFogColor.@Tooltip": "Bring back the old water fog colors from alpha/beta. The§3 blue§r fog color will get§9 darker§r the deeper the player goes underwater.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.smoothWaterDensity": "Smooth Density",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.smoothWaterDensity.@Tooltip": "Smoothly transition the density of water fog. This is most noticeable when a potion effect changes.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.smoothWaterColor": "Smooth Color",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.smoothWaterColor.@Tooltip": "Smoothly transition the color of water fog. This is most noticeable when changing y-levels underwater.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid": "Old Blue Void",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid.@Tooltip": "Bring back the old§1 blue§r void color in the far plane.",
