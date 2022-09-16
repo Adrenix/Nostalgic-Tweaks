@@ -32,6 +32,24 @@ public abstract class BlockCommonUtil
     }
 
     /**
+     * Gets the correct skylight block value for water based on its stored skylight level.
+     * @param skylight The stored skylight from the level.
+     * @return A new light block amount.
+     */
+    public static int getWaterLightBlock(int skylight)
+    {
+        return switch (skylight)
+        {
+            case 15 -> 15;
+            case 14 -> 12;
+            case 13 -> 9;
+            case 12 -> 6;
+            case 11 -> 3;
+            default -> 0;
+        };
+    }
+
+    /**
      * Checks if the given block position is within water.
      * @param level The level that can retrieve fluid states.
      * @param pos The position of the block to check.

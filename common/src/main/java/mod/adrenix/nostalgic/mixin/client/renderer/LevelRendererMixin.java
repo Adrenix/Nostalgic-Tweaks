@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.LightLayer;
@@ -352,7 +351,7 @@ public abstract class LevelRendererMixin
     private static int NT$onGetLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
     {
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, pos))
-            return Mth.clamp(level.getBrightness(layer, pos) - 2, 0, 15);
+            return BlockCommonUtil.getWaterLightBlock(level.getBrightness(layer, pos));
 
         return level.getBrightness(layer, pos);
     }
