@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -348,10 +349,32 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBrightness(Lnet/minecraft/world/level/LightLayer;Lnet/minecraft/core/BlockPos;)I"
         )
     )
-    private static int NT$onGetLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
+    private static int NT$onGetSkyLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
     {
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, pos))
             return BlockCommonUtil.getWaterLightBlock(level.getBrightness(layer, pos));
+
+        return level.getBrightness(layer, pos);
+    }
+
+    /**
+     * Increases the block light brightness for torches by 1 level.
+     * Controlled by the old light rendering tweak.
+     */
+    @Redirect
+    (
+        method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I",
+        at = @At
+        (
+            ordinal = 1,
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBrightness(Lnet/minecraft/world/level/LightLayer;Lnet/minecraft/core/BlockPos;)I"
+        )
+    )
+    private static int NT$onGetBlockLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
+    {
+        if (ModConfig.Candy.oldLightRendering() && BlockCommonUtil.isBlockEqualTo(level.getBlockState(pos), Blocks.TORCH, Blocks.WALL_TORCH))
+            return 15;
 
         return level.getBrightness(layer, pos);
     }
