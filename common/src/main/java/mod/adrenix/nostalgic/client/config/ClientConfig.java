@@ -180,6 +180,44 @@ public class ClientConfig implements ConfigData
         public boolean oldTrappedChest = DefaultConfig.Candy.OLD_TRAPPED_CHEST;
         static { CandyTweak.TRAPPED_CHEST.setKey("oldTrappedChest"); }
 
+        // Block - Torch Candy
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
+        public boolean oldTorchBrightness = DefaultConfig.Candy.OLD_TORCH_BRIGHTNESS;
+        static { CandyTweak.TORCH_BRIGHTNESS.setKey("oldTorchBrightness"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
+        public boolean oldTorchModel = DefaultConfig.Candy.OLD_TORCH_MODEL;
+        static { CandyTweak.TORCH_MODEL.setKey("oldTorchModel"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
+        public boolean oldRedstoneTorchModel = DefaultConfig.Candy.OLD_REDSTONE_TORCH_MODEL;
+        static { CandyTweak.REDSTONE_TORCH_MODEL.setKey("oldRedstoneTorchModel"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
+        public boolean oldSoulTorchModel = DefaultConfig.Candy.OLD_SOUL_TORCH_MODEL;
+        static { CandyTweak.SOUL_TORCH_MODEL.setKey("oldSoulTorchModel"); }
+
         /**
          * Interface Candy
          */

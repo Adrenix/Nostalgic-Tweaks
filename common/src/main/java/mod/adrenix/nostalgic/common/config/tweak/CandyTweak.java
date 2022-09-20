@@ -13,6 +13,10 @@ public enum CandyTweak implements ITweak
     CHEST_VOXEL,
     ENDER_CHEST,
     TRAPPED_CHEST,
+    TORCH_BRIGHTNESS,
+    TORCH_MODEL,
+    SOUL_TORCH_MODEL,
+    REDSTONE_TORCH_MODEL,
 
     /* Interface Candy */
 

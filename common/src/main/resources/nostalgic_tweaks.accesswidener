@@ -1,6 +1,9 @@
 accessWidener v2 named
 
+extendable class com/mojang/math/Matrix4f
 accessible class net/minecraft/client/renderer/chunk/RenderChunk
+accessible class net/minecraft/client/renderer/chunk/ChunkRenderDispatcher$RenderChunk$RebuildTask
+accessible class net/minecraft/client/renderer/chunk/ChunkRenderDispatcher$RenderChunk$RebuildTask$CompileResults
 
 mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
 mutable field net/minecraft/world/inventory/Slot x I

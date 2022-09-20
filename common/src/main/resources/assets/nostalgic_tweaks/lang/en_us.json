@@ -218,6 +218,7 @@
   "gui.nostalgic_tweaks.config.candy.category.world": "World Candy",
 
   "gui.nostalgic_tweaks.config.candy.subcategory.chest": "Chest Candy",
+  "gui.nostalgic_tweaks.config.candy.subcategory.torch": "Torch Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.chat": "Chat Screen",
   "gui.nostalgic_tweaks.config.candy.subcategory.gui": "Screen Candy",
   "gui.nostalgic_tweaks.config.candy.subcategory.crafting": "Crafting Screen",
@@ -304,6 +305,15 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldEnderChest.@Tooltip": "Renders ender chests as full-sized blocks. This tweak also disables chest sounds, particles, and animations.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTrappedChest": "Old Trapped Chest",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTrappedChest.@Tooltip": "Renders trapped chests as full-sized blocks. This tweak also disables chest sounds and animations.",
+
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTorchBrightness": "Old Torch Brightness",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTorchBrightness.@Tooltip": "Bring back the full-bright torch model. This does§c not§r change the amount of light§e emitted§r.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTorchModel": "Old Torch Model",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldTorchModel.@Tooltip": "Bring back the old parallelepiped wall torches.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldRedstoneTorchModel": "Old Redstone Torch Model",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldRedstoneTorchModel.@Tooltip": "Bring back the old parallelepiped redstone wall torches.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSoulTorchModel": "Old Soul Torch Model",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldSoulTorchModel.@Tooltip": "Make soul torches render as parallelepiped when attached to walls.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.overrideTitleScreen": "Override Title Screen",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.overrideTitleScreen.@Tooltip": "This option will apply the tweaks listed in this category to the title screen.",

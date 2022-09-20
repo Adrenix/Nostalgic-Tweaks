@@ -37,6 +37,10 @@ public abstract class DefaultConfig
         public static final boolean OLD_CHEST_VOXEL = false;
         public static final boolean OLD_ENDER_CHEST = true;
         public static final boolean OLD_TRAPPED_CHEST = true;
+        public static final boolean OLD_TORCH_BRIGHTNESS = true;
+        public static final boolean OLD_TORCH_MODEL = true;
+        public static final boolean OLD_SOUL_TORCH_MODEL = true;
+        public static final boolean OLD_REDSTONE_TORCH_MODEL = true;
 
         /* Interface Candy */
 

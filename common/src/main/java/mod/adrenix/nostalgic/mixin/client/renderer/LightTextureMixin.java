@@ -138,8 +138,7 @@ public abstract class LightTextureMixin
                 }
 
                 double gamma = isGammaDisabled ? 0.0D : gammaSetting;
-                float blockShift = (x == 15 || x == 14) ? 0.3F : 0.1F;
-                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + blockShift + 1.0F), 0.0F, 255.0F);
+                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.1F), 0.0F, 255.0F);
                 float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
                 float light = fromBlockLight > fromSkyLight ? blockLight : skyLight;
 

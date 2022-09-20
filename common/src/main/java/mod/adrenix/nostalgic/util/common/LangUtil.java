@@ -248,6 +248,7 @@ public abstract class LangUtil
         public static final String CANDY_CATEGORY_BLOCK = "gui.nostalgic_tweaks.config.candy.category.block";
 
         public static final String CANDY_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.candy.subcategory.chest";
+        public static final String CANDY_SUBCATEGORY_TORCH = "gui.nostalgic_tweaks.config.candy.subcategory.torch";
         public static final String CANDY_SUBCATEGORY_CHAT = "gui.nostalgic_tweaks.config.candy.subcategory.chat";
         public static final String CANDY_SUBCATEGORY_GUI = "gui.nostalgic_tweaks.config.candy.subcategory.gui";
         public static final String CANDY_SUBCATEGORY_CRAFTING = "gui.nostalgic_tweaks.config.candy.subcategory.crafting";

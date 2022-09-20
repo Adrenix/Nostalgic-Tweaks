@@ -257,6 +257,7 @@ public abstract class TweakClient
         // Block Candy Subcategories
 
         BLOCK_CHEST_CANDY(Category.BLOCK_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_CHEST),
+        BLOCK_TORCH_CANDY(Category.BLOCK_CANDY, LangUtil.Gui.CANDY_SUBCATEGORY_TORCH),
 
         // Interface Candy Subcategories
 
