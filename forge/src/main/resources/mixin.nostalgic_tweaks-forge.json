@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "priority": 1001,
   "client": [
+    "client.BlockRenderDispatcherMixin",
     "client.ItemColorsForgeMixin",
     "client.ItemInHandRendererForgeMixin",
     "client.ProgressScreenForgeMixin",

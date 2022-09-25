@@ -150,8 +150,7 @@ public abstract class BlockClientUtil
 
             poseStack.popPose();
         }
-
-        if (isTorchModel(state) && !isTorchSheared)
+        else
         {
             for (BakedQuad quad : model.getQuads(state, null, random))
                 consumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, brightness, overlay);

@@ -8,7 +8,8 @@
     "client.FogRendererFabricMixin",
     "client.GuiFabricMixin",
     "client.ItemColorsFabricMixin",
-    "client.ItemColorsSodiumMixin"
+    "client.ItemColorsSodiumMixin",
+    "client.TerrainRenderContextMixin"
   ],
   "mixins": [
     "common.ExperienceOrbFabricMixin",

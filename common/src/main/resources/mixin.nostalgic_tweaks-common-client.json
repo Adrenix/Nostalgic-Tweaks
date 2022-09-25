@@ -20,7 +20,6 @@
     "gui.ScreenMixin",
     "gui.WorldListEntryMixin",
     "renderer.BlockEntityRenderDispatcherMixin",
-    "renderer.BlockRenderDispatcherMixin",
     "renderer.DimensionSpecialEffectsMixin",
     "renderer.EntityRendererMixin",
     "renderer.ExperienceOrbRendererMixin",

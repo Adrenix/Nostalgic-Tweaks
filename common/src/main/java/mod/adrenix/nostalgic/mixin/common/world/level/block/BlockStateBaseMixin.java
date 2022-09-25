@@ -2,13 +2,11 @@ package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -50,21 +48,6 @@ public abstract class BlockStateBaseMixin
     {
         if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
-    }
-
-    /**
-     * Client:
-     *
-     * The following injection overrides the render shape of vanilla torches. This is required to bypass renderers that
-     * override vanilla block rendering.
-     *
-     * Controlled by various old torch tweaks.
-     */
-    @Inject(method = "getRenderShape", at = @At("HEAD"), cancellable = true)
-    private void NT$onGetRenderShape(CallbackInfoReturnable<RenderShape> callback)
-    {
-        if (NostalgicTweaks.isClient() && BlockClientUtil.isTorchModel(this.getBlock().defaultBlockState()))
-            callback.setReturnValue(RenderShape.ENTITYBLOCK_ANIMATED);
     }
 
     /**
