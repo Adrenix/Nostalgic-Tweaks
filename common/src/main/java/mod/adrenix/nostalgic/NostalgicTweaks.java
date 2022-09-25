@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic;
 
+import com.google.common.base.Suppliers;
 import dev.architectury.networking.NetworkChannel;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.network.PacketRegistry;
@@ -9,6 +10,8 @@ import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class NostalgicTweaks
 {
@@ -21,17 +24,32 @@ public class NostalgicTweaks
 
     /* Other Mod Tracking */
 
+    public static boolean isSodiumInstalled = false;
     public static boolean isModMenuInstalled = false;
-    public static boolean isOptifineInstalled = false;
+
+    public static final Supplier<Boolean> OPTIFINE = Suppliers.memoize(() ->
+    {
+        try
+        {
+            Class.forName("net.optifine.Config");
+            return true;
+        }
+        catch (ClassNotFoundException ignored)
+        {
+            return false;
+        }
+    });
 
     /* Networking */
 
     public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));
     public static final String PROTOCOL = "1.1";
+
     private static MinecraftServer server;
     private static boolean isNetworkSupported = false;
 
-    @Nullable public static MinecraftServer getServer() { return server; }
+    @Nullable
+    public static MinecraftServer getServer() { return server; }
     public static void setServer(MinecraftServer _server) { server = _server; }
 
     /* Side & Environment States */
@@ -99,5 +117,8 @@ public class NostalgicTweaks
         NostalgicTweaks.setEnvironment(environment);
         NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString())));
         PacketRegistry.init();
+
+        if (OPTIFINE.get())
+            NostalgicTweaks.LOGGER.warn("Optifine is installed - some tweaks may not work as intended");
     }
 }

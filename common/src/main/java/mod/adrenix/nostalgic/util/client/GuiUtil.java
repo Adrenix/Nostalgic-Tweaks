@@ -166,7 +166,7 @@ public abstract class GuiUtil
      * The class will manage and keep track of where given text should render.
      * This greatly simplifies the rendering process of in-game HUD text.
      */
-    private static class CornerManager
+    public static class CornerManager
     {
         private final float height = (float) Minecraft.getInstance().getWindow().getGuiScaledHeight();
         private final AtomicDouble topLeft = new AtomicDouble(2.0D);
@@ -193,7 +193,7 @@ public abstract class GuiUtil
      * @param corner The corner to render the text to.
      * @param manager The corner manager for this render cycle.
      */
-    private static void drawText(PoseStack poseStack, String text, TweakType.Corner corner, CornerManager manager)
+    public static void drawText(PoseStack poseStack, String text, TweakType.Corner corner, CornerManager manager)
     {
         Minecraft mc = Minecraft.getInstance();
         boolean isLeft = corner.equals(TweakType.Corner.TOP_LEFT) || corner.equals(TweakType.Corner.BOTTOM_LEFT);

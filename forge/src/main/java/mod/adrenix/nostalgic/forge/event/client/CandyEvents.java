@@ -23,7 +23,7 @@ public abstract class CandyEvents
     // Fog Rendering
     public static void oldFogRendering(ViewportEvent.RenderFog event)
     {
-        if (NostalgicTweaks.isOptifineInstalled)
+        if (NostalgicTweaks.OPTIFINE.get())
             return;
 
         if (FogUtil.isOverworld(event.getCamera()))

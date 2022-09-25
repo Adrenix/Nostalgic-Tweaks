@@ -19,7 +19,7 @@ public abstract class OptifineFogRendererMixin
     @Inject(method = "setupFog", at = @At(value = "RETURN"))
     private static void NT$onSetupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        if (NostalgicTweaks.isOptifineInstalled)
+        if (NostalgicTweaks.OPTIFINE.get())
         {
             FogUtil.setupFog(camera, fogMode);
             FogUtil.setupNetherFog(camera, fogMode);

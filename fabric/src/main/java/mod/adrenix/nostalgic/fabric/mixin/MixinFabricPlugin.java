@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.fabric.mixin;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -10,19 +11,17 @@ import java.util.Set;
 
 public class MixinFabricPlugin implements IMixinConfigPlugin
 {
-    private boolean isSodiumPresent = true;
-
     @Override
     public void onLoad(String mixinPackage)
     {
-        isSodiumPresent = FabricLoader.getInstance().getModContainer("sodium").isPresent();
+        NostalgicTweaks.isSodiumInstalled = FabricLoader.getInstance().getModContainer("sodium").isPresent();
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
         if (mixinClassName.equals("mod.adrenix.nostalgic.fabric.mixin.client.ItemColorsSodiumMixin"))
-            return isSodiumPresent;
+            return NostalgicTweaks.isSodiumInstalled;
         return true;
     }
 

@@ -6,7 +6,6 @@ import mod.adrenix.nostalgic.forge.register.ClientRegistry;
 import mod.adrenix.nostalgic.forge.register.CommonSetup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -19,12 +18,6 @@ public class NostalgicForge
     public NostalgicForge()
     {
         /* Common */
-
-        // Check if optifine is installed
-        NostalgicTweaks.isOptifineInstalled = ModList.get().isLoaded("optifine");
-
-        if (NostalgicTweaks.isOptifineInstalled)
-            NostalgicTweaks.LOGGER.warn("Optifine is installed - some tweaks may not work as intended");
 
         // Let the connection be rejected by the server if there is a protocol mismatch
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () ->

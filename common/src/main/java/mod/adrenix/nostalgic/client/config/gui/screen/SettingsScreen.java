@@ -8,6 +8,8 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.common.config.tweak.TweakType;
+import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
@@ -228,14 +230,25 @@ public class SettingsScreen extends Screen
 
     private void renderDebug(PoseStack poseStack)
     {
+        GuiUtil.CornerManager manager = new GuiUtil.CornerManager();
+
         drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 5, 0xFFFF00);
-        drawString(poseStack, this.font, String.format("LAN: %s", getColored(NetUtil.isLocalHost())), 2, height - 70, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Verified: %s", getColored(NostalgicTweaks.isNetworkVerified())), 2, height - 60, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Operator: %s", getColored(NetUtil.isPlayerOp())), 2, height - 50, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Connection: %s", getColored(NetUtil.isConnected())), 2, height - 40, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Multiplayer: %s", getColored(NetUtil.isMultiplayer())), 2, height - 30, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Integration: %s", getColored(NetUtil.getIntegratedServer())), 2, height - 20, 0xFFFFFF);
-        drawString(poseStack, this.font, String.format("Singleplayer: %s", getColored(NetUtil.isSingleplayer())), 2, height - 10, 0xFFFFFF);
+
+        GuiUtil.drawText(poseStack, String.format("Loader: §d%s", NostalgicTweaks.isForge() ? "Forge" : "Fabric"), TweakType.Corner.TOP_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Protocol: §b%s", NostalgicTweaks.PROTOCOL), TweakType.Corner.TOP_LEFT, manager);
+
+        GuiUtil.drawText(poseStack, String.format("Singleplayer: %s", getColored(NetUtil.isSingleplayer())), TweakType.Corner.BOTTOM_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Multiplayer: %s", getColored(NetUtil.isMultiplayer())), TweakType.Corner.BOTTOM_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Connected: %s", getColored(NetUtil.isConnected())), TweakType.Corner.BOTTOM_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Operator: %s", getColored(NetUtil.isPlayerOp())), TweakType.Corner.BOTTOM_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Verified: %s", getColored(NostalgicTweaks.isNetworkVerified())), TweakType.Corner.BOTTOM_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("LAN: %s", getColored(NetUtil.isLocalHost())), TweakType.Corner.BOTTOM_LEFT, manager);
+
+        GuiUtil.drawText(poseStack, String.format("Integration: %s", getColored(NetUtil.getIntegratedServer())), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Optifine: %s", getColored(NostalgicTweaks.OPTIFINE.get())), TweakType.Corner.TOP_RIGHT, manager);
+
+        if (NostalgicTweaks.isFabric())
+            GuiUtil.drawText(poseStack, String.format("Sodium: %s", getColored(NostalgicTweaks.isSodiumInstalled)), TweakType.Corner.TOP_RIGHT, manager);
     }
 
     private void renderLogo(PoseStack poseStack)
