@@ -61,11 +61,12 @@ public abstract class ItemModelGeneratorMixin
         // Captures NoClassDefFoundError if config dependency is missing which allows forge to reach missing dependency screen
         catch (Error ignored) {}
 
+        boolean isForge = NostalgicTweaks.isForge() && !NostalgicTweaks.OPTIFINE.get();
 
         for (BlockElement element : blockElements)
         {
             for (BlockElementFace face : element.faces.values())
-                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio() + (NostalgicTweaks.isForge() ? 0.00193F : 0.0F));
+                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio() + (isForge ? 0.00193F : 0.0F));
         }
     }
 }
