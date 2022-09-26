@@ -33,6 +33,9 @@ public abstract class ModelBakeryMixin
             default -> namespace;
         };
 
+        if (namespace.equals(minecraft))
+            return vanilla;
+
         if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldEnderChest() && path.equals("item/ender_chest"))
             return new ResourceLocation(NostalgicTweaks.MOD_ID, "item/vanilla_ender_chest");
         else if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldTrappedChest() && path.equals("item/trapped_chest"))
