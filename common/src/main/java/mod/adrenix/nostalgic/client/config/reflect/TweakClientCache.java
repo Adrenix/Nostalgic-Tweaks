@@ -564,6 +564,8 @@ public class TweakClientCache<T>
     public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
     public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
     public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
+    public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
+    public String getOptifineKey() { return this.getLangKey() + ".@Optifine"; }
     public String getTranslation() { return Component.translatable(this.getLangKey()).getString(); }
     public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
 }

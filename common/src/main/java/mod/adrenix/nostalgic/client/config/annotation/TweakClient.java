@@ -116,6 +116,36 @@ public abstract class TweakClient
         public @interface Restart {}
 
         /**
+         * Adds an "Optifine" tag to a tweak in the configuration menu.
+         * These tags inform the user that there are known problems with this tweak and Optifine.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface Optifine
+        {
+            /**
+             * Disable this flag if a custom tooltip is desired.
+             * @return Whether to use the default tooltip message regarding incompatibility.
+             */
+            boolean incompatible() default true;
+        }
+
+        /**
+         * Adds a "Sodium" tag to a tweak in the configuration menu.
+         * These tags inform the user that there are known problems with this tweak and Sodium.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface Sodium
+        {
+            /**
+             * Disable this flag if a custom tooltip is desired.
+             * @return Whether to use the default tooltip message regarding incompatibility.
+             */
+            boolean incompatible() default true;
+        }
+
+        /**
          * An enumeration that tells the config menu renderer where to order tweaks at.
          * The structure of ordering is typically done like so:
          * Top (orders tweaks based on their order number from least to greatest 0 -> infinity)

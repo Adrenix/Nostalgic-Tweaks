@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
@@ -112,9 +113,14 @@ public class TweakTag extends AbstractWidget
         TweakSide.Client isClient = CommonReflect.getAnnotation(this.cache, TweakSide.Client.class);
         TweakSide.Server isServer = CommonReflect.getAnnotation(this.cache, TweakSide.Server.class);
         TweakSide.Dynamic isDynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
+        TweakClient.Gui.Sodium isSodium = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Sodium.class);
         TweakClient.Gui.Restart isRestart = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Restart.class);
         TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
+        TweakClient.Gui.Optifine isOptifine = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Optifine.class);
         TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
+
+        Component optifineTag = Component.literal("Optifine");
+        Component sodiumTag = Component.literal("Sodium");
 
         Component title = Component.literal(this.title);
         Component newTag = Component.translatable(LangUtil.Gui.TAG_NEW);
@@ -124,12 +130,15 @@ public class TweakTag extends AbstractWidget
         Component reloadTag = Component.translatable(LangUtil.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
         Component restartTag = Component.translatable(LangUtil.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
         Component warningTag = Component.translatable(LangUtil.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
+
         Component newTooltip = Component.translatable(LangUtil.Gui.TAG_NEW_TOOLTIP);
         Component clientTooltip = Component.translatable(LangUtil.Gui.TAG_CLIENT_TOOLTIP);
         Component serverTooltip = Component.translatable(LangUtil.Gui.TAG_SERVER_TOOLTIP);
         Component dynamicTooltip = Component.translatable(LangUtil.Gui.TAG_DYNAMIC_TOOLTIP);
         Component reloadTooltip = Component.translatable(LangUtil.Gui.TAG_RELOAD_TOOLTIP);
         Component restartTooltip = Component.translatable(LangUtil.Gui.TAG_RESTART_TOOLTIP);
+        Component sodiumTooltip = Component.translatable(this.cache.getSodiumKey());
+        Component optifineTooltip = Component.translatable(this.cache.getOptifineKey());
         Component warningTooltip = Component.translatable(this.cache.getWarningKey());
 
         boolean isNewRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS).getCurrent();
@@ -184,6 +193,24 @@ public class TweakTag extends AbstractWidget
         {
             renderTooltip(screen, poseStack, warningTag, warningTooltip, lastX, startY, mouseX, mouseY);
             lastX = renderTag(screen, poseStack, warningTag, lastX, startY, U_WARNING_OFFSET, this.render);
+        }
+
+        if (isSodium != null && NostalgicTweaks.isSodiumInstalled)
+        {
+            if (isSodium.incompatible())
+                sodiumTooltip = Component.translatable(LangUtil.Gui.TAG_SODIUM_TOOLTIP);
+
+            renderTooltip(screen, poseStack, sodiumTag, sodiumTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, sodiumTag, lastX, startY, U_RESTART_OFFSET, this.render);
+        }
+
+        if (isOptifine != null && NostalgicTweaks.OPTIFINE.get())
+        {
+            if (isOptifine.incompatible())
+                optifineTooltip = Component.translatable(LangUtil.Gui.TAG_OPTIFINE_TOOLTIP);
+
+            renderTooltip(screen, poseStack, optifineTag, optifineTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, optifineTag, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         this.x = startX;

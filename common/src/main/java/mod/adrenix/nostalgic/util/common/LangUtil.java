@@ -160,6 +160,8 @@ public abstract class LangUtil
         public static final String TAG_SYNC_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sync.@Tooltip";
         public static final String TAG_AUTO = "gui.nostalgic_tweaks.config.tag.auto";
         public static final String TAG_AUTO_TOOLTIP = "gui.nostalgic_tweaks.config.tag.auto.@Tooltip";
+        public static final String TAG_SODIUM_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sodium.@Tooltip";
+        public static final String TAG_OPTIFINE_TOOLTIP = "gui.nostalgic_tweaks.config.tag.optifine.@Tooltip";
 
         public static final String SEARCH_EMPTY = "gui.nostalgic_tweaks.config.search.empty";
         public static final String SEARCH_INVALID = "gui.nostalgic_tweaks.config.search.invalidTag";

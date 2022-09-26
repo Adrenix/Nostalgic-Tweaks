@@ -154,6 +154,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadResources
+        @TweakClient.Gui.Optifine(incompatible = false)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_CHEST_CANDY)
         public boolean oldChest = DefaultConfig.Candy.OLD_CHEST;
         static { CandyTweak.CHEST.setKey("oldChest"); }
@@ -186,6 +187,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Sodium
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
         public boolean oldTorchBrightness = DefaultConfig.Candy.OLD_TORCH_BRIGHTNESS;
@@ -195,6 +197,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Sodium
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
         public boolean oldTorchModel = DefaultConfig.Candy.OLD_TORCH_MODEL;
@@ -204,6 +207,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Sodium
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
         public boolean oldRedstoneTorchModel = DefaultConfig.Candy.OLD_REDSTONE_TORCH_MODEL;
@@ -213,6 +217,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Sodium
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
         public boolean oldSoulTorchModel = DefaultConfig.Candy.OLD_SOUL_TORCH_MODEL;
@@ -397,6 +402,7 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Optifine(incompatible = false)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_LOADING_CANDY)
         public boolean removeLoadingBar = DefaultConfig.Candy.REMOVE_LOADING_BAR;
