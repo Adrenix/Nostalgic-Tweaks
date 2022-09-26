@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "priority": 1001,
   "client": [
+    "client.BlockRenderDispatcherFabricMixin",
     "client.FogRendererFabricMixin",
     "client.GuiFabricMixin",
     "client.ItemColorsFabricMixin",
