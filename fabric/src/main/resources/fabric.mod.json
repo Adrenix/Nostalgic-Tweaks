@@ -55,10 +55,6 @@
     "architectury": ">=${architectury_version}"
   },
 
-  "breaks": {
-    "optifabric": "*"
-  },
-
   "custom": {
     "modmenu": {
       "links": {
