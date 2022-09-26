@@ -13,6 +13,13 @@ import java.util.Set;
  * Some configuration entries need to be known when mixins are applied.
  * If the cloth-config API is missing, then mixins will be loaded with missing
  * classes which will prevent Forge from reaching this screen.
+ *
+ * Do <b>not</b> class load any mod related classes here. Doing so will cause "applied too early" ASM errors during the
+ * mixin application process.
+ *
+ * For example, any mod that applies transformations to the <code>ResourceLocation</code> class will throw a mixin
+ * application error because the <code>ResourceLocation</code> class was class loaded by this plugin before the mixin
+ * processor could apply patches.
  */
 
 public class MixinPlugin implements IMixinConfigPlugin
