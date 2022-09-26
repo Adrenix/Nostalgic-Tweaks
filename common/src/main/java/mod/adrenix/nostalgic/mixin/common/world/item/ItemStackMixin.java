@@ -18,7 +18,7 @@ public abstract class ItemStackMixin
     private static void NT$onShouldShowInTooltip(int hideFlags, ItemStack.TooltipPart part, CallbackInfoReturnable<Boolean> callback)
     {
         boolean isVanillaShown = (hideFlags & part.getMask()) == 0;
-        if (!isVanillaShown)
+        if (!isVanillaShown || !ModConfig.isModEnabled())
             return;
 
         boolean isShown = switch (part)

@@ -526,6 +526,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.DisabledBoolean(value = true)
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
         public boolean showEnchantmentTip = DefaultConfig.Candy.SHOW_ENCHANTMENTS_TIP;
         static { CandyTweak.ENCHANTMENT_TIP.setKey("showEnchantmentTip"); }
@@ -533,6 +534,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.DisabledBoolean(value = true)
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
         public boolean showModifiersTip = DefaultConfig.Candy.SHOW_MODIFIERS_TIP;
         static { CandyTweak.MODIFIERS_TIP.setKey("showModifiersTip"); }
@@ -540,6 +542,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus(status = StatusType.LOADED)
+        @TweakClient.Gui.DisabledBoolean(value = true)
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.TOOLTIP_PARTS_CANDY)
         public boolean showDyeTip = DefaultConfig.Candy.SHOW_DYE_TIP;
         static { CandyTweak.DYE_TIP.setKey("showDyeTip"); }
