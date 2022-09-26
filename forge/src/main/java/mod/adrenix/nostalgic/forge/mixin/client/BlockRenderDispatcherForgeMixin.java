@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockRenderDispatcher.class)
-public abstract class BlockRenderDispatcherMixin
+public abstract class BlockRenderDispatcherForgeMixin
 {
     /* Shadows */
 
