@@ -35,7 +35,6 @@ public abstract class TerrainRenderContextMixin
     @Inject
     (
         method = "tessellateBlock",
-        remap = false,
         cancellable = true,
         at = @At
         (
