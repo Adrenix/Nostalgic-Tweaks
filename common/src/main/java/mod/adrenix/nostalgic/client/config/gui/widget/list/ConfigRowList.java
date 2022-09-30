@@ -362,7 +362,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     if (widget instanceof GroupButton group && this.controller.equals(group))
                     {
                         // Ensure children only consist of subcategories
-                        GroupButton last = null;
+                        GroupButton subcategory = null;
                         boolean isSubOnly = true;
 
                         for (ConfigRowList.Row subcategories : this.cache)
@@ -370,7 +370,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                             for (AbstractWidget subWidget : subcategories.children)
                             {
                                 if (subWidget instanceof GroupButton subGroup)
-                                    last = subGroup;
+                                    subcategory = subGroup;
                                 else
                                 {
                                     isSubOnly = false;
@@ -383,12 +383,19 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                         }
 
                         // If parent group only has subcategories, then tell the last subgroup to not display pipe bars
-                        if (isSubOnly && last != null)
-                            last.setLastSubcategory(true);
+                        if (isSubOnly && subcategory != null)
+                            subcategory.setLastSubcategory(true);
 
                         // If category group has tweaks at the end, a category bar is needed for embedded tree rendering
-                        if ((!isSubOnly || group.isParentTreeNeeded()) && last != null)
-                            last.setParentTreeNeeded(true);
+                        if ((!isSubOnly || group.isParentTreeNeeded()) && subcategory != null)
+                            subcategory.setParentTreeNeeded(true);
+
+                        // If category group has additional children then show grandparent pipe bars for embedded rows
+                        if (group.getId() instanceof TweakClient.Embedded && categories.group != null)
+                        {
+                            if (!categories.group.isLastSubcategory())
+                                group.setGrandparentTreeNeeded(true);
+                        }
                     }
                 }
             }
@@ -609,6 +616,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 return;
 
             boolean isSubIndented = this.group == null || !this.group.isLastSubcategory();
+            boolean isVertical = this.indent == SUB_TEXT_START || this.indent == EMB_TEXT_START;
             boolean isRowEmpty = this.children.size() == 0;
             boolean isTextRow = false;
 
@@ -653,8 +661,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
 
-            // Secondary embedded and subcategory vertical bar [ |  L ]
-            boolean isVertical = this.indent == SUB_TEXT_START || this.indent == EMB_TEXT_START;
+            // Secondary embedded and subcategory vertical bar [ |  L or |  |  L ]
 
             if (isVertical && isSubIndented)
             {
@@ -664,7 +671,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
                 RenderUtil.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
 
-                if (this.indent == EMB_TEXT_START)
+                if (this.indent == EMB_TEXT_START && this.group.isGrandparentTreeNeeded())
                     RenderUtil.fill(buffer, matrix, leftX - 20.0F, rightX - 20.0F, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
             }
 
