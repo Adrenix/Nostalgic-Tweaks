@@ -99,14 +99,15 @@ public enum CandyTweak implements ITweak
     PLAIN_SELECTED_ITEM_NAME,
 
     // Lighting Candy
+    MAX_BLOCK_LIGHT,
+    LIGHT_COLOR,
     LIGHT_RENDERING,
     LIGHT_FLICKER,
-    LIGHT_BRIGHTNESS,
     NETHER_LIGHTING,
-    DISABLE_GAMMA,
     SMOOTH_LIGHTING,
     LEAVES_LIGHTING,
     WATER_LIGHTING,
+    DISABLE_BRIGHTNESS,
 
     // Particle Candy
     SWEEP,

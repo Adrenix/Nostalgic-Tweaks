@@ -574,6 +574,16 @@ public abstract class FogUtil
         }
 
         /**
+         * Determines whether the camera can see the sky.
+         * @param camera The game's camera.
+         * @return Whether the sky is visible (skylight = 15)
+         */
+        public static boolean canSeeSky(Camera camera)
+        {
+            return camera.getEntity().level.canSeeSky(camera.getBlockPosition());
+        }
+
+        /**
          * Gets the greatest brightness value from block light or skylight.
          * The encroachment tweak will add onto the calculated brightness.
          * @param entity The entity to check.
@@ -672,7 +682,7 @@ public abstract class FogUtil
         {
             final float SPEED = getSpeed(0.005F, Shift.COLOR);
 
-            if (isIgnored(camera) || isFogModified(camera) || getSkylight(camera.getEntity()) == 15)
+            if (isIgnored(camera) || isFogModified(camera) || canSeeSky(camera))
             {
                 ModUtil.Numbers.moveTowardsColor(CURRENT_FOG_RGB, TARGET_FOG_RGB, SPEED);
                 ModUtil.Numbers.moveTowardsColor(CURRENT_SKY_RGB, TARGET_SKY_RGB, SPEED);

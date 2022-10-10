@@ -291,14 +291,14 @@ public abstract class ModConfig
         public static boolean oldFlatColors() { return getBoolTweak(CandyTweak.FLAT_COLORS, CANDY.old2dColors); }
 
         // Lighting Candy
-        public static boolean oldLightBrightness() { return getBoolTweak(CandyTweak.LIGHT_BRIGHTNESS, CANDY.oldLightBrightness); }
-        public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLighting); }
+        public static boolean disableBrightness() { return getBoolTweak(CandyTweak.DISABLE_BRIGHTNESS, CANDY.disableBrightness); }
+        public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLightRendering); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
         public static boolean oldWaterLighting() { return getBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting); }
         public static boolean oldLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.oldLightFlicker); }
-        public static boolean disableGamma() { return getBoolTweak(CandyTweak.DISABLE_GAMMA, CANDY.disableGamma); }
+        public static boolean oldLightColor() { return getBoolTweak(CandyTweak.LIGHT_COLOR, CANDY.oldLightColor); }
 
         // Particle Candy
         public static boolean unoptimizedExplosionParticles() { return getBoolTweak(CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES, CANDY.unoptimizedExplosionParticles); }
@@ -375,6 +375,7 @@ public abstract class ModConfig
         public static int getVoidParticleRadius() { return isTweakOn(CandyTweak.VOID_PARTICLE_RADIUS) ? CANDY.voidParticleRadius : DefaultConfig.Candy.VOID_PARTICLE_RADIUS; }
         public static int getVoidParticleStart() { return isTweakOn(CandyTweak.VOID_PARTICLE_START) ? CANDY.voidParticleStart + 64 : DefaultConfig.Candy.VOID_PARTICLE_START + 64; }
         public static int getVoidFogEncroach() { return isTweakOn(CandyTweak.VOID_FOG_ENCROACH) ? CANDY.voidFogEncroach : DefaultConfig.Candy.VOID_FOG_ENCROACH; }
+        public static int getMaxBlockLight() { return isTweakOn(CandyTweak.MAX_BLOCK_LIGHT) ? CANDY.maxBlockLight : DefaultConfig.Candy.MAX_BLOCK_LIGHT; }
         public static int getVoidFogStart() { return isTweakOn(CandyTweak.VOID_FOG_START) ? CANDY.voidFogStart + 64 : DefaultConfig.Candy.VOID_FOG_START + 64; }
         public static int getCloudHeight() { return isTweakOn(CandyTweak.CLOUD_HEIGHT) ? CANDY.oldCloudHeight : DefaultConfig.Candy.DISABLED_CLOUD_HEIGHT; }
         public static int getItemMergeLimit() { return isTweakOn(CandyTweak.ITEM_MERGE_LIMIT) ? getSidedTweak(CandyTweak.ITEM_MERGE_LIMIT, CANDY.itemMergeLimit, SERVER_CANDY.itemMergeLimit) : 1; }

@@ -130,14 +130,15 @@ public abstract class DefaultConfig
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
 
         // Lighting Candy
+        public static final int MAX_BLOCK_LIGHT = 15;
+        public static final boolean OLD_LIGHT_COLOR = true;
         public static final boolean OLD_LIGHT_RENDERING = true;
-        public static final boolean OLD_LIGHT_BRIGHTNESS = true;
         public static final boolean OLD_LIGHT_FLICKER = true;
         public static final boolean OLD_NETHER_LIGHTING = true;
         public static final boolean OLD_LEAVES_LIGHTING = true;
         public static final boolean OLD_SMOOTH_LIGHTING = true;
         public static final boolean OLD_WATER_LIGHTING = true;
-        public static final boolean DISABLE_GAMMA = true;
+        public static final boolean DISABLE_BRIGHTNESS = true;
 
         // Particle Candy
         public static final boolean DISABLE_SPRINTING_PARTICLES = true;

@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -27,30 +28,9 @@ public abstract class LightTextureMixin
     @Shadow @Final private DynamicTexture lightTexture;
     @Shadow private boolean updateLightTexture;
     @Shadow protected abstract float getDarknessGamma(float partialTicks);
-    @Shadow protected abstract float calculateDarknessScale(LivingEntity livingEntity, float f, float g);
+    @Shadow protected abstract float calculateDarknessScale(LivingEntity entity, float gamma, float partialTicks);
 
-    /* Static Helpers */
-
-    private static float calculateSkylightSubtracted(ClientLevel clientLevel)
-    {
-        float forceBrightness = clientLevel.dimension() == Level.NETHER ? 7.0F : 15.0F;
-        float timeOfDay = clientLevel.getTimeOfDay(1.0F);
-        float skyDarken = 1.0F - (Mth.cos(timeOfDay * ((float) Math.PI * 2.0F)) * 2.0F + 0.5F);
-
-        skyDarken = 1.0F - Mth.clamp(skyDarken, 0.0F, 1.0F);
-        skyDarken = (float) ((double) skyDarken * (1.0D - (double) (clientLevel.getRainLevel(1.0F) * 5.0F) / 16.0D));
-        skyDarken = (float) ((double) skyDarken * (1.0D - (double) (clientLevel.getThunderLevel(1.0F) * 5.0F) / 16.0D));
-        skyDarken = 1.0F - skyDarken;
-
-        return skyDarken * (forceBrightness - 4.0F) + (15.0F - forceBrightness);
-    }
-
-    private static float getOldBrightness(int i)
-    {
-        float mod = ModConfig.Candy.oldLightBrightness() ? 0.05F : 0.0F;
-        float light = 1.0F - (float) i / 15.0F;
-        return ((1.0F - light) / (light * 3.0F + 1.0F)) * (1.0F - mod) + mod;
-    }
+    /* Injections */
 
     /**
      * Disables the light flickering from light emitting sources.
@@ -73,7 +53,7 @@ public abstract class LightTextureMixin
     @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldLightRendering() || !this.updateLightTexture)
+        if (!ModConfig.Candy.oldLightColor() || !this.updateLightTexture)
             return;
 
         this.updateLightTexture = false;
@@ -94,11 +74,11 @@ public abstract class LightTextureMixin
             (waterVision > 0.0F && this.minecraft.player.hasEffect(MobEffects.CONDUIT_POWER) ? waterVision : 0.0F)
         ;
 
-        boolean isGammaDisabled = ModConfig.Candy.disableGamma();
+        boolean isGammaDisabled = ModConfig.Candy.disableBrightness();
         boolean isFlashPresent = level.getSkyFlashTime() > 0 && !this.minecraft.options.hideLightningFlash().get();
         boolean isWorldDarkening = darkenAmount > 0;
 
-        float skyLightSubtracted = calculateSkylightSubtracted(level);
+        float skyLightSubtracted = WorldClientUtil.getSkylightSubtracted(level);
 
         if (isFlashPresent)
             skyLightSubtracted = 1;
@@ -112,8 +92,8 @@ public abstract class LightTextureMixin
         {
             for (int x = 0; x < 16; x++)
             {
-                float fromBlockLight = getOldBrightness(x);
-                float fromSkyLight = getOldBrightness((int) Math.max(y - skyLightSubtracted, 0));
+                float fromBlockLight = WorldClientUtil.getOldBrightness(x);
+                float fromSkyLight = WorldClientUtil.getOldBrightness((int) Math.max(y - skyLightSubtracted, 0));
 
                 if (level.dimension() == Level.END)
                     fromSkyLight = 0.22F + fromSkyLight * 0.75F;
@@ -138,7 +118,7 @@ public abstract class LightTextureMixin
                 }
 
                 double gamma = isGammaDisabled ? 0.0D : gammaSetting;
-                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.1F), 0.0F, 255.0F);
+                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
                 float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
                 float light = fromBlockLight > fromSkyLight ? blockLight : skyLight;
 

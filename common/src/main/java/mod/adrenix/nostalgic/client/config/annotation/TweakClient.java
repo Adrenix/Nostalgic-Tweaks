@@ -387,9 +387,10 @@ public abstract class TweakClient
 
         TOOLTIP_PARTS_CANDY(Subcategory.INTERFACE_TOOLTIP_CANDY, LangUtil.Gui.CANDY_EMBED_TOOLTIP_PARTS),
 
-        // World Fog (Eye Candy) - Embedded Subcategories
+        // World (Eye Candy) - Embedded Subcategories
 
         WATER_FOG_CANDY(Subcategory.WORLD_FOG_CANDY, LangUtil.Gui.CANDY_EMBED_WATER_FOG),
+        SHADER_LIGHT(Subcategory.LIGHTING_WORLD_CANDY, LangUtil.Gui.CANDY_EMBED_SHADER_LIGHT),
 
         // Void (Eye Candy) - Embedded Subcategories
 

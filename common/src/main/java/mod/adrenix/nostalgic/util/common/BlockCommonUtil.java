@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -55,13 +55,9 @@ public abstract class BlockCommonUtil
      * @param pos The position of the block to check.
      * @return Whether the block is within a water block.
      */
-    public static boolean isInWater(BlockGetter level, BlockPos pos)
+    public static boolean isInWater(BlockAndTintGetter level, BlockPos pos)
     {
-        BlockState block = level.getBlockState(pos);
-
-        if (isBlockEqualTo(block, Blocks.AIR))
-            return false;
-        else if (isBlockEqualTo(block, Blocks.WATER))
+        if (level.getBlockState(pos).is(Blocks.WATER))
             return true;
 
         boolean up = false;

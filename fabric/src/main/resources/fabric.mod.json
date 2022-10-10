@@ -45,12 +45,14 @@
     "mixin.nostalgic_tweaks-common.json",
     "mixin.nostalgic_tweaks-common-client.json",
     "mixin.nostalgic_tweaks-common-widen.json",
-    "mixin.nostalgic_tweaks-fabric.json"
+    "mixin.nostalgic_tweaks-fabric-client.json",
+    "mixin.nostalgic_tweaks-fabric-common.json",
+    "mixin.nostalgic_tweaks-sodium.json"
   ],
 
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19",
+    "minecraft": "1.19",
     "cloth-config": ">=${cloth_version}",
     "architectury": ">=${architectury_version}"
   },

@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
@@ -10,9 +11,12 @@ import mod.adrenix.nostalgic.util.client.*;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.PrioritizeChunkUpdates;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -42,6 +46,7 @@ public abstract class LevelRendererMixin
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private RenderBuffers renderBuffers;
     @Unique @Nullable private VertexBuffer blueBuffer;
+    @Shadow @Nullable private ViewArea viewArea;
     @Shadow @Nullable private ClientLevel level;
 
     /* Unique Injected Fields */
@@ -335,8 +340,10 @@ public abstract class LevelRendererMixin
     }
 
     /**
-     * Drops the skylight brightness from water related blocks by 2 levels.
-     * Controlled by the old water lighting tweak.
+     * If old light rendering is enabled, syncs sky/block light and/or drops the skylight brightness from water related
+     * blocks by 2 levels.
+     *
+     * Controlled by the old water lighting and old light rendering tweaks.
      */
     @Redirect
     (
@@ -350,9 +357,73 @@ public abstract class LevelRendererMixin
     )
     private static int NT$onGetSkyLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
     {
+        // Old light rendering also handles old water lighting so returning here is fine
+        if (ModConfig.Candy.oldLightRendering())
+            return WorldClientUtil.getSyncedLight(level, pos);
+
+        // If old light rendering is disabled then old water lighting logic happens here
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, pos))
             return BlockCommonUtil.getWaterLightBlock(level.getBrightness(layer, pos));
 
         return level.getBrightness(layer, pos);
+    }
+
+    /**
+     * If old light rendering is enabled, syncs sky/block light.
+     * Controlled by old light rendering tweak.
+     */
+    @Redirect
+    (
+        method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I",
+        at = @At
+        (
+            ordinal = 1,
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBrightness(Lnet/minecraft/world/level/LightLayer;Lnet/minecraft/core/BlockPos;)I"
+        )
+    )
+    private static int NT$onGetBlockLightColor(BlockAndTintGetter level, LightLayer layer, BlockPos pos)
+    {
+        return ModConfig.Candy.oldLightRendering() ? WorldClientUtil.getSyncedLight(level, pos) : level.getBrightness(layer, pos);
+    }
+
+    /**
+     * If the old light rendering has shifted skylight values, then a chunk relight is required. All chunks kept in the
+     * current view area will be marked as dirty and will update on the next chunk compile cycle.
+     *
+     * Controlled by the old light rendering tweak.
+     */
+    @Inject(method = "compileChunks", at = @At("HEAD"))
+    private void NT$onCompileChunks(Camera camera, CallbackInfo callback)
+    {
+        if (WorldClientUtil.isRelightCheckEnqueued() && !NostalgicTweaks.isSodiumInstalled && this.viewArea != null)
+        {
+            for (ChunkRenderDispatcher.RenderChunk chunk : this.viewArea.chunks)
+                chunk.setDirty(true);
+        }
+    }
+
+    /**
+     * Changes chunk priority to none. This prevents lag spikes during chunk relighting.
+     * Controlled by the old light rendering tweak.
+     */
+    @SuppressWarnings("unchecked")
+    @Redirect(method = "compileChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;"))
+    private <T> T NT$onCompilePriority(OptionInstance<PrioritizeChunkUpdates> instance)
+    {
+        return ModConfig.Candy.oldLightRendering() && !NostalgicTweaks.isSodiumInstalled ? (T) PrioritizeChunkUpdates.NONE : (T) instance.get();
+    }
+
+    /**
+     * When chunk compilation is finished, if relighting of the chunks was performed then the flag that controls this
+     * functionality needs disabled.
+     *
+     * Not controlled by any tweak.
+     */
+    @Inject(method = "compileChunks", at = @At("RETURN"))
+    private void NT$onFinishChunkCompilation(Camera camera, CallbackInfo callback)
+    {
+        if (WorldClientUtil.isRelightCheckEnqueued() && !NostalgicTweaks.isSodiumInstalled)
+            WorldClientUtil.setRelightFinished();
     }
 }

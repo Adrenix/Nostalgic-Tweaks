@@ -187,7 +187,6 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
-        @TweakClient.Gui.Sodium
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.BLOCK_TORCH_CANDY)
         public boolean oldTorchBrightness = DefaultConfig.Candy.OLD_TORCH_BRIGHTNESS;
@@ -642,6 +641,13 @@ public class ClientConfig implements ConfigData
 
         // Lighting - World Lighting Candy
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
+        public boolean disableBrightness = DefaultConfig.Candy.DISABLE_BRIGHTNESS;
+        static { CandyTweak.DISABLE_BRIGHTNESS.setKey("disableBrightness"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
@@ -654,11 +660,22 @@ public class ClientConfig implements ConfigData
         public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
         static { CandyTweak.NETHER_LIGHTING.setKey("oldNetherLighting"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Optifine(incompatible = false)
+        @TweakClient.Gui.Sodium(incompatible = false)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
+        public boolean oldLightRendering = DefaultConfig.Candy.OLD_LIGHT_RENDERING;
+        static { CandyTweak.LIGHT_RENDERING.setKey("oldLightRendering"); }
+
+        @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
-        public boolean oldLighting = DefaultConfig.Candy.OLD_LIGHT_RENDERING;
-        static { CandyTweak.LIGHT_RENDERING.setKey("oldLighting"); }
+        public boolean oldLightColor = DefaultConfig.Candy.OLD_LIGHT_COLOR;
+        static { CandyTweak.LIGHT_COLOR.setKey("oldLightColor"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
@@ -670,16 +687,12 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
-        public boolean oldLightBrightness = DefaultConfig.Candy.OLD_LIGHT_BRIGHTNESS;
-        static { CandyTweak.LIGHT_BRIGHTNESS.setKey("oldLightBrightness"); }
-
-        @TweakClient.Gui.New
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
-        public boolean disableGamma = DefaultConfig.Candy.DISABLE_GAMMA;
-        static { CandyTweak.DISABLE_GAMMA.setKey("disableGamma"); }
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.SHADER_LIGHT)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_BLOCK_LIGHT)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 15)
+        public int maxBlockLight = DefaultConfig.Candy.MAX_BLOCK_LIGHT;
+        static { CandyTweak.MAX_BLOCK_LIGHT.setKey("maxBlockLight"); }
 
         // Lighting - Block Lighting Candy
 

@@ -54,6 +54,15 @@ public abstract class ModUtil
         public static long bytesToMegabytes(long bytes) { return bytes / 1024L / 1024L; }
 
         /**
+         * Checks if the given value is greater than or equal the given start or less than or equal to the given end.
+         * @param value The integer to check.
+         * @param start The starting integer.
+         * @param end The ending integer.
+         * @return Whether the given value was within range of the given start/end.
+         */
+        public static boolean isInRange(int value, int start, int end) { return value >= start && value <= end; }
+
+        /**
          * Determine if two integers are within a given <code>tolerance</code>.
          * @param a First integer.
          * @param b Second integer.
@@ -224,6 +233,24 @@ public abstract class ModUtil
                 CURRENT_RGB[1] = moveClampTowards(CURRENT_RGB[1], AVERAGE, SPEED, 0.0F, 1.0F);
                 CURRENT_RGB[2] = moveClampTowards(CURRENT_RGB[2], AVERAGE, SPEED, 0.0F, 1.0F);
             }
+        }
+
+        /**
+         * Get the largest number within the given varargs.
+         * @param numbers The numbers to check.
+         * @return The largest number.
+         */
+        public static int getLargest(int ...numbers)
+        {
+            int largest = Integer.MIN_VALUE;
+
+            for (int number : numbers)
+            {
+                if (number > largest)
+                    largest = number;
+            }
+
+            return largest;
         }
     }
 

@@ -1,0 +1,14 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.fabric.mixin.sodium",
+  "plugin": "mod.adrenix.nostalgic.fabric.mixin.MixinSodiumPlugin",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "client": [
+    "BlockRendererMixin",
+    "FluidRendererMixin",
+    "ItemColorsSodiumMixin",
+    "SodiumWorldRendererMixin",
+    "WorldSliceMixin"
+  ]
+}

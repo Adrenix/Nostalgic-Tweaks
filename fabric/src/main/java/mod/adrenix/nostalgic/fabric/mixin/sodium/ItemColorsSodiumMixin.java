@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.fabric.mixin.client;
+package mod.adrenix.nostalgic.fabric.mixin.sodium;
 
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.color.item.ItemColor;

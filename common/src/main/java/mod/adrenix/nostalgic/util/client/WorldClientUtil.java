@@ -6,10 +6,17 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
+import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
@@ -18,6 +25,8 @@ import net.minecraft.util.Mth;
 
 public abstract class WorldClientUtil
 {
+    /* Sky Helpers */
+
     /**
      * Determines where the sun/moon should be rotated when rendering it.
      * @param vanilla The vanilla rotation of the sun/moon.
@@ -115,5 +124,187 @@ public abstract class WorldClientUtil
 
         RenderSystem.setShader(GameRenderer::getPositionShader);
         RenderSystem.setShaderColor(r, g, b, 1.0F);
+    }
+
+    /* World Lighting Helpers */
+
+    /**
+     * Needed so the renderer knows when chunks should be updated.
+     */
+    private static int lastBlockLight = -1;
+
+    /**
+     * Flag that tracks the state of chunk relighting.
+     */
+    private static boolean enqueueRelightChecks = false;
+
+    /**
+     * Sets relight checks back to their default state.
+     * This should be done when exiting a world.
+     */
+    public static void resetLightingCache()
+    {
+        lastBlockLight = -1;
+        enqueueRelightChecks = false;
+    }
+
+    /**
+     * @return The current state of the {@link WorldClientUtil#enqueueRelightChecks} flag.
+     */
+    public static boolean isRelightCheckEnqueued() { return enqueueRelightChecks; }
+
+    /**
+     * Sets the {@link WorldClientUtil#enqueueRelightChecks} flag to <code>false</code>.
+     */
+    public static void setRelightFinished() { enqueueRelightChecks = false; }
+
+    /**
+     * Syncs sky/block light values to simulate old light rendering.
+     * @param level A block and tint getter instance.
+     * @param blockPos A block position.
+     * @return Synced sky/block light integer.
+     */
+    public static int getSyncedLight(BlockAndTintGetter level, BlockPos blockPos)
+    {
+        int skyLight = level.getBrightness(LightLayer.SKY, blockPos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, blockPos);
+
+        if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, blockPos))
+            skyLight = BlockCommonUtil.getWaterLightBlock(skyLight);
+
+        return WorldClientUtil.getMaxLight(skyLight, blockLight);
+    }
+
+    /**
+     * Gets the light emitted by the sky based on dimension properties and weather.
+     * @param level The client level.
+     * @return The light emitted by the sky.
+     */
+    public static int calculateSkylight(ClientLevel level)
+    {
+        float partialTick = Minecraft.getInstance().getDeltaFrameTime();
+        int timeOfDay = (int) (level.getDayTime() % 24000L);
+
+        float rain = level.getRainLevel(partialTick);
+        float thunder = level.getThunderLevel(partialTick);
+
+        int rainDiff = 0;
+        int thunderDiff = 0;
+
+        if (rain >= 0.3F) rainDiff = 1;
+        if (rain >= 0.6F) rainDiff = 2;
+        if (rain >= 0.9F) rainDiff = 3;
+        if (thunder >= 0.8F) thunderDiff = 5;
+
+        int skyLight = 15;
+
+        if (ModUtil.Numbers.isInRange(timeOfDay, 13670, 22330))
+            skyLight = 4;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 22331, 22491) || ModUtil.Numbers.isInRange(timeOfDay, 13509, 13669))
+            skyLight = 5;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 22492, 22652) || ModUtil.Numbers.isInRange(timeOfDay, 13348, 13508))
+            skyLight = 6;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 22653, 22812) || ModUtil.Numbers.isInRange(timeOfDay, 13188, 13347))
+            skyLight = 7;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 22813, 22973) || ModUtil.Numbers.isInRange(timeOfDay, 13027, 13187))
+            skyLight = 8;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 22974, 23134) || ModUtil.Numbers.isInRange(timeOfDay, 12867, 13026))
+            skyLight = 9;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 23135, 23296) || ModUtil.Numbers.isInRange(timeOfDay, 12705, 12866))
+            skyLight = 10;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 23297, 23459) || ModUtil.Numbers.isInRange(timeOfDay, 12542, 12704))
+            skyLight = 11;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 23460, 23623) || ModUtil.Numbers.isInRange(timeOfDay, 12377, 12541))
+            skyLight = 12;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 23624, 23790) || ModUtil.Numbers.isInRange(timeOfDay, 12210, 12376))
+            skyLight = 13;
+        else if (ModUtil.Numbers.isInRange(timeOfDay, 23791, 23960) || ModUtil.Numbers.isInRange(timeOfDay, 12041, 12209))
+            skyLight = 14;
+
+        return skyLight - Math.max(rainDiff, thunderDiff);
+    }
+
+    /**
+     * Gets the amount of skylight to apply to the light texture.
+     * @param level The client level.
+     * @return A float to
+     */
+    public static float getSkylightSubtracted(ClientLevel level)
+    {
+        if (ModConfig.Candy.oldLightRendering())
+            return (float) 0;
+
+        float forceBrightness = level.dimension() == Level.NETHER ? 7.0F : 15.0F;
+        float skyDarken = 1.0F - (Mth.cos(level.getTimeOfDay(1.0F) * ((float) Math.PI * 2.0F)) * 2.0F + 0.5F);
+
+        skyDarken = 1.0F - Mth.clamp(skyDarken, 0.0F, 1.0F);
+        skyDarken = (float) ((double) skyDarken * (1.0D - (double) (level.getRainLevel(1.0F) * 5.0F) / 16.0D));
+        skyDarken = (float) ((double) skyDarken * (1.0D - (double) (level.getThunderLevel(1.0F) * 5.0F) / 16.0D));
+        skyDarken = 1.0F - skyDarken;
+
+        return skyDarken * (forceBrightness - 4.0F) + (15.0F - forceBrightness);
+    }
+
+    /**
+     * Gets a brightness value using the old light brightness table values.
+     * @param i An index from 0-15.
+     * @return An old brightness value based on the given lightmap index.
+     */
+    public static float getOldBrightness(int i)
+    {
+        float light = 1.0F - (float) i / 15.0F;
+        return ((1.0F - light) / (light * 3.0F + 1.0F)) * (1.0F - 0.05F) + 0.05F;
+    }
+
+    /**
+     * Gets a new light value for blocks being rendered by the level.
+     * @param currentSkyLight The current vanilla stored skylight.
+     * @param currentBlockLight The current vanilla stored block light.
+     * @return The new skylight value.
+     */
+    public static int getMaxLight(int currentSkyLight, int currentBlockLight)
+    {
+        ClientLevel level = Minecraft.getInstance().level;
+        int maxLight = Math.max(currentSkyLight, currentBlockLight);
+
+        if (level == null)
+            return maxLight;
+
+        boolean isSkyVisible = currentSkyLight > 0;
+
+        if (!isSkyVisible)
+            return maxLight;
+
+        int maxShader = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
+        int minShader = currentSkyLight >= level.getMaxLightLevel() ? 4 : 0;
+        int skyLight = calculateSkylight(level);
+        int skyDiff = 15 - currentSkyLight;
+
+        if (lastBlockLight == -1 || lastBlockLight != skyLight)
+        {
+            lastBlockLight = skyLight;
+            enqueueRelightChecks = true;
+        }
+
+        return Mth.clamp(Math.max(skyLight - skyDiff, currentBlockLight), minShader, maxShader);
+    }
+
+    /**
+     * Gets the greatest light value surrounding a water block.
+     * @param level A level instance with the a {@link BlockAndTintGetter} interface.
+     * @param source The position of the water block.
+     * @return The largest light value around the water block.
+     */
+    public static int getWaterLight(BlockAndTintGetter level, BlockPos source)
+    {
+        int center = LevelRenderer.getLightColor(level, source);
+        int above = LevelRenderer.getLightColor(level, source.above());
+        int below = LevelRenderer.getLightColor(level, source.below());
+        int north = LevelRenderer.getLightColor(level, source.north());
+        int south = LevelRenderer.getLightColor(level, source.south());
+        int west = LevelRenderer.getLightColor(level, source.west());
+        int east = LevelRenderer.getLightColor(level, source.east());
+
+        return ModUtil.Numbers.getLargest(center, above, below, north, south, west, east);
     }
 }

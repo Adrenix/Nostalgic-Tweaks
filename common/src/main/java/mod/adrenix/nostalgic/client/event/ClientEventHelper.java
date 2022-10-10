@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.screen.NostalgicTitleScreen;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
@@ -23,6 +24,9 @@ public abstract class ClientEventHelper
         {
             // Reset static fog utility trackers
             FogUtil.Void.reset();
+
+            // Reset world lighting trackers
+            WorldClientUtil.resetLightingCache();
 
             // Reset network verification and server cache
             NostalgicTweaks.setNetworkVerification(false);

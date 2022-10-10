@@ -1,0 +1,11 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.fabric.mixin.common",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "mixins": [
+    "ExperienceOrbFabricMixin",
+    "ItemEntityFabricMixin",
+    "LivingEntityFabricMixin"
+  ]
+}

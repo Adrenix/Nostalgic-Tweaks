@@ -31,7 +31,11 @@ dependencies {
     
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${rootProject.fabric_modmenu_version}"
-    
+
+    // Sodium Support
+    modCompileOnly "maven.modrinth:sodium:mc1.19-0.4.2"
+    modCompileOnly "org.joml:joml:1.10.2"
+
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
