@@ -149,6 +149,14 @@ public class ClientConfig implements ConfigData
         public boolean fixAmbientOcclusion = DefaultConfig.Candy.FIX_AMBIENT_OCCLUSION;
         static { CandyTweak.FIX_AO.setKey("fixAmbientOcclusion"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Cat(group = TweakClient.Category.BLOCK_CANDY)
+        public boolean disableOffset = DefaultConfig.Candy.DISABLE_OFFSET;
+        static { CandyTweak.DISABLE_OFFSET.setKey("disableOffset"); }
+
         // Block - Chest Candy
 
         @TweakSide.Client

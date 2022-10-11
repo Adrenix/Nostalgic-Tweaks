@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -48,6 +49,21 @@ public abstract class BlockStateBaseMixin
     {
         if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(Shapes.block());
+    }
+
+    /**
+     * Client:
+     *
+     * Disables the random offset positions for blocks such as flowers and tall-grass.
+     * This will only be applied client side since this is a preference rendering option.
+     *
+     * Controlled by the disable offset tweak.
+     */
+    @Inject(method = "getOffset", at = @At("HEAD"), cancellable = true)
+    private void NT$onGetOffset(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Vec3> callback)
+    {
+        if (NostalgicTweaks.isClient() && ModConfig.Candy.disableOffset())
+            callback.setReturnValue(Vec3.ZERO);
     }
 
     /**

@@ -300,6 +300,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy": "Eye Candy",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion": "Fix Ambient Occlusion",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion.@Tooltip": "Fixes ambient occlusion for broken vanilla blocks such as composters and powdered snow.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableOffset": "Disable Offsets",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableOffset.@Tooltip": "Disables random offset positions for blocks such as flowers and tall grass.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChest": "Old Chest",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChest.@Tooltip": "Bring back the full-sized chest block. This tweak also disables chest sounds and animations.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldChest.@Optifine": "§cVisual Bug§r: Chest blocks will have bookshelf textures on the side if connected textures§r is§a on§r.\n\n Use§e F3 + T§r to reload mod textures§b after§r entering a world. To§c prevent§r doing this each game session, set §7Options > Video Settings > Quality > Connected Textures: §4OFF§r.",
