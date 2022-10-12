@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.TallFlowerBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -66,8 +67,10 @@ public abstract class BlockStateBaseMixin
         if (NostalgicTweaks.isServer())
             return;
 
+        Block block = level.getBlockState(pos).getBlock();
+        boolean isBlockFlower = block instanceof FlowerBlock || block instanceof TallFlowerBlock;
         boolean isAllOff = ModConfig.Candy.disableAllOffset();
-        boolean isFlowerOff = ModConfig.Candy.disableFlowerOffset() && level.getBlockState(pos).getBlock() instanceof FlowerBlock;
+        boolean isFlowerOff = ModConfig.Candy.disableFlowerOffset() && isBlockFlower;
 
         if (isAllOff || isFlowerOff)
             callback.setReturnValue(Vec3.ZERO);
