@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.util.common;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.*;
@@ -57,35 +56,7 @@ public abstract class BlockCommonUtil
      */
     public static boolean isInWater(BlockAndTintGetter level, BlockPos pos)
     {
-        if (level.getBlockState(pos).is(Blocks.WATER))
-            return true;
-
-        boolean up = false;
-        boolean down = false;
-        boolean east = false;
-        boolean west = false;
-        boolean north = false;
-        boolean south = false;
-
-        for (Direction direction : Direction.values())
-        {
-            boolean isFaceWatered = level.getFluidState(pos.relative(direction)).is(FluidTags.WATER);
-
-            switch (direction)
-            {
-                case UP -> up = isFaceWatered;
-                case DOWN -> down = isFaceWatered;
-                case EAST -> east = isFaceWatered;
-                case WEST -> west = isFaceWatered;
-                case NORTH -> north = isFaceWatered;
-                case SOUTH -> south = isFaceWatered;
-            }
-        }
-
-        boolean isDry = !up && !down && !east && !west && !north && !south;
-        boolean isAtop = !up && down && !east && !west && !north && !south;
-
-        return !isDry && !isAtop;
+        return level.getFluidState(pos).is(FluidTags.WATER);
     }
 
     /**
