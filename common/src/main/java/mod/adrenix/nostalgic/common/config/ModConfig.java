@@ -226,7 +226,8 @@ public abstract class ModConfig
 
         // Block Candy
         public static boolean fixAmbientOcclusion() { return getBoolTweak(CandyTweak.FIX_AO, CANDY.fixAmbientOcclusion); }
-        public static boolean disableOffset() { return getBoolTweak(CandyTweak.DISABLE_OFFSET, CANDY.disableOffset); }
+        public static boolean disableFlowerOffset() { return getBoolTweak(CandyTweak.DISABLE_FLOWER_OFFSET, CANDY.disableFlowerOffset); }
+        public static boolean disableAllOffset() { return getBoolTweak(CandyTweak.DISABLE_ALL_OFFSET, CANDY.disableAllOffset); }
         public static boolean oldTrappedChest() { return getBoolTweak(CandyTweak.TRAPPED_CHEST, CANDY.oldTrappedChest); }
         public static boolean oldEnderChest() { return getBoolTweak(CandyTweak.ENDER_CHEST, CANDY.oldEnderChest); }
         public static boolean oldChestVoxel() { return getSidedBoolTweak(CandyTweak.CHEST_VOXEL, CANDY.oldChestVoxel, SERVER_CANDY.oldChestVoxel); }

@@ -154,8 +154,16 @@ public class ClientConfig implements ConfigData
         @TweakSide.EntryStatus
         @TweakClient.Run.ReloadChunks
         @TweakClient.Gui.Cat(group = TweakClient.Category.BLOCK_CANDY)
-        public boolean disableOffset = DefaultConfig.Candy.DISABLE_OFFSET;
-        static { CandyTweak.DISABLE_OFFSET.setKey("disableOffset"); }
+        public boolean disableAllOffset = DefaultConfig.Candy.DISABLE_ALL_OFFSET;
+        static { CandyTweak.DISABLE_ALL_OFFSET.setKey("disableAllOffset"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Run.ReloadChunks
+        @TweakClient.Gui.Cat(group = TweakClient.Category.BLOCK_CANDY)
+        public boolean disableFlowerOffset = DefaultConfig.Candy.DISABLE_FLOWER_OFFSET;
+        static { CandyTweak.DISABLE_FLOWER_OFFSET.setKey("disableFlowerOffset"); }
 
         // Block - Chest Candy
 

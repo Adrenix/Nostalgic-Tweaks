@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -57,12 +58,18 @@ public abstract class BlockStateBaseMixin
      * Disables the random offset positions for blocks such as flowers and tall-grass.
      * This will only be applied client side since this is a preference rendering option.
      *
-     * Controlled by the disable offset tweak.
+     * Controlled by disable all or flower offset tweaks.
      */
     @Inject(method = "getOffset", at = @At("HEAD"), cancellable = true)
     private void NT$onGetOffset(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Vec3> callback)
     {
-        if (NostalgicTweaks.isClient() && ModConfig.Candy.disableOffset())
+        if (NostalgicTweaks.isServer())
+            return;
+
+        boolean isAllOff = ModConfig.Candy.disableAllOffset();
+        boolean isFlowerOff = ModConfig.Candy.disableFlowerOffset() && level.getBlockState(pos).getBlock() instanceof FlowerBlock;
+
+        if (isAllOff || isFlowerOff)
             callback.setReturnValue(Vec3.ZERO);
     }
 

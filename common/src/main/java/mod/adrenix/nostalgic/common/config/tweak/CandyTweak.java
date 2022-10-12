@@ -17,7 +17,8 @@ public enum CandyTweak implements ITweak
     TORCH_MODEL,
     SOUL_TORCH_MODEL,
     REDSTONE_TORCH_MODEL,
-    DISABLE_OFFSET,
+    DISABLE_FLOWER_OFFSET,
+    DISABLE_ALL_OFFSET,
 
     /* Interface Candy */
 

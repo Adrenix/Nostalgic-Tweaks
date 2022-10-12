@@ -32,8 +32,9 @@ public abstract class DefaultConfig
     public static class Candy
     {
         // Block Candy
+        public static final boolean DISABLE_ALL_OFFSET = false;
+        public static final boolean DISABLE_FLOWER_OFFSET = true;
         public static final boolean FIX_AMBIENT_OCCLUSION = true;
-        public static final boolean DISABLE_OFFSET = true;
         public static final boolean OLD_CHEST = true;
         public static final boolean OLD_CHEST_VOXEL = false;
         public static final boolean OLD_ENDER_CHEST = true;
