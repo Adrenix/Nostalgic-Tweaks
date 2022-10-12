@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.FogUtil;
@@ -47,6 +48,8 @@ public abstract class FogRendererMixin
             fogRed = FogUtil.Water.getRed(brightness, respiration);
             fogGreen = FogUtil.Water.getGreen(brightness, respiration);
             fogBlue = FogUtil.Water.getBlue(brightness, respiration);
+
+            RenderSystem.clearColor(fogRed, fogGreen, fogBlue, 0.0F);
         }
     }
 
