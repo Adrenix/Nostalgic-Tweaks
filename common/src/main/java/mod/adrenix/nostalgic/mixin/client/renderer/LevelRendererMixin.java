@@ -141,17 +141,47 @@ public abstract class LevelRendererMixin
     }
 
     /**
+     * Disables the rendering of the dark void if the blue void is enabled and its respective override is enabled.
+     * Controlled by both old blue void and old blue void override tweaks.
+     */
+    @Redirect
+    (
+        method = "renderSky",
+        at = @At
+        (
+            ordinal = 2,
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/vertex/VertexBuffer;drawWithShader(Lcom/mojang/math/Matrix4f;Lcom/mojang/math/Matrix4f;Lnet/minecraft/client/renderer/ShaderInstance;)V"
+        )
+    )
+    private void NT$onRenderDarkVoid(VertexBuffer instance, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, ShaderInstance shaderInstance)
+    {
+        TweakVersion.Generic voidState = ModConfig.Candy.getBlueVoid();
+        boolean isBlueRendered = voidState == TweakVersion.Generic.ALPHA || voidState == TweakVersion.Generic.BETA;
+        boolean isBlueOverride = ModConfig.Candy.oldBlueVoidOverride();
+
+        if (!isBlueRendered || !isBlueOverride)
+        {
+            final float[] DARK_RGB = RenderSystem.getShaderColor();
+            final float[] VOID_RGB = FogUtil.Void.getVoidRGB();
+
+            FogUtil.Void.setVoidRGB(DARK_RGB[0], DARK_RGB[1], DARK_RGB[2]);
+
+            if (FogUtil.Void.isRendering())
+                RenderSystem.setShaderColor(VOID_RGB[0], VOID_RGB[1], VOID_RGB[2], DARK_RGB[3]);
+
+            instance.drawWithShader(modelViewMatrix, projectionMatrix, shaderInstance);
+        }
+    }
+
+    /**
      * Allows the dark void to follow the camera's height.
      * Controlled by the old dynamic void height tweak.
      */
     @ModifyArg(method = "renderSky", index = 1, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
     private double NT$onTranslateDarkSkyBuffer(double y)
     {
-        if (!ModConfig.Candy.oldDarkVoidHeight())
-            return y;
-        y = 0.0D;
-
-        return y - Math.max(this.minecraft.gameRenderer.getMainCamera().getPosition().y - 65.0D, 0.0D);
+        return ModConfig.Candy.oldDarkVoidHeight() ? y - Math.max(this.minecraft.gameRenderer.getMainCamera().getPosition().y - 65.0D, 0.0D) : y;
     }
 
     /**
@@ -201,40 +231,6 @@ public abstract class LevelRendererMixin
     private void NT$onSetSunMoonShading(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         FogUtil.Void.setCelestialTransparency();
-    }
-
-    /**
-     * Disables the rendering of the dark void if the blue void is enabled and its respective override is enabled.
-     * Controlled by both old blue void and old blue void override tweaks.
-     */
-    @Redirect
-    (
-        method = "renderSky",
-        at = @At
-        (
-            ordinal = 2,
-            value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexBuffer;drawWithShader(Lcom/mojang/math/Matrix4f;Lcom/mojang/math/Matrix4f;Lnet/minecraft/client/renderer/ShaderInstance;)V"
-        )
-    )
-    private void NT$onRenderDarkVoid(VertexBuffer instance, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, ShaderInstance shaderInstance)
-    {
-        TweakVersion.Generic voidState = ModConfig.Candy.getBlueVoid();
-        boolean isBlueRendered = voidState == TweakVersion.Generic.ALPHA || voidState == TweakVersion.Generic.BETA;
-        boolean isDarkOverride = ModConfig.Candy.oldBlueVoidOverride();
-
-        if (!isBlueRendered || !isDarkOverride)
-        {
-            final float[] DARK_RGB = RenderSystem.getShaderColor();
-            final float[] VOID_RGB = FogUtil.Void.getVoidRGB();
-
-            FogUtil.Void.setVoidRGB(DARK_RGB[0], DARK_RGB[1], DARK_RGB[2]);
-
-            if (FogUtil.Void.isRendering())
-                RenderSystem.setShaderColor(VOID_RGB[0], VOID_RGB[1], VOID_RGB[2], DARK_RGB[3]);
-
-            instance.drawWithShader(modelViewMatrix, projectionMatrix, shaderInstance);
-        }
     }
 
     /**

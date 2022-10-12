@@ -542,7 +542,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride": "Old Blue Void Override",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride.@Tooltip": "Overrides the dark void color when the player goes beneath the level's defined horizon height.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight": "Old Dark Void Height",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight.@Tooltip": "Changes the dark void's height position based on the player's y-level so the dark void will always start at the horizon. The blue override tweak must be§c disabled§r for this to work.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight.@Tooltip": "Changes the dark void's height position based on the player's y-level so the dark void will always start at the horizon. The blue void override tweak must be§c disabled§r for this to work.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableVoidFog": "Disable Void Fog",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableVoidFog.@Tooltip": "Control whether cave/void fog is rendered. This tweak controls§a all§r void fog tweaks listed below.",

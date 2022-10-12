@@ -76,17 +76,16 @@ public abstract class WorldClientUtil
             return;
 
         float weatherModifier;
-        float partialTick = minecraft.getDeltaFrameTime();
-        float timeOfDay = level.getTimeOfDay(partialTick);
-        float boundedTime = Mth.cos(timeOfDay * ((float) Math.PI * 2)) * 2.0F + 0.5F;
-        boundedTime = Mth.clamp(boundedTime, 0.0F, 1.0F);
+        float partialTicks = minecraft.getDeltaFrameTime();
+        float timeOfDay = level.getTimeOfDay(partialTicks);
+        float boundedTime = Mth.clamp(Mth.cos(timeOfDay * ((float) Math.PI * 2)) * 2.0F + 0.5F, 0.0F, 1.0F);
 
         float r = boundedTime;
         float g = boundedTime;
         float b = boundedTime;
 
-        float rainLevel = level.getRainLevel(partialTick);
-        float thunderLevel = level.getThunderLevel(partialTick);
+        float rainLevel = level.getRainLevel(partialTicks);
+        float thunderLevel = level.getThunderLevel(partialTicks);
 
         if (rainLevel > 0.0F)
         {
