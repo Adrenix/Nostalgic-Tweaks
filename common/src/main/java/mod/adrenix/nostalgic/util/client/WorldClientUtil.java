@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
@@ -167,8 +168,10 @@ public abstract class WorldClientUtil
     {
         int skyLight = level.getBrightness(LightLayer.SKY, blockPos);
         int blockLight = level.getBrightness(LightLayer.BLOCK, blockPos);
+        boolean isWaterLight = ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, blockPos);
 
-        if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, blockPos))
+        // Water rendering in Sodium is handled differently - so don't modify skylight in water if Sodium is installed
+        if (isWaterLight && !NostalgicTweaks.isSodiumInstalled)
             skyLight = BlockCommonUtil.getWaterLightBlock(skyLight);
 
         return WorldClientUtil.getMaxLight(skyLight, blockLight);
@@ -264,18 +267,18 @@ public abstract class WorldClientUtil
     public static int getMaxLight(int currentSkyLight, int currentBlockLight)
     {
         ClientLevel level = Minecraft.getInstance().level;
-        int maxLight = Math.max(currentSkyLight, currentBlockLight);
+        int maxVanilla = Math.max(currentSkyLight, currentBlockLight);
 
         if (level == null)
-            return maxLight;
+            return maxVanilla;
 
         boolean isSkyVisible = currentSkyLight > 0;
 
         if (!isSkyVisible)
-            return maxLight;
+            return maxVanilla;
 
-        int maxShader = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
-        int minShader = currentSkyLight >= level.getMaxLightLevel() ? 4 : 0;
+        int maxLight = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
+        int minLight = currentSkyLight >= level.getMaxLightLevel() ? 4 : 0;
         int skyLight = calculateSkylight(level);
         int skyDiff = 15 - currentSkyLight;
 
@@ -285,7 +288,7 @@ public abstract class WorldClientUtil
             enqueueRelightChecks = true;
         }
 
-        return Mth.clamp(Math.max(skyLight - skyDiff, currentBlockLight), minShader, maxShader);
+        return Mth.clamp(Math.max(skyLight - skyDiff, currentBlockLight), minLight, maxLight);
     }
 
     /**

@@ -25,15 +25,15 @@ public abstract class LevelMixin implements BlockAndTintGetter
     /**
      * Changes the light values of sky/block light so that those values are in sync. This only occurs if the level
      * instance is client side.
-     * @param lightLayer The light layer being either sky or block.
+     * @param layer The light layer being either sky or block.
      * @param blockPos The block position.
      * @return A vanilla or modded light value.
      */
     @Unique
-    private int NT$getLightValue(LightLayer lightLayer, BlockPos blockPos)
+    private int NT$getLightValue(LightLayer layer, BlockPos blockPos)
     {
-        if (!this.isClientSide() || !ModConfig.Candy.oldLightRendering())
-            return this.getLightEngine().getLayerListener(lightLayer).getLightValue(blockPos);
+        if (!this.isClientSide())
+            return this.getLightEngine().getLayerListener(layer).getLightValue(blockPos);
 
         int skyLight = this.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(blockPos);
         int blockLight = this.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(blockPos);
@@ -41,10 +41,21 @@ public abstract class LevelMixin implements BlockAndTintGetter
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(this, blockPos))
             skyLight = BlockCommonUtil.getWaterLightBlock(skyLight);
 
-        if (LightLayer.SKY.equals(lightLayer) && skyLight <= 4)
+        if (!ModConfig.Candy.oldLightRendering())
+        {
+            return switch (layer)
+            {
+                case BLOCK -> blockLight;
+                case SKY -> skyLight;
+            };
+        }
+
+        int maxLight = WorldClientUtil.getMaxLight(skyLight, blockLight);
+
+        if (layer == LightLayer.SKY && (!ModConfig.Candy.oldLightColor() || skyLight <= 4))
             return skyLight;
 
-        return WorldClientUtil.getMaxLight(skyLight, blockLight);
+        return maxLight;
     }
 
     /* Injection Overrides */

@@ -29,9 +29,9 @@ public abstract class WorldSliceMixin implements BlockAndTintGetter
      * Controlled by the old light rendering tweak.
      */
     @Inject(method = "getBrightness", at = @At("HEAD"), cancellable = true)
-    private void NT$onGetBrightness(LightLayer type, BlockPos pos, CallbackInfoReturnable<Integer> callback)
+    private void NT$onGetBrightness(LightLayer layer, BlockPos pos, CallbackInfoReturnable<Integer> callback)
     {
         if (ModConfig.Candy.oldLightRendering())
-            callback.setReturnValue(this.world.getBrightness(type, pos));
+            callback.setReturnValue(this.world.getBrightness(layer, pos));
     }
 }
