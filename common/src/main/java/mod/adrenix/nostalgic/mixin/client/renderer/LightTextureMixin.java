@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import net.minecraft.client.Minecraft;
@@ -48,12 +49,12 @@ public abstract class LightTextureMixin
 
     /**
      * Simulates the old lighting engine by bringing back old light colors and abrupt skylight transitioning.
-     * Controlled by the old light rendering tweak.
+     * Controlled by old light rendering and old light colors tweaks.
      */
     @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldLightColor() || !this.updateLightTexture)
+        if (!ModConfig.Candy.oldLightRendering() || !ModConfig.Candy.oldLightColor() || !this.updateLightTexture)
             return;
 
         this.updateLightTexture = false;
@@ -130,5 +131,26 @@ public abstract class LightTextureMixin
         this.minecraft.getProfiler().pop();
 
         callback.cancel();
+    }
+
+    /**
+     * Maintains old light colors when old light rendering is disabled.
+     * Controlled by the old light colors tweak.
+     */
+    @Redirect
+    (
+        method = "updateLightTexture",
+        slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/mojang/math/Vector3f;map(Lit/unimi/dsi/fastutil/floats/Float2FloatFunction;)V")),
+        at = @At(value = "INVOKE", target = "Lcom/mojang/math/Vector3f;mul(F)V")
+    )
+    private void NT$onFinalizeColor(Vector3f rgb, float multiplier)
+    {
+        if (ModConfig.Candy.oldLightColor())
+        {
+            float average = (rgb.x() + rgb.y() + rgb.z()) / 3.0F;
+            rgb.set(average, average, average);
+        }
+
+        rgb.mul(multiplier);
     }
 }

@@ -486,11 +486,11 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles.@Tooltip": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness": "Disable Brightness",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness.@Tooltip": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting§r old light rendering.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness.@Tooltip": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting §7old light rendering§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightFlicker": "Disable Light Flickering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightFlicker.@Tooltip": "§cDisable§r the flickering of light from§e light emitting§r sources.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightColor": "Old Light Color",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightColor.@Tooltip": "Bring back the old light colors from alpha/beta. If §7old light rendering§r is§a enabled§r, then night colors will be§c wrong§r since that tweak replaces§b sky light§r with§e block light§r.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightColor.@Tooltip": "Bring back the old light colors from alpha/beta. If this tweak is§c disabled§r and §7old light rendering§r is§a enabled§r then night light colors will be§6 inaccurate§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightRendering": "Old Light Rendering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightRendering.@Tooltip": "Bring back the old light rendering from alpha/beta. §eBlock light§r will be used instead of§b sky light§r. This will cause§6 round robin chunk updates§r during dawn/sunset.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightRendering.@Optifine": "This may§4 break§r some shaders. §6Decrease§r the block light slider in the shader subcategory if the world is too§e bright§r. §cDisable§r this tweak if you encounter further visual issues.",
@@ -504,7 +504,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting": "Old Leaves Lighting",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting.@Tooltip": "Bring back the old leaves lighting from§e beta§r. This will§c remove§r ambient occlusion casting on blocks that are§e next§r to leaves.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight": "Max Block Light",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight.@Tooltip": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if old light rendering is§a enabled§r and the world is too§e bright§r.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight.@Tooltip": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if §7old light rendering§r is§a enabled§r and the world is too§e bright§r.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNameTags": "Old Name Tags",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNameTags.@Tooltip": "Bring back the old name tag rendering for entities. This will make tags bigger as you move further away.",
