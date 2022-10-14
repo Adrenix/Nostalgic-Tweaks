@@ -138,7 +138,7 @@
   "gui.nostalgic_tweaks.config.search.invalidTag": "The search tag§9 %s§r is not valid.",
 
   "gui.nostalgic_tweaks.config.general.bindings.title": "Key Bindings",
-  "gui.nostalgic_tweaks.config.general.override.title": "Override Options",
+  "gui.nostalgic_tweaks.config.general.override.title": "Change All Tweaks",
   "gui.nostalgic_tweaks.config.general.override.help": "This section will make§e changes§r to§a all§r configuration values. Use the§3 Disable All§r button to turn§4 off§r all mod tweaks. Use the§3 Enable All§r button to turn§2 on§r all mod tweaks.\n\nYou can§c cancel§r to§a undo§r any accidental edits.",
   "gui.nostalgic_tweaks.config.general.override.disable": "Disable All",
   "gui.nostalgic_tweaks.config.general.override.enable": "Enable All",
@@ -540,7 +540,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.smoothWaterColor.@Tooltip": "Smoothly transition the color of water fog. This is most noticeable when changing y-levels underwater.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid": "Old Blue Void",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid.@Tooltip": "Bring back the old§1 blue§r void color in the far plane.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoid.@Tooltip": "Bring back the old§b blue§r void color in the far plane.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride": "Old Blue Void Override",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldBlueVoidOverride.@Tooltip": "Overrides the dark void color when the player goes beneath the level's defined horizon height.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDarkVoidHeight": "Old Dark Void Height",

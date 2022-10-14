@@ -72,7 +72,8 @@ public record ConfigRenderer(ConfigScreen parent)
             Set<TweakClient.Subcategory> subcategories = new HashSet<>();
             Set<TweakClient.Embedded> embeds = new HashSet<>();
 
-            TweakClientCache.all().forEach((key, entry) -> {
+            TweakClientCache.all().forEach((key, entry) ->
+            {
                 TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(entry, TweakClient.Gui.Cat.class);
                 TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry, TweakClient.Gui.Sub.class);
                 TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(entry, TweakClient.Gui.Emb.class);
@@ -111,12 +112,14 @@ public record ConfigRenderer(ConfigScreen parent)
             EnumSet<TweakClient.Subcategory> allSubs = EnumSet.allOf(TweakClient.Subcategory.class);
             EnumSet<TweakClient.Embedded> allEmbeds = EnumSet.allOf(TweakClient.Embedded.class);
 
-            allSubs.forEach((sub) -> {
+            allSubs.forEach((sub) ->
+            {
                 if (subcategories.contains(sub))
                     rows.add(getSubcategory(sub, list).add());
             });
 
-            allEmbeds.forEach((embed) -> {
+            allEmbeds.forEach((embed) ->
+            {
                 if (embeds.contains(embed))
                     rows.add(getEmbedded(embed, list).add());
             });
@@ -173,7 +176,8 @@ public record ConfigRenderer(ConfigScreen parent)
         List<ConfigRowList.Row> rows = new ArrayList<>();
 
         EnumSet<TweakClient.Category> categories = EnumSet.allOf(TweakClient.Category.class);
-        categories.forEach((category) -> {
+        categories.forEach((category) ->
+        {
             if (category.getGroup() == group)
                 rows.add(getCategory(category, list).add());
         });
@@ -193,7 +197,8 @@ public record ConfigRenderer(ConfigScreen parent)
         HashMap<String, Object> bottom = new HashMap<>();
         HashMap<String, Object> all = new HashMap<>(ClientReflect.getGroup(group));
 
-        all.forEach((key, value) -> {
+        all.forEach((key, value) ->
+        {
             TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
             TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
             TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
@@ -263,9 +268,112 @@ public record ConfigRenderer(ConfigScreen parent)
         TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
         list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getKey(), isModEnabled.getCurrent()).add());
 
+        /* Override Config */
+
+        Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () ->
+        {
+            TextGroup help = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
+            AtomicBoolean serverOnly = new AtomicBoolean(false);
+
+            Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+            {
+                if (!GroupType.isManual(group))
+                {
+                    ClientReflect.getGroup(group).forEach((key, value) ->
+                    {
+                        TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
+
+                        boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
+                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
+                        boolean isLocked = entry.isLocked();
+                        boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
+
+                        if (!isClientIgnored && !isLocked)
+                            entry.reset();
+
+                        if (value instanceof Boolean && isChangeable)
+                        {
+                            TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
+
+                            if (disabledBoolean == null && entry.getDefault())
+                            {
+                                entry.reset();
+                                entry.setCurrent(!entry.getCurrent());
+                            }
+                            else if (disabledBoolean != null)
+                                entry.setCurrent(disabledBoolean.value());
+                        }
+
+                        if (value instanceof Integer && isChangeable)
+                        {
+                            TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
+
+                            if (disabledInteger != null)
+                            {
+                                TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
+                                entryInteger.setCurrent(disabledInteger.value());
+                            }
+                        }
+
+                        if (value instanceof IDisableTweak<?> && isChangeable)
+                        {
+                            TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
+                            version.setCurrent(((IDisableTweak<?>) value).getDisabled());
+                        }
+                    });
+                }
+            });
+
+            Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+            {
+                if (!GroupType.isManual(group))
+                {
+                    ClientReflect.getGroup(group).forEach((key, value) ->
+                    {
+                        TweakClientCache<?> entry = TweakClientCache.get(group, key);
+
+                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
+                        boolean isLocked = entry.isLocked();
+                        boolean isChangeable = !isLocked && !isClientIgnored;
+
+                        if (isChangeable)
+                            entry.reset();
+                    });
+                }
+            });
+
+            ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
+            ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
+
+            ToggleCheckbox toggleServerOnly = new ToggleCheckbox
+            (
+                this.parent,
+                Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER),
+                serverOnly::get,
+                serverOnly::set
+            );
+
+            toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
+
+            ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
+            ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
+            ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
+
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
+
+            rows.add(server.add());
+            rows.add(disable.add());
+            rows.add(enable.add());
+
+            return rows;
+        };
+
+        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
+
         /* Key Bindings */
 
-        Supplier<ArrayList<ConfigRowList.Row>> bindings = () -> {
+        Supplier<ArrayList<ConfigRowList.Row>> bindings = () ->
+        {
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
 
             KeyMapping openConfig = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
@@ -283,11 +391,13 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Menu Settings */
 
-        Supplier<ArrayList<ConfigRowList.Row>> settings = () -> {
+        Supplier<ArrayList<ConfigRowList.Row>> settings = () ->
+        {
             ArrayList<ConfigRowList.Row> subcategories = new ArrayList<>();
 
             // Default Screen Options
-            Supplier<ArrayList<ConfigRowList.Row>> defaultScreen = () -> {
+            Supplier<ArrayList<ConfigRowList.Row>> defaultScreen = () ->
+            {
                 TextGroup menuHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_INFO));
                 TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
                 RadioGroup<MenuOption> screens = new RadioGroup<>
@@ -309,7 +419,8 @@ public record ConfigRenderer(ConfigScreen parent)
             subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Tree Indent Options
-            Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () -> {
+            Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () ->
+            {
                 TextGroup treeHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
 
@@ -325,7 +436,8 @@ public record ConfigRenderer(ConfigScreen parent)
             subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             // Row Highlighting Options
-            Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () -> {
+            Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () ->
+            {
                 TextGroup rowHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
 
@@ -344,7 +456,9 @@ public record ConfigRenderer(ConfigScreen parent)
             subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
 
             /* Tag Options */
-            Supplier<ArrayList<ConfigRowList.Row>> tagging = () -> {
+
+            Supplier<ArrayList<ConfigRowList.Row>> tagging = () ->
+            {
                 TextGroup tagHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_INFO));
                 ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
 
@@ -418,103 +532,6 @@ public record ConfigRenderer(ConfigScreen parent)
 
         list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE), settings, GroupId.GENERAL_CONFIG).add());
 
-        /* Override Config */
-
-        Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () -> {
-            TextGroup help = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
-            AtomicBoolean serverOnly = new AtomicBoolean(false);
-
-            Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                if (!GroupType.isManual(group))
-                {
-                    ClientReflect.getGroup(group).forEach((key, value) -> {
-                        TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
-
-                        boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
-                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
-                        boolean isLocked = entry.isLocked();
-                        boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
-
-                        if (!isClientIgnored && !isLocked)
-                            entry.reset();
-
-                        if (value instanceof Boolean && isChangeable)
-                        {
-                            TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
-
-                            if (disabledBoolean == null && entry.getDefault())
-                            {
-                                entry.reset();
-                                entry.setCurrent(!entry.getCurrent());
-                            }
-                            else if (disabledBoolean != null)
-                                entry.setCurrent(disabledBoolean.value());
-                        }
-
-                        if (value instanceof Integer && isChangeable)
-                        {
-                            TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
-
-                            if (disabledInteger != null)
-                            {
-                                TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
-                                entryInteger.setCurrent(disabledInteger.value());
-                            }
-                        }
-
-                        if (value instanceof IDisableTweak<?> && isChangeable)
-                        {
-                            TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
-                            version.setCurrent(((IDisableTweak<?>) value).getDisabled());
-                        }
-                    });
-                }
-            });
-
-            Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) -> {
-                if (!GroupType.isManual(group))
-                {
-                    ClientReflect.getGroup(group).forEach((key, value) -> {
-                        TweakClientCache<?> entry = TweakClientCache.get(group, key);
-
-                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
-                        boolean isLocked = entry.isLocked();
-                        boolean isChangeable = !isLocked && !isClientIgnored;
-
-                        if (isChangeable)
-                            entry.reset();
-                    });
-                }
-            });
-
-            ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
-            ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
-
-            ToggleCheckbox toggleServerOnly = new ToggleCheckbox
-            (
-                this.parent,
-                Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER),
-                serverOnly::get,
-                serverOnly::set
-            );
-
-            toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
-
-            ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
-            ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
-            ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
-
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
-
-            rows.add(server.add());
-            rows.add(disable.add());
-            rows.add(enable.add());
-
-            return rows;
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
-
         /* Notifications */
 
         Supplier<ArrayList<ConfigRowList.Row>> notifications = () ->
@@ -527,7 +544,8 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Search Tags */
 
-        Supplier<ArrayList<ConfigRowList.Row>> searchTags = () -> {
+        Supplier<ArrayList<ConfigRowList.Row>> searchTags = () ->
+        {
             Component help = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_HELP);
             Component newTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_NEW);
             Component conflictTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CONFLICT);
@@ -536,17 +554,17 @@ public record ConfigRenderer(ConfigScreen parent)
             Component serverTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SERVER);
             Component saveTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SAVE);
             Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
+            Component[] tags = new Component[] { help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag };
 
-            return new TextGroup(list, ModUtil.Text.combine(new Component[] {
-                help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag
-            })).getRows();
+            return new TextGroup(list, ModUtil.Text.combine(tags)).getRows();
         };
 
         list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE), searchTags, GroupId.SEARCH_TAGS_CONFIG).add());
 
         /* Keyboard Shortcuts */
 
-        Supplier<ArrayList<ConfigRowList.Row>> shortcuts = () -> {
+        Supplier<ArrayList<ConfigRowList.Row>> shortcuts = () ->
+        {
             Component help = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_HELP);
             Component find = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_FIND);
             Component save = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_SAVE);
