@@ -155,13 +155,13 @@ public abstract class ItemClientUtil
      */
     private static void shiftLeatherItemColor(final float[] SHIFT_RGB)
     {
-        final float LIGHT = 0.3F * SHIFT_RGB[0] + 0.6F * SHIFT_RGB[1] + 0.1F * SHIFT_RGB[2];
+        final float LIGHT = 0.4F * SHIFT_RGB[0] + 0.6F * SHIFT_RGB[1] + 0.1F * SHIFT_RGB[2];
 
         SHIFT_RGB[0] = Mth.clamp(SHIFT_RGB[0] + 0.1F * (LIGHT - SHIFT_RGB[0]), 0.0F, 255.0F);
         SHIFT_RGB[1] = Mth.clamp(SHIFT_RGB[1] + 0.1F * (LIGHT - SHIFT_RGB[1]), 0.0F, 255.0F);
         SHIFT_RGB[2] = Mth.clamp(SHIFT_RGB[2] + 0.1F * (LIGHT - SHIFT_RGB[2]), 0.0F, 255.0F);
 
-        shiftItemColor(SHIFT_RGB, 0.3F);
+        shiftItemColor(SHIFT_RGB, 0.4F);
     }
 
     /**
