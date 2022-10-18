@@ -631,6 +631,13 @@ public class ClientConfig implements ConfigData
         public boolean old2dEnchantedItems = DefaultConfig.Candy.OLD_2D_ENCHANTED_ITEMS;
         static { CandyTweak.FLAT_ENCHANTED_ITEMS.setKey("old2dEnchantedItems"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.FLAT_ITEM_CANDY)
+        public boolean old2dRendering = DefaultConfig.Candy.OLD_2D_RENDERING;
+        static { CandyTweak.FLAT_RENDERING.setKey("old2dRendering"); }
+
         // Item - Interface
 
         @TweakSide.Client
@@ -1044,21 +1051,24 @@ public class ClientConfig implements ConfigData
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
+        public TweakVersion.Generic oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
+        static { CandyTweak.BLUE_VOID.setKey("oldBlueVoid"); }
+
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 2)
         public boolean oldBlueVoidOverride = DefaultConfig.Candy.OLD_BLUE_VOID_OVERRIDE;
         static { CandyTweak.BLUE_VOID_OVERRIDE.setKey("oldBlueVoidOverride"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
         static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
-
-        @TweakSide.Client
-        @TweakSide.EntryStatus
-        @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
-        public TweakVersion.Generic oldBlueVoid = DefaultConfig.Candy.OLD_BLUE_VOID;
-        static { CandyTweak.BLUE_VOID.setKey("oldBlueVoid"); }
 
         // Void Fog Candy
 

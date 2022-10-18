@@ -285,6 +285,7 @@ public abstract class ModConfig
         // Item Candy
         public static boolean fixItemModelGaps() { return getBoolTweak(CandyTweak.FIX_ITEM_MODEL_GAP, CANDY.fixItemModelGap); }
         public static boolean oldFloatingItems() { return getBoolTweak(CandyTweak.FLAT_ITEMS, CANDY.old2dItems); }
+        public static boolean oldFlatRendering() { return getBoolTweak(CandyTweak.FLAT_RENDERING, CANDY.old2dRendering); }
         public static boolean oldFlatEnchantment() { return getBoolTweak(CandyTweak.FLAT_ENCHANTED_ITEMS, CANDY.old2dEnchantedItems) && oldFloatingItems(); }
         public static boolean oldFlatThrowing() { return getBoolTweak(CandyTweak.FLAT_THROW_ITEMS, CANDY.old2dThrownItems); }
         public static boolean oldItemHolding() { return getBoolTweak(CandyTweak.ITEM_HOLDING, CANDY.oldItemHolding); }

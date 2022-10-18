@@ -14,6 +14,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
@@ -126,6 +128,25 @@ public abstract class ItemClientUtil
         pose.normal().setIdentity();
         if (quad.getDirection() == Direction.NORTH)
             pose.normal().mul(-1.0F);
+    }
+
+    /**
+     * Returns a singleton list of the front facing quad, or all quads if not rendering in 2D.
+     * @param quads A list of model quads.
+     * @return A new list of quads or same list if not rendering in 2D.
+     */
+    public static List<BakedQuad> getSprites(List<BakedQuad> quads)
+    {
+        if (!isRenderingFlat)
+            return quads;
+
+        for (BakedQuad baked : quads)
+        {
+            if (baked.getDirection() == Direction.SOUTH)
+                return Collections.singletonList(baked);
+        }
+
+        return quads;
     }
 
     /**

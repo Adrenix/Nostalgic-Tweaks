@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.*;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+import java.util.List;
 
 /**
  * To help with mod compatibility, the mixins defined in this class will be applied last.
@@ -37,6 +40,17 @@ public abstract class ItemRendererLastMixin
     {
         if (ItemClientUtil.isLightingFlat())
             ItemClientUtil.setNormalQuad(poseStack.last(), quad);
+
         return quad;
+    }
+
+    /**
+     * Used to change the quads list so that only the front face of the model renders.
+     * Controlled by the old 2D rendering tweak.
+     */
+    @ModifyVariable(method = "renderQuadList", at = @At("LOAD"), argsOnly = true)
+    private List<BakedQuad> NT$onRenderQuadList(List<BakedQuad> quads)
+    {
+        return ModConfig.Candy.oldFlatRendering() ? ItemClientUtil.getSprites(quads) : quads;
     }
 }
