@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,13 +140,15 @@ public abstract class ItemClientUtil
         if (!isRenderingFlat)
             return quads;
 
+        List<BakedQuad> southQuads = new ArrayList<>();
+
         for (BakedQuad baked : quads)
         {
             if (baked.getDirection() == Direction.SOUTH)
-                return Collections.singletonList(baked);
+                southQuads.add(baked);
         }
 
-        return quads;
+        return southQuads;
     }
 
     /**
