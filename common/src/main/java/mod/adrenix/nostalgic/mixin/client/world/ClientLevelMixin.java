@@ -183,6 +183,17 @@ public abstract class ClientLevelMixin
     }
 
     /**
+     * Disables growth sounds when using bone meal.
+     * Controlled by the disable growth sound tweak.
+     */
+    @Inject(method = "playSound", at = @At("HEAD"), cancellable = true)
+    private void NT$onPlaySimpleSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean delayed, long seed, CallbackInfo callback)
+    {
+        if (ModConfig.Sound.disableGrowth() && sound == SoundEvents.BONE_MEAL_USE)
+            callback.cancel();
+    }
+
+    /**
      * Disables sounds when attacking.
      * Controlled by the sound attack tweak.
      *
@@ -198,7 +209,7 @@ public abstract class ClientLevelMixin
         at = @At("HEAD"),
         cancellable = true
     )
-    private void NT$onPlayPositionedSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long randomSeed, CallbackInfo callback)
+    private void NT$onPlayPositionedSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed, CallbackInfo callback)
     {
         /* Attack Sounds */
 

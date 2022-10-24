@@ -20,7 +20,9 @@ import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -421,5 +423,18 @@ public abstract class LevelRendererMixin
     {
         if (WorldClientUtil.isRelightCheckEnqueued() && !NostalgicTweaks.isSodiumInstalled)
             WorldClientUtil.setRelightFinished();
+    }
+
+    /**
+     * Prevents the rendering of growth particles when using a bone meal item.
+     * Controlled by the disabled growth particles tweak.
+     */
+    @Redirect(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BoneMealItem;addGrowthParticles(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;I)V"))
+    private void NT$onGrowthParticlesLevelEvent(LevelAccessor level, BlockPos pos, int data)
+    {
+        if (ModConfig.Candy.disableGrowthParticles())
+            return;
+
+        BoneMealItem.addGrowthParticles(level, pos, data);
     }
 }
