@@ -14,17 +14,25 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * To prevent internal server crashes, it is important to use {@link BlockStateBaseMixin#getBlock()} to retrieve block
+ * information. Using a level instance or interface to get block information will cause a singleplayer world to
+ * soft-lock.
+ */
+
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class BlockStateBaseMixin
 {
     /* Shadows */
 
+    @Shadow @Final private BlockBehaviour.OffsetType offsetType;
     @Shadow public abstract Block getBlock();
 
     /* Injections */
@@ -64,10 +72,10 @@ public abstract class BlockStateBaseMixin
     @Inject(method = "getOffset", at = @At("HEAD"), cancellable = true)
     private void NT$onGetOffset(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Vec3> callback)
     {
-        if (NostalgicTweaks.isServer())
+        if (NostalgicTweaks.isServer() || this.offsetType == BlockBehaviour.OffsetType.NONE)
             return;
 
-        Block block = level.getBlockState(pos).getBlock();
+        Block block = this.getBlock();
         boolean isBlockFlower = block instanceof FlowerBlock || block instanceof TallFlowerBlock;
         boolean isAllOff = ModConfig.Candy.disableAllOffset();
         boolean isFlowerOff = ModConfig.Candy.disableFlowerOffset() && isBlockFlower;
