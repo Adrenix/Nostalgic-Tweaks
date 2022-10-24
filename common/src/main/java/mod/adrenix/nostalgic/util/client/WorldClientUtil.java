@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.WorldCommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -185,8 +186,6 @@ public abstract class WorldClientUtil
     public static int calculateSkylight(ClientLevel level)
     {
         float partialTick = Minecraft.getInstance().getDeltaFrameTime();
-        int timeOfDay = (int) (level.getDayTime() % 24000L);
-
         float rain = level.getRainLevel(partialTick);
         float thunder = level.getThunderLevel(partialTick);
 
@@ -198,32 +197,7 @@ public abstract class WorldClientUtil
         if (rain >= 0.9F) rainDiff = 3;
         if (thunder >= 0.8F) thunderDiff = 5;
 
-        int skyLight = 15;
-
-        if (ModUtil.Numbers.isInRange(timeOfDay, 13670, 22330))
-            skyLight = 4;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22331, 22491) || ModUtil.Numbers.isInRange(timeOfDay, 13509, 13669))
-            skyLight = 5;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22492, 22652) || ModUtil.Numbers.isInRange(timeOfDay, 13348, 13508))
-            skyLight = 6;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22653, 22812) || ModUtil.Numbers.isInRange(timeOfDay, 13188, 13347))
-            skyLight = 7;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22813, 22973) || ModUtil.Numbers.isInRange(timeOfDay, 13027, 13187))
-            skyLight = 8;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22974, 23134) || ModUtil.Numbers.isInRange(timeOfDay, 12867, 13026))
-            skyLight = 9;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23135, 23296) || ModUtil.Numbers.isInRange(timeOfDay, 12705, 12866))
-            skyLight = 10;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23297, 23459) || ModUtil.Numbers.isInRange(timeOfDay, 12542, 12704))
-            skyLight = 11;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23460, 23623) || ModUtil.Numbers.isInRange(timeOfDay, 12377, 12541))
-            skyLight = 12;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23624, 23790) || ModUtil.Numbers.isInRange(timeOfDay, 12210, 12376))
-            skyLight = 13;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23791, 23960) || ModUtil.Numbers.isInRange(timeOfDay, 12041, 12209))
-            skyLight = 14;
-
-        return skyLight - Math.max(rainDiff, thunderDiff);
+        return WorldCommonUtil.getDayLight(level) - Math.max(rainDiff, thunderDiff);
     }
 
     /**
