@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.screen.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
@@ -17,9 +18,15 @@ import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.profiling.ProfileResults;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,6 +46,8 @@ public abstract class MinecraftMixin
     @Shadow @Nullable public Screen screen;
     @Shadow @Nullable public ClientLevel level;
     @Shadow @Nullable public LocalPlayer player;
+    @Shadow @Nullable public HitResult hitResult;
+    @Shadow @Nullable public MultiPlayerGameMode gameMode;
     @Shadow @Final private Window window;
     @Shadow @Final public Options options;
     @Shadow public abstract Window getWindow();
@@ -153,6 +162,54 @@ public abstract class MinecraftMixin
     {
         if (ModConfig.Gameplay.disableMissTime())
             this.missTime = 0;
+    }
+
+    /**
+     * If the player is connected to an N.T verified world, then this allows left-clicking to interact with some blocks.
+     * Controlled by various left click block tweaks.
+     */
+    @Inject
+    (
+        method = "startAttack",
+        at = @At
+        (
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startDestroyBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z"
+        )
+    )
+    private void NT$onLeftClickBlock(CallbackInfoReturnable<Boolean> callback)
+    {
+        BlockHitResult result = (BlockHitResult) this.hitResult;
+        boolean isNull = this.level == null || this.player == null || this.gameMode == null || result == null;
+
+        if (!NostalgicTweaks.isNetworkVerified() || isNull || this.player.isCreative())
+            return;
+
+        BlockState state = this.level.getBlockState(result.getBlockPos());
+        Block block = state.getBlock();
+        boolean isUsing = false;
+
+        if (ModConfig.Gameplay.leftClickDoor())
+        {
+            if (block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FenceGateBlock)
+                isUsing = true;
+        }
+
+        if (ModConfig.Gameplay.leftClickLever())
+        {
+            if (block instanceof LeverBlock)
+                isUsing = true;
+        }
+
+        if (ModConfig.Gameplay.leftClickButton())
+        {
+            if (block instanceof ButtonBlock)
+                isUsing = true;
+        }
+
+        if (isUsing)
+            this.gameMode.useItemOn(this.player, InteractionHand.MAIN_HAND, result);
     }
 
     /**
