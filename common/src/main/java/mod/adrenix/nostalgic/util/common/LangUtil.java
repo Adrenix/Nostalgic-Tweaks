@@ -113,6 +113,7 @@ public abstract class LangUtil
         public static final String SETTINGS_MODERN = "gui.nostalgic_tweaks.config.modern";
         public static final String DEFAULT = "gui.nostalgic_tweaks.config.default";
 
+        public static final String SLIDER_CAP = "gui.nostalgic_tweaks.config.slider.cap";
         public static final String SLIDER_LIMIT = "gui.nostalgic_tweaks.config.slider.limit";
         public static final String SLIDER_RADIUS = "gui.nostalgic_tweaks.config.slider.radius";
         public static final String SLIDER_DENSITY = "gui.nostalgic_tweaks.config.slider.density";
@@ -219,6 +220,7 @@ public abstract class LangUtil
         public static final String SOUND_SUBCATEGORY_CHEST = "gui.nostalgic_tweaks.config.sound.subcategory.chest";
 
         public static final String GAMEPLAY_CATEGORY_BUG = "gui.nostalgic_tweaks.config.gameplay.category.bug";
+        public static final String GAMEPLAY_CATEGORY_MOB = "gui.nostalgic_tweaks.config.gameplay.category.mob";
         public static final String GAMEPLAY_CATEGORY_COMBAT = "gui.nostalgic_tweaks.config.gameplay.category.combat";
         public static final String GAMEPLAY_CATEGORY_EXPERIENCE = "gui.nostalgic_tweaks.config.gameplay.category.experience";
         public static final String GAMEPLAY_CATEGORY_HUNGER = "gui.nostalgic_tweaks.config.gameplay.category.hunger";
@@ -229,6 +231,8 @@ public abstract class LangUtil
         public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_orb";
         public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_block";
         public static final String GAMEPLAY_SUBCATEGORY_FIRE = "gui.nostalgic_tweaks.config.gameplay.subcategory.fire";
+        public static final String GAMEPLAY_SUBCATEGORY_PLAYER = "gui.nostalgic_tweaks.config.gameplay.subcategory.player";
+        public static final String GAMEPLAY_SUBCATEGORY_FARMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.farming";
         public static final String GAMEPLAY_SUBCATEGORY_SWIMMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.swimming";
         public static final String GAMEPLAY_SUBCATEGORY_HUNGER_BAR = "gui.nostalgic_tweaks.config.gameplay.subcategory.hunger_bar";
         public static final String GAMEPLAY_SUBCATEGORY_FOOD = "gui.nostalgic_tweaks.config.gameplay.subcategory.food";

@@ -36,6 +36,10 @@ public class ServerConfig implements ConfigData
         public boolean oldLadderGap = DefaultConfig.Gameplay.OLD_LADDER_GAP;
         public boolean oldSquidMilking = DefaultConfig.Gameplay.OLD_SQUID_MILKING;
 
+        // Mob System
+        public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
+        public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;
+
         // Combat System
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
         public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;
@@ -53,6 +57,11 @@ public class ServerConfig implements ConfigData
         public boolean oldFire = DefaultConfig.Gameplay.OLD_FIRE;
         public boolean instantAir = DefaultConfig.Gameplay.INSTANT_AIR;
         public boolean infiniteBurn = DefaultConfig.Gameplay.INFINITE_BURN;
+        public boolean leftClickDoor = DefaultConfig.Gameplay.LEFT_CLICK_DOOR;
+        public boolean leftClickLever = DefaultConfig.Gameplay.LEFT_CLICK_LEVER;
+        public boolean leftClickButton = DefaultConfig.Gameplay.LEFT_CLICK_BUTTON;
+        public boolean instantBonemeal = DefaultConfig.Gameplay.INSTANT_BONE_MEAL;
+        public boolean tilledGrassSeeds = DefaultConfig.Gameplay.TILLED_GRASS_SEEDS;
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
         public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
 

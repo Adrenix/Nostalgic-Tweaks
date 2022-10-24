@@ -97,13 +97,17 @@ public class PacketC2SChangeTweak
                 PacketUtil.sendToAll(players, new PacketS2CTweakUpdate(cache));
 
                 String information = String.format(
-                    "Updated server config entry in group (%s) with key (%s) with new value (%s)",
+                    "%s updated server config entry in group (%s) with key (%s) with new value (%s)",
+                    player.getDisplayName().getString(),
                     serializer.getGroup(),
                     serializer.getKey(),
                     serializer.getValue()
                 );
 
-                NostalgicTweaks.LOGGER.debug(information);
+                if (NostalgicTweaks.isServer())
+                    NostalgicTweaks.LOGGER.info(information);
+                else
+                    NostalgicTweaks.LOGGER.debug(information);
             }
             else if (cache == null)
             {

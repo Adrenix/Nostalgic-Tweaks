@@ -57,6 +57,13 @@ public class ClientConfig implements ConfigData
         public boolean disableChest = DefaultConfig.Sound.DISABLE_CHEST;
         static { SoundTweak.DISABLE_CHEST.setKey("disableChest"); }
 
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.BLOCK_SOUND)
+        public boolean disableGrowth = DefaultConfig.Sound.DISABLE_GROWTH;
+        static { SoundTweak.DISABLE_GROWTH.setKey("disableGrowth"); }
+
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Cat(group = TweakClient.Category.BLOCK_SOUND)
@@ -634,6 +641,7 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Optifine
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.FLAT_ITEM_CANDY)
         public boolean old2dRendering = DefaultConfig.Candy.OLD_2D_RENDERING;
         static { CandyTweak.FLAT_RENDERING.setKey("old2dRendering"); }
@@ -758,6 +766,13 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_BLOCK_CANDY)
         public boolean disableLeverParticles = DefaultConfig.Candy.DISABLE_LEVER_PARTICLES;
         static { CandyTweak.NO_LEVER_PARTICLES.setKey("disableLeverParticles"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.PARTICLE_BLOCK_CANDY)
+        public boolean disableGrowthParticles = DefaultConfig.Candy.DISABLE_GROWTH_PARTICLES;
+        static { CandyTweak.NO_GROWTH_PARTICLES.setKey("disableGrowthParticles"); }
 
         // Particle - Player Candy
 
@@ -1189,6 +1204,26 @@ public class ClientConfig implements ConfigData
         static { GameplayTweak.SQUID_MILK.setKey("oldSquidMilking"); }
 
         /**
+         * Mob System
+         */
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_GAMEPLAY)
+        @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_CAP)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
+        static { GameplayTweak.ANIMAL_CAP.setKey("animalSpawnCap"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_GAMEPLAY)
+        public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;
+        static { GameplayTweak.ANIMAL_SPAWNING.setKey("oldAnimalSpawning"); }
+
+        /**
          * Combat System
          */
 
@@ -1352,12 +1387,51 @@ public class ClientConfig implements ConfigData
          * Game Mechanics
          */
 
+        // Mechanics - Player
+
         @TweakClient.Gui.New
         @TweakSide.Dynamic
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Cat(group = TweakClient.Category.MECHANICS_GAMEPLAY)
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_PLAYER_GAMEPLAY)
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
         static { GameplayTweak.SPRINT.setKey("disableSprint"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_PLAYER_GAMEPLAY)
+        public boolean leftClickDoor = DefaultConfig.Gameplay.LEFT_CLICK_DOOR;
+        static { GameplayTweak.LEFT_CLICK_DOOR.setKey("leftClickDoor"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_PLAYER_GAMEPLAY)
+        public boolean leftClickLever = DefaultConfig.Gameplay.LEFT_CLICK_LEVER;
+        static { GameplayTweak.LEFT_CLICK_LEVER.setKey("leftClickLever"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_PLAYER_GAMEPLAY)
+        public boolean leftClickButton = DefaultConfig.Gameplay.LEFT_CLICK_BUTTON;
+        static { GameplayTweak.LEFT_CLICK_BUTTON.setKey("leftClickButton"); }
+
+        // Mechanics - Farming
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_FARMING_GAMEPLAY)
+        public boolean instantBonemeal = DefaultConfig.Gameplay.INSTANT_BONE_MEAL;
+        static { GameplayTweak.INSTANT_BONE_MEAL.setKey("instantBonemeal"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MECHANICS_FARMING_GAMEPLAY)
+        public boolean tilledGrassSeeds = DefaultConfig.Gameplay.TILLED_GRASS_SEEDS;
+        static { GameplayTweak.TILLED_GRASS_SEEDS.setKey("tilledGrassSeeds"); }
 
         // Mechanics - Fire
 

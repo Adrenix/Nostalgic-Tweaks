@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.SharedConstants;
+import net.minecraft.world.entity.MobCategory;
 
 /**
  * This utility class acts as the interface for parts of the mod that need to know the state of tweaks.
@@ -207,6 +208,7 @@ public abstract class ModConfig
         public static boolean ignoreModdedStep() { return getBoolTweak(SoundTweak.IGNORE_MODDED_STEP, SOUND.ignoreModdedStep); }
         public static boolean disableXpPickup() { return getBoolTweak(SoundTweak.DISABLE_PICKUP, SOUND.disableXpPickup); }
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
+        public static boolean disableGrowth() { return getBoolTweak(SoundTweak.DISABLE_GROWTH, SOUND.disableGrowth); }
         public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
         public static boolean disableDoor() { return getBoolTweak(SoundTweak.DISABLE_DOOR, SOUND.disableDoorPlace); }
         public static boolean disableBed() { return getBoolTweak(SoundTweak.DISABLE_BED, SOUND.disableBedPlace); }
@@ -310,6 +312,7 @@ public abstract class ModConfig
         public static boolean disableSprintingParticles() { return getBoolTweak(CandyTweak.NO_SPRINTING_PARTICLES, CANDY.disableSprintingParticles); }
         public static boolean oldNoEnchantHitParticles() { return getBoolTweak(CandyTweak.NO_MAGIC_HIT_PARTICLES, CANDY.oldNoMagicHitParticles); }
         public static boolean disableFallingParticles() { return getBoolTweak(CandyTweak.NO_FALLING_PARTICLES, CANDY.disableFallingParticles); }
+        public static boolean disableGrowthParticles() { return getBoolTweak(CandyTweak.NO_GROWTH_PARTICLES, CANDY.disableGrowthParticles); }
         public static boolean disableNetherParticles() { return getBoolTweak(CandyTweak.NO_NETHER_PARTICLES, CANDY.disableNetherParticles); }
         public static boolean disableLeverParticles() { return getBoolTweak(CandyTweak.NO_LEVER_PARTICLES, CANDY.disableLeverParticles); }
         public static boolean oldExplosionParticles() { return getBoolTweak(CandyTweak.EXPLOSION_PARTICLES, CANDY.oldExplosionParticles); }
@@ -404,6 +407,14 @@ public abstract class ModConfig
         public static boolean oldLadderGap() { return getSidedBoolTweak(GameplayTweak.LADDER_GAP, GAMEPLAY.oldLadderGap, SERVER_GAMEPLAY.oldLadderGap); }
         public static boolean oldSquidMilk() { return getSidedBoolTweak(GameplayTweak.SQUID_MILK, GAMEPLAY.oldSquidMilking, SERVER_GAMEPLAY.oldSquidMilking); }
 
+        // Mob System
+        public static int getAnimalSpawnCap()
+        {
+            return isTweakOn(GameplayTweak.ANIMAL_CAP) ? getSidedTweak(GameplayTweak.ANIMAL_CAP, GAMEPLAY.animalSpawnCap, SERVER_GAMEPLAY.animalSpawnCap) : MobCategory.CREATURE.getMaxInstancesPerChunk();
+        }
+
+        public static boolean oldAnimalSpawning() { return getSidedBoolTweak(GameplayTweak.ANIMAL_SPAWNING, GAMEPLAY.oldAnimalSpawning, SERVER_GAMEPLAY.oldAnimalSpawning); }
+
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }
         public static TweakType.Corner alternativeLevelCorner() { return getEnum(GameplayTweak.XP_LEVEL_CORNER, GAMEPLAY.altXpLevelCorner); }
@@ -417,6 +428,11 @@ public abstract class ModConfig
         public static boolean disableAnvil() { return getSidedBoolTweak(GameplayTweak.ANVIL, GAMEPLAY.disableAnvil, SERVER_GAMEPLAY.disableAnvil); }
 
         // Game Mechanics
+        public static boolean tilledGrassSeeds() { return getSidedBoolTweak(GameplayTweak.TILLED_GRASS_SEEDS, GAMEPLAY.tilledGrassSeeds, SERVER_GAMEPLAY.tilledGrassSeeds); }
+        public static boolean instantBonemeal() { return getSidedBoolTweak(GameplayTweak.INSTANT_BONE_MEAL, GAMEPLAY.instantBonemeal, SERVER_GAMEPLAY.instantBonemeal); }
+        public static boolean leftClickButton() { return getSidedBoolTweak(GameplayTweak.LEFT_CLICK_BUTTON, GAMEPLAY.leftClickButton, SERVER_GAMEPLAY.leftClickButton); }
+        public static boolean leftClickLever() { return getSidedBoolTweak(GameplayTweak.LEFT_CLICK_LEVER, GAMEPLAY.leftClickLever, SERVER_GAMEPLAY.leftClickLever); }
+        public static boolean leftClickDoor() { return getSidedBoolTweak(GameplayTweak.LEFT_CLICK_DOOR, GAMEPLAY.leftClickDoor, SERVER_GAMEPLAY.leftClickDoor); }
         public static boolean disableSprint() { return getSidedBoolTweak(GameplayTweak.SPRINT, GAMEPLAY.disableSprint, SERVER_GAMEPLAY.disableSprint); }
         public static boolean infiniteBurn() { return getSidedBoolTweak(GameplayTweak.INFINITE_BURN, GAMEPLAY.infiniteBurn, SERVER_GAMEPLAY.infiniteBurn); }
         public static boolean disableSwim() { return getSidedBoolTweak(GameplayTweak.SWIM, GAMEPLAY.disableSwim, SERVER_GAMEPLAY.disableSwim); }

@@ -12,6 +12,8 @@
     "client.OptifineFogRendererMixin"
   ],
   "mixins": [
+    "common.BoneMealItemForgeMixin",
+    "common.HoeItemForgeMixin",
     "common.ItemEntityForgeMixin",
     "common.LivingEntityForgeMixin"
   ]

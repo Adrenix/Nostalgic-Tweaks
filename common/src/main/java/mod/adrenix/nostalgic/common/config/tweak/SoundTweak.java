@@ -9,6 +9,7 @@ public enum SoundTweak implements ITweak
 {
     // Block Sounds
     OLD_CHEST,
+    DISABLE_GROWTH,
     DISABLE_CHEST,
     DISABLE_DOOR,
     DISABLE_BED,

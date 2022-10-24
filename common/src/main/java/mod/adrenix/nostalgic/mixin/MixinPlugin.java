@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin;
 
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -11,8 +12,8 @@ import java.util.Set;
  * This plugin allows Forge to reach the "missing dependencies" startup screen.
  *
  * Some configuration entries need to be known when mixins are applied.
- * If the cloth-config API is missing, then mixins will be loaded with missing
- * classes which will prevent Forge from reaching this screen.
+ * If AutoConfig or Architectury is missing, then mixins will be loaded with missing classes which will prevent Forge
+ * from reaching this screen.
  *
  * Do <b>not</b> class load any mod related classes here. Doing so will cause "applied too early" ASM errors during the
  * mixin application process.
@@ -24,25 +25,20 @@ import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin
 {
-    private boolean isClothPresent = true;
+    private boolean isClothPresent = false;
+    private boolean isArchitectPresent = false;
 
     @Override
     public void onLoad(String mixinPackage)
     {
-        try
-        {
-            Class.forName("me.shedaniel.autoconfig.AutoConfig");
-        }
-        catch (ClassNotFoundException ignored)
-        {
-            isClothPresent = false;
-        }
+        isClothPresent = ClassUtil.isAutoPresent();
+        isArchitectPresent = ClassUtil.isArchitectPresent();
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return isClothPresent;
+        return isClothPresent && isArchitectPresent;
     }
 
     @Override public List<String> getMixins() { return null; }

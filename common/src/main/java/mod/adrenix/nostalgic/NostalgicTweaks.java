@@ -5,6 +5,7 @@ import dev.architectury.networking.NetworkChannel;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import net.minecraft.resources.ResourceLocation;
@@ -27,18 +28,7 @@ public class NostalgicTweaks
     public static boolean isSodiumInstalled = false;
     public static boolean isModMenuInstalled = false;
 
-    public static final Supplier<Boolean> OPTIFINE = Suppliers.memoize(() ->
-    {
-        try
-        {
-            Class.forName("net.optifine.Config");
-            return true;
-        }
-        catch (ClassNotFoundException ignored)
-        {
-            return false;
-        }
-    });
+    public static final Supplier<Boolean> OPTIFINE = Suppliers.memoize(ClassUtil::isOptifinePresent);
 
     /* Networking */
 

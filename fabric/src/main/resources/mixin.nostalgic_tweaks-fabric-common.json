@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_16",
   "priority": 1001,
   "mixins": [
+    "BoneMealItemFabricMixin",
     "ExperienceOrbFabricMixin",
+    "HoeItemFabricMixin",
     "ItemEntityFabricMixin",
     "LivingEntityFabricMixin"
   ]

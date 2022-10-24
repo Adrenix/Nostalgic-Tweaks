@@ -18,6 +18,7 @@
 
   "mixins": [
     "ItemEntityAccessor",
-    "LivingEntityAccessor"
+    "LivingEntityAccessor",
+    "MobAccessor"
   ]
 }

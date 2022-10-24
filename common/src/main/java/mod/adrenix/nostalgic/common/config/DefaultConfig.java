@@ -11,6 +11,7 @@ public abstract class DefaultConfig
         // Block Sounds
         public static final boolean OLD_CHEST = true;
         public static final boolean DISABLE_CHEST = true;
+        public static final boolean DISABLE_GROWTH = true;
         public static final boolean DISABLE_DOOR_PLACE = true;
         public static final boolean DISABLE_BED_PLACE = true;
 
@@ -146,6 +147,7 @@ public abstract class DefaultConfig
         // Particle Candy
         public static final boolean DISABLE_SPRINTING_PARTICLES = true;
         public static final boolean DISABLE_FALLING_PARTICLES = true;
+        public static final boolean DISABLE_GROWTH_PARTICLES = true;
         public static final boolean DISABLE_NETHER_PARTICLES = true;
         public static final boolean DISABLE_LEVER_PARTICLES = true;
         public static final boolean OLD_SWEEP_PARTICLES = true;
@@ -199,6 +201,10 @@ public abstract class DefaultConfig
         public static final boolean OLD_LADDER_GAP = true;
         public static final boolean OLD_SQUID_MILKING = true;
 
+        // Mob System
+        public static final int ANIMAL_SPAWN_CAP = 25;
+        public static final boolean OLD_ANIMAL_SPAWNING = false;
+
         // Combat System
         public static final int ARROW_SPEED = 70;
         public static final boolean INSTANT_BOW = true;
@@ -226,8 +232,13 @@ public abstract class DefaultConfig
         public static final boolean OLD_FIRE = false;
         public static final boolean INFINITE_BURN = true;
         public static final boolean INSTANT_AIR = true;
+        public static final boolean INSTANT_BONE_MEAL = true;
         public static final boolean DISABLE_SWIM = true;
         public static final boolean DISABLE_SPRINT = true;
+        public static final boolean LEFT_CLICK_DOOR = true;
+        public static final boolean LEFT_CLICK_LEVER = false;
+        public static final boolean LEFT_CLICK_BUTTON = false;
+        public static final boolean TILLED_GRASS_SEEDS = true;
 
         // Hunger System
         public static final String HUNGER_FOOD_TEXT = "Food: %v";

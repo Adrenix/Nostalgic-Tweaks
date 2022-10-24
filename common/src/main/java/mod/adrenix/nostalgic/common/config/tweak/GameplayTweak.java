@@ -11,6 +11,10 @@ public enum GameplayTweak implements ITweak
     LADDER_GAP,
     SQUID_MILK,
 
+    // Mob System
+    ANIMAL_CAP,
+    ANIMAL_SPAWNING,
+
     // Combat System
     INSTANT_BOW,
     INVINCIBLE_BOW,
@@ -52,6 +56,11 @@ public enum GameplayTweak implements ITweak
     SWIM,
     FIRE_SPREAD,
     INSTANT_AIR,
+    LEFT_CLICK_DOOR,
+    LEFT_CLICK_LEVER,
+    LEFT_CLICK_BUTTON,
+    TILLED_GRASS_SEEDS,
+    INSTANT_BONE_MEAL,
     INFINITE_BURN;
 
     /* Implementation */
