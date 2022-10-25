@@ -25,20 +25,20 @@ import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin
 {
-    private boolean isClothPresent = false;
-    private boolean isArchitectPresent = false;
+    private boolean isAutoConfigPresent = false;
+    private boolean isArchitecturyPresent = false;
 
     @Override
     public void onLoad(String mixinPackage)
     {
-        isClothPresent = ClassUtil.isAutoPresent();
-        isArchitectPresent = ClassUtil.isArchitectPresent();
+        isAutoConfigPresent = ClassUtil.isAutoConfigPresent();
+        isArchitecturyPresent = ClassUtil.isArchitecturyPresent();
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return isClothPresent && isArchitectPresent;
+        return isAutoConfigPresent && isArchitecturyPresent;
     }
 
     @Override public List<String> getMixins() { return null; }
