@@ -1207,10 +1207,12 @@ public class ClientConfig implements ConfigData
          * Mob System
          */
 
+        // Animal - Spawn
+
         @TweakClient.Gui.New
         @TweakSide.Server
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_GAMEPLAY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SPAWN)
         @TweakClient.Gui.SliderType(slider = TweakClient.Gui.Slider.GENERIC, langKey = LangUtil.Gui.SLIDER_CAP)
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
@@ -1219,9 +1221,25 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Server
         @TweakSide.EntryStatus
-        @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_GAMEPLAY)
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SPAWN)
         public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;
         static { GameplayTweak.ANIMAL_SPAWNING.setKey("oldAnimalSpawning"); }
+
+        // Animal - Sheep
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SHEEP)
+        public boolean oldSheepPunching = DefaultConfig.Gameplay.OLD_SHEEP_PUNCHING;
+        static { GameplayTweak.SHEEP_PUNCHING.setKey("oldSheepPunching"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SHEEP)
+        public boolean oneWoolPunch = DefaultConfig.Gameplay.ONE_WOOL_PUNCH;
+        static { GameplayTweak.ONE_WOOL_PUNCH.setKey("oneWoolPunch"); }
 
         /**
          * Combat System

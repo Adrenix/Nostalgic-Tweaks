@@ -14,6 +14,8 @@ public enum GameplayTweak implements ITweak
     // Mob System
     ANIMAL_CAP,
     ANIMAL_SPAWNING,
+    SHEEP_PUNCHING,
+    ONE_WOOL_PUNCH,
 
     // Combat System
     INSTANT_BOW,

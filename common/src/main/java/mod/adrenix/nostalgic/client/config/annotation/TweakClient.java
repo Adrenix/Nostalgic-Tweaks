@@ -350,7 +350,11 @@ public abstract class TweakClient
         // Hunger System Subcategories
 
         HUNGER_BAR_GAMEPLAY(Category.HUNGER_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_HUNGER_BAR),
-        HUNGER_FOOD_GAMEPLAY(Category.HUNGER_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_FOOD);
+        HUNGER_FOOD_GAMEPLAY(Category.HUNGER_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_FOOD),
+
+        // Mob System Subcategories
+
+        MOB_ANIMAL_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_ANIMAL);
 
         private final String langKey;
         private final Category category;
@@ -377,7 +381,7 @@ public abstract class TweakClient
          * There will be GUI rendering issues if this occurs.
          *
          * The best way to prevent this is to prefix the naming scheme for embedded subcategories.
-         * For example, for the button tweaks for title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
+         * For example, for the button tweaks in the title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
          */
 
         // Title Screen (Eye Candy) - Embedded Subcategories
@@ -408,7 +412,12 @@ public abstract class TweakClient
         // Hunger Bar (Gameplay) - Embedded Subcategories
 
         ALT_HUNGER_FOOD_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_HUNGER_FOOD),
-        ALT_HUNGER_SATURATION_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_HUNGER_SATURATION);
+        ALT_HUNGER_SATURATION_GAMEPLAY(Subcategory.HUNGER_BAR_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_HUNGER_SATURATION),
+
+        // Animals (Mob System) - Embedded Subcategories
+
+        ANIMAL_MOB_SPAWN(Subcategory.MOB_ANIMAL_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_ANIMAL_SPAWN),
+        ANIMAL_MOB_SHEEP(Subcategory.MOB_ANIMAL_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_ANIMAL_SHEEP);
 
         private final String langKey;
         private final Subcategory subcategory;

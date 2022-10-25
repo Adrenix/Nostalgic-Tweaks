@@ -39,6 +39,8 @@ public class ServerConfig implements ConfigData
         // Mob System
         public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
         public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;
+        public boolean oldSheepPunching = DefaultConfig.Gameplay.OLD_SHEEP_PUNCHING;
+        public boolean oneWoolPunch = DefaultConfig.Gameplay.ONE_WOOL_PUNCH;
 
         // Combat System
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;

@@ -414,6 +414,8 @@ public abstract class ModConfig
         }
 
         public static boolean oldAnimalSpawning() { return getSidedBoolTweak(GameplayTweak.ANIMAL_SPAWNING, GAMEPLAY.oldAnimalSpawning, SERVER_GAMEPLAY.oldAnimalSpawning); }
+        public static boolean oldSheepPunching() { return getSidedBoolTweak(GameplayTweak.SHEEP_PUNCHING, GAMEPLAY.oldSheepPunching, SERVER_GAMEPLAY.oldSheepPunching); }
+        public static boolean oneWoolPunch() { return getSidedBoolTweak(GameplayTweak.ONE_WOOL_PUNCH, GAMEPLAY.oneWoolPunch, SERVER_GAMEPLAY.oneWoolPunch); }
 
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }

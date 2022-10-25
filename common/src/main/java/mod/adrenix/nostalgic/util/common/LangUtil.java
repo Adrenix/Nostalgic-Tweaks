@@ -236,6 +236,10 @@ public abstract class LangUtil
         public static final String GAMEPLAY_SUBCATEGORY_SWIMMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.swimming";
         public static final String GAMEPLAY_SUBCATEGORY_HUNGER_BAR = "gui.nostalgic_tweaks.config.gameplay.subcategory.hunger_bar";
         public static final String GAMEPLAY_SUBCATEGORY_FOOD = "gui.nostalgic_tweaks.config.gameplay.subcategory.food";
+        public static final String GAMEPLAY_SUBCATEGORY_ANIMAL = "gui.nostalgic_tweaks.config.gameplay.subcategory.animal";
+
+        public static final String GAMEPLAY_EMBED_ANIMAL_SPAWN = "gui.nostalgic_tweaks.config.gameplay.embed.animal.spawn";
+        public static final String GAMEPLAY_EMBED_ANIMAL_SHEEP = "gui.nostalgic_tweaks.config.gameplay.embed.animal.sheep";
 
         public static final String GAMEPLAY_EMBED_XP_LEVEL = "gui.nostalgic_tweaks.config.gameplay.embed.experience.level";
         public static final String GAMEPLAY_EMBED_XP_PROGRESS = "gui.nostalgic_tweaks.config.gameplay.embed.experience.progress";

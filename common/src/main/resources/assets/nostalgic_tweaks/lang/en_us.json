@@ -206,11 +206,16 @@
   "gui.nostalgic_tweaks.config.gameplay.subcategory.swimming": "Swimming",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.hunger_bar": "Hunger Bar",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.food": "Food",
+  "gui.nostalgic_tweaks.config.gameplay.subcategory.animal": "Animals",
+  "gui.nostalgic_tweaks.config.gameplay.subcategory.spawn_rules": "Spawn Rules",
+  "gui.nostalgic_tweaks.config.gameplay.subcategory.sheep_rules": "Sheep Rules",
 
   "gui.nostalgic_tweaks.config.gameplay.embed.experience.level": "Alternative Level Text",
   "gui.nostalgic_tweaks.config.gameplay.embed.experience.progress": "Alternative Progress Text",
   "gui.nostalgic_tweaks.config.gameplay.embed.hunger.saturation": "Alternative Saturation Text",
   "gui.nostalgic_tweaks.config.gameplay.embed.hunger.food": "Alternative Food Text",
+  "gui.nostalgic_tweaks.config.gameplay.embed.animal.spawn": "Spawning",
+  "gui.nostalgic_tweaks.config.gameplay.embed.animal.sheep": "Sheep",
 
   "gui.nostalgic_tweaks.config.animation.category.arm": "Arm Animations",
   "gui.nostalgic_tweaks.config.animation.category.mob": "Mob Animations",
@@ -587,6 +592,10 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.animalSpawnCap.@Tooltip": "Controls how many§e groups§r of animals can spawn around a player. A§a higher cap§r yields§a more§r animals.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldAnimalSpawning": "Old Animal Spawning",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldAnimalSpawning.@Tooltip": "Bring back the old animal spawning and removal logic. This will§c not§r remove saddled, leashed, tagged, or tamed animal entities.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSheepPunching": "Old Sheep Punching",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSheepPunching.@Tooltip": "Punching a sheep will drop the animal's wool as if it were sheared.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oneWoolPunch": "One Wool Punch",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.oneWoolPunch.@Tooltip": "Only drop one wool block when a sheep is punched by a player.",
 
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed": "Arrow Speed",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.arrowSpeed.@Tooltip": "How fast the arrow will fire out of the bow when instant bow is enabled.",

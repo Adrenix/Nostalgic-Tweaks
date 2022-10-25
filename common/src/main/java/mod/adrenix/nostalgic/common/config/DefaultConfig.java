@@ -204,6 +204,8 @@ public abstract class DefaultConfig
         // Mob System
         public static final int ANIMAL_SPAWN_CAP = 25;
         public static final boolean OLD_ANIMAL_SPAWNING = false;
+        public static final boolean OLD_SHEEP_PUNCHING = true;
+        public static final boolean ONE_WOOL_PUNCH = false;
 
         // Combat System
         public static final int ARROW_SPEED = 70;
