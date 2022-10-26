@@ -196,6 +196,7 @@
   "gui.nostalgic_tweaks.config.gameplay.category.mechanics": "Game Mechanics",
   "gui.nostalgic_tweaks.config.gameplay.category.hunger": "Hunger System",
 
+  "gui.nostalgic_tweaks.config.gameplay.subcategory.ai": "Artificial Intelligence",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.bow": "Bow Combat",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_bar": "Experience Bar",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_orb": "Experience Orbs",
@@ -588,6 +589,8 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSquidMilking": "Old Squid Milking",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldSquidMilking.@Tooltip": "Bring back the old bug that allows players to milk squids.",
 
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableAnimalPanic": "Disable Animal Panic",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableAnimalPanic.@Tooltip": "Disable animals from panicking when they receive damage.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.animalSpawnCap": "Animal Spawn Cap",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.animalSpawnCap.@Tooltip": "Controls how many§e groups§r of animals can spawn around a player. A§a higher cap§r yields§a more§r animals.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.oldAnimalSpawning": "Old Animal Spawning",

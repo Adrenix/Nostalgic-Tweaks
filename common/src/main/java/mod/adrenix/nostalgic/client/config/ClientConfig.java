@@ -1207,6 +1207,15 @@ public class ClientConfig implements ConfigData
          * Mob System
          */
 
+        // Artificial Intelligence
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Sub(group = TweakClient.Subcategory.MOB_AI_GAMEPLAY)
+        public boolean disableAnimalPanic = DefaultConfig.Gameplay.DISABLE_ANIMAL_PANIC;
+        static { GameplayTweak.ANIMAL_PANIC.setKey("disableAnimalPanic"); }
+
         // Animal - Spawn
 
         @TweakClient.Gui.New

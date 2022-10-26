@@ -19,6 +19,8 @@
     "world.entity.LivingEntityMixin",
     "world.entity.MobCategoryMixin",
     "world.entity.PlayerMixin",
+    "world.entity.ai.AnimalPanicMixin",
+    "world.entity.ai.PanicGoalMixin",
     "world.entity.animal.AnimalMixin",
     "world.entity.animal.ChickenMixin",
     "world.item.ItemMixin",

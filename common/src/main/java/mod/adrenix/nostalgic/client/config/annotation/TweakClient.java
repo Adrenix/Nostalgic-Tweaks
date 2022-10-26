@@ -354,6 +354,7 @@ public abstract class TweakClient
 
         // Mob System Subcategories
 
+        MOB_AI_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_AI),
         MOB_ANIMAL_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_ANIMAL);
 
         private final String langKey;
