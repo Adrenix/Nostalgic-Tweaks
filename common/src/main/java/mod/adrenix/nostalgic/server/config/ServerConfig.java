@@ -43,6 +43,24 @@ public class ServerConfig implements ConfigData
         public boolean oldSheepPunching = DefaultConfig.Gameplay.OLD_SHEEP_PUNCHING;
         public boolean oneWoolPunch = DefaultConfig.Gameplay.ONE_WOOL_PUNCH;
 
+        // Mob Drops
+        public boolean oldZombiePigmenDrops = DefaultConfig.Gameplay.OLD_ZOMBIE_PIGMEN_DROPS;
+        public boolean oldSkeletonDrops = DefaultConfig.Gameplay.OLD_SKELETON_DROPS;
+        public boolean oldChickenDrops = DefaultConfig.Gameplay.OLD_CHICKEN_DROPS;
+        public boolean oldZombieDrops = DefaultConfig.Gameplay.OLD_ZOMBIE_DROPS;
+        public boolean oldSpiderDrops = DefaultConfig.Gameplay.OLD_SPIDER_DROPS;
+        public boolean oldSheepDrops = DefaultConfig.Gameplay.OLD_SHEEP_DROPS;
+        public boolean oldCowDrops = DefaultConfig.Gameplay.OLD_COW_DROPS;
+        public boolean oldPigDrops = DefaultConfig.Gameplay.OLD_PIG_DROPS;
+
+        public boolean oldStyleZombieVillagerDrops = DefaultConfig.Gameplay.OLD_STYLE_ZOMBIE_VILLAGER_DROPS;
+        public boolean oldStyleCaveSpiderDrops = DefaultConfig.Gameplay.OLD_STYLE_CAVE_SPIDER_DROPS;
+        public boolean oldStyleMooshroomDrops = DefaultConfig.Gameplay.OLD_STYLE_MOOSHROOM_DROPS;
+        public boolean oldStyleDrownedDrops = DefaultConfig.Gameplay.OLD_STYLE_DROWNED_DROPS;
+        public boolean oldStyleRabbitDrops = DefaultConfig.Gameplay.OLD_STYLE_RABBIT_DROPS;
+        public boolean oldStyleStrayDrops = DefaultConfig.Gameplay.OLD_STYLE_STRAY_DROPS;
+        public boolean oldStyleHuskDrops = DefaultConfig.Gameplay.OLD_STYLE_HUSK_DROPS;
+
         // Combat System
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
         public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;

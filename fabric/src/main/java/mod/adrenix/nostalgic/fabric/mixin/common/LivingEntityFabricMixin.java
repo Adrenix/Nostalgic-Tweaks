@@ -58,6 +58,6 @@ public abstract class LivingEntityFabricMixin extends Entity
     )
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return ItemServerUtil.explodeStack(consumer);
+        return ItemServerUtil.splitConsumer(consumer);
     }
 }

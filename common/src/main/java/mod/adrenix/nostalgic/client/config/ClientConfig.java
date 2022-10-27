@@ -1250,6 +1250,117 @@ public class ClientConfig implements ConfigData
         public boolean oneWoolPunch = DefaultConfig.Gameplay.ONE_WOOL_PUNCH;
         static { GameplayTweak.ONE_WOOL_PUNCH.setKey("oneWoolPunch"); }
 
+        /* Mob Drops */
+
+        // Classic Mob Drops
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldZombiePigmenDrops = DefaultConfig.Gameplay.OLD_ZOMBIE_PIGMEN_DROPS;
+        static { GameplayTweak.ZOMBIE_PIGMEN_DROPS.setKey("oldZombiePigmenDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldSkeletonDrops = DefaultConfig.Gameplay.OLD_SKELETON_DROPS;
+        static { GameplayTweak.SKELETON_DROPS.setKey("oldSkeletonDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldChickenDrops = DefaultConfig.Gameplay.OLD_CHICKEN_DROPS;
+        static { GameplayTweak.CHICKEN_DROPS.setKey("oldChickenDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldZombieDrops = DefaultConfig.Gameplay.OLD_ZOMBIE_DROPS;
+        static { GameplayTweak.ZOMBIE_DROPS.setKey("oldZombieDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldSpiderDrops = DefaultConfig.Gameplay.OLD_SPIDER_DROPS;
+        static { GameplayTweak.SPIDER_DROPS.setKey("oldSpiderDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldSheepDrops = DefaultConfig.Gameplay.OLD_SHEEP_DROPS;
+        static { GameplayTweak.SHEEP_DROPS.setKey("oldSheepDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldCowDrops = DefaultConfig.Gameplay.OLD_COW_DROPS;
+        static { GameplayTweak.COW_DROPS.setKey("oldCowDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.CLASSIC_MOB_DROPS)
+        public boolean oldPigDrops = DefaultConfig.Gameplay.OLD_PIG_DROPS;
+        static { GameplayTweak.PIG_DROPS.setKey("oldPigDrops"); }
+
+        // Modern Mob Drops
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleZombieVillagerDrops = DefaultConfig.Gameplay.OLD_STYLE_ZOMBIE_VILLAGER_DROPS;
+        static { GameplayTweak.ZOMBIE_VILLAGER_DROPS.setKey("oldStyleZombieVillagerDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleCaveSpiderDrops = DefaultConfig.Gameplay.OLD_STYLE_CAVE_SPIDER_DROPS;
+        static { GameplayTweak.CAVE_SPIDER_DROPS.setKey("oldStyleCaveSpiderDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleMooshroomDrops = DefaultConfig.Gameplay.OLD_STYLE_MOOSHROOM_DROPS;
+        static { GameplayTweak.MOOSHROOM_DROPS.setKey("oldStyleMooshroomDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleDrownedDrops = DefaultConfig.Gameplay.OLD_STYLE_DROWNED_DROPS;
+        static { GameplayTweak.DROWNED_DROPS.setKey("oldStyleDrownedDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleRabbitDrops = DefaultConfig.Gameplay.OLD_STYLE_RABBIT_DROPS;
+        static { GameplayTweak.RABBIT_DROPS.setKey("oldStyleRabbitDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleStrayDrops = DefaultConfig.Gameplay.OLD_STYLE_STRAY_DROPS;
+        static { GameplayTweak.STRAY_DROPS.setKey("oldStyleStrayDrops"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.MODERN_MOB_DROPS)
+        public boolean oldStyleHuskDrops = DefaultConfig.Gameplay.OLD_STYLE_HUSK_DROPS;
+        static { GameplayTweak.HUSK_DROPS.setKey("oldStyleHuskDrops"); }
+
         /**
          * Combat System
          */

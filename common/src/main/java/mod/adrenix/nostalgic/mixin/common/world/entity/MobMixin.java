@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -52,5 +53,19 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
             else if (ghast != null)
                 this.NT$attackCounter = 0;
         }
+    }
+
+    /**
+     * Prevents bows being dropped by skeletons.
+     * Controlled by old skeleton drops tweaks.
+     */
+    @Inject(method = "dropCustomDeathLoot", at = @At("HEAD"), cancellable = true)
+    private void NT$onDropCustomDeathLoot(DamageSource damageSource, int looting, boolean hitByPlayer, CallbackInfo callback)
+    {
+        boolean isSkeleton = ModConfig.Gameplay.oldSkeletonDrops() && this.getType() == EntityType.SKELETON;
+        boolean isStray = ModConfig.Gameplay.oldStrayDrops() && this.getType() == EntityType.STRAY;
+
+        if (isSkeleton || isStray)
+            callback.cancel();
     }
 }

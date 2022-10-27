@@ -18,6 +18,24 @@ public enum GameplayTweak implements ITweak
     SHEEP_PUNCHING,
     ONE_WOOL_PUNCH,
 
+    // Mob Drops
+    ZOMBIE_PIGMEN_DROPS,
+    SKELETON_DROPS,
+    CHICKEN_DROPS,
+    ZOMBIE_DROPS,
+    SPIDER_DROPS,
+    SHEEP_DROPS,
+    COW_DROPS,
+    PIG_DROPS,
+
+    ZOMBIE_VILLAGER_DROPS,
+    CAVE_SPIDER_DROPS,
+    MOOSHROOM_DROPS,
+    DROWNED_DROPS,
+    RABBIT_DROPS,
+    STRAY_DROPS,
+    HUSK_DROPS,
+
     // Combat System
     INSTANT_BOW,
     INVINCIBLE_BOW,

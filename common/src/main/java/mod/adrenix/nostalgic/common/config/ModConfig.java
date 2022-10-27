@@ -418,6 +418,24 @@ public abstract class ModConfig
         public static boolean oldSheepPunching() { return getSidedBoolTweak(GameplayTweak.SHEEP_PUNCHING, GAMEPLAY.oldSheepPunching, SERVER_GAMEPLAY.oldSheepPunching); }
         public static boolean oneWoolPunch() { return getSidedBoolTweak(GameplayTweak.ONE_WOOL_PUNCH, GAMEPLAY.oneWoolPunch, SERVER_GAMEPLAY.oneWoolPunch); }
 
+        // Mob Drops
+        public static boolean oldZombiePigmenDrops() { return getSidedBoolTweak(GameplayTweak.ZOMBIE_PIGMEN_DROPS, GAMEPLAY.oldZombiePigmenDrops, SERVER_GAMEPLAY.oldZombiePigmenDrops); }
+        public static boolean oldSkeletonDrops() { return getSidedBoolTweak(GameplayTweak.SKELETON_DROPS, GAMEPLAY.oldSkeletonDrops, SERVER_GAMEPLAY.oldSkeletonDrops); }
+        public static boolean oldChickenDrops() { return getSidedBoolTweak(GameplayTweak.CHICKEN_DROPS, GAMEPLAY.oldChickenDrops, SERVER_GAMEPLAY.oldChickenDrops); }
+        public static boolean oldZombieDrops() { return getSidedBoolTweak(GameplayTweak.ZOMBIE_DROPS, GAMEPLAY.oldZombieDrops, SERVER_GAMEPLAY.oldZombieDrops); }
+        public static boolean oldSpiderDrops() { return getSidedBoolTweak(GameplayTweak.SPIDER_DROPS, GAMEPLAY.oldSpiderDrops, SERVER_GAMEPLAY.oldSpiderDrops); }
+        public static boolean oldSheepDrops() { return getSidedBoolTweak(GameplayTweak.SHEEP_DROPS, GAMEPLAY.oldSheepDrops, SERVER_GAMEPLAY.oldSheepDrops); }
+        public static boolean oldCowDrops() { return getSidedBoolTweak(GameplayTweak.COW_DROPS, GAMEPLAY.oldCowDrops, SERVER_GAMEPLAY.oldCowDrops); }
+        public static boolean oldPigDrops() { return getSidedBoolTweak(GameplayTweak.PIG_DROPS, GAMEPLAY.oldPigDrops, SERVER_GAMEPLAY.oldPigDrops); }
+
+        public static boolean oldZombieVillagerDrops() { return getSidedBoolTweak(GameplayTweak.ZOMBIE_VILLAGER_DROPS, GAMEPLAY.oldStyleZombieVillagerDrops, SERVER_GAMEPLAY.oldStyleZombieVillagerDrops); }
+        public static boolean oldCaveSpiderDrops() { return getSidedBoolTweak(GameplayTweak.CAVE_SPIDER_DROPS, GAMEPLAY.oldStyleCaveSpiderDrops, SERVER_GAMEPLAY.oldStyleCaveSpiderDrops); }
+        public static boolean oldMooshroomDrops() { return getSidedBoolTweak(GameplayTweak.MOOSHROOM_DROPS, GAMEPLAY.oldStyleMooshroomDrops, SERVER_GAMEPLAY.oldStyleMooshroomDrops); }
+        public static boolean oldDrownedDrops() { return getSidedBoolTweak(GameplayTweak.DROWNED_DROPS, GAMEPLAY.oldStyleDrownedDrops, SERVER_GAMEPLAY.oldStyleDrownedDrops); }
+        public static boolean oldRabbitDrops() { return getSidedBoolTweak(GameplayTweak.RABBIT_DROPS, GAMEPLAY.oldStyleRabbitDrops, SERVER_GAMEPLAY.oldStyleRabbitDrops); }
+        public static boolean oldStrayDrops() { return getSidedBoolTweak(GameplayTweak.STRAY_DROPS, GAMEPLAY.oldStyleStrayDrops, SERVER_GAMEPLAY.oldStyleStrayDrops); }
+        public static boolean oldHuskDrops() { return getSidedBoolTweak(GameplayTweak.HUSK_DROPS, GAMEPLAY.oldStyleHuskDrops, SERVER_GAMEPLAY.oldStyleHuskDrops); }
+
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }
         public static TweakType.Corner alternativeLevelCorner() { return getEnum(GameplayTweak.XP_LEVEL_CORNER, GAMEPLAY.altXpLevelCorner); }

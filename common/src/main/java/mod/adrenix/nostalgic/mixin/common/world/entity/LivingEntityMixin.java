@@ -18,6 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -156,5 +158,67 @@ public abstract class LivingEntityMixin extends Entity
     private void NT$onEndDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
         ItemServerUtil.isDroppingLoot = false;
+    }
+
+    /**
+     * Changes the loot dropped by certain entities.
+     * Controlled by various loot override tweaks.
+     */
+    @Inject(method = "dropFromLootTable", at = @At("HEAD"), cancellable = true)
+    private void NT$onDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
+    {
+        Entity entity = damageSource.getEntity();
+        EntityType<?> type = this.getType();
+
+        int luck = hitByPlayer && entity != null ? EnchantmentHelper.getMobLooting((LivingEntity) entity) : 0;
+        int zeroToTwo = this.random.nextInt(3) + luck;
+        int zeroToOne = this.random.nextInt(2) + luck;
+
+        boolean isZombiePigmen = ModConfig.Gameplay.oldZombiePigmenDrops() && type == EntityType.ZOMBIFIED_PIGLIN;
+        boolean isSkeleton = ModConfig.Gameplay.oldSkeletonDrops() && type == EntityType.SKELETON;
+        boolean isChicken = ModConfig.Gameplay.oldChickenDrops() && type == EntityType.CHICKEN;
+        boolean isRabbit = ModConfig.Gameplay.oldRabbitDrops() && type == EntityType.RABBIT;
+        boolean isSheep = ModConfig.Gameplay.oldSheepDrops() && type == EntityType.SHEEP;
+        boolean isStray = ModConfig.Gameplay.oldStrayDrops() && type == EntityType.STRAY;
+        boolean isPig = ModConfig.Gameplay.oldPigDrops() && type == EntityType.PIG;
+
+        boolean isCow = (ModConfig.Gameplay.oldCowDrops() && type == EntityType.COW) ||
+            (ModConfig.Gameplay.oldMooshroomDrops() && type == EntityType.MOOSHROOM)
+        ;
+
+        boolean isSpider = (ModConfig.Gameplay.oldSpiderDrops() && type == EntityType.SPIDER) ||
+            (ModConfig.Gameplay.oldCaveSpiderDrops() && type == EntityType.CAVE_SPIDER)
+        ;
+
+        boolean isZombie = (ModConfig.Gameplay.oldZombieDrops() && type == EntityType.ZOMBIE) ||
+            (ModConfig.Gameplay.oldZombieVillagerDrops() && type == EntityType.ZOMBIE_VILLAGER) ||
+            (ModConfig.Gameplay.oldDrownedDrops() && type == EntityType.DROWNED) ||
+            (ModConfig.Gameplay.oldHuskDrops() && type == EntityType.HUSK)
+        ;
+
+        if (isZombiePigmen)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.COOKED_PORKCHOP, zeroToTwo));
+        else if (isChicken)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.FEATHER, zeroToTwo));
+        else if (isRabbit)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.RABBIT_HIDE, zeroToOne));
+        else if (isCow)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.LEATHER, zeroToTwo));
+        else if (isSpider)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.STRING, zeroToTwo));
+        else if (isZombie)
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.FEATHER, zeroToTwo));
+        else if (isSkeleton || isStray)
+        {
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.ARROW, this.random.nextInt(3) + luck));
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.BONE, this.random.nextInt(3) + luck));
+        }
+        else if (isPig)
+        {
+            ItemLike item = this.isOnFire() ? Items.COOKED_PORKCHOP : Items.PORKCHOP;
+            ItemServerUtil.splitLoot(callback, this, new ItemStack(item, zeroToTwo));
+        }
+        else if (isSheep)
+            callback.cancel();
     }
 }

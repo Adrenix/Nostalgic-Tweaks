@@ -355,7 +355,8 @@ public abstract class TweakClient
         // Mob System Subcategories
 
         MOB_AI_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_AI),
-        MOB_ANIMAL_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_ANIMAL);
+        MOB_ANIMAL_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_ANIMAL),
+        MOB_DROPS_GAMEPLAY(Category.MOB_GAMEPLAY, LangUtil.Gui.GAMEPLAY_SUBCATEGORY_DROPS);
 
         private final String langKey;
         private final Category category;
@@ -417,6 +418,8 @@ public abstract class TweakClient
 
         // Animals (Mob System) - Embedded Subcategories
 
+        CLASSIC_MOB_DROPS(Subcategory.MOB_DROPS_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_DROP_CLASSIC),
+        MODERN_MOB_DROPS(Subcategory.MOB_DROPS_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_DROP_MODERN),
         ANIMAL_MOB_SPAWN(Subcategory.MOB_ANIMAL_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_ANIMAL_SPAWN),
         ANIMAL_MOB_SHEEP(Subcategory.MOB_ANIMAL_GAMEPLAY, LangUtil.Gui.GAMEPLAY_EMBED_ANIMAL_SHEEP);
 

@@ -208,6 +208,24 @@ public abstract class DefaultConfig
         public static final boolean OLD_SHEEP_PUNCHING = true;
         public static final boolean ONE_WOOL_PUNCH = false;
 
+        // Mob System - Drops
+        public static final boolean OLD_ZOMBIE_DROPS = true;
+        public static final boolean OLD_SPIDER_DROPS = true;
+        public static final boolean OLD_ZOMBIE_PIGMEN_DROPS = true;
+        public static final boolean OLD_SKELETON_DROPS = true;
+        public static final boolean OLD_CHICKEN_DROPS = true;
+        public static final boolean OLD_SHEEP_DROPS = true;
+        public static final boolean OLD_COW_DROPS = true;
+        public static final boolean OLD_PIG_DROPS = true;
+
+        public static final boolean OLD_STYLE_ZOMBIE_VILLAGER_DROPS = false;
+        public static final boolean OLD_STYLE_CAVE_SPIDER_DROPS = false;
+        public static final boolean OLD_STYLE_MOOSHROOM_DROPS = false;
+        public static final boolean OLD_STYLE_DROWNED_DROPS = false;
+        public static final boolean OLD_STYLE_RABBIT_DROPS = false;
+        public static final boolean OLD_STYLE_STRAY_DROPS = false;
+        public static final boolean OLD_STYLE_HUSK_DROPS = false;
+
         // Combat System
         public static final int ARROW_SPEED = 70;
         public static final boolean INSTANT_BOW = true;

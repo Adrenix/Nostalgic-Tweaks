@@ -50,6 +50,6 @@ public abstract class LivingEntityForgeMixin extends Entity
     @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"))
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
-        return ItemServerUtil.explodeStack(consumer);
+        return ItemServerUtil.splitConsumer(consumer);
     }
 }
