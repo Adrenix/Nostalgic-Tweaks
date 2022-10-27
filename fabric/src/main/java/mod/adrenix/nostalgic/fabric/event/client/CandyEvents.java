@@ -21,7 +21,7 @@ public abstract class CandyEvents
     public static void onTitleScreen()
     {
         Minecraft minecraft = Minecraft.getInstance();
-        ScreenEvents.BEFORE_INIT.register(
+        ScreenEvents.AFTER_INIT.register(
             (client, screen, scaledWidth, scaledHeight) -> ClientEventHelper.renderClassicTitle(screen, minecraft::setScreen)
         );
     }
@@ -29,7 +29,7 @@ public abstract class CandyEvents
     public static void onLoadScreen()
     {
         Minecraft minecraft = Minecraft.getInstance();
-        ScreenEvents.BEFORE_INIT.register(
+        ScreenEvents.AFTER_INIT.register(
             (client, screen, scaledWidth, scaledHeight) -> ClientEventHelper.renderClassicProgress(screen, minecraft::setScreen)
         );
     }
