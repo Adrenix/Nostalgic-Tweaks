@@ -51,7 +51,7 @@
   ],
 
   "depends": {
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "1.19",
     "cloth-config": ">=${cloth_version}",
     "architectury": ">=${architectury_version}"
