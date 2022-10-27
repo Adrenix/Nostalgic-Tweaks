@@ -15,6 +15,7 @@ public enum GameplayTweak implements ITweak
     ANIMAL_CAP,
     ANIMAL_PANIC,
     ANIMAL_SPAWNING,
+    SHEEP_EAT_GRASS,
     SHEEP_PUNCHING,
     ONE_WOOL_PUNCH,
 

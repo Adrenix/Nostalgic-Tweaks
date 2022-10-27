@@ -20,6 +20,7 @@
     "world.entity.MobCategoryMixin",
     "world.entity.PlayerMixin",
     "world.entity.ai.AnimalPanicMixin",
+    "world.entity.ai.EatBlockGoalMixin",
     "world.entity.ai.PanicGoalMixin",
     "world.entity.animal.AnimalMixin",
     "world.entity.animal.ChickenMixin",

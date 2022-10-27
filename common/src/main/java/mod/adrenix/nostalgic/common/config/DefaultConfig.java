@@ -203,6 +203,7 @@ public abstract class DefaultConfig
 
         // Mob System
         public static final int ANIMAL_SPAWN_CAP = 25;
+        public static final boolean DISABLE_SHEEP_EAT_GRASS = true;
         public static final boolean DISABLE_ANIMAL_PANIC = true;
         public static final boolean OLD_ANIMAL_SPAWNING = false;
         public static final boolean OLD_SHEEP_PUNCHING = true;

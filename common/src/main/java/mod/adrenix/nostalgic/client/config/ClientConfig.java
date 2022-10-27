@@ -1240,6 +1240,13 @@ public class ClientConfig implements ConfigData
         @TweakSide.Server
         @TweakSide.EntryStatus
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SHEEP)
+        public boolean disableSheepEatGrass = DefaultConfig.Gameplay.DISABLE_SHEEP_EAT_GRASS;
+        static { GameplayTweak.SHEEP_EAT_GRASS.setKey("disableSheepEatGrass"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SHEEP)
         public boolean oldSheepPunching = DefaultConfig.Gameplay.OLD_SHEEP_PUNCHING;
         static { GameplayTweak.SHEEP_PUNCHING.setKey("oldSheepPunching"); }
 
