@@ -391,9 +391,9 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                             subcategory.setParentTreeNeeded(true);
 
                         // If category group has additional children then show grandparent pipe bars for embedded rows
-                        if (group.getId() instanceof TweakClient.Embedded && categories.group != null)
+                        if (group.getId() instanceof TweakClient.Embedded)
                         {
-                            if (!categories.group.isLastSubcategory())
+                            if (categories.group != null && !categories.group.isLastSubcategory())
                                 group.setGrandparentTreeNeeded(true);
                         }
                     }
@@ -677,11 +677,21 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             if (this.indent == EMB_TEXT_START && this.group.isParentTreeNeeded() && this.group.isLastSubcategory())
             {
+                topY += this.isFirst() ? 5.0F : 0.0F;
                 leftX = this.indent - 56.0F;
                 rightX = leftX + 2.0F;
                 bottomY = (float) (top + height) + 3.0F;
 
-                RenderUtil.fill(buffer, matrix, leftX, rightX, topY + (this.isFirst() ? 5.0F : 0.0F), bottomY, rgba);
+                RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
+            }
+            else if (this.indent == EMB_TEXT_START && this.group.isGrandparentTreeNeeded())
+            {
+                topY += this.isFirst() ? 5.0F : 0.0F;
+                leftX -= 40.0F;
+                rightX -= 40.0F;
+                bottomY = (float) (top + height) + 3.0F;
+
+                RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, rgba);
             }
 
             tesselator.end();
