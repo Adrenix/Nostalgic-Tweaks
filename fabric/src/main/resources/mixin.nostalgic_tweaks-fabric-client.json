@@ -1,0 +1,13 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.fabric.mixin.client",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "client": [
+    "BlockRenderDispatcherFabricMixin",
+    "FogRendererFabricMixin",
+    "GuiFabricMixin",
+    "ItemColorsFabricMixin",
+    "TerrainRenderContextMixin"
+  ]
+}

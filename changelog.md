@@ -1,105 +1,117 @@
-## Version 1.1.1 (1.19)
-This release has been designed to work with new Forge refactoring, you will need to update the following:
+# N.T (Forge & Fabric): 1.19-v2.0.0 (Multiplayer)
+This update is focused on implementing server support, adding a new Gameplay category into Nostalgic Tweaks, overhauling the mod's configuration menu, and fixing reported issues.
+All updates that start with a 2.x.x version number will support multiplayer.
+- Added server support for all server controlled tweaks.
+- Added LAN support for all server controlled tweaks.
+- Added multiplayer support into the configuration menu.
+> The configuration menu will sync with the server and inform the user on the current state of a tweak.
 
-- Forge to `>= 41.0.94`
-- Cloth Config to `>= 7.0.73`
+- Added new tweak categories in the configuration menu.
+  * Sound: Block Sounds, Damage Sounds, Experience Sounds, and Mob Sounds
+  * Animation: Arm Animations, Item Animations, Mob Animations, and Player Animations
 
-This update also fixes reported issues and adjusts current tweaks.
-- Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
-- Fixed a crash that occurs when the MoreBlockPredicates mod is installed.
-- Fixed item model gap correctional values for Forge.
-- Fixed swinging animations not working correctly in multiplayer.
-- Fixed the darkness effect not working correctly with the Old Fog tweak.
-- Fixed the darkness effect not working correctly with the Old Lighting tweak.
-- Readjusted old lighting rendering.
+- Added subcategories for large categories (e.g., Fog Candy, Sky Candy, and Void Candy subcategories for the World Candy category in Eye Candy)
+- Categories and subcategories will now remember their expansion state when the window resizes or a tab changes.
+- Entries are now indented that are underneath categories and subcategories for easier reading.
+- Entries now have a colored tree indent line to connect entries with their corresponding category for easier reading.
+> This tree can be disabled and have its color changed under General -> Menu Settings -> Category Tree.
+> If you click the colored box next to the hex input box, a color picker window will pop up with RGBA sliders.
+> The color picker window has a draggable title bar and will update all colors and hex inputs automatically when sliding.
 
-## Version 1.0.5 (1.18.2)
-This update fixes reported issues and adjusts current tweaks.
-- Fixed a crash that occurs when the client tries to play a blank fall damage sound while connected to a modded Forge server.
-- Fixed a crash that occurs when the MoreBlockPredicates mod is installed.
-- Fixed swinging animations not working correctly in multiplayer.
-- Fixed Esc key not working properly when changing a key binding in the mod's setting screen.
-- Fixed old fog rendering by making the fog shape a sphere instead of a cylinder.
-- Fixed old item holding positions changing block holding positions.
-- Added composter blocks and piston base blocks to the fixed ambient occlusion list.
-- Redid the old tooltip rendering.
-- Readjusted old lighting rendering.
+- Entry highlight color, display, and fade effect can now be changed under General -> Menu Settings -> Row Highlighting
+- Configuration entries will now condense long text with three dots (...) and a tooltip will appear when hovering over condensed text.
+- Added a category/subcategory/tweak jumper overlay which can be accessed by clicking the category button next to the General button.
+> Clicking on a text entry within this window will auto-jump you to the selected category/subcategory/tweak.
 
-## Version 1.0.4 (1.18, 1.18.1, and 1.18.2)
-This update fixes reported issues, adjusts current tweaks, and adds a lot of new tweaks.
-- Fixed opaque experience orbs not rendering correctly when colormatic is installed.
-- Fixed old fog tweaks from rendering correctly when the void fog mod is installed.
-- Fixed old reequip logic tweak for Forge.
-- Fixed diffused lighting rendering issues with item entities when sodium is installed.
-- Fixed shading issues inside leaf blocks with smooth lighting and old lighting are enabled.
-- Fixed 2D throwing items not rendering in 2D.
-- Fixed Esc and Ctrl (or Alt) + Left (or Right) keyboard shortcuts in the config menu cancelling text input.
-- Fixed the tab key from not being respected when the modern button layout is being used with the classic title screen.
-- Fixed radio group options in the config GUI by removing the semi-transparent with yellow text that indicates the default option.
-- Fixed tweaks from not disabling/enabling correctly when using the disabling/enabling all tweaks overrides.
-- Tweaks that require resource pack reloads will now do it automatically when changed and saved.
-- Added the ability to access the mod's settings screen from the title screen with the user's defined hotkey.
-- Added new eye candy subcategory: Block Candy
-- Added a new tweak: "Old Chest" (Block Candy) - Turns normal chests into full-sized block.
-- Added a new tweak: "Old Chest Voxel" (Block Candy) - (Disabled by default) Bring back the full-sized chest voxel shape. This will change chest block interaction behavior and will require a cache clear world optimization if disabled at a later time.
-- Added a new tweak: "Old Ender Chest" (Block Candy) - Turns ender chests into a full-sized chest block.
-- Added a new tweak: "Old Trapped Chest" (Block Candy) - Turns trapped chests into a full-sized chest block.
-- Added a new tweak: "Fix Ambient Occlusion" (Block Candy) - Fixes ambient occlusion for broken vanilla blocks such as soul sand and powdered snow.
-- Added a new tweak: "Old Door Placing" (Sound Candy) - Disable the placing sound when placing a door in the world.
-- Added a new tweak: "Old Bed Placing" (Sound Candy) - Disable the placing sound when placing a bed in the world.
-- Added a new tweak: "Old Button Layout" (Title Screen Candy) - Bring back various classic title screen layouts.
-- Added a new tweak: "Remove Accessibility Button" (Title Screen Candy) - Remove the accessibility button from the title screen.
-- Added a new tweak: "Remove Language Button" (Title Screen Candy) - Remove the language button from the title screen.
-- Added a new tweak: "Uncap Title FPS" (Title Screen Candy) - Uncaps the 60 FPS limiter on the title screen and related menu screens.
-- Added a new tweak: "Old No Item Tooltips" (Interface Candy) - Removes tooltip boxes when hovering over items within an inventory (disabled by default).
-- Added a new tweak: "Old Game Loading Overlay" (Interface Candy) - Bring back alpha, beta, or post-release game loading overlays.
-- Added a new tweak: "Remove Loading Progress Bar" (Interface Candy) - The progress bar can be enabled for both classic overlays. Does not impact modern loading overlay.
-- Added a new tweak: "Old Chat Input" (Interface Candy) - Adds a '>' to the beginning of the chat box input window.
-- Added a new tweak: "Old Chat Box" (Interface Candy) - Brings back the old chat box size, position, and fading animations.
-- Added a new tweak: "Old Creative Hotbar" (Interface Candy) - Bring back the starting items in the hotbar when joining a world with an empty inventory in creative mode.
-- Added a new tweak: "Old Ghast Charging" (Animation) - Bring back the 'squishy' ghast charging animation.
-- Added a new eye candy subcategory "Lighting Candy".
-- Added a new tweak: "Old Smooth Lighting" (Lighting Candy) - Smooth lighting now renders as it did in beta.
-- Added a new tweak: "Old Leaves Lighting" (Lighting Candy) - Leaves will no longer have AO when smooth lighting is enabled like in beta.
-- Added a new tweak: "Old Water Lighting" (Lighting Candy) - Water will now block 3 light levels instead of 1 (disabled by default since this tweak changes water blocks in the world).
-- Added a new tweak: "Old Dark Void Height" (World Candy) - Changes the void's position based on the player's y-level so the void will always start at horizon.
-- Added a new tweak: "Old Stars" (World Candy) - Bring back the old chunkier stars in the night sky.
-- Redid a tweak: "Old Blue Void" (World Candy) - This tweak no longer requires a game restart for changes to take effect.
-- Redid a tweak: "Old Attack Sounds" (Sounds) - Attack sounds are now controlled by the client.
-- Redid a tweak: "Old Mob Steps" (Sounds) - Unique mob stepping sounds are now controlled by the client.
-- Redid tweaks: All Particle Candy tweaks are now controlled by the client.
+- Redesigned the mod's searching functionality and display.
+> You can now 'fuzzy' search for tweaks and search for words within a tweak's tooltip bubble.
+> Additionally, you can type a search query, and then narrow it using the new search tag button.
+> The mod will automatically refill the search box with a search tag and your previous query.
 
-## Version 1.0.3 (1.18, 1.18.1, and 1.18.2)
-This update is focused on fixing reported crashes and compatibility issues, squashing bugs, and adjusting tweaks as suggested on the mod's discord.
-- Fixed crash that occurs on the Forge version of N.T when the hurt sound tries to play on multiplayer.
-- Fixed a startup crash that occurs on the Fabric version of N.T when using the sodium-extras mod.
-- Fixed a startup crash that occurs on the Fabric version of N.T when using the BetterNether mod.
-- Moved explosion particle tweaks from "World Candy" to "Particle Candy"
-- Fixed the old item holding tweak from mirroring properly on the left hand. (Fix contribution by InboundBark)
-- Lowered the mod's mixin loader priority to increase compatibility with other mods.
-- Replaced "Old Title Screen" tweak with a new eye candy subcategory "Title Screen Candy"
-- Added a new tweak: "Old Dirt Background" (Title Screen Candy) - Toggles between panorama mode and dirt background.
-- Added a new tweak: "Old Logo Outline" (Title Screen Candy) - Removes the black outline around static logos on the title screen.
-- Added a new tweak: "Remove Mod Loader Text" (Title Screen Candy) - Removes mod loader related text from the title screen.
-- Added a new tweak: "Title Version Text" (Title Screen Candy) - Add custom text to the title screen, comes with color support.
-- Added a new tweak: "Bottom Left Title Text" (Title Screen Candy) - Move the title text from the top-left to bottom-left.
-- Added a new tweak: "Old Nether Lighting" (World Candy) - Changes brightness and light shading directions in the Nether.
-- Added a new tweak: "Old Fog Terrain" (World Candy) - Brings back the old terrain fog from alpha/beta.
-- Added a new tweak: "Old Fog Horizon" (World Candy) - Brings back the old horizon fog from alpha.
-- Redid a tweak: "Old Cloud Height" (World Candy) - This tweak is now a slider that ranges from 108 to 192 with alpha, beta, and modern labels.
+- Added Tab key and Shift + Tab key support for config row lists and config overlay screens.
+- Added a new "@save" search tag that will filter out tweaks that will be saved when the "Save & Quit" button is pressed.
+- Added a checkbox to the override tweak subcategory that filters server only tweaks.
 
-## Version 1.0.2 (1.18, 1.18.1, and 1.18.2)
-Small patch to help increase mod compatibility.
-- Removed the mod's high global mixin priority.
-- Added a small priority bump to some mixins that safely overrides some commonly used mods.
-> It is possible that some conflicts might occur with other mods, but only if those other mods don't raise their priority above 1001.
-
-## Version 1.0.1 (1.18, 1.18.1, and 1.18.2)
-Adds a few features to enhance the old fog tweak.
-- Added new Key Bindings subcategory in the General settings menu.
-- Added new Toggle Fog key binding (unbound by default).
-> The toggle fog hotkey will change the render distance by switching between far (16 chunks), normal (8 chunks), short (4 chunks), and tiny (2 chunks).
-- Removed "New" tags from currently released tweaks.
-
-## Version 1.0.0 (1.18.2)
-Initial release of Nostalgic Tweaks.
+- Redid the mod's console output.
+- Redid the mod's config runtime and loader system. Some users may see about a 10-20 FPS increase. 
+- Redid the old alpha logo, so it refreshes at the game's FPS.
+- Readjusted the settings screen's category button positions.
+- Readjusted item model gap correctional values for Forge.
+- Readjusted animation for the old sneaking tweak.
+- Readjusted old alpha logo positioning.
+- Readjusted star brightness.
+- Readjusted night sky color.
+- Added debugging functionality, it can be activated/deactivated with Ctrl + Shift + D in the mod's home settings screen.
+- Added new tweak category: Gameplay
+- Added new Combat System subcategory for Gameplay
+- Added new tweak: (Combat System) Instant Bow
+- Added new tweak: (Combat System) Arrow Speed - Used in conjunction with the Instant Bow tweak
+- Added new tweak: (Combat System) Invincible Bow
+- Added new tweak: (Combat System) Disable Miss Timer
+- Added new tweak: (Combat System) Disable Cooldown
+- Added new tweak: (Combat System) Disable Sweep
+- Added new Experience System subcategory for Gameplay
+- Added new tweak: (Experience System) Alternative Experience Bar
+- Added new tweak: (Experience System) Disable Experience Bar
+- Added new tweak: (Experience System) Disable Orb Spawning
+- Added new tweak: (Experience System) Disable Orb Rendering
+- Added new tweak: (Experience System) Disable Anvil
+- Added new tweak: (Experience System) Disable Enchantment Table
+- Added new Game Mechanics subcategory for Gameplay
+- Added new tweak: (Game Mechanics) Old Fire
+- Added new tweak: (Game Mechanics) Infinite Burn
+- Added new tweak: (Game Mechanics) Instant Air Refill
+- Added new tweak: (Game Mechanics) Disable Swimming
+- Added new tweak: (Game Mechanics) Disable Sprinting
+- Added new Hunger System subcategory for Gameplay
+- Added new tweak: (Hunger System) Alternative Hunger Bar
+- Added new tweak: (Hunger System) Disable Hunger Bar
+- Added new tweak: (Hunger System) Disable Hunger
+> Only vanilla items will be impacted. Effects given to the player are removed and the nutrition values of different foods will change.
+- Added new tweak: (Hunger System) Instant Eat
+- Added new tweak: (Hunger System) Old Food Stacking
+> Only vanilla items will be impacted. Foods that restore half a heart can stack up to 8 like potatoes and carrots.
+- Added new tweak: (Player Animation) Disable Death Topple
+- Added new tweak: (Player Animation) Old Backwards Walking
+- Added new tweak: (Player Animation) Old Creative Crouching
+- Added new tweak: (Player Animation) Old Directional Damage
+- Added new tweak: (Player Animation) Old Random Damage
+- Added new tweak: (Particle Candy) Disable Nether Biome Particles
+- Added new tweak: (Lighting Candy) Disable Gamma
+- Added new tweak: (Lighting Candy) Old Lighting Brightness
+- Added new tweak: (Tooltip Parts) Show Dye Information
+- Added new tweak: (Tooltip Parts) Show Enchantment Information
+- Added new tweak: (Tooltip Parts) Show Modifier Information
+- Added new tweak: (Gui Interface) Old Gui Backgrounds
+- Added new tweak: (Gui Interface) Custom Gui Backgrounds
+- Added new tweak: (Interface Candy) Show Debug Entity IDs
+- Added new tweak: (Interface Candy) Old Pause Screen
+- Added new tweak: (Interface Candy) Include Mods Button for Pause Screen
+- Added new tweak: (Interface Candy) Include Mods Button for Title Screen
+> The "Mods" button will only appear in Fabric when Mod Menu is installed.
+- Added new tweak: (Title Screen Candy) Remove Realms Button
+- Added new tweak: (Inventory Candy) Modify Recipe Button
+- Added new tweak: (Inventory Candy) Modify Armor Slot
+- Added new tweak: (Inventory Candy) Inverted Player Lighting
+- Added new tweak: (Inventory Candy) Inverted Block Lighting
+- Added new tweak: (Crafting Screen) Old Crafting Table Screen
+- Added new tweak: (Crafting Screen) Modify Recipe Button
+- Added new tweak: (Furnace Screen) Old Furnace Screen
+- Added new tweak: (Furnace Screen) Modify Recipe Button
+- Added new tweak: (Sky Candy) Disable Sunrise/Sunset Colors
+- Added new tweak: (Bugs) Old Ladder Gap
+- Added new tweak: (Sound) Ignore Modded Mob Steps - Prevents the mod from overriding the footstep sounds for modded entities.
+- Added new tweak: (Sound) Disable Chest Sounds
+- Added new tweak: (Sound) Old Chest Sounds
+- Added new void candy subcategory: Void Fog
+- Added new tweak: (Void Fog) Creative Void Fog
+- Added new tweak: (Void Fog) Creative Void Particles
+- Added new tweak: (Void Fog) Light Removes Void Fog
+- Added new tweak: (Void Fog) Void Fog Color
+- Added new tweak: (Void Fog) Fog Encroachment Amount
+- Added new tweak: (Void Fog) Fog Starting Level
+- Added new tweak: (Void Fog) Void Particle Starting Level
+- Added new tweak: (Void Fog) Void Particle Radius
+- Added new tweak: (Void Fog) Void Particle Density
+- Added new tweak: (World Candy) Old Name Tag Rendering
+- Added new tweak: (Player Animation) Old Swing Interrupt
