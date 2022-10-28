@@ -135,6 +135,13 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_SOUND)
+        public boolean disableSquid = DefaultConfig.Sound.DISABLE_SQUID;
+        static { SoundTweak.DISABLE_SQUID.setKey("disableSquid"); }
+
+        @TweakClient.Gui.New
+        @TweakSide.Client
+        @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.BOTTOM, order = 1)
         @TweakClient.Gui.Cat(group = TweakClient.Category.MOB_SOUND)
         public boolean ignoreModdedStep = DefaultConfig.Sound.IGNORE_MODDED_STEP;
@@ -1235,6 +1242,13 @@ public class ClientConfig implements ConfigData
         static { GameplayTweak.ANIMAL_SPAWNING.setKey("oldAnimalSpawning"); }
 
         // Animal - Sheep
+
+        @TweakClient.Gui.New
+        @TweakSide.Server
+        @TweakSide.EntryStatus
+        @TweakClient.Gui.Emb(group = TweakClient.Embedded.ANIMAL_MOB_SHEEP)
+        public boolean disableSheepEatGrass = DefaultConfig.Gameplay.DISABLE_SHEEP_EAT_GRASS;
+        static { GameplayTweak.SHEEP_EAT_GRASS.setKey("disableSheepEatGrass"); }
 
         @TweakClient.Gui.New
         @TweakSide.Server

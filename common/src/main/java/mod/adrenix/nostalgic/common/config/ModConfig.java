@@ -210,6 +210,7 @@ public abstract class ModConfig
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
         public static boolean disableGrowth() { return getBoolTweak(SoundTweak.DISABLE_GROWTH, SOUND.disableGrowth); }
         public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
+        public static boolean disableSquid() { return getBoolTweak(SoundTweak.DISABLE_SQUID, SOUND.disableSquid); }
         public static boolean disableDoor() { return getBoolTweak(SoundTweak.DISABLE_DOOR, SOUND.disableDoorPlace); }
         public static boolean disableBed() { return getBoolTweak(SoundTweak.DISABLE_BED, SOUND.disableBedPlace); }
         public static boolean oldAttack() { return getBoolTweak(SoundTweak.OLD_ATTACK, SOUND.oldAttack); }
@@ -413,6 +414,7 @@ public abstract class ModConfig
             return isTweakOn(GameplayTweak.ANIMAL_CAP) ? getSidedTweak(GameplayTweak.ANIMAL_CAP, GAMEPLAY.animalSpawnCap, SERVER_GAMEPLAY.animalSpawnCap) : MobCategory.CREATURE.getMaxInstancesPerChunk();
         }
 
+        public static boolean disableSheepEatGrass() { return getSidedBoolTweak(GameplayTweak.SHEEP_EAT_GRASS, GAMEPLAY.disableSheepEatGrass, SERVER_GAMEPLAY.disableSheepEatGrass); }
         public static boolean disableAnimalPanic() { return getSidedBoolTweak(GameplayTweak.ANIMAL_PANIC, GAMEPLAY.disableAnimalPanic, SERVER_GAMEPLAY.disableAnimalPanic); }
         public static boolean oldAnimalSpawning() { return getSidedBoolTweak(GameplayTweak.ANIMAL_SPAWNING, GAMEPLAY.oldAnimalSpawning, SERVER_GAMEPLAY.oldAnimalSpawning); }
         public static boolean oldSheepPunching() { return getSidedBoolTweak(GameplayTweak.SHEEP_PUNCHING, GAMEPLAY.oldSheepPunching, SERVER_GAMEPLAY.oldSheepPunching); }
