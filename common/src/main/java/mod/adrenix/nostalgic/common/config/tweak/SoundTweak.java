@@ -26,6 +26,7 @@ public enum SoundTweak implements ITweak
 
     // Mob Sounds
     OLD_STEP,
+    DISABLE_SQUID,
     IGNORE_MODDED_STEP;
 
     /* Implementation */

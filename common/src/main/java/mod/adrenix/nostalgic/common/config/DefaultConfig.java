@@ -27,6 +27,7 @@ public abstract class DefaultConfig
 
         // Mob Sounds
         public static final boolean OLD_STEP = true;
+        public static final boolean DISABLE_SQUID = true;
         public static final boolean IGNORE_MODDED_STEP = false;
     }
 

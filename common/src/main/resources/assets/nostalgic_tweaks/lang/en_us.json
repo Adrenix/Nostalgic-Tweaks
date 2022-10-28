@@ -309,7 +309,9 @@
 
   "text.autoconfig.nostalgic_tweaks.option.sound.oldStep": "Old Mob Steps",
   "text.autoconfig.nostalgic_tweaks.option.sound.oldStep.@Tooltip": "Disable the unique footstep sounds for mobs. Sounds will be replaced by the block the mob is walking on.",
-  "text.autoconfig.nostalgic_tweaks.option.sound.ignoreModdedStep": "Ignore Modded Steps",
+  "text.autoconfig.nostalgic_tweaks.option.sound.disableSquid": "Disable Squid Sounds",
+  "text.autoconfig.nostalgic_tweaks.option.sound.disableSquid.@Tooltip": "Prevent sounds from squid entities.",
+  "text.autoconfig.nostalgic_tweaks.option.sound.ignoreModdedStep": "Ignore Modded Mob Steps",
   "text.autoconfig.nostalgic_tweaks.option.sound.ignoreModdedStep.@Tooltip": "§cIgnore§r bringing back old footstep sounds for entities§a added§r by§6 mods§r.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy": "Eye Candy",

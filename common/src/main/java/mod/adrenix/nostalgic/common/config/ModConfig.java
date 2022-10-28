@@ -210,6 +210,7 @@ public abstract class ModConfig
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
         public static boolean disableGrowth() { return getBoolTweak(SoundTweak.DISABLE_GROWTH, SOUND.disableGrowth); }
         public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
+        public static boolean disableSquid() { return getBoolTweak(SoundTweak.DISABLE_SQUID, SOUND.disableSquid); }
         public static boolean disableDoor() { return getBoolTweak(SoundTweak.DISABLE_DOOR, SOUND.disableDoorPlace); }
         public static boolean disableBed() { return getBoolTweak(SoundTweak.DISABLE_BED, SOUND.disableBedPlace); }
         public static boolean oldAttack() { return getBoolTweak(SoundTweak.OLD_ATTACK, SOUND.oldAttack); }

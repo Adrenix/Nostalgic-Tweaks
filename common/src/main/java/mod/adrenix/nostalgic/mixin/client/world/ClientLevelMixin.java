@@ -227,6 +227,20 @@ public abstract class ClientLevelMixin
             return;
         }
 
+        /* Squid Sounds */
+
+        boolean isSquid = sound == SoundEvents.SQUID_AMBIENT ||
+            sound == SoundEvents.SQUID_DEATH ||
+            sound == SoundEvents.SQUID_HURT ||
+            sound == SoundEvents.SQUID_SQUIRT
+        ;
+
+        if (ModConfig.Sound.disableSquid() && isSquid)
+        {
+            callback.cancel();
+            return;
+        }
+
         /* Chest Sounds */
 
         BlockPos pos = new BlockPos(x, y, z);
