@@ -62,10 +62,11 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
     @Inject(method = "dropCustomDeathLoot", at = @At("HEAD"), cancellable = true)
     private void NT$onDropCustomDeathLoot(DamageSource damageSource, int looting, boolean hitByPlayer, CallbackInfo callback)
     {
+        boolean isZombiePigman = ModConfig.Gameplay.oldZombiePigmenDrops() && this.getType() == EntityType.ZOMBIFIED_PIGLIN;
         boolean isSkeleton = ModConfig.Gameplay.oldSkeletonDrops() && this.getType() == EntityType.SKELETON;
         boolean isStray = ModConfig.Gameplay.oldStrayDrops() && this.getType() == EntityType.STRAY;
 
-        if (isSkeleton || isStray)
+        if (isZombiePigman || isSkeleton || isStray)
             callback.cancel();
     }
 }
