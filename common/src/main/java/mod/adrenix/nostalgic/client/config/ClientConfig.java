@@ -682,15 +682,17 @@ public class ClientConfig implements ConfigData
         @TweakClient.Gui.New
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
         public boolean disableBrightness = DefaultConfig.Candy.DISABLE_BRIGHTNESS;
         static { CandyTweak.DISABLE_BRIGHTNESS.setKey("disableBrightness"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus
+        @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 1)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
-        public boolean oldLightFlicker = DefaultConfig.Candy.OLD_LIGHT_FLICKER;
-        static { CandyTweak.LIGHT_FLICKER.setKey("oldLightFlicker"); }
+        public boolean disableLightFlicker = DefaultConfig.Candy.DISABLE_LIGHT_FLICKER;
+        static { CandyTweak.LIGHT_FLICKER.setKey("disableLightFlicker"); }
 
         @TweakSide.Client
         @TweakSide.EntryStatus

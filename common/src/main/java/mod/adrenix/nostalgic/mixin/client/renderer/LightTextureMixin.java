@@ -40,7 +40,7 @@ public abstract class LightTextureMixin
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void NT$onTick(CallbackInfo callback)
     {
-        if (ModConfig.Candy.oldLightFlicker())
+        if (ModConfig.Candy.disableLightFlicker())
         {
             this.updateLightTexture = true;
             callback.cancel();

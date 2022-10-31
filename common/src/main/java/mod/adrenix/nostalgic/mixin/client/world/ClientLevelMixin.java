@@ -230,10 +230,10 @@ public abstract class ClientLevelMixin
         /* Squid Sounds */
 
         boolean isSquid = sound == SoundEvents.SQUID_AMBIENT ||
-                sound == SoundEvents.SQUID_DEATH ||
-                sound == SoundEvents.SQUID_HURT ||
-                sound == SoundEvents.SQUID_SQUIRT
-                ;
+            sound == SoundEvents.SQUID_DEATH ||
+            sound == SoundEvents.SQUID_HURT ||
+            sound == SoundEvents.SQUID_SQUIRT
+        ;
 
         if (ModConfig.Sound.disableSquid() && isSquid)
         {

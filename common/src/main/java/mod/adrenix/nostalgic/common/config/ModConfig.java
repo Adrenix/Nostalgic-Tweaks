@@ -297,13 +297,13 @@ public abstract class ModConfig
         public static boolean oldFlatColors() { return getBoolTweak(CandyTweak.FLAT_COLORS, CANDY.old2dColors); }
 
         // Lighting Candy
+        public static boolean disableLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.disableLightFlicker); }
         public static boolean disableBrightness() { return getBoolTweak(CandyTweak.DISABLE_BRIGHTNESS, CANDY.disableBrightness); }
         public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLightRendering); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
         public static boolean oldWaterLighting() { return getBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting); }
-        public static boolean oldLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.oldLightFlicker); }
         public static boolean oldLightColor() { return getBoolTweak(CandyTweak.LIGHT_COLOR, CANDY.oldLightColor); }
 
         // Particle Candy
