@@ -448,7 +448,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.inventoryBook": "Recipe Book",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.inventoryBook.@Tooltip": "Disable or change the look of the recipe book button.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.inventoryShield": "Off-hand Slot",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.inventoryShield.@Tooltip": "Make the off-hand slot invisible or change its position.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.inventoryShield.@Tooltip": "Make the off-hand slot invisible or change its position. The§c Modern§r option will§c not§r work when the§e old inventory screen§r tweak is§a enabled§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableEmptyArmorTexture": "Hide Empty Armor Texture",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableEmptyArmorTexture.@Tooltip": "Disable the overlay textures that appear in empty armor slots.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableEmptyShieldTexture": "Hide Empty Off-hand Texture",
