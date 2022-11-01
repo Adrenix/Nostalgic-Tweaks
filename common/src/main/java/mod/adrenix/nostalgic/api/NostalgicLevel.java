@@ -12,6 +12,11 @@ public abstract class NostalgicLevel
 {
     /**
      * Get the vanilla brightness value from the provided light layer and block position.
+     *
+     * Only the client-side level instance returns modified sky/block light values. If your mod is experiencing
+     * client-side rendering issues due to incorrect light values, then use the helper method below to retrieve the
+     * default vanilla light layer value at the given block position.
+     *
      * @param level A level instance.
      * @param lightLayer The light layer to retrieve data from.
      * @param blockPos A block position to retrieve data from.
