@@ -50,12 +50,10 @@ public abstract class LevelMixin implements BlockAndTintGetter
             };
         }
 
-        int maxLight = WorldClientUtil.getMaxLight(skyLight, blockLight);
-
-        if (layer == LightLayer.SKY && (!ModConfig.Candy.oldLightColor() || skyLight <= 4))
+        if (layer == LightLayer.SKY && !ModConfig.Candy.oldLightColor())
             return skyLight;
 
-        return maxLight;
+        return WorldClientUtil.getMaxLight(skyLight, blockLight);
     }
 
     /* Injection Overrides */

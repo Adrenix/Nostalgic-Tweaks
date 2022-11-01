@@ -179,11 +179,11 @@ public abstract class WorldClientUtil
     }
 
     /**
-     * Gets the light emitted by the sky based on dimension properties and weather.
+     * Get a skylight subtraction value that is influenced by current weather patterns.
      * @param level The client level.
-     * @return The light emitted by the sky.
+     * @return A skylight subtraction value calculated by level weather.
      */
-    public static int calculateSkylight(ClientLevel level)
+    public static int getWeatherInfluence(ClientLevel level)
     {
         float partialTick = Minecraft.getInstance().getDeltaFrameTime();
         float rain = level.getRainLevel(partialTick);
@@ -197,7 +197,7 @@ public abstract class WorldClientUtil
         if (rain >= 0.9F) rainDiff = 3;
         if (thunder >= 0.8F) thunderDiff = 5;
 
-        return WorldCommonUtil.getDayLight(level) - Math.max(rainDiff, thunderDiff);
+        return Math.max(rainDiff, thunderDiff);
     }
 
     /**
@@ -241,19 +241,15 @@ public abstract class WorldClientUtil
     public static int getMaxLight(int currentSkyLight, int currentBlockLight)
     {
         ClientLevel level = Minecraft.getInstance().level;
-        int maxVanilla = Math.max(currentSkyLight, currentBlockLight);
 
-        if (level == null)
-            return maxVanilla;
+        if (level == null || currentSkyLight <= 0)
+            return Math.max(currentSkyLight, currentBlockLight);
 
-        boolean isSkyVisible = currentSkyLight > 0;
-
-        if (!isSkyVisible)
-            return maxVanilla;
-
+        int levelMaxLight = level.getMaxLightLevel();
+        int weatherDiff = getWeatherInfluence(level);
+        int minLight = currentSkyLight >= levelMaxLight ? 4 : 0;
         int maxLight = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
-        int minLight = currentSkyLight >= level.getMaxLightLevel() ? 4 : 0;
-        int skyLight = calculateSkylight(level);
+        int skyLight = WorldCommonUtil.getDayLight(level) - weatherDiff;
         int skyDiff = 15 - currentSkyLight;
 
         if (lastBlockLight == -1 || lastBlockLight != skyLight)
@@ -261,6 +257,9 @@ public abstract class WorldClientUtil
             lastBlockLight = skyLight;
             enqueueRelightChecks = true;
         }
+
+        if (currentSkyLight != levelMaxLight && skyLight <= 4)
+            skyLight += weatherDiff;
 
         return Mth.clamp(Math.max(skyLight - skyDiff, currentBlockLight), minLight, maxLight);
     }
