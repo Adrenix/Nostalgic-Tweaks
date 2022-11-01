@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.util.client;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Camera;
@@ -570,7 +571,7 @@ public abstract class FogUtil
          */
         public static int getSkylight(Entity entity)
         {
-            return entity.level.getBrightness(LightLayer.SKY, entity.blockPosition());
+            return NostalgicLevel.getVanillaBrightness(entity.level, LightLayer.SKY, entity.blockPosition());
         }
 
         /**
