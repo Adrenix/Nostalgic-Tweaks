@@ -237,10 +237,15 @@ public abstract class ModConfig
         public static boolean oldChest() { return getBoolTweak(CandyTweak.CHEST, CANDY.oldChest); }
 
         // Block Candy - Torches
-        public static boolean oldRedstoneTorchModel() { return getBoolTweak(CandyTweak.REDSTONE_TORCH_MODEL, CANDY.oldRedstoneTorchModel); }
+        private static boolean getModelState(ITweak tweak, boolean client)
+        {
+            return !NostalgicTweaks.isSodiumInstalled && getBoolTweak(tweak, client);
+        }
+
         public static boolean oldTorchBrightness() { return getBoolTweak(CandyTweak.TORCH_BRIGHTNESS, CANDY.oldTorchBrightness); }
-        public static boolean oldSoulTorchModel() { return getBoolTweak(CandyTweak.SOUL_TORCH_MODEL, CANDY.oldSoulTorchModel); }
-        public static boolean oldTorchModel() { return getBoolTweak(CandyTweak.TORCH_MODEL, CANDY.oldTorchModel); }
+        public static boolean oldRedstoneTorchModel() { return getModelState(CandyTweak.REDSTONE_TORCH_MODEL, CANDY.oldRedstoneTorchModel); }
+        public static boolean oldSoulTorchModel() { return getModelState(CandyTweak.SOUL_TORCH_MODEL, CANDY.oldSoulTorchModel); }
+        public static boolean oldTorchModel() { return getModelState(CandyTweak.TORCH_MODEL, CANDY.oldTorchModel); }
 
         // Interface - Generic & Title Candy
         public static TweakType.Corner oldOverlayCorner() { return getEnum(CandyTweak.VERSION_CORNER, CANDY.oldOverlayCorner); }
