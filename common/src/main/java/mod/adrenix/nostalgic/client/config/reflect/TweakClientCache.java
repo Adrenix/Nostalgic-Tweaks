@@ -46,7 +46,8 @@ public class TweakClientCache<T>
     static
     {
         Arrays.stream(GroupType.values()).forEach((group) ->
-            ClientReflect.getGroup(group).forEach((key, value) -> {
+            ClientReflect.getGroup(group).forEach((key, value) ->
+            {
                 if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
                     TweakClientCache.cache.put(generateKey(group, key), new TweakClientCache<>(group, key, value));
             })
@@ -94,6 +95,7 @@ public class TweakClientCache<T>
     {
         if (tweak.getClientCache() == null)
             tweak.setClientCache(get(tweak.getGroup(), tweak.getKey()));
+
         return (TweakClientCache<T>) tweak.getClientCache();
     }
 
@@ -139,6 +141,7 @@ public class TweakClientCache<T>
     public static int getConflicts()
     {
         AtomicInteger found = new AtomicInteger();
+
         TweakClientCache.all().forEach((key, tweak) -> {
             if (tweak.getStatus() == StatusType.FAIL)
                 found.getAndIncrement();
@@ -157,6 +160,7 @@ public class TweakClientCache<T>
     {
         if (this.tweak != null)
             return TweakServerCache.get(this.tweak);
+
         return TweakServerCache.get(this.group, this.key);
     }
 
@@ -175,6 +179,7 @@ public class TweakClientCache<T>
     {
         if (!NostalgicTweaks.isNetworkVerified() || NetUtil.isSingleplayer() || Minecraft.getInstance().level == null)
             return true;
+
         return !this.isDynamic() && this.isClient();
     }
 
@@ -318,6 +323,7 @@ public class TweakClientCache<T>
             this.value = value;
 
             TweakServerCache<T> cache = this.getServerTweak();
+
             if (override && cache != null)
                 cache.setValue(value);
         }
@@ -331,10 +337,7 @@ public class TweakClientCache<T>
      *
      * @param value The new tweak value.
      */
-    public void setCurrent(T value)
-    {
-        this.setCurrent(value, false);
-    }
+    public void setCurrent(T value) { this.setCurrent(value, false); }
 
     /**
      * The group is assigned in the client configuration class.
@@ -348,10 +351,7 @@ public class TweakClientCache<T>
      * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
      * @return Whether a tweak has failed to load, has not attempted to load, or is loaded.
      */
-    public StatusType getStatus()
-    {
-        return this.isClientHandled() ? this.status : this.getServerTweak().getStatus();
-    }
+    public StatusType getStatus() { return this.isClientHandled() ? this.status : this.getServerTweak().getStatus(); }
 
     /**
      * Can be set anywhere and updated at anytime.

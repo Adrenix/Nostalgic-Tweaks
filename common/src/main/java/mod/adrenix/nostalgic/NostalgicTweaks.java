@@ -10,8 +10,8 @@ import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class NostalgicTweaks
@@ -38,8 +38,7 @@ public class NostalgicTweaks
     private static MinecraftServer server;
     private static boolean isNetworkSupported = false;
 
-    @Nullable
-    public static MinecraftServer getServer() { return server; }
+    @Nullable public static MinecraftServer getServer() { return server; }
     public static void setServer(MinecraftServer _server) { server = _server; }
 
     /* Side & Environment States */
