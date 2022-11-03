@@ -348,6 +348,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 3)
+        @TweakClient.Gui.Alert(alert = TweakClient.TweakAlert.SHIELD_CONFLICT, langKey = LangUtil.Gui.ALERT_SHIELD)
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.INTERFACE_INVENTORY_CANDY)
         public TweakType.InventoryShield inventoryShield = DefaultConfig.Candy.INVENTORY_SHIELD;
         static { CandyTweak.INVENTORY_SHIELD.setKey("inventoryShield"); }
@@ -714,6 +715,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Sub(group = TweakClient.Subcategory.LIGHTING_WORLD_CANDY)
+        @TweakClient.Gui.Alert(alert = TweakClient.TweakAlert.LIGHT_CONFLICT, langKey = LangUtil.Gui.ALERT_LIGHT)
         public boolean oldLightColor = DefaultConfig.Candy.OLD_LIGHT_COLOR;
         static { CandyTweak.LIGHT_COLOR.setKey("oldLightColor"); }
 
@@ -1090,6 +1092,7 @@ public class ClientConfig implements ConfigData
         @TweakSide.Client
         @TweakSide.EntryStatus
         @TweakClient.Gui.Emb(group = TweakClient.Embedded.VOID_SKY_CANDY)
+        @TweakClient.Gui.Alert(alert = TweakClient.TweakAlert.VOID_CONFLICT, langKey = LangUtil.Gui.ALERT_VOID)
         @TweakClient.Gui.Placement(pos = TweakClient.Gui.Position.TOP, order = 4)
         public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
         static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }

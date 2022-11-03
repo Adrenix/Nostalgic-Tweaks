@@ -117,6 +117,7 @@
 
   "gui.nostalgic_tweaks.config.tag.new": "New",
   "gui.nostalgic_tweaks.config.tag.new.@Tooltip": "This is a§c new§r tweak in this update.",
+  "gui.nostalgic_tweaks.config.tag.alert": "Alert",
   "gui.nostalgic_tweaks.config.tag.client": "Client",
   "gui.nostalgic_tweaks.config.tag.client.@Tooltip": "This tweak is§e controlled§r by the§9 client§r.",
   "gui.nostalgic_tweaks.config.tag.server": "Server",
@@ -134,6 +135,10 @@
   "gui.nostalgic_tweaks.config.tag.auto.@Tooltip": "This binding is§a automatically saved§r when changed.",
   "gui.nostalgic_tweaks.config.tag.sodium.@Tooltip": "This tweak will§c not§r work when§b Sodium§r is installed.",
   "gui.nostalgic_tweaks.config.tag.optifine.@Tooltip": "This tweak will§c not§r work when§b Optifine§r is installed.",
+
+  "gui.nostalgic_tweaks.config.alert.void": "This tweak§c cannot§r be used when the§b old blue void override§r tweak is§a enabled§r.",
+  "gui.nostalgic_tweaks.config.alert.light": "The§c modern§r light colors will be §4incorrect§r when the§b old light rendering§r tweak is§a enabled§r. For example, the nighttime §9blue§r colors will look §6orange§r since§e skylight§r is replaced with§d block light§r.",
+  "gui.nostalgic_tweaks.config.alert.shield": "The§c modern§r shield position§c cannot§r be used when the §6old inventory§r tweak is§a enabled§r.",
 
   "gui.nostalgic_tweaks.config.search.empty": "No configuration entries found.",
   "gui.nostalgic_tweaks.config.search.invalidTag": "The search tag§9 %s§r is not valid.",
@@ -461,7 +466,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.itemMergeLimit": "Item Merging Limit",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.itemMergeLimit.@Tooltip": "Begin merging items into stacks when surrounding items become§e greater than or equal to§r the defined limit.\n\nHaving§a smaller§r limits provides§2 better§r FPS/TPS performance.\n\nSet limit to§6 64§r to§c disable§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemMerging": "Old Item Merging",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemMerging.@Tooltip": "Disable item entities from merging. Use the item merging limit tweak to§c restrict§r this behavior.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemMerging.@Tooltip": "Disable item entities from merging. Use the§b item merging limit§r tweak to§c restrict§r this behavior.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding": "Old Item Holding",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldItemHolding.@Tooltip": "Bring back the old item holding position.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.old2dItems": "Old 2D Item Entities",
@@ -507,7 +512,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles.@Tooltip": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness": "Disable Vanilla Brightness",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness.@Tooltip": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting §7old light rendering§r.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness.@Tooltip": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting§b old light rendering§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableLightFlicker": "Disable Light Flickering",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableLightFlicker.@Tooltip": "§cDisable§r the flickering of light from§e light emitting§r sources.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLightColor": "Old Light Color",
@@ -525,7 +530,7 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting": "Old Leaves Lighting",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldLeavesLighting.@Tooltip": "Bring back the old leaves lighting from§e beta§r. This will§c remove§r ambient occlusion casting on blocks that are§e next§r to leaves.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight": "Max Block Light",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight.@Tooltip": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if §7old light rendering§r is§a enabled§r and the world is too§e bright§r.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.maxBlockLight.@Tooltip": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if§b old light rendering§r is§a enabled§r and the world is too§e bright§r.",
 
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNameTags": "Old Name Tags",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldNameTags.@Tooltip": "Bring back the old name tag rendering for entities. This will make tags bigger as you move further away.",

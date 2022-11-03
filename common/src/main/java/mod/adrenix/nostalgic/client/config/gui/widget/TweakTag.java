@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
@@ -20,8 +21,15 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+/**
+ * There are multiple tags that can be displayed next to a tweak's display name in a configuration row.
+ * A row can have a variety of different tags and will always be visible on the screen.
+ */
+
 public class TweakTag extends AbstractWidget
 {
+    /* Horizontal Coordinate Offsets */
+
     public static final int U_NEW_OFFSET = 66;
     public static final int U_CLIENT_OFFSET = 69;
     public static final int U_SERVER_OFFSET = 72;
@@ -36,11 +44,15 @@ public class TweakTag extends AbstractWidget
     public static final int V_GLOBAL_HEIGHT = 11;
     public static final int TAG_MARGIN = 5;
 
+    /* Widget Fields */
+
     private String title;
     private boolean render = true;
-    protected final TweakClientCache<?> cache;
-    protected final AbstractWidget anchor;
-    protected final boolean isTooltip;
+    private final TweakClientCache<?> cache;
+    private final AbstractWidget anchor;
+    private final boolean isTooltip;
+
+    /* Constructor */
 
     public TweakTag(TweakClientCache<?> cache, AbstractWidget anchor, boolean isTooltip)
     {
@@ -52,21 +64,65 @@ public class TweakTag extends AbstractWidget
         this.title = Component.translatable(this.cache.getLangKey()).getString();
     }
 
+    /* Helper Methods */
+
+    /**
+     * @return Get the title of this tag.
+     */
     public String getTitle() { return this.title; }
+
+    /**
+     * Set the title of this tag.
+     * @param title The new title of this tag.
+     */
     public void setTitle(String title) { this.title = title; }
+
+    /**
+     * Control whether this tag should render.
+     * @param state A flag that dictates tag rendering.
+     */
     public void setRender(boolean state) { this.render = state; }
 
+    /* Rendering Static Helpers */
+
+    /**
+     * Get the width of a tag.
+     * @param tag The title of a tag.
+     * @param startX Where the title of this tag is starting.
+     * @return The ending x-position that includes the starting x-position and the text-width of the tag title.
+     */
     private static int getTagWidth(Component tag, int startX)
     {
         return startX + U_GLOBAL_WIDTH + Minecraft.getInstance().font.width(tag) + TAG_MARGIN;
     }
 
+    /**
+     * Draws a tag to the screen.
+     * @param screen The current screen.
+     * @param poseStack The current pose stack.
+     * @param x The x-position of where the tag should be drawn.
+     * @param y The y-position of where the tag should be drawn.
+     * @param uOffset The horizontal texture coordinate offset.
+     * @param vOffset The vertical texture coordinate offset.
+     * @param render Whether the tag should be rendered.
+     */
     private static void draw(Screen screen, PoseStack poseStack, int x, int y, int uOffset, int vOffset, boolean render)
     {
         if (render)
             screen.blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
     }
 
+    /**
+     * Renders a complete tag to the screen.
+     * @param screen The current screen.
+     * @param poseStack The current pose stack.
+     * @param tag The tag to render.
+     * @param startX The x-position of where the tag should be drawn.
+     * @param startY The y-position of where the tag should be drawn.
+     * @param uOffset The horizontal texture coordinate offset.
+     * @param render Whether the tag should be rendered.
+     * @return An x-position of where the next tag should start rendering. This includes the defined tag margin.
+     */
     public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
         RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
@@ -87,11 +143,34 @@ public class TweakTag extends AbstractWidget
         return endX + TAG_MARGIN;
     }
 
+    /**
+     * An override method of {@link TweakTag#renderTag(Screen, PoseStack, Component, int, int, int, boolean)} that does
+     * not require a rendering state.
+     *
+     * @param screen The current screen.
+     * @param poseStack The current pose stack.
+     * @param tag The tag to render.
+     * @param startX The x-position of where the tag should be drawn.
+     * @param startY The y-position of where the tag should be drawn.
+     * @param uOffset The horizontal texture coordinate offset.
+     * @return An x-position of where the next tag should start rendering. This includes the defined tag margin.
+     */
     public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
     {
         return renderTag(screen, poseStack, tag, startX, startY, uOffset, true);
     }
 
+    /**
+     * Render a tooltip on the screen if the mouse is over a specific position.
+     * @param screen The current screen.
+     * @param poseStack The current pose stack.
+     * @param title The title component of a tag.
+     * @param tooltip The tooltip component to display.
+     * @param startX Where the tooltip box starts rendering on the x-axis.
+     * @param startY Where the tooltip box starts rendering on the y-axis.
+     * @param mouseX Where the mouse currently sits on the x-axis.
+     * @param mouseY Where the mouse currently sits on the y-axis.
+     */
     public static void renderTooltip(Screen screen, PoseStack poseStack, Component title, Component tooltip, int startX, int startY, int mouseX, int mouseY)
     {
         int endX = getTagWidth(title, startX);
@@ -102,34 +181,46 @@ public class TweakTag extends AbstractWidget
                 screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
 
+    /**
+     * An override method that instructs the screen renderer what to show.
+     * @param poseStack The current pose stack.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param partialTick The change in frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
+
         if (screen == null) return;
 
-        TweakClient.Gui.New isNew = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.New.class);
-        TweakSide.Client isClient = CommonReflect.getAnnotation(this.cache, TweakSide.Client.class);
-        TweakSide.Server isServer = CommonReflect.getAnnotation(this.cache, TweakSide.Server.class);
-        TweakSide.Dynamic isDynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
-        TweakClient.Gui.Sodium isSodium = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Sodium.class);
-        TweakClient.Gui.Restart isRestart = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Restart.class);
-        TweakClient.Gui.Warning isWarning = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
-        TweakClient.Gui.Optifine isOptifine = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Optifine.class);
-        TweakClient.Run.ReloadResources isReload = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
+        TweakClient.Gui.New newTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.New.class);
+        TweakSide.Client clientTag = CommonReflect.getAnnotation(this.cache, TweakSide.Client.class);
+        TweakSide.Server serverTag = CommonReflect.getAnnotation(this.cache, TweakSide.Server.class);
+        TweakSide.Dynamic dynamicTag = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
+        TweakClient.Gui.Alert alertTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Alert.class);
+        TweakClient.Gui.Sodium sodiumTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Sodium.class);
+        TweakClient.Gui.Restart restartTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Restart.class);
+        TweakClient.Gui.Warning warningTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
+        TweakClient.Gui.Optifine optifineTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Optifine.class);
+        TweakClient.Run.ReloadResources reloadTag = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
 
-        Component optifineTag = Component.literal("Optifine");
-        Component sodiumTag = Component.literal("Sodium");
+        Component optifineTitle = Component.literal("Optifine");
+        Component sodiumTitle = Component.literal("Sodium");
+
+        ChatFormatting flashColor = StatusButton.getFlipState() ? ChatFormatting.GRAY : ChatFormatting.RED;
 
         Component title = Component.literal(this.title);
-        Component newTag = Component.translatable(LangUtil.Gui.TAG_NEW);
-        Component clientTag = Component.translatable(LangUtil.Gui.TAG_CLIENT);
-        Component serverTag = Component.translatable(LangUtil.Gui.TAG_SERVER);
-        Component dynamicTag = Component.translatable(LangUtil.Gui.TAG_DYNAMIC);
-        Component reloadTag = Component.translatable(LangUtil.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
-        Component restartTag = Component.translatable(LangUtil.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
-        Component warningTag = Component.translatable(LangUtil.Gui.TAG_WARNING).withStyle(ChatFormatting.RED);
+        Component newTitle = Component.translatable(LangUtil.Gui.TAG_NEW);
+        Component clientTitle = Component.translatable(LangUtil.Gui.TAG_CLIENT);
+        Component serverTitle = Component.translatable(LangUtil.Gui.TAG_SERVER);
+        Component dynamicTitle = Component.translatable(LangUtil.Gui.TAG_DYNAMIC);
+        Component reloadTitle = Component.translatable(LangUtil.Gui.TAG_RELOAD).withStyle(ChatFormatting.ITALIC);
+        Component restartTitle = Component.translatable(LangUtil.Gui.TAG_RESTART).withStyle(ChatFormatting.ITALIC);
+        Component warningTitle = Component.translatable(LangUtil.Gui.TAG_WARNING).withStyle(flashColor);
+        Component alertTitle = Component.translatable(LangUtil.Gui.TAG_ALERT).withStyle(flashColor);
 
         Component newTooltip = Component.translatable(LangUtil.Gui.TAG_NEW_TOOLTIP);
         Component clientTooltip = Component.translatable(LangUtil.Gui.TAG_CLIENT_TOOLTIP);
@@ -149,73 +240,82 @@ public class TweakTag extends AbstractWidget
         int startY = this.anchor.y + 4;
         int lastX = startX;
 
-        if (isNew != null && isNewRenderable)
+        if (newTag != null && isNewRenderable)
         {
             if (isTooltipRenderable)
-                renderTooltip(screen, poseStack, newTag, newTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, newTag, lastX, startY, U_NEW_OFFSET, this.render);
+                renderTooltip(screen, poseStack, newTitle, newTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, newTitle, lastX, startY, U_NEW_OFFSET, this.render);
         }
 
-        if (isClient != null && isSidedRenderable)
+        if (clientTag != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
-                renderTooltip(screen, poseStack, clientTag, clientTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, clientTag, lastX, startY, U_CLIENT_OFFSET, this.render);
+                renderTooltip(screen, poseStack, clientTitle, clientTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, clientTitle, lastX, startY, U_CLIENT_OFFSET, this.render);
         }
 
-        if (isServer != null && isSidedRenderable)
+        if (serverTag != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
-                renderTooltip(screen, poseStack, serverTag, serverTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, serverTag, lastX, startY, U_SERVER_OFFSET, this.render);
+                renderTooltip(screen, poseStack, serverTitle, serverTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, serverTitle, lastX, startY, U_SERVER_OFFSET, this.render);
         }
 
-        if (isDynamic != null && isSidedRenderable)
+        if (dynamicTag != null && isSidedRenderable)
         {
             if (isTooltipRenderable)
-                renderTooltip(screen, poseStack, dynamicTag, dynamicTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, dynamicTag, lastX, startY, U_DYNAMIC_OFFSET, this.render);
+                renderTooltip(screen, poseStack, dynamicTitle, dynamicTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, dynamicTitle, lastX, startY, U_DYNAMIC_OFFSET, this.render);
         }
 
-        if (isReload != null)
+        if (reloadTag != null)
         {
-            renderTooltip(screen, poseStack, reloadTag, reloadTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, reloadTag, lastX, startY, U_RELOAD_OFFSET, this.render);
+            renderTooltip(screen, poseStack, reloadTitle, reloadTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, reloadTitle, lastX, startY, U_RELOAD_OFFSET, this.render);
         }
 
-        if (isRestart != null)
+        if (restartTag != null)
         {
-            renderTooltip(screen, poseStack, restartTag, restartTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, restartTag, lastX, startY, U_RESTART_OFFSET, this.render);
+            renderTooltip(screen, poseStack, restartTitle, restartTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, restartTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        if (isWarning != null)
+        if (alertTag != null && alertTag.alert().active())
         {
-            renderTooltip(screen, poseStack, warningTag, warningTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, warningTag, lastX, startY, U_WARNING_OFFSET, this.render);
+            Component tooltip = Component.translatable(alertTag.langKey());
+            renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }
 
-        if (isSodium != null && NostalgicTweaks.isSodiumInstalled)
+        if (warningTag != null)
         {
-            if (isSodium.incompatible())
+            renderTooltip(screen, poseStack, warningTitle, warningTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, warningTitle, lastX, startY, U_WARNING_OFFSET, this.render);
+        }
+
+        if (sodiumTag != null && NostalgicTweaks.isSodiumInstalled)
+        {
+            if (sodiumTag.incompatible())
                 sodiumTooltip = Component.translatable(LangUtil.Gui.TAG_SODIUM_TOOLTIP);
 
-            renderTooltip(screen, poseStack, sodiumTag, sodiumTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, sodiumTag, lastX, startY, U_RESTART_OFFSET, this.render);
+            renderTooltip(screen, poseStack, sodiumTitle, sodiumTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, sodiumTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        if (isOptifine != null && NostalgicTweaks.OPTIFINE.get())
+        if (optifineTag != null && NostalgicTweaks.OPTIFINE.get())
         {
-            if (isOptifine.incompatible())
+            if (optifineTag.incompatible())
                 optifineTooltip = Component.translatable(LangUtil.Gui.TAG_OPTIFINE_TOOLTIP);
 
-            renderTooltip(screen, poseStack, optifineTag, optifineTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, optifineTag, lastX, startY, U_RESTART_OFFSET, this.render);
+            renderTooltip(screen, poseStack, optifineTitle, optifineTooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         this.x = startX;
         this.setWidth(lastX - startX);
     }
+
+    /* Required Overrides */
 
     @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 }

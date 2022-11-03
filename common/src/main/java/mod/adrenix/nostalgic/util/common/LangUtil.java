@@ -147,6 +147,7 @@ public abstract class LangUtil
 
         public static final String TAG_NEW = "gui.nostalgic_tweaks.config.tag.new";
         public static final String TAG_NEW_TOOLTIP = "gui.nostalgic_tweaks.config.tag.new.@Tooltip";
+        public static final String TAG_ALERT = "gui.nostalgic_tweaks.config.tag.alert";
         public static final String TAG_CLIENT = "gui.nostalgic_tweaks.config.tag.client";
         public static final String TAG_CLIENT_TOOLTIP = "gui.nostalgic_tweaks.config.tag.client.@Tooltip";
         public static final String TAG_SERVER = "gui.nostalgic_tweaks.config.tag.server";
@@ -164,6 +165,10 @@ public abstract class LangUtil
         public static final String TAG_AUTO_TOOLTIP = "gui.nostalgic_tweaks.config.tag.auto.@Tooltip";
         public static final String TAG_SODIUM_TOOLTIP = "gui.nostalgic_tweaks.config.tag.sodium.@Tooltip";
         public static final String TAG_OPTIFINE_TOOLTIP = "gui.nostalgic_tweaks.config.tag.optifine.@Tooltip";
+
+        public static final String ALERT_VOID = "gui.nostalgic_tweaks.config.alert.void";
+        public static final String ALERT_LIGHT = "gui.nostalgic_tweaks.config.alert.light";
+        public static final String ALERT_SHIELD = "gui.nostalgic_tweaks.config.alert.shield";
 
         public static final String SEARCH_EMPTY = "gui.nostalgic_tweaks.config.search.empty";
         public static final String SEARCH_INVALID = "gui.nostalgic_tweaks.config.search.invalidTag";

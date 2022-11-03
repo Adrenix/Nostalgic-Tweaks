@@ -22,13 +22,30 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This is the flashing (!) exclamation mark symbol that sits next to control widgets in configuration rows.
+ * The flashing mechanism is publicly static shared between other widgets so visible flashes is in sync.
+ */
+
 public class StatusButton extends Button
 {
-    protected static boolean flipState = false;
-    protected static long currentTime = 0L;
-    protected final AbstractWidget anchor;
-    protected final TweakClientCache<?> cache;
-    @Nullable protected final TweakServerCache<?> server;
+    /* Static Fields */
+
+    private static boolean flipState = false;
+    private static long currentTime = 0L;
+
+    /**
+     * @return The current state of the flashing flag.
+     */
+    public static boolean getFlipState() { return flipState; }
+
+    /* Widget Fields */
+
+    private final AbstractWidget anchor;
+    private final TweakClientCache<?> cache;
+    @Nullable private final TweakServerCache<?> server;
+
+    /* Widget Constructor */
 
     public StatusButton(TweakClientCache<?> cache, AbstractWidget anchor)
     {
@@ -38,6 +55,10 @@ public class StatusButton extends Button
         this.server = this.cache.getServerTweak();
     }
 
+    /**
+     * @return Checks if the player has permission to change the value of a tweak. Locking will only happen when a
+     * player is connected to a modded server with this mod installed.
+     */
     private boolean isTweakLocked()
     {
         if (this.cache.isClient())
@@ -47,6 +68,13 @@ public class StatusButton extends Button
         return false;
     }
 
+    /**
+     * Renders the flashing (!) symbol.
+     * @param poseStack The current pose stack.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param partialTick The change in frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {

@@ -166,7 +166,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_NAME_TAGS = false;
         public static final boolean OLD_TERRAIN_FOG = true;
         public static final boolean OLD_HORIZON_FOG = true;
-        public static final boolean OLD_DARK_VOID_HEIGHT = true;
+        public static final boolean OLD_DARK_VOID_HEIGHT = false;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
         public static final boolean OLD_WATER_FOG_COLOR = true;

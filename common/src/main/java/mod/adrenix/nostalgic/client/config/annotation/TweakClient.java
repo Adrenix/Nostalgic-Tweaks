@@ -7,6 +7,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.function.Supplier;
 
 /**
  * This annotation class is used exclusively by the client.
@@ -98,6 +99,25 @@ public abstract class TweakClient
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
         public @interface New {}
+
+        /**
+         * Tell the config renderer to render an alert tag when the given conditions are met.
+         * Dynamic display is handled by alert enumeration declarations.
+         */
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target({ElementType.FIELD})
+        public @interface Alert
+        {
+            /**
+             * An alert enumeration that contains the condition whether an alert tag should be displayed.
+             */
+            TweakAlert alert();
+
+            /**
+             * A language file key reference which will be used when rendering the tooltip for an alert tag.
+             */
+            String langKey();
+        }
 
         /**
          * Adds a "Warning" tag to a tweak in the configuration menu.
@@ -209,6 +229,26 @@ public abstract class TweakClient
         @Retention(RetentionPolicy.RUNTIME)
         @Target({ElementType.FIELD})
         public @interface ReloadResources {}
+    }
+
+    /**
+     * Enumeration declarations that define conditions of when to display an alert tag.
+     * Used in the client config for tweaks that need attention under certain conditions.
+     */
+
+    public enum TweakAlert
+    {
+        VOID_CONFLICT(AlertCondition::isVoidConflict),
+        LIGHT_CONFLICT(AlertCondition::isLightConflict),
+        SHIELD_CONFLICT(AlertCondition::isShieldConflict);
+
+        /* Alert Enumeration Definition */
+
+        private final Supplier<Boolean> condition;
+
+        TweakAlert(Supplier<Boolean> condition) { this.condition = condition; }
+
+        public boolean active() { return this.condition.get(); }
     }
 
     /**
