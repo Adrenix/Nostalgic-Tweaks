@@ -2,7 +2,7 @@
 Minecraft Mod Public License
 ============================
 
-Version 2.0.3-Modified
+Version 2.0.3-Modified (Last updated: November 18, 2022)
 
 0. Definitions
 --------------
@@ -133,4 +133,7 @@ The Author must make the Mod source freely and publicly available.
 
 The Author may grant a User the status of Contributor or Author.  
 The Author retains the right to the Mod name.  
+The Author may specify categorical exceptions to Mod licensing.  
+The Author may specify exact or Codebase path exceptions to Mod licensing.  
+The Author may include source code files licensed under different licenses.
 The Author may change the Mod license, but cannot do so retroactively.
