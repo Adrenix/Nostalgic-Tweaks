@@ -12,21 +12,35 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.network.NetworkConstants;
 
+/**
+ * The mod's main class for Forge. This is accessed by both the client and server.
+ * Any immediate registration or field definitions are done here.
+ */
+
 @Mod(NostalgicTweaks.MOD_ID)
 public class NostalgicForge
 {
+    /* Constructor */
+
+    /**
+     * Setup for the mod for both the client and server.
+     * Important registration and main class fields are defined here.
+     */
     public NostalgicForge()
     {
-        /* Common */
+        // Mod Event Bus
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Let the connection be rejected by the server if there is a protocol mismatch
-        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () ->
-            new IExtensionPoint.DisplayTest(() ->
-                NetworkConstants.IGNORESERVERONLY, (a, b) -> true
+        ModLoadingContext.get().registerExtensionPoint
+        (
+            IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest
+            (
+                () -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true
             )
         );
 
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        // Initialize Common Setup
         bus.addListener(CommonSetup::init);
 
         // Development Environment
@@ -36,18 +50,10 @@ public class NostalgicForge
         NostalgicSoundInit.SOUNDS.register(bus);
         NostalgicSoundInit.init();
 
+        // Perform Sided Initialization
         if (FMLLoader.getDist().isDedicatedServer())
-        {
-            /* Server */
-
             NostalgicTweaks.initServer(NostalgicTweaks.Environment.FORGE);
-        }
         else
-        {
-            /* Client */
-
-            // Set up the config on client startup
             bus.addListener(ClientRegistry::init);
-        }
     }
 }

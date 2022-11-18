@@ -9,7 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -33,10 +33,19 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The item suggestion helper class has been in the mod since 1.16 when Nostalgic Tweaks was known as OSECA (Old Swing,
+ * Eye Candy, & Animations). This class will eventually be removed in a future configuration update when an abstract
+ * item selection screen is created and replaces the current custom swing screen.
+ *
+ * Due to this class's age, it does not have proper documentation. No documentation will be added since this class
+ * should now be considered as deprecated.
+ */
+
 public class ItemSuggestionHelper
 {
     private final Minecraft minecraft;
-    private final CustomizeScreen screen;
+    private final SwingScreen screen;
     private final EditBox input;
     private final Font font;
     private final int suggestionLineLimit;
@@ -48,7 +57,7 @@ public class ItemSuggestionHelper
     private boolean allowSuggestions;
     private boolean keepSuggestions;
 
-    public ItemSuggestionHelper(CustomizeScreen screen, EditBox input, Font font, int suggestionLineLimit, int fillColor)
+    public ItemSuggestionHelper(SwingScreen screen, EditBox input, Font font, int suggestionLineLimit, int fillColor)
     {
         this.minecraft = screen.getMinecraft();
         this.screen = screen;

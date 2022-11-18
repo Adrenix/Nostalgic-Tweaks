@@ -7,16 +7,26 @@ import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 
+/**
+ * Helper class that defines instructions for various gameplay related events.
+ */
+
 public abstract class GameplayEvents
 {
-    // Disable Experience Drop
+    /**
+     * Disables the ability for living entities to drop experience.
+     * @param event A living experience drop event instance.
+     */
     public static void disableExperienceDrop(LivingExperienceDropEvent event)
     {
         if (ModConfig.Gameplay.disableOrbSpawn())
             event.setCanceled(true);
     }
 
-    // Remove Dropped Experience
+    /**
+     * Disables the ability for experience gained from blocks, such as furnaces, from spawning.
+     * @param event A pickup experience event instance.
+     */
     public static void disableExperiencePickup(PlayerXpEvent.PickupXp event)
     {
         if (ModConfig.Gameplay.disableOrbSpawn())
@@ -26,7 +36,10 @@ public abstract class GameplayEvents
         }
     }
 
-    // Squid Milking
+    /**
+     * Adds the ability to milk squad entities.
+     * @param event An entity interact event.
+     */
     public static void milkSquid(PlayerInteractEvent.EntityInteract event)
     {
         if (PlayerServerUtil.milkSquid(event.getEntity(), event.getHand(), event.getTarget()).equals(InteractionResult.SUCCESS))

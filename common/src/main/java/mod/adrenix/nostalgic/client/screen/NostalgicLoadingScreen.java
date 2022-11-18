@@ -7,6 +7,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 
+/**
+ * This class overrides the vanilla loading screen.
+ * The old green bar is loaded by a chunk progress listener, or is loaded randomly when a listener is not available.
+ */
+
 public class NostalgicLoadingScreen extends Screen
 {
     /* Fields */
@@ -16,11 +21,18 @@ public class NostalgicLoadingScreen extends Screen
     protected final StoringChunkProgressListener progressListener;
     protected boolean done;
 
-    /* Constructors */
+    /* Constructor */
 
+    /**
+     * Create a new nostalgic loading screen instance.
+     * @param progressListener A chunk progress listener instance.
+     * @param title A level loading title component.
+     * @param subtitle A level loading state subtitle component.
+     */
     public NostalgicLoadingScreen(StoringChunkProgressListener progressListener, Component title, Component subtitle)
     {
         super(Component.empty());
+
         this.progressListener = progressListener;
         this.title = title;
         this.subtitle = subtitle;
@@ -28,9 +40,16 @@ public class NostalgicLoadingScreen extends Screen
 
     /* Overrides */
 
+    /**
+     * Prevents the screen from closing when the Esc key is pressed.
+     * @return Always returns <code>false</code>.
+     */
     @Override
     public boolean shouldCloseOnEsc() { return false; }
 
+    /**
+     * Handler method that provides instructions for when the screen is closed.
+     */
     @Override
     public void removed()
     {
@@ -38,6 +57,10 @@ public class NostalgicLoadingScreen extends Screen
         this.triggerImmediateNarration(true);
     }
 
+    /**
+     * Handler method that provides instructions for narration when the screen is done loading.
+     * @param narrationElementOutput A narration element output.
+     */
     @Override
     protected void updateNarratedWidget(NarrationElementOutput narrationElementOutput)
     {
@@ -45,23 +68,23 @@ public class NostalgicLoadingScreen extends Screen
             narrationElementOutput.add(NarratedElementType.TITLE, Component.translatable("narrator.loading.done"));
     }
 
+    /**
+     * Handler method that provides instructions for rendering this screen.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
-    public void render(PoseStack poses, int mouseX, int mouseY, float partialTick)
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         if (this.minecraft == null)
             return;
 
         this.renderDirtBackground(0);
 
-        ProgressRenderer.drawTitleText(poses, this, this.title);
-        ProgressRenderer.drawSubtitleText(poses, this, this.subtitle);
-        NostalgicLoadingScreen.renderProgress(this.progressListener);
-    }
-
-    /* Classic Rendering */
-
-    protected static void renderProgress(StoringChunkProgressListener progressListener)
-    {
-        ProgressRenderer.renderProgressWithChunks(progressListener);
+        ProgressRenderer.drawTitleText(poseStack, this, this.title);
+        ProgressRenderer.drawSubtitleText(poseStack, this, this.subtitle);
+        ProgressRenderer.renderProgressWithChunks(this.progressListener);
     }
 }

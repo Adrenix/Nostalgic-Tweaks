@@ -7,6 +7,11 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Handler class that subscribes events to Forge's <b>mod</b> event bus.
+ * This class subscribes events for the client.
+ */
+
 @Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public abstract class ModEventHandler
 {

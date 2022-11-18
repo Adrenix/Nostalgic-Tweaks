@@ -18,11 +18,20 @@ import mod.adrenix.nostalgic.util.common.log.LogColor;
 
 public enum StatusType
 {
+    /* Types */
+
     LOADED,
     WAIT,
     WARN,
     FAIL;
 
+    /* Static Methods */
+
+    /**
+     * Get the name of a status type in colored format. This can only be used by loggers that support ANSI color codes.
+     * @param status A status type to retrieve <code>toString</code> data from.
+     * @return A colored <code>toString</code> value.
+     */
     public static String toStringWithColor(StatusType status)
     {
         return switch (status)

@@ -57,13 +57,24 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class overrides the vanilla title screen. The nostalgic title screen can be configured in a variety of ways.
+ * The screen can have its button layout, Minecraft logo, and screen background changed. Various corner text options
+ * are available as well.
+ */
+
 public class NostalgicTitleScreen extends TitleScreen
 {
-    /* Public Fields */
+    /* Static Fields */
 
+    /**
+     * This field determines whether the game has finished its first loading cycle. When the game first loads, the
+     * loading overlay screen slowly fades away to the title screen. This effect overlaps the falling logo animation.
+     * Therefore, the nostalgic title screen will delay the animation until the fade away effect has finished.
+     */
     public static boolean isGameReady = false;
 
-    /* Private Fields */
+    /* Fields */
 
     private static final String[] MINECRAFT = {
         " *   * * *   * *** *** *** *** *** ***",
@@ -73,23 +84,55 @@ public class NostalgicTitleScreen extends TitleScreen
         " *   * * *   * *** *** * * * * *    * "
     };
 
-    private final boolean isEasterEgged;
+    /**
+     * This field delays the falling logo animation.
+     * Once the loading overlay fade away effect has finished, the falling logo animation can begin.
+     */
     private long updateScreenDelay;
+
+    /**
+     * This field, when <code>true</code>, will change the title to M I N C E R A F T. This Easter egg will be applied
+     * to the vanilla logo and falling logo animation.
+     */
+    private final boolean isEasterEgged;
+
+    /**
+     * This two-dimensional array holds falling block data.
+     * The array is set up in [x][y] format.
+     */
     private LogoEffectRandomizer[][] logoEffects;
+
+    /* Widget Data */
 
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 20;
     private static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
-    private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
-    private final KeyMapping optionsKey = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
-    private final RandomSource random = RandomSource.create();
 
+    /**
+     * This panorama is used when the user wishes to use a more modern title screen display.
+     * The vanilla renderer is still used since that has not changed since its original debut.
+     */
+    private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
+
+    /**
+     * The options key is defined here so that the user may jump to the mod's config user interface menu from the title
+     * screen. This bypasses the need to go through a mod menu.
+     */
+    private final KeyMapping optionsKey = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
+
+    /* Random Source & Button Layouts */
+
+    private final RandomSource random = RandomSource.create();
     private final List<Widget> alpha = new ArrayList<>();
     private final List<Widget> beta = new ArrayList<>();
     private final List<Widget> release = new ArrayList<>();
 
     /* Constructor */
 
+    /**
+     * Create a new nostalgic title screen instance.
+     * Easter egg creation is done here if the user has won the lottery.
+     */
     public NostalgicTitleScreen()
     {
         this.isEasterEgged = random.nextFloat() < 1.0E-4;
@@ -103,6 +146,9 @@ public class NostalgicTitleScreen extends TitleScreen
 
     /* Overrides */
 
+    /**
+     * Handler method for screen initialization.
+     */
     @Override
     protected void init()
     {
@@ -131,6 +177,13 @@ public class NostalgicTitleScreen extends TitleScreen
         super.init();
     }
 
+    /**
+     * Handler method for when a key is pressed.
+     * @param keyCode The pressed key code.
+     * @param scanCode A key scancode.
+     * @param modifiers Any held modifiers.
+     * @return Whether this method handled the event.
+     */
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
@@ -140,9 +193,36 @@ public class NostalgicTitleScreen extends TitleScreen
             this.minecraft.setScreen(new NostalgicTitleScreen());
         else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
             this.minecraft.setScreen(new SettingsScreen(this, true));
+
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    /**
+     * Handler method for when the mouse is clicked.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether this method handled the event.
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        return switch (ModConfig.Candy.getButtonLayout())
+        {
+            case MODERN -> super.mouseClicked(mouseX, mouseY, button);
+            case ALPHA -> this.getClicked(this.alpha, mouseX, mouseY, button);
+            case BETA -> this.getClicked(this.beta, mouseX, mouseY, button);
+            case RELEASE_TEXTURE_PACK, RELEASE_NO_TEXTURE_PACK -> this.getClicked(this.release, mouseX, mouseY, button);
+        };
+    }
+
+    /**
+     * Handler method that provides instructions for rendering this screen.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
@@ -164,6 +244,7 @@ public class NostalgicTitleScreen extends TitleScreen
 
         boolean isModern = ModConfig.Candy.getLoadingOverlay() == TweakVersion.Overlay.MODERN;
         boolean isDelayed = !NostalgicTitleScreen.isGameReady && Util.getMillis() - this.updateScreenDelay < 1200;
+
         if (this.minecraft == null || (isModern && isDelayed))
             return;
 
@@ -216,10 +297,12 @@ public class NostalgicTitleScreen extends TitleScreen
             }
         }
 
-        TweakVersion.TitleLayout layout = ModConfig.Candy.getButtonLayout();
         NostalgicTitleScreen.isGameReady = true;
+
+        TweakVersion.TitleLayout layout = ModConfig.Candy.getButtonLayout();
         TitleScreenAccessor titleAccessor = (TitleScreenAccessor) this;
         ScreenAccessor screenAccessor = (ScreenAccessor) this;
+
         int color = Mth.ceil(255.0F) << 24;
 
         if (titleAccessor.NT$getSplash() != null)
@@ -230,14 +313,14 @@ public class NostalgicTitleScreen extends TitleScreen
 
             float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
             scale = scale * 100.0F / (float) (this.font.width(titleAccessor.NT$getSplash()) + 32);
+
             poseStack.scale(scale, scale, scale);
-
             TitleScreen.drawCenteredString(poseStack, this.font, titleAccessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
-
             poseStack.popPose();
         }
 
         String minecraft = ModConfig.Candy.getVersionText();
+
         Component copyright = switch (layout)
         {
             case ALPHA -> Component.translatable(LangUtil.Gui.CANDY_TITLE_COPYRIGHT_ALPHA);
@@ -279,33 +362,31 @@ public class NostalgicTitleScreen extends TitleScreen
                 if (titleAccessor.NT$getRealmsNotificationsEnabled())
                     titleAccessor.NT$getRealmsNotificationsScreen().render(poseStack, mouseX, mouseY, partialTick);
             }
+
             case ALPHA -> this.alpha.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
             case BETA -> this.beta.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
+
             default -> this.release.forEach(widget -> widget.render(poseStack, mouseX, mouseY, partialTick));
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
-    {
-        return switch (ModConfig.Candy.getButtonLayout())
-        {
-            case ALPHA -> getClicked(this.alpha, mouseX, mouseY, button);
-            case BETA -> getClicked(this.beta, mouseX, mouseY, button);
-            case RELEASE_TEXTURE_PACK, RELEASE_NO_TEXTURE_PACK -> getClicked(this.release, mouseX, mouseY, button);
-            case MODERN -> super.mouseClicked(mouseX, mouseY, button);
-        };
-    }
+    /* Methods */
 
-    /**
-     * Methods
+    /*
+       Nostalgic Buttons
+
+       The following methods define the widget layout for the title screen.
+       Helper methods are also defined for widget visibility and on-press instructions.
      */
 
-    /* Button Layout */
-
+    /**
+     * Change the visibility of buttons. Some tweaks will remove vanilla buttons from the modern title screen.
+     * This acts as a compatibility layer for mods that change the modern title screen.
+     */
     private void setButtonVisibility()
     {
         ScreenAccessor screen = (ScreenAccessor) this;
+
         for (Widget widget : screen.NT$getRenderables())
         {
             if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
@@ -321,6 +402,11 @@ public class NostalgicTitleScreen extends TitleScreen
         }
     }
 
+    /**
+     * Change the visibility of widgets.
+     * @param widgets A list of widgets.
+     * @param visible A visibility boolean flag.
+     */
     private void setLayoutVisibility(List<Widget> widgets, boolean visible)
     {
         for (Widget widget : widgets)
@@ -330,6 +416,14 @@ public class NostalgicTitleScreen extends TitleScreen
         }
     }
 
+    /**
+     * Check if a widget was clicked.
+     * @param widgets A list of widgets to check.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current x-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether a widget was clicked.
+     */
     private boolean getClicked(List<Widget> widgets, double mouseX, double mouseY, int button)
     {
         boolean isClicked = false;
@@ -346,24 +440,52 @@ public class NostalgicTitleScreen extends TitleScreen
         return isClicked;
     }
 
+    /* Button Press Instructions */
+
+    /**
+     * Instructions that goes to the vanilla select world screen.
+     * @param ignored The button instance is not used.
+     */
     private void onSingleplayer(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new SelectWorldScreen(this));
     }
 
+    /**
+     * Instructions that goes to the vanilla join multiplayer screen.
+     * @param ignored The button instance is not used.
+     */
     private void onMultiplayer(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new JoinMultiplayerScreen(this));
     }
 
+    /**
+     * Instructions that goes to the vanilla options screen.
+     * @param ignored The button instance is not used.
+     */
     private void onOptions(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
     }
 
+    /**
+     * Instructions that opens a mod loader "mods" screen.
+     * @param ignored The button instance is not used.
+     */
+    private void onMods(Button ignored)
+    {
+        if (this.minecraft != null && GuiUtil.modScreen != null)
+            this.minecraft.setScreen(GuiUtil.modScreen.apply(this.minecraft.screen));
+    }
+
+    /**
+     * Updates the resource pack repository list.
+     * @param repository A pack repository instance.
+     */
     private void updatePackList(PackRepository repository)
     {
         if (this.minecraft == null)
@@ -391,21 +513,22 @@ public class NostalgicTitleScreen extends TitleScreen
         options.save();
 
         ImmutableList<String> after = ImmutableList.copyOf(options.resourcePacks);
+
         if (!after.equals(before))
             this.minecraft.reloadResourcePacks();
     }
 
-    private void onMods(Button ignored)
-    {
-        if (this.minecraft != null && GuiUtil.modScreen != null)
-            this.minecraft.setScreen(GuiUtil.modScreen.apply(this.minecraft.screen));
-    }
-
+    /**
+     * Instructions that opens the vanilla resource pack selection screen.
+     * @param ignored The button instance is not used.
+     */
     private void onResources(Button ignored)
     {
         if (this.minecraft != null)
             this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), Component.translatable("resourcePack.title")));
     }
+
+    /* Button Layouts */
 
     private void createAlphaOptions(int x, int y, int rowHeight)
     {
@@ -489,6 +612,10 @@ public class NostalgicTitleScreen extends TitleScreen
 
     /* Classic Logo */
 
+    /**
+     * Instructions for rendering the classic logo and the introduction falling animation.
+     * @param partialTick The change in game frame time.
+     */
     private void renderClassicLogo(float partialTick)
     {
         if (this.minecraft == null)
@@ -604,16 +731,38 @@ public class NostalgicTitleScreen extends TitleScreen
         RenderSystem.enableCull();
     }
 
+    /**
+     * Get a packed RGBA integer.
+     * @param red R
+     * @param green G
+     * @param blue B
+     * @param alpha A
+     * @return Packed RGBA integer.
+     */
     private int getColorFromRGBA(float red, float green, float blue, float alpha)
     {
         return (int) (alpha * 255.0F) << 24 | (int) (red * 255.0F) << 16 | (int) (green * 255.0F) << 8 | (int) (blue * 255.0F);
     }
 
+    /**
+     * Get a grayscale packed RGBA integer from a brightness and alpha value.
+     * @param brightness Brightness
+     * @param alpha Transparency
+     * @return A packed grayscale RGBA integer.
+     */
     private int getColorFromBrightness(float brightness, float alpha)
     {
         return this.getColorFromRGBA(brightness, brightness, brightness, alpha);
     }
 
+    /**
+     * Quad rendering instructions that allow for transparency.
+     * @param modelPose Model position matrix.
+     * @param builder Buffer builder instance.
+     * @param quad A baked quad.
+     * @param brightness The brightness of the quad.
+     * @param alpha The transparency of the quad.
+     */
     private void renderQuad(PoseStack.Pose modelPose, BufferBuilder builder, BakedQuad quad, float brightness, float alpha)
     {
         int combinedLight = this.getColorFromBrightness(brightness, alpha);
@@ -644,6 +793,13 @@ public class NostalgicTitleScreen extends TitleScreen
         }
     }
 
+    /**
+     * Render a block to the classic title screen.
+     * @param modelView Model view matrix.
+     * @param stone A stone block model.
+     * @param pass The rendering pass index.
+     * @param alpha A transparency value.
+     */
     private void renderBlock(PoseStack modelView, BakedModel stone, int pass, float alpha)
     {
         Tesselator tesselator = Tesselator.getInstance();
@@ -677,16 +833,34 @@ public class NostalgicTitleScreen extends TitleScreen
 
     /* Logo Effect Randomizer */
 
+    /**
+     * This class tracks individual blocks for the falling animation.
+     * Updates of position values are handled by the screen renderer.
+     */
+
     private static class LogoEffectRandomizer
     {
+        /* Fields */
+
         public float position;
         public float speed;
 
+        /* Constructor */
+
+        /**
+         * Create a new logo effect randomizer instance.
+         * @param x The starting x-position.
+         * @param y The starting y-position.
+         */
         public LogoEffectRandomizer(int x, int y)
         {
             this.position = (10 + y) + RandomSource.create().nextFloat() * 32.0F + x;
         }
 
+        /**
+         * Update the position of this randomizer instance.
+         * @param partialTick The change in game frame time.
+         */
         public void update(float partialTick)
         {
             if (this.position > 0.0F)

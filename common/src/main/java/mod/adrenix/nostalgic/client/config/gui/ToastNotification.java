@@ -17,7 +17,15 @@ import net.minecraft.network.chat.Component;
 
 public abstract class ToastNotification
 {
+    /* Fields */
+
+    /**
+     * This long integer keeps track of when the last pop-up occurred on screen.
+     * To prevent spam, a pop-up can only appear every 5 seconds.
+     */
     private static long timeSinceLast = 0L;
+
+    /* Methods */
 
     /**
      * Pops up a toast on the client if the time since the last pop-up is greater than 5 seconds.
@@ -35,10 +43,16 @@ public abstract class ToastNotification
         }
     }
 
-    private static void add(String headKey, String bodyKey)
+    /**
+     * Helper method that adds a new toast to the game screen.
+     * @param headerKey A language file key for the toast header.
+     * @param bodyKey A language file key for the toast body.
+     */
+    private static void add(String headerKey, String bodyKey)
     {
-        Component header = Component.translatable(headKey).withStyle(ChatFormatting.WHITE);
+        Component header = Component.translatable(headerKey).withStyle(ChatFormatting.WHITE);
         Component body = Component.translatable(bodyKey).withStyle(ChatFormatting.YELLOW);
+
         add(new SystemToast(SystemToast.SystemToastIds.TUTORIAL_HINT, header, body));
     }
 

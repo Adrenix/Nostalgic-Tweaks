@@ -1,15 +1,12 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StateButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.StateType;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
-import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.SearchWidget;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -26,6 +23,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+/**
+ * This class builds and provides logic for all config screen widgets.
+ * Widget event handling is done elsewhere.
+ */
 
 public class ConfigWidgets
 {
@@ -87,11 +89,19 @@ public class ConfigWidgets
 
     /* Provider Constructor */
 
+    /**
+     * Create a new config screen widget provider instance.
+     * @param parent The parent config screen instance.
+     */
     public ConfigWidgets(ConfigScreen parent) { this.parent = parent; }
 
     /* Widget Construction */
 
-    public void addWidgets()
+    /**
+     * Generate the widgets for this instance.
+     * This should be done during screen initialization.
+     */
+    public void generate()
     {
         this.configRowList = generateConfigRowList();
         this.swingSpeedPrefix = generateSwingSpeedPrefix();
@@ -112,7 +122,7 @@ public class ConfigWidgets
         this.input.setVisible(false);
         this.input.setTextColor(0xFFFFFF);
         this.input.setValue(this.input.getValue());
-        this.input.setResponder(this::checkSearch);
+        this.input.setResponder(this::runSearch);
 
         this.clear = generateClearButton();
         this.tag = generateTagButton();
@@ -125,32 +135,55 @@ public class ConfigWidgets
         int gap = 0;
         int width = 0;
 
+        // Config screen configuration tabs
         this.categories = new Button[] { list, general, sound, candy, gameplay, animation, swing, search };
+
+        // Config screen exit controls
         Button[] exits = new Button[] { cancel, save };
+
+        // Config screen search tab controls
         List<Button> search = this.getSearchControls();
 
         this.children.addAll(List.of(this.categories));
         this.children.addAll(List.of(exits));
         this.children.addAll(search);
 
-        for (Widget widget : this.children) this.parent.addRenderableWidget((GuiEventListener & Widget & NarratableEntry) widget);
-        for (Button button : this.categories) width += button.getWidth() + gap;
-        for (Button button : search) button.visible = false;
+        // Adds all generated widgets to the parent screen for rendering
+        for (Widget widget : this.children)
+            this.parent.addRenderableWidget((GuiEventListener & Widget & NarratableEntry) widget);
 
+        // Get the full width from all the config tab buttons
+        for (Button button : this.categories)
+            width += button.getWidth() + gap;
+
+        // Hides search button controls since that tab is not visible during generation
+        for (Button button : search)
+            button.visible = false;
+
+        // The left side starting x-position from the center of the tab bar
         int prevX = (this.parent.width / 2) - ((width - gap) / 2);
+
+        // Align configuration tab buttons so that they are side-by-side
         for (Button button : this.categories)
         {
             button.x = prevX;
             prevX = button.x + button.getWidth() - 1;
         }
 
+        /*
+           Some buttons in the config tab bar will experience gap issues due to centering inconsistencies with even/odd
+           spacing. The following logic fixes this issue using the first two buttons as a guide based on their starting
+           x-positions. Each button after the first two will follow the same pattern.
+         */
+
         boolean isOddChecked = general.x % 2 != 0;
 
         for (int i = 0; i < this.categories.length; i++)
         {
-            boolean adjust = false;
             Button first = ModUtil.Array.get(this.categories, i);
             Button second = ModUtil.Array.get(this.categories, i + 1);
+            boolean adjust = false;
+
             if (first == null || second == null)
                 break;
 
@@ -163,6 +196,7 @@ public class ConfigWidgets
             if (adjust)
             {
                 second.x -= 1;
+
                 if (ModUtil.Array.get(this.categories, i + 2) != null)
                 {
                     for (int j = i + 2; j < this.categories.length; j++)
@@ -174,11 +208,17 @@ public class ConfigWidgets
 
     /* Widget Providers */
 
-    public List<Button> getSearchControls()
-    {
-        return List.of(this.fuzzy, this.bubble, this.tag, this.clear);
-    }
+    /**
+     * The search config tab has unique controls that changes the results provided during from search queries.
+     * @return A list of control buttons.
+     */
+    public List<Button> getSearchControls() { return List.of(this.fuzzy, this.bubble, this.tag, this.clear); }
 
+    /**
+     * The config row list instance provides rows of tweak controls. These rows can be automatically generated or
+     * manually created.
+     * @return A config row list instance.
+     */
     private ConfigRowList generateConfigRowList()
     {
         return new ConfigRowList
@@ -192,93 +232,122 @@ public class ConfigWidgets
         );
     }
 
+    /**
+     * The list button jumps to a screen that lists every tweak in the mod and its respective control.
+     * @return A list tab button.
+     */
     private Button generateListButton()
     {
-        return new OverlapButton
-        (
-            this.parent,
-            Component.empty(),
-            (button) ->
-            {
-                this.parent.setConfigTab(ConfigScreen.ConfigTab.ALL);
-                CategoryList.OVERLAY.open(this.configRowList);
-            }
-        ).setAsList();
+        Button.OnPress action = (button) ->
+        {
+            this.parent.setConfigTab(ConfigScreen.ConfigTab.ALL);
+            CategoryList.OVERLAY.open(this.configRowList);
+        };
+
+        return new OverlapButton(Component.empty(), action).setAsList();
     }
 
+    /**
+     * The general tab contains various config menu controls and general information about config controls and tweaks.
+     * @return A general tab button.
+     */
     private Button generateGeneralButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.GENERAL.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.GENERAL)
         );
     }
 
+    /**
+     * The sound tab contains tweaks that modify game sound.
+     * @return A sound tab button.
+     */
     private Button generateSoundButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.SOUND.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.SOUND)
         );
     }
 
+    /**
+     * The eye candy tab contains tweaks that modify visual aspects of the game.
+     * @return An eye candy tab button.
+     */
     private Button generateCandyButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.CANDY.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.CANDY)
         );
     }
 
+    /**
+     * The gameplay tab contains tweaks that modify gameplay elements of the game.
+     * @return A gameplay tab button.
+     */
     private Button generateGameplayButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.GAMEPLAY.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.GAMEPLAY)
         );
     }
 
+    /**
+     * The animation tab contains tweaks that modify animations of the game.
+     * @return An animation tab button.
+     */
     private Button generateAnimationButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.ANIMATION.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.ANIMATION)
         );
     }
 
+    /**
+     * The swing tab contains that modify first-person swing animations.
+     * This tab also contains a special screen that controls individual item swings.
+     * @return A swing tab button.
+     */
     private Button generateSwingButton()
     {
         return new OverlapButton
         (
-            this.parent,
             Component.translatable(ConfigScreen.ConfigTab.SWING.getLangKey()),
             (button) -> this.parent.setConfigTab(ConfigScreen.ConfigTab.SWING)
         );
     }
 
+    /**
+     * The search tab allows the user to quickly search for tweaks.
+     * @return A search tab button.
+     */
     private Button generateSearchButton()
     {
         Component translation = Component.translatable(ConfigScreen.ConfigTab.SEARCH.getLangKey());
         Component title = Component.literal("    " + translation.getString());
 
-        return new OverlapButton
-        (
-            this.parent,
-            title,
-            (button) -> { this.parent.setConfigTab(ConfigScreen.ConfigTab.SEARCH); this.focusInput = true; }
-        );
+        Button.OnPress action = (button) ->
+        {
+            this.parent.setConfigTab(ConfigScreen.ConfigTab.SEARCH);
+            this.focusInput = true;
+        };
+
+        return new OverlapButton(title, action);
     }
 
+    /**
+     * The cancel button will exit the config screen without saving changes.
+     * @return A cancel button.
+     */
     private Button generateCancelButton()
     {
         return new Button
@@ -292,6 +361,10 @@ public class ConfigWidgets
         );
     }
 
+    /**
+     * The save button will exit the config screen while also saving any changes.
+     * @return A save button.
+     */
     private Button generateSaveButton()
     {
         return new Button
@@ -305,57 +378,112 @@ public class ConfigWidgets
         );
     }
 
+    /**
+     * Gets a width for small buttons based on the parent screen width.
+     * @return A width of 200 or smaller.
+     */
     private int getSmallWidth() { return Math.min(200, (this.parent.width - 50 - 12) / 3); }
 
+    /**
+     * This input box is used by the search tab.
+     * @return An edit box widget.
+     */
     private EditBox generateInputBox()
     {
-        int x = (this.parent.width / 2) - (INPUT_WIDTH / 2);
-        return new EditBox(this.parent.getFont(), x, 3, INPUT_WIDTH, INPUT_HEIGHT, Component.translatable(LangUtil.Vanilla.SEARCH).withStyle(ChatFormatting.ITALIC));
+        int startX = (this.parent.width / 2) - (INPUT_WIDTH / 2);
+        Component title = Component.translatable(LangUtil.Vanilla.SEARCH).withStyle(ChatFormatting.ITALIC);
+
+        return new EditBox(this.parent.getFont(), startX, 3, INPUT_WIDTH, INPUT_HEIGHT, title);
     }
 
+    /**
+     * Provides a text group that gives information about swing speeds.
+     * @return A text group widget.
+     */
     private TextGroup generateSwingSpeedPrefix()
     {
-        return new TextGroup(this.configRowList, Component.translatable(LangUtil.Gui.SETTINGS_SPEED_HELP));
+        return new TextGroup(Component.translatable(LangUtil.Gui.SETTINGS_SPEED_HELP));
     }
 
+    /**
+     * This button toggles whether tooltips should be checked during search result generation.
+     * @return A state button widget.
+     */
     private StateButton generateBubbleState()
     {
         EditBox search = this.getSearchInput();
-        return new StateButton(this.parent, StateType.BUBBLE, search.x - 61, search.y - 1, false, (button) -> {
-            this.checkSearch(search.getValue());
-            this.setSearchFocus();
+
+        return new StateButton(SearchWidget.BUBBLE, search.x - 61, search.y - 1, false, (button) ->
+        {
+            this.runSearch(search.getValue());
+            this.focusSearch();
         });
     }
 
+    /**
+     * This button toggles whether search results should be fuzzy or be 100% exact.
+     * @return A state button widget.
+     */
     private StateButton generateFuzzyState()
     {
         EditBox search = this.getSearchInput();
-        return new StateButton(this.parent, StateType.FUZZY, search.x - 42, search.y - 1, (button) -> {
-            this.checkSearch(search.getValue());
-            this.setSearchFocus();
+
+        return new StateButton(SearchWidget.FUZZY, search.x - 42, search.y - 1, (button) ->
+        {
+            this.runSearch(search.getValue());
+            this.focusSearch();
         });
     }
 
+    /**
+     * This button toggles tag restrictions that are applied to search results, regardless of fuzzy state.
+     * @return A state button widget.
+     */
     private StateButton generateTagButton()
     {
         EditBox search = this.getSearchInput();
-        return new StateButton(this.parent, StateType.TAG, search.x - 23, search.y - 1, (button) -> {
+
+        return new StateButton(SearchWidget.TAG, search.x - 23, search.y - 1, (button) ->
+        {
             ConfigWidgets.setTagCycle(search);
-            this.setSearchFocus();
+            this.focusSearch();
         });
     }
 
+    /**
+     * This button clears any input from the edit box used by the search tab.
+     * @return A state button widget.
+     */
     private StateButton generateClearButton()
     {
         EditBox search = this.getSearchInput();
-        return new StateButton(this.parent, StateType.CLEAR, search.x + search.getWidth() + 3, search.y - 1, (button) -> {
+
+        return new StateButton(SearchWidget.CLEAR, search.x + search.getWidth() + 3, search.y - 1, (button) ->
+        {
             search.setValue("");
-            this.setSearchFocus();
+            this.focusSearch();
         });
     }
 
     /* Private Widget Helpers */
 
+    /**
+     * These tags are used in the search tab.
+     * Each tag will restrict the search results regardless of the fuzzy state button.
+     */
+    public enum SearchTag
+    {
+        CLIENT, SERVER, CONFLICT, RESET, NEW, SAVE, ALL;
+
+        @Override
+        public String toString() { return super.toString().toLowerCase(); }
+    }
+
+    /**
+     * Changes the tag being used in the search box.
+     * If there is an already existing search query then it will be preserved during tab cycling.
+     * @param search The edit box widget instance being used by the search tab.
+     */
     private static void setTagCycle(EditBox search)
     {
         StringBuilder query = new StringBuilder();
@@ -372,13 +500,13 @@ public class ConfigWidgets
             search.setValue(("@client " + query).replaceAll("\s+", " "));
         else
         {
-            ConfigScreen.SearchTag[] searchTags = ConfigScreen.SearchTag.values();
-            ConfigScreen.SearchTag found = null;
-            ConfigScreen.SearchTag next = null;
+            SearchTag[] searchTags = SearchTag.values();
+            SearchTag found = null;
+            SearchTag next = null;
 
             for (int i = 0; i < searchTags.length; i++)
             {
-                ConfigScreen.SearchTag tag = searchTags[i];
+                SearchTag tag = searchTags[i];
 
                 if (atTag.replace("@", "").equals(tag.toString()))
                     found = tag;
@@ -407,7 +535,7 @@ public class ConfigWidgets
             }
 
             if (next == null)
-                next = ConfigScreen.SearchTag.CLIENT;
+                next = SearchTag.CLIENT;
 
             search.setValue(("@" + next + " " + query).replaceAll("\s+", " "));
         }
@@ -415,14 +543,21 @@ public class ConfigWidgets
 
     /* Public Widget Helpers */
 
-    public void setSearchFocus()
+    /**
+     * Ensures that the edit box in the search tab is visible, focused, and editable.
+     */
+    public void focusSearch()
     {
         this.getSearchInput().setVisible(true);
         this.getSearchInput().setFocus(true);
         this.getSearchInput().setEditable(true);
     }
 
-    public void checkSearch(String search)
+    /**
+     * Performs searching operations on the provided query.
+     * @param search A query string to use when running search instructions.
+     */
+    public void runSearch(String search)
     {
         this.getConfigRowList().children().clear();
         this.parent.search.clear();
@@ -433,11 +568,12 @@ public class ConfigWidgets
         search = search.toLowerCase();
 
         HashMap<String, TweakClientCache<?>> entries = TweakClientCache.all();
-        ConfigScreen.SearchTag tag = null;
         StringBuilder query = new StringBuilder();
         String[] words = search.split(" ");
         String atTag = ModUtil.Array.get(words, 0);
         String requestedTag = atTag != null ? atTag.replace("@", "").toLowerCase() : "";
+
+        SearchTag tag = null;
 
         for (String word : words)
         {
@@ -445,7 +581,7 @@ public class ConfigWidgets
                 query.append(" ").append(word);
         }
 
-        for (ConfigScreen.SearchTag searchTag : ConfigScreen.SearchTag.values())
+        for (SearchTag searchTag : SearchTag.values())
         {
             if (requestedTag.equals(searchTag.toString()))
                 tag = searchTag;
@@ -464,9 +600,9 @@ public class ConfigWidgets
                 switch (tag)
                 {
                     case ALL -> isTagged = true;
-                    case NEW -> isTagged = CommonReflect.getAnnotation(tweak, TweakClient.Gui.New.class) != null;
-                    case CLIENT -> isTagged = CommonReflect.getAnnotation(tweak, TweakSide.Client.class) != null;
-                    case SERVER -> isTagged = CommonReflect.getAnnotation(tweak, TweakSide.Server.class) != null;
+                    case NEW -> isTagged = tweak.isNew();
+                    case CLIENT -> isTagged = tweak.isClient();
+                    case SERVER -> isTagged = tweak.isServer();
                     case CONFLICT -> isTagged = tweak.getStatus() != StatusType.LOADED;
                     case RESET -> isTagged = tweak.isResettable();
                     case SAVE -> isTagged = tweak.isSavable();

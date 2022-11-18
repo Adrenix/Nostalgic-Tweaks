@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.ChatFormatting;
@@ -12,18 +11,36 @@ import net.minecraft.network.chat.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An extension of the overlap button and is used by the search tab in the config screen. Each state button will be
+ * associated with a {@link SearchWidget} enumeration value.
+ */
+
 public class StateButton extends OverlapButton
 {
     /* Fields */
 
-    private final StateType type;
+    /**
+     * This field must be defined during construction.
+     * Different search widgets require unique rendering and logic.
+     */
+    private final SearchWidget widget;
+
+    /**
+     * This field determines whether this state button is on/off.
+     */
     private boolean state;
 
     /* Private Static Helpers */
 
-    private static Component getText(StateType type)
+    /**
+     * Gets a button title component based on the provide search widget type.
+     * @param widget A search widget enumeration value.
+     * @return A button title component.
+     */
+    private static Component getText(SearchWidget widget)
     {
-        return switch (type)
+        return switch (widget)
         {
             case TAG -> Component.literal("@");
             case CLEAR -> Component.literal("\u274c").withStyle(ChatFormatting.DARK_RED).withStyle(ChatFormatting.BOLD);
@@ -33,30 +50,54 @@ public class StateButton extends OverlapButton
 
     /* Constructors */
 
-    public StateButton(ConfigScreen screen, StateType type, int startX, int startY, boolean defaultState, OnPress onPress)
+    /**
+     * Create a state button with predefined default state.
+     * @param widget A search widget enumeration value.
+     * @param startX The starting x-position.
+     * @param startY The starting y-position.
+     * @param defaultState The default state of this button.
+     * @param onPress Instructions for when the button is pressed.
+     */
+    public StateButton(SearchWidget widget, int startX, int startY, boolean defaultState, OnPress onPress)
     {
-        super(screen, startX, startY, 20, 20, getText(type), onPress);
-        this.type = type;
+        super(startX, startY, 20, 20, getText(widget), onPress);
+
+        this.widget = widget;
         this.state = defaultState;
     }
 
-    public StateButton(ConfigScreen screen, StateType type, int startX, int startY, OnPress onPress)
+    /**
+     * Create a state button that is defaults to being true.
+     * @param widget A search widget enumeration value.
+     * @param startX The starting x-position.
+     * @param startY The starting y-position.
+     * @param onPress Instructions for when the button is pressed.
+     */
+    public StateButton(SearchWidget widget, int startX, int startY, OnPress onPress)
     {
-        this(screen, type, startX, startY, true, onPress);
+        this(widget, startX, startY, true, onPress);
     }
 
     /* Getters */
 
+    /**
+     * Determine whether this button is on/off.
+     * @return The current state of this button.
+     */
     public boolean getState() { return this.state; }
 
     /* Tooltips */
 
-    private List<Component> getTooltip(boolean isShiftDown)
+    /**
+     * Get a list of tooltip components that is dependent on whether the shift key is held down.
+     * @return A list of components that should be used in a tooltip.
+     */
+    private List<Component> getTooltip()
     {
         List<Component> tooltip = new ArrayList<>();
 
         Component shift = Component.translatable(LangUtil.Gui.STATE_SHIFT).withStyle(ChatFormatting.GRAY);
-        Component title = switch (this.type)
+        Component title = switch (this.widget)
         {
             case TAG -> Component.translatable(LangUtil.Gui.STATE_TAG).withStyle(ChatFormatting.GREEN);
             case CLEAR -> Component.translatable(LangUtil.Gui.STATE_CLEAR).withStyle(ChatFormatting.RED);
@@ -64,7 +105,7 @@ public class StateButton extends OverlapButton
             case BUBBLE -> Component.translatable(LangUtil.Gui.STATE_BUBBLE).withStyle(ChatFormatting.AQUA);
         };
 
-        List<Component> wrap = switch (this.type)
+        List<Component> wrap = switch (this.widget)
         {
             case TAG -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_TAG_TOOLTIP), 35);
             case CLEAR -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_CLEAR_TOOLTIP), 40);
@@ -74,7 +115,7 @@ public class StateButton extends OverlapButton
 
         tooltip.add(title);
 
-        if (isShiftDown)
+        if (Screen.hasShiftDown())
             tooltip.addAll(wrap);
         else
             tooltip.add(shift);
@@ -82,8 +123,26 @@ public class StateButton extends OverlapButton
         return tooltip;
     }
 
+    /**
+     * Render a tooltip component.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
+    private void showTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        this.screen.renderComponentTooltip(poseStack, this.getTooltip(), mouseX, mouseY);
+    }
+
     /* Overrides */
 
+    /**
+     * Handler method for adding extra rendering instructions when the button is rendered.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
@@ -92,24 +151,29 @@ public class StateButton extends OverlapButton
 
         int uOffset = this.state ? 0 : 20;
 
-        switch (this.type)
+        switch (this.widget)
         {
-            case BUBBLE -> screen.blit(poseStack, this.x, this.y, uOffset, 123, this.width, this.height);
-            case FUZZY -> screen.blit(poseStack, this.x, this.y, uOffset, 143, this.width, this.height);
+            case BUBBLE -> this.screen.blit(poseStack, this.x, this.y, uOffset, 123, this.width, this.height);
+            case FUZZY -> this.screen.blit(poseStack, this.x, this.y, uOffset, 143, this.width, this.height);
         }
     }
 
+    /**
+     * Handler method for when a tooltip is rendered.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
     @Override
     public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
     {
         if (this.shouldRenderToolTip(mouseX, mouseY))
-        {
-            this.screen.renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, this.getTooltip(Screen.hasShiftDown()), mouseX, mouseY)
-            );
-        }
+            this.screen.renderLast.add(() -> this.showTooltip(poseStack, mouseX, mouseY));
     }
 
+    /**
+     * Handler method for when this button is pressed.
+     */
     @Override
     public void onPress()
     {

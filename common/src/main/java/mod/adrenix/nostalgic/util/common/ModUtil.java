@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class may be used by both the client and server.
+ * Do not use vanilla client code here.
+ */
+
 public abstract class ModUtil
 {
     public static class Resource
@@ -26,13 +31,6 @@ public abstract class ModUtil
         public static final ResourceLocation MOJANG_RELEASE_ORANGE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_orange.png");
         public static final ResourceLocation MOJANG_RELEASE_BLACK = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_black.png");
         public static final ResourceLocation MINECRAFT_LOGO = new ResourceLocation("textures/gui/title/minecraft.png");
-    }
-
-    public static class Link
-    {
-        public static final String DISCORD = "https://discord.gg/jWdfVh3";
-        public static final String KO_FI = "https://ko-fi.com/adrenix";
-        public static final String GOLDEN_DAYS = "https://github.com/PoeticRainbow/golden-days/releases";
     }
 
     public static class Run
@@ -116,8 +114,8 @@ public abstract class ModUtil
          * @param pointY The y-point to check against.
          * @param startX The startX of the box.
          * @param startY The startY of the box.
-         * @param width The width of the box.
-         * @param height The height of the box.
+         * @param width The width of the box. Do not include startX addition when providing a width.
+         * @param height The height of the box. Do not include startY addition when providing a height.
          * @return Whether the point is within the box's boundaries.
          */
         public static boolean isWithinBox(double pointX, double pointY, double startX, double startY, double width, double height)

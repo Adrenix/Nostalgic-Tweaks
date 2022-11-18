@@ -15,11 +15,18 @@ import net.minecraft.world.InteractionResult;
 
 public abstract class ServerConfigCache
 {
-    /* Configuration Caching */
+    /* Cache Fields */
 
     private static boolean initialized = false;
     private static final ServerConfig CLIENT_CACHE = new ServerConfig();
     private static ServerConfig cache;
+
+    /**
+     * If the caller is from a client, then return a dummy cache since the server cache is never used by the client.
+     * Otherwise, preload the configuration data if this cache has not already been initialized.
+     *
+     * @return The server config cache if the caller was the server, or a dummy cache if the caller was the client.
+     */
     private static ServerConfig getCache()
     {
         // This cache is only used by the ModConfig class and is not used for logic
@@ -28,14 +35,23 @@ public abstract class ServerConfigCache
 
         if (!initialized)
             preloadConfiguration();
+
         return cache;
     }
+
+    /* Quick Group Cache Access */
 
     public static ServerConfig getRoot() { return getCache(); }
     public static ServerConfig.EyeCandy getCandy() { return getCache().eyeCandy; }
     public static ServerConfig.Gameplay getGameplay() { return getCache().gameplay; }
     public static ServerConfig.Animation getAnimation() { return getCache().animation; }
 
+    /* Cache Methods */
+
+    /**
+     * Reloads and validates the config file saved on disk.
+     * @return Always returns a success result regardless of config file validity.
+     */
     private static InteractionResult reloadConfiguration()
     {
         // Retrieve new config
@@ -47,12 +63,19 @@ public abstract class ServerConfigCache
         return InteractionResult.SUCCESS;
     }
 
+    /**
+     * Loads the server configuration cache prematurely when the server starts mixin patching.
+     */
     public static void preloadConfiguration()
     {
         NostalgicTweaks.LOGGER.info("Initializing server config prematurely for mixin compatibility");
         initializeConfiguration();
     }
 
+    /**
+     * Initializes the server configuration cache when the server starts.
+     * This only happens once and this method will return early if the cache has already been initialized.
+     */
     public static void initializeConfiguration()
     {
         // Do not initialize again this method was already run

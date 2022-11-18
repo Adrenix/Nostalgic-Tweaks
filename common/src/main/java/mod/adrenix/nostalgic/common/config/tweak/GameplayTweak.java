@@ -5,13 +5,15 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
-public enum GameplayTweak implements ITweak
+public enum GameplayTweak implements Tweak
 {
     // Bugs
+
     LADDER_GAP,
     SQUID_MILK,
 
     // Mob System
+
     ANIMAL_CAP,
     ANIMAL_PANIC,
     ANIMAL_SPAWNING,
@@ -20,6 +22,7 @@ public enum GameplayTweak implements ITweak
     ONE_WOOL_PUNCH,
 
     // Mob Drops
+
     ZOMBIE_PIGMEN_DROPS,
     SKELETON_DROPS,
     CHICKEN_DROPS,
@@ -38,6 +41,7 @@ public enum GameplayTweak implements ITweak
     HUSK_DROPS,
 
     // Combat System
+
     INSTANT_BOW,
     INVINCIBLE_BOW,
     ARROW_SPEED,
@@ -46,6 +50,7 @@ public enum GameplayTweak implements ITweak
     DISABLE_SWEEP,
 
     // Experience System
+
     DISABLE_EXP_BAR,
     SHOW_XP_LEVEL,
     XP_LEVEL_CORNER,
@@ -60,6 +65,7 @@ public enum GameplayTweak implements ITweak
     ENCHANT_TABLE,
 
     // Hunger System
+
     DISABLE_HUNGER_BAR,
     SHOW_HUNGER_FOOD,
     USE_DYNAMIC_FOOD_COLOR,
@@ -74,6 +80,7 @@ public enum GameplayTweak implements ITweak
     FOOD_STACKING,
 
     // Game Mechanics
+
     SPRINT,
     SWIM,
     FIRE_SPREAD,
@@ -85,26 +92,45 @@ public enum GameplayTweak implements ITweak
     INSTANT_BONE_MEAL,
     INFINITE_BURN;
 
-    /* Implementation */
+    /* Fields */
 
+    /**
+     * This field must be defined in the client config within a static block below an entry definition.
+     * There are safeguard checks in place to prevent missing, mistyped, or invalid key entries.
+     */
     private String key;
+
+    /**
+     * Keeps track of whether this tweak is client or server controller.
+     */
     private NostalgicTweaks.Side side = null;
-    private TweakClientCache<?> clientCache;
-    private TweakServerCache<?> serverCache;
+
+    /**
+     * Keeps track of whether this tweak has had its enumeration queried.
+     */
     private boolean loaded = false;
 
-    @Override public String getKey() { return this.key; }
+    /* Caching */
+
+    private TweakClientCache<?> clientCache;
+    private TweakServerCache<?> serverCache;
+
+    /* Tweak Implementation */
+
     @Override public GroupType getGroup() { return GroupType.GAMEPLAY; }
+
+    @Override public void setKey(String key) { this.key = key; }
+    @Override public String getKey() { return this.key; }
 
     @Override public void setSide(NostalgicTweaks.Side side) { this.side = side; }
     @Override public NostalgicTweaks.Side getSide() { return this.side; }
 
     @Override public void setClientCache(TweakClientCache<?> cache) { this.clientCache = cache; }
-    @Override public void setServerCache(TweakServerCache<?> cache) { this.serverCache = cache; }
-    @Override public TweakServerCache<?> getServerCache() { return this.serverCache; }
     @Override public TweakClientCache<?> getClientCache() { return this.clientCache; }
 
-    @Override public boolean isLoaded() { return this.loaded; }
+    @Override public void setServerCache(TweakServerCache<?> cache) { this.serverCache = cache; }
+    @Override public TweakServerCache<?> getServerCache() { return this.serverCache; }
+
     @Override public void setLoaded(boolean state) { this.loaded = state; }
-    @Override public void setKey(String key) { this.key = key; }
+    @Override public boolean isLoaded() { return this.loaded; }
 }

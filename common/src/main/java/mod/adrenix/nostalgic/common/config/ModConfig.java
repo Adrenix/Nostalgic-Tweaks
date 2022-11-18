@@ -45,7 +45,7 @@ public abstract class ModConfig
      * @param tweak The tweak to load and to check if the value on disk should be used.
      * @return Whether to use what's saved on disk.
      */
-    public static boolean isTweakOn(ITweak tweak)
+    public static boolean isTweakOn(Tweak tweak)
     {
         // Code is querying this tweak - load it
         loadTweak(tweak);
@@ -72,7 +72,7 @@ public abstract class ModConfig
      * @param tweak The tweak to check against.
      * @return Whether the tweak is exempt from network verification checks.
      */
-    private static boolean isTweakExempt(ITweak tweak)
+    private static boolean isTweakExempt(Tweak tweak)
     {
         return CONFIG.isModEnabled && (tweak.equals(CandyTweak.CREATIVE_HOTBAR) || tweak.equals(CandyTweak.SQUARE_BORDER));
     }
@@ -83,7 +83,7 @@ public abstract class ModConfig
      *
      * @param tweak The tweak to load.
      */
-    private static void loadTweak(ITweak tweak)
+    private static void loadTweak(Tweak tweak)
     {
         TweakServerCache<?> cache = TweakServerCache.get(tweak);
 
@@ -117,7 +117,7 @@ public abstract class ModConfig
      * @param <T> The value expected on disk.
      * @return What is kept on disk based on the current environment.
      */
-    private static <T> T getSidedTweak(ITweak tweak, T client, T server)
+    private static <T> T getSidedTweak(Tweak tweak, T client, T server)
     {
         if (NostalgicTweaks.isServer())
             return server;
@@ -141,7 +141,7 @@ public abstract class ModConfig
      * @param client A {@link ClientConfig client config} boolean field.
      * @return Whether the tweak should be considered on.
      */
-    private static boolean getBoolTweak(ITweak tweak, boolean client)
+    private static boolean getBoolTweak(Tweak tweak, boolean client)
     {
         return isTweakOn(tweak) && client;
     }
@@ -153,7 +153,7 @@ public abstract class ModConfig
      * @param server A {@link ServerConfig server config} boolean field.
      * @return Whether the tweak should be considered on.
      */
-    private static boolean getSidedBoolTweak(ITweak tweak, boolean client, boolean server)
+    private static boolean getSidedBoolTweak(Tweak tweak, boolean client, boolean server)
     {
         return isTweakOn(tweak) && getSidedTweak(tweak, client, server);
     }
@@ -165,9 +165,9 @@ public abstract class ModConfig
      * @param <E> The enumeration stored within the tweak.
      * @return The enumeration saved on disk, or the disabled value if the mod state is off.
      */
-    private static <E extends Enum<E> & IDisableTweak<E>> E getEnum(ITweak tweak, E client)
+    private static <E extends Enum<E> & DisabledTweak<E>> E getEnum(Tweak tweak, E client)
     {
-        return !isTweakOn(tweak) ? client.getDisabled() : client;
+        return !isTweakOn(tweak) ? client.getDisabledValue() : client;
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class ModConfig
      * @return The enumeration saved on disk, or the disabled value if the mod is client-side and the mod state is off.
      */
     @SuppressWarnings("SameParameterValue") // Temporary suppression until another sided enum tweak is created
-    private static <E extends Enum<E> & IDisableTweak<E>> E getSidedEnum(ITweak tweak, E client, E server)
+    private static <E extends Enum<E> & DisabledTweak<E>> E getSidedEnum(Tweak tweak, E client, E server)
     {
         return NostalgicTweaks.isClient() ? getEnum(tweak, client) : server;
     }
@@ -237,7 +237,7 @@ public abstract class ModConfig
         public static boolean oldChest() { return getBoolTweak(CandyTweak.CHEST, CANDY.oldChest); }
 
         // Block Candy - Torches
-        private static boolean getModelState(ITweak tweak, boolean client)
+        private static boolean getModelState(Tweak tweak, boolean client)
         {
             return !NostalgicTweaks.isSodiumInstalled && getBoolTweak(tweak, client);
         }

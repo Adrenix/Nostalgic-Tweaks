@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
-import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
@@ -12,15 +11,17 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * This is the flashing (!) exclamation mark symbol that sits next to control widgets in configuration rows.
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class StatusButton extends Button
 {
-    /* Static Fields */
+    /* Static Fields & Methods */
 
     private static boolean flipState = false;
     private static long currentTime = 0L;
@@ -39,21 +40,24 @@ public class StatusButton extends Button
      */
     public static boolean getFlipState() { return flipState; }
 
-    /* Widget Fields */
+    /* Fields */
 
     private final AbstractWidget anchor;
-    private final TweakClientCache<?> cache;
+    private final TweakClientCache<?> tweak;
     @Nullable private final TweakServerCache<?> server;
 
-    /* Widget Constructor */
+    /* Constructor */
 
-    public StatusButton(TweakClientCache<?> cache, AbstractWidget anchor)
+    public StatusButton(TweakClientCache<?> tweak, AbstractWidget anchor)
     {
         super(0, 0, 0, 0, Component.empty(), (ignored) -> {});
-        this.cache = cache;
+
+        this.tweak = tweak;
         this.anchor = anchor;
-        this.server = this.cache.getServerTweak();
+        this.server = this.tweak.getServerTweak();
     }
+
+    /* Methods */
 
     /**
      * @return Checks if the player has permission to change the value of a tweak. Locking will only happen when a
@@ -61,11 +65,26 @@ public class StatusButton extends Button
      */
     private boolean isTweakLocked()
     {
-        if (this.cache.isClient())
+        if (this.tweak.isClient())
             return false;
         else if (Minecraft.getInstance().player != null)
             return !NetUtil.isPlayerOp(Minecraft.getInstance().player);
+
         return false;
+    }
+
+    /**
+     * Renders a tooltip based on the given language file key.
+     * @param screen A config screen instance.
+     * @param langKey A language file key.
+     * @param poseStack The current mouse stack.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     */
+    private void renderTooltip(ConfigScreen screen, String langKey, PoseStack poseStack, int mouseX, int mouseY)
+    {
+        List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(langKey), 40);
+        screen.renderLast.add(() -> screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 
     /**
@@ -79,48 +98,52 @@ public class StatusButton extends Button
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        StatusType cacheStatus = this.cache.getStatus();
-        StatusType serverStatus = this.server == null ? cacheStatus : this.server.getStatus();
+        StatusType tweakStatus = this.tweak.getStatus();
+        StatusType serverStatus = this.server == null ? tweakStatus : this.server.getStatus();
+        TweakSide.Dynamic dynamic = this.tweak.getMetadata(TweakSide.Dynamic.class);
 
-        if (cacheStatus == StatusType.FAIL && serverStatus != StatusType.FAIL)
-            cacheStatus = serverStatus;
+        if (tweakStatus == StatusType.FAIL && serverStatus != StatusType.FAIL)
+            tweakStatus = serverStatus;
 
-        TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
-        boolean isTweakDynamic = dynamic != null && minecraft.level != null && cacheStatus != StatusType.FAIL && NetUtil.isMultiplayer();
+        boolean isTweakDynamic = dynamic != null && minecraft.level != null && tweakStatus != StatusType.FAIL && NetUtil.isMultiplayer();
         boolean isTweakLocked = this.isTweakLocked();
-        boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.cache.isClient() || Minecraft.getInstance().level == null;
+        boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.tweak.isClient() || Minecraft.getInstance().level == null;
         boolean isStatusProblem = !isNetVerified || isTweakLocked;
 
-        if (cacheStatus == StatusType.LOADED && !isStatusProblem && !isTweakDynamic)
+        if (tweakStatus == StatusType.LOADED && !isStatusProblem && !isTweakDynamic)
             return;
 
         if (!isTweakDynamic)
         {
-            boolean isRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS).getCurrent();
-            if (!isRenderable && cacheStatus != StatusType.WARN)
+            boolean isRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS).getValue();
+            if (!isRenderable && tweakStatus != StatusType.WARN)
                 return;
         }
 
-        if (NetUtil.isMultiplayer() && cacheStatus == StatusType.WAIT)
-            cacheStatus = StatusType.FAIL;
+        if (NetUtil.isMultiplayer() && tweakStatus == StatusType.WAIT)
+            tweakStatus = StatusType.FAIL;
 
-        StatusType status = flipState ? StatusType.LOADED : cacheStatus;
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
-        Screen screen = minecraft.screen;
+        if (ClassUtil.isNotInstanceOf(minecraft.screen, ConfigScreen.class))
+            return;
 
-        if (screen == null) return;
-        if (currentTime == 0) currentTime = Util.getMillis();
-        if (Util.getMillis() - currentTime > 1000)
-        {
-            currentTime = 0;
-            flipState = !flipState;
-        }
+        ConfigScreen screen = (ConfigScreen) minecraft.screen;
+        StatusType status = flipState ? StatusType.LOADED : tweakStatus;
 
         int uWidth = 4;
         int vHeight = 20;
         int xStart = this.anchor.x - ConfigRowList.ROW_WIDGET_GAP - uWidth;
         int yStart = this.anchor.y;
-        boolean isMouseOver = (mouseX >= xStart && mouseX <= xStart + uWidth) && (mouseY >= yStart && mouseY <= yStart + vHeight);
+
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+
+        if (currentTime == 0)
+            currentTime = Util.getMillis();
+
+        if (Util.getMillis() - currentTime > 1000)
+        {
+            currentTime = 0;
+            flipState = !flipState;
+        }
 
         if (isStatusProblem && !flipState)
             screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
@@ -137,42 +160,28 @@ public class StatusButton extends Button
             }
         }
 
-        if (isMouseOver && screen instanceof ConfigScreen)
+        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, xStart, yStart, uWidth, vHeight))
         {
             if (!isNetVerified)
-            {
-                ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_NET), 40), mouseX, mouseY));
-                return;
-            }
+                this.renderTooltip(screen, LangUtil.Gui.STATUS_NET, poseStack, mouseX, mouseY);
             else if (isTweakLocked)
-            {
-                ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_PERM), 40), mouseX, mouseY));
-                return;
-            }
+                this.renderTooltip(screen, LangUtil.Gui.STATUS_PERM, poseStack, mouseX, mouseY);
             else if (isTweakDynamic)
             {
                 String state = NostalgicTweaks.isNetworkVerified() && NetUtil.isPlayerOp() ? LangUtil.Gui.STATUS_DYNAMIC_OP :
                     NostalgicTweaks.isNetworkVerified() ? LangUtil.Gui.STATUS_DYNAMIC_OFF : LangUtil.Gui.STATUS_DYNAMIC_ON
                 ;
 
-                ((ConfigScreen) screen).renderLast.add(() ->
-                    screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(state), 40), mouseX, mouseY));
-                return;
+                this.renderTooltip(screen, state, poseStack, mouseX, mouseY);
             }
-
-            switch (cacheStatus)
+            else
             {
-                case WAIT ->
-                    ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_WAIT), 40), mouseX, mouseY));
-                case WARN ->
-                    ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_WARN), 40), mouseX, mouseY));
-                case FAIL ->
-                    ((ConfigScreen) screen).renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATUS_FAIL), 40), mouseX, mouseY));
+                switch (tweakStatus)
+                {
+                    case WAIT -> this.renderTooltip(screen, LangUtil.Gui.STATUS_WAIT, poseStack, mouseX, mouseY);
+                    case WARN -> this.renderTooltip(screen, LangUtil.Gui.STATUS_WARN, poseStack, mouseX, mouseY);
+                    case FAIL -> this.renderTooltip(screen, LangUtil.Gui.STATUS_FAIL, poseStack, mouseX, mouseY);
+                }
             }
         }
     }

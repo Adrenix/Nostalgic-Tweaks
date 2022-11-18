@@ -7,7 +7,6 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
-import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -48,20 +47,26 @@ public class TweakTag extends AbstractWidget
 
     private String title;
     private boolean render = true;
-    private final TweakClientCache<?> cache;
-    private final AbstractWidget anchor;
+    private final TweakClientCache<?> tweak;
+    private final AbstractWidget controller;
     private final boolean isTooltip;
 
     /* Constructor */
 
-    public TweakTag(TweakClientCache<?> cache, AbstractWidget anchor, boolean isTooltip)
+    /**
+     * Create a new tweak tag instance.
+     * @param tweak A tweak from the client cache.
+     * @param controller A controller widget associated with a config row list row.
+     * @param isTooltip Whether this tag has a tooltip associated with it.
+     */
+    public TweakTag(TweakClientCache<?> tweak, AbstractWidget controller, boolean isTooltip)
     {
         super(0, 0, 0, 0, Component.empty());
 
-        this.cache = cache;
-        this.anchor = anchor;
+        this.tweak = tweak;
+        this.controller = controller;
         this.isTooltip = isTooltip;
-        this.title = Component.translatable(this.cache.getLangKey()).getString();
+        this.title = Component.translatable(this.tweak.getLangKey()).getString();
     }
 
     /* Helper Methods */
@@ -137,7 +142,6 @@ public class TweakTag extends AbstractWidget
             TweakTag.draw(screen, poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
 
         TweakTag.draw(screen, poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
-
         font.draw(poseStack, tag, startX + 4, startY + 2, 0xFFFFFF);
 
         return endX + TAG_MARGIN;
@@ -196,16 +200,16 @@ public class TweakTag extends AbstractWidget
 
         if (screen == null) return;
 
-        TweakClient.Gui.New newTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.New.class);
-        TweakSide.Client clientTag = CommonReflect.getAnnotation(this.cache, TweakSide.Client.class);
-        TweakSide.Server serverTag = CommonReflect.getAnnotation(this.cache, TweakSide.Server.class);
-        TweakSide.Dynamic dynamicTag = CommonReflect.getAnnotation(this.cache, TweakSide.Dynamic.class);
-        TweakClient.Gui.Alert alertTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Alert.class);
-        TweakClient.Gui.Sodium sodiumTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Sodium.class);
-        TweakClient.Gui.Restart restartTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Restart.class);
-        TweakClient.Gui.Warning warningTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Warning.class);
-        TweakClient.Gui.Optifine optifineTag = CommonReflect.getAnnotation(this.cache, TweakClient.Gui.Optifine.class);
-        TweakClient.Run.ReloadResources reloadTag = CommonReflect.getAnnotation(this.cache, TweakClient.Run.ReloadResources.class);
+        TweakClient.Gui.New newTag = this.tweak.getMetadata(TweakClient.Gui.New.class);
+        TweakSide.Client clientTag = this.tweak.getMetadata(TweakSide.Client.class);
+        TweakSide.Server serverTag = this.tweak.getMetadata(TweakSide.Server.class);
+        TweakSide.Dynamic dynamicTag = this.tweak.getMetadata(TweakSide.Dynamic.class);
+        TweakClient.Gui.Alert alertTag = this.tweak.getMetadata(TweakClient.Gui.Alert.class);
+        TweakClient.Gui.Sodium sodiumTag = this.tweak.getMetadata(TweakClient.Gui.Sodium.class);
+        TweakClient.Gui.Restart restartTag = this.tweak.getMetadata(TweakClient.Gui.Restart.class);
+        TweakClient.Gui.Warning warningTag = this.tweak.getMetadata(TweakClient.Gui.Warning.class);
+        TweakClient.Gui.Optifine optifineTag = this.tweak.getMetadata(TweakClient.Gui.Optifine.class);
+        TweakClient.Run.ReloadResources reloadTag = this.tweak.getMetadata(TweakClient.Run.ReloadResources.class);
 
         Component optifineTitle = Component.literal("Optifine");
         Component sodiumTitle = Component.literal("Sodium");
@@ -228,16 +232,16 @@ public class TweakTag extends AbstractWidget
         Component dynamicTooltip = Component.translatable(LangUtil.Gui.TAG_DYNAMIC_TOOLTIP);
         Component reloadTooltip = Component.translatable(LangUtil.Gui.TAG_RELOAD_TOOLTIP);
         Component restartTooltip = Component.translatable(LangUtil.Gui.TAG_RESTART_TOOLTIP);
-        Component sodiumTooltip = Component.translatable(this.cache.getSodiumKey());
-        Component optifineTooltip = Component.translatable(this.cache.getOptifineKey());
-        Component warningTooltip = Component.translatable(this.cache.getWarningKey());
+        Component sodiumTooltip = Component.translatable(this.tweak.getSodiumKey());
+        Component optifineTooltip = Component.translatable(this.tweak.getOptifineKey());
+        Component warningTooltip = Component.translatable(this.tweak.getWarningKey());
 
-        boolean isNewRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS).getCurrent();
-        boolean isSidedRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS).getCurrent();
-        boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS).getCurrent();
+        boolean isNewRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS).getValue();
+        boolean isSidedRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS).getValue();
+        boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS).getValue();
 
         int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + (isTooltip ? 20 : 4);
-        int startY = this.anchor.y + 4;
+        int startY = this.controller.y + 4;
         int lastX = startX;
 
         if (newTag != null && isNewRenderable)
@@ -315,7 +319,7 @@ public class TweakTag extends AbstractWidget
         this.setWidth(lastX - startX);
     }
 
-    /* Required Overrides */
+    /* Required Widget Overrides */
 
-    @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+    @Override public void updateNarration(NarrationElementOutput narrationElementOutput) { }
 }

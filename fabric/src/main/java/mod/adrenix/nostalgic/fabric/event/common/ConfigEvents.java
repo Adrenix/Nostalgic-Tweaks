@@ -3,8 +3,16 @@ package mod.adrenix.nostalgic.fabric.event.common;
 import mod.adrenix.nostalgic.server.event.ServerEventHelper;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
+/**
+ * Fabric configuration related event instructions and registration.
+ * Registration is invoked by client/server event handlers.
+ */
+
 public abstract class ConfigEvents
 {
+    /**
+     * Register config related Fabric events.
+     */
     public static void register() { onJoinWorld(); }
 
     /* Config Events */

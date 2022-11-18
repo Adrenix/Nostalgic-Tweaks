@@ -21,8 +21,8 @@ public abstract class AlertCondition
      */
     public static boolean isShieldConflict()
     {
-        boolean isModernShield = TweakClientCache.get(CandyTweak.INVENTORY_SHIELD).getCurrent() == TweakType.InventoryShield.MODERN;
-        boolean isOldInventory = (boolean) TweakClientCache.get(CandyTweak.OLD_INVENTORY).getCurrent();
+        boolean isModernShield = TweakClientCache.get(CandyTweak.INVENTORY_SHIELD).getValue() == TweakType.InventoryShield.MODERN;
+        boolean isOldInventory = (boolean) TweakClientCache.get(CandyTweak.OLD_INVENTORY).getValue();
 
         return isModernShield && isOldInventory;
     }
@@ -35,8 +35,8 @@ public abstract class AlertCondition
      */
     public static boolean isLightConflict()
     {
-        boolean isOldColor = (boolean) TweakClientCache.get(CandyTweak.LIGHT_COLOR).getCurrent();
-        boolean isOldLight = (boolean) TweakClientCache.get(CandyTweak.LIGHT_RENDERING).getCurrent();
+        boolean isOldColor = (boolean) TweakClientCache.get(CandyTweak.LIGHT_COLOR).getValue();
+        boolean isOldLight = (boolean) TweakClientCache.get(CandyTweak.LIGHT_RENDERING).getValue();
 
         return !isOldColor && isOldLight;
     }
@@ -49,8 +49,8 @@ public abstract class AlertCondition
      */
     public static boolean isVoidConflict()
     {
-        boolean isDarkVoidHeight = (boolean) TweakClientCache.get(CandyTweak.DARK_VOID_HEIGHT).getCurrent();
-        boolean isBlueVoidOverride = (boolean) TweakClientCache.get(CandyTweak.BLUE_VOID_OVERRIDE).getCurrent();
+        boolean isDarkVoidHeight = (boolean) TweakClientCache.get(CandyTweak.DARK_VOID_HEIGHT).getValue();
+        boolean isBlueVoidOverride = (boolean) TweakClientCache.get(CandyTweak.BLUE_VOID_OVERRIDE).getValue();
 
         return isDarkVoidHeight && isBlueVoidOverride;
     }

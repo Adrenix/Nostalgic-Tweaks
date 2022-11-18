@@ -5,8 +5,16 @@ import dev.architectury.event.events.common.InteractionEvent;
 import mod.adrenix.nostalgic.util.server.PlayerServerUtil;
 import net.minecraft.world.InteractionResult;
 
+/**
+ * Fabric gameplay related event instructions and registration.
+ * Registration is invoked by client/server event handlers.
+ */
+
 public abstract class GameplayEvents
 {
+    /**
+     * Register gameplay related Fabric events.
+     */
     public static void register() { onMilkSquid(); }
 
     /**

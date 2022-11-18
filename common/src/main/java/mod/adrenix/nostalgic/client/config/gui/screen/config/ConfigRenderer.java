@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
-import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupId;
@@ -15,7 +15,7 @@ import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
-import mod.adrenix.nostalgic.common.config.tweak.IDisableTweak;
+import mod.adrenix.nostalgic.common.config.tweak.DisabledTweak;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
@@ -31,11 +31,24 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
+/**
+ * This record defines complex rendering instructions for the parent configuration screen.
+ * @param parent A configuration screen instance.
+ */
+
 public record ConfigRenderer(ConfigScreen parent)
 {
+    /**
+     * Sorts tweaks based on placement metadata and alphabetical translation.
+     * @param tweak A tweak client cache value.
+     * @param placement Any placement metadata.
+     * @param translated Translation data.
+     * @param top Predefined tweaks that render on top.
+     * @param bottom Predefined tweaks that render on the bottom.
+     */
     private static void sort
     (
-        TweakClientCache<?> entry,
+        TweakClientCache<?> tweak,
         TweakClient.Gui.Placement placement,
         HashMap<String, TweakClientCache<?>> translated,
         HashMap<Integer, TweakClientCache<?>> top,
@@ -43,17 +56,25 @@ public record ConfigRenderer(ConfigScreen parent)
     )
     {
         if (placement == null)
-            translated.put(entry.getTranslation(), entry);
+            translated.put(tweak.getTranslation(), tweak);
         else
         {
-            if (entry.getPosition() == TweakClient.Gui.Position.TOP)
-                top.put(entry.getOrder(), entry);
-            else if (entry.getPosition() == TweakClient.Gui.Position.BOTTOM)
-                bottom.put(entry.getOrder(), entry);
+            if (tweak.getPosition() == TweakClient.Gui.Position.TOP)
+                top.put(tweak.getOrder(), tweak);
+            else if (tweak.getPosition() == TweakClient.Gui.Position.BOTTOM)
+                bottom.put(tweak.getOrder(), tweak);
         }
     }
 
-    private static Supplier<ArrayList<ConfigRowList.Row>> getChildren
+    /**
+     * Generates a list of rows based on given container metadata.
+     * @param list A config row list instance.
+     * @param category A category enumeration value, or null.
+     * @param subcategory A subcategory enumeration value, or null.
+     * @param embedded An embedded enumeration value, or null.
+     * @return An array list of properly sorted config rows.
+     */
+    private static ArrayList<ConfigRowList.Row> generateContainerRows
     (
         ConfigRowList list,
         @Nullable TweakClient.Category category,
@@ -61,133 +82,267 @@ public record ConfigRenderer(ConfigScreen parent)
         @Nullable TweakClient.Embedded embedded
     )
     {
-        return () ->
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+
+        HashMap<String, TweakClientCache<?>> translated = new HashMap<>();
+        HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
+        HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
+
+        Set<TweakClient.Subcategory> subcategories = new HashSet<>();
+        Set<TweakClient.Embedded> embeds = new HashSet<>();
+
+        TweakClientCache.all().forEach((id, tweak) ->
         {
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+            /*
+               Tweaks may have category metadata (which does not have any subcategory or embedded data)
+               Tweaks may have subcategory metadata (which will have category data)
+               Tweaks may have embedded metadata (which will have subcategory and category data)
+             */
 
-            HashMap<String, TweakClientCache<?>> translated = new HashMap<>();
-            HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
-            HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
+            TweakClient.Gui.Cat cat = tweak.getCategory();
+            TweakClient.Gui.Sub sub = tweak.getSubcategory();
+            TweakClient.Gui.Emb emb = tweak.getEmbedded();
+            TweakClient.Gui.Placement placement = tweak.getPlacement();
 
-            Set<TweakClient.Subcategory> subcategories = new HashSet<>();
-            Set<TweakClient.Embedded> embeds = new HashSet<>();
+            /*
+               If this method is invoked with a category enumeration value, then the array list of rows must contain
+               data for not only the provided category, but also subcategory and embedded rows. This is achieved through
+               recursion if a category contains subcategory and embed containers.
 
-            TweakClientCache.all().forEach((key, entry) ->
+               If this method is invoked with a subcategory enumeration value (which will be done by recursion), then
+               the array list of rows must contain data for subcategory and embed rows. Embed data is generated through
+               recursion.
+
+               If this method is invoked with an embed enumeration value (which will be done by recursion), then the
+               array list of rows only needs to contain embed data since this will be the deepest container type.
+             */
+
+            if (category != null)
             {
-                TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(entry, TweakClient.Gui.Cat.class);
-                TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(entry, TweakClient.Gui.Sub.class);
-                TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(entry, TweakClient.Gui.Emb.class);
-                TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(entry, TweakClient.Gui.Placement.class);
+                /*
+                   If this tweak resides in a category then it can be added and sorted if the categories match.
+                   The tweak's group must also match the category's group.
+                 */
+                boolean isTweakInCategory =
+                    cat != null &&
+                    cat.group() == category &&
+                    tweak.getGroup() == category.getGroup()
+                ;
 
-                if (category != null)
-                {
-                    boolean isCategory = cat != null && cat.group() == category && entry.getGroup() == category.getGroup();
-                    boolean isSubcategory = sub != null && !subcategories.contains(sub.group()) && sub.group().getCategory() == category && entry.getGroup() == category.getGroup();
-                    boolean isEmptySub = emb != null && !subcategories.contains(emb.group().getSubcategory()) && emb.group().getSubcategory().getCategory() == category;
+                /*
+                   Subcategory rows are generated here if this category has it. If this tweak is within a subcategory
+                   that is in this category, then its data must also be added via recursion.
 
-                    if (isCategory)
-                        sort(entry, placement, translated, top, bottom);
-                    else if (isSubcategory)
-                        subcategories.add(sub.group());
-                    else if (isEmptySub)
-                        subcategories.add(emb.group().getSubcategory());
-                }
-                else if (subcategory != null)
-                {
-                    boolean isSubcategory = sub != null && sub.group() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup();
-                    boolean isEmbed = emb != null && !embeds.contains(emb.group()) && emb.group().getSubcategory() == subcategory && entry.getGroup() == subcategory.getCategory().getGroup();
+                   The subcategory is only added to the set if it hasn't already been added by a previous tweak.
+                 */
+                boolean isTweakInSubcategory =
+                    sub != null &&
+                    !subcategories.contains(sub.group()) &&
+                    sub.group().getCategory() == category &&
+                    tweak.getGroup() == category.getGroup()
+                ;
 
-                    if (isSubcategory)
-                        sort(entry, placement, translated, top, bottom);
-                    else if (isEmbed)
-                        embeds.add(emb.group());
-                }
-                else if (embedded != null)
-                {
-                    if (emb != null && emb.group() == embedded && entry.getGroup() == embedded.getSubcategory().getCategory().getGroup())
-                        sort(entry, placement, translated, top, bottom);
-                }
-            });
+                /*
+                   It may be possible that a tweak is in an embedded container that is within a subcategory with no
+                   tweaks. In this case, the embed's subcategory will never be added since no tweak pushed it into
+                   the subcategory set.
 
-            EnumSet<TweakClient.Subcategory> allSubs = EnumSet.allOf(TweakClient.Subcategory.class);
-            EnumSet<TweakClient.Embedded> allEmbeds = EnumSet.allOf(TweakClient.Embedded.class);
+                   This checks if a tweak has embedded data and checks if the tweak's subcategory is missing from the
+                   subcategory set. If so, then the tweak's embedded subcategory parent will be added.
+                 */
+                boolean isTweakInEmptySubcategory =
+                    emb != null &&
+                    !subcategories.contains(emb.group().getSubcategory()) &&
+                    emb.group().getSubcategory().getCategory() == category
+                ;
 
-            allSubs.forEach((sub) ->
+                if (isTweakInCategory)
+                    sort(tweak, placement, translated, top, bottom);
+                else if (isTweakInSubcategory)
+                    subcategories.add(sub.group());
+                else if (isTweakInEmptySubcategory)
+                    subcategories.add(emb.group().getSubcategory());
+            }
+            else if (subcategory != null)
             {
-                if (subcategories.contains(sub))
-                    rows.add(getSubcategory(sub, list).add());
-            });
+                /*
+                   If this tweak resides in a subcategory then it can be added and sorted if the subcategories match.
+                   The tweak's group must also match the subcategory's category's group.
+                 */
+                boolean isTweakInSubcategory =
+                    sub != null &&
+                    sub.group() == subcategory &&
+                    tweak.getGroup() == subcategory.getCategory().getGroup()
+                ;
 
-            allEmbeds.forEach((embed) ->
+                /*
+                   If this tweak resides in an embed then it can be added and sorted if the subcategories match.
+                   The tweak's group must also match the embed's subcategory's category's group.
+                 */
+                boolean isTweakInEmbed =
+                    emb != null &&
+                    !embeds.contains(emb.group()) &&
+                    emb.group().getSubcategory() == subcategory &&
+                    tweak.getGroup() == subcategory.getCategory().getGroup()
+                ;
+
+                if (isTweakInSubcategory)
+                    sort(tweak, placement, translated, top, bottom);
+                else if (isTweakInEmbed)
+                    embeds.add(emb.group());
+            }
+            else if (embedded != null)
             {
-                if (embeds.contains(embed))
-                    rows.add(getEmbedded(embed, list).add());
-            });
+                // If this tweak resides in an embed then it can be added and sorted if the main group types match
+                if (emb != null && emb.group() == embedded && tweak.getGroup() == embedded.getSubcategory().getCategory().getGroup())
+                    sort(tweak, placement, translated, top, bottom);
+            }
+        });
 
-            SortedMap<Integer, TweakClientCache<?>> sortTop = new TreeMap<>(top);
-            SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
-            SortedMap<Integer, TweakClientCache<?>> sortBottom = new TreeMap<>(bottom);
+        EnumSet<TweakClient.Subcategory> allSubs = EnumSet.allOf(TweakClient.Subcategory.class);
+        EnumSet<TweakClient.Embedded> allEmbeds = EnumSet.allOf(TweakClient.Embedded.class);
 
-            sortTop.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
-            sortMiddle.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
-            sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent())));
+        /*
+           Loops through all defined subcategory enumeration values and adds subcategory data via recursion if this
+           method was invoked with a category enumeration value.
+         */
+        allSubs.forEach((sub) ->
+        {
+            if (subcategories.contains(sub))
+                rows.add(getSubcategory(sub, list).generate());
+        });
 
-            return rows;
-        };
+        /*
+           Loops through all defined embedded enumeration values and adds embedded data via recursion if this method was
+           invoked with a subcategory enumeration value.
+         */
+        allEmbeds.forEach((embed) ->
+        {
+            if (embeds.contains(embed))
+                rows.add(getEmbedded(embed, list).generate());
+        });
+
+        SortedMap<Integer, TweakClientCache<?>> sortTop = new TreeMap<>(top);
+        SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
+        SortedMap<Integer, TweakClientCache<?>> sortBottom = new TreeMap<>(bottom);
+
+        sortTop.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortMiddle.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+
+        return rows;
     }
 
-    private static ConfigRowList.CategoryRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
+    /**
+     * Gets a list supplier of config row instances.
+     * @param list A config row list instance.
+     * @param category A category enumeration value, or null.
+     * @param subcategory A subcategory enumeration value, or null.
+     * @param embedded An embed enumeration value, or null.
+     * @return A supplier that provides a list of properly sorted rows based on the given container type.
+     */
+    private static Supplier<ArrayList<ConfigRowList.Row>> getContainerRowSupplier
+    (
+        ConfigRowList list,
+        @Nullable TweakClient.Category category,
+        @Nullable TweakClient.Subcategory subcategory,
+        @Nullable TweakClient.Embedded embedded
+    )
     {
-        return new ConfigRowList.CategoryRow
+        return () -> generateContainerRows(list, category, subcategory, embedded);
+    }
+
+    /**
+     * Get a container row instance based on an embed enumeration value.
+     * @param embedded An embed enumeration value.
+     * @param list A config row list instance.
+     * @return A list of properly sorted rows within an embed.
+     */
+    private static ConfigRowList.ContainerRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
+    {
+        return new ConfigRowList.ContainerRow
         (
-            list,
             Component.translatable(embedded.getLangKey()),
-            getChildren(list, null, null, embedded),
+            getContainerRowSupplier(list, null, null, embedded),
             embedded,
-            ConfigRowList.CatType.EMBEDDED
+            ConfigRowList.ContainerType.EMBEDDED
         );
     }
 
-    private static ConfigRowList.CategoryRow getSubcategory(TweakClient.Subcategory subcategory, ConfigRowList list)
+    /**
+     * Get a container row instance based on a subcategory enumeration value.
+     * @param subcategory A subcategory enumeration value.
+     * @param list A config row list instance.
+     * @return A list of properly sorted rows within a subcategory.
+     */
+    private static ConfigRowList.ContainerRow getSubcategory(TweakClient.Subcategory subcategory, ConfigRowList list)
     {
-        return new ConfigRowList.CategoryRow
+        return new ConfigRowList.ContainerRow
         (
-            list,
             Component.translatable(subcategory.getLangKey()),
-            getChildren(list, null, subcategory, null),
+            getContainerRowSupplier(list, null, subcategory, null),
             subcategory,
-            ConfigRowList.CatType.SUBCATEGORY
+            ConfigRowList.ContainerType.SUBCATEGORY
         );
     }
 
-    private static ConfigRowList.CategoryRow getCategory(TweakClient.Category category, ConfigRowList list)
+    /**
+     * Get a container row instance based on a category enumeration value.
+     * @param category A category enumeration value.
+     * @param list A config row list instance.
+     * @return A list of properly sorted rows within a category.
+     */
+    private static ConfigRowList.ContainerRow getCategory(TweakClient.Category category, ConfigRowList list)
     {
-        return new ConfigRowList.CategoryRow
+        return new ConfigRowList.ContainerRow
         (
-            list,
             Component.translatable(category.getLangKey()),
-            getChildren(list, category, null, null),
+            getContainerRowSupplier(list, category, null, null),
             category
         );
     }
 
+    /**
+     * Generate all category, subcategory, embed, and tweak rows for the provided group.
+     * @param list A config row list instance.
+     * @param group A group type enumeration value.
+     * @return A list of properly sorted config row list instances for the given group type.
+     */
     private static List<ConfigRowList.Row> getCategories(ConfigRowList list, GroupType group)
     {
         List<ConfigRowList.Row> rows = new ArrayList<>();
-
         EnumSet<TweakClient.Category> categories = EnumSet.allOf(TweakClient.Category.class);
+
         categories.forEach((category) ->
         {
             if (category.getGroup() == group)
-                rows.add(getCategory(category, list).add());
+                rows.add(getCategory(category, list).generate());
         });
 
         return rows;
     }
 
+    /**
+     * Generates all config rows for the given group type.
+     * @param group A group type to generate data from.
+     */
     private void addRows(GroupType group)
     {
-        getCategories(this.parent.getWidgets().getConfigRowList(), group).forEach((row) -> this.parent.getWidgets().getConfigRowList().addRow(row));
+        ConfigRowList list = this.parent.getWidgets().getConfigRowList();
+
+        /*
+           The following method automatically generates row data from the client's tweak cache.
+           All sorting is handled by the above methods.
+         */
+
+        getCategories(list, group).forEach(list::addRow);
+
+        /*
+           Any tweaks that do not fall into a category, subcategory, or embed needs row data generated and sorted here.
+
+           If there is any change in sort logic here, then this change may require a reflection of logic in container
+           sorting logic if applicable.
+         */
 
         Comparator<String> translationComparator = Comparator.comparing((String key) -> TweakClientCache.get(group, key).getTranslation());
         Comparator<String> orderComparator = Comparator.comparing((String key) -> TweakClientCache.get(group, key).getOrder());
@@ -223,22 +378,29 @@ public record ConfigRenderer(ConfigScreen parent)
         sortMiddle.putAll(middle);
         sortBottom.putAll(bottom);
 
-        sortTop.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
-        sortMiddle.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
-        sortBottom.forEach((key, value) -> this.parent.getWidgets().getConfigRowList().addRow(group, key, value));
+        sortTop.forEach((key, value) -> list.addRow(group, key, value));
+        sortMiddle.forEach((key, value) -> list.addRow(group, key, value));
+        sortBottom.forEach((key, value) -> list.addRow(group, key, value));
     }
 
-    private void addSearchRows(TweakClientCache<?> tweak)
+    /**
+     * Add a new row instance to the search results based on the provided tweak.
+     * @param tweak A tweak client cache instance.
+     */
+    private void addSearchRow(TweakClientCache<?> tweak)
     {
-        TextWidget text = new TextWidget(ConfigRowList.TEXT_START, tweak.getSearchGroup());
+        SearchCrumbs crumbs = new SearchCrumbs(tweak);
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
-        ConfigRowList.Row row = list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getCurrent());
+        ConfigRowList.Row row = list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue());
 
-        row.children.add(text);
-
-        this.parent.getWidgets().getConfigRowList().addRow(row);
+        row.children.add(crumbs);
+        list.addRow(row);
     }
 
+    /**
+     * Logic for adding search rows based on the current user input inside the search box.
+     * No instructions are executed if the search map is empty.
+     */
     private void addFound()
     {
         if (this.parent.search.isEmpty())
@@ -256,9 +418,356 @@ public record ConfigRenderer(ConfigScreen parent)
         ;
 
         sorted.putAll(found);
-        sorted.forEach((key, tweak) -> this.addSearchRows(tweak));
+        sorted.forEach((id, tweak) -> this.addSearchRow(tweak));
     }
 
+    /**
+     * Adds rows and provides logic for changing all tweak values instantaneously.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralOverrideList()
+    {
+        TextGroup help = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
+        AtomicBoolean serverOnly = new AtomicBoolean(false);
+
+        Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+        {
+            if (!GroupType.isManual(group))
+            {
+                ClientReflect.getGroup(group).forEach((key, value) ->
+                {
+                    TweakClientCache<Boolean> tweak = TweakClientCache.get(group, key);
+
+                    boolean isDisableIgnored = tweak.isMetadataPresent(TweakClient.Gui.IgnoreDisable.class);
+                    boolean isClientIgnored = serverOnly.get() && tweak.isClient() && !tweak.isDynamic();
+                    boolean isLocked = tweak.isLocked();
+                    boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
+
+                    if (!isClientIgnored && !isLocked)
+                        tweak.reset();
+
+                    if (value instanceof Boolean && isChangeable)
+                    {
+                        TweakClient.Gui.DisabledBoolean disabledBoolean = tweak.getMetadata(TweakClient.Gui.DisabledBoolean.class);
+
+                        if (disabledBoolean == null && tweak.getDefault())
+                        {
+                            tweak.reset();
+                            tweak.setValue(!tweak.getValue());
+                        }
+                        else if (disabledBoolean != null)
+                            tweak.setValue(disabledBoolean.value());
+                    }
+
+                    if (value instanceof Integer && isChangeable)
+                    {
+                        TweakClient.Gui.DisabledInteger disabledInteger = tweak.getMetadata(TweakClient.Gui.DisabledInteger.class);
+
+                        if (disabledInteger != null)
+                        {
+                            TweakClientCache<Integer> intTweak = TweakClientCache.get(group, key);
+                            intTweak.setValue(disabledInteger.value());
+                        }
+                    }
+
+                    if (value instanceof DisabledTweak<?> && isChangeable)
+                    {
+                        TweakClientCache<Enum<?>> enumTweak = TweakClientCache.get(group, key);
+                        enumTweak.setValue(((DisabledTweak<?>) value).getDisabledValue());
+                    }
+                });
+            }
+        });
+
+        Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+        {
+            if (!GroupType.isManual(group))
+            {
+                ClientReflect.getGroup(group).forEach((key, value) ->
+                {
+                    TweakClientCache<?> tweak = TweakClientCache.get(group, key);
+
+                    boolean isClientIgnored = serverOnly.get() && tweak.isClient() && !tweak.isDynamic();
+                    boolean isLocked = tweak.isLocked();
+                    boolean isChangeable = !isLocked && !isClientIgnored;
+
+                    if (isChangeable)
+                        tweak.reset();
+                });
+            }
+        });
+
+        ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
+        ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
+
+        ToggleCheckbox toggleServerOnly = new ToggleCheckbox
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER),
+            serverOnly::get,
+            serverOnly::set
+        );
+
+        toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
+
+        ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
+        ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
+        ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
+
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
+
+        rows.add(server.generate());
+        rows.add(disable.generate());
+        rows.add(enable.generate());
+
+        return rows;
+    }
+
+    /**
+     * Generates rows for key binding options in the general options group.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralBindingsList()
+    {
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+
+        KeyMapping openConfig = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
+        KeyMapping toggleFog = KeyUtil.find(LangUtil.Key.TOGGLE_FOG);
+
+        if (openConfig != null)
+            rows.add(new ConfigRowList.BindingRow(openConfig).generate());
+
+        if (toggleFog != null)
+            rows.add(new ConfigRowList.BindingRow(toggleFog).generate());
+
+        return rows;
+    }
+
+    /**
+     * Generates rows and containers for configuration screen menu settings.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralSettingsList()
+    {
+        ArrayList<ConfigRowList.Row> subcategories = new ArrayList<>();
+
+        /* Default Screen Options */
+
+        Supplier<ArrayList<ConfigRowList.Row>> getScreenOptions = () ->
+        {
+            TweakClientCache<MenuOption> defaultScreen = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
+            RadioGroup<MenuOption> radioGroup = new RadioGroup<>
+            (
+                MenuOption.class,
+                DefaultConfig.Gui.DEFAULT_SCREEN,
+                defaultScreen::getValue,
+                defaultScreen::setValue,
+                MenuOption::getTranslation
+            );
+
+            TextGroup radioHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_INFO));
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(radioHelp.getRows());
+
+            rows.addAll(radioGroup.getRows());
+
+            return rows;
+        };
+
+        ConfigRowList.ContainerRow screenConfig = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE),
+            getScreenOptions,
+            GroupId.DEFAULT_SCREEN_CONFIG,
+            ConfigRowList.ContainerType.SUBCATEGORY
+        );
+
+        subcategories.add(screenConfig.generate());
+
+        /* Tree Indent Options */
+
+        Supplier<ArrayList<ConfigRowList.Row>> getTreeOptions = () ->
+        {
+            TextGroup treeHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_INFO));
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
+
+            TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
+            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, tree.getKey(), tree.getValue()).generate());
+
+            TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
+            rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getValue()).generate());
+
+            return rows;
+        };
+
+        ConfigRowList.ContainerRow treeConfig = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE),
+            getTreeOptions,
+            GroupId.TREE_CONFIG,
+            ConfigRowList.ContainerType.SUBCATEGORY
+        );
+
+        subcategories.add(treeConfig.generate());
+
+        /* Row Highlighting Options */
+
+        Supplier<ArrayList<ConfigRowList.Row>> getHighlightOptions = () ->
+        {
+            TextGroup rowHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_INFO));
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
+
+            TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
+            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, highlight.getKey(), highlight.getValue()).generate());
+
+            TweakClientCache<Boolean> fade = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE);
+            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, fade.getKey(), fade.getValue()).generate());
+
+            TweakClientCache<String> color = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR);
+            rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getValue()).generate());
+
+            return rows;
+        };
+
+        ConfigRowList.ContainerRow highlightConfig = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE),
+            getHighlightOptions,
+            GroupId.ROW_CONFIG,
+            ConfigRowList.ContainerType.SUBCATEGORY
+        );
+
+        subcategories.add(highlightConfig.generate());
+
+        /* Tag Options */
+
+        Supplier<ArrayList<ConfigRowList.Row>> getTaggingOptions = () ->
+        {
+            TextGroup tagHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_INFO));
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
+
+            // New Tags
+
+            TweakClientCache<Boolean> displayNewTags = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
+            ToggleCheckbox newTagsCheckbox = new ToggleCheckbox
+            (
+                Component.translatable(LangUtil.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
+                displayNewTags::getValue,
+                displayNewTags::setValue
+            );
+
+            ConfigRowList.ManualRow newTagsRow = new ConfigRowList.ManualRow(List.of(newTagsCheckbox));
+            rows.add(newTagsRow.generate());
+
+            // Sided tags
+
+            TweakClientCache<Boolean> displaySidedTags = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
+            ToggleCheckbox sidedTagsCheckbox = new ToggleCheckbox
+            (
+                Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
+                displaySidedTags::getValue,
+                displaySidedTags::setValue
+            );
+
+            ConfigRowList.ManualRow sidedTagsRow = new ConfigRowList.ManualRow(List.of(sidedTagsCheckbox));
+            rows.add(sidedTagsRow.generate());
+
+            // Tag Tooltips
+
+            TweakClientCache<Boolean> displayTagTooltips = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
+            ToggleCheckbox tagTooltipsCheckbox = new ToggleCheckbox
+            (
+                Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
+                displayTagTooltips::getValue,
+                displayTagTooltips::setValue
+            );
+
+            ConfigRowList.ManualRow tagTooltipsRow = new ConfigRowList.ManualRow(List.of(tagTooltipsCheckbox));
+
+            rows.add(tagTooltipsRow.generate());
+            rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).generate());
+
+            // Feature Status
+
+            TextGroup statusHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
+            rows.addAll(statusHelp.getRows());
+
+            TweakClientCache<Boolean> displayFeatureStatus = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
+            ToggleCheckbox featureStatusCheckbox = new ToggleCheckbox
+            (
+                Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
+                displayFeatureStatus::getValue,
+                displayFeatureStatus::setValue
+            );
+
+            ConfigRowList.ManualRow featureStatusRow = new ConfigRowList.ManualRow(List.of(featureStatusCheckbox));
+            rows.add(featureStatusRow.generate());
+
+            return rows;
+        };
+
+        ConfigRowList.ContainerRow taggingConfig = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_TITLE),
+            getTaggingOptions,
+            GroupId.TITLE_TAGS_CONFIG,
+            ConfigRowList.ContainerType.SUBCATEGORY
+        );
+
+        subcategories.add(taggingConfig.generate());
+
+        return subcategories;
+    }
+
+    /**
+     * Generates information about any important notifications.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralNotifyList()
+    {
+        TextGroup notify = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
+
+        return new ArrayList<>(notify.getRows());
+    }
+
+    /**
+     * Generates information about search tags.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralSearchTags()
+    {
+        Component help = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_HELP);
+        Component newTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_NEW);
+        Component conflictTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CONFLICT);
+        Component resetTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_RESET);
+        Component clientTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CLIENT);
+        Component serverTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SERVER);
+        Component saveTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SAVE);
+        Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
+        Component[] tags = new Component[] { help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag };
+
+        return new TextGroup(ModUtil.Text.combine(tags)).getRows();
+    }
+
+    /**
+     * Generates information about keyboard shortcuts.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getGeneralShortcuts()
+    {
+        Component help = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_HELP);
+        Component find = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_FIND);
+        Component save = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_SAVE);
+        Component exit = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_EXIT);
+        Component jump = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_JUMP);
+        Component all = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_ALL);
+        Component group = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_GROUP);
+
+        return new TextGroup(ModUtil.Text.combine(new Component[] { help, find, save, exit, jump, all, group })).getRows();
+    }
+
+    /**
+     * Instructions for manually creating rows and containers for the general configuration group.
+     * No logic is used here to automatically generate rows or containers.
+     */
     private void addGeneral()
     {
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
@@ -266,320 +775,81 @@ public record ConfigRenderer(ConfigScreen parent)
         /* Mod Enabled */
 
         TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
-        list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getKey(), isModEnabled.getCurrent()).add());
 
-        /* Override Config */
+        list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
 
-        Supplier<ArrayList<ConfigRowList.Row>> globalOptions = () ->
-        {
-            TextGroup help = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
-            AtomicBoolean serverOnly = new AtomicBoolean(false);
+        /* All Tweak Overrides */
 
-            Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
-            {
-                if (!GroupType.isManual(group))
-                {
-                    ClientReflect.getGroup(group).forEach((key, value) ->
-                    {
-                        TweakClientCache<Boolean> entry = TweakClientCache.get(group, key);
+        ConfigRowList.ContainerRow changeAllTweaks = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE),
+            this::getGeneralOverrideList,
+            GroupId.OVERRIDE_CONFIG
+        );
 
-                        boolean isDisableIgnored = CommonReflect.getAnnotation(entry, TweakClient.Gui.IgnoreDisable.class) != null;
-                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
-                        boolean isLocked = entry.isLocked();
-                        boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
-
-                        if (!isClientIgnored && !isLocked)
-                            entry.reset();
-
-                        if (value instanceof Boolean && isChangeable)
-                        {
-                            TweakClient.Gui.DisabledBoolean disabledBoolean = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledBoolean.class);
-
-                            if (disabledBoolean == null && entry.getDefault())
-                            {
-                                entry.reset();
-                                entry.setCurrent(!entry.getCurrent());
-                            }
-                            else if (disabledBoolean != null)
-                                entry.setCurrent(disabledBoolean.value());
-                        }
-
-                        if (value instanceof Integer && isChangeable)
-                        {
-                            TweakClient.Gui.DisabledInteger disabledInteger = CommonReflect.getAnnotation(entry, TweakClient.Gui.DisabledInteger.class);
-
-                            if (disabledInteger != null)
-                            {
-                                TweakClientCache<Integer> entryInteger = TweakClientCache.get(group, key);
-                                entryInteger.setCurrent(disabledInteger.value());
-                            }
-                        }
-
-                        if (value instanceof IDisableTweak<?> && isChangeable)
-                        {
-                            TweakClientCache<Enum<?>> version = TweakClientCache.get(group, key);
-                            version.setCurrent(((IDisableTweak<?>) value).getDisabled());
-                        }
-                    });
-                }
-            });
-
-            Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
-            {
-                if (!GroupType.isManual(group))
-                {
-                    ClientReflect.getGroup(group).forEach((key, value) ->
-                    {
-                        TweakClientCache<?> entry = TweakClientCache.get(group, key);
-
-                        boolean isClientIgnored = serverOnly.get() && entry.isClient() && !entry.isDynamic();
-                        boolean isLocked = entry.isLocked();
-                        boolean isChangeable = !isLocked && !isClientIgnored;
-
-                        if (isChangeable)
-                            entry.reset();
-                    });
-                }
-            });
-
-            ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
-            ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
-
-            ToggleCheckbox toggleServerOnly = new ToggleCheckbox
-            (
-                this.parent,
-                Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER),
-                serverOnly::get,
-                serverOnly::set
-            );
-
-            toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
-
-            ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
-            ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
-            ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
-
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
-
-            rows.add(server.add());
-            rows.add(disable.add());
-            rows.add(enable.add());
-
-            return rows;
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE), globalOptions, GroupId.OVERRIDE_CONFIG).add());
+        list.addRow(changeAllTweaks.generate());
 
         /* Key Bindings */
 
-        Supplier<ArrayList<ConfigRowList.Row>> bindings = () ->
-        {
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+        ConfigRowList.ContainerRow changeKeyBinds = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_BINDINGS),
+            this::getGeneralBindingsList,
+            GroupId.BINDINGS_CONFIG
+        );
 
-            KeyMapping openConfig = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
-            KeyMapping toggleFog = KeyUtil.find(LangUtil.Key.TOGGLE_FOG);
-
-            if (openConfig != null)
-                rows.add(new ConfigRowList.BindingRow(openConfig).add());
-            if (toggleFog != null)
-                rows.add(new ConfigRowList.BindingRow(toggleFog).add());
-
-            return rows;
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_BINDINGS), bindings, GroupId.BINDINGS_CONFIG).add());
+        list.addRow(changeKeyBinds.generate());
 
         /* Menu Settings */
 
-        Supplier<ArrayList<ConfigRowList.Row>> settings = () ->
-        {
-            ArrayList<ConfigRowList.Row> subcategories = new ArrayList<>();
+        ConfigRowList.ContainerRow changeSettings = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE),
+            this::getGeneralSettingsList,
+            GroupId.GENERAL_CONFIG
+        );
 
-            // Default Screen Options
-            Supplier<ArrayList<ConfigRowList.Row>> defaultScreen = () ->
-            {
-                TextGroup menuHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_INFO));
-                TweakClientCache<MenuOption> screenCache = TweakClientCache.get(GuiTweak.DEFAULT_SCREEN);
-                RadioGroup<MenuOption> screens = new RadioGroup<>
-                (
-                    list,
-                    MenuOption.class,
-                    DefaultConfig.Gui.DEFAULT_SCREEN,
-                    screenCache::getCurrent,
-                    (option) -> MenuOption.getTranslation((MenuOption) option),
-                    (selected) -> screenCache.setCurrent((MenuOption) selected)
-                );
-
-                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(menuHelp.getRows());
-                rows.addAll(screens.getRows());
-
-                return rows;
-            };
-
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE), defaultScreen, GroupId.DEFAULT_SCREEN_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
-
-            // Tree Indent Options
-            Supplier<ArrayList<ConfigRowList.Row>> treeConfig = () ->
-            {
-                TextGroup treeHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_INFO));
-                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
-
-                TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
-                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, tree.getKey(), tree.getCurrent()).add());
-
-                TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
-                rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getCurrent()).add());
-
-                return rows;
-            };
-
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE), treeConfig, GroupId.TREE_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
-
-            // Row Highlighting Options
-            Supplier<ArrayList<ConfigRowList.Row>> rowConfig = () ->
-            {
-                TextGroup rowHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_INFO));
-                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
-
-                TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
-                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, highlight.getKey(), highlight.getCurrent()).add());
-
-                TweakClientCache<Boolean> fade = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE);
-                rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, fade.getKey(), fade.getCurrent()).add());
-
-                TweakClientCache<String> color = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR);
-                rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getCurrent()).add());
-
-                return rows;
-            };
-
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE), rowConfig, GroupId.ROW_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
-
-            /* Tag Options */
-
-            Supplier<ArrayList<ConfigRowList.Row>> tagging = () ->
-            {
-                TextGroup tagHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_INFO));
-                ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
-
-                // New Tags
-
-                TweakClientCache<Boolean> newCache = TweakClientCache.get(GuiTweak.DISPLAY_NEW_TAGS);
-                ToggleCheckbox toggleNewTags = new ToggleCheckbox
-                (
-                    this.parent,
-                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_NEW_TAGS_LABEL),
-                    newCache::getCurrent,
-                    newCache::setCurrent
-                );
-
-                ConfigRowList.ManualRow displayNewTag = new ConfigRowList.ManualRow(List.of(toggleNewTags));
-                rows.add(displayNewTag.add());
-
-                // Sided tags
-
-                TweakClientCache<Boolean> sidedCache = TweakClientCache.get(GuiTweak.DISPLAY_SIDED_TAGS);
-                ToggleCheckbox toggleSidedTags = new ToggleCheckbox
-                (
-                    this.parent,
-                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SIDED_TAGS_LABEL),
-                    sidedCache::getCurrent,
-                    sidedCache::setCurrent
-                );
-
-                ConfigRowList.ManualRow displaySidedTag = new ConfigRowList.ManualRow(List.of(toggleSidedTags));
-                rows.add(displaySidedTag.add());
-
-                // Tag Tooltips
-
-                TweakClientCache<Boolean> tooltipCache = TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS);
-                ToggleCheckbox toggleTagTooltips = new ToggleCheckbox
-                (
-                    this.parent,
-                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAG_TOOLTIPS_LABEL),
-                    tooltipCache::getCurrent,
-                    tooltipCache::setCurrent
-                );
-
-                ConfigRowList.ManualRow displayTagTooltips = new ConfigRowList.ManualRow(List.of(toggleTagTooltips));
-                rows.add(displayTagTooltips.add());
-                rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).add());
-
-                // Feature Status
-
-                TextGroup statusHelp = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
-                rows.addAll(statusHelp.getRows());
-
-                TweakClientCache<Boolean> featureCache = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
-                ToggleCheckbox toggleFeatureStatus = new ToggleCheckbox
-                (
-                    this.parent,
-                    Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_LABEL),
-                    featureCache::getCurrent,
-                    featureCache::setCurrent
-                );
-
-                ConfigRowList.ManualRow displayFeatureStatus = new ConfigRowList.ManualRow(List.of(toggleFeatureStatus));
-                rows.add(displayFeatureStatus.add());
-
-                return rows;
-            };
-
-            subcategories.add(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_TITLE), tagging, GroupId.TITLE_TAGS_CONFIG, ConfigRowList.CatType.SUBCATEGORY).add());
-
-            return subcategories;
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE), settings, GroupId.GENERAL_CONFIG).add());
+        list.addRow(changeSettings.generate());
 
         /* Notifications */
 
-        Supplier<ArrayList<ConfigRowList.Row>> notifications = () ->
-        {
-            TextGroup notify = new TextGroup(list, Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
-            return new ArrayList<>(notify.getRows());
-        };
+        ConfigRowList.ContainerRow notifications = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE),
+            this::getGeneralNotifyList,
+            GroupId.NOTIFY_CONFIG
+        );
 
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE), notifications, GroupId.NOTIFY_CONFIG).add());
+        list.addRow(notifications.generate());
 
         /* Search Tags */
 
-        Supplier<ArrayList<ConfigRowList.Row>> searchTags = () ->
-        {
-            Component help = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_HELP);
-            Component newTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_NEW);
-            Component conflictTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CONFLICT);
-            Component resetTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_RESET);
-            Component clientTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_CLIENT);
-            Component serverTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SERVER);
-            Component saveTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_SAVE);
-            Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
-            Component[] tags = new Component[] { help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag };
+        ConfigRowList.ContainerRow searchTags = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE),
+            this::getGeneralSearchTags,
+            GroupId.SEARCH_TAGS_CONFIG
+        );
 
-            return new TextGroup(list, ModUtil.Text.combine(tags)).getRows();
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE), searchTags, GroupId.SEARCH_TAGS_CONFIG).add());
+        list.addRow(searchTags.generate());
 
         /* Keyboard Shortcuts */
 
-        Supplier<ArrayList<ConfigRowList.Row>> shortcuts = () ->
-        {
-            Component help = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_HELP);
-            Component find = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_FIND);
-            Component save = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_SAVE);
-            Component exit = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_EXIT);
-            Component jump = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_JUMP);
-            Component all = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_ALL);
-            Component group = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_GROUP);
+        ConfigRowList.ContainerRow shortcuts = new ConfigRowList.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_TITLE),
+            this::getGeneralShortcuts,
+            GroupId.SHORTCUTS_CONFIG
+        );
 
-            return new TextGroup(list, ModUtil.Text.combine(new Component[]{ help, find, save, exit, jump, all, group })).getRows();
-        };
-
-        list.addRow(new ConfigRowList.CategoryRow(list, Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_TITLE), shortcuts, GroupId.SHORTCUTS_CONFIG).add());
+        list.addRow(shortcuts.generate());
     }
 
-    public void generateAllList()
+    /**
+     * Used by the "all" group tab which displays a list of every tweak in the mod.
+     * Any addition group types will need to be added here.
+     */
+    public void generateRowsFromAllGroups()
     {
         addRows(GroupType.SOUND);
         addRows(GroupType.CANDY);
@@ -588,7 +858,14 @@ public record ConfigRenderer(ConfigScreen parent)
         addRows(GroupType.SWING);
     }
 
-    public void generateGroupList(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    /**
+     * Generates config row lists based on the current config tab and renders special effects based on config tab.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick A change in frame time.
+     */
+    public void generateAndRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SWING)
         {
@@ -596,15 +873,14 @@ public record ConfigRenderer(ConfigScreen parent)
 
             ConfigRowList.SingleCenteredRow custom = new ConfigRowList.SingleCenteredRow
             (
-                this.parent,
                 new ControlButton
                 (
-                    Component.translatable(LangUtil.Gui.CUSTOMIZE),
-                    (button) -> this.parent.getMinecraft().setScreen(new CustomizeScreen(this.parent))
+                    Component.translatable(LangUtil.Gui.SWING),
+                    (button) -> this.parent.getMinecraft().setScreen(new SwingScreen(this.parent))
                 )
             );
 
-            this.parent.getWidgets().getConfigRowList().addRow(custom.add());
+            this.parent.getWidgets().getConfigRowList().addRow(custom.generate());
         }
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
@@ -615,7 +891,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
             if (first != null)
             {
-                for (ConfigScreen.SearchTag tag : ConfigScreen.SearchTag.values())
+                for (ConfigWidgets.SearchTag tag : ConfigWidgets.SearchTag.values())
                 {
                     if (tag.toString().equals(first.replaceAll("@", "")))
                         isInvalidTag = false;
@@ -623,7 +899,8 @@ public record ConfigRenderer(ConfigScreen parent)
             }
 
             if (isInvalidTag)
-                this.parent.renderLast.add(() -> Screen.drawCenteredString(
+                this.parent.renderLast.add(() -> Screen.drawCenteredString
+                (
                     poseStack,
                     this.parent.getFont(),
                     Component.translatable(LangUtil.Gui.SEARCH_INVALID, this.parent.getWidgets().getSearchInput().getValue()),
@@ -633,7 +910,8 @@ public record ConfigRenderer(ConfigScreen parent)
                 ));
             else
             {
-                this.parent.renderLast.add(() -> Screen.drawCenteredString(
+                this.parent.renderLast.add(() -> Screen.drawCenteredString
+                (
                     poseStack,
                     this.parent.getFont(),
                     Component.translatable(LangUtil.Gui.SEARCH_EMPTY),
@@ -646,6 +924,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         switch (this.parent.getConfigTab())
         {
+            case ALL -> generateRowsFromAllGroups();
             case GENERAL -> addGeneral();
             case SOUND -> addRows(GroupType.SOUND);
             case CANDY -> addRows(GroupType.CANDY);
@@ -653,7 +932,6 @@ public record ConfigRenderer(ConfigScreen parent)
             case ANIMATION -> addRows(GroupType.ANIMATION);
             case SWING -> addRows(GroupType.SWING);
             case SEARCH -> addFound();
-            case ALL -> generateAllList();
         }
     }
 }

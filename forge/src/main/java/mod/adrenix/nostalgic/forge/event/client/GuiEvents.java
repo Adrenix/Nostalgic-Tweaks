@@ -18,12 +18,23 @@ import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.ForgeMod;
 
+/**
+ * This helper class defines instructions for overriding the in-game overlay and for overriding Forge's debugging
+ * overlay.
+ */
+
 public abstract class GuiEvents
 {
-    // Vanilla debug overlay reference
+    /**
+     * Vanilla debug overlay reference. This is needed so that the vanilla debug overlay can be rendered instead of the
+     * modded Forge version.
+     */
     private static final DebugScreenOverlay DEBUG_OVERLAY = new DebugScreenOverlay(Minecraft.getInstance());
 
-    // In Game Overlay Override
+    /**
+     * Overrides the rendering of the in-game overlay and debugging overlay.
+     * @param event A pre-render gui overlay event instance.
+     */
     public static void overlayOverride(RenderGuiOverlayEvent.Pre event)
     {
         Minecraft minecraft = Minecraft.getInstance();
@@ -91,6 +102,15 @@ public abstract class GuiEvents
         }
     }
 
+    /**
+     * Renders a modified food overlay.
+     * @param gui A forge GUI instance.
+     * @param isHungerDisabled Is hunger disabled.
+     * @param isExperienceDisabled Is experience disabled.
+     * @param width The current screen width.
+     * @param height The current screen height.
+     * @param poseStack The current pose stack.
+     */
     private static void renderFood(ForgeGui gui, boolean isHungerDisabled, boolean isExperienceDisabled, int width, int height, PoseStack poseStack)
     {
         if (isHungerDisabled)
@@ -98,8 +118,8 @@ public abstract class GuiEvents
 
         RandomSource random = RandomSource.create();
         Minecraft minecraft = Minecraft.getInstance();
-
         Player player = (Player) minecraft.getCameraEntity();
+
         if (player == null)
             return;
 
@@ -119,7 +139,7 @@ public abstract class GuiEvents
             int x = left - i * 8 - 9;
             int y = top + (isExperienceDisabled ? 7 : 0);
             int icon = 16;
-            byte background = 0;
+            int background = 0;
 
             if (player.hasEffect(MobEffects.HUNGER))
             {
@@ -142,9 +162,19 @@ public abstract class GuiEvents
         minecraft.getProfiler().pop();
     }
 
+    /**
+     * Renders a modified armor overlay.
+     * @param gui A forge GUI instance.
+     * @param isHungerDisabled Is hunger disabled.
+     * @param isExperienceDisabled Is experience disabled.
+     * @param width The current screen width.
+     * @param height The current screen height.
+     * @param poseStack The current pose stack.
+     */
     private static void renderArmor(ForgeGui gui, boolean isHungerDisabled, boolean isExperienceDisabled, int width, int height, PoseStack poseStack)
     {
         Minecraft minecraft = Minecraft.getInstance();
+
         if (minecraft.player == null)
             return;
 
@@ -170,21 +200,39 @@ public abstract class GuiEvents
 
             if (isHungerDisabled)
             {
-                if (i == level) // Half armor
+                if (i == level)
+                {
+                    // Half armor
                     GuiUtil.renderInverseArmor(poseStack, gui.getBlitOffset(), x, top + dy, 25, 9, 9, 9);
-                else if (i < level) // Full armor
+                }
+                else if (i < level)
+                {
+                    // Full armor
                     gui.blit(poseStack, x, top + dy, 34, 9, 9, 9);
-                else // No armor
+                }
+                else
+                {
+                    // No armor
                     gui.blit(poseStack, x, top + dy, 16, 9, 9, 9);
+                }
             }
             else
             {
-                if (i == level) // Half armor
+                if (i == level)
+                {
+                    // Half armor
                     gui.blit(poseStack, left, top + dy, 25, 9, 9, 9);
-                else if (i < level) // Full armor
+                }
+                else if (i < level)
+                {
+                    // Full armor
                     gui.blit(poseStack, left, top + dy, 34, 9, 9, 9);
-                else // No armor
+                }
+                else
+                {
+                    // No armor
                     gui.blit(poseStack, left, top + dy, 16, 9, 9, 9);
+                }
             }
 
             left += 8;
@@ -196,10 +244,20 @@ public abstract class GuiEvents
         minecraft.getProfiler().pop();
     }
 
+    /**
+     * Renders a modified air bubble overlay.
+     * @param gui A forge GUI instance.
+     * @param isHungerDisabled Is hunger disabled.
+     * @param isExperienceDisabled Is experience disabled.
+     * @param width The current screen width.
+     * @param height The current screen height.
+     * @param poseStack The current pose stack.
+     */
     private static void renderAir(ForgeGui gui, boolean isHungerDisabled, boolean isExperienceDisabled, int width, int height, PoseStack poseStack)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = (Player) minecraft.getCameraEntity();
+
         if (player == null)
             return;
 
@@ -207,6 +265,7 @@ public abstract class GuiEvents
         RenderSystem.enableBlend();
 
         int left = width / 2 + 91;
+
         if (left % 2 != 0 && isHungerDisabled)
             left -= 1;
 
@@ -214,6 +273,7 @@ public abstract class GuiEvents
         int y = top - (isExperienceDisabled ? 2 : 9);
         int dy = isExperienceDisabled ? 7 : 0;
         int air = player.getAirSupply();
+
         if (player.getAbsorptionAmount() > 0.0F)
             y -= 10;
 

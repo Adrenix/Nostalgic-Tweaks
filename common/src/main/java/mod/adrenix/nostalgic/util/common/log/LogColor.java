@@ -9,6 +9,8 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 
 public enum LogColor
 {
+    /* Colors */
+
     BLACK("\u001B[0;30m", "0"),          // Black §0
     DARK_BLUE("\u001B[0;34m", "1"),      // Dark Blue §1
     DARK_GREEN("\u001B[0;32m", "2"),     // Dark Green §2
@@ -58,8 +60,8 @@ public enum LogColor
     /**
      * Applies a log color to the given string.
      * @param color The desired color.
-     * @param to The string to apply the color to.
-     * @return A modified string with color applied and appended <code>RESET</code> code.
+     * @param to The string to apply a color to.
+     * @return A modified string with the color applied. An appended <code>RESET</code> code will be included.
      */
     public static String apply(LogColor color, String to)
     {
@@ -82,8 +84,5 @@ public enum LogColor
      * @return A modified string based on what environment the mod is loaded in.
      */
     @Override
-    public String toString()
-    {
-        return NostalgicTweaks.isDevelopmentEnvironment() ? this.ansi : "";
-    }
+    public String toString() { return NostalgicTweaks.isDevelopmentEnvironment() ? this.ansi : ""; }
 }

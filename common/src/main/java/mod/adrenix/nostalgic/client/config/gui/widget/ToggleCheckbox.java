@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.CustomizeScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
@@ -13,59 +13,119 @@ import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * This checkbox widget is used by various parts of the config user interface system.
+ * These widgets are used to toggle boolean flags.
+ */
+
 public class ToggleCheckbox extends Checkbox
 {
+    /* Static Fields */
+
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 20;
+
+    public static final boolean ON = true;
+    public static final boolean OFF = false;
+
     /* Fields */
 
     private final Screen screen;
+    private int tooltipWidth = 40;
     private OnPress onPress;
     private Component tooltip;
-    private int tooltipWidth = 40;
 
     /* Click Interface */
 
-    public interface OnPress { void press(boolean newState); }
+    public interface OnPress
+    {
+        /**
+         * Runs when a checkbox is clicked.
+         * @param newValue The new value of the checkbox.
+         */
+        void press(boolean newValue);
+    }
 
     /* Constructors */
 
-    public ToggleCheckbox(Screen screen, int x, int y, int width, int height, Component label, boolean state)
+    /**
+     * Create a new toggle checkbox with a custom starting x and y position.
+     * @param x The starting x-position of the checkbox.
+     * @param y The starting y-position of the checkbox.
+     * @param label The label of the checkbox.
+     * @param state The default state of the checkbox.
+     */
+    public ToggleCheckbox(int x, int y, Component label, boolean state)
     {
-        super(x, y, width, height, label, state, true);
-        this.screen = screen;
+        super(x, y, WIDTH, HEIGHT, label, state, ON);
+
+        this.screen = Minecraft.getInstance().screen;
         this.onPress = (newState) -> {};
         this.tooltip = null;
     }
 
-    public ToggleCheckbox(Screen screen, Component label, Supplier<Boolean> state, OnPress onPress)
+    /**
+     * Create a new toggle checkbox with a custom state supplier and on press logic.
+     *
+     * The starting x-position is aligned to the config row list starting x-position and the starting y-position is set
+     * to zero so that it may be redefined later by a row list renderer.
+     *
+     * @param label The label of the checkbox.
+     * @param state A state supplier.
+     * @param onPress A consumer that accepts a new value from {@link OnPress#press(boolean)}.
+     */
+    public ToggleCheckbox(Component label, Supplier<Boolean> state, OnPress onPress)
     {
-        this(screen, ConfigRowList.TEXT_START, 0, 20, 20, label, state.get());
+        this(ConfigRowList.TEXT_START, 0, label, state.get());
         this.onPress = onPress;
     }
 
     /* Setters */
 
+    /**
+     * Set the tooltip for this checkbox along with a new maximum tooltip width value.
+     * @param tooltip The tooltip to render.
+     * @param width The maximum width of the tooltip box.
+     */
     public void setTooltip(Component tooltip, int width)
     {
         this.tooltip = tooltip;
         this.tooltipWidth = width;
     }
 
+    /**
+     * Change the tooltip for this checkbox.
+     * @param tooltip The tooltip to render.
+     */
     public void setTooltip(Component tooltip) { this.setTooltip(tooltip, this.tooltipWidth); }
 
     /* Widget Overrides */
 
+    /**
+     * Handler method for when the checkbox is clicked.
+     * Special logic is included if the active game screen is a swing screen instance.
+     */
     @Override
     public void onPress()
     {
         super.onPress();
+
         this.onPress.press(this.selected());
-        if (this.screen instanceof CustomizeScreen)
+
+        if (this.screen instanceof SwingScreen)
         {
-            ((CustomizeScreen) this.screen).getMinecraft().setScreen(this.screen);
-            ((CustomizeScreen) this.screen).setSuggestionFocus(false);
+            ((SwingScreen) this.screen).getMinecraft().setScreen(this.screen);
+            ((SwingScreen) this.screen).setSearchBoxFocus(false);
         }
     }
 
+    /**
+     * Handler method for when the checkbox widget is rendered.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {

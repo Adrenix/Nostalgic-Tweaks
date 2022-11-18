@@ -11,16 +11,34 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+/**
+ * This helper class provides instructions for various server events. These methods are used by both mod loader event
+ * subscriptions. Any unique instructions are handled by their respective mod loader helpers.
+ */
+
 public abstract class ServerEventHelper
 {
-    /* Server Network Event Helpers */
+    /*
+       Server Network Helpers
 
+       The following methods are used by the server's networking events.
+     */
+
+    /**
+     * This method provides instructions for the mod to perform after a player connects to the server level.
+     * Disconnection instructions are handled by the client. The server will verify network protocol and inform the
+     * client that it is connected to a server with Nostalgic Tweaks installed.
+     *
+     * @param player A player instance.
+     */
     public static void connect(Player player)
     {
         if (player instanceof ServerPlayer)
         {
             PacketUtil.sendToPlayer((ServerPlayer) player, new PacketS2CHandshake());
-            TweakServerCache.all().forEach((id, tweak) -> {
+
+            TweakServerCache.all().forEach((id, tweak) ->
+            {
                 // Syncs server tweaks if singleplayer went to local host session
                 if (NostalgicTweaks.isClient())
                 {
@@ -41,5 +59,9 @@ public abstract class ServerEventHelper
 
     /* Server Event Helpers */
 
+    /**
+     * Defines the minecraft server instance in the mod's main class.
+     * @param instance A minecraft server instance.
+     */
     public static void instantiate(MinecraftServer instance) { NostalgicTweaks.setServer(instance); }
 }

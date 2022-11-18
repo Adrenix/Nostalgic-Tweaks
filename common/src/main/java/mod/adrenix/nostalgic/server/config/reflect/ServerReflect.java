@@ -21,7 +21,7 @@ public abstract class ServerReflect
 {
     /**
      * Updates the server config cache. To save to disk use {@link me.shedaniel.autoconfig.ConfigHolder#save()}.
-     * @param group Group associated with server tweak.
+     * @param group A group type associated with the server tweak.
      * @param key Key that links tweak to the server config.
      * @param value The value to save in the server config cache.
      */
@@ -32,7 +32,7 @@ public abstract class ServerReflect
 
     /**
      * Get all server tweaks saved in a configuration group.
-     * @param group Group associated with server tweak.
+     * @param group A group type.
      * @return A map of server tweaks associated with the given group type.
      */
     public static HashMap<String, Object> getGroup(GroupType group)
@@ -40,10 +40,16 @@ public abstract class ServerReflect
         return fetchFields(group, ServerConfigCache.getRoot());
     }
 
-    /**
-     * Private Helpers
+    /*
+       Private Helpers
      */
 
+    /**
+     * Get a data pair that holds a server config subclass type and a server config subclass instance.
+     * @param group A group type.
+     * @param config A server config instance.
+     * @return A data pair with a class type and its associated instance.
+     */
     private static Pair<Class<?>, Object> getServerGroupClass(GroupType group, ServerConfig config)
     {
         switch (group)
@@ -58,11 +64,24 @@ public abstract class ServerReflect
         return new Pair<>(ServerConfig.class, config);
     }
 
+    /**
+     * Set a field in the server config.
+     * @param group The group type that is associated with the key.
+     * @param config A server config instance.
+     * @param key The key that links the tweak to the config.
+     * @param value The value to put in the field.
+     */
     private static void setField(GroupType group, ServerConfig config, String key, Object value)
     {
         CommonReflect.setFieldHelper(getServerGroupClass(group, config), key, value);
     }
 
+    /**
+     * Get a hash map of fields associated with a group type and the server config.
+     * @param group A group type.
+     * @param config A server config instance.
+     * @return A hash map of fields from the given group type from the server config.
+     */
     private static HashMap<String, Object> fetchFields(GroupType group, ServerConfig config)
     {
         return CommonReflect.fetchFieldsHelper(getServerGroupClass(group, config));

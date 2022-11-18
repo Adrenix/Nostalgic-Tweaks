@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
@@ -24,37 +25,31 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides a list of current categories, subcategories, and tweaks.
+ * This class display a list of all categories, subcategories, and tweaks.
  * Assists the configuration screen so users can quickly jump to a specific row.
  */
 
 public class CategoryList extends Overlay
 {
-    /**
-     * Singleton Constructor
-     */
+    /* Singleton Constructor */
 
     public static final int DEFAULT_WIDTH = 256;
     public static final int DEFAULT_HEIGHT = 220;
 
     private CategoryList() { super(DEFAULT_WIDTH, DEFAULT_HEIGHT); }
 
-    /**
-     * Register Overlay
-     */
+    /* Register Overlay */
 
     public static final CategoryList OVERLAY = new CategoryList();
     static { Overlay.register(OVERLAY); }
 
-    /**
-     * Constants
-     */
+    /* Rendering Constants */
 
     private static final int U_TOP_LEFT_CORNER = 0;
     private static final int V_TOP_LEFT_CORNER = 0;
@@ -103,17 +98,26 @@ public class CategoryList extends Overlay
     private static final int V_HINT_ON = 0;
     private static final int HINT_SQUARE = 9;
 
+    /* Rendering Utility */
+
     private int getListStartX() { return (int) this.x + 10; }
     private int getListStartY() { return (int) this.y + H_TOP_RIGHT_CORNER; }
     private int getListEndY() { return (int) this.y + this.getListHeight() + H_TOP_LEFT_CORNER - 1; }
     private int getListWidth() { return (int) this.x + DEFAULT_WIDTH - 9; }
     private int getListHeight() { return this.height - H_TOP_RIGHT_CORNER - H_TOP_LEFT_CORNER; }
     private int getDrawWidth() { return this.width - W_TOP_RIGHT_CORNER - W_TOP_LEFT_CORNER; }
+
+    // Hint Flag
     private boolean hint = false;
+
+    // Star Char
     private static final String TWEAK_STAR = "*";
 
     /**
      * Text Row Button Widget
+     *
+     * This class turns text into clickable buttons.
+     * These buttons can be stars, container names, or tweak names.
      */
 
     private static class TextButton extends Button
@@ -147,6 +151,11 @@ public class CategoryList extends Overlay
 
         /* Widget Overrides */
 
+        /**
+         * Handler method for when the mouse is clicked.
+         * @param mouseX The current x-position of the mouse.
+         * @param mouseY The current y-position of the mouse.
+         */
         @Override
         public void onClick(double mouseX, double mouseY)
         {
@@ -156,6 +165,13 @@ public class CategoryList extends Overlay
             super.onClick(mouseX, mouseY);
         }
 
+        /**
+         * Rendering instructions for the text button widget.
+         * @param poseStack The current pose stack.
+         * @param mouseX The current x-position of the mouse.
+         * @param mouseY The current y-position of the mouse.
+         * @param partialTick The change in frame time.
+         */
         @Override
         public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
         {
@@ -175,30 +191,61 @@ public class CategoryList extends Overlay
             drawString(poseStack, this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.x, this.y, highlight);
         }
 
+        /* Required Widget Overrides */
+
         @Override
         public void updateNarration(NarrationElementOutput narrationElementOutput) { }
     }
 
     /**
      * Text Row List
+     *
+     * This class defines a list of rows that contain text button widgets.
+     * Only text button widgets are used in this list.
      */
 
     private static class TextRowList extends AbstractRowList<TextRow>
     {
+        /* Fields */
+
         public static int color = 0xFFFFFF;
         public final ConfigScreen screen;
 
+        /* Constructor */
+
         public TextRowList(ConfigScreen screen, int width, int height, int startY, int endY, int rowHeight)
         {
-            super(screen.getMinecraft(), width, height, startY, endY, rowHeight);
+            super(width, height, startY, endY, rowHeight);
+
             this.screen = screen;
-            this.setAsTransparentList();
+            this.setAsSemiTransparent();
         }
 
+        /* Methods */
+
+        /**
+         * Add a row to the text row list.
+         * @param row A row instance to add.
+         */
         public void addRow(TextRow row) { this.addEntry(row); }
 
+        /**
+         * This record defines the type of row being created.
+         * These rows will either be text buttons for containers (group buttons) or individual tweaks.
+         *
+         * @param list A text row list instance.
+         * @param row A config row list row instance.
+         * @param group Whether there is a group button associated with this entry.
+         * @param title The title to display when this entry is rendered.
+         * @param indent How far in from the left of the overlay window to start rendering text.
+         * @param onClick A handler method for when this entry is clicked.
+         */
         public record EntryRow(TextRowList list, ConfigRowList.Row row, @Nullable GroupButton group, Component title, int indent, Button.OnPress onClick)
         {
+            /**
+             * When an entry's definition is finished, invoke this to create a text row instance.
+             * @return A new text row instance that can be added to a text row list instance.
+             */
             public TextRow add()
             {
                 List<AbstractWidget> widgets = new ArrayList<>();
@@ -211,15 +258,20 @@ public class CategoryList extends Overlay
                 return new TextRow(ImmutableList.copyOf(widgets));
             }
 
+            /**
+             * A handler method for text row entries that toggles container rows.
+             * @param button A text button widget.
+             */
             private void toggle(Button button)
             {
                 if (this.group != null)
                 {
                     double scrolled = OVERLAY.list.getScrollAmount();
+                    int position = 0;
+
                     this.group.silentPress();
                     button.setMessage(Component.literal(this.group.isExpanded() ? "-" : "+"));
 
-                    int position = 0;
                     for (int i = 0; i < OVERLAY.list.children().size() - 1; i++)
                     {
                         for (AbstractWidget widget : OVERLAY.list.children().get(i).children)
@@ -252,21 +304,37 @@ public class CategoryList extends Overlay
         }
     }
 
+    /**
+     * Text Row
+     *
+     * This class defines the rows that will be included in a text row list instance.
+     * Only text button widgets are used in rows.
+     */
     private static class TextRow extends ContainerObjectSelectionList.Entry<TextRow>
     {
+        /* Fields */
+
         public final List<AbstractWidget> children;
 
-        public TextRow(List<AbstractWidget> children)
-        {
-            this.children = children;
-        }
+        /* Constructor */
 
-        @Override
-        public List<? extends GuiEventListener> children() { return this.children; }
+        public TextRow(List<AbstractWidget> children) { this.children = children; }
 
-        @Override
-        public List<? extends NarratableEntry> narratables() { return this.children; }
+        /* List Overrides */
 
+        /**
+         * Rendering instructions for an individual text row.
+         * @param poseStack The current pose stack.
+         * @param index Unused parameter.
+         * @param top The top of this row.
+         * @param left The left side (starting x-position) of this row.
+         * @param width The width of this row.
+         * @param height The height of this row.
+         * @param mouseX The current x-position of the mouse.
+         * @param mouseY The current y-position of the mouse.
+         * @param isMouseOver A flag that states whether the mouse is over this row.
+         * @param partialTick A change in time between frames.
+         */
         @Override
         public void render(PoseStack poseStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTick)
         {
@@ -298,25 +366,40 @@ public class CategoryList extends Overlay
 
             RenderSystem.disableBlend();
         }
+
+        /* Required Overrides */
+
+        @Override
+        public List<? extends GuiEventListener> children() { return this.children; }
+
+        @Override
+        public List<? extends NarratableEntry> narratables() { return this.children; }
     }
 
-    /**
-     * Overlay Overrides
-     */
+    /* Overlay Overrides */
 
     private TextRowList list;
     private ConfigRowList all;
     private ConfigRowList.Row selected = null;
 
+    /**
+     * There is no setter method for this field. This is handled by widget handlers automatically.
+     * @return A selected config row, null otherwise.
+     */
     @Nullable
     public ConfigRowList.Row getSelected() { return this.selected; }
 
+    /**
+     * This method defines instructions to perform when the overlay window is opened.
+     * @param configRowList A config row list instance.
+     */
     public void open(ConfigRowList configRowList)
     {
         Overlay.start(CategoryList.OVERLAY);
 
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
+
         if (screen == null)
             return;
 
@@ -330,10 +413,15 @@ public class CategoryList extends Overlay
             this.generateWidgets();
     }
 
+    /**
+     * This method defines instructions that create widgets for this overlay window.
+     * A text row list and its corresponding rows are created here.
+     */
     @Override
     public void generateWidgets()
     {
         ConfigScreen screen = (ConfigScreen) Minecraft.getInstance().screen;
+
         if (screen == null || (this.list != null && !this.list.children().isEmpty()))
             return;
 
@@ -346,12 +434,14 @@ public class CategoryList extends Overlay
         int endY = this.getListEndY();
 
         TextRowList.color = 0xFFFFFF;
+
         this.list = new TextRowList(screen, width, height, startY, endY, screen.getFont().lineHeight + 2);
         this.list.setLeftPos(this.getListStartX());
 
         for (ConfigRowList.Row row : this.all.children())
         {
             int indent = 0;
+
             if (row.getIndent() == ConfigRowList.CAT_TEXT_START)
                 indent = 9;
             else if (row.getIndent() == ConfigRowList.SUB_TEXT_START)
@@ -359,7 +449,8 @@ public class CategoryList extends Overlay
             else if (row.getIndent() == ConfigRowList.EMB_TEXT_START)
                 indent = 27;
 
-            Button.OnPress jump = button -> {
+            Button.OnPress jump = button ->
+            {
                 this.all.setScrollOn(row);
                 this.selected = row;
                 screen.getWidgets().getConfigRowList().setSelection = true;
@@ -368,23 +459,36 @@ public class CategoryList extends Overlay
             if (row.controller instanceof GroupButton group)
                 this.list.addRow(new TextRowList.EntryRow(this.list, row, group, group.getTitle(), indent, jump).add());
 
-            if (row.cache != null)
-                this.list.addRow(new TextRowList.EntryRow(this.list, row, null, Component.translatable(row.cache.getLangKey()), indent, jump).add());
+            if (row.tweak != null)
+                this.list.addRow(new TextRowList.EntryRow(this.list, row, null, Component.translatable(row.tweak.getLangKey()), indent, jump).add());
         }
     }
 
+    /**
+     * A filter method that checks if a text button widget is just a prefix star.
+     * @param row A text row instance.
+     * @param widget A widget instance.
+     * @return Whether the provided widget is invalid for selection.
+     */
     private boolean isInvalidWidget(TextRow row, AbstractWidget widget)
     {
         return widget instanceof TextButton text && text.title.getString().equals(TWEAK_STAR);
     }
 
+    /**
+     * A handler method for when a key is pressed while an overlay window is open.
+     * @param keyCode The pressed key code.
+     * @param scanCode A scan code.
+     * @param modifiers Any key modifiers.
+     * @return Whether this method handled the key press event.
+     */
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (ConfigScreen.isEsc(keyCode) && this.list.unsetFocus())
+        if (KeyUtil.isEsc(keyCode) && this.list.unsetFocus())
             return true;
 
-        if (ConfigScreen.isTab(keyCode) && this.list.getFocus(this::isInvalidWidget))
+        if (KeyUtil.isTab(keyCode) && this.list.setFocus(this::isInvalidWidget))
             return true;
 
         if (this.list.getFocusKeyPress(keyCode, scanCode, modifiers))
@@ -393,12 +497,28 @@ public class CategoryList extends Overlay
         return super.onKeyPressed(keyCode, scanCode, modifiers);
     }
 
+    /**
+     * A handler method for when the mouse is scrolled while an overlay window is open.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param delta A change in time between frames.
+     * @return Whether this method handled the mouse scroll event.
+     */
     @Override
     public boolean onMouseScrolled(double mouseX, double mouseY, double delta)
     {
         return this.list.mouseScrolled(mouseX, mouseY, delta);
     }
 
+    /**
+     * A handler method for when a dragging action occurs while a mouse button is pressed while an overlay window is open.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param button The clicked mouse button.
+     * @param dragX A new drag x-position.
+     * @param dragY A new drag y-position.
+     * @return Whether this method handled the mouse drag event.
+     */
     @Override
     public boolean onDrag(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
@@ -407,6 +527,7 @@ public class CategoryList extends Overlay
         if (isDragging)
         {
             double scrolled = this.list.getScrollAmount();
+
             this.list.children().clear();
             this.generateWidgets();
             this.list.setScrollAmount(scrolled);
@@ -417,18 +538,30 @@ public class CategoryList extends Overlay
         return isDragging;
     }
 
+    /**
+     * A handler method for when click event occurs while an overlay window is open.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param button The clicked mouse button.
+     * @return Whether this method handled the mouse drag event.
+     */
     @Override
     public boolean onClick(double mouseX, double mouseY, int button)
     {
         int startX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth() - 10;
         int startY = (int) this.y + 4;
+
         if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
 
         this.list.mouseClicked(mouseX, mouseY, button);
+
         return super.onClick(mouseX, mouseY, button);
     }
 
+    /**
+     * A handler method for when the game window is resized while an overlay window is open.
+     */
     @Override
     public void onResize()
     {
@@ -439,11 +572,14 @@ public class CategoryList extends Overlay
 
         if (screen instanceof ConfigScreen configScreen)
         {
-            configScreen.getRenderer().generateAllList();
+            configScreen.getRenderer().generateRowsFromAllGroups();
             this.open(configScreen.getWidgets().getConfigRowList());
         }
     }
 
+    /**
+     * A handler method for when the overlay window is closed.
+     */
     @Override
     public void onClose()
     {
@@ -453,11 +589,19 @@ public class CategoryList extends Overlay
         super.onClose();
     }
 
+    /**
+     * Rendering instructions for this overlay window.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in time between frames.
+     */
     @Override
     public void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
+
         if (screen == null || !this.isOpen())
             return;
 
@@ -490,7 +634,6 @@ public class CategoryList extends Overlay
             this.list.render(poseStack, mouseX, mouseY, partialTick);
 
         // Render border
-
         RenderSystem.enableTexture();
         RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
 

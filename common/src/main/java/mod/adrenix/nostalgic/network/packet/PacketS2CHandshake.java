@@ -19,6 +19,10 @@ import java.util.function.Supplier;
 
 public class PacketS2CHandshake
 {
+    /**
+     * Register this packet to the mod's network channel.
+     * Channel registration is handled by Architectury.
+     */
     public static void register()
     {
         NostalgicTweaks.NETWORK.register
@@ -30,29 +34,51 @@ public class PacketS2CHandshake
         );
     }
 
+    /* Fields */
+
     private final String protocol;
 
+    /* Constructors */
+
+    /**
+     * Create a new handshake packet.
+     * This creates a packet using the mod's current network protocol version.
+     */
     public PacketS2CHandshake()
     {
-        // Packet creation
         this.protocol = NostalgicTweaks.PROTOCOL;
     }
 
+    /**
+     * Create a new handshake packet with a buffer.
+     * This decodes a packet into a protocol string.
+     *
+     * @param buffer A friendly byte buffer instance.
+     */
     public PacketS2CHandshake(FriendlyByteBuf buffer)
     {
-        // Decode packet into data
         this.protocol = buffer.readUtf();
     }
 
+    /* Methods */
+
+    /**
+     * Encode data into the packet.
+     * @param buffer A friendly byte buffer instance.
+     */
     public void encode(FriendlyByteBuf buffer)
     {
-        // Encode data into packet
         buffer.writeUtf(this.protocol);
     }
 
+    /**
+     * Handle packet data.
+     * @param supplier A packet context supplier.
+     */
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
         // Client received packet data
+
         /*
             WARNING:
 
@@ -60,41 +86,47 @@ public class PacketS2CHandshake
             server will be class loading this packet.
          */
 
-        NetworkManager.PacketContext context = supplier.get();
-        context.queue(() -> {
-            if (context.getEnv() == EnvType.SERVER)
-            {
-                PacketUtil.warn(EnvType.SERVER, this.getClass());
-                return;
-            }
+        supplier.get().queue(() -> this.process(supplier.get()));
+    }
 
-            if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
-            {
-                NostalgicTweaks.setNetworkVerification(true);
-                ToastNotification.addServerHandshake();
+    /**
+     * Process packet data.
+     * @param context Network manager packet context.
+     */
+    private void process(NetworkManager.PacketContext context)
+    {
+        if (context.getEnv() == EnvType.SERVER)
+        {
+            PacketUtil.warn(EnvType.SERVER, this.getClass());
+            return;
+        }
 
-                String info = String.format
-                (
-                    "Successfully connected to a world with Nostalgic Tweaks with protocol (%s).",
-                    LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
-                );
+        if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
+        {
+            NostalgicTweaks.setNetworkVerification(true);
+            ToastNotification.addServerHandshake();
 
-                NostalgicTweaks.LOGGER.debug(info);
-            }
-            else
-            {
-                NostalgicTweaks.setNetworkVerification(false);
-                NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received incorrect protocol.");
+            String info = String.format
+            (
+                "Successfully connected to a world with Nostalgic Tweaks with protocol (%s).",
+                LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
+            );
 
-                String info = String.format
-                (
-                    "Received (%s) :: Expected (%s)",
-                    LogColor.apply(LogColor.RED, this.protocol),
-                    LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
-                );
+            NostalgicTweaks.LOGGER.debug(info);
+        }
+        else
+        {
+            NostalgicTweaks.setNetworkVerification(false);
+            NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received incorrect protocol.");
 
-                NostalgicTweaks.LOGGER.warn(info);
-            }
-        });
+            String info = String.format
+            (
+                "Received (%s) :: Expected (%s)",
+                LogColor.apply(LogColor.RED, this.protocol),
+                LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
+            );
+
+            NostalgicTweaks.LOGGER.warn(info);
+        }
     }
 }

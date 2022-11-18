@@ -17,6 +17,10 @@ import java.util.function.Supplier;
 
 public class PacketS2CHurtDirection
 {
+    /**
+     * Register this packet to the mod's network channel.
+     * Channel registration is handled by Architectury.
+     */
     public static void register()
     {
         NostalgicTweaks.NETWORK.register
@@ -28,29 +32,49 @@ public class PacketS2CHurtDirection
         );
     }
 
+    /* Fields */
+
     private final float hurtDir;
 
+    /* Constructors */
+
+    /**
+     * Create a new hurt direction packet with hurt direction value.
+     * This creates a packet using the provided float.
+     *
+     * @param hurtDir A hurt direction.
+     */
     public PacketS2CHurtDirection(float hurtDir)
     {
-        // Packet creation
         this.hurtDir = hurtDir;
     }
 
+    /**
+     * Create a new hurt direction packet with a buffer.
+     * This decodes a packet into a hurt direction value.
+     *
+     * @param buffer A friendly byte buffer instance.
+     */
     public PacketS2CHurtDirection(FriendlyByteBuf buffer)
     {
-        // Decode packet into Data
         this.hurtDir = buffer.readFloat();
     }
 
+    /* Methods */
+
+    /**
+     * Encode data into the packet.
+     * @param buffer A friendly byte buffer instance.
+     */
     public void encode(FriendlyByteBuf buffer)
     {
-        // Encode data into packet
         buffer.writeFloat(this.hurtDir);
     }
 
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
         // Client received packet data
+
         /*
             WARNING:
 
@@ -59,7 +83,9 @@ public class PacketS2CHurtDirection
          */
 
         NetworkManager.PacketContext context = supplier.get();
-        context.queue(() -> {
+
+        context.queue(() ->
+        {
             if (context.getEnv() == EnvType.SERVER)
             {
                 PacketUtil.warn(EnvType.SERVER, this.getClass());

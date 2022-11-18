@@ -7,16 +7,31 @@ import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.Minecraft;
 
+/**
+ * This class implements the Mod Menu API for Fabric. A functional interface is cached so that mod menu screen can be
+ * accessed from the nostalgic title screen and the nostalgic pause screen.
+ */
+
 public class ModMenuIntegration implements ModMenuApi
 {
-    /* Mod Tracking */
+    /*
+       Mod Menu Tracking
+
+       The following static block informs the mod that Mod Menu is installed and removes the null value from the mod
+       screen functional interface.
+     */
     static
     {
         NostalgicTweaks.isModMenuInstalled = true;
         GuiUtil.modScreen = ModMenuApi::createModsScreen;
     }
 
-    /* Menu Implementation */
+    /**
+     * Override the mod config screen factory so that it points to the mod's built-in configuration graphical user
+     * interface.
+     *
+     * @return A config screen factory that builds a new settings screen instance.
+     */
     public ConfigScreenFactory<?> getModConfigScreenFactory()
     {
         return parent -> new SettingsScreen(Minecraft.getInstance().screen, false);

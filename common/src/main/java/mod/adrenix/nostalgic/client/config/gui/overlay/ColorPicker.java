@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * This class provides a color picker overlay which assists color fields in the configuration screen.
+ * All overlay windows will have all sliders accessible. Hex management must be handled separately.
  */
 
 public class ColorPicker extends Overlay
@@ -36,7 +37,7 @@ public class ColorPicker extends Overlay
     public static final ColorPicker OVERLAY = new ColorPicker();
     static { Overlay.register(OVERLAY); }
 
-    /* Constants */
+    /* Rendering Constants */
 
     private static final int U_CLOSE_OFF = 176;
     private static final int V_CLOSE_OFF = 9;
@@ -49,32 +50,16 @@ public class ColorPicker extends Overlay
     private static final int V_HINT_ON = 18;
     private static final int HINT_SQUARE = 9;
 
-    /* Fields */
+    /* Overlay Fields */
 
-    private TweakClientCache<String> cache;
+    private TweakClientCache<String> tweak;
     private boolean hint = false;
     private int r;
     private int g;
     private int b;
     private int a;
 
-    /* Widgets Override */
-
-    @Override
-    public void generateWidgets()
-    {
-        int dy = 24;
-        int x = (int) this.x + 38;
-        int y = (int) this.y + 20;
-        int w = 125;
-        int h = 20;
-
-        widgets.clear();
-        widgets.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
-        widgets.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
-        widgets.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
-        widgets.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
-    }
+    /* Field Setters & Getters */
 
     private void setRed(int red) { this.r = red; }
     private void setGreen(int green) { this.g = green; }
@@ -89,24 +74,51 @@ public class ColorPicker extends Overlay
     private int getHintX() { return (int) this.x + 150; }
     private int getHintY() { return (int) this.y + 4; }
 
-    /* Methods */
+    /* Widgets Override */
 
+    /**
+     * Defines the widgets that are used by this overlay.
+     * Any existing widgets are cleared when this is invoked.
+     */
+    @Override
+    public void generateWidgets()
+    {
+        int x = (int) this.x + 38;
+        int y = (int) this.y + 20;
+        int w = 125;
+        int h = 20;
+        int dy = 24;
+
+        widgets.clear();
+        widgets.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
+        widgets.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
+        widgets.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
+        widgets.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
+    }
+
+    /* Overlay Opening */
+
+    /**
+     * Start a new color picker overlay window instance.
+     * @param hex A client tweak cache with a string value that stores a hex value.
+     */
     public void open(TweakClientCache<String> hex)
     {
         Overlay.start(ColorPicker.OVERLAY);
 
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
+
         if (screen == null)
             return;
 
         this.isJustOpened = true;
-        this.cache = hex;
+        this.tweak = hex;
         this.hint = false;
         this.x = (screen.width / 2.0D) - (this.width / 2.0D);
         this.y = (screen.height / 2.0D) - (this.height / 2.0D);
 
-        int[] rgba = ModUtil.Text.toHexRGBA(this.cache.getCurrent());
+        int[] rgba = ModUtil.Text.toHexRGBA(this.tweak.getValue());
         this.r = rgba[0];
         this.g = rgba[1];
         this.b = rgba[2];
@@ -115,41 +127,70 @@ public class ColorPicker extends Overlay
         this.generateWidgets();
     }
 
-    /* Overrides */
+    /* Overlay Overrides */
 
+    /**
+     * Handler method for when the game window is resized.
+     * Widget references will be reset when this happens.
+     */
     @Override
     public void onResize()
     {
-        TweakClientCache<String> current = this.cache;
+        TweakClientCache<String> current = this.tweak;
+
         this.onClose();
         this.open(current);
     }
 
+    /**
+     * Handler method for when the mouse is clicked.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether this method handled the click event.
+     */
     @Override
     public boolean onClick(double mouseX, double mouseY, int button)
     {
         if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, getHintX(), getHintY(), HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
+
         return super.onClick(mouseX, mouseY, button);
     }
 
-    private static void drawBorder(BufferBuilder buffer, Matrix4f matrix, int leftX, int topY, int color)
+    /**
+     * Draws a colored border around a slider widget.
+     * @param buffer A buffer builder instance.
+     * @param matrix A position matrix.
+     * @param startX The starting x-position for rendering.
+     * @param startY The starting y-position for rendering.
+     * @param color A color integer for the border.
+     */
+    private static void drawBorder(BufferBuilder buffer, Matrix4f matrix, int startX, int startY, int color)
     {
-        RenderUtil.fill(buffer, matrix, leftX, leftX + 1, topY, topY + 19, color);
-        RenderUtil.fill(buffer, matrix, leftX, leftX + 125, topY, topY + 1, color);
-        RenderUtil.fill(buffer, matrix, leftX + 125, leftX + 126, topY, topY + 20, color);
-        RenderUtil.fill(buffer, matrix, leftX, leftX + 125, topY + 19, topY + 20, color);
+        RenderUtil.fill(buffer, matrix, startX, startX + 1, startY, startY + 19, color);
+        RenderUtil.fill(buffer, matrix, startX, startX + 125, startY, startY + 1, color);
+        RenderUtil.fill(buffer, matrix, startX + 125, startX + 126, startY, startY + 20, color);
+        RenderUtil.fill(buffer, matrix, startX, startX + 125, startY + 19, startY + 20, color);
     }
 
+    /**
+     * Handler method for overlay rendering.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick A change in game frame time.
+     */
     @Override
     public void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
+
         if (screen == null || !this.isOpen())
             return;
 
-        this.cache.setCurrent(ModUtil.Text.toHexString(new int[] {this.r, this.g, this.b, this.a}));
+        this.tweak.setValue(ModUtil.Text.toHexString(new int[] {this.r, this.g, this.b, this.a}));
 
         int startX = (int) this.x;
         int startY = (int) this.y;
@@ -181,11 +222,11 @@ public class ColorPicker extends Overlay
         int leftX = startX + 14;
         int topY = startY + 21;
 
-        int[] rgba = ModUtil.Text.toHexRGBA(this.cache.getCurrent());
+        int[] rgba = ModUtil.Text.toHexRGBA(this.tweak.getValue());
         int r = ModUtil.Text.toHexInt("#" + (rgba[0] < 16 ? "0" : "") + Integer.toHexString(rgba[0]) + "0000FF");
         int g = ModUtil.Text.toHexInt("#00" + (rgba[1] < 16 ? "0" : "") + Integer.toHexString(rgba[1]) + "00FF");
         int b = ModUtil.Text.toHexInt("#0000" + (rgba[2] < 16 ? "0" : "") + Integer.toHexString(rgba[2]) + "FF");
-        int a = ModUtil.Text.toHexInt(this.cache.getCurrent());
+        int a = ModUtil.Text.toHexInt(this.tweak.getValue());
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY, topY + 18, r);
@@ -221,6 +262,7 @@ public class ColorPicker extends Overlay
 
         // Render dragging and tooltip hints
         boolean isOverIcon = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
+
         if (isOverIcon)
         {
             List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);

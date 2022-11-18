@@ -13,74 +13,138 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ProgressListener;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
+
+/**
+ * This screen defines the instructions that are performed while progress is being made.
+ *
+ * Since these types of screens no longer serve a purpose in vanilla, the nostalgic progress screen simulates the old
+ * style of loading by randomly ticking up a progress bar.
+ */
 
 public class NostalgicProgressScreen extends Screen implements ProgressListener
 {
     /* Fields */
 
-    protected @Nullable Component header;
-    protected @Nullable Component stage;
-    protected int progress = 0;
-    protected double pauseTicking = 0.98;
-    protected boolean renderProgressBar = true;
-    protected boolean ticking = false;
-    protected boolean stop;
-    protected ProgressScreenAccessor progressScreen;
-    protected static ResourceKey<Level> previousDimension;
-    protected static ResourceKey<Level> currentDimension;
-    protected static final int MAX = 100;
+    private @Nullable Component header;
+    private @Nullable Component stage;
+
+    private int progress = 0;
+    private double pauseTicking = 0.98;
+    private boolean renderProgressBar = true;
+    private boolean ticking = false;
+    private boolean stop;
+    private final ProgressScreenAccessor progressScreen;
+
+    private static ResourceKey<Level> previousDimension;
+    private static ResourceKey<Level> currentDimension;
+
     public static final double NO_PAUSES = 1.0;
 
     /* Constructor */
 
+    /**
+     * Create a new nostalgic progress screen instance.
+     * @param progressScreen A vanilla progress screen.
+     */
     public NostalgicProgressScreen(ProgressScreen progressScreen)
     {
         super(Component.empty());
+
         this.progressScreen = (ProgressScreenAccessor) progressScreen;
     }
 
     /* Setters / Getters */
 
+    /**
+     * Retrieves the current state of the ticking flag.
+     * @return Whether the progress screen is ticking progress.
+     */
     public boolean isTicking() { return this.ticking; }
+
+    /**
+     * Set the state of the render progress bar flag.
+     * @param state A boolean.
+     */
     public void setRenderProgressBar(boolean state) { this.renderProgressBar = state; }
+
+    /**
+     * Set the amount of milliseconds to wait per tick pause.
+     * @param pause A time to wait after a pause in ticking in milliseconds.
+     */
     public void setPauseTicking(double pause) { this.pauseTicking = pause; }
+
+    /**
+     * Set the header for the progress screen.
+     * @param header A header component.
+     */
     public void setHeader(@Nullable Component header) { this.header = header; }
+
+    /**
+     * Set the stage (subtitle) for the progress screen.
+     * @param stage A subtitle component.
+     */
     public void setStage(@Nullable Component stage) { this.stage = stage; }
+
+    /**
+     * Set the previous dimension that was loaded.
+     * @param setter A level resource key.
+     */
     public static void setPreviousDimension(ResourceKey<Level> setter) { previousDimension = setter; }
+
+    /**
+     * Set the current dimension that player is in.
+     * @param setter A level resource key.
+     */
     public static void setCurrentDimension(ResourceKey<Level> setter) { currentDimension = setter; }
+
+    /**
+     * Gets the last dimension that the player was in.
+     * @return A level resource key.
+     */
     public static @Nullable ResourceKey<Level> getPreviousDimension() { return previousDimension; }
+
+    /**
+     * Gets the current dimension that the player is in.
+     * @return A level resource key.
+     */
     public static @Nullable ResourceKey<Level> getCurrentDimension() { return currentDimension; }
 
     /* Overrides */
 
+    /**
+     * Handler method that prevents the screen from closing when the Esc key is pressed.
+     * @return Always returns <code>false</code>.
+     */
     @Override
     public boolean shouldCloseOnEsc() { return false; }
 
-    @Override
-    public void progressStartNoAbort(Component component) {}
-
-    @Override
-    public void progressStart(Component header) {}
-
-    @Override
-    public void progressStage(Component stage) {}
-
-    @Override
-    public void progressStagePercentage(int progress) {}
-
+    /**
+     * Handler method that provides instructions for when progress is stopped.
+     */
     @Override
     public void stop() { this.stop = true; }
 
+    /**
+     * Handler method that provides instructions for when the screen is closed.
+     */
     @Override
     public void removed() { this.stop(); }
 
+    /**
+     * Handler method that provides instructions for rendering this screen.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
-    public void render(PoseStack poses, int mouseX, int mouseY, float partialTick)
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         if (this.minecraft == null) return;
 
-        this.generateText();
+        this.setHeaderAndStage();
 
         if (this.header == null && this.stage == null)
         {
@@ -89,10 +153,11 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         }
 
         this.renderDirtBackground(0);
+
         if (this.renderProgressBar)
             ProgressRenderer.renderProgressWithInt(this.progress);
 
-        this.renderDrawableText(poses);
+        this.renderDrawableText(poseStack);
 
         if (this.stop)
         {
@@ -101,32 +166,57 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         }
     }
 
+    /* Required Screen Overrides */
+
+    @Override
+    public void progressStartNoAbort(Component component) { }
+
+    @Override
+    public void progressStart(Component header) { }
+
+    @Override
+    public void progressStage(Component stage) { }
+
+    @Override
+    public void progressStagePercentage(int progress) { }
+
     /* Helpers */
 
-    public void renderProgress()
+    /**
+     * Progresses through an entire progress bar. This is done randomly and the random behavior can be controlled by
+     * various fields.
+     */
+    public void load()
     {
         Minecraft minecraft = Minecraft.getInstance();
 
         this.ticking = true;
         this.progress = -1;
 
-        while (minecraft.isRunning() && this.ticking && this.progress < NostalgicProgressScreen.MAX)
+        while (minecraft.isRunning() && this.ticking && this.progress < 100)
         {
             long start = Util.getMillis();
             double pause = Math.random();
-            double wait = (long) ((Math.random()) + (pause > pauseTicking ? Math.random() * 1000 : 0));
+            double wait = (long) ((Math.random()) + (pause > this.pauseTicking ? Math.random() * 1000 : 0));
 
             while (Util.getMillis() - start < wait)
                 ModUtil.Run.nothing();
 
             this.progress++;
+
             minecraft.forceSetScreen(this);
         }
 
         this.ticking = false;
     }
 
-    protected void generateText()
+    /**
+     * This method changes the title and subtitle of the nostalgic progress screen.
+     *
+     * Different titles/subtitles are used depending on whether the screen is being used for saving or whether the
+     * player is moving to a new a dimension.
+     */
+    private void setHeaderAndStage()
     {
         Minecraft minecraft = Minecraft.getInstance();
         MutableComponent header = (MutableComponent) this.header;
@@ -179,12 +269,16 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         }
     }
 
-    protected void renderDrawableText(PoseStack poses)
+    /**
+     * Renders any text that is eligible for being drawn.
+     * @param poseStack The current pose stack.
+     */
+    private void renderDrawableText(PoseStack poseStack)
     {
         if (this.header != null)
-            ProgressRenderer.drawTitleText(poses, this, this.header);
+            ProgressRenderer.drawTitleText(poseStack, this, this.header);
 
         if (this.stage != null)
-            ProgressRenderer.drawSubtitleText(poses, this, this.stage);
+            ProgressRenderer.drawSubtitleText(poseStack, this, this.stage);
     }
 }

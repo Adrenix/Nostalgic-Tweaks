@@ -11,54 +11,91 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
+
+/**
+ * The reset button is the last button to the right of all tweak cache rows within a config row list row.
+ * Depending on the type of tweak that is cached, different resetting logic is required.
+ */
 
 public class ResetButton extends Button
 {
-    protected static final Component TITLE = Component.translatable(LangUtil.Cloth.RESET);
-    protected final AbstractWidget anchor;
-    @Nullable protected final TweakClientCache<?> cache;
+    /* Fields */
 
-    public ResetButton(@Nullable TweakClientCache<?> cache, AbstractWidget anchor)
+    private static final Component TITLE = Component.translatable(LangUtil.Cloth.RESET);
+    private final AbstractWidget controller;
+
+    @Nullable
+    private final TweakClientCache<?> tweak;
+
+    /* Private Helpers */
+
+    /**
+     * Changes the width of the reset button based on the translation font width of this button title.
+     * @return A reset button width.
+     */
+    private static int getResetWidth() { return Minecraft.getInstance().font.width(TITLE.getString()) + 8; }
+
+    /**
+     * Resets the tweak client cache based on the neighboring widget controller.
+     * @param cache A nullable tweak client cache instance.
+     * @param controller A neighboring widget controller.
+     */
+    private static void reset(@Nullable TweakClientCache<?> cache, AbstractWidget controller)
     {
-        super(
-            0,
-            0,
-            getResetWidth(),
-            ConfigRowList.BUTTON_HEIGHT,
-            TITLE,
-            (button) -> {
-                if (cache != null)
-                {
-                    cache.reset();
+        if (cache != null)
+        {
+            cache.reset();
 
-                    if (anchor instanceof EditBox input && cache.getCurrent() instanceof String value)
-                        input.setValue(value);
-                    else if (anchor instanceof ColorInput color && cache.getCurrent() instanceof String value)
-                        ((EditBox) color.getWidget()).setValue(value);
-                }
-                else if (anchor instanceof KeyBindButton key)
-                    key.reset();
-            }
-        );
-
-        this.cache = cache;
-        this.anchor = anchor;
-        setStartX();
+            if (controller instanceof EditBox input && cache.getValue() instanceof String value)
+                input.setValue(value);
+            else if (controller instanceof ColorInput color && cache.getValue() instanceof String value)
+                ((EditBox) color.getWidget()).setValue(value);
+        }
+        else if (controller instanceof KeyBindButton key)
+            key.reset();
     }
 
-    public static int getResetWidth() { return Minecraft.getInstance().font.width(TITLE.getString()) + 8; }
+    /* Constructor */
 
-    private void setStartX() { this.x = anchor.x + anchor.getWidth() + ConfigRowList.ROW_WIDGET_GAP; }
+    /**
+     * Create a new reset button instance.
+     * @param tweak A nullable tweak client cache instance.
+     * @param controller The controller widget used in config row list row this reset button is attached to.
+     */
+    public ResetButton(@Nullable TweakClientCache<?> tweak, AbstractWidget controller)
+    {
+        super(0, 0, getResetWidth(), ConfigRowList.BUTTON_HEIGHT, TITLE, (button) -> reset(tweak, controller));
 
+        this.tweak = tweak;
+        this.controller = controller;
+
+        this.updateX();
+    }
+
+    /* Methods */
+
+    /**
+     * Update the starting x-position based on controller position and standard row widget gap.
+     */
+    private void updateX() { this.x = this.controller.x + this.controller.getWidth() + ConfigRowList.ROW_WIDGET_GAP; }
+
+    /**
+     * Handler method for reset button rendering.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        setStartX();
+        this.updateX();
 
-        if (this.cache != null)
-            this.active = this.cache.isResettable();
-        else if (this.anchor instanceof KeyBindButton key)
+        if (this.tweak != null)
+            this.active = this.tweak.isResettable();
+        else if (this.controller instanceof KeyBindButton key)
             this.active = key.isResettable();
 
         if (Overlay.isOpened())

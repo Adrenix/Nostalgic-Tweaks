@@ -12,6 +12,11 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Handler class that subscribes mod events to Forge's event bus.
+ * This class is focused on client events.
+ */
+
 @Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public abstract class ClientEventHandler
 {
@@ -38,30 +43,25 @@ public abstract class ClientEventHandler
      * the server.
      */
     @SubscribeEvent
-    public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) { ClientEventHelper.disconnect(); }
+    public static void onLogOut(ClientPlayerNetworkEvent.LoggingOut event) { ClientEventHelper.disconnect(); }
 
     /* Candy Events */
 
     /**
-     * Redirects the vanilla title screen to the mod's classic title screen.
-     * Controlled by the old title screen toggle.
+     * Redirects various vanilla screens so that the mod's classic title screen or classic world loading screens can
+     * be rendered.
+     *
+     * Controlled by various old screen tweaks.
      */
     @SubscribeEvent
-    public static void classicTitleScreen(ScreenEvent.Opening event) { CandyEvents.classicTitleScreen(event); }
-
-    /**
-     * Redirects various vanilla screens so that classic world loading screens can be rendered.
-     * Controlled by the old loading screens toggle.
-     */
-    @SubscribeEvent
-    public static void classicLoadingScreens(ScreenEvent.Opening event) { CandyEvents.classicLoadingScreens(event); }
+    public static void onSetScreen(ScreenEvent.Opening event) { CandyEvents.classicTitleScreens(event); }
 
     /**
      * Handles the rendering of old fog.
-     * Controlled by the old overworld/nether fog toggles.
+     * Controlled by the old overworld/nether fog tweaks.
      */
     @SubscribeEvent
-    public static void oldFogRendering(ViewportEvent.RenderFog event) { CandyEvents.oldFogRendering(event); }
+    public static void onRenderFog(ViewportEvent.RenderFog event) { CandyEvents.renderOldFog(event); }
 
     /* Gui Events */
 
@@ -73,5 +73,5 @@ public abstract class ClientEventHandler
      * Controlled by various HUD tweaks.
      */
     @SubscribeEvent
-    public static void overlayOverride(RenderGuiOverlayEvent.Pre event) { GuiEvents.overlayOverride(event); }
+    public static void onPreRenderOverlay(RenderGuiOverlayEvent.Pre event) { GuiEvents.overlayOverride(event); }
 }

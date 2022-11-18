@@ -5,9 +5,8 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
-import mod.adrenix.nostalgic.common.config.tweak.ITweak;
+import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import java.util.HashMap;
  * overridden from values received from the server.
  */
 
-public class TweakServerCache<T>
+public class TweakServerCache<T> extends TweakCommonCache
 {
     /**
      * This cache keeps a record of server only tweaks reducing the amount of tweaks to cycle through when the server
@@ -29,16 +28,16 @@ public class TweakServerCache<T>
      * It will reference the default client config to see which tweaks are currently marked as server controlled.
      */
 
-    private static final HashMap<String, TweakServerCache<?>> cache = new HashMap<>();
+    private static final HashMap<String, TweakServerCache<?>> CACHE = new HashMap<>();
 
-    private static String generateKey(GroupType group, String key) { return TweakCommonCache.generateKey(group, key); }
     static
     {
         if (NostalgicTweaks.isClient())
         {
-            TweakClientCache.all().forEach((id, tweak) -> {
+            TweakClientCache.all().forEach((id, tweak) ->
+            {
                 if (!tweak.isClient() || tweak.isDynamic())
-                    cache.put(id, new TweakServerCache<>(tweak.getGroup(), tweak.getKey(), tweak.getSavedValue()));
+                    CACHE.put(id, new TweakServerCache<>(tweak.getGroup(), tweak.getKey(), tweak.getSavedValue()));
             });
         }
         else
@@ -52,7 +51,7 @@ public class TweakServerCache<T>
                         TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(group, key, TweakSide.Dynamic.class);
 
                         if (server != null || dynamic != null)
-                            cache.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
+                            CACHE.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
                     }
                 })
             );
@@ -63,11 +62,11 @@ public class TweakServerCache<T>
      * Get a hash map of all server-only tweaks.
      * @return A map of tweak keys to their server cached value.
      */
-    public static HashMap<String, TweakServerCache<?>> all() { return cache; }
+    public static HashMap<String, TweakServerCache<?>> all() { return CACHE; }
 
     /**
      * Get a server-side tweak. This should <b>only</b> be used if a tweak enumeration is not available.
-     * For the best performance, use {@link TweakServerCache#get(ITweak)} since it retrieves cached hashmap pointers.
+     * For the best performance, use {@link TweakServerCache#get(Tweak)} since it retrieves cached hashmap pointers.
      * @param group The group a tweak is associated with.
      * @param key The key used to identify the tweak.
      * @return The current tweak value kept in the cache.
@@ -76,7 +75,7 @@ public class TweakServerCache<T>
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks and asserted, their returned type is assured.
     public static <T> TweakServerCache<T> get(GroupType group, String key)
     {
-        return (TweakServerCache<T>) cache.get(generateKey(group, key));
+        return (TweakServerCache<T>) CACHE.get(generateKey(group, key));
     }
 
     /**
@@ -88,24 +87,18 @@ public class TweakServerCache<T>
      * @param <T> The type associated with the tweak.
      */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
-    public static <T> TweakServerCache<T> get(ITweak tweak)
+    public static <T> TweakServerCache<T> get(Tweak tweak)
     {
         if (tweak.getSide() == NostalgicTweaks.Side.CLIENT)
             return null;
 
         if (tweak.getServerCache() == null)
             tweak.setServerCache(get(tweak.getGroup(), tweak.getKey()));
+
         return (TweakServerCache<T>) tweak.getServerCache();
     }
 
-    /**
-     * All tweak caches have a group and a unique key within that group.
-     * @see mod.adrenix.nostalgic.client.config.ClientConfig
-     */
-
-    private final String key;
-    private final GroupType group;
-    private StatusType status;
+    /* Fields */
 
     /**
      * Caches the dynamic annotation status of each tweak. Since this metadata never changes, it is best to cache the
@@ -131,6 +124,8 @@ public class TweakServerCache<T>
      */
     private T server;
 
+    /* Constructor */
+
     /**
      * Server tweaks are created once and saved in the cache.
      * Use the cache to retrieve tweaks by their group and key identification.
@@ -141,22 +136,27 @@ public class TweakServerCache<T>
      */
     private TweakServerCache(GroupType group, String key, T value)
     {
-        this.group = group;
-        this.key = key;
+        super(group, key);
+
         this.value = value;
         this.server = value;
-        this.status = StatusType.FAIL;
-        this.isAnnotatedDynamic = CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
-
-        TweakSide.EntryStatus status = CommonReflect.getAnnotation(this, TweakSide.EntryStatus.class);
-
-        if (status != null)
-            this.status = status.status();
+        this.isAnnotatedDynamic = this.isMetadataPresent(TweakSide.Dynamic.class);
     }
 
-    public GroupType getGroup() { return this.group; }
-    public String getKey() { return this.key; }
+    /* Methods */
+
+    /**
+     * Get the value used by both the client and server. The client can change this field within the config menu.
+     * Therefore, this field will not always be in sync with the server.
+     * @return The current (possibly not synced) value for this server tweak.
+     */
     public T getValue() { return this.value; }
+
+    /**
+     * Get the current state last received by the server. This should be used by the client when it seeks to find the
+     * current state of a tweak set by the server.
+     * @return A value only used by the client.
+     */
     public T getServerCache() { return this.server; }
 
     /**
@@ -165,20 +165,6 @@ public class TweakServerCache<T>
      * @return Whether the tweak is annotated with a dynamic side.
      */
     public boolean isDynamic() { return this.isAnnotatedDynamic; }
-
-    /**
-     * The status of a tweak is updated when its code is executed.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
-     * @return Whether a tweak has failed to load, has not attempted to load, or is loaded.
-     */
-    public StatusType getStatus() { return this.status; }
-
-    /**
-     * Can be set anywhere and updated at anytime.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
-     * @param status The current status of a tweak.
-     */
-    public void setStatus(StatusType status) { this.status = status; }
 
     /**
      * Sets the value of the server cache. Only the client should be using this method.

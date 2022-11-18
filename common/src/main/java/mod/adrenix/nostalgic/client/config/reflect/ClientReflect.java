@@ -19,7 +19,7 @@ public abstract class ClientReflect
 {
     /**
      * Updates the config cache. To save to disk use {@link me.shedaniel.autoconfig.ConfigHolder#save()}.
-     * @param group Group associated with tweak.
+     * @param group The group type that is associated with a tweak.
      * @param key The key that links the tweak to the config.
      * @param value The value to save in the config cache.
      */
@@ -40,7 +40,7 @@ public abstract class ClientReflect
 
     /**
      * Get the default value of a tweak.
-     * @param group Group associated with tweak.
+     * @param group The group type that is associated with the key.
      * @param key The key that links the tweak to the config.
      * @param <T> Class associated with tweak.
      * @return The default value associated with the given tweak identifiers.
@@ -52,7 +52,7 @@ public abstract class ClientReflect
 
     /**
      * Get the current tweak value that is saved on disk.
-     * @param group Group associated with tweak.
+     * @param group The group type that is associated with the key.
      * @param key The key that links the tweak to the config.
      * @param <T> Class associated with tweak.
      * @return The current value saved on disk.
@@ -62,25 +62,41 @@ public abstract class ClientReflect
         return getFieldValue(group, key, ClientConfigCache.getRoot());
     }
 
-    /**
-     * Private Helpers
+    /*
+       Private Helpers
      */
 
+    /**
+     * Find a field value from the config.
+     * @param group The group type that is associated with the key.
+     * @param key The key that links the tweak to the config.
+     * @param config A client config instance.
+     * @param <T> The expected type associated with the field.
+     * @return A value retrieved from a field.
+     */
     private static <T> T getFieldValue(GroupType group, String key, ClientConfig config)
-    {
-        return findField(group, config, key);
-    }
-
-    private static <T> T findField(GroupType group, ClientConfig config, String key)
     {
         return CommonReflect.getFieldHelper(CommonReflect.getGroupClass(group, config), key);
     }
 
+    /**
+     * Set a field in the client config.
+     * @param group The group type that is associated with the key.
+     * @param config A client config instance.
+     * @param key The key that links the tweak to the config.
+     * @param value The value to put in the field.
+     */
     private static void setField(GroupType group, ClientConfig config, String key, Object value)
     {
         CommonReflect.setFieldHelper(CommonReflect.getGroupClass(group, config), key, value);
     }
 
+    /**
+     * Get a hash map of fields associated with a group type and the client config.
+     * @param group A group type.
+     * @param config A client config instance.
+     * @return A hash map of fields from the given group type from the client config.
+     */
     private static HashMap<String, Object> fetchFields(GroupType group, ClientConfig config)
     {
         return CommonReflect.fetchFieldsHelper(CommonReflect.getGroupClass(group, config));

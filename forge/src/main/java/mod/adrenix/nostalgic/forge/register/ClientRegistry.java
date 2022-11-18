@@ -11,15 +11,26 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+/**
+ * Handler class that subscribes mod events to Forge's event bus.
+ * This class is focused on client events.
+ */
+
 @Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public abstract class ClientRegistry
 {
+    /**
+     * Instructions for client initialization.
+     * @param event A FML client setup event.
+     */
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event)
     {
         // Register config screen
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
-            new ConfigScreenHandler.ConfigScreenFactory(((minecraft, screen) -> new SettingsScreen(screen, false)))
+        ModLoadingContext.get().registerExtensionPoint
+        (
+            ConfigScreenHandler.ConfigScreenFactory.class, () ->
+                new ConfigScreenHandler.ConfigScreenFactory(((minecraft, screen) -> new SettingsScreen(screen, false)))
         );
 
         // Define mod screen

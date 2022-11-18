@@ -10,6 +10,11 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Handler class that subscribes mod events to Forge's event bus.
+ * This class is focused on events used by both the client and server.
+ */
+
 @Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public abstract class CommonEventHandler
 {

@@ -15,11 +15,18 @@ import net.minecraft.world.InteractionResult;
 
 public abstract class ClientConfigCache
 {
-    /* Configuration Caching */
+    /* Cache Fields */
 
     private static boolean initialized = false;
     private static final ClientConfig SERVER_CACHE = new ClientConfig();
     private static ClientConfig cache;
+
+    /**
+     * If the caller is from a server, then return a dummy cache since the client cache is never used by the server.
+     * Otherwise, preload configuration data if this cache has not already been initialized.
+     *
+     * @return The client config cache if the caller was the client, or a dummy cache if the caller was the server.
+     */
     private static ClientConfig getCache()
     {
         // This cache is only used by the ModConfig class and is not used for logic
@@ -28,8 +35,11 @@ public abstract class ClientConfigCache
 
         if (!initialized)
             preloadConfiguration();
+
         return cache;
     }
+
+    /* Quick Group Cache Access */
 
     public static ClientConfig getRoot() { return getCache(); }
     public static ClientConfig.Sound getSound() { return getCache().sound; }
@@ -39,6 +49,12 @@ public abstract class ClientConfigCache
     public static ClientConfig.Swing getSwing() { return getCache().swing; }
     public static ClientConfig.Gui getGui() { return getCache().gui; }
 
+    /* Cache Methods */
+
+    /**
+     * Reloads and validates the config file saved on disk.
+     * @return Always returns a success result regardless of config file validity.
+     */
     private static InteractionResult reloadConfiguration()
     {
         // Retrieve new config and validate its data
@@ -51,6 +67,10 @@ public abstract class ClientConfigCache
         return InteractionResult.SUCCESS;
     }
 
+    /**
+     * Loads the client configuration cache prematurely when the game starts mixin patching.
+     * @throws AssertionError When this method is called by the server.
+     */
     public static void preloadConfiguration()
     {
         if (NostalgicTweaks.isServer())
@@ -63,6 +83,10 @@ public abstract class ClientConfigCache
         initializeConfiguration();
     }
 
+    /**
+     * Initializes the client configuration cache when the game starts.
+     * This only happens once and this method will return early if the cache has already been initialized.
+     */
     public static void initializeConfiguration()
     {
         // Do not initialize again if this method was run prematurely

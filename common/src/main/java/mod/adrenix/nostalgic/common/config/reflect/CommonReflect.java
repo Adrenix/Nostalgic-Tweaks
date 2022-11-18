@@ -2,8 +2,6 @@ package mod.adrenix.nostalgic.common.config.reflect;
 
 import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
@@ -28,7 +26,7 @@ public abstract class CommonReflect
 
     /**
      * Get a class/subclass reference from the client config.
-     * @param group Group associated with tweak.
+     * @param group A group type.
      * @param config A client config instance.
      * @return A data pair with a class/subclass reference on the left and a client config instance on the right.
      */
@@ -69,7 +67,10 @@ public abstract class CommonReflect
                     break;
                 }
             }
-            catch (IllegalArgumentException | IllegalAccessException e) { e.printStackTrace(); }
+            catch (IllegalArgumentException | IllegalAccessException exception)
+            {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -92,7 +93,10 @@ public abstract class CommonReflect
                 if (key.equals(field.getName()))
                     return (T) field.get(instance);
             }
-            catch (IllegalArgumentException | IllegalAccessException e) { e.printStackTrace(); }
+            catch (IllegalArgumentException | IllegalAccessException exception)
+            {
+                exception.printStackTrace();
+            }
         }
 
         return null;
@@ -100,7 +104,7 @@ public abstract class CommonReflect
 
     /**
      * Get an annotation attached to a config tweak.
-     * @param group Group associated with tweak.
+     * @param group A group type.
      * @param key Key that matches both tweak and config class field.
      * @param annotation The annotation class to look for.
      * @param <T> A class that extends the Annotation interface.
@@ -113,42 +117,38 @@ public abstract class CommonReflect
     }
 
     /**
-     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}. This requires tweaks from
-     * the {@link TweakClientCache}.
-     * @param cache A cached entry from {@link TweakClientCache}.
+     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}.
+     * @param cache A cached entry from {@link TweakCommonCache}.
      * @param annotation An annotation class to check for.
      * @param <T> The class type of annotation.
      * @return An annotation instance if it was found.
      */
     @Nullable
-    public static <T extends Annotation> T getAnnotation(TweakClientCache<?> cache, Class<T> annotation)
+    public static <T extends Annotation> T getAnnotation(TweakCommonCache cache, Class<T> annotation)
     {
         return getAnnotation(cache.getGroup(), cache.getKey(), annotation);
     }
 
     /**
-     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}. This requires tweaks from
-     * the {@link TweakServerCache}.
-     * @param cache A cached entry from {@link TweakServerCache}.
-     * @param annotation An annotation class to check for.
-     * @param <T> The class type of annotation.
-     * @return An annotation instance if it was found.
+     * Helper for public annotation retriever method.
+     * @param group A group type.
+     * @param key Key that matches both tweak and config class field.
+     * @param annotation The annotation class to look for.
+     * @param <T> A class that extends the Annotation interface.
+     * @return The annotation if it was found.
      */
     @Nullable
-    public static <T extends Annotation> T getAnnotation(TweakServerCache<?> cache, Class<T> annotation)
-    {
-        return getAnnotation(cache.getGroup(), cache.getKey(), annotation);
-    }
-
-    @Nullable // Helper for public annotation retriever method
     private static <T extends Annotation> T getFieldAnnotation(GroupType group, String key, Class<T> annotation)
     {
         Pair<Class<?>, Object> groupClass = getGroupClass(group, DEFAULT_CONFIG);
         Class<?> reference = groupClass.getFirst();
 
         for (Field field : reference.getFields())
+        {
             if (field.getName().equals(key))
                 return field.getAnnotation(annotation);
+        }
+
         return null;
     }
 
@@ -161,15 +161,18 @@ public abstract class CommonReflect
     {
         Class<?> reference = groupClass.getFirst();
         Object instance = groupClass.getSecond();
-
         HashMap<String, Object> fields = new HashMap<>();
+
         for (Field field : reference.getFields())
         {
             try
             {
                 fields.put(field.getName(), field.get(instance));
             }
-            catch (IllegalArgumentException | IllegalAccessException e) { e.printStackTrace(); }
+            catch (IllegalArgumentException | IllegalAccessException exception)
+            {
+                exception.printStackTrace();
+            }
         }
 
         return fields;

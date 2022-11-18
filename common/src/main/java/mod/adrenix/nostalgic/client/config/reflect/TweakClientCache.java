@@ -8,16 +8,14 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.GroupType;
 import mod.adrenix.nostalgic.common.config.reflect.StatusType;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
-import mod.adrenix.nostalgic.common.config.tweak.ITweak;
+import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.network.packet.PacketC2SChangeTweak;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -31,25 +29,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Therefore, using vanilla client code here is safe.
  */
 
-public class TweakClientCache<T>
+public class TweakClientCache<T> extends TweakCommonCache
 {
     /**
      * This cache keeps a record of every tweak used by both client and server. If the server wants to interface with
-     * a server tweak it needs to reference the server cache.
+     * a server tweak, then it needs to reference the server cache.
      *
      * @see TweakServerCache
      */
 
-    private static final HashMap<String, TweakClientCache<?>> cache = new HashMap<>();
+    private static final HashMap<String, TweakClientCache<?>> CACHE = new HashMap<>();
 
-    private static String generateKey(GroupType group, String key) { return TweakCommonCache.generateKey(group, key); }
     static
     {
         Arrays.stream(GroupType.values()).forEach((group) ->
             ClientReflect.getGroup(group).forEach((key, value) ->
             {
                 if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
-                    TweakClientCache.cache.put(generateKey(group, key), new TweakClientCache<>(group, key, value));
+                    TweakClientCache.CACHE.put(generateKey(group, key), new TweakClientCache<>(group, key, value));
             })
         );
     }
@@ -58,11 +55,11 @@ public class TweakClientCache<T>
      * Get a hash map of all tweaks.
      * @return A map of tweak keys to their client cached value.
      */
-    public static HashMap<String, TweakClientCache<?>> all() { return cache; }
+    public static HashMap<String, TweakClientCache<?>> all() { return CACHE; }
 
     /**
      * Get a tweak. This should <b>only</b> be used if a tweak enumeration is not available.
-     * For best performance, use {@link TweakClientCache#get(ITweak)} since it retrieves cached hashmap pointers.
+     * For best performance, use {@link TweakClientCache#get(Tweak)} since it retrieves cached hashmap pointers.
      * @param group The group a tweak is associated with.
      * @param key The key used to identify the tweak.
      * @return The current tweak value kept in the cache.
@@ -72,7 +69,7 @@ public class TweakClientCache<T>
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakClientCache<T> get(GroupType group, String key) throws AssertionError
     {
-        TweakClientCache<T> instance = (TweakClientCache<T>) cache.get(generateKey(group, key));
+        TweakClientCache<T> instance = (TweakClientCache<T>) CACHE.get(generateKey(group, key));
 
         if (instance == null)
             throw new AssertionError(String.format("Tweak [group=%s, key=%s] was not found in client-cache", group, key));
@@ -91,13 +88,37 @@ public class TweakClientCache<T>
      * @param <T> The type associated with the tweak.
      */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
-    public static <T> TweakClientCache<T> get(ITweak tweak)
+    public static <T> TweakClientCache<T> get(Tweak tweak)
     {
         if (tweak.getClientCache() == null)
             tweak.setClientCache(get(tweak.getGroup(), tweak.getKey()));
 
         return (TweakClientCache<T>) tweak.getClientCache();
     }
+
+    /* Server Cache Retrieval */
+
+    /**
+     * Client tweaks do interface with the server tweak cache. This is needed so the client can stay in sync while
+     * connected to a verified N.T supported server.
+     *
+     * @see TweakServerCache
+     */
+    public TweakServerCache<T> getServerTweak()
+    {
+        if (this.tweak != null)
+            return TweakServerCache.get(this.tweak);
+
+        return TweakServerCache.get(this.group, this.key);
+    }
+
+    /**
+     * A shortcut for {@link TweakClientCache#getServerTweak()} that gets the current server cache.
+     * @return The value saved in the client's server cache.
+     */
+    public T getServerCache() { return this.getServerTweak().getServerCache(); }
+
+    /* Fuzzy Searching */
 
     /**
      * This field is used to determine a tweak's fuzzy weight when the client is searching for tweaks.
@@ -129,6 +150,8 @@ public class TweakClientCache<T>
         return compare != 0 ? compare : compare + 1;
     }
 
+    /* Static Methods */
+
     /**
      * Finds the number of tweaks that have failed to load. This is not always accurate since some
      * tweaks will need to load into the world.
@@ -150,25 +173,88 @@ public class TweakClientCache<T>
         return found.get();
     }
 
-    /**
-     * Client tweaks do interface with the server tweak cache. This is needed so the client can stay in sync while
-     * connected to a verified N.T supported server.
-     *
-     * @see TweakServerCache
-     */
-    public TweakServerCache<T> getServerTweak()
-    {
-        if (this.tweak != null)
-            return TweakServerCache.get(this.tweak);
+    /* Fields */
 
-        return TweakServerCache.get(this.group, this.key);
+    /*
+       These fields are caches for commonly accessed annotation metadata. Any annotations that is queried often or every
+       tick needs a field cache. Since this metadata never changes during runtime, it is safe to cache the known values
+       rather than constantly using reflection to retrieve metadata.
+     */
+
+    private final boolean isAnnotatedNew;
+    private final boolean isAnnotatedClient;
+    private final boolean isAnnotatedServer;
+    private final boolean isAnnotatedDynamic;
+    private final boolean isAnnotatedReloadChunks;
+    private final boolean isAnnotatedReloadResources;
+
+    @Nullable private final TweakClient.Gui.Placement placement;
+    @Nullable private final TweakClient.Gui.Cat category;
+    @Nullable private final TweakClient.Gui.Sub subcategory;
+    @Nullable private final TweakClient.Gui.Emb embedded;
+
+    /**
+     * This field will track the tweak enumeration associated with this cache. Once defined, this will speed up value
+     * retrieval for server side tweaks significantly.
+     *
+     * There is no need for this field to be common since the server will only be interfacing with its own cache. The
+     * server will never reach over to the client cache map.
+     */
+    private Tweak tweak;
+
+    /**
+     * This field will not be in sync with the config saved on disk. That is done through reflection.
+     * The state of this field is toggled via the configuration menu.
+     *
+     * @see mod.adrenix.nostalgic.client.config.reflect.ClientReflect
+     */
+    private T value;
+
+    /*
+       The position of a tweak within the configuration menu can be order by top or bottom.
+       It may be ideal to override the alphabetical ordering of tweaks to keep related tweaks together, regardless of name.
+     */
+
+    private int order;
+    private TweakClient.Gui.Position position;
+
+    /* Constructor */
+
+    /**
+     * Client tweaks are created once and saved in the cache.
+     * Use the cache to retrieve tweaks by their group and key identification.
+     *
+     * @param group Group associated with this tweak (e.g. CandyTweak).
+     * @param key The unique key of a tweak. Must match what is saved on disk.
+     * @param value The value of a tweak. Can be an Enum, boolean, String, int, etc.
+     */
+    private TweakClientCache(GroupType group, String key, T value)
+    {
+        super(group, key);
+
+        this.tweak = null;
+        this.value = value;
+
+        this.isAnnotatedNew = this.isMetadataPresent(TweakClient.Gui.New.class);
+        this.isAnnotatedClient = this.isMetadataMissing(TweakSide.Server.class);
+        this.isAnnotatedServer = this.isMetadataPresent(TweakSide.Server.class);
+        this.isAnnotatedDynamic = this.isMetadataPresent(TweakSide.Dynamic.class);
+        this.isAnnotatedReloadChunks = this.isMetadataPresent(TweakClient.Run.ReloadChunks.class);
+        this.isAnnotatedReloadResources = this.isMetadataPresent(TweakClient.Run.ReloadResources.class);
+
+        this.placement = this.getMetadata(TweakClient.Gui.Placement.class);
+        this.category = this.getMetadata(TweakClient.Gui.Cat.class);
+        this.subcategory = this.getMetadata(TweakClient.Gui.Sub.class);
+        this.embedded = this.getMetadata(TweakClient.Gui.Emb.class);
+
+        if (this.placement != null)
+        {
+            this.position = this.placement.pos();
+            this.order = this.placement.order();
+        }
     }
 
-    /**
-     * A shortcut for {@link TweakClientCache#getServerTweak()} that gets the current server cache.
-     * @return The value saved in the client's server cache.
-     */
-    public T getServerCache() { return this.getServerTweak().getServerCache(); }
+    /* Methods */
 
     /**
      * If the network has not verified a level with Nostalgic Tweaks installed then all tweaks should be modified
@@ -184,108 +270,10 @@ public class TweakClientCache<T>
     }
 
     /**
-     * All tweak caches have a group and a unique key within that group. These keys match what is saved onto disk.
-     * It is important that the keys stay in sync with the client config. This is why keys are established within
-     * class loaded code blocks underneath each tweak entry.
-     *
-     * To get a tweak's key in the cache map, use {@link TweakClientCache#getId()}
-     *
-     * @see mod.adrenix.nostalgic.client.config.ClientConfig
-     */
-
-    private final String key;
-    private final String id;
-    private final GroupType group;
-    private StatusType status;
-
-    /**
-     * Caches the annotation status of each tweak. Since this metadata never changes, it is best to cache the known
-     * values than constantly using reflection to find metadata.
-     */
-
-    private final boolean isAnnotatedClient;
-    private final boolean isAnnotatedServer;
-    private final boolean isAnnotatedDynamic;
-    private final boolean isAnnotatedReloadChunks;
-    private final boolean isAnnotatedReloadResources;
-
-    @Nullable private final TweakClient.Gui.Cat category;
-    @Nullable private final TweakClient.Gui.Sub subcategory;
-    @Nullable private final TweakClient.Gui.Emb embedded;
-
-    /**
-     * This field will track the tweak enumeration associated with this cache. Once defined, this will speed up value
-     * retrieval significantly.
-     */
-    private ITweak tweak;
-
-    /**
-     * This field will not be in sync with the config saved on disk. That is done through reflection.
-     * The state of this field is toggled via the configuration menu.
-     *
-     * @see mod.adrenix.nostalgic.client.config.reflect.ClientReflect
-     */
-    private T value;
-
-    /**
-     * The position of a tweak within the configuration menu can be order by top or bottom.
-     * It may be ideal to override the alphabetical ordering of tweaks to keep related tweaks together, regardless of name.
-     */
-
-    private int order;
-    private TweakClient.Gui.Position position;
-
-    /**
-     * Client tweaks are created once and saved in the cache.
-     * Use the cache to retrieve tweaks by their group and key identification.
-     *
-     * @param group Group associated with this tweak (e.g. CandyTweak).
-     * @param key The unique key of a tweak. Must match what is saved on disk.
-     * @param value The value of a tweak. Can be an Enum, boolean, String, int, etc.
-     */
-    private TweakClientCache(GroupType group, String key, T value)
-    {
-        this.tweak = null;
-        this.group = group;
-        this.key = key;
-        this.value = value;
-        this.status = StatusType.FAIL;
-        this.id = generateKey(group, key);
-
-        this.isAnnotatedClient = CommonReflect.getAnnotation(this, TweakSide.Server.class) == null;
-        this.isAnnotatedServer = CommonReflect.getAnnotation(this, TweakSide.Server.class) != null;
-        this.isAnnotatedDynamic = CommonReflect.getAnnotation(this, TweakSide.Dynamic.class) != null;
-        this.isAnnotatedReloadChunks = CommonReflect.getAnnotation(this, TweakClient.Run.ReloadChunks.class) != null;
-        this.isAnnotatedReloadResources = CommonReflect.getAnnotation(this, TweakClient.Run.ReloadResources.class) != null;
-
-        this.category = CommonReflect.getAnnotation(this, TweakClient.Gui.Cat.class);
-        this.subcategory = CommonReflect.getAnnotation(this, TweakClient.Gui.Sub.class);
-        this.embedded = CommonReflect.getAnnotation(this, TweakClient.Gui.Emb.class);
-
-        TweakSide.EntryStatus status = CommonReflect.getAnnotation(this, TweakSide.EntryStatus.class);
-        TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(this, TweakClient.Gui.Placement.class);
-
-        if (status != null)
-            this.status = status.status();
-
-        if (placement != null)
-        {
-            this.position = placement.pos();
-            this.order = placement.order();
-        }
-    }
-
-    /**
      * Define the tweak enumeration associated with this cache.
      * @param tweak A tweak instance.
      */
-    public void setTweak(ITweak tweak) { this.tweak = tweak; }
-
-    /**
-     * Get a tweak's ID which is its key in the {@link TweakClientCache#cache} map.
-     * @return The key used to identify the tweak in the client {@link TweakClientCache#cache}.
-     */
-    public String getId() { return this.id; }
+    public void setTweak(Tweak tweak) { this.tweak = tweak; }
 
     /**
      * Gets the default value of a tweak via reflection.
@@ -299,7 +287,7 @@ public class TweakClientCache<T>
      * The return value of this is dependent on whether the tweak is controlled by the server.
      * @return If the tweak is handled by the client, then it returns the client value; otherwise, the server value.
      */
-    public T getCurrent() { return this.isClientHandled() ? this.value : this.getServerTweak().getValue(); }
+    public T getValue() { return this.isClientHandled() ? this.value : this.getServerTweak().getValue(); }
 
     /**
      * Get the value of this tweak that is saved on disk.
@@ -316,35 +304,28 @@ public class TweakClientCache<T>
      * @param value The new tweak value.
      * @param override Whether to ignore if the tweak is client cached or server cached.
      */
-    public void setCurrent(T value, boolean override)
+    public void setValue(T value, boolean override)
     {
         if (this.isClientHandled() || override)
         {
             this.value = value;
 
-            TweakServerCache<T> cache = this.getServerTweak();
+            TweakServerCache<T> serverTweak = this.getServerTweak();
 
-            if (override && cache != null)
-                cache.setValue(value);
+            if (override && serverTweak != null)
+                serverTweak.setValue(value);
         }
         else
             this.getServerTweak().setValue(value);
     }
 
     /**
-     * Overload method for setting the current value of a tweak. The default behavior is to examine if the client should
-     * handle the tweak. If the session is over LAN, it is necessary to override this behavior when a server tweak changes.
+     * Overload method for setting the current value of a tweak. Use this method when the client needs to change the
+     * value of a tweak.
      *
      * @param value The new tweak value.
      */
-    public void setCurrent(T value) { this.setCurrent(value, false); }
-
-    /**
-     * The group is assigned in the client configuration class.
-     * @see mod.adrenix.nostalgic.client.config.ClientConfig
-     * @return The group this tweak is in.
-     */
-    public GroupType getGroup() { return this.group; }
+    public void setValue(T value) { this.setValue(value, false); }
 
     /**
      * The status of a tweak is updated when its code is executed.
@@ -445,6 +426,13 @@ public class TweakClientCache<T>
     }
 
     /**
+     * Checks the annotations defined in the client's configuration class if a tweak is new for this update.
+     * @see mod.adrenix.nostalgic.client.config.ClientConfig
+     * @return If the client side annotation is attached to a tweak.
+     */
+    public boolean isNew() { return this.isAnnotatedNew; }
+
+    /**
      * Checks the annotations defined in the client's configuration class if a tweak is client sided.
      * This <b>does</b> check if a tweak is dynamic. Restrict using {@link TweakClientCache#isDynamic()}.
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
@@ -490,12 +478,13 @@ public class TweakClientCache<T>
         if (!this.isClientHandled() && !NetUtil.isPlayerOp())
             return false;
 
-        T current = this.getCurrent();
+        T current = this.getValue();
         T def = this.getDefault();
 
         // This check is required since comparison on the generics appears to check the integers as if they were bytes.
         if (current instanceof Integer && def instanceof Integer)
             return ((Integer) current).compareTo((Integer) def) != 0;
+
         return !current.equals(def);
     }
 
@@ -505,59 +494,38 @@ public class TweakClientCache<T>
      */
     public boolean isSavable()
     {
-        T current = this.getCurrent();
+        T current = this.getValue();
         T cache = this.isClientHandled() ? ClientReflect.getCurrent(this.group, this.key) : this.getServerCache();
 
         if (current instanceof Integer && cache instanceof Integer)
             return ((Integer) current).compareTo((Integer) cache) != 0;
+
         return !current.equals(cache);
     }
 
     /**
-     * Get the translated category/subcategory/embedded name for this tweak.
-     * @return The returned translated string from the tweak's closest associated category.
+     * @return A tweak's container placement data if it is present.
      */
-    public Component getSearchGroup()
-    {
-        MutableComponent group = Component.translatable(this.getGroup().getLangKey()).withStyle(ChatFormatting.GOLD);
-
-        if (this.category != null || this.subcategory != null || this.embedded != null)
-            group.append(ChatFormatting.WHITE + "/");
-
-        if (this.category != null)
-            group.append(Component.translatable(this.category.group().getLangKey()).withStyle(ChatFormatting.YELLOW));
-
-        if (this.subcategory != null)
-        {
-            group
-                .append(Component.translatable(this.subcategory.group().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW))
-                .append(ChatFormatting.WHITE + "/")
-            ;
-
-            group.append(Component.translatable(this.subcategory.group().getLangKey()).withStyle(ChatFormatting.GREEN));
-        }
-
-        if (this.embedded != null)
-        {
-            group
-                .append(Component.translatable(this.embedded.group().getSubcategory().getCategory().getLangKey()).withStyle(ChatFormatting.YELLOW))
-                .append(ChatFormatting.WHITE + "/")
-            ;
-
-            group
-                .append(Component.translatable(this.embedded.group().getSubcategory().getLangKey()).withStyle(ChatFormatting.GREEN))
-                .append(ChatFormatting.WHITE + "/")
-            ;
-
-            group.append(Component.translatable(this.embedded.group().getLangKey()).withStyle(ChatFormatting.AQUA));
-        }
-
-        return group;
-    }
+    @Nullable public TweakClient.Gui.Placement getPlacement() { return this.placement; }
 
     /**
-     * The key is used to identify a tweak within a group.
-     * Additionally, the key is also used in the language definition files.
+     * @return A tweak's category if it is present.
+     */
+    @Nullable public TweakClient.Gui.Cat getCategory() { return this.category; }
+
+    /**
+     * @return A tweak's subcategory if it is present.
+     */
+    @Nullable public TweakClient.Gui.Sub getSubcategory() { return this.subcategory; }
+
+    /**
+     * @return A tweak's embed if it is present.
+     */
+    @Nullable public TweakClient.Gui.Emb getEmbedded() { return this.embedded; }
+
+    /*
+      The key is used to identify a tweak within a group.
+      Additionally, the key is also used in the language definition files.
      */
 
     public String getKey() { return this.key; }

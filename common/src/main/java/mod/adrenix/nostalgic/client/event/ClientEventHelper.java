@@ -14,10 +14,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 
+/**
+ * This helper class provides instructions for various client events. These methods are used by both mod loader event
+ * subscriptions. Any unique instructions are handled by their respective mod loader helpers.
+ */
+
 public abstract class ClientEventHelper
 {
-    /* Client Network Helpers */
+    /*
+       Client Network Helpers
 
+       The following methods are used by the client's networking events.
+     */
+
+    /**
+     * This method provides instructions for the mod to perform after a player disconnects from a level.
+     * Connection instructions are handled by the server. The client will wait for a connection verification packet
+     * from the server. If one is not received, then the mod must assume the server does not have the mod installed.
+     */
     public static void disconnect()
     {
         if (NostalgicTweaks.isClient())
@@ -30,17 +44,40 @@ public abstract class ClientEventHelper
 
             // Reset network verification and server cache
             NostalgicTweaks.setNetworkVerification(false);
+
             TweakServerCache.all().forEach((id, tweak) -> {
                 if (tweak.isDynamic())
-                    tweak.setValue(TweakClientCache.all().get(id).getCurrent());
+                    tweak.setValue(TweakClientCache.all().get(id).getValue());
             });
         }
     }
 
-    /* Screen Event Helpers */
+    /*
+       Screen Event Helpers
 
-    public interface ISetScreen { void set(Screen screen); }
+       The following interface and methods provides utility for the client's screen management.
+       Some vanilla screens will be redirected to modded ones depending on tweak settings.
+     */
 
+    /**
+     * This interface is used to set the game screen to a new screen.
+     */
+    public interface SetScreen
+    {
+        /**
+         * Each mod loader has a different way of setting new game screens. As long as the mod loader has a method that
+         * accepts a screen and returns nothing, then this interface can be used.
+         *
+         * @param screen The screen to set.
+         */
+        void set(Screen screen);
+    }
+
+    /**
+     * Checks if the current screen is of a loading type screen.
+     * @param screen The screen to check.
+     * @return Whether the given screen is a loading screen.
+     */
     private static boolean isLoadingScreen(Screen screen)
     {
         return screen.getClass() == NostalgicProgressScreen.class ||
@@ -49,7 +86,12 @@ public abstract class ClientEventHelper
         ;
     }
 
-    public static void renderClassicTitle(Screen screen, ISetScreen setScreen)
+    /**
+     * Redirects the vanilla title screen to a classic style title screen.
+     * @param screen A vanilla screen.
+     * @param setScreen A function that accepts a new screen.
+     */
+    public static void classicTitleScreen(Screen screen, SetScreen setScreen)
     {
         if (screen == null)
             return;
@@ -65,7 +107,12 @@ public abstract class ClientEventHelper
             setScreen.set(new TitleScreen());
     }
 
-    public static void renderClassicProgress(Screen screen, ISetScreen setScreen)
+    /**
+     * Redirects the vanilla level loading screen to a classic style loading screen.
+     * @param screen A vanilla screen.
+     * @param setScreen A function that accepts a new screen.
+     */
+    public static void classicProgressScreen(Screen screen, SetScreen setScreen)
     {
         Minecraft minecraft = Minecraft.getInstance();
 
@@ -76,20 +123,22 @@ public abstract class ClientEventHelper
         {
             Component title = Component.translatable(LangUtil.Gui.LEVEL_LOADING);
             Component subtitle = Component.translatable(LangUtil.Gui.LEVEL_BUILDING);
+
             setScreen.set(new NostalgicLoadingScreen(minecraft.getProgressListener(), title, subtitle));
         }
 
         if (ClientEventHelper.isLoadingScreen(screen))
         {
             if (screen.getClass() == NostalgicProgressScreen.class && !((NostalgicProgressScreen) screen).isTicking())
-                ((NostalgicProgressScreen) screen).renderProgress();
+                ((NostalgicProgressScreen) screen).load();
             else
             {
                 NostalgicProgressScreen progressScreen;
+
                 if (screen.getClass() == ProgressScreen.class)
                 {
                     progressScreen = new NostalgicProgressScreen((ProgressScreen) screen);
-                    progressScreen.renderProgress();
+                    progressScreen.load();
                 }
                 else if (screen.getClass() == ReceivingLevelScreen.class)
                 {
@@ -98,7 +147,7 @@ public abstract class ClientEventHelper
                     progressScreen.setStage(Component.translatable(LangUtil.Gui.LEVEL_SIMULATE));
                     progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
                     progressScreen.setRenderProgressBar(false);
-                    progressScreen.renderProgress();
+                    progressScreen.load();
                 }
             }
         }

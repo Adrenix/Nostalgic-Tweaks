@@ -6,22 +6,27 @@ import mod.adrenix.nostalgic.util.client.FogUtil;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 
+/**
+ * Helper class that defines instructions for various eye candy related events.
+ */
+
 public abstract class CandyEvents
 {
-    // Old Title Screen
-    public static void classicTitleScreen(ScreenEvent.Opening event)
+    /**
+     * Changes specific vanilla screens so that the mod's old style screens appear instead.
+     * Any further screen redirects are handled by the mod screens.
+     */
+    public static void classicTitleScreens(ScreenEvent.Opening event)
     {
-        ClientEventHelper.renderClassicTitle(event.getScreen(), event::setNewScreen);
+        ClientEventHelper.classicTitleScreen(event.getScreen(), event::setNewScreen);
+        ClientEventHelper.classicProgressScreen(event.getScreen(), event::setNewScreen);
     }
 
-    // Old Loading Screens
-    public static void classicLoadingScreens(ScreenEvent.Opening event)
-    {
-        ClientEventHelper.renderClassicProgress(event.getScreen(), event::setNewScreen);
-    }
-
-    // Fog Rendering
-    public static void oldFogRendering(ViewportEvent.RenderFog event)
+    /**
+     * Performs various fog manipulation instructions which are dependent various tweaks.
+     * The overworld, nether, and caves has unique fog that is handled by this mod.
+     */
+    public static void renderOldFog(ViewportEvent.RenderFog event)
     {
         if (NostalgicTweaks.OPTIFINE.get())
             return;
