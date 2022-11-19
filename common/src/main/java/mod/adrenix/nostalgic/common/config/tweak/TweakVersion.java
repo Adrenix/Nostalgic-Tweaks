@@ -89,4 +89,19 @@ public abstract class TweakVersion
         public String toString() { return Component.translatable(this.langKey).getString(); }
         public Hotbar getDisabled() { return MODERN; }
     }
+
+    public enum OldMissingTexture implements IDisableTweak<OldMissingTexture>
+    {
+        B14(Generic.BETA.getLangKey()),
+        R15("§61.5§r - §61.6"),
+        R16("§61.6§r - §61.13"),
+        MODERN(Generic.MODERN.getLangKey());
+
+        private final String langKey;
+
+        OldMissingTexture(String langKey) { this.langKey = langKey; }
+
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+        public OldMissingTexture getDisabled() { return MODERN; }
+    }
 }
