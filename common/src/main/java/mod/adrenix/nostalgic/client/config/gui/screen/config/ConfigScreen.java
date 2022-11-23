@@ -3,19 +3,22 @@ package mod.adrenix.nostalgic.client.config.gui.screen.config;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
@@ -53,11 +56,11 @@ public class ConfigScreen extends Screen
     {
         ALL(LangUtil.Gui.SETTINGS_ALL),
         GENERAL(LangUtil.Vanilla.GENERAL),
-        SOUND(LangUtil.Cloth.SOUND_TITLE),
-        CANDY(LangUtil.Cloth.CANDY_TITLE),
-        GAMEPLAY(LangUtil.Cloth.GAMEPLAY_TITLE),
-        ANIMATION(LangUtil.Cloth.ANIMATION_TITLE),
-        SWING(LangUtil.Cloth.SWING_TITLE),
+        SOUND(LangUtil.Config.SOUND_TITLE),
+        CANDY(LangUtil.Config.CANDY_TITLE),
+        GAMEPLAY(LangUtil.Config.GAMEPLAY_TITLE),
+        ANIMATION(LangUtil.Config.ANIMATION_TITLE),
+        SWING(LangUtil.Config.SWING_TITLE),
         SEARCH(LangUtil.Vanilla.SEARCH);
 
         ConfigTab(String langKey) { this.langKey = langKey; }
@@ -89,7 +92,7 @@ public class ConfigScreen extends Screen
 
     public ConfigScreen(Screen parentScreen)
     {
-        super(Component.translatable(LangUtil.Cloth.CONFIG_TITLE));
+        super(Component.translatable(LangUtil.Config.CONFIG_TITLE));
 
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
@@ -98,18 +101,20 @@ public class ConfigScreen extends Screen
         {
             ConfigScreen.isCacheReflected = true;
 
-            TweakClientCache.all().forEach((key, tweak) -> {
-                TweakSide.EntryStatus entryStatus = tweak.getMetadata(TweakSide.EntryStatus.class);
+            TweakClientCache.all().forEach((key, tweak) ->
+            {
+                TweakData.EntryStatus entryStatus = tweak.getMetadata(TweakData.EntryStatus.class);
 
-                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
-                    tweak.setStatus(StatusType.FAIL);
+                if (entryStatus != null && tweak.getStatus() == TweakStatus.WAIT)
+                    tweak.setStatus(TweakStatus.FAIL);
             });
 
-            TweakServerCache.all().forEach((key, tweak) -> {
-                TweakSide.EntryStatus entryStatus = tweak.getMetadata(TweakSide.EntryStatus.class);
+            TweakServerCache.all().forEach((key, tweak) ->
+            {
+                TweakData.EntryStatus entryStatus = tweak.getMetadata(TweakData.EntryStatus.class);
 
-                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
-                    tweak.setStatus(StatusType.FAIL);
+                if (entryStatus != null && tweak.getStatus() == TweakStatus.WAIT)
+                    tweak.setStatus(TweakStatus.FAIL);
             });
         }
     }
@@ -519,7 +524,7 @@ public class ConfigScreen extends Screen
      */
     private ConfigTab getTabFromGroupKey(String groupLangKey)
     {
-        for (GroupType group : GroupType.values())
+        for (TweakGroup group : TweakGroup.values())
         {
             if (group.getLangKey().equals(groupLangKey))
             {
@@ -546,7 +551,7 @@ public class ConfigScreen extends Screen
 
     /**
      * Sets the scrollbar on a configuration container row based on the provided group identifier.
-     * @param id An enumeration value from {@link TweakClient} (category, subcategory, or embedded).
+     * @param id An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
      */
     public void setScrollOnGroup(Object id) { ConfigRowList.jumpToGroupId = id; }
 
@@ -574,24 +579,24 @@ public class ConfigScreen extends Screen
      */
     private void jumpToGroupFromTweak(TweakClientCache<?> tweak)
     {
-        if (tweak.getEmbedded() != null)
+        if (tweak.getEmbed() != null)
         {
-            this.jumpToGroup(tweak.getEmbedded().group().getSubcategory().getCategory());
-            this.jumpToGroup(tweak.getEmbedded().group().getSubcategory());
-            this.jumpToGroup(tweak.getEmbedded().group());
+            this.jumpToGroup(tweak.getEmbed().container().getSubcategory().getCategory());
+            this.jumpToGroup(tweak.getEmbed().container().getSubcategory());
+            this.jumpToGroup(tweak.getEmbed().container());
         }
         else if (tweak.getSubcategory() != null)
         {
-            this.jumpToGroup(tweak.getSubcategory().group().getCategory());
-            this.jumpToGroup(tweak.getSubcategory().group());
+            this.jumpToGroup(tweak.getSubcategory().container().getCategory());
+            this.jumpToGroup(tweak.getSubcategory().container());
         }
         else if (tweak.getCategory() != null)
-            this.jumpToGroup(tweak.getCategory().group());
+            this.jumpToGroup(tweak.getCategory().container());
     }
 
     /**
      * Jump to a group based on the provided group identifier.
-     * @param groupId An enumeration value from {@link TweakClient} (category, subcategory, or embedded).
+     * @param groupId An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
      */
     private void jumpToGroup(Object groupId)
     {
@@ -629,13 +634,15 @@ public class ConfigScreen extends Screen
             return;
         }
 
-        this.minecraft.setScreen(
-            new ConfirmScreen(
+        this.minecraft.setScreen
+        (
+            new ConfirmScreen
+            (
                 new CancelConsumer(),
-                Component.translatable(LangUtil.Cloth.QUIT_CONFIG),
-                Component.translatable(LangUtil.Cloth.QUIT_CONFIG_SURE),
-                Component.translatable(LangUtil.Cloth.QUIT_DISCARD),
-                Component.translatable(LangUtil.Vanilla.GUI_CANCEL)
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_TITLE),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_BODY),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_DISCARD),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_CANCEL)
             )
         );
     }
@@ -713,7 +720,7 @@ public class ConfigScreen extends Screen
         }
 
         RunUtil.onSave.forEach(Runnable::run);
-        NostalgicTweaks.LOGGER.debug(String.format("Ran (%s) onSave functions", RunUtil.onSave.size()));
+        NostalgicTweaks.LOGGER.debug("Ran (%s) onSave functions", RunUtil.onSave.size());
     }
 
     /* Rendering */
@@ -731,7 +738,7 @@ public class ConfigScreen extends Screen
         ConfigRowList list = this.getWidgets().getConfigRowList();
 
         String tabKey = this.configTab.getLangKey();
-        String configKey = LangUtil.Cloth.CONFIG_TITLE;
+        String configKey = LangUtil.Config.CONFIG_TITLE;
         String title = Component.translatable(tabKey).getString() + " " + Component.translatable(configKey).getString();
 
         // Background Rendering
@@ -813,18 +820,18 @@ public class ConfigScreen extends Screen
 
         if (ConfigRowList.jumpToGroupId != null)
         {
-            if (ConfigRowList.jumpToGroupId instanceof TweakClient.Embedded embed)
+            if (ConfigRowList.jumpToGroupId instanceof TweakEmbed embed)
             {
                 this.jumpToGroup(embed.getSubcategory().getCategory());
                 this.jumpToGroup(embed.getSubcategory());
                 this.jumpToGroup(embed);
             }
-            else if (ConfigRowList.jumpToGroupId instanceof TweakClient.Subcategory subcategory)
+            else if (ConfigRowList.jumpToGroupId instanceof TweakSubcategory subcategory)
             {
                 this.jumpToGroup(subcategory.getCategory());
                 this.jumpToGroup(subcategory);
             }
-            else if (ConfigRowList.jumpToGroupId instanceof TweakClient.Category category)
+            else if (ConfigRowList.jumpToGroupId instanceof TweakCategory category)
                 this.jumpToGroup(category);
 
             ConfigRowList.jumpToGroupId = null;

@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
 import com.google.gson.Gson;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 /**
@@ -23,8 +23,8 @@ public class TweakSerializer
     /* Fields */
 
     private final String key;
-    private final GroupType group;
-    private final StatusType status;
+    private final TweakGroup group;
+    private final TweakStatus status;
     private Object value;
 
     /* Transmitted Numbers */
@@ -96,13 +96,13 @@ public class TweakSerializer
      * Get the group type associated with this serializer.
      * @return A group type enumeration value.
      */
-    public GroupType getGroup() { return this.group; }
+    public TweakGroup getGroup() { return this.group; }
 
     /**
      * Get the status type associated with this serializer.
      * @return A status type enumeration value.
      */
-    public StatusType getStatus() { return this.status; }
+    public TweakStatus getStatus() { return this.status; }
 
     /**
      * Get the hotbar tweak version associated with this serializer.

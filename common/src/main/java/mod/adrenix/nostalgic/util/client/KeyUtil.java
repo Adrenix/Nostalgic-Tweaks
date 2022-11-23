@@ -99,6 +99,7 @@ public abstract class KeyUtil
     public static KeyMapping find(String langKey)
     {
         KeyMapping cache = MAPPING_CACHE.get(langKey);
+
         if (cache != null)
             return cache;
 
@@ -154,6 +155,7 @@ public abstract class KeyUtil
     public static void onToggleFog(KeyMapping toggleFog)
     {
         boolean isReleased = false;
+
         if (!isFogDown && toggleFog.isDown())
             isFogDown = true;
         else if (isFogDown && !toggleFog.isDown())
@@ -167,6 +169,7 @@ public abstract class KeyUtil
         if (isReleased && minecraft.level != null)
         {
             int distance = minecraft.options.renderDistance().get();
+
             if (distance >= 16)
                 minecraft.options.renderDistance().set(8);
             else if (distance >= 8)

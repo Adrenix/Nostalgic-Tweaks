@@ -24,28 +24,19 @@ public record ModLogger(String prefix)
      * Checks if the mod is in debug mode.
      * @return The state of this record's <code>isDebugging</code> flag.
      */
-    public boolean isDebugMode()
-    {
-        return ModLogger.isDebugging;
-    }
+    public boolean isDebugMode() { return ModLogger.isDebugging; }
 
     /**
      * Change this record's <code>isDebugging</code> flag.
      * @param state The new state.
      */
-    public void setDebug(boolean state)
-    {
-        ModLogger.isDebugging = state;
-    }
+    public void setDebug(boolean state) { ModLogger.isDebugging = state; }
 
     /**
      * Get the prefix of this record's <code>prefix</code>.
      * @return A colored square bracketed prefix with this record's <code>prefix</code>.
      */
-    private String getPrefix()
-    {
-        return String.format("[%s] ", LogColor.apply(LogColor.BLUE, this.prefix));
-    }
+    private String getPrefix() { return String.format("[%s] ", LogColor.apply(LogColor.BLUE, this.prefix)); }
 
     /**
      * Changes known strings to specific colors, such as applying a green color to instances of 'true' within a string.
@@ -76,6 +67,13 @@ public record ModLogger(String prefix)
     }
 
     /**
+     * Convenience overload method to output an info message as a formatted string.
+     * @param message The info message to log.
+     * @param args String formatting arguments.
+     */
+    public void info(String message, Object ...args) { this.info(String.format(message, args)); }
+
+    /**
      * Create a warning logging statement.
      * @param message The warning to log.
      */
@@ -84,6 +82,30 @@ public record ModLogger(String prefix)
         String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.GOLD, "WARN"));
         LOGGER.warn(getOutput(input));
     }
+
+    /**
+     * Convenience overload method to output a warning message as a formatted string.
+     * @param message The warning message to log.
+     * @param args String formatting arguments.
+     */
+    public void warn(String message, Object ...args) { this.warn(String.format(message, args)); }
+
+    /**
+     * Create an error logging statement.
+     * @param message The error to log.
+     */
+    public void error(String message)
+    {
+        String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.RED, "ERROR"));
+        LOGGER.error(getOutput(input));
+    }
+
+    /**
+     * Convenience overload method to output an error message as a formatted string.
+     * @param message The error message to log.
+     * @param args String formatting arguments.
+     */
+    public void error(String message, Object ...args) { this.error(String.format(message, args)); }
 
     /**
      * Create a debugging logging statement.
@@ -96,5 +118,16 @@ public record ModLogger(String prefix)
             String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.LIGHT_PURPLE, "DEBUG"));
             LOGGER.info(getOutput(input));
         }
+    }
+
+    /**
+     * Convenience overload method to output a debug message as a formatted string.
+     * @param message The debug message to log.
+     * @param args String formatting arguments.
+     */
+    public void debug(String message, Object ...args)
+    {
+        if (ModLogger.isDebugging)
+            this.debug(String.format(message, args));
     }
 }

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.common.config.reflect;
 
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 
 import java.lang.annotation.Annotation;
 
@@ -30,7 +30,7 @@ public abstract class TweakCommonCache
      * All tweaks have a group associated with them.
      * Some tweaks may be further categorized by a container type.
      */
-    protected final GroupType group;
+    protected final TweakGroup group;
 
     /**
      * All tweaks will have a status associated with them.
@@ -38,45 +38,45 @@ public abstract class TweakCommonCache
      * During construction, all tweaks will be labeled as failures unless defined otherwise in a config definition
      * class. Otherwise, a status will not be changed until the tweak's code is queried during runtime.
      */
-    protected StatusType status;
+    protected TweakStatus status;
 
     /* Common Constructor */
 
-    protected TweakCommonCache(GroupType group, String key)
+    protected TweakCommonCache(TweakGroup group, String key)
     {
         this.group = group;
         this.key = key;
         this.id = generateKey(group, key);
 
-        if (this.isMetadataPresent(TweakSide.EntryStatus.class))
-            this.status = this.getMetadata(TweakSide.EntryStatus.class).status();
+        if (this.isMetadataPresent(TweakData.EntryStatus.class))
+            this.status = this.getMetadata(TweakData.EntryStatus.class).status();
         else
-            this.status = StatusType.FAIL;
+            this.status = TweakStatus.FAIL;
     }
 
     /* Common Setters */
 
     /**
      * Can be set anywhere and updated at anytime.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
+     * @see TweakStatus
      * @param status The current status of a tweak.
      */
-    public void setStatus(StatusType status) { this.status = status; }
+    public void setStatus(TweakStatus status) { this.status = status; }
 
     /* Common Getters */
 
     /**
      * The status of a tweak is updated when its code is executed.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
+     * @see TweakStatus
      * @return Whether a tweak has failed to load, has not attempted to load, or is loaded.
      */
-    public StatusType getStatus() { return this.status; }
+    public TweakStatus getStatus() { return this.status; }
 
     /**
      * Each tweak will have a group type attached to it.
      * @return The group type associated with this tweak.
      */
-    public GroupType getGroup() { return this.group; }
+    public TweakGroup getGroup() { return this.group; }
 
     /**
      * Each tweak has a config key.
@@ -101,7 +101,7 @@ public abstract class TweakCommonCache
      * @param key A configuration key.
      * @return A unique hash map key identifier.
      */
-    public static String generateKey(GroupType group, String key) { return group.toString() + "@" + key; }
+    public static String generateKey(TweakGroup group, String key) { return group.toString() + "@" + key; }
 
     /**
      * Get data from an annotation. Ensure the annotation being accessed is <b>not</b> already cached. If this method is

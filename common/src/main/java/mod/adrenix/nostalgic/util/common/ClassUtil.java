@@ -43,11 +43,6 @@ public abstract class ClassUtil
     public static boolean isOptifinePresent() { return isClassPresent("net.optifine.Config"); }
 
     /**
-     * @return Whether autoconfig is installed.
-     */
-    public static boolean isAutoConfigPresent() { return isClassPresent("me.shedaniel.autoconfig.AutoConfig"); }
-
-    /**
      * @return Whether architectury is installed.
      */
     public static boolean isArchitecturyPresent() { return isClassPresent("dev.architectury.networking.NetworkChannel"); }

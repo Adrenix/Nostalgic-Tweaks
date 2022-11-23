@@ -70,7 +70,7 @@ public class SearchCrumbs extends AbstractWidget
 
         if (tweak.getCategory() != null)
         {
-            String catKey = tweak.getCategory().group().getLangKey();
+            String catKey = tweak.getCategory().container().getLangKey();
             MutableComponent catText = Component.translatable(catKey).withStyle(ChatFormatting.YELLOW);
             Crumb catCrumb = new Crumb(groupCrumb.getEndX(), tweak, catText, JumpType.CATEGORY);
 
@@ -79,8 +79,8 @@ public class SearchCrumbs extends AbstractWidget
 
         if (tweak.getSubcategory() != null)
         {
-            String catKey = tweak.getSubcategory().group().getCategory().getLangKey();
-            String subKey = tweak.getSubcategory().group().getLangKey();
+            String catKey = tweak.getSubcategory().container().getCategory().getLangKey();
+            String subKey = tweak.getSubcategory().container().getLangKey();
 
             MutableComponent catText = Component.translatable(catKey).withStyle(ChatFormatting.YELLOW);
             MutableComponent subText = Component.translatable(subKey).withStyle(ChatFormatting.GREEN);
@@ -92,11 +92,11 @@ public class SearchCrumbs extends AbstractWidget
             this.crumbs.add(subCrumb);
         }
 
-        if (tweak.getEmbedded() != null)
+        if (tweak.getEmbed() != null)
         {
-            String catKey = tweak.getEmbedded().group().getSubcategory().getCategory().getLangKey();
-            String subKey = tweak.getEmbedded().group().getSubcategory().getLangKey();
-            String embKey = tweak.getEmbedded().group().getLangKey();
+            String catKey = tweak.getEmbed().container().getSubcategory().getCategory().getLangKey();
+            String subKey = tweak.getEmbed().container().getSubcategory().getLangKey();
+            String embKey = tweak.getEmbed().container().getLangKey();
 
             MutableComponent catText = Component.translatable(catKey).withStyle(ChatFormatting.YELLOW);
             MutableComponent subText = Component.translatable(subKey).withStyle(ChatFormatting.GREEN);
@@ -188,24 +188,24 @@ public class SearchCrumbs extends AbstractWidget
                  */
 
                 if (crumb.tweak().getCategory() != null && crumb.jump() == JumpType.CATEGORY)
-                    configScreen.setScrollOnGroup(crumb.tweak().getCategory().group());
+                    configScreen.setScrollOnGroup(crumb.tweak().getCategory().container());
 
                 if (crumb.tweak().getSubcategory() != null)
                 {
                     if (crumb.jump() == JumpType.CATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().group().getCategory());
+                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().container().getCategory());
                     else if (crumb.jump() == JumpType.SUBCATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().group());
+                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().container());
                 }
 
-                if (crumb.tweak().getEmbedded() != null)
+                if (crumb.tweak().getEmbed() != null)
                 {
                     if (crumb.jump() == JumpType.CATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbedded().group().getSubcategory().getCategory());
+                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container().getSubcategory().getCategory());
                     else if (crumb.jump() == JumpType.SUBCATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbedded().group().getSubcategory());
+                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container().getSubcategory());
                     else if (crumb.jump() == JumpType.EMBEDDED)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbedded().group());
+                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container());
                 }
 
                 this.playDownSound(minecraft.getSoundManager());

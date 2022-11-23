@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.common.config;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.tweak.*;
 import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.server.config.ServerConfig;
@@ -87,14 +87,14 @@ public abstract class ModConfig
     {
         TweakServerCache<?> cache = TweakServerCache.get(tweak);
 
-        if (!tweak.isLoaded() || (cache != null && cache.getStatus().equals(StatusType.FAIL)))
+        if (!tweak.isLoaded() || (cache != null && cache.getStatus().equals(TweakStatus.FAIL)))
         {
             tweak.setEnabled();
 
             // Server cache status syncing
             if (cache != null)
             {
-                cache.setStatus(StatusType.LOADED);
+                cache.setStatus(TweakStatus.LOADED);
 
                 // Some tweaks will be executing code before the server is started
                 // Therefore check for server instance before sending a packet

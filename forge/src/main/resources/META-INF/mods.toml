@@ -33,13 +33,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.nostalgic_tweaks]]
-modId = "cloth_config"
-mandatory = true
-versionRange = "[${cloth_version},)"
-ordering = "NONE"
-side = "CLIENT"
-
-[[dependencies.nostalgic_tweaks]]
 modId = "architectury"
 mandatory = true
 versionRange = "[${architectury_version},)"

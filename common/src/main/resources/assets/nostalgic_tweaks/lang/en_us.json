@@ -2,7 +2,18 @@
   "key.nostalgic_tweaks.open_config": "Open Config",
   "key.nostalgic_tweaks.toggle_fog": "Toggle Fog",
   "key.nostalgic_tweaks.unbound": "Unbound",
+
   "category.nostalgic_tweaks.name": "Nostalgic Tweaks",
+
+  "gui.nostalgic_tweaks.confirm.quit_title": "§eUnsaved Changes",
+  "gui.nostalgic_tweaks.confirm.quit_body": "Are you sure you want to quit editing? Changes will§c not§r be saved!",
+  "gui.nostalgic_tweaks.confirm.quit_discard": "Quit & Discard Changes",
+  "gui.nostalgic_tweaks.confirm.quit_cancel": "Go Back",
+
+  "gui.nostalgic_tweaks.button.save_and_done": "Save & Quit",
+  "gui.nostalgic_tweaks.button.reset": "Reset",
+  "gui.nostalgic_tweaks.button.yes": "§aYes",
+  "gui.nostalgic_tweaks.button.no": "§cNo",
 
   "gui.nostalgic_tweaks.background.solid_black": "Solid Black",
   "gui.nostalgic_tweaks.background.solid_blue": "Solid Blue",

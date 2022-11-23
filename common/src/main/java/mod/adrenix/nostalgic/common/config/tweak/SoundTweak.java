@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.common.config.tweak;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 public enum SoundTweak implements Tweak
@@ -58,7 +58,7 @@ public enum SoundTweak implements Tweak
 
     /* Tweak Implementation */
 
-    @Override public GroupType getGroup() { return GroupType.SOUND; }
+    @Override public TweakGroup getGroup() { return TweakGroup.SOUND; }
 
     @Override public void setKey(String key) { this.key = key; }
     @Override public String getKey() { return this.key; }

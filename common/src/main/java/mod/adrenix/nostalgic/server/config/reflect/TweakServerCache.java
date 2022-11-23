@@ -2,9 +2,9 @@ package mod.adrenix.nostalgic.server.config.reflect;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
 import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 
@@ -42,13 +42,13 @@ public class TweakServerCache<T> extends TweakCommonCache
         }
         else
         {
-            Arrays.stream(GroupType.values()).forEach((group) ->
+            Arrays.stream(TweakGroup.values()).forEach((group) ->
                 ServerReflect.getGroup(group).forEach((key, value) ->
                 {
-                    if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
+                    if (CommonReflect.getAnnotation(group, key, TweakData.Ignore.class) == null)
                     {
-                        TweakSide.Server server = CommonReflect.getAnnotation(group, key, TweakSide.Server.class);
-                        TweakSide.Dynamic dynamic = CommonReflect.getAnnotation(group, key, TweakSide.Dynamic.class);
+                        TweakData.Server server = CommonReflect.getAnnotation(group, key, TweakData.Server.class);
+                        TweakData.Dynamic dynamic = CommonReflect.getAnnotation(group, key, TweakData.Dynamic.class);
 
                         if (server != null || dynamic != null)
                             CACHE.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
@@ -73,13 +73,13 @@ public class TweakServerCache<T> extends TweakCommonCache
      * @param <T> The type associated with the tweak.
      */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks and asserted, their returned type is assured.
-    public static <T> TweakServerCache<T> get(GroupType group, String key)
+    public static <T> TweakServerCache<T> get(TweakGroup group, String key)
     {
         return (TweakServerCache<T>) CACHE.get(generateKey(group, key));
     }
 
     /**
-     * An overload method for {@link TweakServerCache#get(GroupType, String)}. This should be the primary way of
+     * An overload method for {@link TweakServerCache#get(TweakGroup, String)}. This should be the primary way of
      * retrieving cached tweak values. When each tweak loads, a pointer is cached in the tweak's enumeration instance.
      * This method will use that pointer instead of looping through the hashmap to get a tweak's value.
      * @param tweak The tweak to fetch from cache.
@@ -134,13 +134,13 @@ public class TweakServerCache<T> extends TweakCommonCache
      * @param key The unique key of a tweak. Must match what is saved on disk.
      * @param value The value of a tweak. Can be an Enum, boolean, String, int, etc.
      */
-    private TweakServerCache(GroupType group, String key, T value)
+    private TweakServerCache(TweakGroup group, String key, T value)
     {
         super(group, key);
 
         this.value = value;
         this.server = value;
-        this.isAnnotatedDynamic = this.isMetadataPresent(TweakSide.Dynamic.class);
+        this.isAnnotatedDynamic = this.isMetadataPresent(TweakData.Dynamic.class);
     }
 
     /* Methods */

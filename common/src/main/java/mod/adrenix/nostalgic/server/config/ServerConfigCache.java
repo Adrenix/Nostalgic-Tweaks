@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.server.config;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.auto.serializer.GsonConfigSerializer;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import net.minecraft.world.InteractionResult;
 
@@ -31,12 +31,12 @@ public abstract class ServerConfigCache
     {
         // This cache is only used by the ModConfig class and is not used for logic
         if (NostalgicTweaks.isClient())
-            return CLIENT_CACHE;
+            return ServerConfigCache.CLIENT_CACHE;
 
-        if (!initialized)
-            preloadConfiguration();
+        if (!ServerConfigCache.initialized)
+            ServerConfigCache.preload();
 
-        return cache;
+        return ServerConfigCache.cache;
     }
 
     /* Quick Group Cache Access */
@@ -52,10 +52,10 @@ public abstract class ServerConfigCache
      * Reloads and validates the config file saved on disk.
      * @return Always returns a success result regardless of config file validity.
      */
-    private static InteractionResult reloadConfiguration()
+    private static InteractionResult reload()
     {
         // Retrieve new config
-        cache = AutoConfig.getConfigHolder(ServerConfig.class).getConfig();
+        ServerConfigCache.cache = AutoConfig.getConfigHolder(ServerConfig.class).getConfig();
 
         // Let consoles know what happened
         NostalgicTweaks.LOGGER.info("Server config was reloaded");
@@ -66,31 +66,31 @@ public abstract class ServerConfigCache
     /**
      * Loads the server configuration cache prematurely when the server starts mixin patching.
      */
-    public static void preloadConfiguration()
+    public static void preload()
     {
         NostalgicTweaks.LOGGER.info("Initializing server config prematurely for mixin compatibility");
-        initializeConfiguration();
+        ServerConfigCache.initialize();
     }
 
     /**
      * Initializes the server configuration cache when the server starts.
      * This only happens once and this method will return early if the cache has already been initialized.
      */
-    public static void initializeConfiguration()
+    public static void initialize()
     {
         // Do not initialize again this method was already run
-        if (!initialized)
-            initialized = true;
+        if (!ServerConfigCache.initialized)
+            ServerConfigCache.initialized = true;
         else
             return;
 
         // Register and cache config
         AutoConfig.register(ServerConfig.class, GsonConfigSerializer::new);
-        AutoConfig.getConfigHolder(ServerConfig.class).registerLoadListener((manager, update) -> reloadConfiguration());
-        AutoConfig.getConfigHolder(ServerConfig.class).registerSaveListener((manager, data) -> reloadConfiguration());
-        reloadConfiguration();
+        AutoConfig.getConfigHolder(ServerConfig.class).registerLoadListener((manager, update) -> reload());
+        AutoConfig.getConfigHolder(ServerConfig.class).registerSaveListener((manager, data) -> reload());
+        ServerConfigCache.reload();
 
         // Inform console
-        NostalgicTweaks.LOGGER.info(String.format("Loaded %d server controlled tweaks", TweakServerCache.all().size()));
+        NostalgicTweaks.LOGGER.info("Loaded %d server controlled tweaks", TweakServerCache.all().size());
     }
 }

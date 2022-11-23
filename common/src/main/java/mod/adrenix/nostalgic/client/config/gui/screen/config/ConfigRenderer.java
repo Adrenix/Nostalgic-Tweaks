@@ -1,7 +1,10 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
 import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
@@ -16,7 +19,7 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
 import mod.adrenix.nostalgic.common.config.tweak.DisabledTweak;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -49,7 +52,7 @@ public record ConfigRenderer(ConfigScreen parent)
     private static void sort
     (
         TweakClientCache<?> tweak,
-        TweakClient.Gui.Placement placement,
+        TweakGui.Placement placement,
         HashMap<String, TweakClientCache<?>> translated,
         HashMap<Integer, TweakClientCache<?>> top,
         HashMap<Integer, TweakClientCache<?>> bottom
@@ -59,9 +62,9 @@ public record ConfigRenderer(ConfigScreen parent)
             translated.put(tweak.getTranslation(), tweak);
         else
         {
-            if (tweak.getPosition() == TweakClient.Gui.Position.TOP)
+            if (tweak.getPosition() == TweakGui.Position.TOP)
                 top.put(tweak.getOrder(), tweak);
-            else if (tweak.getPosition() == TweakClient.Gui.Position.BOTTOM)
+            else if (tweak.getPosition() == TweakGui.Position.BOTTOM)
                 bottom.put(tweak.getOrder(), tweak);
         }
     }
@@ -69,17 +72,17 @@ public record ConfigRenderer(ConfigScreen parent)
     /**
      * Generates a list of rows based on given container metadata.
      * @param list A config row list instance.
-     * @param category A category enumeration value, or null.
-     * @param subcategory A subcategory enumeration value, or null.
-     * @param embedded An embedded enumeration value, or null.
+     * @param tweakCategory A category enumeration value, or null.
+     * @param tweakSubcategory A subcategory enumeration value, or null.
+     * @param tweakEmbed An embedded enumeration value, or null.
      * @return An array list of properly sorted config rows.
      */
     private static ArrayList<ConfigRowList.Row> generateContainerRows
     (
         ConfigRowList list,
-        @Nullable TweakClient.Category category,
-        @Nullable TweakClient.Subcategory subcategory,
-        @Nullable TweakClient.Embedded embedded
+        @Nullable TweakCategory tweakCategory,
+        @Nullable TweakSubcategory tweakSubcategory,
+        @Nullable TweakEmbed tweakEmbed
     )
     {
         ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
@@ -88,8 +91,8 @@ public record ConfigRenderer(ConfigScreen parent)
         HashMap<Integer, TweakClientCache<?>> bottom = new HashMap<>();
         HashMap<Integer, TweakClientCache<?>> top = new HashMap<>();
 
-        Set<TweakClient.Subcategory> subcategories = new HashSet<>();
-        Set<TweakClient.Embedded> embeds = new HashSet<>();
+        Set<TweakSubcategory> subcategories = new HashSet<>();
+        Set<TweakEmbed> embeds = new HashSet<>();
 
         TweakClientCache.all().forEach((id, tweak) ->
         {
@@ -99,10 +102,10 @@ public record ConfigRenderer(ConfigScreen parent)
                Tweaks may have embedded metadata (which will have subcategory and category data)
              */
 
-            TweakClient.Gui.Cat cat = tweak.getCategory();
-            TweakClient.Gui.Sub sub = tweak.getSubcategory();
-            TweakClient.Gui.Emb emb = tweak.getEmbedded();
-            TweakClient.Gui.Placement placement = tweak.getPlacement();
+            TweakGui.Placement placement = tweak.getPlacement();
+            TweakGui.Category category = tweak.getCategory();
+            TweakGui.Subcategory subcategory = tweak.getSubcategory();
+            TweakGui.Embed embed = tweak.getEmbed();
 
             /*
                If this method is invoked with a category enumeration value, then the array list of rows must contain
@@ -117,16 +120,16 @@ public record ConfigRenderer(ConfigScreen parent)
                array list of rows only needs to contain embed data since this will be the deepest container type.
              */
 
-            if (category != null)
+            if (tweakCategory != null)
             {
                 /*
                    If this tweak resides in a category then it can be added and sorted if the categories match.
                    The tweak's group must also match the category's group.
                  */
                 boolean isTweakInCategory =
-                    cat != null &&
-                    cat.group() == category &&
-                    tweak.getGroup() == category.getGroup()
+                    category != null &&
+                    category.container() == tweakCategory &&
+                    tweak.getGroup() == tweakCategory.getGroup()
                 ;
 
                 /*
@@ -136,10 +139,10 @@ public record ConfigRenderer(ConfigScreen parent)
                    The subcategory is only added to the set if it hasn't already been added by a previous tweak.
                  */
                 boolean isTweakInSubcategory =
-                    sub != null &&
-                    !subcategories.contains(sub.group()) &&
-                    sub.group().getCategory() == category &&
-                    tweak.getGroup() == category.getGroup()
+                    subcategory != null &&
+                    !subcategories.contains(subcategory.container()) &&
+                    subcategory.container().getCategory() == tweakCategory &&
+                    tweak.getGroup() == tweakCategory.getGroup()
                 ;
 
                 /*
@@ -151,28 +154,28 @@ public record ConfigRenderer(ConfigScreen parent)
                    subcategory set. If so, then the tweak's embedded subcategory parent will be added.
                  */
                 boolean isTweakInEmptySubcategory =
-                    emb != null &&
-                    !subcategories.contains(emb.group().getSubcategory()) &&
-                    emb.group().getSubcategory().getCategory() == category
+                    embed != null &&
+                    !subcategories.contains(embed.container().getSubcategory()) &&
+                    embed.container().getSubcategory().getCategory() == tweakCategory
                 ;
 
                 if (isTweakInCategory)
                     sort(tweak, placement, translated, top, bottom);
                 else if (isTweakInSubcategory)
-                    subcategories.add(sub.group());
+                    subcategories.add(subcategory.container());
                 else if (isTweakInEmptySubcategory)
-                    subcategories.add(emb.group().getSubcategory());
+                    subcategories.add(embed.container().getSubcategory());
             }
-            else if (subcategory != null)
+            else if (tweakSubcategory != null)
             {
                 /*
                    If this tweak resides in a subcategory then it can be added and sorted if the subcategories match.
                    The tweak's group must also match the subcategory's category's group.
                  */
                 boolean isTweakInSubcategory =
-                    sub != null &&
-                    sub.group() == subcategory &&
-                    tweak.getGroup() == subcategory.getCategory().getGroup()
+                    subcategory != null &&
+                    subcategory.container() == tweakSubcategory &&
+                    tweak.getGroup() == tweakSubcategory.getCategory().getGroup()
                 ;
 
                 /*
@@ -180,27 +183,27 @@ public record ConfigRenderer(ConfigScreen parent)
                    The tweak's group must also match the embed's subcategory's category's group.
                  */
                 boolean isTweakInEmbed =
-                    emb != null &&
-                    !embeds.contains(emb.group()) &&
-                    emb.group().getSubcategory() == subcategory &&
-                    tweak.getGroup() == subcategory.getCategory().getGroup()
+                    embed != null &&
+                    !embeds.contains(embed.container()) &&
+                    embed.container().getSubcategory() == tweakSubcategory &&
+                    tweak.getGroup() == tweakSubcategory.getCategory().getGroup()
                 ;
 
                 if (isTweakInSubcategory)
                     sort(tweak, placement, translated, top, bottom);
                 else if (isTweakInEmbed)
-                    embeds.add(emb.group());
+                    embeds.add(embed.container());
             }
-            else if (embedded != null)
+            else if (tweakEmbed != null)
             {
                 // If this tweak resides in an embed then it can be added and sorted if the main group types match
-                if (emb != null && emb.group() == embedded && tweak.getGroup() == embedded.getSubcategory().getCategory().getGroup())
+                if (embed != null && embed.container() == tweakEmbed && tweak.getGroup() == tweakEmbed.getSubcategory().getCategory().getGroup())
                     sort(tweak, placement, translated, top, bottom);
             }
         });
 
-        EnumSet<TweakClient.Subcategory> allSubs = EnumSet.allOf(TweakClient.Subcategory.class);
-        EnumSet<TweakClient.Embedded> allEmbeds = EnumSet.allOf(TweakClient.Embedded.class);
+        EnumSet<TweakSubcategory> allSubs = EnumSet.allOf(TweakSubcategory.class);
+        EnumSet<TweakEmbed> allEmbeds = EnumSet.allOf(TweakEmbed.class);
 
         /*
            Loops through all defined subcategory enumeration values and adds subcategory data via recursion if this
@@ -244,9 +247,9 @@ public record ConfigRenderer(ConfigScreen parent)
     private static Supplier<ArrayList<ConfigRowList.Row>> getContainerRowSupplier
     (
         ConfigRowList list,
-        @Nullable TweakClient.Category category,
-        @Nullable TweakClient.Subcategory subcategory,
-        @Nullable TweakClient.Embedded embedded
+        @Nullable TweakCategory category,
+        @Nullable TweakSubcategory subcategory,
+        @Nullable TweakEmbed embedded
     )
     {
         return () -> generateContainerRows(list, category, subcategory, embedded);
@@ -258,7 +261,7 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within an embed.
      */
-    private static ConfigRowList.ContainerRow getEmbedded(TweakClient.Embedded embedded, ConfigRowList list)
+    private static ConfigRowList.ContainerRow getEmbedded(TweakEmbed embedded, ConfigRowList list)
     {
         return new ConfigRowList.ContainerRow
         (
@@ -275,7 +278,7 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within a subcategory.
      */
-    private static ConfigRowList.ContainerRow getSubcategory(TweakClient.Subcategory subcategory, ConfigRowList list)
+    private static ConfigRowList.ContainerRow getSubcategory(TweakSubcategory subcategory, ConfigRowList list)
     {
         return new ConfigRowList.ContainerRow
         (
@@ -292,7 +295,7 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within a category.
      */
-    private static ConfigRowList.ContainerRow getCategory(TweakClient.Category category, ConfigRowList list)
+    private static ConfigRowList.ContainerRow getCategory(TweakCategory category, ConfigRowList list)
     {
         return new ConfigRowList.ContainerRow
         (
@@ -308,10 +311,10 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param group A group type enumeration value.
      * @return A list of properly sorted config row list instances for the given group type.
      */
-    private static List<ConfigRowList.Row> getCategories(ConfigRowList list, GroupType group)
+    private static List<ConfigRowList.Row> getCategories(ConfigRowList list, TweakGroup group)
     {
         List<ConfigRowList.Row> rows = new ArrayList<>();
-        EnumSet<TweakClient.Category> categories = EnumSet.allOf(TweakClient.Category.class);
+        EnumSet<TweakCategory> categories = EnumSet.allOf(TweakCategory.class);
 
         categories.forEach((category) ->
         {
@@ -326,7 +329,7 @@ public record ConfigRenderer(ConfigScreen parent)
      * Generates all config rows for the given group type.
      * @param group A group type to generate data from.
      */
-    private void addRows(GroupType group)
+    private void addRows(TweakGroup group)
     {
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
 
@@ -354,18 +357,18 @@ public record ConfigRenderer(ConfigScreen parent)
 
         all.forEach((key, value) ->
         {
-            TweakClient.Gui.Placement placement = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Placement.class);
-            TweakClient.Gui.Cat cat = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Cat.class);
-            TweakClient.Gui.Sub sub = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Sub.class);
-            TweakClient.Gui.Emb emb = CommonReflect.getAnnotation(group, key, TweakClient.Gui.Emb.class);
+            TweakGui.Placement placement = CommonReflect.getAnnotation(group, key, TweakGui.Placement.class);
+            TweakGui.Category category = CommonReflect.getAnnotation(group, key, TweakGui.Category.class);
+            TweakGui.Subcategory subcategory = CommonReflect.getAnnotation(group, key, TweakGui.Subcategory.class);
+            TweakGui.Embed embed = CommonReflect.getAnnotation(group, key, TweakGui.Embed.class);
 
-            if (cat == null && sub == null && emb == null)
+            if (category == null && subcategory == null && embed == null)
             {
                 if (placement == null)
                     middle.put(key, value);
-                else if (placement.pos() == TweakClient.Gui.Position.TOP)
+                else if (placement.pos() == TweakGui.Position.TOP)
                     top.put(key, value);
-                else if (placement.pos() == TweakClient.Gui.Position.BOTTOM)
+                else if (placement.pos() == TweakGui.Position.BOTTOM)
                     bottom.put(key, value);
             }
         });
@@ -430,15 +433,15 @@ public record ConfigRenderer(ConfigScreen parent)
         TextGroup help = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
         AtomicBoolean serverOnly = new AtomicBoolean(false);
 
-        Button.OnPress onDisable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+        Button.OnPress onDisable = (button) -> Arrays.stream(TweakGroup.values()).forEach((group) ->
         {
-            if (!GroupType.isManual(group))
+            if (!TweakGroup.isManual(group))
             {
                 ClientReflect.getGroup(group).forEach((key, value) ->
                 {
                     TweakClientCache<Boolean> tweak = TweakClientCache.get(group, key);
 
-                    boolean isDisableIgnored = tweak.isMetadataPresent(TweakClient.Gui.IgnoreDisable.class);
+                    boolean isDisableIgnored = tweak.isMetadataPresent(TweakGui.IgnoreDisable.class);
                     boolean isClientIgnored = serverOnly.get() && tweak.isClient() && !tweak.isDynamic();
                     boolean isLocked = tweak.isLocked();
                     boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
@@ -448,7 +451,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
                     if (value instanceof Boolean && isChangeable)
                     {
-                        TweakClient.Gui.DisabledBoolean disabledBoolean = tweak.getMetadata(TweakClient.Gui.DisabledBoolean.class);
+                        TweakGui.DisabledBoolean disabledBoolean = tweak.getMetadata(TweakGui.DisabledBoolean.class);
 
                         if (disabledBoolean == null && tweak.getDefault())
                         {
@@ -461,7 +464,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
                     if (value instanceof Integer && isChangeable)
                     {
-                        TweakClient.Gui.DisabledInteger disabledInteger = tweak.getMetadata(TweakClient.Gui.DisabledInteger.class);
+                        TweakGui.DisabledInteger disabledInteger = tweak.getMetadata(TweakGui.DisabledInteger.class);
 
                         if (disabledInteger != null)
                         {
@@ -479,9 +482,9 @@ public record ConfigRenderer(ConfigScreen parent)
             }
         });
 
-        Button.OnPress onEnable = (button) -> Arrays.stream(GroupType.values()).forEach((group) ->
+        Button.OnPress onEnable = (button) -> Arrays.stream(TweakGroup.values()).forEach((group) ->
         {
-            if (!GroupType.isManual(group))
+            if (!TweakGroup.isManual(group))
             {
                 ClientReflect.getGroup(group).forEach((key, value) ->
                 {
@@ -590,10 +593,10 @@ public record ConfigRenderer(ConfigScreen parent)
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
 
             TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
-            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, tree.getKey(), tree.getValue()).generate());
+            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, tree.getKey(), tree.getValue()).generate());
 
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
-            rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getValue()).generate());
+            rows.add(new ConfigRowList.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
 
             return rows;
         };
@@ -616,13 +619,13 @@ public record ConfigRenderer(ConfigScreen parent)
             ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
 
             TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
-            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, highlight.getKey(), highlight.getValue()).generate());
+            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, highlight.getKey(), highlight.getValue()).generate());
 
             TweakClientCache<Boolean> fade = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE);
-            rows.add(new ConfigRowList.BooleanRow(GroupType.GUI, fade.getKey(), fade.getValue()).generate());
+            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, fade.getKey(), fade.getValue()).generate());
 
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR);
-            rows.add(new ConfigRowList.ColorRow(GroupType.GUI, color.getKey(), color.getValue()).generate());
+            rows.add(new ConfigRowList.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
 
             return rows;
         };
@@ -774,9 +777,9 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Mod Enabled */
 
-        TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(GroupType.ROOT, ClientConfig.ROOT_KEY);
+        TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(TweakGroup.ROOT, ClientConfig.ROOT_KEY);
 
-        list.addRow(new ConfigRowList.BooleanRow(GroupType.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
+        list.addRow(new ConfigRowList.BooleanRow(TweakGroup.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
 
         /* All Tweak Overrides */
 
@@ -851,11 +854,11 @@ public record ConfigRenderer(ConfigScreen parent)
      */
     public void generateRowsFromAllGroups()
     {
-        addRows(GroupType.SOUND);
-        addRows(GroupType.CANDY);
-        addRows(GroupType.GAMEPLAY);
-        addRows(GroupType.ANIMATION);
-        addRows(GroupType.SWING);
+        addRows(TweakGroup.SOUND);
+        addRows(TweakGroup.CANDY);
+        addRows(TweakGroup.GAMEPLAY);
+        addRows(TweakGroup.ANIMATION);
+        addRows(TweakGroup.SWING);
     }
 
     /**
@@ -926,11 +929,11 @@ public record ConfigRenderer(ConfigScreen parent)
         {
             case ALL -> generateRowsFromAllGroups();
             case GENERAL -> addGeneral();
-            case SOUND -> addRows(GroupType.SOUND);
-            case CANDY -> addRows(GroupType.CANDY);
-            case GAMEPLAY -> addRows(GroupType.GAMEPLAY);
-            case ANIMATION -> addRows(GroupType.ANIMATION);
-            case SWING -> addRows(GroupType.SWING);
+            case SOUND -> addRows(TweakGroup.SOUND);
+            case CANDY -> addRows(TweakGroup.CANDY);
+            case GAMEPLAY -> addRows(TweakGroup.GAMEPLAY);
+            case ANIMATION -> addRows(TweakGroup.ANIMATION);
+            case SWING -> addRows(TweakGroup.SWING);
             case SEARCH -> addFound();
         }
     }

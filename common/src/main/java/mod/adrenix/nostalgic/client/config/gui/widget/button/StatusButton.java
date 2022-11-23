@@ -3,12 +3,12 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
@@ -98,36 +98,36 @@ public class StatusButton extends Button
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        StatusType tweakStatus = this.tweak.getStatus();
-        StatusType serverStatus = this.server == null ? tweakStatus : this.server.getStatus();
-        TweakSide.Dynamic dynamic = this.tweak.getMetadata(TweakSide.Dynamic.class);
+        TweakStatus tweakStatus = this.tweak.getStatus();
+        TweakStatus serverStatus = this.server == null ? tweakStatus : this.server.getStatus();
+        TweakData.Dynamic dynamic = this.tweak.getMetadata(TweakData.Dynamic.class);
 
-        if (tweakStatus == StatusType.FAIL && serverStatus != StatusType.FAIL)
+        if (tweakStatus == TweakStatus.FAIL && serverStatus != TweakStatus.FAIL)
             tweakStatus = serverStatus;
 
-        boolean isTweakDynamic = dynamic != null && minecraft.level != null && tweakStatus != StatusType.FAIL && NetUtil.isMultiplayer();
+        boolean isTweakDynamic = dynamic != null && minecraft.level != null && tweakStatus != TweakStatus.FAIL && NetUtil.isMultiplayer();
         boolean isTweakLocked = this.isTweakLocked();
         boolean isNetVerified = NostalgicTweaks.isNetworkVerified() || this.tweak.isClient() || Minecraft.getInstance().level == null;
         boolean isStatusProblem = !isNetVerified || isTweakLocked;
 
-        if (tweakStatus == StatusType.LOADED && !isStatusProblem && !isTweakDynamic)
+        if (tweakStatus == TweakStatus.LOADED && !isStatusProblem && !isTweakDynamic)
             return;
 
         if (!isTweakDynamic)
         {
             boolean isRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS).getValue();
-            if (!isRenderable && tweakStatus != StatusType.WARN)
+            if (!isRenderable && tweakStatus != TweakStatus.WARN)
                 return;
         }
 
-        if (NetUtil.isMultiplayer() && tweakStatus == StatusType.WAIT)
-            tweakStatus = StatusType.FAIL;
+        if (NetUtil.isMultiplayer() && tweakStatus == TweakStatus.WAIT)
+            tweakStatus = TweakStatus.FAIL;
 
         if (ClassUtil.isNotInstanceOf(minecraft.screen, ConfigScreen.class))
             return;
 
         ConfigScreen screen = (ConfigScreen) minecraft.screen;
-        StatusType status = flipState ? StatusType.LOADED : tweakStatus;
+        TweakStatus status = flipState ? TweakStatus.LOADED : tweakStatus;
 
         int uWidth = 4;
         int vHeight = 20;

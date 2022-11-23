@@ -226,7 +226,7 @@ public class SpeedRowList extends AbstractRowList<SpeedRowList.Row>
                     widget.setMessage(Component.literal(Widgets.REMOVE).withStyle(widget.active ? ChatFormatting.DARK_RED : ChatFormatting.GRAY).withStyle(ChatFormatting.BOLD));
                 else if (title != null && title.equals(Widgets.UNDO))
                     widget.setMessage(Component.literal(Widgets.UNDO).withStyle(widget.active ? ChatFormatting.RED : ChatFormatting.GRAY));
-                else if (title != null && title.equals(Component.translatable(LangUtil.Cloth.RESET).getString()))
+                else if (title != null && title.equals(Component.translatable(LangUtil.Gui.BUTTON_RESET).getString()))
                     widget.active = !SpeedRowList.DELETED_ROWS.contains(entry) && this.entry.getValue() != DefaultConfig.Swing.OLD_SPEED;
             }
 
@@ -407,7 +407,7 @@ public class SpeedRowList extends AbstractRowList<SpeedRowList.Row>
              */
             public static Button createReset(SwingScreen screen, Map.Entry<String, Integer> entry, GenericSlider slider)
             {
-                Component title = Component.translatable(LangUtil.Cloth.RESET);
+                Component title = Component.translatable(LangUtil.Gui.BUTTON_RESET);
 
                 return new Button
                 (

@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.network.packet;
 
 import dev.architectury.networking.NetworkManager;
-import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
 import mod.adrenix.nostalgic.server.config.ServerConfig;

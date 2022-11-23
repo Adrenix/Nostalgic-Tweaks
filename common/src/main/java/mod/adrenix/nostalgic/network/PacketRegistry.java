@@ -13,7 +13,7 @@ public abstract class PacketRegistry
      * Initialize packet registration.
      * Mod loader registration is handled by Architectury.
      */
-    public static void init()
+    public static void initialize()
     {
         PacketC2SChangeTweak.register();
         PacketS2CTweakUpdate.register();

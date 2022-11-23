@@ -222,7 +222,7 @@ public class NostalgicTweaks
      */
     public static void setNetworkVerification(boolean verified)
     {
-        NostalgicTweaks.LOGGER.debug(String.format("Setting network verification to: %s", verified));
+        NostalgicTweaks.LOGGER.debug("Setting network verification to: %s", verified);
         NostalgicTweaks.isNetworkSupported = verified;
     }
 
@@ -234,15 +234,15 @@ public class NostalgicTweaks
      */
     public static void initServer(Environment environment)
     {
-        ServerConfigCache.initializeConfiguration();
+        ServerConfigCache.initialize();
 
         NostalgicTweaks.LOGGER.warn("Nostalgic Tweaks server support is still in-development");
         NostalgicTweaks.LOGGER.warn("Please report any problems you encounter");
 
         NostalgicTweaks.setSide(Side.SERVER);
         NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString())));
-        PacketRegistry.init();
+        NostalgicTweaks.LOGGER.info("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString()));
+        PacketRegistry.initialize();
     }
 
     /**
@@ -251,12 +251,12 @@ public class NostalgicTweaks
      */
     public static void initClient(Environment environment)
     {
-        ClientConfigCache.initializeConfiguration();
+        ClientConfigCache.initialize();
 
         NostalgicTweaks.setSide(Side.CLIENT);
         NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info(String.format("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString())));
-        PacketRegistry.init();
+        NostalgicTweaks.LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString()));
+        PacketRegistry.initialize();
 
         if (OPTIFINE.get())
             NostalgicTweaks.LOGGER.warn("Optifine is installed - some tweaks may not work as intended");

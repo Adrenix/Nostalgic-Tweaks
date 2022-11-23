@@ -5,7 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
@@ -18,10 +19,10 @@ import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.CycleButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
@@ -253,7 +254,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      * @return A configuration row instance that handles the given value.
      * @param <E> A type that is associated with a provided enumeration value.
      */
-    public <E extends Enum<E>> Row getRow(GroupType group, String key, Object value)
+    public <E extends Enum<E>> Row getRow(TweakGroup group, String key, Object value)
     {
         if (value instanceof Boolean)
             return new BooleanRow(group, key, (Boolean) value).generate();
@@ -263,7 +264,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             return new EnumRow<E>(group, key, value).generate();
         else if (value instanceof String)
         {
-            if (CommonReflect.getAnnotation(group, key, TweakSide.Color.class) != null)
+            if (CommonReflect.getAnnotation(group, key, TweakData.Color.class) != null)
                 return new ColorRow(group, key, (String) value).generate();
 
             return new StringRow(group, key, (String) value).generate();
@@ -284,7 +285,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      * @param key A tweak key that identifies the configuration row.
      * @param value The value that will be controlled by this row.
      */
-    public void addRow(GroupType group, String key, Object value) { this.addEntry(this.getRow(group, key, value)); }
+    public void addRow(TweakGroup group, String key, Object value) { this.addEntry(this.getRow(group, key, value)); }
 
     /*
 
@@ -304,7 +305,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         /* Fields */
 
         protected final TweakClientCache<T> tweak;
-        protected final GroupType group;
+        protected final TweakGroup group;
         protected final String key;
         protected final T value;
 
@@ -316,7 +317,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key The tweak cache key associated with this row.
          * @param value The tweak value associated with this row.
          */
-        protected AbstractRow(GroupType group, String key, T value)
+        protected AbstractRow(TweakGroup group, String key, T value)
         {
             this.tweak = TweakClientCache.get(group, key);
             this.group = group;
@@ -332,7 +333,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            TweakClient.Gui.NoTooltip noTooltip = this.tweak.getMetadata(TweakClient.Gui.NoTooltip.class);
+            TweakGui.NoTooltip noTooltip = this.tweak.getMetadata(TweakGui.NoTooltip.class);
 
             widgets.add(controller);
             widgets.add(new ResetButton(this.tweak, controller));
@@ -370,7 +371,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key A tweak client cache map identifier.
          * @param value The value associated with a tweak.
          */
-        public InvalidRow(GroupType group, String key, Object value) { super(group, key, value); }
+        public InvalidRow(TweakGroup group, String key, Object value) { super(group, key, value); }
 
         @Override
         public ConfigRowList.Row generate() { return new ConfigRowList.Row(new ArrayList<>(), this.tweak); }
@@ -389,7 +390,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key A tweak client cache map identifier.
          * @param value The value associated with a tweak.
          */
-        public BooleanRow(GroupType group, String key, boolean value) { super(group, key, value); }
+        public BooleanRow(TweakGroup group, String key, boolean value) { super(group, key, value); }
 
         @Override
         public ConfigRowList.Row generate()
@@ -411,7 +412,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key A tweak client cache map identifier.
          * @param value The value associated with a tweak.
          */
-        public IntSliderRow(GroupType group, String key, int value) { super(group, key, value); }
+        public IntSliderRow(TweakGroup group, String key, int value) { super(group, key, value); }
 
         @Override
         public ConfigRowList.Row generate() { return this.create(new ConfigSlider(this.tweak)); }
@@ -430,7 +431,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key A tweak client cache map identifier.
          * @param value The value associated with a tweak.
          */
-        public StringRow(GroupType group, String key, String value) { super(group, key, value); }
+        public StringRow(TweakGroup group, String key, String value) { super(group, key, value); }
 
         @Override
         public ConfigRowList.Row generate() { return this.create(new StringInput(this.tweak).getWidget()); }
@@ -449,7 +450,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param key A tweak client cache map identifier.
          * @param value The value associated with a tweak.
          */
-        public ColorRow(GroupType group, String key, String value) { super(group, key, value); }
+        public ColorRow(TweakGroup group, String key, String value) { super(group, key, value); }
 
         @Override
         public ConfigRowList.Row generate() { return this.create(new ColorInput(this.tweak)); }
@@ -470,7 +471,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param value The value associated with a tweak.
          */
         @SuppressWarnings("unchecked")
-        public EnumRow(GroupType group, String key, Object value) { super(group, key, (E) value); }
+        public EnumRow(TweakGroup group, String key, Object value) { super(group, key, (E) value); }
 
         @Override
         public ConfigRowList.Row generate()
@@ -713,7 +714,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                             subcategory.setParentTreeNeeded(true);
 
                         // If category group has additional children then show grandparent pipe bars for embedded rows
-                        if (group.getId() instanceof TweakClient.Embedded)
+                        if (group.getId() instanceof TweakEmbed)
                         {
                             if (categories.group != null && !categories.group.isLastSubcategory())
                                 group.setGrandparentTreeNeeded(true);

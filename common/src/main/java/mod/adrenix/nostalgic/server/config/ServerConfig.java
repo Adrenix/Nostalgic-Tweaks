@@ -1,9 +1,11 @@
 package mod.adrenix.nostalgic.server.config;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.ValidateConfig;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import mod.adrenix.nostalgic.common.config.auto.ConfigData;
+import mod.adrenix.nostalgic.common.config.auto.annotation.Config;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 
 /**
@@ -19,11 +21,19 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 @Config(name = NostalgicTweaks.MOD_ID + "-server")
 public class ServerConfig implements ConfigData
 {
+    /* Config Validation */
+
+    @Override public void validatePostLoad() throws ValidationException { ValidateConfig.scan(this); }
+
+    /* Server Config */
+
     public EyeCandy eyeCandy = new EyeCandy();
     public static class EyeCandy
     {
-        public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
+        @TweakData.BoundedSlider(min = 1, max = 64, reset = DefaultConfig.Candy.ITEM_MERGE_LIMIT)
         public int itemMergeLimit = DefaultConfig.Candy.ITEM_MERGE_LIMIT;
+
+        public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
@@ -37,7 +47,9 @@ public class ServerConfig implements ConfigData
         public boolean oldSquidMilking = DefaultConfig.Gameplay.OLD_SQUID_MILKING;
 
         // Mob System
+        @TweakData.BoundedSlider(min = 0, max = 100, reset = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP)
         public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
+
         public boolean disableAnimalPanic = DefaultConfig.Gameplay.DISABLE_ANIMAL_PANIC;
         public boolean disableSheepEatGrass = DefaultConfig.Gameplay.DISABLE_SHEEP_EAT_GRASS;
         public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;
@@ -63,7 +75,9 @@ public class ServerConfig implements ConfigData
         public boolean oldStyleHuskDrops = DefaultConfig.Gameplay.OLD_STYLE_HUSK_DROPS;
 
         // Combat System
+        @TweakData.BoundedSlider(min = 0, max = 100, reset = DefaultConfig.Gameplay.ARROW_SPEED)
         public int arrowSpeed = DefaultConfig.Gameplay.ARROW_SPEED;
+
         public boolean instantBow = DefaultConfig.Gameplay.INSTANT_BOW;
         public boolean invincibleBow = DefaultConfig.Gameplay.INVINCIBLE_BOW;
         public boolean disableCooldown = DefaultConfig.Gameplay.DISABLE_COOLDOWN;

@@ -52,7 +52,9 @@ public class CycleButton<E extends Enum<E>> extends ControlButton implements Per
 
         if (enums.length == 0)
         {
-            NostalgicTweaks.LOGGER.warn("Tried to toggle an empty enumeration list. This shouldn't happen!");
+            String name = enums.getClass().getName();
+            NostalgicTweaks.LOGGER.warn("Tried to toggle %s an empty enumeration list. This shouldn't happen!", name);
+
             return;
         }
 

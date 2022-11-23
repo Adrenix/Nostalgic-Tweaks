@@ -12,8 +12,8 @@ import java.util.Set;
  * This plugin allows Forge to reach the "missing dependencies" startup screen.
  *
  * Some configuration entries need to be known when mixins are applied.
- * If AutoConfig or Architectury is missing, then mixins will be loaded with missing classes which will prevent Forge
- * from reaching this screen.
+ * If Architectury is missing, then mixins will be loaded with missing classes which will prevent Forge from reaching
+ * this screen.
  *
  * Do <b>not</b> class load any mod related classes here. Doing so will cause "applied too early" ASM errors during the
  * mixin application process.
@@ -25,21 +25,32 @@ import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin
 {
-    private boolean isAutoConfigPresent = false;
+    /* Fields */
+
     private boolean isArchitecturyPresent = false;
 
-    @Override
-    public void onLoad(String mixinPackage)
-    {
-        isAutoConfigPresent = ClassUtil.isAutoConfigPresent();
-        isArchitecturyPresent = ClassUtil.isArchitecturyPresent();
-    }
+    /* Methods */
 
+    /**
+     * Defines the mods that are present.
+     * @param mixinPackage The mixin root package from the config.
+     */
+    @Override
+    public void onLoad(String mixinPackage) { this.isArchitecturyPresent = ClassUtil.isArchitecturyPresent(); }
+
+    /**
+     * The result of this method determines whether mixins are applied to the target class.
+     * @param targetClassName Fully qualified class name of the target class.
+     * @param mixinClassName Fully qualified class name of the mixin.
+     * @return Whether the mixin instructions from the mixin class is applied to the target class.
+     */
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return isAutoConfigPresent && isArchitecturyPresent;
+        return this.isArchitecturyPresent;
     }
+
+    /* Required Plugin Overrides */
 
     @Override public List<String> getMixins() { return null; }
     @Override public String getRefMapperConfig() { return null; }

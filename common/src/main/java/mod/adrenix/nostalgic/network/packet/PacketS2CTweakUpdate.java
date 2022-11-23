@@ -1,13 +1,13 @@
 package mod.adrenix.nostalgic.network.packet;
 
 import dev.architectury.networking.NetworkManager;
-import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
@@ -136,7 +136,7 @@ public class PacketS2CTweakUpdate
                 LogColor.apply(LogColor.LIGHT_PURPLE, serializer.getGroup().toString()),
                 LogColor.apply(LogColor.GREEN, serializer.getKey()),
                 LogColor.apply(LogColor.BLUE, serializer.getValue().toString()),
-                StatusType.toStringWithColor(serializer.getStatus())
+                TweakStatus.toStringWithColor(serializer.getStatus())
             );
 
             NostalgicTweaks.LOGGER.debug(information);

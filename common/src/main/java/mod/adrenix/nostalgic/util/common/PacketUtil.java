@@ -25,7 +25,7 @@ public abstract class PacketUtil
     public static <Packet> void sendToPlayer(ServerPlayer player, Packet packet)
     {
         NostalgicTweaks.NETWORK.sendToPlayer(player, packet);
-        NostalgicTweaks.LOGGER.debug(String.format("(S2C) Sent (%s) to (%s)", packet, player));
+        NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to (%s)", packet, player);
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class PacketUtil
     public static <Packet> void sendToAll(Iterable<ServerPlayer> players, Packet packet)
     {
         NostalgicTweaks.NETWORK.sendToPlayers(players, packet);
-        NostalgicTweaks.LOGGER.debug(String.format("(S2C) Sent (%s) to all players", packet));
+        NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to all players", packet);
     }
 
     /**
@@ -59,6 +59,7 @@ public abstract class PacketUtil
     public static <Packet> void sendToAll(Packet packet) throws AssertionError
     {
         MinecraftServer server = NostalgicTweaks.getServer();
+
         if (server == null)
             throw new AssertionError(String.format("Tried to send (%s) but there was no server instance available", packet.getClass()));
 
@@ -78,10 +79,10 @@ public abstract class PacketUtil
         if (NostalgicTweaks.isNetworkVerified())
         {
             NostalgicTweaks.NETWORK.sendToServer(packet);
-            NostalgicTweaks.LOGGER.debug(String.format("(C2S) Sent (%s) to server", packet));
+            NostalgicTweaks.LOGGER.debug("(C2S) Sent (%s) to server", packet);
         }
         else
-            NostalgicTweaks.LOGGER.info(String.format("N.T network is unverified - not sending %s", packet.getClass()));
+            NostalgicTweaks.LOGGER.info("N.T network is unverified - not sending %s", packet.getClass());
     }
 
     /**
@@ -90,10 +91,7 @@ public abstract class PacketUtil
      * @param player The server player to check permissions on.
      * @return Whether the server player is an operator. (level >= 2)
      */
-    public static boolean isPlayerOp(ServerPlayer player)
-    {
-        return player.hasPermissions(2);
-    }
+    public static boolean isPlayerOp(ServerPlayer player) { return player.hasPermissions(2); }
 
     /**
      * This is a helper method that informs the console that a packet was processed on the wrong logical side.
@@ -104,7 +102,8 @@ public abstract class PacketUtil
     {
         String receiver = side.equals(EnvType.CLIENT) ? "Client" : "Server";
         String bound = side.equals(EnvType.CLIENT) ? "server" : "client";
-        String warn = String.format(
+        String warn = String.format
+        (
             "%s is processing (%s) a %s bound packet. This shouldn't happen!",
             receiver,
             packet,

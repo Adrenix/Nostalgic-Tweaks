@@ -7,8 +7,8 @@ import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StateButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.SearchWidget;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
@@ -373,7 +373,7 @@ public class ConfigWidgets
             this.parent.height - BOTTOM_OFFSET,
             getSmallWidth(),
             BUTTON_HEIGHT,
-            Component.translatable(LangUtil.Cloth.SAVE_AND_DONE),
+            Component.translatable(LangUtil.Gui.BUTTON_SAVE_AND_DONE),
             (button) -> this.parent.onClose(false)
         );
     }
@@ -591,7 +591,7 @@ public class ConfigWidgets
         {
             tweak.setWeight(0);
 
-            if (GroupType.isManual(tweak.getGroup()))
+            if (TweakGroup.isManual(tweak.getGroup()))
                 continue;
 
             boolean isTagged = false;
@@ -603,7 +603,7 @@ public class ConfigWidgets
                     case NEW -> isTagged = tweak.isNew();
                     case CLIENT -> isTagged = tweak.isClient();
                     case SERVER -> isTagged = tweak.isServer();
-                    case CONFLICT -> isTagged = tweak.getStatus() != StatusType.LOADED;
+                    case CONFLICT -> isTagged = tweak.getStatus() != TweakStatus.LOADED;
                     case RESET -> isTagged = tweak.isResettable();
                     case SAVE -> isTagged = tweak.isSavable();
                 }

@@ -30,7 +30,7 @@ public abstract class CommonReflect
      * @param config A client config instance.
      * @return A data pair with a class/subclass reference on the left and a client config instance on the right.
      */
-    public static Pair<Class<?>, Object> getGroupClass(GroupType group, ClientConfig config)
+    public static Pair<Class<?>, Object> getGroupClass(TweakGroup group, ClientConfig config)
     {
         switch (group)
         {
@@ -111,13 +111,13 @@ public abstract class CommonReflect
      * @return The annotation if it was found.
      */
     @Nullable
-    public static <T extends Annotation> T getAnnotation(GroupType group, String key, Class<T> annotation)
+    public static <T extends Annotation> T getAnnotation(TweakGroup group, String key, Class<T> annotation)
     {
         return getFieldAnnotation(group, key, annotation);
     }
 
     /**
-     * Overload method for {@link CommonReflect#getAnnotation(GroupType, String, Class)}.
+     * Overload method for {@link CommonReflect#getAnnotation(TweakGroup, String, Class)}.
      * @param cache A cached entry from {@link TweakCommonCache}.
      * @param annotation An annotation class to check for.
      * @param <T> The class type of annotation.
@@ -138,7 +138,7 @@ public abstract class CommonReflect
      * @return The annotation if it was found.
      */
     @Nullable
-    private static <T extends Annotation> T getFieldAnnotation(GroupType group, String key, Class<T> annotation)
+    private static <T extends Annotation> T getFieldAnnotation(TweakGroup group, String key, Class<T> annotation)
     {
         Pair<Class<?>, Object> groupClass = getGroupClass(group, DEFAULT_CONFIG);
         Class<?> reference = groupClass.getFirst();

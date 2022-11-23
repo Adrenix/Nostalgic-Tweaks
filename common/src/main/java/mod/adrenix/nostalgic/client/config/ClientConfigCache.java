@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.client.config;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.auto.serializer.GsonConfigSerializer;
 import net.minecraft.world.InteractionResult;
 
 /**
@@ -31,12 +31,12 @@ public abstract class ClientConfigCache
     {
         // This cache is only used by the ModConfig class and is not used for logic
         if (NostalgicTweaks.isServer())
-            return SERVER_CACHE;
+            return ClientConfigCache.SERVER_CACHE;
 
-        if (!initialized)
-            preloadConfiguration();
+        if (!ClientConfigCache.initialized)
+            ClientConfigCache.preload();
 
-        return cache;
+        return ClientConfigCache.cache;
     }
 
     /* Quick Group Cache Access */
@@ -55,7 +55,7 @@ public abstract class ClientConfigCache
      * Reloads and validates the config file saved on disk.
      * @return Always returns a success result regardless of config file validity.
      */
-    private static InteractionResult reloadConfiguration()
+    private static InteractionResult reload()
     {
         // Retrieve new config and validate its data
         ClientConfigCache.cache = AutoConfig.getConfigHolder(ClientConfig.class).getConfig();
@@ -71,7 +71,7 @@ public abstract class ClientConfigCache
      * Loads the client configuration cache prematurely when the game starts mixin patching.
      * @throws AssertionError When this method is called by the server.
      */
-    public static void preloadConfiguration()
+    public static void preload()
     {
         if (NostalgicTweaks.isServer())
         {
@@ -80,31 +80,31 @@ public abstract class ClientConfigCache
         }
 
         NostalgicTweaks.LOGGER.info("Initializing client config prematurely for mixin compatibility");
-        initializeConfiguration();
+        ClientConfigCache.initialize();
     }
 
     /**
      * Initializes the client configuration cache when the game starts.
      * This only happens once and this method will return early if the cache has already been initialized.
      */
-    public static void initializeConfiguration()
+    public static void initialize()
     {
         // Do not initialize again if this method was run prematurely
-        if (!initialized)
-            initialized = true;
+        if (!ClientConfigCache.initialized)
+            ClientConfigCache.initialized = true;
         else
             return;
 
         // Register and cache config
         AutoConfig.register(ClientConfig.class, GsonConfigSerializer::new);
-        AutoConfig.getConfigHolder(ClientConfig.class).registerLoadListener((manager, update) -> reloadConfiguration());
-        AutoConfig.getConfigHolder(ClientConfig.class).registerSaveListener((manager, data) -> reloadConfiguration());
-        reloadConfiguration();
+        AutoConfig.getConfigHolder(ClientConfig.class).registerLoadListener((manager, update) -> reload());
+        AutoConfig.getConfigHolder(ClientConfig.class).registerSaveListener((manager, data) -> reload());
+        ClientConfigCache.reload();
 
         // List loaded tweaks
-        NostalgicTweaks.LOGGER.info(String.format("Loaded %d tweaks", TweakClientCache.all().size()));
+        NostalgicTweaks.LOGGER.info("Loaded %d tweaks", TweakClientCache.all().size());
 
         // Let consoles know what happened
-        NostalgicTweaks.LOGGER.info(String.format("Registered %d customized swing speeds", cache.custom.size()));
+        NostalgicTweaks.LOGGER.info("Registered %d customized swing speeds", cache.custom.size());
     }
 }

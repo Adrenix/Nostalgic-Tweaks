@@ -3,10 +3,11 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -200,16 +201,16 @@ public class TweakTag extends AbstractWidget
 
         if (screen == null) return;
 
-        TweakClient.Gui.New newTag = this.tweak.getMetadata(TweakClient.Gui.New.class);
-        TweakSide.Client clientTag = this.tweak.getMetadata(TweakSide.Client.class);
-        TweakSide.Server serverTag = this.tweak.getMetadata(TweakSide.Server.class);
-        TweakSide.Dynamic dynamicTag = this.tweak.getMetadata(TweakSide.Dynamic.class);
-        TweakClient.Gui.Alert alertTag = this.tweak.getMetadata(TweakClient.Gui.Alert.class);
-        TweakClient.Gui.Sodium sodiumTag = this.tweak.getMetadata(TweakClient.Gui.Sodium.class);
-        TweakClient.Gui.Restart restartTag = this.tweak.getMetadata(TweakClient.Gui.Restart.class);
-        TweakClient.Gui.Warning warningTag = this.tweak.getMetadata(TweakClient.Gui.Warning.class);
-        TweakClient.Gui.Optifine optifineTag = this.tweak.getMetadata(TweakClient.Gui.Optifine.class);
-        TweakClient.Run.ReloadResources reloadTag = this.tweak.getMetadata(TweakClient.Run.ReloadResources.class);
+        TweakGui.New newTag = this.tweak.getMetadata(TweakGui.New.class);
+        TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);
+        TweakData.Server serverTag = this.tweak.getMetadata(TweakData.Server.class);
+        TweakData.Dynamic dynamicTag = this.tweak.getMetadata(TweakData.Dynamic.class);
+        TweakGui.Alert alertTag = this.tweak.getMetadata(TweakGui.Alert.class);
+        TweakGui.Sodium sodiumTag = this.tweak.getMetadata(TweakGui.Sodium.class);
+        TweakGui.Restart restartTag = this.tweak.getMetadata(TweakGui.Restart.class);
+        TweakGui.Warning warningTag = this.tweak.getMetadata(TweakGui.Warning.class);
+        TweakGui.Optifine optifineTag = this.tweak.getMetadata(TweakGui.Optifine.class);
+        TweakReload.Resources reloadTag = this.tweak.getMetadata(TweakReload.Resources.class);
 
         Component optifineTitle = Component.literal("Optifine");
         Component sodiumTitle = Component.literal("Sodium");
@@ -284,7 +285,7 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(screen, poseStack, restartTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        if (alertTag != null && alertTag.alert().active())
+        if (alertTag != null && alertTag.condition().active())
         {
             Component tooltip = Component.translatable(alertTag.langKey());
             renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);

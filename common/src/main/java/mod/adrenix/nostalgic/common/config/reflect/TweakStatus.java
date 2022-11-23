@@ -16,7 +16,7 @@ import mod.adrenix.nostalgic.util.common.log.LogColor;
  * </ol>
  */
 
-public enum StatusType
+public enum TweakStatus
 {
     /* Types */
 
@@ -32,7 +32,7 @@ public enum StatusType
      * @param status A status type to retrieve <code>toString</code> data from.
      * @return A colored <code>toString</code> value.
      */
-    public static String toStringWithColor(StatusType status)
+    public static String toStringWithColor(TweakStatus status)
     {
         return switch (status)
         {

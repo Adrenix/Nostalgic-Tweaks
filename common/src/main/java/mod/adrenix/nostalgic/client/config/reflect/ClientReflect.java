@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.reflect;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 
 import java.util.HashMap;
 
@@ -23,7 +23,7 @@ public abstract class ClientReflect
      * @param key The key that links the tweak to the config.
      * @param value The value to save in the config cache.
      */
-    public static void setConfig(GroupType group, String key, Object value)
+    public static void setConfig(TweakGroup group, String key, Object value)
     {
         setField(group, ClientConfigCache.getRoot(), key, value);
     }
@@ -33,7 +33,7 @@ public abstract class ClientReflect
      * @param group The group to get tweaks from.
      * @return A map of tweaks associated with given group type.
      */
-    public static HashMap<String, Object> getGroup(GroupType group)
+    public static HashMap<String, Object> getGroup(TweakGroup group)
     {
         return fetchFields(group, ClientConfigCache.getRoot());
     }
@@ -45,7 +45,7 @@ public abstract class ClientReflect
      * @param <T> Class associated with tweak.
      * @return The default value associated with the given tweak identifiers.
      */
-    public static <T> T getDefault(GroupType group, String key)
+    public static <T> T getDefault(TweakGroup group, String key)
     {
         return getFieldValue(group, key, CommonReflect.DEFAULT_CONFIG);
     }
@@ -57,7 +57,7 @@ public abstract class ClientReflect
      * @param <T> Class associated with tweak.
      * @return The current value saved on disk.
      */
-    public static <T> T getCurrent(GroupType group, String key)
+    public static <T> T getCurrent(TweakGroup group, String key)
     {
         return getFieldValue(group, key, ClientConfigCache.getRoot());
     }
@@ -74,7 +74,7 @@ public abstract class ClientReflect
      * @param <T> The expected type associated with the field.
      * @return A value retrieved from a field.
      */
-    private static <T> T getFieldValue(GroupType group, String key, ClientConfig config)
+    private static <T> T getFieldValue(TweakGroup group, String key, ClientConfig config)
     {
         return CommonReflect.getFieldHelper(CommonReflect.getGroupClass(group, config), key);
     }
@@ -86,7 +86,7 @@ public abstract class ClientReflect
      * @param key The key that links the tweak to the config.
      * @param value The value to put in the field.
      */
-    private static void setField(GroupType group, ClientConfig config, String key, Object value)
+    private static void setField(TweakGroup group, ClientConfig config, String key, Object value)
     {
         CommonReflect.setFieldHelper(CommonReflect.getGroupClass(group, config), key, value);
     }
@@ -97,7 +97,7 @@ public abstract class ClientReflect
      * @param config A client config instance.
      * @return A hash map of fields from the given group type from the client config.
      */
-    private static HashMap<String, Object> fetchFields(GroupType group, ClientConfig config)
+    private static HashMap<String, Object> fetchFields(TweakGroup group, ClientConfig config)
     {
         return CommonReflect.fetchFieldsHelper(CommonReflect.getGroupClass(group, config));
     }

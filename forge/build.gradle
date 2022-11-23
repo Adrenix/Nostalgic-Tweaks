@@ -39,9 +39,6 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
-    
-    // Cloth Config
-    modApi("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}")
 
     // Fuzzy Searching
     common "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
@@ -65,7 +62,6 @@ processResources {
             "mod_donate": rootProject.mod_donate,
             "mod_discord": rootProject.mod_discord,
             "mod_description": rootProject.mod_description,
-            "cloth_version": rootProject.cloth_config_version,
             "architectury_version": rootProject.architectury_version
     }
 }

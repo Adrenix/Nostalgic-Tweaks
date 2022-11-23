@@ -23,7 +23,7 @@ public class ResetButton extends Button
 {
     /* Fields */
 
-    private static final Component TITLE = Component.translatable(LangUtil.Cloth.RESET);
+    private static final Component TITLE = Component.translatable(LangUtil.Gui.BUTTON_RESET);
     private final AbstractWidget controller;
 
     @Nullable

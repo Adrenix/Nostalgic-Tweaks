@@ -1,11 +1,11 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 
 /**
  * This type of slider widget is used exclusively by the configuration screen.
@@ -33,7 +33,7 @@ public class ConfigSlider extends GenericSlider implements PermissionLock
         super(tweak, null, ConfigRowList.getControlStartX(), 0, ConfigRowList.BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT);
 
         this.tweak = tweak;
-        ConfigEntry.BoundedDiscrete bounds = this.tweak.getMetadata(ConfigEntry.BoundedDiscrete.class);
+        TweakData.BoundedSlider bounds = this.tweak.getMetadata(TweakData.BoundedSlider.class);
 
         if (bounds != null)
         {
@@ -41,10 +41,10 @@ public class ConfigSlider extends GenericSlider implements PermissionLock
             this.setMaximum((int) bounds.max());
         }
 
-        TweakClient.Gui.SliderType sliderType = this.tweak.getMetadata(TweakClient.Gui.SliderType.class);
+        TweakGui.Slider sliderData = this.tweak.getMetadata(TweakGui.Slider.class);
 
-        if (sliderType != null)
-            this.setSlider(sliderType.slider());
+        if (sliderData != null)
+            this.setType(sliderData.type());
     }
 
     /* Methods */

@@ -339,10 +339,10 @@ public class NostalgicTitleScreen extends TitleScreen
 
         boolean isRelease = layout == TweakVersion.TitleLayout.RELEASE_TEXTURE_PACK || layout == TweakVersion.TitleLayout.RELEASE_NO_TEXTURE_PACK;
 
-        setLayoutVisibility(screenAccessor.NT$getRenderables(), layout == TweakVersion.TitleLayout.MODERN);
-        setLayoutVisibility(this.alpha, layout == TweakVersion.TitleLayout.ALPHA);
-        setLayoutVisibility(this.beta, layout == TweakVersion.TitleLayout.BETA);
-        setLayoutVisibility(this.release, isRelease);
+        this.setLayoutVisibility(screenAccessor.NT$getRenderables(), layout == TweakVersion.TitleLayout.MODERN);
+        this.setLayoutVisibility(this.alpha, layout == TweakVersion.TitleLayout.ALPHA);
+        this.setLayoutVisibility(this.beta, layout == TweakVersion.TitleLayout.BETA);
+        this.setLayoutVisibility(this.release, isRelease);
 
         switch (layout)
         {

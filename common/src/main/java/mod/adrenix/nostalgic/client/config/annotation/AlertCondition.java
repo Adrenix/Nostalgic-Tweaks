@@ -6,7 +6,7 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 
 /**
  * Helper class that defines the conditions of when an alert tag should be displayed.
- * Used in the tweak alert enumeration definition defined in {@link TweakClient}.
+ * Used in the tweak alert enumeration definition defined in {@link TweakGui}.
  *
  * This utility is to be used only on the client.
  */

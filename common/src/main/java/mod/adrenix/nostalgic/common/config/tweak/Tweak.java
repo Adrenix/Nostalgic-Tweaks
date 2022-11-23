@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.common.config.tweak;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 
 /**
@@ -24,7 +24,7 @@ public interface Tweak
      * Each tweak must be associated with a group type.
      * @return A group type enumeration value.
      */
-    GroupType getGroup();
+    TweakGroup getGroup();
 
     /**
      * Each tweak must have a configuration key associated with it.
@@ -114,7 +114,7 @@ public interface Tweak
         if (NostalgicTweaks.isClient())
         {
             if (clientCache != null)
-                clientCache.setStatus(StatusType.LOADED);
+                clientCache.setStatus(TweakStatus.LOADED);
             else
             {
                 String fail = String.format
@@ -132,7 +132,7 @@ public interface Tweak
         else
         {
             if (serverCache != null)
-                serverCache.setStatus(StatusType.LOADED);
+                serverCache.setStatus(TweakStatus.LOADED);
             else if (clientCache == null)
             {
                 String fail = String.format

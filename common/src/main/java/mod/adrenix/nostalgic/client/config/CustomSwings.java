@@ -1,10 +1,10 @@
 package mod.adrenix.nostalgic.client.config;
 
 import com.google.common.collect.Maps;
-import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.SpeedRowList;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
@@ -59,9 +59,9 @@ public abstract class CustomSwings
             if (entry.getValue() < ClientConfig.MIN || entry.getValue() > ClientConfig.MAX)
             {
                 NostalgicTweaks.LOGGER.warn(entry.getKey() + " has invalid swing speed: " + entry.getValue());
-                NostalgicTweaks.LOGGER.info(entry.getKey() + " has been updated to speed: " + DefaultConfig.Swing.OLD_SPEED);
-
+                NostalgicTweaks.LOGGER.warn(entry.getKey() + " has been updated to speed: " + DefaultConfig.Swing.OLD_SPEED);
                 entry.setValue(DefaultConfig.Swing.OLD_SPEED);
+
                 isCleaned = true;
             }
         }

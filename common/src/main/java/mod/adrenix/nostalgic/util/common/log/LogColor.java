@@ -63,10 +63,7 @@ public enum LogColor
      * @param to The string to apply a color to.
      * @return A modified string with the color applied. An appended <code>RESET</code> code will be included.
      */
-    public static String apply(LogColor color, String to)
-    {
-        return color + to + LogColor.RESET;
-    }
+    public static String apply(LogColor color, String to) { return color + to + LogColor.RESET; }
 
     /**
      * Converts Minecraft color codes to ANSI color strings when the mod is in a development environment.

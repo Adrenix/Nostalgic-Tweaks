@@ -4,13 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import me.shedaniel.autoconfig.AutoConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.CustomSwings;
 import mod.adrenix.nostalgic.client.config.gui.ItemSuggestionHelper;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.SpeedRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.ToggleCheckbox;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -489,10 +489,10 @@ public class SwingScreen extends SettingsScreen
             new ConfirmScreen
             (
                 new CancelConsumer(),
-                Component.translatable(LangUtil.Cloth.QUIT_CONFIG),
-                Component.translatable(LangUtil.Cloth.QUIT_CONFIG_SURE),
-                Component.translatable(LangUtil.Cloth.QUIT_DISCARD),
-                Component.translatable(LangUtil.Vanilla.GUI_CANCEL)
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_TITLE),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_BODY),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_DISCARD),
+                Component.translatable(LangUtil.Gui.CONFIRM_QUIT_CANCEL)
             )
         );
     }
@@ -646,7 +646,7 @@ public class SwingScreen extends SettingsScreen
                 SwingScreen.this.height - DONE_BUTTON_TOP_OFFSET,
                 this.getSmallWidth(),
                 BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Cloth.SAVE_AND_DONE),
+                Component.translatable(LangUtil.Gui.BUTTON_SAVE_AND_DONE),
                 (button) -> SwingScreen.this.onClose(false)
             );
         }

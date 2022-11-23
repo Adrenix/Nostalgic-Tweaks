@@ -34,6 +34,16 @@ public abstract class LangUtil
 
     public static class Gui
     {
+        public static final String CONFIRM_QUIT_TITLE = "gui.nostalgic_tweaks.confirm.quit_title";
+        public static final String CONFIRM_QUIT_BODY = "gui.nostalgic_tweaks.confirm.quit_body";
+        public static final String CONFIRM_QUIT_DISCARD = "gui.nostalgic_tweaks.confirm.quit_discard";
+        public static final String CONFIRM_QUIT_CANCEL = "gui.nostalgic_tweaks.confirm.quit_cancel";
+
+        public static final String BUTTON_SAVE_AND_DONE = "gui.nostalgic_tweaks.button.save_and_done";
+        public static final String BUTTON_RESET = "gui.nostalgic_tweaks.button.reset";
+        public static final String BUTTON_YES = "gui.nostalgic_tweaks.button.yes";
+        public static final String BUTTON_NO = "gui.nostalgic_tweaks.button.no";
+
         public static final String BACKGROUND_SOLID_BLACK = "gui.nostalgic_tweaks.background.solid_black";
         public static final String BACKGROUND_SOLID_BLUE = "gui.nostalgic_tweaks.background.solid_blue";
         public static final String BACKGROUND_GRADIENT_BLUE = "gui.nostalgic_tweaks.background.gradient_blue";
@@ -313,7 +323,7 @@ public abstract class LangUtil
         public static final String CANDY_TITLE_COPYRIGHT_BETA = "gui.nostalgic_tweaks.config.candy.title.copyright.beta";
     }
 
-    public static class Cloth
+    public static class Config
     {
         public static final String CONFIG_TITLE = "text.autoconfig.nostalgic_tweaks.title";
         public static final String SOUND_TITLE = "text.autoconfig.nostalgic_tweaks.option.sound";
@@ -321,12 +331,5 @@ public abstract class LangUtil
         public static final String GAMEPLAY_TITLE = "text.autoconfig.nostalgic_tweaks.option.gameplay";
         public static final String ANIMATION_TITLE = "text.autoconfig.nostalgic_tweaks.option.animation";
         public static final String SWING_TITLE = "text.autoconfig.nostalgic_tweaks.option.swing";
-        public static final String QUIT_CONFIG = "text.cloth-config.quit_config";
-        public static final String QUIT_CONFIG_SURE = "text.cloth-config.quit_config_sure";
-        public static final String QUIT_DISCARD = "text.cloth-config.quit_discard";
-        public static final String SAVE_AND_DONE = "text.cloth-config.save_and_done";
-        public static final String RESET = "text.cloth-config.reset_value";
-        public static final String YES = "text.cloth-config.boolean.value.true";
-        public static final String NO = "text.cloth-config.boolean.value.false";
     }
 }

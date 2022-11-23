@@ -15,7 +15,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
  * - ServerReflect {@link mod.adrenix.nostalgic.server.config.reflect.ServerReflect} (Required)
  */
 
-public enum GroupType
+public enum TweakGroup
 {
     /* Values */
 
@@ -46,5 +46,5 @@ public enum GroupType
      * @param group A group type value to check.
      * @return Whether the given group type should be considered a manually constructed group.
      */
-    public static boolean isManual(GroupType group) { return group == ROOT || group == GUI; }
+    public static boolean isManual(TweakGroup group) { return group == ROOT || group == GUI; }
 }

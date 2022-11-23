@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
@@ -23,14 +23,14 @@ public class GenericSlider extends AbstractSliderButton
 {
     /* Fields */
 
-    private TweakClient.Gui.Slider slider = TweakClient.Gui.Slider.SWING;
+    private TweakGui.SliderType sliderType = TweakGui.SliderType.SWING;
     private int min = ClientConfig.MIN;
     private int max = ClientConfig.MAX;
     private final Consumer<Integer> setCurrent;
     private final Supplier<Integer> current;
 
     @Nullable private final Supplier<String> text;
-    @Nullable private final TweakClient.Gui.SliderType sliderType;
+    @Nullable private final TweakGui.Slider sliderData;
 
     /* Constructors */
 
@@ -47,7 +47,7 @@ public class GenericSlider extends AbstractSliderButton
     {
         super(x, y, width, height, Component.empty(), (double) tweak.getValue());
 
-        this.sliderType = tweak.getMetadata(TweakClient.Gui.SliderType.class);
+        this.sliderData = tweak.getMetadata(TweakGui.Slider.class);
         this.setCurrent = tweak::setValue;
         this.current = tweak::getValue;
         this.text = text;
@@ -73,7 +73,7 @@ public class GenericSlider extends AbstractSliderButton
         this.setCurrent = setCurrent;
         this.current = current;
         this.text = text;
-        this.sliderType = null;
+        this.sliderData = null;
 
         this.updateMessage();
         this.setValue(current.get());
@@ -117,9 +117,9 @@ public class GenericSlider extends AbstractSliderButton
     /**
      * Change the slider type associated with a generic slider.
      * This will only change visual aspects of the slider.
-     * @param slider A slider type enumeration value.
+     * @param sliderType A slider type enumeration value.
      */
-    public void setSlider(TweakClient.Gui.Slider slider) { this.slider = slider; }
+    public void setType(TweakGui.SliderType sliderType) { this.sliderType = sliderType; }
 
     /**
      * Gets chat formatting based on this slider's type.
@@ -130,25 +130,25 @@ public class GenericSlider extends AbstractSliderButton
         ChatFormatting color = ChatFormatting.GREEN;
         int integer = this.current.get();
 
-        if (this.slider == TweakClient.Gui.Slider.SWING)
+        if (this.sliderType == TweakGui.SliderType.SWING)
         {
             if (integer == DefaultConfig.Swing.DISABLED) color = ChatFormatting.RED;
             else if (integer == DefaultConfig.Swing.PHOTOSENSITIVE) color = ChatFormatting.YELLOW;
             else if (integer <= DefaultConfig.Swing.NEW_SPEED) color = ChatFormatting.GOLD;
         }
-        else if (this.slider == TweakClient.Gui.Slider.INTENSITY)
+        else if (this.sliderType == TweakGui.SliderType.INTENSITY)
         {
             if (integer == 0) color = ChatFormatting.RED;
             else if (integer <= 50) color = ChatFormatting.GOLD;
             else if (integer > 100) color = ChatFormatting.AQUA;
         }
-        else if (this.slider == TweakClient.Gui.Slider.CLOUD)
+        else if (this.sliderType == TweakGui.SliderType.CLOUD)
         {
             if (integer == 128) color = ChatFormatting.YELLOW;
             else if (integer == 192) color = ChatFormatting.GOLD;
             else color = ChatFormatting.LIGHT_PURPLE;
         }
-        else if (this.slider == TweakClient.Gui.Slider.GENERIC)
+        else if (this.sliderType == TweakGui.SliderType.GENERIC)
             color = ChatFormatting.RESET;
 
         return color;
@@ -167,14 +167,14 @@ public class GenericSlider extends AbstractSliderButton
 
         if (this.text != null)
             title = this.text.get();
-        else if (this.slider == TweakClient.Gui.Slider.SWING)
+        else if (this.sliderType == TweakGui.SliderType.SWING)
             title = Component.translatable(LangUtil.Gui.SETTINGS_SPEED).getString();
-        else if (this.slider == TweakClient.Gui.Slider.INTENSITY)
+        else if (this.sliderType == TweakGui.SliderType.INTENSITY)
         {
             suffix = "%";
             title = Component.translatable(LangUtil.Gui.SETTINGS_INTENSITY).getString();
         }
-        else if (this.slider == TweakClient.Gui.Slider.CLOUD)
+        else if (this.sliderType == TweakGui.SliderType.CLOUD)
         {
             title = switch (this.current.get())
             {
@@ -185,11 +185,11 @@ public class GenericSlider extends AbstractSliderButton
             };
         }
 
-        if (this.sliderType != null && !this.sliderType.langKey().isEmpty())
-            title = Component.translatable(this.sliderType.langKey()).getString();
+        if (this.sliderData != null && !this.sliderData.langKey().isEmpty())
+            title = Component.translatable(this.sliderData.langKey()).getString();
 
-        if (this.sliderType != null && !this.sliderType.suffix().isEmpty())
-            suffix = this.sliderType.suffix();
+        if (this.sliderData != null && !this.sliderData.suffix().isEmpty())
+            suffix = this.sliderData.suffix();
 
         String text = title + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;
 

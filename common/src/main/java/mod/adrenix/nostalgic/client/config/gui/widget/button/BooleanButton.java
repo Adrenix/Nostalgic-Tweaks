@@ -38,6 +38,6 @@ public class BooleanButton extends ControlButton implements PermissionLock
     @Override
     public Component getMessage()
     {
-        return Component.translatable(this.tweak.getValue() ? LangUtil.Cloth.YES : LangUtil.Cloth.NO);
+        return Component.translatable(this.tweak.getValue() ? LangUtil.Gui.BUTTON_YES : LangUtil.Gui.BUTTON_NO);
     }
 }

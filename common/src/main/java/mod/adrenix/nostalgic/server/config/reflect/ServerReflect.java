@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.server.config.reflect;
 
 import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.server.config.ServerConfig;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
 
@@ -25,7 +25,7 @@ public abstract class ServerReflect
      * @param key Key that links tweak to the server config.
      * @param value The value to save in the server config cache.
      */
-    public static void setConfig(GroupType group, String key, Object value)
+    public static void setConfig(TweakGroup group, String key, Object value)
     {
         setField(group, ServerConfigCache.getRoot(), key, value);
     }
@@ -35,7 +35,7 @@ public abstract class ServerReflect
      * @param group A group type.
      * @return A map of server tweaks associated with the given group type.
      */
-    public static HashMap<String, Object> getGroup(GroupType group)
+    public static HashMap<String, Object> getGroup(TweakGroup group)
     {
         return fetchFields(group, ServerConfigCache.getRoot());
     }
@@ -50,7 +50,7 @@ public abstract class ServerReflect
      * @param config A server config instance.
      * @return A data pair with a class type and its associated instance.
      */
-    private static Pair<Class<?>, Object> getServerGroupClass(GroupType group, ServerConfig config)
+    private static Pair<Class<?>, Object> getServerGroupClass(TweakGroup group, ServerConfig config)
     {
         switch (group)
         {
@@ -71,7 +71,7 @@ public abstract class ServerReflect
      * @param key The key that links the tweak to the config.
      * @param value The value to put in the field.
      */
-    private static void setField(GroupType group, ServerConfig config, String key, Object value)
+    private static void setField(TweakGroup group, ServerConfig config, String key, Object value)
     {
         CommonReflect.setFieldHelper(getServerGroupClass(group, config), key, value);
     }
@@ -82,7 +82,7 @@ public abstract class ServerReflect
      * @param config A server config instance.
      * @return A hash map of fields from the given group type from the server config.
      */
-    private static HashMap<String, Object> fetchFields(GroupType group, ServerConfig config)
+    private static HashMap<String, Object> fetchFields(TweakGroup group, ServerConfig config)
     {
         return CommonReflect.fetchFieldsHelper(getServerGroupClass(group, config));
     }

@@ -21,9 +21,23 @@ import java.util.Set;
 
 public class MixinSodiumPlugin implements IMixinConfigPlugin
 {
-    private final boolean SODIUM_PRESENT = FabricLoader.getInstance().getModContainer("sodium").isPresent();
+    /* Fields */
 
-    @Override public boolean shouldApplyMixin(String targetClassName, String mixinClassName) { return SODIUM_PRESENT; }
+    private final boolean isSodiumPresent = FabricLoader.getInstance().getModContainer("sodium").isPresent();
+
+    /* Methods */
+
+    /**
+     * The result of this method determines whether mixins are applied to the target class.
+     * @param targetClassName Fully qualified class name of the target class.
+     * @param mixinClassName Fully qualified class name of the mixin.
+     * @return Whether the mixin instructions from the mixin class is applied to the target class.
+     */
+    @Override
+    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) { return this.isSodiumPresent; }
+
+    /* Required Plugin Overrides */
+
     @Override public void onLoad(String mixinPackage) { }
     @Override public List<String> getMixins() { return null; }
     @Override public String getRefMapperConfig() { return null; }

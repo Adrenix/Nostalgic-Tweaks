@@ -1,12 +1,13 @@
 package mod.adrenix.nostalgic.client.config.reflect;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.annotation.TweakClient;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
-import mod.adrenix.nostalgic.common.config.annotation.TweakSide;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
-import mod.adrenix.nostalgic.common.config.reflect.GroupType;
-import mod.adrenix.nostalgic.common.config.reflect.StatusType;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
 import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
@@ -42,10 +43,10 @@ public class TweakClientCache<T> extends TweakCommonCache
 
     static
     {
-        Arrays.stream(GroupType.values()).forEach((group) ->
+        Arrays.stream(TweakGroup.values()).forEach((group) ->
             ClientReflect.getGroup(group).forEach((key, value) ->
             {
-                if (CommonReflect.getAnnotation(group, key, TweakSide.Ignore.class) == null)
+                if (CommonReflect.getAnnotation(group, key, TweakData.Ignore.class) == null)
                     TweakClientCache.CACHE.put(generateKey(group, key), new TweakClientCache<>(group, key, value));
             })
         );
@@ -67,7 +68,7 @@ public class TweakClientCache<T> extends TweakCommonCache
      * @throws AssertionError Will throw if the tweak is not available in the cache.
      */
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
-    public static <T> TweakClientCache<T> get(GroupType group, String key) throws AssertionError
+    public static <T> TweakClientCache<T> get(TweakGroup group, String key) throws AssertionError
     {
         TweakClientCache<T> instance = (TweakClientCache<T>) CACHE.get(generateKey(group, key));
 
@@ -78,7 +79,7 @@ public class TweakClientCache<T> extends TweakCommonCache
     }
 
     /**
-     * An overload method for {@link TweakClientCache#get(GroupType, String)}. This should be the primary way of
+     * An overload method for {@link TweakClientCache#get(TweakGroup, String)}. This should be the primary way of
      * retrieving cached tweak values. When each tweak loads, a pointer is cached in the tweak's enumeration instance.
      * This method will use that pointer instead of looping through the hashmap to get a tweak's value.
      *
@@ -165,8 +166,9 @@ public class TweakClientCache<T> extends TweakCommonCache
     {
         AtomicInteger found = new AtomicInteger();
 
-        TweakClientCache.all().forEach((key, tweak) -> {
-            if (tweak.getStatus() == StatusType.FAIL)
+        TweakClientCache.all().forEach((key, tweak) ->
+        {
+            if (tweak.getStatus() == TweakStatus.FAIL)
                 found.getAndIncrement();
         });
 
@@ -188,10 +190,10 @@ public class TweakClientCache<T> extends TweakCommonCache
     private final boolean isAnnotatedReloadChunks;
     private final boolean isAnnotatedReloadResources;
 
-    @Nullable private final TweakClient.Gui.Placement placement;
-    @Nullable private final TweakClient.Gui.Cat category;
-    @Nullable private final TweakClient.Gui.Sub subcategory;
-    @Nullable private final TweakClient.Gui.Emb embedded;
+    @Nullable private final TweakGui.Placement placement;
+    @Nullable private final TweakGui.Category category;
+    @Nullable private final TweakGui.Subcategory subcategory;
+    @Nullable private final TweakGui.Embed embed;
 
     /**
      * This field will track the tweak enumeration associated with this cache. Once defined, this will speed up value
@@ -216,7 +218,7 @@ public class TweakClientCache<T> extends TweakCommonCache
      */
 
     private int order;
-    private TweakClient.Gui.Position position;
+    private TweakGui.Position position;
 
     /* Constructor */
 
@@ -228,24 +230,24 @@ public class TweakClientCache<T> extends TweakCommonCache
      * @param key The unique key of a tweak. Must match what is saved on disk.
      * @param value The value of a tweak. Can be an Enum, boolean, String, int, etc.
      */
-    private TweakClientCache(GroupType group, String key, T value)
+    private TweakClientCache(TweakGroup group, String key, T value)
     {
         super(group, key);
 
         this.tweak = null;
         this.value = value;
 
-        this.isAnnotatedNew = this.isMetadataPresent(TweakClient.Gui.New.class);
-        this.isAnnotatedClient = this.isMetadataMissing(TweakSide.Server.class);
-        this.isAnnotatedServer = this.isMetadataPresent(TweakSide.Server.class);
-        this.isAnnotatedDynamic = this.isMetadataPresent(TweakSide.Dynamic.class);
-        this.isAnnotatedReloadChunks = this.isMetadataPresent(TweakClient.Run.ReloadChunks.class);
-        this.isAnnotatedReloadResources = this.isMetadataPresent(TweakClient.Run.ReloadResources.class);
+        this.isAnnotatedNew = this.isMetadataPresent(TweakGui.New.class);
+        this.isAnnotatedClient = this.isMetadataMissing(TweakData.Server.class);
+        this.isAnnotatedServer = this.isMetadataPresent(TweakData.Server.class);
+        this.isAnnotatedDynamic = this.isMetadataPresent(TweakData.Dynamic.class);
+        this.isAnnotatedReloadChunks = this.isMetadataPresent(TweakReload.Chunks.class);
+        this.isAnnotatedReloadResources = this.isMetadataPresent(TweakReload.Resources.class);
 
-        this.placement = this.getMetadata(TweakClient.Gui.Placement.class);
-        this.category = this.getMetadata(TweakClient.Gui.Cat.class);
-        this.subcategory = this.getMetadata(TweakClient.Gui.Sub.class);
-        this.embedded = this.getMetadata(TweakClient.Gui.Emb.class);
+        this.placement = this.getMetadata(TweakGui.Placement.class);
+        this.category = this.getMetadata(TweakGui.Category.class);
+        this.subcategory = this.getMetadata(TweakGui.Subcategory.class);
+        this.embed = this.getMetadata(TweakGui.Embed.class);
 
         if (this.placement != null)
         {
@@ -329,17 +331,17 @@ public class TweakClientCache<T> extends TweakCommonCache
 
     /**
      * The status of a tweak is updated when its code is executed.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
+     * @see TweakStatus
      * @return Whether a tweak has failed to load, has not attempted to load, or is loaded.
      */
-    public StatusType getStatus() { return this.isClientHandled() ? this.status : this.getServerTweak().getStatus(); }
+    public TweakStatus getStatus() { return this.isClientHandled() ? this.status : this.getServerTweak().getStatus(); }
 
     /**
      * Can be set anywhere and updated at anytime.
-     * @see mod.adrenix.nostalgic.common.config.reflect.StatusType
+     * @see TweakStatus
      * @param status The current status of a tweak.
      */
-    public void setStatus(StatusType status)
+    public void setStatus(TweakStatus status)
     {
         if (this.isClientHandled())
             this.status = status;
@@ -352,7 +354,7 @@ public class TweakClientCache<T> extends TweakCommonCache
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return Whether the tweak is ordered at the top or bottom of a category.
      */
-    @Nullable public TweakClient.Gui.Position getPosition() { return this.position; }
+    @Nullable public TweakGui.Position getPosition() { return this.position; }
 
     /**
      * This ordering is set in the client configuration class. Ordering is done least to greatest.
@@ -506,22 +508,22 @@ public class TweakClientCache<T> extends TweakCommonCache
     /**
      * @return A tweak's container placement data if it is present.
      */
-    @Nullable public TweakClient.Gui.Placement getPlacement() { return this.placement; }
+    @Nullable public TweakGui.Placement getPlacement() { return this.placement; }
 
     /**
      * @return A tweak's category if it is present.
      */
-    @Nullable public TweakClient.Gui.Cat getCategory() { return this.category; }
+    @Nullable public TweakGui.Category getCategory() { return this.category; }
 
     /**
      * @return A tweak's subcategory if it is present.
      */
-    @Nullable public TweakClient.Gui.Sub getSubcategory() { return this.subcategory; }
+    @Nullable public TweakGui.Subcategory getSubcategory() { return this.subcategory; }
 
     /**
      * @return A tweak's embed if it is present.
      */
-    @Nullable public TweakClient.Gui.Emb getEmbedded() { return this.embedded; }
+    @Nullable public TweakGui.Embed getEmbed() { return this.embed; }
 
     /*
       The key is used to identify a tweak within a group.
