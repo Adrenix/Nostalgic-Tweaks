@@ -55,8 +55,9 @@ public abstract class ValidateConfig
      * @param fields An array of fields from a config class instance.
      * @param config A config container instance.
      * @param annotation The annotation type class.
-     * @param validator A validation bi-function that accepts a field and annotation type class and returns a data pair.
-     *                  The data pair has a CONTINUE/STOP value and a loader message.
+     * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
+     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
+     *                  reason message for the continuation or stop.
      * @param <T> The type class of the annotation.
      * @throws ConfigData.ValidationException When invalid data cannot be reset and requires a panic exit.
      */
@@ -137,8 +138,9 @@ public abstract class ValidateConfig
      *
      * @param fields A list fields to scan and validate.
      * @param annotation The annotation to check if it is attached.
-     * @param validator A validation bi-function that accepts a field and annotation type class and returns a data pair.
-     *                  The data pair has a CONTINUE/STOP value and a loader message.
+     * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
+     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
+     *                  reason message for the continuation or stop.
      * @param <T> The type class of the annotation.
      * @return A data pair with a result boolean and failure message if applicable.
      */
@@ -197,10 +199,11 @@ public abstract class ValidateConfig
      * Get the annotation of a field and validate the metadata.
      * @param field The field to scan.
      * @param annotation The annotation class to try and get.
-     * @param validator A validation bi-function that accepts a field and annotation type class and returns a data pair.
-     *                  The data pair has a CONTINUE/STOP value and a loader message.
+     * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
+     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
+     *                  reason message for the continuation or stop.
      * @param <T> The type class of the annotation.
-     * @return The data pair from the validation bi-function.
+     * @return The data pair from the validation tri-function.
      */
     private static <T extends Annotation> Pair<Loader, String> getAnnotationAndValidate
     (

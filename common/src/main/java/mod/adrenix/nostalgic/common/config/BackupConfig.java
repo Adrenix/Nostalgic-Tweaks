@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * This utility class provides helper methods for creating backup of configs.
+ * This utility class provides helper methods for creating backups of configs.
  *
  * Anytime the config file is about to be reset, a backup will be created. A maximum of five files will automatically be
  * backed up. The user can increase this limit and the user can manually create a backup at any time.
@@ -33,13 +33,22 @@ public abstract class BackupConfig
     public static final String FILE_NAME = NostalgicTweaks.MOD_ID + "_backup_" + "%s.json";
 
     /**
+     * This field defines the regex for finding the month within a backup file.
+     * Example of a regex month result (jan-01-2022-).
+     */
+    private static final String REGEX_MONTH = "[a-z]{3}-\\d{2}-\\d{4}-";
+
+    /**
+     * This field defines the regex for finding the time within a backup file.
+     * Example of a regex time result (1134am) or (1134am_1) where _# indicates a backup made at the same minute.
+     */
+    private static final String REGEX_TIME = "\\d{4}(?>am|pm)(?>_\\d+)?";
+
+    /**
      * This field contains a unique regex string that will help the backup utility cleaner find files that were created
      * by the mod.
      */
-    public static final String FILE_REGEX = NostalgicTweaks.MOD_ID +
-            "_backup_[a-z]{3}-\\d{2}-\\d{4}-" +
-            "\\d{4}(?>am|pm)(?>_\\d+)?\\.json"
-    ;
+    public static final String FILE_REGEX = NostalgicTweaks.MOD_ID + "_backup_" + REGEX_MONTH + REGEX_TIME + "\\.json";
 
     /* Methods */
 
