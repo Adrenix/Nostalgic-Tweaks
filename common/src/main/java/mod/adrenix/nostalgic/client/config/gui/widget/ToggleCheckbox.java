@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
@@ -149,7 +150,7 @@ public class ToggleCheckbox extends Checkbox
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
         {
-            List<Component> tip = ModUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth);
+            List<Component> tip = TextUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth);
             this.screen.renderComponentTooltip(poseStack, tip, mouseX, mouseY);
         }
     }

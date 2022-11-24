@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.IWidgetManager;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -75,8 +75,8 @@ public abstract class ScreenMixin extends GuiComponent implements IWidgetManager
     {
         if (ModConfig.Candy.customGuiBackground())
         {
-            int top = ModUtil.Text.toHexInt(ModConfig.Candy.customTopGradient());
-            int bottom = ModUtil.Text.toHexInt(ModConfig.Candy.customBottomGradient());
+            int top = TextUtil.toHexInt(ModConfig.Candy.customTopGradient());
+            int bottom = TextUtil.toHexInt(ModConfig.Candy.customBottomGradient());
 
             this.fillGradient(poseStack, x, y, w, h, top, bottom);
         }

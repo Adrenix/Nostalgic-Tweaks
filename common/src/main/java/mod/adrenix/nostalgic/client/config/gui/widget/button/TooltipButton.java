@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -65,7 +66,7 @@ public class TooltipButton extends Button
     {
         RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
 
-        List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(this.tweak.getTooltipKey()), 38);
+        List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(this.tweak.getTooltipKey()), 38);
         Minecraft minecraft = Minecraft.getInstance();
 
         if (ClassUtil.isNotInstanceOf(minecraft.screen, ConfigScreen.class))

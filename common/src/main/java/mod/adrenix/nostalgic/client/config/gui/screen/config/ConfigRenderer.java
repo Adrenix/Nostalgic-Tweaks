@@ -24,7 +24,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -748,7 +748,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
         Component[] tags = new Component[] { help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag };
 
-        return new TextGroup(ModUtil.Text.combine(tags)).getRows();
+        return new TextGroup(TextUtil.combine(tags)).getRows();
     }
 
     /**
@@ -765,7 +765,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Component all = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_ALL);
         Component group = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_GROUP);
 
-        return new TextGroup(ModUtil.Text.combine(new Component[] { help, find, save, exit, jump, all, group })).getRows();
+        return new TextGroup(TextUtil.combine(new Component[] { help, find, save, exit, jump, all, group })).getRows();
     }
 
     /**

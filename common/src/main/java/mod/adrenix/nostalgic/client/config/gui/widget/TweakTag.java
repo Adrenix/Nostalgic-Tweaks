@@ -13,6 +13,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -183,7 +184,7 @@ public class TweakTag extends AbstractWidget
 
         if (isMouseOver && screen instanceof ConfigScreen)
             ((ConfigScreen) screen).renderLast.add(() ->
-                screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
+                screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
 
     /**

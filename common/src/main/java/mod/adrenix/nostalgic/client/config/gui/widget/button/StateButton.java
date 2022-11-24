@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -107,10 +108,10 @@ public class StateButton extends OverlapButton
 
         List<Component> wrap = switch (this.widget)
         {
-            case TAG -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_TAG_TOOLTIP), 35);
-            case CLEAR -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_CLEAR_TOOLTIP), 40);
-            case FUZZY -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_FUZZY_TOOLTIP), 35);
-            case BUBBLE -> ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_BUBBLE_TOOLTIP), 35);
+            case TAG -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_TAG_TOOLTIP), 35);
+            case CLEAR -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_CLEAR_TOOLTIP), 40);
+            case FUZZY -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_FUZZY_TOOLTIP), 35);
+            case BUBBLE -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_BUBBLE_TOOLTIP), 35);
         };
 
         tooltip.add(title);

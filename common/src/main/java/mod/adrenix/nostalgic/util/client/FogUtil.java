@@ -6,7 +6,7 @@ import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -692,7 +692,7 @@ public abstract class FogUtil
             else
             {
                 final float[] CURRENT_FOG = RenderSystem.getShaderFogColor();
-                final int[] CUSTOM_FOG = ModUtil.Text.toHexRGBA(ModConfig.Candy.getVoidFogColor());
+                final int[] CUSTOM_FOG = TextUtil.toHexRGBA(ModConfig.Candy.getVoidFogColor());
 
                 final float LIGHT = (float) getBrightness(camera.getEntity());
                 final float FOG_R = Mth.clamp(CURRENT_FOG[0] * LIGHT + (CUSTOM_FOG[0] / 255.0F), 0.0F, 1.0F);

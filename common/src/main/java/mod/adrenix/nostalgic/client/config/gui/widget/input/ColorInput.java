@@ -9,10 +9,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -163,7 +160,7 @@ public class ColorInput extends AbstractWidget
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        int color = ModUtil.Text.toHexInt(this.tweak.getValue());
+        int color = TextUtil.toHexInt(this.tweak.getValue());
         int border = this.input.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0;
 
         float leftX = this.x;

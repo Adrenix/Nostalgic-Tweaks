@@ -15,6 +15,7 @@ import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -690,13 +691,13 @@ public class CategoryList extends Overlay
         boolean isOverIcon = MathUtil.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
         if (isOverIcon)
         {
-            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
+            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 
         if (isOverHint && this.hint)
         {
-            List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST_HINT), 36);
+            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST_HINT), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.config.gui.screen;
 
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -51,5 +51,5 @@ public enum MenuOption
      * @return An enumeration name in title case format.
      */
     @Override
-    public String toString() { return ModUtil.Text.toTitleCase(super.toString()); }
+    public String toString() { return TextUtil.toTitleCase(super.toString()); }
 }

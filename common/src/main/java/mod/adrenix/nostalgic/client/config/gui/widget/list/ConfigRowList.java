@@ -28,9 +28,9 @@ import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -995,7 +995,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             float z = 0.0F;
             boolean isFaded = (Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue();
-            int[] rgba = ModUtil.Text.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
+            int[] rgba = TextUtil.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
             int r = rgba[0];
             int g = rgba[1];
             int b = rgba[2];
@@ -1055,7 +1055,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-            int rgba = ModUtil.Text.toHexInt(color.getValue());
+            int rgba = TextUtil.toHexInt(color.getValue());
 
             float leftX = this.indent - 16.0F;
             float rightX = leftX + 10.0F;
@@ -1246,7 +1246,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
                             while (tag.x + tag.getWidth() >= this.controller.x - 6)
                             {
-                                tag.setTitle(ModUtil.Text.ellipsis(tag.getTitle()));
+                                tag.setTitle(TextUtil.ellipsis(tag.getTitle()));
                                 tag.render(poseStack, mouseX, mouseY, partialTick);
 
                                 if (tag.getTitle() == null || tag.getTitle().length() < 3)
@@ -1373,7 +1373,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 if (isEllipsis && isOverText && this.tweak != null)
                 {
                     screen.renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, ModUtil.Wrap.tooltip(Component.translatable(this.tweak.getTranslation()), 35), mouseX, mouseY))
+                        screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(Component.translatable(this.tweak.getTranslation()), 35), mouseX, mouseY))
                     ;
                 }
 

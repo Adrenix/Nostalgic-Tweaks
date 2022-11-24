@@ -11,10 +11,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -84,7 +81,7 @@ public class StatusButton extends Button
      */
     private void renderTooltip(ConfigScreen screen, String langKey, PoseStack poseStack, int mouseX, int mouseY)
     {
-        List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(langKey), 40);
+        List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(langKey), 40);
         screen.renderLast.add(() -> screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 

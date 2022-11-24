@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.group;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -67,7 +67,7 @@ public class TextGroup extends AbstractWidget
         this.rows.clear();
 
         this.width = this.list.screen.width - ConfigRowList.getStartX() - ConfigRowList.TEXT_FROM_END;
-        this.lines = ModUtil.Wrap.tooltip(this.text, (int) (this.width / 5.5F));
+        this.lines = TextUtil.Wrap.tooltip(this.text, (int) (this.width / 5.5F));
         int rowsNeeded = (int) Math.ceil((double) (lines.size()) / 2);
 
         for (int i = 0; i < rowsNeeded; i++)
