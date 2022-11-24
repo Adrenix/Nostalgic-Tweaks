@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
 import mod.adrenix.nostalgic.mixin.widen.MinecraftAccessor;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -76,8 +76,8 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         long used = total - free;
         int width = this.minecraft.getWindow().getGuiScaledWidth();
 
-        String memory = String.format("Used memory: %2d%% (%03dMB) of %03dMB", used * 100L / max, ModUtil.Numbers.bytesToMegabytes(used), ModUtil.Numbers.bytesToMegabytes(max));
-        String allocated = String.format("Allocated memory: %2d%% (%03dMB)", total * 100L / max, ModUtil.Numbers.bytesToMegabytes(total));
+        String memory = String.format("Used memory: %2d%% (%03dMB) of %03dMB", used * 100L / max, MathUtil.bytesToMegabytes(used), MathUtil.bytesToMegabytes(max));
+        String allocated = String.format("Allocated memory: %2d%% (%03dMB)", total * 100L / max, MathUtil.bytesToMegabytes(total));
 
         if (this.font.width(title + fps) + 2 > width - 2 - this.font.width(memory))
             fps = overflow;

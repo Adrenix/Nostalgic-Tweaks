@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -141,7 +142,7 @@ public class ColorInput extends AbstractWidget
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
+        if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
         {
             ColorPicker.OVERLAY.open(this.tweak);
             this.playDownSound(Minecraft.getInstance().getSoundManager());
@@ -197,7 +198,7 @@ public class ColorInput extends AbstractWidget
 
         ConfigScreen screen = (ConfigScreen) Minecraft.getInstance().screen;
 
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
+        if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
             screen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(LangUtil.Gui.GUI_OVERLAY_INPUT_TIP), mouseX, mouseY));
 
         this.input.x = this.x + 21;

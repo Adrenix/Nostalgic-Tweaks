@@ -33,27 +33,27 @@ public abstract class WorldCommonUtil
         int timeOfDay = (int) (level.dayTime() % 24000L);
         int skyLight = 15;
 
-        if (ModUtil.Numbers.isInRange(timeOfDay, 13670, 22330))
+        if (MathUtil.isInRange(timeOfDay, 13670, 22330))
             skyLight = 4;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22331, 22491) || ModUtil.Numbers.isInRange(timeOfDay, 13509, 13669))
+        else if (MathUtil.isInRange(timeOfDay, 22331, 22491) || MathUtil.isInRange(timeOfDay, 13509, 13669))
             skyLight = 5;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22492, 22652) || ModUtil.Numbers.isInRange(timeOfDay, 13348, 13508))
+        else if (MathUtil.isInRange(timeOfDay, 22492, 22652) || MathUtil.isInRange(timeOfDay, 13348, 13508))
             skyLight = 6;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22653, 22812) || ModUtil.Numbers.isInRange(timeOfDay, 13188, 13347))
+        else if (MathUtil.isInRange(timeOfDay, 22653, 22812) || MathUtil.isInRange(timeOfDay, 13188, 13347))
             skyLight = 7;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22813, 22973) || ModUtil.Numbers.isInRange(timeOfDay, 13027, 13187))
+        else if (MathUtil.isInRange(timeOfDay, 22813, 22973) || MathUtil.isInRange(timeOfDay, 13027, 13187))
             skyLight = 8;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 22974, 23134) || ModUtil.Numbers.isInRange(timeOfDay, 12867, 13026))
+        else if (MathUtil.isInRange(timeOfDay, 22974, 23134) || MathUtil.isInRange(timeOfDay, 12867, 13026))
             skyLight = 9;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23135, 23296) || ModUtil.Numbers.isInRange(timeOfDay, 12705, 12866))
+        else if (MathUtil.isInRange(timeOfDay, 23135, 23296) || MathUtil.isInRange(timeOfDay, 12705, 12866))
             skyLight = 10;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23297, 23459) || ModUtil.Numbers.isInRange(timeOfDay, 12542, 12704))
+        else if (MathUtil.isInRange(timeOfDay, 23297, 23459) || MathUtil.isInRange(timeOfDay, 12542, 12704))
             skyLight = 11;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23460, 23623) || ModUtil.Numbers.isInRange(timeOfDay, 12377, 12541))
+        else if (MathUtil.isInRange(timeOfDay, 23460, 23623) || MathUtil.isInRange(timeOfDay, 12377, 12541))
             skyLight = 12;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23624, 23790) || ModUtil.Numbers.isInRange(timeOfDay, 12210, 12376))
+        else if (MathUtil.isInRange(timeOfDay, 23624, 23790) || MathUtil.isInRange(timeOfDay, 12210, 12376))
             skyLight = 13;
-        else if (ModUtil.Numbers.isInRange(timeOfDay, 23791, 23960) || ModUtil.Numbers.isInRange(timeOfDay, 12041, 12209))
+        else if (MathUtil.isInRange(timeOfDay, 23791, 23960) || MathUtil.isInRange(timeOfDay, 12041, 12209))
             skyLight = 14;
 
         return skyLight;

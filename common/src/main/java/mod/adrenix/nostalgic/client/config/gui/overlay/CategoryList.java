@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.ChatFormatting;
@@ -179,7 +180,7 @@ public class CategoryList extends Overlay
             boolean isControl = this.title.getString().length() == 1;
             boolean isSelected = this.row.equals(CategoryList.OVERLAY.getSelected()) && isControl;
             boolean isTabbed = this.isFocused() && !isTweak;
-            boolean isHover = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
+            boolean isHover = MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
             int highlight = isHover ? 0xFFD800 : this.color;
 
             if (isTabbed)
@@ -551,7 +552,7 @@ public class CategoryList extends Overlay
         int startX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth() - 10;
         int startY = (int) this.y + 4;
 
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, HINT_SQUARE, HINT_SQUARE))
+        if (MathUtil.isWithinBox(mouseX, mouseY, startX, startY, HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
 
         this.list.mouseClicked(mouseX, mouseY, button);
@@ -672,12 +673,12 @@ public class CategoryList extends Overlay
         // Render close and hint button
         int closeX = startX + W_TOP_LEFT_CORNER + drawWidth;
         int closeY = startY + 4;
-        this.isOverClose = ModUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
+        this.isOverClose = MathUtil.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         int hintX = closeX - 10;
-        boolean isOverHint = ModUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, closeY, HINT_SQUARE, HINT_SQUARE);
+        boolean isOverHint = MathUtil.isWithinBox(mouseX, mouseY, hintX, closeY, HINT_SQUARE, HINT_SQUARE);
 
         blit(poseStack, hintX, closeY, isOverHint ? U_HINT_ON : U_HINT_OFF, isOverHint ? V_HINT_ON : V_HINT_OFF, HINT_SQUARE, HINT_SQUARE);
 
@@ -686,7 +687,7 @@ public class CategoryList extends Overlay
         drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST), startX + 20, startY + 4, color);
 
         // Render dragging and tooltip hints
-        boolean isOverIcon = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
+        boolean isOverIcon = MathUtil.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
         if (isOverIcon)
         {
             List<Component> tooltip = ModUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);

@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.client.world;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import mod.adrenix.nostalgic.util.client.FogUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -112,9 +112,9 @@ public abstract class ClientLevelMixin
             return;
 
         boolean isParticleAtPlayer =
-            ModUtil.Numbers.tolerance(player.getX(), x, 0.01F) &&
-            ModUtil.Numbers.tolerance(player.getY(), y, 0.01F) &&
-            ModUtil.Numbers.tolerance(player.getZ(), z, 0.01F)
+            MathUtil.tolerance(player.getX(), x, 0.01F) &&
+            MathUtil.tolerance(player.getY(), y, 0.01F) &&
+            MathUtil.tolerance(player.getZ(), z, 0.01F)
         ;
 
         if (isParticleAtPlayer)
@@ -330,9 +330,9 @@ public abstract class ClientLevelMixin
                 if (next instanceof ItemEntity)
                     continue;
 
-                boolean isX = ModUtil.Numbers.tolerance((int) next.getX(), (int) x);
-                boolean isY = ModUtil.Numbers.tolerance((int) next.getY(), (int) y);
-                boolean isZ = ModUtil.Numbers.tolerance((int) next.getZ(), (int) z);
+                boolean isX = MathUtil.tolerance((int) next.getX(), (int) x);
+                boolean isY = MathUtil.tolerance((int) next.getY(), (int) y);
+                boolean isZ = MathUtil.tolerance((int) next.getZ(), (int) z);
 
                 if (isX && isY && isZ)
                 {

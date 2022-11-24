@@ -13,6 +13,7 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -160,7 +161,7 @@ public class StatusButton extends Button
             }
         }
 
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, xStart, yStart, uWidth, vHeight))
+        if (MathUtil.isWithinBox(mouseX, mouseY, xStart, yStart, uWidth, vHeight))
         {
             if (!isNetVerified)
                 this.renderTooltip(screen, LangUtil.Gui.STATUS_NET, poseStack, mouseX, mouseY);

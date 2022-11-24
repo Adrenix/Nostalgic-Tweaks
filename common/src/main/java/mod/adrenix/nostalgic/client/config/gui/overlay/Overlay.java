@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -331,7 +331,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     protected boolean isMouseOverTitle(double mouseX, double mouseY)
     {
-        return ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, 15);
+        return MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, 15);
     }
 
     /**
@@ -376,7 +376,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     {
         this.widgets.forEach((widget) ->
         {
-            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseScrolled(mouseX, mouseY, delta);
         });
 
@@ -402,7 +402,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     {
         this.widgets.forEach((widget) ->
         {
-            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseDragged(mouseX, mouseY, button, dragX, dragY);
         });
 
@@ -444,7 +444,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         if (button != LEFT_CLICK)
             return false;
 
-        boolean isOutOfBounds = !ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height);
+        boolean isOutOfBounds = !MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height);
 
         if (isOutOfBounds || this.isOverClose)
             this.onClose();
@@ -494,7 +494,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         // Send mouse release to widgets the mouse is over
         this.widgets.forEach((widget) ->
         {
-            if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
                 widget.mouseReleased(mouseX, mouseY, button);
         });
     }

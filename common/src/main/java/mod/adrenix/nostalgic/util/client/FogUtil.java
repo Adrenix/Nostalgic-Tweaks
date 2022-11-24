@@ -4,6 +4,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -46,20 +47,14 @@ public abstract class FogUtil
      * @param camera The game's camera.
      * @return Whether the camera entity is in the nether dimension.
      */
-    public static boolean isNether(Camera camera)
-    {
-        return camera.getEntity().getLevel().dimension() == Level.NETHER;
-    }
+    public static boolean isNether(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.NETHER; }
 
     /**
      * Checks if the camera is in some type of fluid.
      * @param camera The game's camera.
      * @return Whether the camera is within a fluid like water or lava.
      */
-    private static boolean isFluidFog(Camera camera)
-    {
-        return camera.getFluidInCamera() != FogType.NONE;
-    }
+    private static boolean isFluidFog(Camera camera) { return camera.getFluidInCamera() != FogType.NONE; }
 
     /**
      * Checks if the camera entity currently has the blindness effect.
@@ -215,7 +210,7 @@ public abstract class FogUtil
             if (currentDensity == 0.0F)
                 currentDensity = target;
 
-            currentDensity = ModUtil.Numbers.moveTowards(currentDensity, target, deltaTime);
+            currentDensity = MathUtil.moveTowards(currentDensity, target, deltaTime);
 
             RenderSystem.setShaderFogEnd(ModConfig.Candy.smoothWaterDensity() ? currentDensity : target);
         }
@@ -242,7 +237,7 @@ public abstract class FogUtil
             if (CURRENT_RGB[0] == 0.0F)
                 CURRENT_RGB[0] = TARGET;
 
-            CURRENT_RGB[0] = ModUtil.Numbers.moveTowards(CURRENT_RGB[0], TARGET, SPEED);
+            CURRENT_RGB[0] = MathUtil.moveTowards(CURRENT_RGB[0], TARGET, SPEED);
 
             return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[0] : TARGET;
         }
@@ -270,7 +265,7 @@ public abstract class FogUtil
             if (CURRENT_RGB[1] == 0.0F)
                 CURRENT_RGB[1] = TARGET;
 
-            CURRENT_RGB[1] = ModUtil.Numbers.moveTowards(CURRENT_RGB[1], TARGET, SPEED);
+            CURRENT_RGB[1] = MathUtil.moveTowards(CURRENT_RGB[1], TARGET, SPEED);
 
             return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[1] : TARGET;
         }
@@ -298,7 +293,7 @@ public abstract class FogUtil
             if (CURRENT_RGB[2] == 0.0F)
                 CURRENT_RGB[2] = TARGET;
 
-            CURRENT_RGB[2] = ModUtil.Numbers.moveTowards(CURRENT_RGB[2], TARGET, SPEED);
+            CURRENT_RGB[2] = MathUtil.moveTowards(CURRENT_RGB[2], TARGET, SPEED);
 
             return ModConfig.Candy.smoothWaterColor() ? CURRENT_RGB[2] : TARGET;
         }
@@ -529,6 +524,7 @@ public abstract class FogUtil
 
             if (player == null || level == null)
                 return false;
+
             return player.getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level) < 0.0D;
         }
 
@@ -611,6 +607,7 @@ public abstract class FogUtil
             float renderDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
             double fogStart = ModConfig.Candy.getVoidFogStart();
             double fogDistance = getLocalBrightness(entity) / 16.0D + getYLevel(entity) / (fogStart == 0 ? 1 : fogStart);
+
             return fogDistance >= 1 ? renderDistance : (float) Mth.clamp(100.0D * Math.pow(Math.max(fogDistance, 0.0D), 2.0D), 5.0D, renderDistance);
         }
 
@@ -632,6 +629,7 @@ public abstract class FogUtil
         private static boolean isThick(Camera camera)
         {
             Minecraft mc = Minecraft.getInstance();
+
             if (mc.level == null)
                 return false;
 
@@ -671,7 +669,8 @@ public abstract class FogUtil
         private static double getBrightness(Entity entity)
         {
             double brightness = Math.max(15.0D - (ModConfig.Candy.getVoidFogStart() - getYLevel(entity)), getSkylight(entity)) / 15.0F;
-            currentBrightness = ModUtil.Numbers.moveClampTowards(currentBrightness, brightness, getSpeed(0.002F, Shift.BRIGHTNESS), 0.0D, 1.0D);
+            currentBrightness = MathUtil.moveClampTowards(currentBrightness, brightness, getSpeed(0.002F, Shift.BRIGHTNESS), 0.0D, 1.0D);
+
             return currentBrightness;
         }
 
@@ -685,9 +684,9 @@ public abstract class FogUtil
 
             if (isIgnored(camera) || isFogModified(camera) || canSeeSky(camera))
             {
-                ModUtil.Numbers.moveTowardsColor(CURRENT_FOG_RGB, TARGET_FOG_RGB, SPEED);
-                ModUtil.Numbers.moveTowardsColor(CURRENT_SKY_RGB, TARGET_SKY_RGB, SPEED);
-                ModUtil.Numbers.moveTowardsColor(CURRENT_VOID_RGB, TARGET_VOID_RGB, SPEED);
+                MathUtil.moveTowardsColor(CURRENT_FOG_RGB, TARGET_FOG_RGB, SPEED);
+                MathUtil.moveTowardsColor(CURRENT_SKY_RGB, TARGET_SKY_RGB, SPEED);
+                MathUtil.moveTowardsColor(CURRENT_VOID_RGB, TARGET_VOID_RGB, SPEED);
             }
             else
             {
@@ -700,9 +699,9 @@ public abstract class FogUtil
                 final float FOG_B = Mth.clamp(CURRENT_FOG[2] * LIGHT + (CUSTOM_FOG[2] / 255.0F), 0.0F, 1.0F);
                 final float[] TARGET_RGB = new float[] { FOG_R, FOG_G, FOG_B };
 
-                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_FOG_RGB, TARGET_RGB, SPEED);
-                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_SKY_RGB, TARGET_RGB, SPEED);
-                ModUtil.Numbers.moveTowardsGrayscale(CURRENT_VOID_RGB, TARGET_RGB, SPEED);
+                MathUtil.moveTowardsGrayscale(CURRENT_FOG_RGB, TARGET_RGB, SPEED);
+                MathUtil.moveTowardsGrayscale(CURRENT_SKY_RGB, TARGET_RGB, SPEED);
+                MathUtil.moveTowardsGrayscale(CURRENT_VOID_RGB, TARGET_RGB, SPEED);
             }
 
             RenderSystem.clearColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2], 1.0F);
@@ -713,10 +712,7 @@ public abstract class FogUtil
          * Resets the interpolation tracker initializer.
          * This occurs when the player exits a world.
          */
-        public static void reset()
-        {
-            isInitialized = false;
-        }
+        public static void reset() { isInitialized = false; }
 
         /**
          * Initializes interpolation values to an acceptable starting point when joining a world.
@@ -768,10 +764,11 @@ public abstract class FogUtil
             float starTarget = !isIgnored && getSkylight(entity) == 0 ? 0.0F : targetStarAlpha;
 
             initialize(camera);
-            currentCelestial = ModUtil.Numbers.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.CELESTIAL));
-            currentStarAlpha = ModUtil.Numbers.moveTowards(currentStarAlpha, starTarget, getSpeed(0.03F, Shift.STAR));
-            currentFogStart = ModUtil.Numbers.moveTowards(currentFogStart, fogStartTarget, speed);
-            currentFogEnd = ModUtil.Numbers.moveTowards(currentFogEnd, fogEndTarget, speed);
+
+            currentCelestial = MathUtil.moveTowards(currentCelestial, celestialTarget, getSpeed(0.07F, Shift.CELESTIAL));
+            currentStarAlpha = MathUtil.moveTowards(currentStarAlpha, starTarget, getSpeed(0.03F, Shift.STAR));
+            currentFogStart = MathUtil.moveTowards(currentFogStart, fogStartTarget, speed);
+            currentFogEnd = MathUtil.moveTowards(currentFogEnd, fogEndTarget, speed);
 
             RenderSystem.setShaderFogStart(currentFogStart);
             RenderSystem.setShaderFogEnd(currentFogEnd);

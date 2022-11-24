@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -96,7 +97,7 @@ public class OverlapButton extends Button
     private boolean isMouseOver(AbstractWidget widget, int mouseX, int mouseY)
     {
         boolean isSame = widget.equals(this);
-        boolean isInBounds = ModUtil.Numbers.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight());
+        boolean isInBounds = MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight());
 
         return !isSame && isInBounds;
     }

@@ -8,6 +8,7 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ColorSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -152,7 +153,7 @@ public class ColorPicker extends Overlay
     @Override
     public boolean onClick(double mouseX, double mouseY, int button)
     {
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, getHintX(), getHintY(), HINT_SQUARE, HINT_SQUARE))
+        if (MathUtil.isWithinBox(mouseX, mouseY, getHintX(), getHintY(), HINT_SQUARE, HINT_SQUARE))
             this.hint = !this.hint;
 
         return super.onClick(mouseX, mouseY, button);
@@ -199,8 +200,8 @@ public class ColorPicker extends Overlay
         int hintX = this.getHintX();
         int hintY = this.getHintY();
 
-        boolean isOverHint = ModUtil.Numbers.isWithinBox(mouseX, mouseY, hintX, hintY, HINT_SQUARE, HINT_SQUARE);
-        this.isOverClose = ModUtil.Numbers.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
+        boolean isOverHint = MathUtil.isWithinBox(mouseX, mouseY, hintX, hintY, HINT_SQUARE, HINT_SQUARE);
+        this.isOverClose = MathUtil.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
 
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
@@ -261,7 +262,7 @@ public class ColorPicker extends Overlay
         drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_COLOR), startX + 19, startY + 5, color);
 
         // Render dragging and tooltip hints
-        boolean isOverIcon = ModUtil.Numbers.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
+        boolean isOverIcon = MathUtil.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
 
         if (isOverIcon)
         {

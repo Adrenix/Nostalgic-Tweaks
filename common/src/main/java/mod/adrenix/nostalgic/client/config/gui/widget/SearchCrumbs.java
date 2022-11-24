@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -150,7 +150,7 @@ public class SearchCrumbs extends AbstractWidget
         int width = font.width(crumb.text());
         int height = font.lineHeight;
 
-        return ModUtil.Numbers.isWithinBox(mouseX, mouseY, crumb.startX(), this.y, width, height);
+        return MathUtil.isWithinBox(mouseX, mouseY, crumb.startX(), this.y, width, height);
     }
 
     /**

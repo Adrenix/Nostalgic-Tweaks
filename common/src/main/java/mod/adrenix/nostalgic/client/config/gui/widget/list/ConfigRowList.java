@@ -27,6 +27,7 @@ import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
@@ -1312,7 +1313,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 int dy = isSearching ? 11 : 0;
                 int startY = top + 6 + dy;
 
-                boolean isHovered = isSearching && ModUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, font.width(title), font.lineHeight);
+                boolean isHovered = isSearching && MathUtil.isWithinBox(mouseX, mouseY, startX, startY, font.width(title), font.lineHeight);
                 title = isHovered ? title.copy().withStyle(ChatFormatting.UNDERLINE) : title;
 
                 Screen.drawString(poseStack, font, title, startX, startY, 0xFFFFFF);

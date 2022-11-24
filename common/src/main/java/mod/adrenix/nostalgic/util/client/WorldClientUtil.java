@@ -8,7 +8,7 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.WorldCommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -280,6 +280,6 @@ public abstract class WorldClientUtil
         int west = LevelRenderer.getLightColor(level, source.west());
         int east = LevelRenderer.getLightColor(level, source.east());
 
-        return ModUtil.Numbers.getLargest(center, above, below, north, south, west, east);
+        return MathUtil.getLargest(center, above, below, north, south, west, east);
     }
 }

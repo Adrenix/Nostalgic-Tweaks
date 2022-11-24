@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -79,7 +80,7 @@ public class TooltipButton extends Button
 
         screen.blit(poseStack, startX, startY, 0, 0, uWidth, vHeight);
 
-        if (ModUtil.Numbers.isWithinBox(mouseX, mouseY, startX, startY, uWidth, vHeight))
+        if (MathUtil.isWithinBox(mouseX, mouseY, startX, startY, uWidth, vHeight))
             screen.renderLast.add(() -> screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 }

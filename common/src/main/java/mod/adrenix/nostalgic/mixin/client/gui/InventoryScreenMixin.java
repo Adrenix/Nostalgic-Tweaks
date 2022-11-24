@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.screen.SlotTracker;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -187,7 +188,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     {
         int x = guiLeft + (this.recipeBookComponent.isVisible() ? this.imageWidth : -25);
         int y = guiTop + this.imageHeight - 32;
-        boolean isNearShield = ModUtil.Numbers.isWithinBox(mouseX, mouseY, x, y, 25, 32);
+        boolean isNearShield = MathUtil.isWithinBox(mouseX, mouseY, x, y, 25, 32);
         boolean isBottomLeft = ModConfig.Candy.getInventoryShield().equals(TweakType.InventoryShield.BOTTOM_LEFT);
 
         if (isNearShield && isBottomLeft)
