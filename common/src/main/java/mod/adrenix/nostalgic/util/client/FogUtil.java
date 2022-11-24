@@ -4,6 +4,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Camera;
@@ -723,9 +724,9 @@ public abstract class FogUtil
             if (isInitialized)
                 return;
 
-            ModUtil.Array.copy(TARGET_VOID_RGB, CURRENT_VOID_RGB);
-            ModUtil.Array.copy(TARGET_FOG_RGB, CURRENT_FOG_RGB);
-            ModUtil.Array.copy(TARGET_SKY_RGB, CURRENT_SKY_RGB);
+            ArrayUtil.copy(TARGET_VOID_RGB, CURRENT_VOID_RGB);
+            ArrayUtil.copy(TARGET_FOG_RGB, CURRENT_FOG_RGB);
+            ArrayUtil.copy(TARGET_SKY_RGB, CURRENT_SKY_RGB);
 
             currentBrightness = getBrightness(camera.getEntity());
             currentStarAlpha = targetStarAlpha;

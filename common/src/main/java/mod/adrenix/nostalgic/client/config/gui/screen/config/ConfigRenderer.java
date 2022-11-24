@@ -22,6 +22,7 @@ import mod.adrenix.nostalgic.common.config.tweak.DisabledTweak;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.KeyMapping;
@@ -410,7 +411,7 @@ public record ConfigRenderer(ConfigScreen parent)
             return;
 
         String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
-        String first = ModUtil.Array.get(words, 0);
+        String first = ArrayUtil.get(words, 0);
 
         boolean isTagOnly = first != null && first.startsWith("@") && words.length == 1;
 
@@ -888,7 +889,7 @@ public record ConfigRenderer(ConfigScreen parent)
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {
             String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
-            String first = ModUtil.Array.get(words, 0);
+            String first = ArrayUtil.get(words, 0);
 
             boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("@");
 

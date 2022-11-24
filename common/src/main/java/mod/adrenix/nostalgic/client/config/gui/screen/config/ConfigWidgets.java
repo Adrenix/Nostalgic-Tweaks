@@ -10,8 +10,8 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.SearchWidget;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -180,8 +180,8 @@ public class ConfigWidgets
 
         for (int i = 0; i < this.categories.length; i++)
         {
-            Button first = ModUtil.Array.get(this.categories, i);
-            Button second = ModUtil.Array.get(this.categories, i + 1);
+            Button first = ArrayUtil.get(this.categories, i);
+            Button second = ArrayUtil.get(this.categories, i + 1);
             boolean adjust = false;
 
             if (first == null || second == null)
@@ -197,7 +197,7 @@ public class ConfigWidgets
             {
                 second.x -= 1;
 
-                if (ModUtil.Array.get(this.categories, i + 2) != null)
+                if (ArrayUtil.get(this.categories, i + 2) != null)
                 {
                     for (int j = i + 2; j < this.categories.length; j++)
                         this.categories[j].x -= 1;
@@ -488,7 +488,7 @@ public class ConfigWidgets
     {
         StringBuilder query = new StringBuilder();
         String[] words = search.getValue().split(" ");
-        String atTag = ModUtil.Array.get(words, 0);
+        String atTag = ArrayUtil.get(words, 0);
 
         for (String word : words)
         {
@@ -516,7 +516,7 @@ public class ConfigWidgets
                     if (Screen.hasShiftDown())
                     {
                         // Go back one if shift is down
-                        if (ModUtil.Array.get(searchTags, i - 1) != null)
+                        if (ArrayUtil.get(searchTags, i - 1) != null)
                             next = searchTags[i - 1];
                         else // We're at the front of the array, so get the last one
                             next = searchTags[searchTags.length - 1];
@@ -524,7 +524,7 @@ public class ConfigWidgets
                     else
                     {
                         // Go forward one
-                        if (ModUtil.Array.get(searchTags, i + 1) != null)
+                        if (ArrayUtil.get(searchTags, i + 1) != null)
                             next = searchTags[i + 1];
                         else // We're at the end of the array, so get the first one
                             next = searchTags[0];
@@ -570,7 +570,7 @@ public class ConfigWidgets
         HashMap<String, TweakClientCache<?>> entries = TweakClientCache.all();
         StringBuilder query = new StringBuilder();
         String[] words = search.split(" ");
-        String atTag = ModUtil.Array.get(words, 0);
+        String atTag = ArrayUtil.get(words, 0);
         String requestedTag = atTag != null ? atTag.replace("@", "").toLowerCase() : "";
 
         SearchTag tag = null;
