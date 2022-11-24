@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
@@ -231,16 +231,16 @@ public class CategoryList extends Overlay
 
         /**
          * This record defines the type of row being created.
-         * These rows will either be text buttons for containers (group buttons) or individual tweaks.
+         * These rows will either be text buttons for containers (container buttons) or individual tweaks.
          *
          * @param list A text row list instance.
          * @param row A config row list row instance.
-         * @param group Whether there is a group button associated with this entry.
+         * @param container Whether there is a container button associated with this entry.
          * @param title The title to display when this entry is rendered.
          * @param indent How far in from the left of the overlay window to start rendering text.
          * @param onClick A handler method for when this entry is clicked.
          */
-        public record EntryRow(TextRowList list, ConfigRowList.Row row, @Nullable GroupButton group, Component title, int indent, Button.OnPress onClick)
+        public record EntryRow(TextRowList list, ConfigRowList.Row row, @Nullable ContainerButton container, Component title, int indent, Button.OnPress onClick)
         {
             /**
              * When an entry's definition is finished, invoke this to create a text row instance.
@@ -249,7 +249,7 @@ public class CategoryList extends Overlay
             public TextRow add()
             {
                 List<AbstractWidget> widgets = new ArrayList<>();
-                Component control = group == null ? Component.literal(TWEAK_STAR) : Component.literal(group.isExpanded() ? "-" : "+");
+                Component control = container == null ? Component.literal(TWEAK_STAR) : Component.literal(container.isExpanded() ? "-" : "+");
 
                 widgets.add(new TextButton(this.list().screen, row, color, this.list.x0 + 2 + indent, 0, control, this::toggle));
                 widgets.add(new TextButton(this.list().screen, row, color, this.list.x0 + 11 + indent, 0, this.title, onClick));
@@ -264,13 +264,13 @@ public class CategoryList extends Overlay
              */
             private void toggle(Button button)
             {
-                if (this.group != null)
+                if (this.container != null)
                 {
                     double scrolled = OVERLAY.list.getScrollAmount();
                     int position = 0;
 
-                    this.group.silentPress();
-                    button.setMessage(Component.literal(this.group.isExpanded() ? "-" : "+"));
+                    this.container.silentPress();
+                    button.setMessage(Component.literal(this.container.isExpanded() ? "-" : "+"));
 
                     for (int i = 0; i < OVERLAY.list.children().size() - 1; i++)
                     {
@@ -456,8 +456,8 @@ public class CategoryList extends Overlay
                 screen.getWidgets().getConfigRowList().setSelection = true;
             };
 
-            if (row.controller instanceof GroupButton group)
-                this.list.addRow(new TextRowList.EntryRow(this.list, row, group, group.getTitle(), indent, jump).add());
+            if (row.controller instanceof ContainerButton container)
+                this.list.addRow(new TextRowList.EntryRow(this.list, row, container, container.getTitle(), indent, jump).add());
 
             if (row.tweak != null)
                 this.list.addRow(new TextRowList.EntryRow(this.list, row, null, Component.translatable(row.tweak.getLangKey()), indent, jump).add());
@@ -567,7 +567,7 @@ public class CategoryList extends Overlay
     {
         this.onClose();
 
-        GroupButton.collapseAll();
+        ContainerButton.collapseAll();
         Screen screen = Minecraft.getInstance().screen;
 
         if (screen instanceof ConfigScreen configScreen)

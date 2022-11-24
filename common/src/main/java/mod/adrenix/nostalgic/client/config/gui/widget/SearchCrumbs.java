@@ -188,24 +188,24 @@ public class SearchCrumbs extends AbstractWidget
                  */
 
                 if (crumb.tweak().getCategory() != null && crumb.jump() == JumpType.CATEGORY)
-                    configScreen.setScrollOnGroup(crumb.tweak().getCategory().container());
+                    configScreen.setScrollOnContainer(crumb.tweak().getCategory().container());
 
                 if (crumb.tweak().getSubcategory() != null)
                 {
                     if (crumb.jump() == JumpType.CATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().container().getCategory());
+                        configScreen.setScrollOnContainer(crumb.tweak().getSubcategory().container().getCategory());
                     else if (crumb.jump() == JumpType.SUBCATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getSubcategory().container());
+                        configScreen.setScrollOnContainer(crumb.tweak().getSubcategory().container());
                 }
 
                 if (crumb.tweak().getEmbed() != null)
                 {
                     if (crumb.jump() == JumpType.CATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container().getSubcategory().getCategory());
+                        configScreen.setScrollOnContainer(crumb.tweak().getEmbed().container().getSubcategory().getCategory());
                     else if (crumb.jump() == JumpType.SUBCATEGORY)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container().getSubcategory());
+                        configScreen.setScrollOnContainer(crumb.tweak().getEmbed().container().getSubcategory());
                     else if (crumb.jump() == JumpType.EMBEDDED)
-                        configScreen.setScrollOnGroup(crumb.tweak().getEmbed().container());
+                        configScreen.setScrollOnContainer(crumb.tweak().getEmbed().container());
                 }
 
                 this.playDownSound(minecraft.getSoundManager());

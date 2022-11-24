@@ -8,7 +8,7 @@ import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory
 import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupId;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerId;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.RadioGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
@@ -579,7 +579,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE),
             getScreenOptions,
-            GroupId.DEFAULT_SCREEN_CONFIG,
+            ContainerId.DEFAULT_SCREEN_CONFIG,
             ConfigRowList.ContainerType.SUBCATEGORY
         );
 
@@ -605,7 +605,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE),
             getTreeOptions,
-            GroupId.TREE_CONFIG,
+            ContainerId.TREE_CONFIG,
             ConfigRowList.ContainerType.SUBCATEGORY
         );
 
@@ -634,7 +634,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE),
             getHighlightOptions,
-            GroupId.ROW_CONFIG,
+            ContainerId.ROW_CONFIG,
             ConfigRowList.ContainerType.SUBCATEGORY
         );
 
@@ -711,7 +711,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_TITLE),
             getTaggingOptions,
-            GroupId.TITLE_TAGS_CONFIG,
+            ContainerId.TITLE_TAGS_CONFIG,
             ConfigRowList.ContainerType.SUBCATEGORY
         );
 
@@ -787,7 +787,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE),
             this::getGeneralOverrideList,
-            GroupId.OVERRIDE_CONFIG
+            ContainerId.OVERRIDE_CONFIG
         );
 
         list.addRow(changeAllTweaks.generate());
@@ -798,7 +798,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_BINDINGS),
             this::getGeneralBindingsList,
-            GroupId.BINDINGS_CONFIG
+            ContainerId.BINDINGS_CONFIG
         );
 
         list.addRow(changeKeyBinds.generate());
@@ -809,7 +809,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE),
             this::getGeneralSettingsList,
-            GroupId.GENERAL_CONFIG
+            ContainerId.GENERAL_CONFIG
         );
 
         list.addRow(changeSettings.generate());
@@ -820,7 +820,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE),
             this::getGeneralNotifyList,
-            GroupId.NOTIFY_CONFIG
+            ContainerId.NOTIFY_CONFIG
         );
 
         list.addRow(notifications.generate());
@@ -831,7 +831,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE),
             this::getGeneralSearchTags,
-            GroupId.SEARCH_TAGS_CONFIG
+            ContainerId.SEARCH_TAGS_CONFIG
         );
 
         list.addRow(searchTags.generate());
@@ -842,7 +842,7 @@ public record ConfigRenderer(ConfigScreen parent)
         (
             Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_TITLE),
             this::getGeneralShortcuts,
-            GroupId.SHORTCUTS_CONFIG
+            ContainerId.SHORTCUTS_CONFIG
         );
 
         list.addRow(shortcuts.generate());

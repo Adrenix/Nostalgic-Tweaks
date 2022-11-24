@@ -82,7 +82,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
     // Holds a group identification string for crumb search jumping.
     @Nullable
-    public static Object jumpToGroupId = null;
+    public static Object jumpToContainerId = null;
 
     /* Widget Start Positions */
 
@@ -210,7 +210,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      */
     private boolean isInvalidWidget(Row row, AbstractWidget widget)
     {
-        boolean isGroup = widget instanceof GroupButton;
+        boolean isGroup = widget instanceof ContainerButton;
         boolean isReset = widget.equals(row.reset);
         boolean isController = widget.equals(row.controller);
         boolean isInactive = (isGroup || isReset || isController) && !widget.isActive();
@@ -603,7 +603,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         /* Fields */
 
         private ArrayList<ConfigRowList.Row> cache;
-        private GroupButton controller;
+        private ContainerButton controller;
 
         private final Enum<?> id;
         private final Component title;
@@ -682,17 +682,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 for (AbstractWidget widget : categories.children)
                 {
                     // Check if parent group
-                    if (widget instanceof GroupButton group && this.controller.equals(group))
+                    if (widget instanceof ContainerButton group && this.controller.equals(group))
                     {
                         // Ensure children only consist of subcategories
-                        GroupButton subcategory = null;
+                        ContainerButton subcategory = null;
                         boolean isSubOnly = true;
 
                         for (ConfigRowList.Row subcategories : this.cache)
                         {
                             for (AbstractWidget subWidget : subcategories.children)
                             {
-                                if (subWidget instanceof GroupButton subGroup)
+                                if (subWidget instanceof ContainerButton subGroup)
                                     subcategory = subGroup;
                                 else
                                 {
@@ -738,7 +738,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
                 for (AbstractWidget widget : this.list.children().get(i).children)
                 {
-                    if (widget instanceof GroupButton && widget.equals(this.controller))
+                    if (widget instanceof ContainerButton && widget.equals(this.controller))
                     {
                         header = i;
                         break;
@@ -794,7 +794,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                         // Collapse any subcategories within the category
                         for (AbstractWidget widget : child.children)
                         {
-                            if (widget instanceof GroupButton group)
+                            if (widget instanceof ContainerButton group)
                                 group.collapse();
                         }
 
@@ -814,7 +814,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         public ConfigRowList.Row generate()
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            this.controller = new GroupButton(this, this.id, this.title, this.containerType);
+            this.controller = new ContainerButton(this, this.id, this.title, this.containerType);
             widgets.add(this.controller);
 
             return new ConfigRowList.Row(widgets, this.controller, null);
@@ -831,7 +831,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     {
         /* Nullable Fields */
 
-        @Nullable private GroupButton group;
+        @Nullable private ContainerButton group;
         @Nullable public final TweakClientCache<?> tweak;
         @Nullable public final AbstractWidget controller;
         @Nullable public ResetButton reset = null;
@@ -870,8 +870,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     this.reset = button;
             }
 
-            if (this.controller instanceof GroupButton groupButton)
-                this.group = groupButton;
+            if (this.controller instanceof ContainerButton containerButton)
+                this.group = containerButton;
             else
                 this.group = null;
         }
@@ -923,7 +923,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * Set a new group button.
          * @param group A group button instance.
          */
-        public void setGroup(@Nullable GroupButton group) { this.group = group; }
+        public void setGroup(@Nullable ContainerButton group) { this.group = group; }
 
         /* Overrides & Rendering */
 
@@ -1304,8 +1304,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     Component translation = Component.translatable(((KeyBindButton) widget).getMapping().getName());
                     title = KeyUtil.isMappingConflict(((KeyBindButton) widget).getMapping()) ? translation.copy().withStyle(ChatFormatting.RED) : translation.copy().withStyle(ChatFormatting.RESET);
                 }
-                else if (widget instanceof GroupButton groupButton)
-                    groupButton.setHighlight(CategoryList.OVERLAY.getSelected() == this);
+                else if (widget instanceof ContainerButton containerButton)
+                    containerButton.setHighlight(CategoryList.OVERLAY.getSelected() == this);
 
                 // Render row title
                 boolean isSearching = screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH;

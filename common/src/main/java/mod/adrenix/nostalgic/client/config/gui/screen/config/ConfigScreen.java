@@ -12,7 +12,7 @@ import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.GroupButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
@@ -172,7 +172,7 @@ public class ConfigScreen extends Screen
         AutoConfig.getConfigHolder(ClientConfig.class).save();
 
         // Clear expansion states stored in config rows
-        GroupButton.collapseAll();
+        ContainerButton.collapseAll();
 
         // Return to parent screen
         this.minecraft.setScreen(this.parentScreen);
@@ -199,7 +199,7 @@ public class ConfigScreen extends Screen
         if (this.configTab == configTab)
             return;
         else if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
-            GroupButton.collapseAll();
+            ContainerButton.collapseAll();
 
         if (configTab == ConfigTab.SEARCH)
             this.getWidgets().getConfigRowList().setRowHeight(36);
@@ -291,7 +291,7 @@ public class ConfigScreen extends Screen
         {
             if (ConfigRowList.overTweakId != null)
             {
-                GroupButton.collapseAll();
+                ContainerButton.collapseAll();
                 ConfigRowList.jumpToTweakId = ConfigRowList.overTweakId;
             }
 
@@ -305,7 +305,7 @@ public class ConfigScreen extends Screen
 
                         if (isClicked)
                         {
-                            GroupButton.collapseAll();
+                            ContainerButton.collapseAll();
                             return true;
                         }
                     }
@@ -550,10 +550,10 @@ public class ConfigScreen extends Screen
     public void setTabFromGroupKey(String groupLangKey) { this.setConfigTab(this.getTabFromGroupKey(groupLangKey)); }
 
     /**
-     * Sets the scrollbar on a configuration container row based on the provided group identifier.
-     * @param id An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
+     * Sets the scrollbar on a configuration container row based on the provided container identifier.
+     * @param containerId An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
      */
-    public void setScrollOnGroup(Object id) { ConfigRowList.jumpToGroupId = id; }
+    public void setScrollOnContainer(Object containerId) { ConfigRowList.jumpToContainerId = containerId; }
 
     /**
      * Jump to a configuration row entry that holds controllers for the provided tweak.
@@ -574,31 +574,31 @@ public class ConfigScreen extends Screen
     }
 
     /**
-     * Jump to a group that holds the provided tweak.
-     * @param tweak A tweak with group data.
+     * Jump to a container that holds the provided tweak.
+     * @param tweak A tweak with container data.
      */
-    private void jumpToGroupFromTweak(TweakClientCache<?> tweak)
+    private void jumpToContainerFromTweak(TweakClientCache<?> tweak)
     {
         if (tweak.getEmbed() != null)
         {
-            this.jumpToGroup(tweak.getEmbed().container().getSubcategory().getCategory());
-            this.jumpToGroup(tweak.getEmbed().container().getSubcategory());
-            this.jumpToGroup(tweak.getEmbed().container());
+            this.jumpToContainer(tweak.getEmbed().container().getSubcategory().getCategory());
+            this.jumpToContainer(tweak.getEmbed().container().getSubcategory());
+            this.jumpToContainer(tweak.getEmbed().container());
         }
         else if (tweak.getSubcategory() != null)
         {
-            this.jumpToGroup(tweak.getSubcategory().container().getCategory());
-            this.jumpToGroup(tweak.getSubcategory().container());
+            this.jumpToContainer(tweak.getSubcategory().container().getCategory());
+            this.jumpToContainer(tweak.getSubcategory().container());
         }
         else if (tweak.getCategory() != null)
-            this.jumpToGroup(tweak.getCategory().container());
+            this.jumpToContainer(tweak.getCategory().container());
     }
 
     /**
-     * Jump to a group based on the provided group identifier.
-     * @param groupId An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
+     * Jump to a container based on the provided container identifier.
+     * @param tweakContainer An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
      */
-    private void jumpToGroup(Object groupId)
+    private void jumpToContainer(Object tweakContainer)
     {
         ConfigRowList list = this.getWidgets().getConfigRowList();
 
@@ -606,14 +606,14 @@ public class ConfigScreen extends Screen
         {
             for (AbstractWidget widget : row.children)
             {
-                if (widget instanceof GroupButton group)
+                if (widget instanceof ContainerButton container)
                 {
-                    if (group.getId() == groupId)
+                    if (container.getId() == tweakContainer)
                     {
-                        if (!group.isExpanded())
-                            group.silentPress();
+                        if (!container.isExpanded())
+                            container.silentPress();
 
-                        list.setFocusOn(group);
+                        list.setFocusOn(container);
                         list.setScrollOn(row);
                     }
                 }
@@ -818,23 +818,23 @@ public class ConfigScreen extends Screen
 
         // Crumb & Tweak Jumping
 
-        if (ConfigRowList.jumpToGroupId != null)
+        if (ConfigRowList.jumpToContainerId != null)
         {
-            if (ConfigRowList.jumpToGroupId instanceof TweakEmbed embed)
+            if (ConfigRowList.jumpToContainerId instanceof TweakEmbed embed)
             {
-                this.jumpToGroup(embed.getSubcategory().getCategory());
-                this.jumpToGroup(embed.getSubcategory());
-                this.jumpToGroup(embed);
+                this.jumpToContainer(embed.getSubcategory().getCategory());
+                this.jumpToContainer(embed.getSubcategory());
+                this.jumpToContainer(embed);
             }
-            else if (ConfigRowList.jumpToGroupId instanceof TweakSubcategory subcategory)
+            else if (ConfigRowList.jumpToContainerId instanceof TweakSubcategory subcategory)
             {
-                this.jumpToGroup(subcategory.getCategory());
-                this.jumpToGroup(subcategory);
+                this.jumpToContainer(subcategory.getCategory());
+                this.jumpToContainer(subcategory);
             }
-            else if (ConfigRowList.jumpToGroupId instanceof TweakCategory category)
-                this.jumpToGroup(category);
+            else if (ConfigRowList.jumpToContainerId instanceof TweakCategory category)
+                this.jumpToContainer(category);
 
-            ConfigRowList.jumpToGroupId = null;
+            ConfigRowList.jumpToContainerId = null;
         }
 
 
@@ -849,7 +849,7 @@ public class ConfigScreen extends Screen
         {
             TweakClientCache<?> tweak = TweakClientCache.all().get(ConfigRowList.jumpToTweakId);
 
-            this.jumpToGroupFromTweak(tweak);
+            this.jumpToContainerFromTweak(tweak);
             this.jumpToTweak(tweak);
 
             ConfigRowList.jumpToTweakId = null;

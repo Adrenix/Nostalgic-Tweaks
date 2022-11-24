@@ -14,20 +14,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A group button handles subscribed configuration rows that are defined by a config row container type.
+ * A container button handles subscribed configuration rows that are defined by a config row container type or rows that
+ * are defined manually.
  *
- * The rows that are put into these group buttons are defined in the client config or manually assigned in a different
- * class that defines a config row list.
+ * The rows that are put into container buttons are defined in the client config or manually assigned in a different
+ * class.
  */
 
-public class GroupButton extends Button
+public class ContainerButton extends Button
 {
     /* Expansion Cache */
 
     /**
-     * Since group buttons are identified by an enumeration value, any group buttons with the same identifier will be
-     * linked together. This will cause their expansions and collapses to be in sync. If this behavior is not desired,
-     * then it is important to ensure group button enumeration identifiers are unique.
+     * Since container buttons are identified by an enumeration value, any container buttons with the same identifier
+     * will be linked together. This will cause their expansions and collapses to be in sync. If this behavior is not
+     * desired, then it is important to ensure container button enumeration identifiers are unique.
      */
     private static final Map<Enum<?>, Boolean> EXPANDED = new HashMap<>();
 
@@ -45,13 +46,13 @@ public class GroupButton extends Button
     /* Constructor */
 
     /**
-     * Create a new group button for a config row list container.
+     * Create a new container button for a config row list container.
      * @param row The row instance associated with this button.
      * @param id An enumeration identifier that will be used in the expanded map state tracker.
-     * @param title A component title for this group button.
+     * @param title A component title for this container button.
      * @param containerType The config row list container type for this button.
      */
-    public GroupButton(ConfigRowList.ContainerRow row, Enum<?> id, Component title, ConfigRowList.ContainerType containerType)
+    public ContainerButton(ConfigRowList.ContainerRow row, Enum<?> id, Component title, ConfigRowList.ContainerType containerType)
     {
         super(ConfigRowList.ContainerRow.getIndent(containerType), 0, 0, 0, Component.empty(), (ignored) -> {});
 
@@ -84,35 +85,41 @@ public class GroupButton extends Button
     }
 
     /**
-     * Collapse every group button defined in the expanded map.
+     * Collapse every container button defined in the expanded map.
      */
     public static void collapseAll() { EXPANDED.forEach((id, state) -> EXPANDED.put(id, false)); }
 
     /**
-     * @return The title of this group button as a component.
+     * @return The title of this container button as a component.
      */
     public Component getTitle() { return this.title; }
 
     /**
-     * Informs the config list renderer that this group button requires tree lines outward from an embedded container.
+     * Informs the config list renderer that this container button requires tree lines outward from an embedded
+     * container.
+     *
      * @param state Whether an embedded grandparent tree is needed.
      */
     public void setGrandparentTreeNeeded(boolean state) { this.grandparentTreeNeeded = state; }
 
     /**
-     * Informs the config list renderer that this group button requires tree lines outward from a subcategory container.
+     * Informs the config list renderer that this container button requires tree lines outward from a subcategory
+     * container.
+     *
      * @param state Whether a subcategory parent tree is needed.
      */
     public void setParentTreeNeeded(boolean state) { this.parentTreeNeeded = state; }
 
     /**
-     * Informs the config list renderer that this group button is the last subcategory and no further rendering is needed.
+     * Informs the config list renderer that this container button is the last subcategory and no further rendering is
+     * needed.
+     *
      * @param state Whether this container is the last subcategory.
      */
     public void setLastSubcategory(boolean state) { this.lastSubcategory = state; }
 
     /**
-     * Informs the group button renderer whether the text for this widget should be highlighted or not.
+     * Informs the container button renderer whether the text for this widget should be highlighted or not.
      * @param state A flag that controls text highlighting.
      */
     public void setHighlight(boolean state) { this.highlighted = state; }
@@ -128,26 +135,26 @@ public class GroupButton extends Button
     public boolean isParentTreeNeeded() { return this.parentTreeNeeded; }
 
     /**
-     * @return Check if this group is the last subcategory.
+     * @return Check if this container is the last subcategory.
      */
     public boolean isLastSubcategory() { return this.lastSubcategory; }
 
     /**
-     * @return Check if this group button is showing its subscribed rows.
+     * @return Check if this container button is showing its subscribed rows.
      */
     public boolean isExpanded() { return EXPANDED.get(this.id); }
 
     /**
-     * In automatically generated group buttons, this is category, subcategory, or embedded value. These are defined in
-     * annotations in the client config. Manually created group buttons have their own unique identifiers. These are
-     * defined in other classes.
+     * In automatically generated container buttons, this is category, subcategory, or embedded value. These are defined
+     * in annotations in the client config. Manually created container buttons have their own unique identifiers. These
+     * are defined in other classes.
      *
-     * @return Get the enumeration value of this group button.
+     * @return Get the enumeration value of this container button.
      */
     public Enum<?> getId() { return this.id; }
 
     /**
-     * Collapses or expands a group button without making a button click sound.
+     * Collapses or expands a container button without making a button click sound.
      * No expansion or collapse checks are required before invoking.
      */
     public void silentPress()
@@ -163,7 +170,7 @@ public class GroupButton extends Button
     /* Widget Overrides */
 
     /**
-     * Handler method for when a group button is pressed.
+     * Handler method for when a container button is pressed.
      */
     @Override
     public void onPress()
@@ -193,7 +200,7 @@ public class GroupButton extends Button
     }
 
     /**
-     * Rendering instructions for the group button widget.
+     * Rendering instructions for the container button widget.
      * @param poseStack The current pose stack.
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
