@@ -497,7 +497,7 @@ public class ConfigWidgets
         }
 
         if (atTag == null || !atTag.startsWith("@"))
-            search.setValue(("@client " + query).replaceAll("\s+", " "));
+            search.setValue(String.format("@%s %s", SearchTag.CLIENT, query).replaceAll("\s+", " "));
         else
         {
             SearchTag[] searchTags = SearchTag.values();

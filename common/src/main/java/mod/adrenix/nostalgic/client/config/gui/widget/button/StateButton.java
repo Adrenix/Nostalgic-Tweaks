@@ -97,7 +97,9 @@ public class StateButton extends OverlapButton
     {
         List<Component> tooltip = new ArrayList<>();
 
+        Component hide = Component.translatable(LangUtil.Gui.STATE_HIDE).withStyle(ChatFormatting.GRAY);
         Component shift = Component.translatable(LangUtil.Gui.STATE_SHIFT).withStyle(ChatFormatting.GRAY);
+
         Component title = switch (this.widget)
         {
             case TAG -> Component.translatable(LangUtil.Gui.STATE_TAG).withStyle(ChatFormatting.GREEN);
@@ -119,7 +121,10 @@ public class StateButton extends OverlapButton
         if (Screen.hasShiftDown())
             tooltip.addAll(wrap);
         else
+        {
             tooltip.add(shift);
+            tooltip.add(hide);
+        }
 
         return tooltip;
     }
@@ -168,7 +173,7 @@ public class StateButton extends OverlapButton
     @Override
     public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
     {
-        if (this.shouldRenderToolTip(mouseX, mouseY))
+        if (this.shouldRenderToolTip(mouseX, mouseY) && !Screen.hasControlDown())
             this.screen.renderLast.add(() -> this.showTooltip(poseStack, mouseX, mouseY));
     }
 

@@ -146,6 +146,10 @@ public class SearchCrumbs extends AbstractWidget
      */
     private boolean isOverCrumb(double mouseX, double mouseY, Crumb crumb)
     {
+        // This prevents clicking when the crumbs haven't received a y-position from the row list yet.
+        if (this.y == 0)
+            return false;
+
         Font font = Minecraft.getInstance().font;
         int width = font.width(crumb.text());
         int height = font.lineHeight;

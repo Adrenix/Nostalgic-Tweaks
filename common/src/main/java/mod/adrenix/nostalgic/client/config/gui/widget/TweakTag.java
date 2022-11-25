@@ -182,8 +182,11 @@ public class TweakTag extends AbstractWidget
         int endX = getTagWidth(title, startX);
         boolean isMouseOver = (mouseX >= startX && mouseX <= endX) && (mouseY >= startY && mouseY <= startY + V_GLOBAL_HEIGHT);
 
-        if (isMouseOver && screen instanceof ConfigScreen)
-            ((ConfigScreen) screen).renderLast.add(() ->
+        // Prevents tooltip rendering when the row list has not assigned a y-position yet
+        boolean isInitialized = startY != 4;
+
+        if (isMouseOver && isInitialized && screen instanceof ConfigScreen configScreen)
+            configScreen.renderLast.add(() ->
                 screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
 
@@ -200,7 +203,8 @@ public class TweakTag extends AbstractWidget
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
 
-        if (screen == null) return;
+        if (screen == null)
+            return;
 
         TweakGui.New newTag = this.tweak.getMetadata(TweakGui.New.class);
         TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);

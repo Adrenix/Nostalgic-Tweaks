@@ -433,6 +433,7 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         TextGroup help = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_HELP));
         AtomicBoolean serverOnly = new AtomicBoolean(false);
+        AtomicBoolean clientOnly = new AtomicBoolean(false);
 
         Button.OnPress onDisable = (button) -> Arrays.stream(TweakGroup.values()).forEach((group) ->
         {
@@ -444,10 +445,11 @@ public record ConfigRenderer(ConfigScreen parent)
 
                     boolean isDisableIgnored = tweak.isMetadataPresent(TweakGui.IgnoreDisable.class);
                     boolean isClientIgnored = serverOnly.get() && tweak.isClient() && !tweak.isDynamic();
+                    boolean isServerIgnored = clientOnly.get() && (tweak.isServer() || tweak.isDynamic());
                     boolean isLocked = tweak.isLocked();
-                    boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored;
+                    boolean isChangeable = !isDisableIgnored && !isLocked && !isClientIgnored && !isServerIgnored;
 
-                    if (!isClientIgnored && !isLocked)
+                    if (!isClientIgnored && !isServerIgnored && !isLocked)
                         tweak.reset();
 
                     if (value instanceof Boolean && isChangeable)
@@ -492,8 +494,9 @@ public record ConfigRenderer(ConfigScreen parent)
                     TweakClientCache<?> tweak = TweakClientCache.get(group, key);
 
                     boolean isClientIgnored = serverOnly.get() && tweak.isClient() && !tweak.isDynamic();
+                    boolean isServerIgnored = clientOnly.get() && (tweak.isServer() || tweak.isDynamic());
                     boolean isLocked = tweak.isLocked();
-                    boolean isChangeable = !isLocked && !isClientIgnored;
+                    boolean isChangeable = !isLocked && !isClientIgnored && !isServerIgnored;
 
                     if (isChangeable)
                         tweak.reset();
@@ -501,8 +504,22 @@ public record ConfigRenderer(ConfigScreen parent)
             }
         });
 
+        Button.OnPress onReview = (button) ->
+        {
+            this.parent.setConfigTab(ConfigScreen.ConfigTab.SEARCH);
+            this.parent.getWidgets().getSearchInput().setValue(String.format("@%s ", ConfigWidgets.SearchTag.SAVE));
+        };
+
         ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
         ControlButton enableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_ENABLE), onEnable);
+        ControlButton reviewAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_REVIEW), onReview);
+
+        ToggleCheckbox toggleClientOnly = new ToggleCheckbox
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_CLIENT),
+            clientOnly::get,
+            clientOnly::set
+        );
 
         ToggleCheckbox toggleServerOnly = new ToggleCheckbox
         (
@@ -511,17 +528,24 @@ public record ConfigRenderer(ConfigScreen parent)
             serverOnly::set
         );
 
+        toggleClientOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_CLIENT_TIP));
         toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
 
+        ConfigRowList.BlankRow blank = new ConfigRowList.BlankRow();
+        ConfigRowList.SingleLeftRow client = new ConfigRowList.SingleLeftRow(toggleClientOnly, ConfigRowList.CAT_TEXT_START);
         ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
         ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
         ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
+        ConfigRowList.SingleLeftRow review = new ConfigRowList.SingleLeftRow(reviewAll, ConfigRowList.CAT_TEXT_START);
 
         ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
 
+        rows.add(client.generate());
         rows.add(server.generate());
+        rows.add(blank.generate());
         rows.add(disable.generate());
         rows.add(enable.generate());
+        rows.add(review.generate());
 
         return rows;
     }
@@ -687,7 +711,7 @@ public record ConfigRenderer(ConfigScreen parent)
             ConfigRowList.ManualRow tagTooltipsRow = new ConfigRowList.ManualRow(List.of(tagTooltipsCheckbox));
 
             rows.add(tagTooltipsRow.generate());
-            rows.add(new ConfigRowList.ManualRow(new ArrayList<>()).generate());
+            rows.add(new ConfigRowList.BlankRow().generate());
 
             // Feature Status
 

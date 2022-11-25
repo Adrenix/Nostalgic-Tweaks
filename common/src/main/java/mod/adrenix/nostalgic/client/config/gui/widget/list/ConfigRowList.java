@@ -573,6 +573,20 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         public ConfigRowList.Row generate() { return new ConfigRowList.Row(widgets, null); }
     }
 
+    /**
+     * Manually create an empty row within the configuration row list.
+     */
+    public record BlankRow()
+    {
+        /**
+         * Create a new blank row. No widgets will be in the row.
+         * The purpose of having a blank row is to provide spacing in a crowded area of the menu.
+         *
+         * @return A config row list instance with no widgets.
+         */
+        public ConfigRowList.Row generate() { return new ConfigRowList.ManualRow(new ArrayList<>()).generate(); }
+    }
+
     /*
 
       Group Container Rows

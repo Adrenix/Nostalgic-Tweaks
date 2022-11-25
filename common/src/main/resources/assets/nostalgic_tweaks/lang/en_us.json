@@ -107,6 +107,7 @@
   "gui.nostalgic_tweaks.config.corner.bottom_left": "Bottom Left",
   "gui.nostalgic_tweaks.config.corner.bottom_right": "Bottom Right",
 
+  "gui.nostalgic_tweaks.config.state.hide": "Hold ctrl to hide.",
   "gui.nostalgic_tweaks.config.state.shift": "Hold shift for info.",
   "gui.nostalgic_tweaks.config.state.fuzzy": "Fuzzy Search",
   "gui.nostalgic_tweaks.config.state.fuzzy.@Tooltip": "Get a list of results based on§a likely§r relevance from§6 search words§r and§c misspellings§r.\n\n§2Exact§r and§a highly§r relevant matches appear§e near the top§r of the results.",
@@ -156,11 +157,14 @@
 
   "gui.nostalgic_tweaks.config.general.bindings.title": "Key Bindings",
   "gui.nostalgic_tweaks.config.general.override.title": "Change All Tweaks",
-  "gui.nostalgic_tweaks.config.general.override.help": "This section will make§e changes§r to§a all§r configuration values. Use the§3 Disable All§r button to turn§4 off§r all mod tweaks. Use the§3 Enable All§r button to turn§2 on§r all mod tweaks.\n\nYou can§c cancel§r to§a undo§r any accidental edits.",
+  "gui.nostalgic_tweaks.config.general.override.help": "This section will make§e changes§r to§a all§r configuration values. Use the§3 Disable All§r button to turn§4 off§r all mod tweaks. Use the§3 Enable All§r button to§2 reset§r all mod tweaks back to their§a default§r values.\n\nYou can§c cancel§r to§a undo§r any accidental edits.",
   "gui.nostalgic_tweaks.config.general.override.disable": "Disable All",
   "gui.nostalgic_tweaks.config.general.override.enable": "Enable All",
+  "gui.nostalgic_tweaks.config.general.override.client": "Client Only",
+  "gui.nostalgic_tweaks.config.general.override.client.@Tooltip": "Only override§b client-side§r tweaks.",
   "gui.nostalgic_tweaks.config.general.override.server": "Server Only",
   "gui.nostalgic_tweaks.config.general.override.server.@Tooltip": "Only override§e server-side§r tweaks.",
+  "gui.nostalgic_tweaks.config.general.override.review": "Review Changes",
   "gui.nostalgic_tweaks.config.general.config.title": "Menu Settings",
   "gui.nostalgic_tweaks.config.general.config.screen.title": "Default Screen",
   "gui.nostalgic_tweaks.config.general.config.screen.main": "Main Menu",

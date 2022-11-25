@@ -221,7 +221,10 @@ public class ConfigScreen extends Screen
             }
         }
         else if (configTab == ConfigTab.SEARCH)
+        {
+            this.getWidgets().getSearchInput().setVisible(true);
             this.getWidgets().runSearch(this.getWidgets().getSearchInput().getValue());
+        }
     }
 
     /**

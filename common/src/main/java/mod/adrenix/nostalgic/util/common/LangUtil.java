@@ -136,6 +136,7 @@ public abstract class LangUtil
         public static final String CORNER_BOTTOM_LEFT = "gui.nostalgic_tweaks.config.corner.bottom_left";
         public static final String CORNER_BOTTOM_RIGHT = "gui.nostalgic_tweaks.config.corner.bottom_right";
 
+        public static final String STATE_HIDE = "gui.nostalgic_tweaks.config.state.hide";
         public static final String STATE_SHIFT = "gui.nostalgic_tweaks.config.state.shift";
         public static final String STATE_FUZZY = "gui.nostalgic_tweaks.config.state.fuzzy";
         public static final String STATE_FUZZY_TOOLTIP = "gui.nostalgic_tweaks.config.state.fuzzy.@Tooltip";
@@ -188,6 +189,9 @@ public abstract class LangUtil
         public static final String GENERAL_OVERRIDE_HELP = "gui.nostalgic_tweaks.config.general.override.help";
         public static final String GENERAL_OVERRIDE_DISABLE = "gui.nostalgic_tweaks.config.general.override.disable";
         public static final String GENERAL_OVERRIDE_ENABLE = "gui.nostalgic_tweaks.config.general.override.enable";
+        public static final String GENERAL_OVERRIDE_REVIEW = "gui.nostalgic_tweaks.config.general.override.review";
+        public static final String GENERAL_OVERRIDE_CLIENT = "gui.nostalgic_tweaks.config.general.override.client";
+        public static final String GENERAL_OVERRIDE_CLIENT_TIP = "gui.nostalgic_tweaks.config.general.override.client.@Tooltip";
         public static final String GENERAL_OVERRIDE_SERVER = "gui.nostalgic_tweaks.config.general.override.server";
         public static final String GENERAL_OVERRIDE_SERVER_TIP = "gui.nostalgic_tweaks.config.general.override.server.@Tooltip";
         public static final String GENERAL_CONFIG_TITLE = "gui.nostalgic_tweaks.config.general.config.title";
