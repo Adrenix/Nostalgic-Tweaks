@@ -33,7 +33,7 @@ public abstract class ValidateConfig
      * Debugging information is displayed during validation for developers. If a value is reset, the user will be
      * notified of the invalid value and what it was reset to.
      */
-    private enum Loader { CONTINUE, STOP }
+    private enum Scan { CONTINUE, STOP }
 
     /**
      * Scan a client or server config instance. This method will validate metadata to ensure that all field data is
@@ -45,13 +45,14 @@ public abstract class ValidateConfig
     public static void scan(Object config) throws ConfigData.ValidationException
     {
         Field[] fields = config.getClass().getFields();
-        validateAnnotation(fields, config, TweakData.BoundedSlider.class, ValidateConfig::validateBoundedSliders);
+
+        validate(fields, config, TweakData.BoundedSlider.class, ValidateConfig::boundedSliders);
     }
 
     /* Annotation Validations */
 
     /**
-     *
+     * Validate metadata that is attached to a config field annotation value.
      * @param fields An array of fields from a config class instance.
      * @param config A config container instance.
      * @param annotation The annotation type class.
@@ -62,26 +63,26 @@ public abstract class ValidateConfig
      * @throws ConfigData.ValidationException When invalid data cannot be reset and requires a panic exit.
      */
     @SuppressWarnings("SameParameterValue") // Temporary until additional metadata validation is created
-    private static <T extends Annotation> void validateAnnotation
+    private static <T extends Annotation> void validate
     (
         Field[] fields,
         Object config,
         Class<T> annotation,
-        TriFunction<Field, Object, T, Pair<Loader, String>> validator
+        TriFunction<Field, Object, T, Pair<Scan, String>> validator
     )
     throws ConfigData.ValidationException
     {
-        NostalgicTweaks.LOGGER.debug("START_VALIDATING: %s", annotation.getName());
+        NostalgicTweaks.LOGGER.debug("VALIDATING: %s", annotation.getName());
 
-        Pair<Loader, String> result = getValidation(fields, config, annotation, validator);
+        Pair<Scan, String> result = getValidation(fields, config, annotation, validator);
 
-        Loader resultLoader = result.getFirst();
+        Scan resultScan = result.getFirst();
         String resultMessage = result.getSecond();
 
-        if (resultLoader == Loader.STOP)
+        if (resultScan == Scan.STOP)
             throw new ConfigData.ValidationException(new Throwable(resultMessage));
 
-        NostalgicTweaks.LOGGER.debug("FINISH_VALIDATING: %s", annotation.getName());
+        NostalgicTweaks.LOGGER.debug("VALIDATED: %s", annotation.getName());
     }
 
     /**
@@ -92,7 +93,7 @@ public abstract class ValidateConfig
      * @return A data pair where the first value is a result value and the second is a message.
      * @throws IllegalAccessException When a field could not be set or retrieved.
      */
-    private static Pair<Loader, String> validateBoundedSliders(Field field, Object container, TweakData.BoundedSlider slider)
+    private static Pair<Scan, String> boundedSliders(Field field, Object container, TweakData.BoundedSlider slider)
             throws IllegalAccessException
     {
         String name = field.getName();
@@ -108,7 +109,7 @@ public abstract class ValidateConfig
             String body = "[%s %s]: reset is out-of-bounds (min: %s, max: %s, reset: %s)";
             String reason = String.format(body, container.toString(), name, min, max, reset);
 
-            return new Pair<>(Loader.STOP, reason);
+            return new Pair<>(Scan.STOP, reason);
         }
 
         if (value < min || value > max)
@@ -123,10 +124,10 @@ public abstract class ValidateConfig
             else
                 field.set(container, (int) reset);
 
-            return new Pair<>(Loader.CONTINUE, LogColor.apply(LogColor.YELLOW, message));
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.YELLOW, message));
         }
 
-        return new Pair<>(Loader.CONTINUE, LogColor.apply(LogColor.GREEN, PASSED_VALIDATION));
+        return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.GREEN, PASSED_VALIDATION));
     }
 
     /* Validation Methods */
@@ -144,21 +145,21 @@ public abstract class ValidateConfig
      * @param <T> The type class of the annotation.
      * @return A data pair with a result boolean and failure message if applicable.
      */
-    private static <T extends Annotation> Pair<Loader, String> getValidation
+    private static <T extends Annotation> Pair<Scan, String> getValidation
     (
         Field[] fields,
         Object container,
         Class<T> annotation,
-        TriFunction<Field, Object, T, Pair<Loader, String>> validator
+        TriFunction<Field, Object, T, Pair<Scan, String>> validator
     )
     {
         if (fields[0] != null && fields[0].getDeclaringClass() == String.class)
-            return new Pair<>(Loader.CONTINUE, LogColor.apply(LogColor.LIGHT_PURPLE, SKIP_STRING));
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.LIGHT_PURPLE, SKIP_STRING));
 
         for (Field field : fields)
         {
             Field[] typeFields = field.getType().getFields();
-            Pair<Loader, String> result;
+            Pair<Scan, String> result;
 
             if (typeFields.length > 0 && !field.isSynthetic() && !field.isEnumConstant())
             {
@@ -174,7 +175,7 @@ public abstract class ValidateConfig
             else
                 result = getAnnotationAndValidate(field, container, annotation, validator);
 
-            final Loader LOAD_STATE = result.getFirst();
+            final Scan LOAD_STATE = result.getFirst();
             final String FIELD = LogColor.apply(LogColor.GOLD, field.getName());
             final String RESULT = switch (LOAD_STATE)
             {
@@ -184,7 +185,7 @@ public abstract class ValidateConfig
 
             NostalgicTweaks.LOGGER.debug("Field: %s | Result: %s | Message: %s", FIELD, RESULT, result.getSecond());
 
-            if (result.getFirst() == Loader.STOP)
+            if (result.getFirst() == Scan.STOP)
                 return result;
         }
 
@@ -192,7 +193,7 @@ public abstract class ValidateConfig
         final String ANNOTATION = LogColor.apply(LogColor.AQUA, annotation.getSimpleName());
         final String MESSAGE = String.format("CHECKED %s FOR %s", CHECKED, ANNOTATION);
 
-        return new Pair<>(Loader.CONTINUE, MESSAGE);
+        return new Pair<>(Scan.CONTINUE, MESSAGE);
     }
 
     /**
@@ -205,12 +206,12 @@ public abstract class ValidateConfig
      * @param <T> The type class of the annotation.
      * @return The data pair from the validation tri-function.
      */
-    private static <T extends Annotation> Pair<Loader, String> getAnnotationAndValidate
+    private static <T extends Annotation> Pair<Scan, String> getAnnotationAndValidate
     (
         Field field,
         Object container,
         Class<T> annotation,
-        TriFunction<Field, Object, T, Pair<Loader, String>> validator
+        TriFunction<Field, Object, T, Pair<Scan, String>> validator
     )
     {
         T data = field.getAnnotation(annotation);
@@ -227,6 +228,6 @@ public abstract class ValidateConfig
             }
         }
 
-        return new Pair<>(Loader.CONTINUE, LogColor.apply(LogColor.RED, NO_METADATA));
+        return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.RED, NO_METADATA));
     }
 }
