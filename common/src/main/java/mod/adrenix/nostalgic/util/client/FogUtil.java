@@ -195,6 +195,7 @@ public abstract class FogUtil
             float density = 0.15F;
             float deltaTime = Minecraft.getInstance().getDeltaFrameTime();
             Entity entity = Minecraft.getInstance().getCameraEntity();
+
             RenderSystem.setShaderFogShape(FogShape.SPHERE);
             RenderSystem.setShaderFogStart(-8.0F);
 
@@ -534,10 +535,7 @@ public abstract class FogUtil
          * @param entity The entity to get a y-level from.
          * @return The entity's current y-level as a <code>double</code>.
          */
-        public static double getYLevel(Entity entity)
-        {
-            return entity.getY() - entity.level.getMinBuildHeight();
-        }
+        public static double getYLevel(Entity entity) { return entity.getY() - entity.level.getMinBuildHeight(); }
 
         /**
          * Checks if cave/void fog should be rendered. This is controlled by tweaks and other level environmental factors.

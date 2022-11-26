@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Vector3f;
+import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.FogUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
@@ -43,7 +44,7 @@ public abstract class FogRendererMixin
         if (ModConfig.Candy.oldWaterFogColor() && camera.getFluidInCamera() == FogType.WATER)
         {
             float respiration = (float) EnchantmentHelper.getRespiration((LivingEntity) camera.getEntity()) * 0.2F;
-            int brightness = level.getBrightness(LightLayer.SKY, camera.getBlockPosition());
+            int brightness = NostalgicLevel.getVanillaBrightness(level, LightLayer.SKY, camera.getBlockPosition());
 
             fogRed = FogUtil.Water.getRed(brightness, respiration);
             fogGreen = FogUtil.Water.getGreen(brightness, respiration);
