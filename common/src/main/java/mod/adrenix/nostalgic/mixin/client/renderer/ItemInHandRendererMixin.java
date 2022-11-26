@@ -20,6 +20,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -125,6 +126,7 @@ public abstract class ItemInHandRendererMixin
     private float NT$onOffHandTick(float current)
     {
         LocalPlayer player = this.minecraft.player;
+
         if (!ModConfig.Animation.oldItemReequip() || player == null)
             return current;
 
@@ -132,6 +134,7 @@ public abstract class ItemInHandRendererMixin
 
         if (this.offHandItem.is(offStack.getItem()) && this.offHandItem.getCount() != offStack.getCount())
             return 0.0F;
+
         return current;
     }
 
@@ -246,11 +249,15 @@ public abstract class ItemInHandRendererMixin
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V"
         )
     )
-    private void NT$onRenderItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
+    private void NT$onRenderItem(LivingEntity entity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        if (ModConfig.Candy.oldItemHolding() && !(itemStack.getItem() instanceof BlockItem))
+        boolean isBlockItem = itemStack.getItem() instanceof BlockItem;
+        boolean isUsingItem = itemStack == entity.getUseItem() && entity.isUsingItem() && entity.getUseItemRemainingTicks() > 0;
+        boolean isCrossbow = itemStack.is(Items.CROSSBOW);
+
+        if (ModConfig.Candy.oldItemHolding() && !isBlockItem && !isUsingItem && !isCrossbow)
         {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5F));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5.0F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);
         }
     }
@@ -266,6 +273,7 @@ public abstract class ItemInHandRendererMixin
         {
             float progress = Mth.sin((float) Math.PI * swingProgress);
             float scale = 1.0F - (0.3F * progress);
+
             poseStack.translate(-0.12F * progress, 0.085F * progress, 0.0F);
             poseStack.scale(scale, scale, scale);
         }
