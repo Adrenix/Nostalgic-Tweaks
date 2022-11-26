@@ -56,6 +56,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         if (debug.equals(TweakVersion.Generic.MODERN) || this.minecraft.level == null || this.minecraft.getCameraEntity() == null)
             return;
 
+        boolean isReducedInfo = this.minecraft.showOnlyReducedInfo();
         String overlay = ModConfig.Candy.getOverlayText();
         String title = overlay.isEmpty() ? "Minecraft " + SharedConstants.getCurrentVersion().getName() : overlay;
         String fps = String.format(" (%s fps, %s chunk updates)", MinecraftAccessor.NT$getFPS(), this.minecraft.levelRenderer.getChunkRenderDispatcher().getToUpload());
@@ -89,15 +90,18 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         {
             left.add(String.format("ChunkCache: %d", this.minecraft.level.getChunkSource().getLoadedChunksCount()));
 
-            if (ModConfig.Candy.displayLightLevels())
+            if (ModConfig.Candy.displayLightLevels() && !isReducedInfo)
                 left.add(light);
 
-            left.add("");
-            left.add(String.format("X: %f", this.minecraft.getCameraEntity().getX()));
-            left.add(String.format("Y: %f", this.minecraft.getCameraEntity().getY()));
-            left.add(String.format("Z: %f", this.minecraft.getCameraEntity().getZ()));
+            if (!isReducedInfo)
+            {
+                left.add("");
+                left.add(String.format("X: %f", this.minecraft.getCameraEntity().getX()));
+                left.add(String.format("Y: %f", this.minecraft.getCameraEntity().getY()));
+                left.add(String.format("Z: %f", this.minecraft.getCameraEntity().getZ()));
+            }
         }
-        else if (ModConfig.Candy.displayLightLevels())
+        else if (ModConfig.Candy.displayLightLevels() && !isReducedInfo)
             left.add(light);
 
         for (int i = 0; i < left.size(); i++)
