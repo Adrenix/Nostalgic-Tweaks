@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,10 +38,9 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
 {
     /* Dummy Constructor */
 
-    private LivingEntityMixin(EntityType<?> entityType, Level level)
-    {
-        super(entityType, level);
-    }
+    @Shadow public abstract void setSprinting(boolean sprinting);
+
+    private LivingEntityMixin(EntityType<?> entityType, Level level) { super(entityType, level); }
 
     /* Camera Pitching Ducking */
 
@@ -109,9 +109,26 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
      * Updates the previous camera pitching.
      */
     @Inject(method = "baseTick", at = @At(value = "FIELD", ordinal = 0, target = "Lnet/minecraft/world/entity/LivingEntity;hurtTime:I"))
-    private void NT$onBaseTick(CallbackInfo callback)
+    private void NT$onBaseTickHurtTime(CallbackInfo callback)
     {
         this.NT$setPrevCameraPitch(this.NT$getCameraPitch());
+    }
+
+    /**
+     * Prevents players from continuing sprinting out of water if disabled swimming is off but disabled sprinting is on.
+     */
+    @Inject(method = "baseTick", at = @At("HEAD"))
+    private void NT$onBaseTickStart(CallbackInfo callback)
+    {
+        if (ModConfig.Gameplay.disableSprint() && !ModConfig.Gameplay.disableSwim() && this.getType() == EntityType.PLAYER)
+        {
+            Player entity = (Player) this.getType().tryCast(this);
+            boolean isInvalidEntity = entity == null || !entity.isLocalPlayer();
+            boolean isOverride = entity != null && (entity.isCreative() || entity.isSpectator());
+
+            if (this.isSprinting() && !this.isUnderWater() && !isInvalidEntity && !isOverride)
+                this.setSprinting(false);
+        }
     }
 
     /**
