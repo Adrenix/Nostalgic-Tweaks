@@ -56,7 +56,14 @@ public abstract class BlockCommonUtil
      */
     public static boolean isInWater(BlockAndTintGetter level, BlockPos pos)
     {
-        return level.getFluidState(pos).is(FluidTags.WATER);
+        try
+        {
+            return level.getFluidState(pos).is(FluidTags.WATER);
+        }
+        catch (Exception exception)
+        {
+            return false;
+        }
     }
 
     /**
