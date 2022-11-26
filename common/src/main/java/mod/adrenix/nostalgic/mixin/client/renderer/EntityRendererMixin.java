@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -41,7 +42,7 @@ public abstract class EntityRendererMixin
 
         if (isRenderable && isValidEntity)
         {
-            this.renderNameTag(entity, Component.literal(Integer.toString(entity.getId())), poseStack, buffer, packedLight);
+            this.renderNameTag(entity, Component.literal(Integer.toString(entity.getId())), poseStack, buffer, LightTexture.FULL_BRIGHT);
             callback.cancel();
         }
     }
