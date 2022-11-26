@@ -78,6 +78,8 @@ public class ConfigScreen extends Screen
     private ConfigWidgets widgetProvider;
     private ConfigRenderer rendererProvider;
     private ConfigTab configTab = ConfigTab.GENERAL;
+    private String searchCache = "";
+    private int rowHeightCache = 0;
     private static boolean isCacheReflected = false;
 
     /* Getters */
@@ -122,6 +124,27 @@ public class ConfigScreen extends Screen
     /* Screen Methods */
 
     /**
+     * Caches important widget values so that those values can be restored at a later point in time.
+     */
+    private void setupCache()
+    {
+        this.searchCache = this.getWidgets().getSearchInput().getValue();
+        this.rowHeightCache = this.getWidgets().getConfigRowList().getRowHeight();
+    }
+
+    /**
+     * Restores important widget values that were cached at an early point in time.
+     */
+    private void restoreCache()
+    {
+        this.getWidgets().getSearchInput().setValue(this.searchCache);
+        this.getWidgets().getConfigRowList().setRowHeight(this.rowHeightCache);
+
+        if (this.configTab == ConfigTab.SEARCH)
+            this.getWidgets().getSearchInput().setVisible(true);
+    }
+
+    /**
      * Initializes the configuration screen.
      */
     @Override
@@ -141,13 +164,11 @@ public class ConfigScreen extends Screen
     @Override
     public void resize(Minecraft minecraft, int width, int height)
     {
-        String searching = this.getWidgets().getSearchInput().getValue();
-        int rowHeight = this.getWidgets().getConfigRowList().getRowHeight();
+        this.setupCache();
 
         super.resize(minecraft, width, height);
 
-        this.getWidgets().getSearchInput().setValue(searching);
-        this.getWidgets().getConfigRowList().setRowHeight(rowHeight);
+        this.restoreCache();
 
         if (this.configTab == ConfigTab.SEARCH)
             this.getWidgets().focusInput = true;
@@ -198,7 +219,8 @@ public class ConfigScreen extends Screen
     {
         if (this.configTab == configTab)
             return;
-        else if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
+
+        if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
             ContainerButton.collapseAll();
 
         if (configTab == ConfigTab.SEARCH)
@@ -637,6 +659,8 @@ public class ConfigScreen extends Screen
             return;
         }
 
+        this.setupCache();
+
         this.minecraft.setScreen
         (
             new ConfirmScreen
@@ -666,7 +690,10 @@ public class ConfigScreen extends Screen
                 ConfigScreen.this.minecraft.setScreen(ConfigScreen.this.parentScreen);
             }
             else
+            {
                 ConfigScreen.this.minecraft.setScreen(ConfigScreen.this);
+                ConfigScreen.this.restoreCache();
+            }
         }
     }
 
