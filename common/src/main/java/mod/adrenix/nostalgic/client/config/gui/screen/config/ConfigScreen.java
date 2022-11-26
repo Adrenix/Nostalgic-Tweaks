@@ -133,7 +133,7 @@ public class ConfigScreen extends Screen
     }
 
     /**
-     * Restores important widget values that were cached at an early point in time.
+     * Restores important widget values that were cached at an earlier point in time.
      */
     private void restoreCache()
     {
