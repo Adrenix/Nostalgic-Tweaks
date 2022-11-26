@@ -253,7 +253,7 @@ public abstract class DefaultConfig
 
         // Game Mechanics
         public static final boolean OLD_FIRE = false;
-        public static final boolean INFINITE_BURN = true;
+        public static final boolean INFINITE_BURN = false;
         public static final boolean INSTANT_AIR = true;
         public static final boolean INSTANT_BONE_MEAL = true;
         public static final boolean DISABLE_SWIM = true;
