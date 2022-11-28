@@ -17,7 +17,7 @@ public abstract class TextUtil
      * @param regex The regex pattern to use.
      * @return An array list of matched strings or a list with a single empty string entry if nothing was found.
      */
-    public static ArrayList<String> extract(String from, String regex)
+    public static ArrayList<String> extractAll(String from, String regex)
     {
         ArrayList<String> results = new ArrayList<>();
 
@@ -32,6 +32,19 @@ public abstract class TextUtil
             results.add("");
 
         return results;
+    }
+
+    /**
+     * Shortcut for the {@link TextUtil#extractAll(String, String)} method where only the first entry in the array list
+     * will be returned. If nothing was found, then an empty string is returned.
+     *
+     * @param from The string to extract data from.
+     * @param regex The regex pattern to use.
+     * @return The first string matched by the regex, otherwise an empty string.
+     */
+    public static String extract(String from, String regex)
+    {
+        return extractAll(from, regex).get(0);
     }
 
     /**

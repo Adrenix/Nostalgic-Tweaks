@@ -187,8 +187,8 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
         if (ModConfig.Candy.showDebugGpuUsage())
         {
-            String gpu = TextUtil.extract(this.minecraft.fpsString, "GPU:.+").get(0);
-            String usage = TextUtil.extract(gpu, "\\d+").get(0);
+            String gpu = TextUtil.extract(this.minecraft.fpsString, "GPU:.+");
+            String usage = TextUtil.extract(gpu, "\\d+");
 
             if (!usage.isEmpty())
                 right.add("GPU usage: " + TextUtil.getPercentColorHigh(Integer.parseInt(usage)) + "%");
