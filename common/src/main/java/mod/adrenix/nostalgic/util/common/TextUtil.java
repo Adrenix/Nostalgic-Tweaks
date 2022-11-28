@@ -10,6 +10,55 @@ import java.util.regex.Pattern;
 public abstract class TextUtil
 {
     /**
+     * Extract strings from another string with the given regex. If nothing was found, then an empty string will be the
+     * only entry in the returned array list.
+     *
+     * @param from The string to extract data from.
+     * @param regex The regex pattern to use.
+     * @return An array list of matched strings or a list with a single empty string entry if nothing was found.
+     */
+    public static ArrayList<String> extract(String from, String regex)
+    {
+        ArrayList<String> results = new ArrayList<>();
+
+        Pattern.compile(regex)
+            .matcher(from)
+            .results()
+            .map(match -> match.group(0))
+            .forEach(results::add)
+        ;
+
+        if (results.isEmpty())
+            results.add("");
+
+        return results;
+    }
+
+    /**
+     * Apply a Minecraft color section code to the given percent based on the given percent's value. The higher the
+     * percentage value is, the more <font color="red">dangerous</font> the color will appear. A reset section code will
+     * be applied to the end of the returned string.
+     *
+     * @param percent The percent value to check (<font color="green">0</font>-<font color="red">100</font>).
+     * @return The given percent value with a Minecraft color § code attached and a reset section code appended.
+     */
+    public static String getPercentColorHigh(int percent)
+    {
+        if (percent < 20)
+            return "§a" + percent + "§r";
+        else if (percent < 40)
+            return "§2" + percent + "§r";
+        else if (percent < 60)
+            return "§e" + percent + "§r";
+        else if (percent < 80)
+            return "§6" + percent + "§r";
+        else if (percent < 100)
+            return "§c" + percent + "§r";
+
+        return "§4" + percent + "§r";
+    }
+
+    /**
      * Converts a string into a title case format. Handles space and underscore delimiters.
      * @param convert The string to convert.
      * @return A string that is in title case format.
@@ -45,7 +94,7 @@ public abstract class TextUtil
      * @param hex The hexadecimal to check.
      * @return Whether the input is a valid hexadecimal.
      */
-    public static boolean isHexValid(String hex)
+    private static boolean isHexadecimal(String hex)
     {
         try
         {
@@ -54,6 +103,30 @@ public abstract class TextUtil
         catch (NumberFormatException ignored)
         {
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the given string is a valid hexadecimal. This checker will remove any # found in the string.
+     * The hexadecimal can be of length 6 or 8, if any other length is found, then result will be <code>false</code>.
+     *
+     * @param check The hexadecimal string to check.
+     * @return Whether the given string is a valid hexadecimal.
+     */
+    public static boolean isValidHexString(String check)
+    {
+        check = check.replaceAll("#", "");
+
+        if (check.length() != 6 && check.length() != 8)
+            return false;
+
+        String[] split = splitInTwo(check);
+
+        for (String hex : split) {
+            if (!isHexadecimal(hex))
+                return false;
         }
 
         return true;
@@ -77,7 +150,7 @@ public abstract class TextUtil
 
         for (int i = 0; i < hex.length; i++)
         {
-            if (isHexValid(hex[i]))
+            if (isHexadecimal(hex[i]))
                 rgba[i] = Integer.parseInt(hex[i], 16);
         }
 

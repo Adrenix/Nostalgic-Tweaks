@@ -34,12 +34,19 @@ public enum CandyTweak implements Tweak
     CRAFTING_RECIPE,
 
     // Interface Candy - Debug Screen
+    DEBUG_COLOR,
     DEBUG_SCREEN,
     DEBUG_FPS_CHART,
     DEBUG_TPS_CHART,
     DEBUG_PIE_CHART,
     DEBUG_ENTITY_ID,
+    DEBUG_GPU,
+    DEBUG_FACING,
     DEBUG_LIGHT,
+    DEBUG_BIOME,
+    DEBUG_TARGETED,
+    DEBUG_SHOW_COLOR,
+    DEBUG_SHOW_SHADOW,
     OLD_PIE_BACKGROUND,
 
     // Interface Candy - Furnace Screen

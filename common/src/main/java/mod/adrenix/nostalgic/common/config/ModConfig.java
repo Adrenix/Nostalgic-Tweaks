@@ -269,8 +269,15 @@ public abstract class ModConfig
         public static TweakType.DebugChart getDebugChart() { return getEnum(CandyTweak.DEBUG_FPS_CHART, CANDY.fpsChart); }
         public static String customTopGradient() { return CANDY.customTopGradient; }
         public static String customBottomGradient() { return CANDY.customBottomGradient; }
+        public static String debugBackgroundColor() { return CANDY.debugBackgroundColor; }
+        public static boolean showDebugTextShadow() { return getBoolTweak(CandyTweak.DEBUG_SHOW_SHADOW, CANDY.showDebugTextShadow); }
+        public static boolean showDebugBackground() { return getBoolTweak(CandyTweak.DEBUG_SHOW_COLOR, CANDY.showDebugBackground); }
+        public static boolean showDebugTargetData() { return getBoolTweak(CandyTweak.DEBUG_TARGETED, CANDY.showDebugTargetData); }
+        public static boolean showDebugFacingData() { return getBoolTweak(CandyTweak.DEBUG_FACING, CANDY.showDebugFacingData); }
+        public static boolean showDebugLightData() { return getBoolTweak(CandyTweak.DEBUG_LIGHT, CANDY.showDebugLightData); }
+        public static boolean showDebugBiomeData() { return getBoolTweak(CandyTweak.DEBUG_BIOME, CANDY.showDebugBiomeData); }
+        public static boolean showDebugGpuUsage() { return getBoolTweak(CandyTweak.DEBUG_GPU, CANDY.showDebugGpuUsage); }
         public static boolean customGuiBackground() { return getBoolTweak(CandyTweak.CUSTOM_GUI_BACKGROUND, CANDY.customGuiBackground); }
-        public static boolean displayLightLevels() { return getBoolTweak(CandyTweak.DEBUG_LIGHT, CANDY.displayLightLevels); }
         public static boolean disableEmptyShield() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_SHIELD, CANDY.disableEmptyShieldTexture); }
         public static boolean disableEmptyArmor() { return getBoolTweak(CandyTweak.DISABLE_EMPTY_ARMOR, CANDY.disableEmptyArmorTexture); }
         public static boolean invertPlayerLight() { return getBoolTweak(CandyTweak.INVERTED_PLAYER_LIGHTING, CANDY.invertedPlayerLighting); }
@@ -278,8 +285,8 @@ public abstract class ModConfig
         public static boolean invertBlockLight() { return getBoolTweak(CandyTweak.INVERTED_BLOCK_LIGHTING, CANDY.invertedBlockLighting); }
         public static boolean oldPieBackground() { return getBoolTweak(CandyTweak.OLD_PIE_BACKGROUND, CANDY.oldPieChartBackground); }
         public static boolean oldFurnaceScreen() { return getBoolTweak(CandyTweak.FURNACE_SCREEN, CANDY.oldFurnaceScreen); }
-        public static boolean displayPieChart() { return getBoolTweak(CandyTweak.DEBUG_PIE_CHART, CANDY.displayPieChart); }
-        public static boolean displayTpsChart() { return getBoolTweak(CandyTweak.DEBUG_TPS_CHART, CANDY.displayTpsChart); }
+        public static boolean displayPieChart() { return getBoolTweak(CandyTweak.DEBUG_PIE_CHART, CANDY.showDebugPieChart); }
+        public static boolean displayTpsChart() { return getBoolTweak(CandyTweak.DEBUG_TPS_CHART, CANDY.showDebugTpsChart); }
         public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
         public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
 

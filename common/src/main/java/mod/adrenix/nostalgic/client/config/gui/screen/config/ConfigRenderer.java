@@ -476,6 +476,17 @@ public record ConfigRenderer(ConfigScreen parent)
                         }
                     }
 
+                    if (value instanceof String && isChangeable)
+                    {
+                        TweakGui.DisabledString disabledString = tweak.getMetadata(TweakGui.DisabledString.class);
+
+                        if (disabledString != null)
+                        {
+                            TweakClientCache<String> stringTweak = TweakClientCache.get(group, key);
+                            stringTweak.setValue(disabledString.value());
+                        }
+                    }
+
                     if (value instanceof DisabledTweak<?> && isChangeable)
                     {
                         TweakClientCache<Enum<?>> enumTweak = TweakClientCache.get(group, key);

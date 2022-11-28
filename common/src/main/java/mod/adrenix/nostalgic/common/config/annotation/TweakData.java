@@ -72,5 +72,8 @@ public abstract class TweakData
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    public @interface Color {}
+    public @interface Color
+    {
+        String reset();
+    }
 }

@@ -311,6 +311,9 @@ public abstract class LangUtil
         public static final String CANDY_EMBED_TITLE_BUTTON = "gui.nostalgic_tweaks.config.candy.embed.title.button";
         public static final String CANDY_EMBED_TITLE_TEXT = "gui.nostalgic_tweaks.config.candy.embed.title.text";
         public static final String CANDY_EMBED_TOOLTIP_PARTS = "gui.nostalgic_tweaks.config.candy.embed.tooltip.parts";
+        public static final String CANDY_EMBED_DEBUG_COLOR = "gui.nostalgic_tweaks.config.candy.embed.debug.color";
+        public static final String CANDY_EMBED_DEBUG_EXTRA = "gui.nostalgic_tweaks.config.candy.embed.debug.extra";
+        public static final String CANDY_EMBED_DEBUG_CHART = "gui.nostalgic_tweaks.config.candy.embed.debug.chart";
         public static final String CANDY_EMBED_WATER_FOG = "gui.nostalgic_tweaks.config.candy.embed.void.water";
         public static final String CANDY_EMBED_VOID_FOG = "gui.nostalgic_tweaks.config.candy.embed.void.fog";
         public static final String CANDY_EMBED_VOID_SKY = "gui.nostalgic_tweaks.config.candy.embed.void.sky";

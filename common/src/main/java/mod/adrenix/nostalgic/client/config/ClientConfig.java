@@ -293,51 +293,112 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
+        public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
+        static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
+
+        // Interface - Debug Charts
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_CHART_CANDY)
         public TweakType.DebugChart fpsChart = DefaultConfig.Candy.FPS_CHART;
         static { CandyTweak.DEBUG_FPS_CHART.setKey("fpsChart"); }
 
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_CHART_CANDY)
+        public boolean showDebugTpsChart = DefaultConfig.Candy.SHOW_DEBUG_TPS_CHART;
+        static { CandyTweak.DEBUG_TPS_CHART.setKey("showDebugTpsChart"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
-        public boolean displayTpsChart = DefaultConfig.Candy.DISPLAY_TPS_CHART;
-        static { CandyTweak.DEBUG_TPS_CHART.setKey("displayTpsChart"); }
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_CHART_CANDY)
+        public boolean showDebugPieChart = DefaultConfig.Candy.SHOW_DEBUG_PIE_CHART;
+        static { CandyTweak.DEBUG_PIE_CHART.setKey("showDebugPieChart"); }
 
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
-        public boolean displayLightLevels = DefaultConfig.Candy.DISPLAY_LIGHT_LEVELS;
-        static { CandyTweak.DEBUG_LIGHT.setKey("displayLightLevels"); }
-
-        @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
-        public boolean displayPieChart = DefaultConfig.Candy.DISPLAY_PIE_CHART;
-        static { CandyTweak.DEBUG_PIE_CHART.setKey("displayPieChart"); }
-
-        @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 6)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_CHART_CANDY)
         public boolean oldPieChartBackground = DefaultConfig.Candy.OLD_PIE_CHART_BACKGROUND;
         static { CandyTweak.OLD_PIE_BACKGROUND.setKey("oldPieChartBackground"); }
 
+        // Interface - Debug Color Background
+
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
-        public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
-        static { CandyTweak.DEBUG_ENTITY_ID.setKey("debugEntityId"); }
+        @TweakGui.DisabledBoolean(value = false)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_COLOR_CANDY)
+        public boolean showDebugTextShadow = DefaultConfig.Candy.SHOW_DEBUG_TEXT_SHADOW;
+        static { CandyTweak.DEBUG_SHOW_SHADOW.setKey("showDebugTextShadow"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.DisabledBoolean(value = true)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_COLOR_CANDY)
+        public boolean showDebugBackground = DefaultConfig.Candy.SHOW_DEBUG_BACKGROUND;
+        static { CandyTweak.DEBUG_SHOW_COLOR.setKey("showDebugBackground"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.Color(reset = DefaultConfig.Candy.DEBUG_BACKGROUND_COLOR)
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.DisabledString(value = DefaultConfig.Candy.DEBUG_BACKGROUND_COLOR)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_COLOR_CANDY)
+        public String debugBackgroundColor = DefaultConfig.Candy.DEBUG_BACKGROUND_COLOR;
+        static { CandyTweak.DEBUG_COLOR.setKey("debugBackgroundColor"); }
+
+        // Interface - Extra Debug Information
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_EXTRA_CANDY)
+        public boolean showDebugGpuUsage = DefaultConfig.Candy.SHOW_DEBUG_GPU_USAGE;
+        static { CandyTweak.DEBUG_GPU.setKey("showDebugGpuUsage"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_EXTRA_CANDY)
+        public boolean showDebugLightData = DefaultConfig.Candy.SHOW_DEBUG_LIGHT_DATA;
+        static { CandyTweak.DEBUG_LIGHT.setKey("showDebugLightData"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_EXTRA_CANDY)
+        public boolean showDebugFacingData = DefaultConfig.Candy.SHOW_DEBUG_FACING_DATA;
+        static { CandyTweak.DEBUG_FACING.setKey("showDebugFacingData"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_EXTRA_CANDY)
+        public boolean showDebugTargetData = DefaultConfig.Candy.SHOW_DEBUG_TARGET_DATA;
+        static { CandyTweak.DEBUG_TARGETED.setKey("showDebugTargetData"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.DEBUG_EXTRA_CANDY)
+        public boolean showDebugBiomeData = DefaultConfig.Candy.SHOW_DEBUG_BIOME_DATA;
+        static { CandyTweak.DEBUG_BIOME.setKey("showDebugBiomeData"); }
+        
         // Interface - Inventory Screen Candy
 
         @TweakGui.New
@@ -417,7 +478,7 @@ public class ClientConfig implements ConfigData
 
         @TweakGui.New
         @TweakData.Client
-        @TweakData.Color
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_TOP_GRADIENT)
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_GUI_CANDY)
@@ -426,7 +487,7 @@ public class ClientConfig implements ConfigData
 
         @TweakGui.New
         @TweakData.Client
-        @TweakData.Color
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_BOTTOM_GRADIENT)
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_GUI_CANDY)
@@ -702,7 +763,7 @@ public class ClientConfig implements ConfigData
 
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
         public boolean disableLightFlicker = DefaultConfig.Candy.DISABLE_LIGHT_FLICKER;
         static { CandyTweak.LIGHT_FLICKER.setKey("disableLightFlicker"); }
@@ -1147,7 +1208,7 @@ public class ClientConfig implements ConfigData
 
         @TweakGui.New
         @TweakData.Client
-        @TweakData.Color
+        @TweakData.Color(reset = DefaultConfig.Candy.VOID_FOG_COLOR)
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
         @TweakGui.Embed(container = TweakEmbed.VOID_FOG_CANDY)

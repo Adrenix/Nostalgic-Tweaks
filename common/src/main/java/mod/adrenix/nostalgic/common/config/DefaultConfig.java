@@ -64,10 +64,17 @@ public abstract class DefaultConfig
         // Interface - Debugging Screen
         public static final TweakType.DebugChart FPS_CHART = TweakType.DebugChart.CLASSIC;
         public static final TweakVersion.Generic OLD_DEBUG = TweakVersion.Generic.BETA;
+        public static final String DEBUG_BACKGROUND_COLOR = "#50505090";
         public static final boolean OLD_PIE_CHART_BACKGROUND = false;
-        public static final boolean DISPLAY_LIGHT_LEVELS = false;
-        public static final boolean DISPLAY_PIE_CHART = false;
-        public static final boolean DISPLAY_TPS_CHART = false;
+        public static final boolean SHOW_DEBUG_TEXT_SHADOW = true;
+        public static final boolean SHOW_DEBUG_BACKGROUND = false;
+        public static final boolean SHOW_DEBUG_TARGET_DATA = false;
+        public static final boolean SHOW_DEBUG_FACING_DATA = false;
+        public static final boolean SHOW_DEBUG_LIGHT_DATA = false;
+        public static final boolean SHOW_DEBUG_BIOME_DATA = false;
+        public static final boolean SHOW_DEBUG_GPU_USAGE = false;
+        public static final boolean SHOW_DEBUG_PIE_CHART = false;
+        public static final boolean SHOW_DEBUG_TPS_CHART = false;
         public static final boolean DEBUG_ENTITY_ID = true;
 
         // Interface - Loading & Pause Screen

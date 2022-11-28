@@ -15,8 +15,10 @@ public enum TweakEmbed
        To prevent issues, embedded subcategory names should not match any category or subcategory names.
        There will be GUI rendering issues if this occurs.
 
-       The best way to prevent this is to prefix the naming scheme for embedded subcategories.
-       For example, for the button tweaks in the title candy subcategory, the name would be: CANDY_TITLE_BUTTONS.
+       The best way to prevent this is to follow a naming scheme for embedded subcategories. The naming scheme should
+       be SUBCATEGORY_EMBED_GROUP.
+
+       For example, the name for the button tweaks embed in the title candy subcategory would be: TITLE_BUTTON_CANDY.
      */
 
     // Title Screen (Eye Candy) - Embedded Subcategories
@@ -27,6 +29,9 @@ public enum TweakEmbed
 
     // Interface Tooltips (Eye Candy) - Embedded Subcategories
 
+    DEBUG_COLOR_CANDY(TweakSubcategory.INTERFACE_DEBUG_CANDY, LangUtil.Gui.CANDY_EMBED_DEBUG_COLOR),
+    DEBUG_EXTRA_CANDY(TweakSubcategory.INTERFACE_DEBUG_CANDY, LangUtil.Gui.CANDY_EMBED_DEBUG_EXTRA),
+    DEBUG_CHART_CANDY(TweakSubcategory.INTERFACE_DEBUG_CANDY, LangUtil.Gui.CANDY_EMBED_DEBUG_CHART),
     TOOLTIP_PARTS_CANDY(TweakSubcategory.INTERFACE_TOOLTIP_CANDY, LangUtil.Gui.CANDY_EMBED_TOOLTIP_PARTS),
 
     // World (Eye Candy) - Embedded Subcategories

@@ -64,10 +64,14 @@ public abstract class TweakGui
 
     /**
      * This will prevent tweaks from getting their states toggled when a user disables/enables all
-     * tweaks. This works for all tweak types. For explicit default states see below.
+     * tweaks. This works for all tweak types.
+     *
+     * If this behavior is not desirable and a special value needs assigned when a tweak is disabled/enabled then see
+     * the below special annotations.
      *
      * @see DisabledInteger
      * @see DisabledBoolean
+     * @see DisabledString
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
@@ -93,6 +97,17 @@ public abstract class TweakGui
     public @interface DisabledBoolean
     {
         boolean value();
+    }
+
+    /**
+     * Used to disable tweaks that hold a String value.
+     * This is the implementation used for the disable/enable all tweaks feature.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface DisabledString
+    {
+        String value();
     }
 
     /**
