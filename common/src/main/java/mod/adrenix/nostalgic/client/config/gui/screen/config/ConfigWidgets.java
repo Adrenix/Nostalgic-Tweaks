@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -19,14 +20,11 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class builds and provides logic for all config screen widgets.
- * Widget event handling is done elsewhere.
+ * Widget event handling is done by the parent screen.
  */
 
 public class ConfigWidgets
@@ -469,7 +467,7 @@ public class ConfigWidgets
 
     /**
      * These tags are used in the search tab.
-     * Each tag will restrict the search results regardless of the fuzzy state button.
+     * Each tag will restrict the search results regardless of fuzzy search.
      */
     public enum SearchTag
     {
@@ -541,6 +539,73 @@ public class ConfigWidgets
         }
     }
 
+    /**
+     * Get a list of strings of lower case related words from the provided tweak.
+     * @param tweak A tweak to get related words from.
+     * @return A string array of lower case words that are related to the given tweak.
+     */
+    private String[] getRelatedWords(TweakClientCache<?> tweak)
+    {
+        return Component.translatable(tweak.getRelatedKey()).getString().toLowerCase().trim().split("\s*,\s*");
+    }
+
+    /**
+     * Checks if the returned words from a tweak are actually relatable.
+     * @param words A string array of words that resulted from a tweak.
+     * @return Whether the results are actually related words.
+     */
+    private boolean areWordsUnrelated(String[] words)
+    {
+        return words.length == 0 || words[0].contains(TweakClientCache.RELATED_KEY.toLowerCase());
+    }
+
+    /**
+     * Checks if the given query includes any of the related words defined in the language file.
+     * @param tweak The tweak to get related words from.
+     * @param query The current search query.
+     * @return Whether any related words were exactly contained within the query.
+     */
+    private boolean isRelatedExact(TweakClientCache<?> tweak, String query)
+    {
+        String[] words = this.getRelatedWords(tweak);
+
+        if (this.areWordsUnrelated(words))
+            return false;
+
+        for (String word : words)
+        {
+            if (query.contains(word))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Fuzzily checks if the given query includes any of the related words defined in the language file.
+     * @param tweak The tweak to get related words from.
+     * @param query The current search query.
+     * @return The largest weight found from the related words.
+     */
+    private int isRelatedFuzzy(TweakClientCache<?> tweak, String query)
+    {
+        String[] words = this.getRelatedWords(tweak);
+        int largestWeight = 0;
+
+        if (this.areWordsUnrelated(words))
+            return 0;
+
+        for (String word : words)
+        {
+            int weight = FuzzySearch.weightedRatio(word, query);
+
+            if (weight > largestWeight)
+                largestWeight = weight;
+        }
+
+        return largestWeight;
+    }
+
     /* Public Widget Helpers */
 
     /**
@@ -568,7 +633,7 @@ public class ConfigWidgets
         search = search.toLowerCase();
 
         HashMap<String, TweakClientCache<?>> entries = TweakClientCache.all();
-        StringBuilder query = new StringBuilder();
+        StringBuilder searchBuilder = new StringBuilder();
         String[] words = search.split(" ");
         String atTag = ArrayUtil.get(words, 0);
         String requestedTag = atTag != null ? atTag.replace("@", "").toLowerCase() : "";
@@ -578,7 +643,7 @@ public class ConfigWidgets
         for (String word : words)
         {
             if (!word.contains("@"))
-                query.append(" ").append(word);
+                searchBuilder.append(" ").append(word);
         }
 
         for (SearchTag searchTag : SearchTag.values())
@@ -595,6 +660,7 @@ public class ConfigWidgets
                 continue;
 
             boolean isTagged = false;
+
             if (tag != null)
             {
                 switch (tag)
@@ -610,30 +676,40 @@ public class ConfigWidgets
             }
 
             // Don't add the tweak to the results if we're narrowing the search
-            if (isTagged && query.isEmpty())
+            if (isTagged && searchBuilder.isEmpty())
                 this.parent.search.put(tweak.getId(), tweak);
 
             // Don't add the tweak to the results if the tweak doesn't belong to the tag group
             if ((!isTagged && tag != null) || (!isTagged && search.contains("@")))
                 continue;
 
+            String query = searchBuilder.toString().replaceAll("\s+", " ").trim().toLowerCase();
+
             // Fuzzy search or exact search - can be expanded with a tooltip bubble search
             if (this.getFuzzy().getState())
             {
-                int title = FuzzySearch.weightedRatio(tweak.getTranslation().toLowerCase(), query.toString().replaceAll("\s+", " "));
-                int bubble = FuzzySearch.weightedRatio(tweak.getTooltipTranslation().toLowerCase(), query.toString().replaceAll("\s+", " "));
+                int title = FuzzySearch.weightedRatio(tweak.getTranslation().toLowerCase(), query);
+                int bubble = FuzzySearch.weightedRatio(tweak.getTooltipTranslation().toLowerCase(), query);
+                int container = FuzzySearch.weightedRatio(tweak.getContainerTranslation().toLowerCase(), query);
+                int related = this.isRelatedFuzzy(tweak, query);
 
-                tweak.setWeight(Math.max(title, this.getBubble().getState() ? bubble : 0));
+                if (!this.getBubble().getState())
+                    bubble = 0;
+
+                tweak.setWeight(MathUtil.getLargest(title, bubble, container, related));
+
                 if (tweak.getWeight() > 0)
                     this.parent.search.put(tweak.getId(), tweak);
             }
             else
             {
-                String find = query.toString().replaceAll("\s+", " ").trim();
+                boolean isInBubble = tweak.getTooltipTranslation().toLowerCase().contains(query);
                 boolean isBubbleOn = this.getBubble().getState();
-                boolean isInBubble = tweak.getTooltipTranslation().toLowerCase().contains(find);
+                boolean isRelatedWord = this.isRelatedExact(tweak, query);
+                boolean isInContainer = tweak.getContainerTranslation().toLowerCase().contains(query);
+                boolean isValidResult = isInContainer || isRelatedWord || (isBubbleOn && isInBubble);
 
-                if (tweak.getTranslation().toLowerCase().contains(find) || (isBubbleOn && isInBubble))
+                if (tweak.getTranslation().toLowerCase().contains(query) || isValidResult)
                     this.parent.search.put(tweak.getId(), tweak);
             }
         }

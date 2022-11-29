@@ -525,17 +525,38 @@ public class TweakClientCache<T> extends TweakCommonCache
      */
     @Nullable public TweakGui.Embed getEmbed() { return this.embed; }
 
-    /*
-      The key is used to identify a tweak within a group.
-      Additionally, the key is also used in the language definition files.
+    /**
+     * Get the translation of this tweak's container. If this tweak does not reside in a container then an empty string
+     * is returned.
+     *
+     * @return The translation of this tweak's container, or an empty string if there is not a container.
      */
+    public String getContainerTranslation()
+    {
+        if (this.category != null)
+            return Component.translatable(this.category.container().getLangKey()).getString();
+        else if (this.subcategory != null)
+            return Component.translatable(this.subcategory.container().getLangKey()).getString();
+        else if (this.embed != null)
+            return Component.translatable(this.embed.container().getLangKey()).getString();
+
+        return "";
+    }
+
+    /*
+       The key is used to identify a tweak within a group.
+       Additionally, the key is also used in the language definition files.
+     */
+
+    public static final String RELATED_KEY = ".@Related";
 
     public String getKey() { return this.key; }
     public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
     public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
     public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
-    public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
     public String getOptifineKey() { return this.getLangKey() + ".@Optifine"; }
+    public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
+    public String getRelatedKey() { return this.getLangKey() + RELATED_KEY; }
     public String getTranslation() { return Component.translatable(this.getLangKey()).getString(); }
     public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
 }
