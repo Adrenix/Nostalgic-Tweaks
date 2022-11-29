@@ -42,10 +42,7 @@ public abstract class TextUtil
      * @param regex The regex pattern to use.
      * @return The first string matched by the regex, otherwise an empty string.
      */
-    public static String extract(String from, String regex)
-    {
-        return extractAll(from, regex).get(0);
-    }
+    public static String extract(String from, String regex) { return extractAll(from, regex).get(0); }
 
     /**
      * Apply a Minecraft color section code to the given percent based on the given percent's value. The higher the

@@ -4,7 +4,6 @@ import net.minecraft.util.Mth;
 
 public abstract class MathUtil
 {
-
     /**
      * Turns given <code>bytes</code> into megabytes.
      * @param bytes The bytes to turn into megabytes.
