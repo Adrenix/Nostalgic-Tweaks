@@ -18,7 +18,7 @@ import java.util.HashMap;
 public abstract class ClientReflect
 {
     /**
-     * Updates the config cache. To save to disk use {@link me.shedaniel.autoconfig.ConfigHolder#save()}.
+     * Updates the config cache. To save to disk use {@link mod.adrenix.nostalgic.common.config.auto.ConfigHolder#save()}.
      * @param group The group type that is associated with a tweak.
      * @param key The key that links the tweak to the config.
      * @param value The value to save in the config cache.

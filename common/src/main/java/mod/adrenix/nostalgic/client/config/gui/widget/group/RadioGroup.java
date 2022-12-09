@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.group;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
@@ -83,7 +84,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
     private void generateRadioRow(ArrayList<ConfigRowList.Row> list, E option)
     {
         Radio<E> radio = new Radio<>(option, this.defaultValue, this.currentValue, this.onPress, this.label);
-        ConfigRowList.ManualRow row = new ConfigRowList.ManualRow(List.of(radio));
+        ConfigRowBuild.ManualRow row = new ConfigRowBuild.ManualRow(List.of(radio));
 
         list.add(row.generate());
     }

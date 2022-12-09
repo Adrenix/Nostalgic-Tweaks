@@ -42,7 +42,8 @@ public abstract class RunUtil
     /* Standard Reload Runnable */
     static
     {
-        onSave.add(() -> {
+        onSave.add(() ->
+        {
             Minecraft minecraft = Minecraft.getInstance();
 
             if (reloadResources)

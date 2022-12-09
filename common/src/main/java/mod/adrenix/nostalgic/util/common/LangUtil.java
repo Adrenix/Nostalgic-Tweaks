@@ -34,13 +34,25 @@ public abstract class LangUtil
 
     public static class Gui
     {
+        public static final String LIST_HELP_TITLE = "gui.nostalgic_tweaks.list.help_title";
+        public static final String LIST_TUTORIAL = "gui.nostalgic_tweaks.list.tutorial";
+        public static final String LIST_ALL_ITEMS = "gui.nostalgic_tweaks.list.all_items";
+        public static final String LIST_SAVED_ITEMS = "gui.nostalgic_tweaks.list.saved_items";
+        public static final String LIST_NOTHING_SAVED = "gui.nostalgic_tweaks.list.nothing_saved";
+        public static final String LIST_NOTHING_FOUND = "gui.nostalgic_tweaks.list.nothing_found";
+        public static final String LIST_ITEM_KEY = "gui.nostalgic_tweaks.list.item_key";
+
         public static final String CONFIRM_QUIT_TITLE = "gui.nostalgic_tweaks.confirm.quit_title";
         public static final String CONFIRM_QUIT_BODY = "gui.nostalgic_tweaks.confirm.quit_body";
         public static final String CONFIRM_QUIT_DISCARD = "gui.nostalgic_tweaks.confirm.quit_discard";
         public static final String CONFIRM_QUIT_CANCEL = "gui.nostalgic_tweaks.confirm.quit_cancel";
 
         public static final String BUTTON_SAVE_AND_DONE = "gui.nostalgic_tweaks.button.save_and_done";
+        public static final String BUTTON_EXIT_LOCAL_SAVE = "gui.nostalgic_tweaks.button.exit_local_save";
+        public static final String BUTTON_EXIT_NO_SAVE = "gui.nostalgic_tweaks.button.exit_no_save";
+        public static final String BUTTON_DELETE = "gui.nostalgic_tweaks.button.delete";
         public static final String BUTTON_RESET = "gui.nostalgic_tweaks.button.reset";
+        public static final String BUTTON_UNDO = "gui.nostalgic_tweaks.button.undo";
         public static final String BUTTON_YES = "gui.nostalgic_tweaks.button.yes";
         public static final String BUTTON_NO = "gui.nostalgic_tweaks.button.no";
 
@@ -60,12 +72,33 @@ public abstract class LangUtil
         public static final String INVENTORY_SHIELD_MIDDLE_RIGHT = "gui.nostalgic_tweaks.inventory.shield.middle_right";
         public static final String INVENTORY_SHIELD_BOTTOM_LEFT = "gui.nostalgic_tweaks.inventory.shield.bottom_left";
 
-        public static final String GUI_OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
-        public static final String GUI_OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
-        public static final String GUI_OVERLAY_COLOR = "gui.nostalgic_tweaks.overlay.color";
-        public static final String GUI_OVERLAY_COLOR_HINT = "gui.nostalgic_tweaks.overlay.color.hint";
-        public static final String GUI_OVERLAY_INPUT_TIP = "gui.nostalgic_tweaks.overlay.input.@Tooltip";
-        public static final String GUI_OVERLAY_DRAG_TIP = "gui.nostalgic_tweaks.overlay.drag.@Tooltip";
+        public static final String OVERLAY_LIST = "gui.nostalgic_tweaks.overlay.list";
+        public static final String OVERLAY_LIST_HINT = "gui.nostalgic_tweaks.overlay.list.hint";
+        public static final String OVERLAY_COLOR = "gui.nostalgic_tweaks.overlay.color";
+        public static final String OVERLAY_COLOR_HINT = "gui.nostalgic_tweaks.overlay.color.hint";
+        public static final String OVERLAY_ITEM = "gui.nostalgic_tweaks.overlay.item";
+        public static final String OVERLAY_ITEM_ADD = "gui.nostalgic_tweaks.overlay.item.add";
+        public static final String OVERLAY_ITEM_EDIT = "gui.nostalgic_tweaks.overlay.item.edit";
+        public static final String OVERLAY_ITEM_REMOVE = "gui.nostalgic_tweaks.overlay.item.remove";
+        public static final String OVERLAY_SWING = "gui.nostalgic_tweaks.overlay.swing";
+        public static final String OVERLAY_SWING_OLD = "gui.nostalgic_tweaks.overlay.swing.old_speed";
+        public static final String OVERLAY_SWING_MODERN = "gui.nostalgic_tweaks.overlay.swing.modern_speed";
+        public static final String OVERLAY_SWING_PHOTOSENSITIVE = "gui.nostalgic_tweaks.overlay.swing.photosensitive";
+        public static final String OVERLAY_FILTER = "gui.nostalgic_tweaks.overlay.filter";
+        public static final String OVERLAY_FILTER_TOOL = "gui.nostalgic_tweaks.overlay.filter.tool";
+        public static final String OVERLAY_FILTER_TOOL_TOOLTIP = "gui.nostalgic_tweaks.overlay.filter.tool.@Tooltip";
+        public static final String OVERLAY_FILTER_BLOCK = "gui.nostalgic_tweaks.overlay.filter.block";
+        public static final String OVERLAY_FILTER_BLOCK_TOOLTIP = "gui.nostalgic_tweaks.overlay.filter.block.@Tooltip";
+        public static final String OVERLAY_FILTER_ITEM = "gui.nostalgic_tweaks.overlay.filter.item";
+        public static final String OVERLAY_FILTER_ITEM_TOOLTIP = "gui.nostalgic_tweaks.overlay.filter.item.@Tooltip";
+        public static final String OVERLAY_NUKE = "gui.nostalgic_tweaks.overlay.nuke";
+        public static final String OVERLAY_NUKE_HEADER = "gui.nostalgic_tweaks.overlay.nuke.header";
+        public static final String OVERLAY_NUKE_MESSAGE = "gui.nostalgic_tweaks.overlay.nuke.message";
+        public static final String OVERLAY_PERMISSION = "gui.nostalgic_tweaks.overlay.permission";
+        public static final String OVERLAY_PERMISSION_HEADER = "gui.nostalgic_tweaks.overlay.permission.header";
+        public static final String OVERLAY_PERMISSION_MESSAGE = "gui.nostalgic_tweaks.overlay.permission.message";
+        public static final String OVERLAY_INPUT_TIP = "gui.nostalgic_tweaks.overlay.input.@Tooltip";
+        public static final String OVERLAY_DRAG_TIP = "gui.nostalgic_tweaks.overlay.drag.@Tooltip";
 
         public static final String TOAST_TWEAK_UPDATE_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_update_header";
         public static final String TOAST_TWEAK_UPDATE_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_update_body";
@@ -80,21 +113,7 @@ public abstract class LangUtil
         public static final String SETTINGS_DISCORD = "gui.nostalgic_tweaks.settings.discord";
         public static final String SETTINGS_GOLDEN_DAYS = "gui.nostalgic_tweaks.settings.golden_days";
 
-        public static final String SWING = "gui.nostalgic_tweaks.settings.swing";
-        public static final String SWING_TOOL = "gui.nostalgic_tweaks.swing.tool";
-        public static final String SWING_BLOCK = "gui.nostalgic_tweaks.swing.block";
-        public static final String SWING_ITEM = "gui.nostalgic_tweaks.swing.item";
-        public static final String SWING_RESET = "gui.nostalgic_tweaks.swing.reset";
-        public static final String SWING_RESET_TOOLTIP_0 = "gui.nostalgic_tweaks.swing.reset.@Tooltip[0]";
-        public static final String SWING_RESET_TOOLTIP_1 = "gui.nostalgic_tweaks.swing.reset.@Tooltip[1]";
-        public static final String SWING_ADD = "gui.nostalgic_tweaks.swing.add";
-        public static final String SWING_ADD_TOOLTIP = "gui.nostalgic_tweaks.swing.add.@Tooltip";
-        public static final String SWING_AUTOFILL_TOOLTIP = "gui.nostalgic_tweaks.swing.autofill.@Tooltip";
-        public static final String SWING_RANGE_TOOLTIP_0 = "gui.nostalgic_tweaks.swing.range.@Tooltip[0]";
-        public static final String SWING_RANGE_TOOLTIP_1 = "gui.nostalgic_tweaks.swing.range.@Tooltip[1]";
-        public static final String SWING_RANGE_TOOLTIP_2 = "gui.nostalgic_tweaks.swing.range.@Tooltip[2]";
-        public static final String SWING_REMOVE_TOOLTIP = "gui.nostalgic_tweaks.swing.remove.@Tooltip";
-        public static final String SWING_UNDO_TOOLTIP = "gui.nostalgic_tweaks.swing.undo.@Tooltip";
+        public static final String CUSTOM_SPEEDS = "gui.nostalgic_tweaks.settings.custom_speeds";
         public static final String SWING_UNKNOWN = "gui.nostalgic_tweaks.swing.unknown";
         public static final String SWING_HAND = "gui.nostalgic_tweaks.swing.hand";
 
@@ -138,6 +157,8 @@ public abstract class LangUtil
 
         public static final String STATE_HIDE = "gui.nostalgic_tweaks.config.state.hide";
         public static final String STATE_SHIFT = "gui.nostalgic_tweaks.config.state.shift";
+        public static final String STATE_SWING = "gui.nostalgic_tweaks.config.state.swing";
+        public static final String STATE_SWING_TOOLTIP = "gui.nostalgic_tweaks.config.state.swing.@Tooltip";
         public static final String STATE_FUZZY = "gui.nostalgic_tweaks.config.state.fuzzy";
         public static final String STATE_FUZZY_TOOLTIP = "gui.nostalgic_tweaks.config.state.fuzzy.@Tooltip";
         public static final String STATE_BUBBLE = "gui.nostalgic_tweaks.config.state.bubble";
@@ -146,6 +167,12 @@ public abstract class LangUtil
         public static final String STATE_CLEAR_TOOLTIP = "gui.nostalgic_tweaks.config.state.clear.@Tooltip";
         public static final String STATE_TAG = "gui.nostalgic_tweaks.config.state.tag";
         public static final String STATE_TAG_TOOLTIP = "gui.nostalgic_tweaks.config.state.tag.@Tooltip";
+        public static final String STATE_NUKE = "gui.nostalgic_tweaks.config.state.nuke";
+        public static final String STATE_NUKE_TOOLTIP = "gui.nostalgic_tweaks.config.state.nuke.@Tooltip";
+        public static final String STATE_FILTER = "gui.nostalgic_tweaks.config.state.filter";
+        public static final String STATE_FILTER_TOOLTIP = "gui.nostalgic_tweaks.config.state.filter.@Tooltip";
+        public static final String STATE_LIGHTNING = "gui.nostalgic_tweaks.config.state.tag.lightning";
+        public static final String STATE_LIGHTNING_TOOLTIP = "gui.nostalgic_tweaks.config.state.tag.lightning.@Tooltip";
 
         public static final String STATUS_WAIT = "gui.nostalgic_tweaks.config.status.wait";
         public static final String STATUS_WARN = "gui.nostalgic_tweaks.config.status.warn";
@@ -198,7 +225,7 @@ public abstract class LangUtil
         public static final String GENERAL_CONFIG_SCREEN_TITLE = "gui.nostalgic_tweaks.config.general.config.screen.title";
         public static final String GENERAL_CONFIG_SCREEN_MAIN = "gui.nostalgic_tweaks.config.general.config.screen.main";
         public static final String GENERAL_CONFIG_SCREEN_SETTINGS = "gui.nostalgic_tweaks.config.general.config.screen.settings";
-        public static final String GENERAL_CONFIG_SCREEN_CUSTOM = "gui.nostalgic_tweaks.config.general.config.screen.custom";
+        public static final String GENERAL_CONFIG_SCREEN_PRESETS = "gui.nostalgic_tweaks.config.general.config.screen.presets";
         public static final String GENERAL_CONFIG_SCREEN_INFO = "gui.nostalgic_tweaks.config.general.config.screen.info";
         public static final String GENERAL_CONFIG_TREE_TITLE = "gui.nostalgic_tweaks.config.general.config.tree.title";
         public static final String GENERAL_CONFIG_TREE_INFO = "gui.nostalgic_tweaks.config.general.config.tree.info";

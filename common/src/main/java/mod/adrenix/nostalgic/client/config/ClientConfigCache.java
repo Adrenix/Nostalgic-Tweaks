@@ -59,7 +59,6 @@ public abstract class ClientConfigCache
     {
         // Retrieve new config and validate its data
         ClientConfigCache.cache = AutoConfig.getConfigHolder(ClientConfig.class).getConfig();
-        CustomSwings.validate();
 
         // Let consoles know what happened and what was loaded
         NostalgicTweaks.LOGGER.info("Config was reloaded");
@@ -104,7 +103,7 @@ public abstract class ClientConfigCache
         // List loaded tweaks
         NostalgicTweaks.LOGGER.info("Loaded %d tweaks", TweakClientCache.all().size());
 
-        // Let consoles know what happened
-        NostalgicTweaks.LOGGER.info("Registered %d customized swing speeds", cache.custom.size());
+        // List loaded maps and sets
+        NostalgicTweaks.LOGGER.info("Registered %d customized swing speeds", cache.customSwingSpeeds.size());
     }
 }

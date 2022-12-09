@@ -26,6 +26,7 @@ public class BooleanButton extends ControlButton implements PermissionLock
     public BooleanButton(TweakClientCache<Boolean> tweak, OnPress onPress)
     {
         super(Component.empty(), onPress);
+
         this.tweak = tweak;
     }
 

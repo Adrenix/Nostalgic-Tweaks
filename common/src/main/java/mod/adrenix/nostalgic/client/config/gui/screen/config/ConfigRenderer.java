@@ -1,20 +1,25 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
-import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerId;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.RadioGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowTweak;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
@@ -230,9 +235,9 @@ public record ConfigRenderer(ConfigScreen parent)
         SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
         SortedMap<Integer, TweakClientCache<?>> sortBottom = new TreeMap<>(bottom);
 
-        sortTop.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
-        sortMiddle.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
-        sortBottom.forEach((key, tweak) -> rows.add(list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortTop.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortMiddle.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortBottom.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
 
         return rows;
     }
@@ -262,14 +267,14 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within an embed.
      */
-    private static ConfigRowList.ContainerRow getEmbedded(TweakEmbed embedded, ConfigRowList list)
+    private static ConfigRowGroup.ContainerRow getEmbedded(TweakEmbed embedded, ConfigRowList list)
     {
-        return new ConfigRowList.ContainerRow
+        return new ConfigRowGroup.ContainerRow
         (
             Component.translatable(embedded.getLangKey()),
             getContainerRowSupplier(list, null, null, embedded),
             embedded,
-            ConfigRowList.ContainerType.EMBEDDED
+            ConfigRowGroup.ContainerType.EMBEDDED
         );
     }
 
@@ -279,14 +284,14 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within a subcategory.
      */
-    private static ConfigRowList.ContainerRow getSubcategory(TweakSubcategory subcategory, ConfigRowList list)
+    private static ConfigRowGroup.ContainerRow getSubcategory(TweakSubcategory subcategory, ConfigRowList list)
     {
-        return new ConfigRowList.ContainerRow
+        return new ConfigRowGroup.ContainerRow
         (
             Component.translatable(subcategory.getLangKey()),
             getContainerRowSupplier(list, null, subcategory, null),
             subcategory,
-            ConfigRowList.ContainerType.SUBCATEGORY
+            ConfigRowGroup.ContainerType.SUBCATEGORY
         );
     }
 
@@ -296,9 +301,9 @@ public record ConfigRenderer(ConfigScreen parent)
      * @param list A config row list instance.
      * @return A list of properly sorted rows within a category.
      */
-    private static ConfigRowList.ContainerRow getCategory(TweakCategory category, ConfigRowList list)
+    private static ConfigRowGroup.ContainerRow getCategory(TweakCategory category, ConfigRowList list)
     {
-        return new ConfigRowList.ContainerRow
+        return new ConfigRowGroup.ContainerRow
         (
             Component.translatable(category.getLangKey()),
             getContainerRowSupplier(list, category, null, null),
@@ -395,7 +400,7 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         SearchCrumbs crumbs = new SearchCrumbs(tweak);
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
-        ConfigRowList.Row row = list.getRow(tweak.getGroup(), tweak.getKey(), tweak.getValue());
+        ConfigRowList.Row row = list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue());
 
         row.children.add(crumbs);
         list.addRow(row);
@@ -542,14 +547,14 @@ public record ConfigRenderer(ConfigScreen parent)
         toggleClientOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_CLIENT_TIP));
         toggleServerOnly.setTooltip(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_SERVER_TIP));
 
-        ConfigRowList.BlankRow blank = new ConfigRowList.BlankRow();
-        ConfigRowList.SingleLeftRow client = new ConfigRowList.SingleLeftRow(toggleClientOnly, ConfigRowList.CAT_TEXT_START);
-        ConfigRowList.SingleLeftRow server = new ConfigRowList.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
-        ConfigRowList.SingleLeftRow disable = new ConfigRowList.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
-        ConfigRowList.SingleLeftRow enable = new ConfigRowList.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
-        ConfigRowList.SingleLeftRow review = new ConfigRowList.SingleLeftRow(reviewAll, ConfigRowList.CAT_TEXT_START);
+        ConfigRowBuild.BlankRow blank = new ConfigRowBuild.BlankRow();
+        ConfigRowBuild.SingleLeftRow client = new ConfigRowBuild.SingleLeftRow(toggleClientOnly, ConfigRowList.CAT_TEXT_START);
+        ConfigRowBuild.SingleLeftRow server = new ConfigRowBuild.SingleLeftRow(toggleServerOnly, ConfigRowList.CAT_TEXT_START);
+        ConfigRowBuild.SingleLeftRow disable = new ConfigRowBuild.SingleLeftRow(disableAll, ConfigRowList.CAT_TEXT_START);
+        ConfigRowBuild.SingleLeftRow enable = new ConfigRowBuild.SingleLeftRow(enableAll, ConfigRowList.CAT_TEXT_START);
+        ConfigRowBuild.SingleLeftRow review = new ConfigRowBuild.SingleLeftRow(reviewAll, ConfigRowList.CAT_TEXT_START);
 
-        ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.getRows());
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>(help.generate());
 
         rows.add(client.generate());
         rows.add(server.generate());
@@ -573,10 +578,10 @@ public record ConfigRenderer(ConfigScreen parent)
         KeyMapping toggleFog = KeyUtil.find(LangUtil.Key.TOGGLE_FOG);
 
         if (openConfig != null)
-            rows.add(new ConfigRowList.BindingRow(openConfig).generate());
+            rows.add(new ConfigRowBuild.BindingRow(openConfig).generate());
 
         if (toggleFog != null)
-            rows.add(new ConfigRowList.BindingRow(toggleFog).generate());
+            rows.add(new ConfigRowBuild.BindingRow(toggleFog).generate());
 
         return rows;
     }
@@ -604,19 +609,19 @@ public record ConfigRenderer(ConfigScreen parent)
             );
 
             TextGroup radioHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_INFO));
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(radioHelp.getRows());
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(radioHelp.generate());
 
             rows.addAll(radioGroup.getRows());
 
             return rows;
         };
 
-        ConfigRowList.ContainerRow screenConfig = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow screenConfig = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_SCREEN_TITLE),
             getScreenOptions,
             ContainerId.DEFAULT_SCREEN_CONFIG,
-            ConfigRowList.ContainerType.SUBCATEGORY
+            ConfigRowGroup.ContainerType.SUBCATEGORY
         );
 
         subcategories.add(screenConfig.generate());
@@ -626,23 +631,23 @@ public record ConfigRenderer(ConfigScreen parent)
         Supplier<ArrayList<ConfigRowList.Row>> getTreeOptions = () ->
         {
             TextGroup treeHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_INFO));
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.getRows());
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(treeHelp.generate());
 
             TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
-            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, tree.getKey(), tree.getValue()).generate());
+            rows.add(new ConfigRowTweak.BooleanRow(TweakGroup.GUI, tree.getKey(), tree.getValue()).generate());
 
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
-            rows.add(new ConfigRowList.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
+            rows.add(new ConfigRowTweak.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
 
             return rows;
         };
 
-        ConfigRowList.ContainerRow treeConfig = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow treeConfig = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TREE_TITLE),
             getTreeOptions,
             ContainerId.TREE_CONFIG,
-            ConfigRowList.ContainerType.SUBCATEGORY
+            ConfigRowGroup.ContainerType.SUBCATEGORY
         );
 
         subcategories.add(treeConfig.generate());
@@ -652,26 +657,26 @@ public record ConfigRenderer(ConfigScreen parent)
         Supplier<ArrayList<ConfigRowList.Row>> getHighlightOptions = () ->
         {
             TextGroup rowHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_INFO));
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.getRows());
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(rowHelp.generate());
 
             TweakClientCache<Boolean> highlight = TweakClientCache.get(GuiTweak.DISPLAY_ROW_HIGHLIGHT);
-            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, highlight.getKey(), highlight.getValue()).generate());
+            rows.add(new ConfigRowTweak.BooleanRow(TweakGroup.GUI, highlight.getKey(), highlight.getValue()).generate());
 
             TweakClientCache<Boolean> fade = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE);
-            rows.add(new ConfigRowList.BooleanRow(TweakGroup.GUI, fade.getKey(), fade.getValue()).generate());
+            rows.add(new ConfigRowTweak.BooleanRow(TweakGroup.GUI, fade.getKey(), fade.getValue()).generate());
 
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR);
-            rows.add(new ConfigRowList.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
+            rows.add(new ConfigRowTweak.ColorRow(TweakGroup.GUI, color.getKey(), color.getValue()).generate());
 
             return rows;
         };
 
-        ConfigRowList.ContainerRow highlightConfig = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow highlightConfig = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_ROW_TITLE),
             getHighlightOptions,
             ContainerId.ROW_CONFIG,
-            ConfigRowList.ContainerType.SUBCATEGORY
+            ConfigRowGroup.ContainerType.SUBCATEGORY
         );
 
         subcategories.add(highlightConfig.generate());
@@ -681,7 +686,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Supplier<ArrayList<ConfigRowList.Row>> getTaggingOptions = () ->
         {
             TextGroup tagHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_INFO));
-            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.getRows());
+            ArrayList<ConfigRowList.Row> rows = new ArrayList<>(tagHelp.generate());
 
             // New Tags
 
@@ -693,7 +698,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 displayNewTags::setValue
             );
 
-            ConfigRowList.ManualRow newTagsRow = new ConfigRowList.ManualRow(List.of(newTagsCheckbox));
+            ConfigRowBuild.ManualRow newTagsRow = new ConfigRowBuild.ManualRow(List.of(newTagsCheckbox));
             rows.add(newTagsRow.generate());
 
             // Sided tags
@@ -706,7 +711,7 @@ public record ConfigRenderer(ConfigScreen parent)
                 displaySidedTags::setValue
             );
 
-            ConfigRowList.ManualRow sidedTagsRow = new ConfigRowList.ManualRow(List.of(sidedTagsCheckbox));
+            ConfigRowBuild.ManualRow sidedTagsRow = new ConfigRowBuild.ManualRow(List.of(sidedTagsCheckbox));
             rows.add(sidedTagsRow.generate());
 
             // Tag Tooltips
@@ -719,15 +724,15 @@ public record ConfigRenderer(ConfigScreen parent)
                 displayTagTooltips::setValue
             );
 
-            ConfigRowList.ManualRow tagTooltipsRow = new ConfigRowList.ManualRow(List.of(tagTooltipsCheckbox));
+            ConfigRowBuild.ManualRow tagTooltipsRow = new ConfigRowBuild.ManualRow(List.of(tagTooltipsCheckbox));
 
             rows.add(tagTooltipsRow.generate());
-            rows.add(new ConfigRowList.BlankRow().generate());
+            rows.add(new ConfigRowBuild.BlankRow().generate());
 
             // Feature Status
 
             TextGroup statusHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TWEAK_STATUS_HELP));
-            rows.addAll(statusHelp.getRows());
+            rows.addAll(statusHelp.generate());
 
             TweakClientCache<Boolean> displayFeatureStatus = TweakClientCache.get(GuiTweak.DISPLAY_FEATURE_STATUS);
             ToggleCheckbox featureStatusCheckbox = new ToggleCheckbox
@@ -737,18 +742,18 @@ public record ConfigRenderer(ConfigScreen parent)
                 displayFeatureStatus::setValue
             );
 
-            ConfigRowList.ManualRow featureStatusRow = new ConfigRowList.ManualRow(List.of(featureStatusCheckbox));
+            ConfigRowBuild.ManualRow featureStatusRow = new ConfigRowBuild.ManualRow(List.of(featureStatusCheckbox));
             rows.add(featureStatusRow.generate());
 
             return rows;
         };
 
-        ConfigRowList.ContainerRow taggingConfig = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow taggingConfig = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TAGS_TITLE),
             getTaggingOptions,
             ContainerId.TITLE_TAGS_CONFIG,
-            ConfigRowList.ContainerType.SUBCATEGORY
+            ConfigRowGroup.ContainerType.SUBCATEGORY
         );
 
         subcategories.add(taggingConfig.generate());
@@ -764,7 +769,7 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         TextGroup notify = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
 
-        return new ArrayList<>(notify.getRows());
+        return new ArrayList<>(notify.generate());
     }
 
     /**
@@ -783,7 +788,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Component allTag = Component.translatable(LangUtil.Gui.GENERAL_SEARCH_ALL);
         Component[] tags = new Component[] { help, newTag, conflictTag, resetTag, clientTag, serverTag, saveTag, allTag };
 
-        return new TextGroup(TextUtil.combine(tags)).getRows();
+        return new TextGroup(TextUtil.combine(tags)).generate();
     }
 
     /**
@@ -800,7 +805,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Component all = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_ALL);
         Component group = Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_GROUP);
 
-        return new TextGroup(TextUtil.combine(new Component[] { help, find, save, exit, jump, all, group })).getRows();
+        return new TextGroup(TextUtil.combine(new Component[] { help, find, save, exit, jump, all, group })).generate();
     }
 
     /**
@@ -815,11 +820,11 @@ public record ConfigRenderer(ConfigScreen parent)
 
         TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(TweakGroup.ROOT, ClientConfig.ROOT_KEY);
 
-        list.addRow(new ConfigRowList.BooleanRow(TweakGroup.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
+        list.addRow(new ConfigRowTweak.BooleanRow(TweakGroup.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
 
         /* All Tweak Overrides */
 
-        ConfigRowList.ContainerRow changeAllTweaks = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow changeAllTweaks = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_TITLE),
             this::getGeneralOverrideList,
@@ -830,7 +835,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Key Bindings */
 
-        ConfigRowList.ContainerRow changeKeyBinds = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow changeKeyBinds = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_BINDINGS),
             this::getGeneralBindingsList,
@@ -841,7 +846,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Menu Settings */
 
-        ConfigRowList.ContainerRow changeSettings = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow changeSettings = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_CONFIG_TITLE),
             this::getGeneralSettingsList,
@@ -852,7 +857,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Notifications */
 
-        ConfigRowList.ContainerRow notifications = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow notifications = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE),
             this::getGeneralNotifyList,
@@ -863,7 +868,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Search Tags */
 
-        ConfigRowList.ContainerRow searchTags = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow searchTags = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_SEARCH_TITLE),
             this::getGeneralSearchTags,
@@ -874,7 +879,7 @@ public record ConfigRenderer(ConfigScreen parent)
 
         /* Keyboard Shortcuts */
 
-        ConfigRowList.ContainerRow shortcuts = new ConfigRowList.ContainerRow
+        ConfigRowGroup.ContainerRow shortcuts = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.GENERAL_SHORTCUT_TITLE),
             this::getGeneralShortcuts,
@@ -910,12 +915,21 @@ public record ConfigRenderer(ConfigScreen parent)
         {
             this.parent.getWidgets().getSwingSpeedPrefix().render(poseStack, mouseX, mouseY, partialTick);
 
-            ConfigRowList.SingleCenteredRow custom = new ConfigRowList.SingleCenteredRow
+            ListMapScreen<Integer> swingScreen = new ListMapScreen<>
+            (
+                this.parent,
+                Component.translatable(LangUtil.Gui.CUSTOM_SPEEDS),
+                ClientConfigCache.getRoot().customSwingSpeeds,
+                DefaultConfig.Swing.OLD_SPEED,
+                ListId.CUSTOM_SWING
+            );
+
+            ConfigRowBuild.SingleCenteredRow custom = new ConfigRowBuild.SingleCenteredRow
             (
                 new ControlButton
                 (
-                    Component.translatable(LangUtil.Gui.SWING),
-                    (button) -> this.parent.getMinecraft().setScreen(new SwingScreen(this.parent))
+                    Component.translatable(LangUtil.Gui.CUSTOM_SPEEDS),
+                    (button) -> this.parent.getMinecraft().setScreen(swingScreen)
                 )
             );
 

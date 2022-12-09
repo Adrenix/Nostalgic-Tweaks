@@ -91,6 +91,7 @@ public enum CandyTweak implements Tweak
 
     // Item Candy
     FIX_ITEM_MODEL_GAP,
+    DISABLED_ITEM_HOLDING,
     ITEM_HOLDING,
     ITEM_MERGING,
     ITEM_MERGE_LIMIT,

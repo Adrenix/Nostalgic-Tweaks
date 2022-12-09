@@ -2,47 +2,75 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.slider.GenericSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * The reset button is the last button to the right of all tweak cache rows within a config row list row.
  * Depending on the type of tweak that is cached, different resetting logic is required.
+ *
+ * When used for custom list item entries, the reset button can turn into an undo button.
  */
 
 public class ResetButton extends Button
 {
     /* Fields */
 
-    private static final Component TITLE = Component.translatable(LangUtil.Gui.BUTTON_RESET);
+    private static final int START_X = 0;
+    private static final int START_Y = 0;
+    private static final Component RESET_TITLE = Component.translatable(LangUtil.Gui.BUTTON_RESET);
+    private static final Component UNDO_TITLE = Component.translatable(LangUtil.Gui.BUTTON_UNDO);
+    private final Supplier<Boolean> isEntryChanged;
     private final AbstractWidget controller;
 
     @Nullable
     private final TweakClientCache<?> tweak;
 
-    /* Private Helpers */
+    /* Constructor Helpers */
 
     /**
      * Changes the width of the reset button based on the translation font width of this button title.
      * @return A reset button width.
      */
-    private static int getResetWidth() { return Minecraft.getInstance().font.width(TITLE.getString()) + 8; }
+    private static int getResetWidth()
+    {
+        Font font = Minecraft.getInstance().font;
+        int resetWidth = font.width(ResetButton.RESET_TITLE.getString());
+        int undoWidth = font.width(ResetButton.UNDO_TITLE.getString());
+
+        return Math.max(resetWidth, undoWidth) + 8;
+    }
+
+    /**
+     * Get the title of the reset button based on whether the current list entry is changed.
+     * @param isChanged A supplier that determines whether the entry has changed.
+     * @return A component title for the reset button.
+     */
+    private static Component getResetTitle(Supplier<Boolean> isChanged)
+    {
+        return isChanged.get() ? ResetButton.UNDO_TITLE : ResetButton.RESET_TITLE;
+    }
 
     /**
      * Resets the tweak client cache based on the neighboring widget controller.
      * @param cache A nullable tweak client cache instance.
      * @param controller A neighboring widget controller.
      */
-    private static void reset(@Nullable TweakClientCache<?> cache, AbstractWidget controller)
+    private static void resetTweak(@Nullable TweakClientCache<?> cache, AbstractWidget controller)
     {
         if (cache != null)
         {
@@ -57,7 +85,35 @@ public class ResetButton extends Button
             key.reset();
     }
 
-    /* Constructor */
+    /**
+     * Resets the given list entry to the provided reset value. This widget will update slider controllers.
+     * @param entry The entry to reset.
+     * @param controller The controller that will be updated if it is a slider.
+     * @param resetValue The value to reset to.
+     * @param undoValue The value to undo to.
+     * @param isChanged A supplier that determines whether the entry has changed.
+     * @param <T> The type of the value.
+     */
+    private static <T> void resetEntry
+    (
+        ListMapScreen<T> listMapScreen,
+        AbstractWidget controller,
+        Map.Entry<String, T> entry,
+        T resetValue,
+        T undoValue,
+        Supplier<Boolean> isChanged)
+    {
+        listMapScreen.copy(entry);
+        entry.setValue(isChanged.get() ? undoValue : resetValue);
+
+        if (!isChanged.get())
+            listMapScreen.copy(entry);
+
+        if (controller instanceof GenericSlider slider)
+            slider.update();
+    }
+
+    /* Constructors */
 
     /**
      * Create a new reset button instance.
@@ -66,15 +122,63 @@ public class ResetButton extends Button
      */
     public ResetButton(@Nullable TweakClientCache<?> tweak, AbstractWidget controller)
     {
-        super(0, 0, getResetWidth(), ConfigRowList.BUTTON_HEIGHT, TITLE, (button) -> reset(tweak, controller));
+        super
+        (
+            ResetButton.START_X,
+            ResetButton.START_Y,
+            ResetButton.getResetWidth(),
+            ConfigRowList.BUTTON_HEIGHT,
+            ResetButton.RESET_TITLE,
+            (button) -> ResetButton.resetTweak(tweak, controller)
+        );
 
         this.tweak = tweak;
         this.controller = controller;
+        this.isEntryChanged = () -> false;
+
+        this.updateX();
+    }
+
+    /**
+     * Create a new reset button instance for a list entry.
+     * @param entry A list entry.
+     * @param controller The controller widget for this entry.
+     * @param resetValue The value to reset to when this button is clicked.
+     * @param undoValue The value to undo to.
+     * @param isChanged A supplier that checks if the entry has changed.
+     */
+    public <T> ResetButton
+    (
+        ListMapScreen<T> listMapScreen,
+        AbstractWidget controller,
+        Map.Entry<String, T> entry,
+        T resetValue,
+        T undoValue,
+        Supplier<Boolean> isChanged)
+    {
+        super
+        (
+            ResetButton.START_X,
+            ResetButton.START_Y,
+            ResetButton.getResetWidth(),
+            ConfigRowList.BUTTON_HEIGHT,
+            ResetButton.getResetTitle(isChanged),
+            (button) -> ResetButton.resetEntry(listMapScreen, controller, entry, resetValue, undoValue, isChanged)
+        );
+
+        this.tweak = null;
+        this.controller = controller;
+        this.isEntryChanged = isChanged;
 
         this.updateX();
     }
 
     /* Methods */
+
+    /**
+     * @return Get this button's widget controller. This is the reset button's neighbor to the left.
+     */
+    public AbstractWidget getController() { return this.controller; }
 
     /**
      * Update the starting x-position based on controller position and standard row widget gap.
@@ -91,6 +195,7 @@ public class ResetButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
+        this.setMessage(ResetButton.getResetTitle(this.isEntryChanged));
         this.updateX();
 
         if (this.tweak != null)

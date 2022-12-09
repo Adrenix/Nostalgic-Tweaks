@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
@@ -11,7 +11,6 @@ import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -25,9 +24,6 @@ public class ToggleCheckbox extends Checkbox
 
     public static final int WIDTH = 20;
     public static final int HEIGHT = 20;
-
-    public static final boolean ON = true;
-    public static final boolean OFF = false;
 
     /* Fields */
 
@@ -58,11 +54,29 @@ public class ToggleCheckbox extends Checkbox
      */
     public ToggleCheckbox(int x, int y, Component label, boolean state)
     {
-        super(x, y, WIDTH, HEIGHT, label, state, ON);
+        super(x, y, WIDTH, HEIGHT, label, state, true);
 
         this.screen = Minecraft.getInstance().screen;
         this.onPress = (newState) -> {};
         this.tooltip = null;
+    }
+
+    /**
+     * Create a new toggle checkbox with more control options.
+     * @param x The starting x-position of the checkbox.
+     * @param y The starting y-position of the checkbox.
+     * @param label The label of the checkbox.
+     * @param tooltip The tooltip of the checkbox.
+     * @param state The default state of the checkbox.
+     * @param onPress A consumer that accepts a new value from {@link OnPress#press(boolean)}.
+     */
+    public ToggleCheckbox(int x, int y, Component label, Component tooltip, Supplier<Boolean> state, OnPress onPress)
+    {
+        super(x, y, WIDTH, HEIGHT, label, state.get(), true);
+
+        this.screen = Minecraft.getInstance().screen;
+        this.onPress = onPress;
+        this.tooltip = tooltip;
     }
 
     /**
@@ -112,12 +126,18 @@ public class ToggleCheckbox extends Checkbox
         super.onPress();
 
         this.onPress.press(this.selected());
+    }
 
-        if (this.screen instanceof SwingScreen)
-        {
-            ((SwingScreen) this.screen).getMinecraft().setScreen(this.screen);
-            ((SwingScreen) this.screen).setSearchBoxFocus(false);
-        }
+    /**
+     * Handler method for rendering a tooltip for this toggle checkbox.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
+    @Override
+    public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        this.screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth), mouseX, mouseY);
     }
 
     /**
@@ -150,8 +170,10 @@ public class ToggleCheckbox extends Checkbox
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
         {
-            List<Component> tip = TextUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth);
-            this.screen.renderComponentTooltip(poseStack, tip, mouseX, mouseY);
+            if (this.screen instanceof AbstractListScreen listScreen)
+                listScreen.renderOverlayTooltips.add(this::renderToolTip);
+            else
+                this.renderToolTip(poseStack, mouseX, mouseY);
         }
     }
 }

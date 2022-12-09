@@ -1,12 +1,12 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
+import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StateButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.SearchWidget;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.StateWidget;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -239,7 +239,7 @@ public class ConfigWidgets
         Button.OnPress action = (button) ->
         {
             this.parent.setConfigTab(ConfigScreen.ConfigTab.ALL);
-            CategoryList.OVERLAY.open(this.configRowList);
+            new CategoryListOverlay();
         };
 
         return new OverlapButton(Component.empty(), action).setAsList();
@@ -411,7 +411,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(SearchWidget.BUBBLE, search.x - 61, search.y - 1, false, (button) ->
+        return new StateButton(StateWidget.BUBBLE, search.x - 61, search.y - 1, false, (button) ->
         {
             this.runSearch(search.getValue());
             this.focusSearch();
@@ -426,7 +426,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(SearchWidget.FUZZY, search.x - 42, search.y - 1, (button) ->
+        return new StateButton(StateWidget.FUZZY, search.x - 42, search.y - 1, (button) ->
         {
             this.runSearch(search.getValue());
             this.focusSearch();
@@ -441,7 +441,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(SearchWidget.TAG, search.x - 23, search.y - 1, (button) ->
+        return new StateButton(StateWidget.TAG, search.x - 23, search.y - 1, (button) ->
         {
             ConfigWidgets.setTagCycle(search);
             this.focusSearch();
@@ -456,7 +456,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(SearchWidget.CLEAR, search.x + search.getWidth() + 3, search.y - 1, (button) ->
+        return new StateButton(StateWidget.CLEAR, search.x + search.getWidth() + 3, search.y - 1, (button) ->
         {
             search.setValue("");
             this.focusSearch();

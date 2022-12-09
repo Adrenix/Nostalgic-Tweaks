@@ -2,19 +2,24 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * An extension of the overlap button and is used by the search tab in the config screen. Each state button will be
- * associated with a {@link SearchWidget} enumeration value.
+ * associated with a {@link StateWidget} enumeration value.
  */
 
 public class StateButton extends OverlapButton
@@ -25,7 +30,7 @@ public class StateButton extends OverlapButton
      * This field must be defined during construction.
      * Different search widgets require unique rendering and logic.
      */
-    private final SearchWidget widget;
+    private final StateWidget widget;
 
     /**
      * This field determines whether this state button is on/off.
@@ -39,12 +44,14 @@ public class StateButton extends OverlapButton
      * @param widget A search widget enumeration value.
      * @return A button title component.
      */
-    private static Component getText(SearchWidget widget)
+    private static Component getText(StateWidget widget)
     {
         return switch (widget)
         {
             case TAG -> Component.literal("@");
+            case SWING -> Component.literal("?").withStyle(ChatFormatting.BOLD);
             case CLEAR -> Component.literal("\u274c").withStyle(ChatFormatting.DARK_RED).withStyle(ChatFormatting.BOLD);
+            case LIGHTNING -> Component.literal("\u26a1").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD);
             default -> Component.empty();
         };
     }
@@ -59,7 +66,7 @@ public class StateButton extends OverlapButton
      * @param defaultState The default state of this button.
      * @param onPress Instructions for when the button is pressed.
      */
-    public StateButton(SearchWidget widget, int startX, int startY, boolean defaultState, OnPress onPress)
+    public StateButton(StateWidget widget, int startX, int startY, boolean defaultState, OnPress onPress)
     {
         super(startX, startY, 20, 20, getText(widget), onPress);
 
@@ -74,7 +81,7 @@ public class StateButton extends OverlapButton
      * @param startY The starting y-position.
      * @param onPress Instructions for when the button is pressed.
      */
-    public StateButton(SearchWidget widget, int startX, int startY, OnPress onPress)
+    public StateButton(StateWidget widget, int startX, int startY, OnPress onPress)
     {
         this(widget, startX, startY, true, onPress);
     }
@@ -103,17 +110,25 @@ public class StateButton extends OverlapButton
         Component title = switch (this.widget)
         {
             case TAG -> Component.translatable(LangUtil.Gui.STATE_TAG).withStyle(ChatFormatting.GREEN);
+            case NUKE -> Component.translatable(LangUtil.Gui.STATE_NUKE).withStyle(ChatFormatting.RED);
+            case SWING -> Component.translatable(LangUtil.Gui.STATE_SWING).withStyle(ChatFormatting.BLUE);
             case CLEAR -> Component.translatable(LangUtil.Gui.STATE_CLEAR).withStyle(ChatFormatting.RED);
             case FUZZY -> Component.translatable(LangUtil.Gui.STATE_FUZZY).withStyle(ChatFormatting.GOLD);
             case BUBBLE -> Component.translatable(LangUtil.Gui.STATE_BUBBLE).withStyle(ChatFormatting.AQUA);
+            case FILTER -> Component.translatable(LangUtil.Gui.STATE_FILTER).withStyle(ChatFormatting.GOLD);
+            case LIGHTNING -> Component.translatable(LangUtil.Gui.STATE_LIGHTNING).withStyle(ChatFormatting.YELLOW);
         };
 
         List<Component> wrap = switch (this.widget)
         {
             case TAG -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_TAG_TOOLTIP), 35);
+            case NUKE -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_NUKE_TOOLTIP), 35);
+            case SWING -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_SWING_TOOLTIP), 30);
             case CLEAR -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_CLEAR_TOOLTIP), 40);
             case FUZZY -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_FUZZY_TOOLTIP), 35);
             case BUBBLE -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_BUBBLE_TOOLTIP), 35);
+            case FILTER -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_FILTER_TOOLTIP), 40);
+            case LIGHTNING -> TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.STATE_LIGHTNING_TOOLTIP), 35);
         };
 
         tooltip.add(title);
@@ -153,14 +168,18 @@ public class StateButton extends OverlapButton
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         super.renderButton(poseStack, mouseX, mouseY, partialTick);
+
         RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
 
         int uOffset = this.state ? 0 : 20;
+        int blockX = this.x + 2;
+        int blockY = this.y + 2;
 
         switch (this.widget)
         {
+            case NUKE -> ItemClientUtil.renderGuiItem(new ItemStack(Items.TNT), blockX, blockY, 0.85F, -0.5F);
             case BUBBLE -> this.screen.blit(poseStack, this.x, this.y, uOffset, 123, this.width, this.height);
-            case FUZZY -> this.screen.blit(poseStack, this.x, this.y, uOffset, 143, this.width, this.height);
+            case FUZZY, FILTER -> this.screen.blit(poseStack, this.x, this.y, uOffset, 143, this.width, this.height);
         }
     }
 
@@ -183,7 +202,9 @@ public class StateButton extends OverlapButton
     @Override
     public void onPress()
     {
-        this.state = !this.state;
+        if (ClassUtil.isNotInstanceOf(this.screen, AbstractListScreen.class))
+            this.state = !this.state;
+
         super.onPress();
     }
 }

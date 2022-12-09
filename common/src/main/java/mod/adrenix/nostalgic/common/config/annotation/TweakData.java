@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.common.config.annotation;
 
+import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 
 import java.lang.annotation.ElementType;
@@ -75,5 +76,16 @@ public abstract class TweakData
     public @interface Color
     {
         String reset();
+    }
+
+    /**
+     * Informs the mod that the field associated with this annotation is a list.
+     * This assists the mod in list validation and sided syncing.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface List
+    {
+        ListId id();
     }
 }

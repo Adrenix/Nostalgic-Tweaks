@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,9 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An overlap button is a button that overlaps the edge of another button by 1 pixel. This overlap can be on side or on
@@ -31,6 +35,12 @@ public class OverlapButton extends Button
      * sprite for display, rather than text.
      */
     private boolean isListButton = false;
+
+    /**
+     * This set is defined during constructions and will either be widgets from a config screen instance, or from a list
+     * screen instance.
+     */
+    private final Set<Widget> widgets;
 
     /* Constructors */
 
@@ -58,6 +68,13 @@ public class OverlapButton extends Button
         super(startX, startY, width, height, text, onPress);
 
         this.screen = (ConfigScreen) Minecraft.getInstance().screen;
+
+        if (Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+            this.widgets = listScreen.getListWidgets();
+        else if (Minecraft.getInstance().screen instanceof ConfigScreen configScreen)
+            this.widgets = configScreen.getWidgets().children;
+        else
+            this.widgets = new HashSet<>();
     }
 
     /**
@@ -112,7 +129,7 @@ public class OverlapButton extends Button
     {
         boolean isOtherHovered = false;
 
-        for (Widget child : this.screen.getWidgets().children)
+        for (Widget child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
             {
@@ -136,7 +153,7 @@ public class OverlapButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        for (Widget child : this.screen.getWidgets().children)
+        for (Widget child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
             {

@@ -4,6 +4,9 @@ import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class DefaultConfig
 {
     public static class Sound
@@ -33,6 +36,9 @@ public abstract class DefaultConfig
 
     public static class Candy
     {
+        // Item Lists
+        public static final Set<String> DISABLED_ITEM_HOLDING = new HashSet<>();
+
         // Block Candy
         public static final boolean DISABLE_ALL_OFFSET = false;
         public static final boolean DISABLE_FLOWER_OFFSET = true;
@@ -320,6 +326,8 @@ public abstract class DefaultConfig
     public static class Swing
     {
         public static final boolean OVERRIDE_SPEEDS = false;
+        public static final int MIN_SPEED = 0;
+        public static final int MAX_SPEED = 16;
         public static final int NEW_SPEED = 6;
         public static final int OLD_SPEED = 8;
         public static final int DISABLED = -1;

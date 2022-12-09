@@ -2,7 +2,8 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.client.Minecraft;
@@ -35,7 +36,7 @@ public class ContainerButton extends Button
     /* Fields */
 
     private final Enum<?> id;
-    private final ConfigRowList.ContainerRow row;
+    private final ConfigRowGroup.ContainerRow row;
     private final Component title;
 
     private boolean grandparentTreeNeeded;
@@ -52,9 +53,9 @@ public class ContainerButton extends Button
      * @param title A component title for this container button.
      * @param containerType The config row list container type for this button.
      */
-    public ContainerButton(ConfigRowList.ContainerRow row, Enum<?> id, Component title, ConfigRowList.ContainerType containerType)
+    public ContainerButton(ConfigRowGroup.ContainerRow row, Enum<?> id, Component title, ConfigRowGroup.ContainerType containerType)
     {
-        super(ConfigRowList.ContainerRow.getIndent(containerType), 0, 0, 0, Component.empty(), (ignored) -> {});
+        super(ConfigRowGroup.ContainerRow.getIndent(containerType), 0, 0, 0, Component.empty(), (ignored) -> {});
 
         this.id = id;
         this.row = row;
@@ -66,6 +67,26 @@ public class ContainerButton extends Button
     }
 
     /* Utility Methods */
+
+    /**
+     * Expand a container.
+     * @param id A container identifier.
+     */
+    public static void expand(Enum<?> id)
+    {
+        if (EXPANDED.containsKey(id))
+            EXPANDED.put(id, true);
+    }
+
+    /**
+     * Collapse a container.
+     * @param id A container identifier.
+     */
+    public static void collapse(Enum<?> id)
+    {
+        if (EXPANDED.containsKey(id))
+            EXPANDED.put(id, false);
+    }
 
     /**
      * Collapses if expanded and expands if collapsed.
@@ -88,6 +109,26 @@ public class ContainerButton extends Button
      * Collapse every container button defined in the expanded map.
      */
     public static void collapseAll() { EXPANDED.forEach((id, state) -> EXPANDED.put(id, false)); }
+
+    /**
+     * Initialize a container by having its rows expanded/collapsed as needed.
+     *
+     * When a container renders, it checks if it should be expanded/collapsed. During item searching, the row list gets
+     * reset. A container will be regenerated with its row already collapsed. During the first rendering cycle, the
+     * container will expand since it was regenerated already collapsed. The next cycle will render the expanded rows.
+     * This will cause a "flash" effect, which is not desirable. This initializer method will perform this check before
+     * the list renders all its rows. See the rendering method below:
+     *
+     * {@link mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList#render(PoseStack, int, int, float)}
+     */
+    public void init()
+    {
+        if (this.isExpanded() && !this.row.isExpanded())
+            this.row.expand();
+
+        if (!this.isExpanded() && this.row.isExpanded())
+            this.row.collapse();
+    }
 
     /**
      * @return The title of this container button as a component.
@@ -219,7 +260,10 @@ public class ContainerButton extends Button
         boolean expanded = this.isExpanded();
 
         if (expanded && !this.row.isExpanded())
-            row.expand();
+            this.row.expand();
+
+        if (!expanded && this.row.isExpanded())
+            this.row.collapse();
 
         int uOffset = 33;
         int vOffset = 0;
@@ -247,6 +291,7 @@ public class ContainerButton extends Button
         }
 
         this.width = 20 + minecraft.font.width(this.title);
+        this.active = !Overlay.isOpened();
 
         screen.blit(poseStack, blitX, blitY, uOffset, vOffset, uWidth, vHeight);
         Screen.drawString(poseStack, minecraft.font, this.title, this.x + 20, this.y + 5, isMouseOver ? 0xFFD800 : color);

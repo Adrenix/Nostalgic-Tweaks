@@ -37,10 +37,10 @@ public class SettingsScreen extends Screen
 {
     /* Widget Constants */
 
-    protected static final int BUTTON_HEIGHT = 20;
-    protected static final int DONE_BUTTON_TOP_OFFSET = 26;
-    protected static final int LARGE_WIDTH = 204;
-    protected static final int SMALL_WIDTH = 98;
+    public static final int BUTTON_HEIGHT = 20;
+    public static final int DONE_BUTTON_TOP_OFFSET = 26;
+    public static final int LARGE_WIDTH = 204;
+    public static final int SMALL_WIDTH = 98;
 
     /* Fields */
 
@@ -192,7 +192,7 @@ public class SettingsScreen extends Screen
             switch (ClientConfigCache.getGui().defaultScreen)
             {
                 case SETTINGS_MENU -> this.minecraft.setScreen(new ConfigScreen(this));
-                case CUSTOM_SWING_MENU -> this.minecraft.setScreen(new SwingScreen(this));
+                case PRESETS_MENU -> this.minecraft.setScreen(this);
             }
         }
     }

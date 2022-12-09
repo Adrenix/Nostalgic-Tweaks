@@ -1,11 +1,14 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.slider;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
-import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -24,8 +27,8 @@ public class GenericSlider extends AbstractSliderButton
     /* Fields */
 
     private TweakGui.SliderType sliderType = TweakGui.SliderType.SWING;
-    private int min = ClientConfig.MIN;
-    private int max = ClientConfig.MAX;
+    private int min = DefaultConfig.Swing.MIN_SPEED;
+    private int max = DefaultConfig.Swing.MAX_SPEED;
     private final Consumer<Integer> setCurrent;
     private final Supplier<Integer> current;
 
@@ -106,6 +109,15 @@ public class GenericSlider extends AbstractSliderButton
     public void setValue(int value)
     {
         this.value = (Mth.clamp(value, this.min, this.max) - this.min) / (double) Math.abs(this.max - this.min);
+    }
+
+    /**
+     * Send an update message to this slider that the value has changed and an update is needed for visuals.
+     */
+    public void update()
+    {
+        this.setValue(this.current.get());
+        this.updateMessage();
     }
 
     /**
@@ -191,8 +203,39 @@ public class GenericSlider extends AbstractSliderButton
         if (this.sliderData != null && !this.sliderData.suffix().isEmpty())
             suffix = this.sliderData.suffix();
 
-        String text = title + ": " + (this.active ? color : ChatFormatting.GRAY) + this.current.get().toString() + suffix;
+        String text = title + ": " + color + this.current.get().toString() + suffix;
+
+        if (!this.active)
+        {
+            text = ChatFormatting.stripFormatting(text);
+            text = ChatFormatting.GRAY + ChatFormatting.STRIKETHROUGH.toString() + text;
+        }
+
+        if (Overlay.isOpened())
+        {
+            text = ChatFormatting.stripFormatting(text);
+            text = ChatFormatting.GRAY + text;
+        }
 
         this.setMessage(Component.literal(text));
+    }
+
+    /**
+     * Handler method for rendering the background of this widget.
+     * @param poseStack The current pose stack.
+     * @param minecraft The current game instance.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
+    @Override
+    protected void renderBg(PoseStack poseStack, Minecraft minecraft, int mouseX, int mouseY)
+    {
+        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int dy = !this.active ? 0 : (this.isHoveredOrFocused() ? 2 : 1) * 20;
+
+        this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)), this.y, 0, 46 + dy, 4, 20);
+        this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)) + 4, this.y, 196, 46 + dy, 4, 20);
     }
 }

@@ -13,11 +13,13 @@ import mod.adrenix.nostalgic.common.config.ValidateConfig;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.auto.ConfigData;
 import mod.adrenix.nostalgic.common.config.auto.annotation.Config;
+import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.tweak.*;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The server controlled tweaks in this config need to stay in sync with the fields in the server config.
@@ -33,10 +35,8 @@ public class ClientConfig implements ConfigData
 
     @Override public void validatePostLoad() throws ValidationException { ValidateConfig.scan(this); }
 
-    /* Helper Fields */
+    /* Root Key */
 
-    @TweakData.Ignore public static final int MIN = 0;
-    @TweakData.Ignore public static final int MAX = 16;
     @TweakData.Ignore public static final String ROOT_KEY = "isModEnabled";
 
     /* Client Config */
@@ -667,6 +667,10 @@ public class ClientConfig implements ConfigData
         @TweakGui.Category(container = TweakCategory.ITEM_CANDY)
         public boolean oldItemHolding = DefaultConfig.Candy.OLD_ITEM_HOLDING;
         static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
+
+        // TODO:
+//        public Set<String> disableItemHolding = DefaultConfig.Candy.DISABLED_ITEM_HOLDING;
+//        static { CandyTweak.DISABLED_ITEM_HOLDING.setKey("disableItemHolding"); }
 
         // Item - Merging
 
@@ -1959,6 +1963,14 @@ public class ClientConfig implements ConfigData
     public Swing swing = new Swing();
     public static class Swing
     {
+        /* Swing Speed Constants */
+
+        @TweakData.Ignore private static final int MIN = DefaultConfig.Swing.MIN_SPEED;
+        @TweakData.Ignore private static final int MAX = DefaultConfig.Swing.MAX_SPEED;
+        @TweakData.Ignore private static final int GLOBAL = DefaultConfig.Swing.GLOBAL;
+
+        /* Swing Speed Tweaks */
+
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.DisabledBoolean(value = true)
@@ -1968,7 +1980,7 @@ public class ClientConfig implements ConfigData
 
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
-        @TweakData.BoundedSlider(min = DefaultConfig.Swing.GLOBAL, max = MAX, reset = DefaultConfig.Swing.GLOBAL)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
         public int global = DefaultConfig.Swing.GLOBAL;
 
@@ -2006,14 +2018,14 @@ public class ClientConfig implements ConfigData
 
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
-        @TweakData.BoundedSlider(min = DefaultConfig.Swing.GLOBAL, max = MAX, reset = DefaultConfig.Swing.GLOBAL)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
         @TweakGui.Category(container = TweakCategory.POTION_SWING)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
         public int haste = DefaultConfig.Swing.HASTE;
 
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
-        @TweakData.BoundedSlider(min = DefaultConfig.Swing.GLOBAL, max = MAX, reset = DefaultConfig.Swing.GLOBAL)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
         @TweakGui.Category(container = TweakCategory.POTION_SWING)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
         public int fatigue = DefaultConfig.Swing.FATIGUE;
@@ -2073,5 +2085,7 @@ public class ClientConfig implements ConfigData
         static { GuiTweak.ROW_HIGHLIGHT_COLOR.setKey("rowHighlightColor"); }
     }
 
-    @TweakData.Ignore public Map<String, Integer> custom = Maps.newHashMap();
+    @TweakData.Ignore
+    @TweakData.List(id = ListId.CUSTOM_SWING)
+    public Map<String, Integer> customSwingSpeeds = Maps.newHashMap();
 }

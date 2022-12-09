@@ -1,17 +1,28 @@
 package mod.adrenix.nostalgic.util.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -25,6 +36,74 @@ import java.util.List;
 public abstract class ItemClientUtil
 {
     /**
+     * Get an item instance based on the provided resource location key.
+     * @param resourceKey An item's resource location key.
+     * @return An item instance from the registry if that item exists.
+     */
+    public static Item getItem(String resourceKey) { return Registry.ITEM.get(ResourceLocation.tryParse(resourceKey)); }
+
+    /**
+     * Get an item stack instance based on the provided resource location key.
+     * @param resourceKey An item's resource location key.
+     * @return An item stack instance from the registry if that item exists.
+     */
+    public static ItemStack getItemStack(String resourceKey) { return getItem(resourceKey).getDefaultInstance(); }
+
+    /**
+     * Get a block based on the provided resource location key.
+     * @param resourceKey The block's resource location key.
+     * @return A block from the registry if it exists.
+     */
+    public static Block getBlock(String resourceKey) { return Registry.BLOCK.get(ResourceLocation.tryParse(resourceKey)); }
+
+    /**
+     * Get a block based on the provided item.
+     * @param item An item instance to get block data from.
+     * @return A block from the registry if it exists.
+     */
+    public static Block getBlockFromItem(Item item) { return getBlock(getResourceKey(item)); }
+
+    /**
+     * Generates a unique key that will be associated with an item instance. This key is the toString method associated
+     * with the item registry.
+     *
+     * @param item The item instance to get registry key information from.
+     * @return A unique item key that can be stored in a configuration file.
+     */
+    public static String getResourceKey(Item item) { return Registry.ITEM.getKey(item).toString(); }
+
+    /**
+     * Checks if a resource location key exists within the registry.
+     * @param resourceKey An item's resource location key.
+     * @return Whether the given resource location key exists.
+     */
+    public static boolean isValidEntry(String resourceKey)
+    {
+        return getResourceKey(getItem(resourceKey)).equals(resourceKey);
+    }
+
+    /**
+     * Get a localized item name.
+     * @param resourceKey An item's resource location key.
+     * @return A localized item name (if it exists) that is associated with the given key.
+     */
+    public static String getLocalizedItem(String resourceKey)
+    {
+        String localized = getItem(resourceKey).getDefaultInstance().getHoverName().getString();
+        Item item = getItem(resourceKey);
+
+        if (getResourceKey(item).equals("minecraft:air"))
+        {
+            if (isValidEntry(resourceKey))
+                return Component.translatable(LangUtil.Gui.SWING_HAND).getString();
+            else
+                return Component.translatable(LangUtil.Gui.SWING_UNKNOWN).getString();
+        }
+
+        return localized;
+    }
+
+    /**
      * Used to enhance the old reequipping logic by preventing visual glitches when pulling items out of the player's hand.
      * @param originalItemStack The original item stack.
      * @param rendererItemStack The renderer's item stack.
@@ -36,6 +115,7 @@ public abstract class ItemClientUtil
     {
         // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
         boolean isUnequipped = rendererItemStack.toString().equals("0 air") && playerItemStack.toString().equals("1 air");
+
         if (!ModConfig.Animation.oldItemReequip() || !isUnequipped)
             return originalItemStack;
 
@@ -64,28 +144,29 @@ public abstract class ItemClientUtil
      * @param model The model to check.
      * @return Whether the given model uses block light.
      */
-    public static boolean isModelFlat(BakedModel model)
+    public static boolean isModelFlat(BakedModel model) { return !model.usesBlockLight(); }
+
+    /**
+     * Shortcut for checking if a model is flat based on the given item stack.
+     * @param itemStack The item stack to get model data from.
+     * @return Whether the item stack can render as flat.
+     */
+    public static boolean isModelFlat(ItemStack itemStack)
     {
-        return !model.usesBlockLight();
+        return isModelFlat(Minecraft.getInstance().getItemRenderer().getModel(itemStack, null, null, 0));
     }
 
     /**
      * Flattens an item to be as close to 2D as possible via scaling.
      * @param poseStack The current pose stack.
      */
-    public static void flatten(PoseStack poseStack)
-    {
-        poseStack.scale(1.0F, 1.0F, 0.001F);
-    }
+    public static void flatten(PoseStack poseStack) { poseStack.scale(1.0F, 1.0F, 0.001F); }
 
     /**
      * Getter for checking if diffused lighting is disabled.
      * @return Whether the item renderer should be rendering flat items.
      */
-    public static boolean isLightingFlat()
-    {
-        return isRenderingFlat;
-    }
+    public static boolean isLightingFlat() { return isRenderingFlat; }
 
     /**
      * Turns off diffused lighting.
@@ -96,6 +177,7 @@ public abstract class ItemClientUtil
             levelBufferSource.endBatch();
 
         Lighting.setupForFlatItems();
+
         isRenderingFlat = true;
     }
 
@@ -126,6 +208,7 @@ public abstract class ItemClientUtil
     public static void setNormalQuad(PoseStack.Pose pose, BakedQuad quad)
     {
         pose.normal().setIdentity();
+
         if (quad.getDirection() == Direction.NORTH)
             pose.normal().mul(-1.0F);
     }
@@ -210,5 +293,63 @@ public abstract class ItemClientUtil
             shiftItemColor(SHIFT_RGB, 0.35F);
 
         return (int) SHIFT_RGB[0] << 16 | (int) SHIFT_RGB[1] << 8 | (int) SHIFT_RGB[2];
+    }
+
+    /**
+     * Similar to {@link ItemRenderer#renderGuiItem(ItemStack, int, int)} except that this method changes render scaling.
+     * @param itemStack The item stack to render.
+     * @param x Where the rendering starts on the x-axis.
+     * @param y Where the rendering starts on the y-axis.
+     * @param scale The custom scaling for rendering.
+     * @param dx The change in x-axis translation.
+     * @param dy The change in y-axis translation.
+     */
+    public static void renderGuiItem(ItemStack itemStack, int x, int y, float scale, float dx, float dy)
+    {
+        Minecraft.getInstance().getTextureManager().getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(false, false);
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        PoseStack viewStack = RenderSystem.getModelViewStack();
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+
+        viewStack.pushPose();
+        viewStack.translate(x, y, 100.0F + itemRenderer.blitOffset);
+        viewStack.translate(8.0F + dx, 8.0F + dy, 0.0F);
+        viewStack.scale(1.0F, -1.0F, 1.0F);
+        viewStack.scale(16.0f, 16.0f, 16.0f);
+        viewStack.scale(scale, scale, scale);
+        RenderSystem.applyModelViewMatrix();
+
+        PoseStack poseStack = new PoseStack();
+        BakedModel bakedModel = itemRenderer.getModel(itemStack, null, null, 0);
+        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+
+        boolean isLightingFlat = !bakedModel.usesBlockLight();
+
+        if (isLightingFlat)
+            Lighting.setupForFlatItems();
+
+        itemRenderer.render(itemStack, ItemTransforms.TransformType.GUI, false, poseStack, buffer, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
+
+        buffer.endBatch();
+        RenderSystem.enableDepthTest();
+
+        if (isLightingFlat)
+            Lighting.setupFor3DItems();
+
+        viewStack.popPose();
+        RenderSystem.applyModelViewMatrix();
+    }
+
+    /**
+     * Shortcut for rendering a GUI item with a custom scale and translation in the y-axis.
+     * @see ItemClientUtil#renderGuiItem(ItemStack, int, int, float, float)
+     */
+    public static void renderGuiItem(ItemStack itemStack, int x, int y, float scale, float dy)
+    {
+        ItemClientUtil.renderGuiItem(itemStack, x, y, scale, 0.0F, dy);
     }
 }

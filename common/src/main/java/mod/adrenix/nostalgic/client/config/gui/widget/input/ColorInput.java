@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.client.config.gui.overlay.ColorPicker;
+import mod.adrenix.nostalgic.client.config.gui.overlay.ColorPickerOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
@@ -141,7 +141,7 @@ public class ColorInput extends AbstractWidget
     {
         if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
         {
-            ColorPicker.OVERLAY.open(this.tweak);
+            new ColorPickerOverlay(this.tweak);
             this.playDownSound(Minecraft.getInstance().getSoundManager());
 
             return true;
@@ -196,7 +196,7 @@ public class ColorInput extends AbstractWidget
         ConfigScreen screen = (ConfigScreen) Minecraft.getInstance().screen;
 
         if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
-            screen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(LangUtil.Gui.GUI_OVERLAY_INPUT_TIP), mouseX, mouseY));
+            screen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(LangUtil.Gui.OVERLAY_INPUT_TIP), mouseX, mouseY));
 
         this.input.x = this.x + 21;
         this.input.y = this.y + 1;

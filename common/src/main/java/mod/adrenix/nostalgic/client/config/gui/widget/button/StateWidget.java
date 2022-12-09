@@ -7,10 +7,14 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
  * This allows for easy switching between rendering and logic.
  */
 
-public enum SearchWidget
+public enum StateWidget
 {
-    FUZZY,
+    LIGHTNING,
+    FILTER,
     BUBBLE,
-    TAG,
-    CLEAR
+    FUZZY,
+    CLEAR,
+    SWING,
+    NUKE,
+    TAG
 }

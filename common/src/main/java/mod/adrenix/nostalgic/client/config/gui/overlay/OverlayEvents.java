@@ -10,6 +10,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 public interface OverlayEvents
 {
     /**
+     * Initialize the overlay window. Typically, this method is used to define overlay fields based on current screen
+     * properties. When the game window resizes, this method is called since the game's window properties has changed.
+     */
+    void init();
+
+    /**
      * Setup widgets for a new overlay session.
      */
     void generateWidgets();

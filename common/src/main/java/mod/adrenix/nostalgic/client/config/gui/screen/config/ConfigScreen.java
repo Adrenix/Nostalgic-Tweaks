@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
-import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryList;
+import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
@@ -32,6 +32,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.*;
 import org.lwjgl.glfw.GLFW;
 
@@ -88,13 +89,19 @@ public class ConfigScreen extends Screen
     public Minecraft getMinecraft() { return this.minecraft; }
     public ConfigWidgets getWidgets() { return this.widgetProvider; }
     public ConfigRenderer getRenderer() { return this.rendererProvider; }
+    public ItemRenderer getItemRenderer() { return this.itemRenderer; }
     public ConfigTab getConfigTab() { return this.configTab; }
 
-    /* Constructor */
+    /* Constructors */
 
-    public ConfigScreen(Screen parentScreen)
+    /**
+     * Get a configuration screen with a custom title.
+     * @param parentScreen The parent screen.
+     * @param title The configuration screen's title.
+     */
+    public ConfigScreen(Screen parentScreen, Component title)
     {
-        super(Component.translatable(LangUtil.Config.CONFIG_TITLE));
+        super(title);
 
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
@@ -119,6 +126,15 @@ public class ConfigScreen extends Screen
                     tweak.setStatus(TweakStatus.FAIL);
             });
         }
+    }
+
+    /**
+     * Get a configuration screen with the standard configuration title.
+     * @param parentScreen The parent screen.
+     */
+    public ConfigScreen(Screen parentScreen)
+    {
+        this(parentScreen, Component.translatable(LangUtil.Config.CONFIG_TITLE));
     }
 
     /* Screen Methods */
@@ -211,6 +227,17 @@ public class ConfigScreen extends Screen
     }
 
     /**
+     * Resets the configuration row list to a fresh empty state.
+     * Any previous tabbing selection will be discarded.
+     */
+    public void resetRowList()
+    {
+        this.getWidgets().getConfigRowList().children().clear();
+        this.getWidgets().getConfigRowList().setScrollAmount(0);
+        this.getWidgets().getConfigRowList().resetLastSelection();
+    }
+
+    /**
      * Changes the screen's configuration tab. This method must be used when the configuration tab needs to be changed.
      * State management and row list management is also handled by this method when the configuration tab is changed.
      * @param configTab The new configuration tab.
@@ -230,16 +257,14 @@ public class ConfigScreen extends Screen
 
         this.configTab = configTab;
 
-        this.getWidgets().getConfigRowList().children().clear();
-        this.getWidgets().getConfigRowList().setScrollAmount(0);
-        this.getWidgets().getConfigRowList().resetLastSelection();
+        this.resetRowList();
 
         if (configTab == ConfigTab.ALL)
         {
             if (!Overlay.isOpened())
             {
                 this.getRenderer().generateRowsFromAllGroups();
-                CategoryList.OVERLAY.open(this.getWidgets().getConfigRowList());
+                new CategoryListOverlay();
             }
         }
         else if (configTab == ConfigTab.SEARCH)
@@ -251,16 +276,16 @@ public class ConfigScreen extends Screen
 
     /**
      * Handler method for when a character is typed.
-     * @param code The character code.
+     * @param codePoint The character code.
      * @param modifiers Modifiers.
      * @return Whether the character that was typed was handled by this method.
      */
     @Override
-    public boolean charTyped(char code, int modifiers)
+    public boolean charTyped(char codePoint, int modifiers)
     {
         if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused())
         {
-            boolean isCharTyped = this.getWidgets().getSearchInput().charTyped(code, modifiers);
+            boolean isCharTyped = this.getWidgets().getSearchInput().charTyped(codePoint, modifiers);
 
             if (isCharTyped && !KeyUtil.isModifierDown())
                 this.getWidgets().getConfigRowList().children().clear();
@@ -274,7 +299,7 @@ public class ConfigScreen extends Screen
         {
             for (AbstractWidget widget : focused.children)
                 if (widget instanceof EditBox)
-                    widget.charTyped(code, modifiers);
+                    widget.charTyped(codePoint, modifiers);
         }
 
         return false;
@@ -527,7 +552,7 @@ public class ConfigScreen extends Screen
             this.setConfigTab(ConfigTab.ALL);
 
             if (!Overlay.isOpened())
-                CategoryList.OVERLAY.open(this.getWidgets().getConfigRowList());
+                new CategoryListOverlay();
 
             return true;
         }
@@ -777,6 +802,9 @@ public class ConfigScreen extends Screen
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
         else
             this.renderDirtBackground(0);
+
+        this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
+        this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
 
         // Config Row Generation for Group Tabs
 

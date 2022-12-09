@@ -20,7 +20,7 @@ import java.util.HashMap;
 public abstract class ServerReflect
 {
     /**
-     * Updates the server config cache. To save to disk use {@link me.shedaniel.autoconfig.ConfigHolder#save()}.
+     * Updates the server config cache. To save to disk use {@link mod.adrenix.nostalgic.common.config.auto.ConfigHolder#save()}.
      * @param group A group type associated with the server tweak.
      * @param key Key that links tweak to the server config.
      * @param value The value to save in the server config cache.

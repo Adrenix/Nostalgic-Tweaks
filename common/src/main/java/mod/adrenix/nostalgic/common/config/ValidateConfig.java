@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.auto.ConfigData;
+import mod.adrenix.nostalgic.common.config.list.ValidateList;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.function.TriFunction;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
@@ -38,6 +39,7 @@ public abstract class ValidateConfig
 
     private static final String NO_METADATA = "NO_METADATA";
     private static final String VALIDATE_FIELD = "SHOULD_NOT_APPEAR";
+    private static final String LIST_VALIDATED = "LIST_VALIDATED";
     private static final String PASSED_VALIDATION = "PASSED_VALIDATION";
 
     /**
@@ -66,6 +68,7 @@ public abstract class ValidateConfig
         Field[] fields = config.getClass().getFields();
 
         validate(fields, config, TweakData.BoundedSlider.class, ValidateConfig::boundedSliders);
+        validate(fields, config, TweakData.List.class, ValidateConfig::customLists);
         validate(fields, config, TweakData.Color.class, ValidateConfig::colorStrings);
         validate(fields, config, TweakGui.Placement.class, ValidateConfig::configPlacement);
 
@@ -80,8 +83,8 @@ public abstract class ValidateConfig
      * @param config A config container instance.
      * @param annotation The annotation type class.
      * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
-     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
-     *                  reason message for the continuation or stop.
+     *                  annotation type class and returns a data pair. The data pair has a scan code value (first) and a
+     *                  reason message for the continuation or stop (second).
      * @param <T> The type class of the annotation.
      * @throws ConfigData.ValidationException When invalid data cannot be reset and requires a panic exit.
      */
@@ -190,6 +193,33 @@ public abstract class ValidateConfig
     }
 
     /**
+     * Validate a config file's list data.
+     * @param field A field that has a placement annotation attached to itself.
+     * @param container The class this field is contained in.
+     * @param list List metadata.
+     * @return A data pair where the first value is a result value and the second is a message.
+     * @throws IllegalAccessException When a field could not be set or retrieved.
+     */
+    private static Pair<Scan, String> customLists(Field field, Object container, TweakData.List list)
+            throws IllegalAccessException
+    {
+        String fieldId = field.getName();
+
+        if (ValidateList.scan(list.id(), field.get(container)))
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.GREEN, LIST_VALIDATED));
+        else
+        {
+            String warning = "list (%s) was invalid so it was modified - please see config and backup config";
+            String message = String.format(warning, fieldId);
+
+            NostalgicTweaks.LOGGER.warn(message);
+            NostalgicTweaks.LOGGER.debug("(%s@%s) has invalid list data", container, fieldId);
+
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.YELLOW, message));
+        }
+    }
+
+    /**
      * Validate a client config file's user interface placement data.
      * @param field A field that has a placement annotation attached to itself.
      * @param container The class this field is contained in.
@@ -249,8 +279,8 @@ public abstract class ValidateConfig
      * @param fields A list fields to scan and validate.
      * @param annotation The annotation to check if it is attached.
      * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
-     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
-     *                  reason message for the continuation or stop.
+     *                  annotation type class and returns a data pair. The data pair has a scan code value (first) and a
+     *                  reason message for the continuation or stop (second).
      * @param <T> The type class of the annotation.
      * @return A data pair with a result boolean and failure message if applicable.
      */
@@ -314,8 +344,8 @@ public abstract class ValidateConfig
      * @param field The field to scan.
      * @param annotation The annotation class to try and get.
      * @param validator A validation tri-function that accepts a field, the class instance containing the field, and an
-     *                  annotation type class and returns a data pair. The data pair has a CONTINUE/STOP value and a
-     *                  reason message for the continuation or stop.
+     *                  annotation type class and returns a data pair. The data pair has a scan code value (first) and a
+     *                  reason message for the continuation or stop (second).
      * @param <T> The type class of the annotation.
      * @return The data pair from the validation tri-function.
      */

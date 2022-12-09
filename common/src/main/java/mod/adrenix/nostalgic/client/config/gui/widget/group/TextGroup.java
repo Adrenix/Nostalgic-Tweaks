@@ -3,15 +3,15 @@ package mod.adrenix.nostalgic.client.config.gui.widget.group;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A text group renders text in formatted paragraph form. New text row instances will be created when the end of a
@@ -20,16 +20,15 @@ import java.util.List;
 
 public class TextGroup extends AbstractWidget
 {
-    /* Rendering Constants */
-
-    public static final int LINE_HEIGHT = 13;
+    /* Aligning Options */
 
     /* Widget Fields */
 
+    private MultiLineLabel label;
+    private final TextAlign align;
     private final Component text;
     private final ConfigRowList list;
-    private final ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
-    private List<Component> lines = new ArrayList<>();
+    private final ArrayList<ConfigRowList.Row> rows;
 
     /* Constructor */
 
@@ -44,31 +43,55 @@ public class TextGroup extends AbstractWidget
 
     /**
      * Create a new text group widget that will automatically generate rows based on translation width and the maximum
-     * width of the current screen.
+     * width of the container the text rows reside in.
      *
      * @param text The paragraph to render.
+     * @param align The alignment type for this group.
      */
-    public TextGroup(Component text)
+    public TextGroup(Component text, TextAlign align)
     {
         super(ConfigRowList.TEXT_START, 0, getListWidth(), 12, Component.empty());
 
         this.list = ConfigRowList.getInstance();
         this.text = text;
+        this.align = align;
+        this.rows = new ArrayList<>();
+        this.label = MultiLineLabel.EMPTY;
     }
 
+    /**
+     * Create a new text group widget that will be aligned to the left. Rows will automatically be generated based on
+     * translation widget and the maximum width of the container the text rows reside in.
+     *
+     * @param text The paragraph to render.
+     */
+    public TextGroup(Component text) { this(text, TextAlign.LEFT); }
+
     /* Methods */
+
+    /**
+     * @return The maximum width allocated to text rendering per line.
+     */
+    private int getTextWidth()
+    {
+        return this.list.getWidthMinusScrollbar() - ConfigRowList.currentIndent - ConfigRowList.TEXT_FROM_END;
+    }
 
     /**
      * Generate the rows required to fully display the paragraph for this text group.
      * @return An array list of config row list row instances.
      */
-    public ArrayList<ConfigRowList.Row> getRows()
+    public ArrayList<ConfigRowList.Row> generate()
     {
         this.rows.clear();
 
-        this.width = this.list.screen.width - ConfigRowList.getStartX() - ConfigRowList.TEXT_FROM_END;
-        this.lines = TextUtil.Wrap.tooltip(this.text, (int) (this.width / 5.5F));
-        int rowsNeeded = (int) Math.ceil((double) (lines.size()) / 2);
+        // Fixes a color continuation on next line issue when using a multi line label
+        String fix = this.text.getString().replaceAll("§r", "§f");
+
+        this.width = this.getTextWidth();
+        this.label = MultiLineLabel.create(Minecraft.getInstance().font, Component.literal(fix), this.width);
+
+        int rowsNeeded = (int) Math.ceil((double) (label.getLineCount()) / 2);
 
         for (int i = 0; i < rowsNeeded; i++)
             this.rows.add(new ConfigRowList.Row(ImmutableList.of(new TextRow(i == 0)), null));
@@ -100,7 +123,7 @@ public class TextGroup extends AbstractWidget
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        ArrayList<ConfigRowList.Row> rows = this.getRows();
+        ArrayList<ConfigRowList.Row> rows = this.generate();
         ArrayList<Integer> found = new ArrayList<>();
 
         for (ConfigRowList.Row listChild : this.list.children())
@@ -113,7 +136,7 @@ public class TextGroup extends AbstractWidget
         }
 
         if (found.size() != rows.size())
-            this.getRows().forEach((row) -> this.list.children().add(row));
+            this.generate().forEach((row) -> this.list.children().add(row));
     }
 
     /* Required Widget Overrides */
@@ -153,6 +176,8 @@ public class TextGroup extends AbstractWidget
                 this.height = TextRow.this.getHeight();
         }
 
+        /* Methods */
+
         /**
          * A getter method that checks whether this text row is the first within a text group.
          * @return The state of the {@link TextRow#first} field flag.
@@ -184,18 +209,19 @@ public class TextGroup extends AbstractWidget
             if (!this.first)
                 return;
 
-            int startY = this.y - 1;
+            Font font = Minecraft.getInstance().font;
+            MultiLineLabel label = TextGroup.this.label;
 
-            for (Component line : TextGroup.this.lines)
+            switch (TextGroup.this.align)
             {
-                Screen.drawString(poseStack, Minecraft.getInstance().font, line, this.x, startY, 0xFFFFFF);
-                startY += LINE_HEIGHT;
+                case LEFT -> label.renderLeftAligned(poseStack, ConfigRowList.getStartX(), this.y - 1, font.lineHeight + 4, 0xFFFFFF);
+                case CENTER -> label.renderCentered(poseStack, TextGroup.this.list.getRowWidth() / 2, this.y - 1);
             }
         }
 
         /* Required Widget Overrides */
 
         @Override
-        public void updateNarration(NarrationElementOutput ignored) { }
+        public void updateNarration(NarrationElementOutput ignored) {}
     }
 }

@@ -1,41 +1,183 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
-import mod.adrenix.nostalgic.client.config.gui.screen.SwingScreen;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.gui.overlay.ManageItemOverlay;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-
-import java.util.Map;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 
 /**
- * This is a simple button class that is used to assist the rendering of item sprites on the swing screen row list.
- * Rendering of these sprites are handled by the speed row list renderer.
+ * This widget is used by config list screens. When the mouse hovers an item button, animations will take place as well
+ * as a tooltip with item information and a notice that clicking the item will open a new overlay window with further
+ * options.
  */
 
 public class ItemButton extends Button
 {
+    /* Widget Constants */
+
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 20;
+
     /* Fields */
 
-    public SwingScreen screen;
-    public Map.Entry<String, Integer> entry;
+    public AbstractListScreen screen;
+    public ItemStack itemStack;
+
+    /**
+     * This field tracks whether this button is being by an overlay.
+     * Different rendering logic is needed when this button is used by the item manager overlay.
+     */
+    private boolean isForOverlay;
 
     /* Constructor */
 
     /**
-     * Create a new item button tracker instance.
+     * Create a new hover item button instance.
+     * Since this button is used exclusively by row lists, a starting y-position is omitted from the constructor.
      *
-     * Since this button is used exclusively by the speed row list, a starting y-position is omitted from the
-     * constructor.
-     *
-     * @param screen A swing screen instance.
-     * @param entry A configuration swing speed entry.
+     * @param screen An abstract list screen instance.
+     * @param itemStack The item stack that is being used by this button.
      * @param startX The starting x-position of this button.
      */
-    public ItemButton(SwingScreen screen, Map.Entry<String, Integer> entry, int startX)
+    public ItemButton(AbstractListScreen screen, ItemStack itemStack, int startX)
     {
-        super(startX, 0, 20, 20, Component.empty(), (ignored) -> {});
+        super(startX, 0, WIDTH, HEIGHT, Component.empty(), (ignored) -> {});
 
         this.screen = screen;
-        this.entry = entry;
-        this.active = false;
+        this.itemStack = itemStack;
+        this.isForOverlay = false;
+    }
+
+    /**
+     * Shortcut for setting the focused flag to <code>true</code>. The invoker instance is returned.
+     * @return The item button instance that invoked this method.
+     */
+    public ItemButton forOverlay()
+    {
+        this.isForOverlay = true;
+        return this;
+    }
+
+    /* Methods */
+
+    /**
+     * Handler method for when the mouse clicks on an item button.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
+    @Override
+    public void onClick(double mouseX, double mouseY)
+    {
+        if (!this.isForOverlay)
+            new ManageItemOverlay(this.itemStack);
+    }
+
+    /**
+     * Handler method for when the mouse clicks n an item button widget.
+     * This will return false to prevent a clicking sound from playing when this widget is for an item manager overlay.
+     *
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether this method handled the mouse click event.
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (this.isForOverlay)
+            return false;
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * Handler method for rendering a tooltip for this item button.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     */
+    @Override
+    public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        this.screen.renderComponentTooltip(poseStack, this.screen.getTooltipFromItem(this.itemStack), mouseX, mouseY);
+    }
+
+    /**
+     * Handler method for rendering an item button.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    {
+        // Overlay activation
+
+        this.active = !Overlay.isOpened();
+
+        // If the manage item overlay is open and uses this button, then the y position needs aligned to the overlay.
+
+        if (Overlay.getVisible() instanceof ManageItemOverlay itemOverlay && this.isForOverlay)
+        {
+            int dy = ItemClientUtil.isModelFlat(this.itemStack) ? 2 : 1;
+
+            this.y = itemOverlay.getOverlayStartY() + dy;
+            this.active = true;
+            this.visible = true;
+        }
+
+        // Item button rendering
+
+        PoseStack viewStack = RenderSystem.getModelViewStack();
+
+        boolean isOutsideTop = mouseY <= ConfigWidgets.ROW_LIST_TOP;
+        boolean isOutsideBottom = mouseY >= this.screen.height - ConfigWidgets.ROW_LIST_BOTTOM_OFFSET;
+        boolean isOutside = isOutsideTop || isOutsideBottom;
+        boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && !isOutside;
+
+        int startX = this.x + 2;
+        int startY = this.y + 1;
+        int color = TextUtil.toHexInt((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
+
+        if (this.itemStack.getItem() instanceof BlockItem)
+            startY = this.y + 2;
+
+        viewStack.pushPose();
+
+        if (this.isForOverlay)
+            viewStack.translate(0.0F, 0.0F, 100.0F);
+
+        if (isMouseOver && !this.isForOverlay)
+        {
+            viewStack.translate(0.0F, -0.6F, 0.0F);
+            RenderUtil.fill(poseStack, this.x, this.x + this.width, this.y, this.y + this.height, color);
+        }
+
+        RenderSystem.applyModelViewMatrix();
+
+        this.screen.getItemRenderer().renderGuiItem(this.itemStack, startX, startY);
+
+        viewStack.popPose();
+        RenderSystem.applyModelViewMatrix();
+
+        if (isMouseOver)
+        {
+            if (!this.isForOverlay)
+                this.screen.renderLast.add(() -> this.renderToolTip(poseStack, mouseX, mouseY));
+            else
+                this.screen.renderOverlayTooltips.add(this::renderToolTip);
+        }
     }
 }

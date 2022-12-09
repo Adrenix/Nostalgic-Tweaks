@@ -6,15 +6,14 @@ import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Overlays are not screens nor widgets, instead they render on top of screens and use widgets within the overlay.
@@ -23,26 +22,20 @@ import java.util.Set;
 
 public abstract class Overlay extends GuiComponent implements OverlayEvents
 {
-    /*
-       Singleton Registration
-
-       These static methods are used to register new singleton instance of an overlay.
-       Typically, registration is performed within a static block within an extended overlay class.
-
-       See the color picker or category list overlay windows for examples of registration.
-     */
+    /* Static Fields */
 
     /**
-     * This set keeps track of all singleton overlay instances.
-     * There will not be multiple instances of overlays since only one overlay can be visible at a time.
+     * This field tracks the overlay that is currently visible. Only one overlay can be visible at a time.
      */
-    private static final Set<Overlay> OVERLAYS = new HashSet<>();
+    @Nullable private static Overlay visible = null;
 
     /**
-     * Register an overlay singleton.
-     * @param overlay An overlay instance.
+     * Getter for retrieving the current visible overlay. This will return <code>null</code> if no overlay is currently
+     * visible.
+     *
+     * @return An overlay instance.
      */
-    public static void register(Overlay overlay) { OVERLAYS.add(overlay); }
+    public static Overlay getVisible() { return Overlay.visible; }
 
     /*
        Graphical User Interface Helpers
@@ -52,40 +45,19 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
 
     /**
-     * Get the overlay that is visible to the user.
-     * @return An overlay singleton instance if that overlay is opened.
+     * Close the currently opened overlay.
      */
-    @Nullable
-    private static Overlay getOverlay()
+    public static void close()
     {
-        for (Object obj : OVERLAYS.toArray())
-        {
-            if (obj instanceof Overlay overlay && overlay.isOpen())
-                return overlay;
-        }
-
-        return null;
-    }
-
-    /**
-     * Start a new overlay session.
-     * @param starting The overlay instance that is starting a new session.
-     */
-    protected static void start(Overlay starting)
-    {
-        Overlay visible = getOverlay();
-
-        if (visible != null && visible.isOpen())
-            visible.onClose();
-
-        starting.isOverlayOpen = true;
+        if (Overlay.visible != null)
+            Overlay.visible.onClose();
     }
 
     /**
      * Checks if an overlay session is active.
      * @return Whether an overlay instance is currently visible to the user.
      */
-    public static boolean isOpened() { return getOverlay() != null; }
+    public static boolean isOpened() { return Overlay.visible != null; }
 
     /**
      * Checks if the mouse is over the active overlay window title bar.
@@ -95,10 +67,8 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static boolean isOverTitle(double mouseX, double mouseY)
     {
-        Overlay overlay = getOverlay();
-
-        if (overlay != null)
-            return overlay.isMouseOverTitle(mouseX, mouseY);
+        if (Overlay.visible != null)
+            return Overlay.visible.isMouseOverTitle(mouseX, mouseY);
 
         return false;
     }
@@ -115,10 +85,8 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static void resize()
     {
-        Overlay overlay = getOverlay();
-
-        if (overlay != null)
-            overlay.onResize();
+        if (Overlay.visible != null)
+            Overlay.visible.onResize();
     }
 
     /**
@@ -129,10 +97,8 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static void onRelease(double mouseX, double mouseY, int button)
     {
-        Overlay overlay = getOverlay();
-
-        if (overlay != null)
-            overlay.onMouseReleased(mouseX, mouseY, button);
+        if (Overlay.visible != null)
+            Overlay.visible.onMouseReleased(mouseX, mouseY, button);
     }
 
     /**
@@ -145,15 +111,13 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        Overlay overlay = getOverlay();
-
-        if (overlay != null && keyCode == GLFW.GLFW_KEY_ESCAPE)
+        if (Overlay.visible != null && !Overlay.visible.locked && keyCode == GLFW.GLFW_KEY_ESCAPE)
         {
-            overlay.onClose();
+            Overlay.visible.onClose();
             return true;
         }
 
-        return overlay != null && overlay.onKeyPressed(keyCode, scanCode, modifiers);
+        return Overlay.visible != null && Overlay.visible.onKeyPressed(keyCode, scanCode, modifiers);
     }
 
     /**
@@ -165,8 +129,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        Overlay overlay = getOverlay();
-        return overlay != null && overlay.onClick(mouseX, mouseY, button);
+        return Overlay.visible != null && Overlay.visible.onClick(mouseX, mouseY, button);
     }
 
     /**
@@ -180,8 +143,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
-        Overlay overlay = getOverlay();
-        return overlay != null && overlay.onDrag(mouseX, mouseY, button, dragX, dragY);
+        return Overlay.visible != null && Overlay.visible.onDrag(mouseX, mouseY, button, dragX, dragY);
     }
 
     /**
@@ -193,8 +155,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static boolean mouseScrolled(double mouseX, double mouseY, double delta)
     {
-        Overlay overlay = getOverlay();
-        return overlay != null && overlay.onMouseScrolled(mouseX, mouseY, delta);
+        return Overlay.visible != null && Overlay.visible.onMouseScrolled(mouseX, mouseY, delta);
     }
 
     /**
@@ -206,10 +167,8 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     public static void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        Overlay overlay = getOverlay();
-
-        if (overlay != null)
-            overlay.onRender(poseStack, mouseX, mouseY, partialTick);
+        if (Overlay.visible != null)
+            Overlay.visible.onRender(poseStack, mouseX, mouseY, partialTick);
     }
 
     /*
@@ -239,9 +198,14 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     protected static void drawString(Component component, int x, int y, int color)
     {
-        PoseStack overlay = new PoseStack();
-        overlay.last().pose().translate(new Vector3f(0.0F, 0.0F, 0.03F));
-        drawString(overlay, Minecraft.getInstance().font, component, x, y, color);
+        PoseStack poseStack = new PoseStack();
+
+        poseStack.pushPose();
+        poseStack.last().pose().translate(new Vector3f(0.0F, 0.0F, Z_OFFSET + 1.0F));
+
+        drawString(poseStack, Minecraft.getInstance().font, component, x, y, color);
+
+        poseStack.popPose();
     }
 
     /**
@@ -265,6 +229,11 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * A list of widgets to be rendered and handled.
      */
     protected final ArrayList<AbstractWidget> widgets = new ArrayList<>();
+
+    /**
+     * The current active screen when this overlay is created.
+     */
+    protected final Screen screen = Minecraft.getInstance().screen;
 
     /**
      * Checks if the overlay session is visible to the user.
@@ -305,8 +274,23 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      */
     protected int height;
 
+    /* Flags */
+
+    /**
+     * When this flag is active, the overlay cannot be closed using normal means.
+     * There must be a button somewhere on the overlay that closes the overlay when clicked.
+     */
+    protected boolean locked = false;
+
+    /**
+     * When this flag is active, the overlay will display a tooltip when the mouse is over a hint button.
+     * Rendering and mouse checks must be done within the overlay.
+     */
+    protected boolean hint = false;
+
     /* Rendering Constants */
 
+    public static final float Z_OFFSET = 400.0F;
     protected static final int LEFT_CLICK = GLFW.GLFW_MOUSE_BUTTON_LEFT;
     protected static final int CLOSE_WIDTH = 9;
     protected static final int CLOSE_HEIGHT = 9;
@@ -316,10 +300,26 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * @param width The width of this overlay.
      * @param height The height of this overlay.
      */
-    protected Overlay(int width, int height)
+    @SuppressWarnings("SwitchStatementWithTooFewBranches") // This will be expanded when more flags are made
+    protected Overlay(int width, int height, OverlayFlag ...flags)
     {
         this.width = width;
         this.height = height;
+
+        if (Overlay.visible != null && Overlay.visible.isOpen())
+            Overlay.visible.onClose();
+
+        Overlay.visible = this;
+        Overlay.visible.isOverlayOpen = true;
+        Overlay.visible.isJustOpened = true;
+
+        for (OverlayFlag flag : flags)
+        {
+            switch (flag)
+            {
+                case LOCKED -> this.locked = true;
+            }
+        }
     }
 
     /**
@@ -346,14 +346,20 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * All overlays must override this, there will be no default resizing logic.
      */
     @Override
-    public void onResize() {}
+    public void onResize() { this.init(); }
 
     /**
      * Provides logic that will be performed when the overlay is closed by the user.
      * Overlays may override this. The default behavior is to set the overlay open field to false.
      */
     @Override
-    public void onClose() { this.isOverlayOpen = false; }
+    public void onClose()
+    {
+        this.widgets.clear();
+        this.isOverlayOpen = false;
+
+        Overlay.visible = null;
+    }
 
     /**
      * Provides logic that will be performed when the caller is checking if an overlay instance is visible to the user.
@@ -374,6 +380,10 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public boolean onMouseScrolled(double mouseX, double mouseY, double delta)
     {
+        // Don't process widgets if this overlay closed
+        if (!this.isOverlayOpen)
+            return false;
+
         this.widgets.forEach((widget) ->
         {
             if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
@@ -400,6 +410,10 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public boolean onDrag(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
+        // Don't process widgets if this overlay closed
+        if (!this.isOverlayOpen)
+            return false;
+
         this.widgets.forEach((widget) ->
         {
             if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
@@ -439,17 +453,29 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public boolean onClick(double mouseX, double mouseY, int button)
     {
-        this.widgets.forEach((widget) -> widget.mouseClicked(mouseX, mouseY, button));
+        // Don't process widgets if this overlay closed
+        if (!this.isOverlayOpen)
+            return false;
+
+        // If a click action clears the widget list, then the for loop must stop
+        for (AbstractWidget widget : this.widgets)
+        {
+            widget.mouseClicked(mouseX, mouseY, button);
+
+            if (this.widgets.size() == 0)
+                break;
+        }
 
         if (button != LEFT_CLICK)
             return false;
 
         boolean isOutOfBounds = !MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height);
+        boolean isClosing = isOutOfBounds || this.isOverClose;
 
-        if (isOutOfBounds || this.isOverClose)
+        if (isClosing && !this.locked)
             this.onClose();
 
-        if (this.isMouseOverTitle(mouseX, mouseY))
+        if (this.isMouseOverTitle(mouseX, mouseY) && !(this.locked && isClosing))
             Overlay.playClickSound();
 
         return false;
@@ -466,7 +492,12 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers)
     {
+        // Don't process widgets if this overlay closed
+        if (!this.isOverlayOpen)
+            return false;
+
         this.widgets.forEach((widget) -> widget.keyPressed(keyCode, scanCode, modifiers));
+
         return false;
     }
 
@@ -490,6 +521,29 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
             this.isJustOpened = false;
             return;
         }
+
+        // Don't render widgets if this overlay closed
+        if (!this.isOverlayOpen)
+            return;
+
+        // Check if mouse dragging the window moved it's title bar off the screen.
+        double lastX = this.x;
+        double lastY = this.y;
+
+        if (this.x + this.width <= 0.0D)
+            this.x = 0.0D;
+
+        if (this.x > Minecraft.getInstance().getWindow().getGuiScaledWidth() - 5.0D)
+            this.x = Minecraft.getInstance().getWindow().getGuiScaledWidth() - 25.0D;
+
+        if (this.y < 0.0D)
+            this.y = 0.0D;
+
+        if (this.y > Minecraft.getInstance().getWindow().getGuiScaledHeight())
+            this.y = Minecraft.getInstance().getWindow().getGuiScaledHeight() - 15.0D;
+
+        if (lastY != this.y || lastX != this.x)
+            this.generateWidgets();
 
         // Send mouse release to widgets the mouse is over
         this.widgets.forEach((widget) ->

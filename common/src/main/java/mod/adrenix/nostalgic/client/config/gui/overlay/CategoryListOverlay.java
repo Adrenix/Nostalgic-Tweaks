@@ -5,17 +5,15 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import mod.adrenix.nostalgic.client.config.gui.overlay.template.GenericOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -37,80 +35,62 @@ import java.util.List;
  * Assists the configuration screen so users can quickly jump to a specific row.
  */
 
-public class CategoryList extends Overlay
+public class CategoryListOverlay extends GenericOverlay
 {
-    /* Singleton Constructor */
+    /* Static Fields */
 
     public static final int DEFAULT_WIDTH = 256;
     public static final int DEFAULT_HEIGHT = 220;
 
-    private CategoryList() { super(DEFAULT_WIDTH, DEFAULT_HEIGHT); }
+    /* Overlay Fields */
 
-    /* Register Overlay */
+    private TextRowList list;
+    private ConfigRowList configRowList;
+    private ConfigRowList.Row selected = null;
 
-    public static final CategoryList OVERLAY = new CategoryList();
-    static { Overlay.register(OVERLAY); }
+    /* Constructor & Initialize */
 
-    /* Rendering Constants */
+    /**
+     * Start a new category list overlay window instance.
+     */
+    public CategoryListOverlay()
+    {
+        super(Component.translatable(LangUtil.Gui.OVERLAY_LIST), DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-    private static final int U_TOP_LEFT_CORNER = 0;
-    private static final int V_TOP_LEFT_CORNER = 0;
-    private static final int W_TOP_LEFT_CORNER = 16;
-    private static final int H_TOP_LEFT_CORNER = 15;
+        this.setBackground(0xEF000000);
+        this.init();
+    }
 
-    private static final int U_TOP_RIGHT_CORNER = 19;
-    private static final int V_TOP_RIGHT_CORNER = 0;
-    private static final int W_TOP_RIGHT_CORNER = 16;
-    private static final int H_TOP_RIGHT_CORNER = 15;
+    /**
+     * Sets up overlay fields based on current game window properties.
+     */
+    @Override
+    public void init()
+    {
+        super.init();
 
-    private static final int U_TOP_BAR = 17;
-    private static final int V_TOP_BAR = 0;
-    private static final int H_TOP_BAR = 15;
+        this.configRowList = ConfigRowList.getInstance();
+        this.list = null;
 
-    private static final int U_LEFT_BAR = 0;
-    private static final int V_LEFT_BAR = 16;
-    private static final int W_LEFT_BAR = 8;
-
-    private static final int U_RIGHT_BAR = 27;
-    private static final int V_RIGHT_BAR = 16;
-    private static final int W_RIGHT_BAR = 8;
-
-    private static final int U_BOTTOM_LEFT_CORNER = 0;
-    private static final int V_BOTTOM_LEFT_CORNER = 18;
-    private static final int W_BOTTOM_LEFT_CORNER = 16;
-    private static final int H_BOTTOM_LEFT_CORNER = 8;
-
-    private static final int U_BOTTOM_BAR = 17;
-    private static final int V_BOTTOM_BAR = 18;
-    private static final int H_BOTTOM_BAR = 8;
-
-    private static final int U_BOTTOM_RIGHT_CORNER = 19;
-    private static final int V_BOTTOM_RIGHT_CORNER = 18;
-    private static final int W_BOTTOM_RIGHT_CORNER = 16;
-    private static final int H_BOTTOM_RIGHT_CORNER = 8;
-
-    private static final int U_CLOSE_OFF = 35;
-    private static final int V_CLOSE_OFF = 9;
-    private static final int U_CLOSE_ON = 35;
-    private static final int V_CLOSE_ON = 0;
-
-    private static final int U_HINT_OFF = 44;
-    private static final int V_HINT_OFF = 9;
-    private static final int U_HINT_ON = 44;
-    private static final int V_HINT_ON = 0;
-    private static final int HINT_SQUARE = 9;
+        this.generateWidgets();
+    }
 
     /* Rendering Utility */
 
-    private int getListStartX() { return (int) this.x + 10; }
-    private int getListStartY() { return (int) this.y + H_TOP_RIGHT_CORNER; }
-    private int getListEndY() { return (int) this.y + this.getListHeight() + H_TOP_LEFT_CORNER - 1; }
+    private int getListEndY() { return (int) this.y + this.getOverlayHeight() + H_TOP_LEFT_CORNER - 1; }
     private int getListWidth() { return (int) this.x + DEFAULT_WIDTH - 9; }
-    private int getListHeight() { return this.height - H_TOP_RIGHT_CORNER - H_TOP_LEFT_CORNER; }
-    private int getDrawWidth() { return this.width - W_TOP_RIGHT_CORNER - W_TOP_LEFT_CORNER; }
 
-    // Hint Flag
-    private boolean hint = false;
+    /**
+     * Refreshes the internal overlay row list.
+     */
+    private void refreshRowList()
+    {
+        double scrolled = this.list.getScrollAmount();
+
+        this.list.children().clear();
+        this.generateWidgets();
+        this.list.setScrollAmount(scrolled);
+    }
 
     // Star Char
     private static final String TWEAK_STAR = "*";
@@ -177,9 +157,14 @@ public class CategoryList extends Overlay
         @Override
         public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
         {
+            CategoryListOverlay overlay = (CategoryListOverlay) Overlay.getVisible();
+
+            if (ClassUtil.isNotInstanceOf(overlay, CategoryListOverlay.class))
+                return;
+
             boolean isTweak = this.title.getString().equals(TWEAK_STAR);
             boolean isControl = this.title.getString().length() == 1;
-            boolean isSelected = this.row.equals(CategoryList.OVERLAY.getSelected()) && isControl;
+            boolean isSelected = this.row.equals(overlay.getSelected()) && isControl;
             boolean isTabbed = this.isFocused() && !isTweak;
             boolean isHover = MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
             int highlight = isHover ? 0xFFD800 : this.color;
@@ -187,8 +172,8 @@ public class CategoryList extends Overlay
             if (isTabbed)
                 highlight = 0x3AC0FF;
 
-            if (isSelected && CategoryList.OVERLAY.list.getLastSelection() == null)
-                CategoryList.OVERLAY.list.setLastSelection(this);
+            if (isSelected && overlay.list.getLastSelection() == null)
+                overlay.list.setLastSelection(this);
 
             drawString(poseStack, this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.x, this.y, highlight);
         }
@@ -266,17 +251,17 @@ public class CategoryList extends Overlay
              */
             private void toggle(Button button)
             {
-                if (this.container != null)
+                if (this.container != null && Overlay.getVisible() instanceof CategoryListOverlay overlay)
                 {
-                    double scrolled = OVERLAY.list.getScrollAmount();
+                    double scrolled = overlay.list.getScrollAmount();
                     int position = 0;
 
                     this.container.silentPress();
                     button.setMessage(Component.literal(this.container.isExpanded() ? "-" : "+"));
 
-                    for (int i = 0; i < OVERLAY.list.children().size() - 1; i++)
+                    for (int i = 0; i < overlay.list.children().size() - 1; i++)
                     {
-                        for (AbstractWidget widget : OVERLAY.list.children().get(i).children)
+                        for (AbstractWidget widget : overlay.list.children().get(i).children)
                         {
                             if (widget.isFocused())
                             {
@@ -289,17 +274,17 @@ public class CategoryList extends Overlay
                             break;
                     }
 
-                    OVERLAY.list.children().clear();
-                    OVERLAY.generateWidgets();
+                    overlay.list.children().clear();
+                    overlay.generateWidgets();
 
                     if (scrolled > 0.0D)
-                        OVERLAY.list.setScrollAmount(scrolled);
+                        overlay.list.setScrollAmount(scrolled);
 
-                    if (position < OVERLAY.list.children().size())
+                    if (position < overlay.list.children().size())
                     {
-                        AbstractWidget widget = OVERLAY.list.children().get(position).children.get(0);
+                        AbstractWidget widget = overlay.list.children().get(position).children.get(0);
                         ((AbstractWidgetAccessor) widget).NT$setFocus(true);
-                        OVERLAY.list.setLastSelection(widget);
+                        overlay.list.setLastSelection(widget);
                     }
                 }
             }
@@ -380,40 +365,12 @@ public class CategoryList extends Overlay
 
     /* Overlay Overrides */
 
-    private TextRowList list;
-    private ConfigRowList all;
-    private ConfigRowList.Row selected = null;
-
     /**
      * There is no setter method for this field. This is handled by widget handlers automatically.
      * @return A selected config row, null otherwise.
      */
     @Nullable
     public ConfigRowList.Row getSelected() { return this.selected; }
-
-    /**
-     * This method defines instructions to perform when the overlay window is opened.
-     * @param configRowList A config row list instance.
-     */
-    public void open(ConfigRowList configRowList)
-    {
-        Overlay.start(CategoryList.OVERLAY);
-
-        Minecraft minecraft = Minecraft.getInstance();
-        Screen screen = minecraft.screen;
-
-        if (screen == null)
-            return;
-
-        this.isJustOpened = true;
-        this.hint = false;
-        this.all = configRowList;
-        this.x = (screen.width / 2.0D) - (this.width / 2.0D);
-        this.y = (screen.height / 2.0D) - (this.height / 2.0D);
-
-        if (this.list == null)
-            this.generateWidgets();
-    }
 
     /**
      * This method defines instructions that create widgets for this overlay window.
@@ -431,16 +388,16 @@ public class CategoryList extends Overlay
             this.list.resetLastSelection();
 
         int width = this.getListWidth();
-        int height = this.getListHeight();
-        int startY = this.getListStartY();
+        int height = this.getOverlayHeight();
+        int startY = this.getOverlayStartY();
         int endY = this.getListEndY();
 
         TextRowList.color = 0xFFFFFF;
 
         this.list = new TextRowList(screen, width, height, startY, endY, screen.getFont().lineHeight + 2);
-        this.list.setLeftPos(this.getListStartX());
+        this.list.setLeftPos(this.getOverlayStartX());
 
-        for (ConfigRowList.Row row : this.all.children())
+        for (ConfigRowList.Row row : this.configRowList.children())
         {
             int indent = 0;
 
@@ -453,9 +410,11 @@ public class CategoryList extends Overlay
 
             Button.OnPress jump = button ->
             {
-                this.all.setScrollOn(row);
+                this.configRowList.setScrollOn(row);
+                this.configRowList.setSelection = true;
                 this.selected = row;
-                screen.getWidgets().getConfigRowList().setSelection = true;
+
+                this.refreshRowList();
             };
 
             if (row.controller instanceof ContainerButton container)
@@ -527,13 +486,7 @@ public class CategoryList extends Overlay
         boolean isDragging = super.onDrag(mouseX, mouseY, button, dragX, dragY);
 
         if (isDragging)
-        {
-            double scrolled = this.list.getScrollAmount();
-
-            this.list.children().clear();
-            this.generateWidgets();
-            this.list.setScrollAmount(scrolled);
-        }
+            this.refreshRowList();
         else
             this.list.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 
@@ -567,15 +520,13 @@ public class CategoryList extends Overlay
     @Override
     public void onResize()
     {
-        this.onClose();
-
         ContainerButton.collapseAll();
         Screen screen = Minecraft.getInstance().screen;
 
         if (screen instanceof ConfigScreen configScreen)
         {
             configScreen.getRenderer().generateRowsFromAllGroups();
-            this.open(configScreen.getWidgets().getConfigRowList());
+            this.init();
         }
     }
 
@@ -586,7 +537,7 @@ public class CategoryList extends Overlay
     public void onClose()
     {
         this.list.children().clear();
-        this.all = null;
+        this.configRowList = null;
 
         super.onClose();
     }
@@ -599,108 +550,27 @@ public class CategoryList extends Overlay
      * @param partialTick The change in time between frames.
      */
     @Override
-    public void onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    public void onMainRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        Minecraft minecraft = Minecraft.getInstance();
-        Screen screen = minecraft.screen;
-
-        if (screen == null || !this.isOpen())
-            return;
-
-        if (this.list.children().isEmpty())
-            this.generateWidgets();
-
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buffer = tesselator.getBuilder();
-        Matrix4f matrix = poseStack.last().pose();
-
-        RenderSystem.depthFunc(515);
-        RenderSystem.disableDepthTest();
-        RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.disableTexture();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-        // Render semi-transparent background
-        float leftX = (float) this.x + 6;
-        float rightX = (float) this.x + this.width - 4;
-        float topY = (float) this.y + 14;
-        float bottomY = (float) this.y + this.height - 10;
-
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        RenderUtil.fill(buffer, matrix, leftX, rightX, topY, bottomY, 0xC6000000);
-        tesselator.end();
-
         // Render category list
         if (this.list != null)
             this.list.render(poseStack, mouseX, mouseY, partialTick);
+    }
 
-        // Render border
-        RenderSystem.enableTexture();
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
+    /**
+     * Rendering instructions for post overlay window rendering.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in time between frames.
+     */
+    @Override
+    public void onPostRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    {
+        // Render hint button
+        this.renderHintButton(poseStack, mouseX, mouseY);
 
-        int startX = (int) this.x;
-        int startY = (int) this.y;
-        int drawWidth = this.getDrawWidth();
-        int drawHeight = this.getListHeight();
-
-        // Draw top left
-        blit(poseStack, startX, startY, U_TOP_LEFT_CORNER, V_TOP_LEFT_CORNER, W_TOP_LEFT_CORNER, H_TOP_LEFT_CORNER);
-
-        // Draw top width
-        for (int i = 0; i < drawWidth; i++)
-            blit(poseStack, i + startX + W_TOP_LEFT_CORNER, startY, U_TOP_BAR, V_TOP_BAR, 1, H_TOP_BAR);
-
-        // Draw top right
-        blit(poseStack, startX + W_TOP_LEFT_CORNER + drawWidth, startY, U_TOP_RIGHT_CORNER, V_TOP_RIGHT_CORNER, W_TOP_RIGHT_CORNER, H_TOP_RIGHT_CORNER);
-
-        // Draw sidebars
-        for (int i = 0; i < drawHeight; i++)
-        {
-            blit(poseStack, startX, i + startY + H_TOP_LEFT_CORNER, U_LEFT_BAR, V_LEFT_BAR, W_LEFT_BAR, 1);
-            blit(poseStack, startX + W_TOP_LEFT_CORNER + drawWidth + 8, i + startY + H_TOP_RIGHT_CORNER, U_RIGHT_BAR, V_RIGHT_BAR, W_RIGHT_BAR, 1);
-        }
-
-        // Draw bottom left
-        blit(poseStack, startX, startY + H_TOP_LEFT_CORNER + drawHeight, U_BOTTOM_LEFT_CORNER, V_BOTTOM_LEFT_CORNER, W_BOTTOM_LEFT_CORNER, H_BOTTOM_LEFT_CORNER);
-
-        // Draw bottom width
-        for (int i = 0; i < drawWidth; i++)
-            blit(poseStack, i + startX + W_BOTTOM_LEFT_CORNER, startY + H_TOP_LEFT_CORNER + drawHeight, U_BOTTOM_BAR, V_BOTTOM_BAR, 1, H_BOTTOM_BAR);
-
-        // Draw bottom right
-        blit(poseStack, startX + W_BOTTOM_LEFT_CORNER + drawWidth, startY + H_TOP_RIGHT_CORNER + drawHeight, U_BOTTOM_RIGHT_CORNER, V_BOTTOM_RIGHT_CORNER, W_BOTTOM_RIGHT_CORNER, H_BOTTOM_RIGHT_CORNER);
-
-        // Render close and hint button
-        int closeX = startX + W_TOP_LEFT_CORNER + drawWidth;
-        int closeY = startY + 4;
-        this.isOverClose = MathUtil.isWithinBox(mouseX, mouseY, closeX, closeY, CLOSE_WIDTH, CLOSE_HEIGHT);
-
-        blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);
-
-        int hintX = closeX - 10;
-        boolean isOverHint = MathUtil.isWithinBox(mouseX, mouseY, hintX, closeY, HINT_SQUARE, HINT_SQUARE);
-
-        blit(poseStack, hintX, closeY, isOverHint ? U_HINT_ON : U_HINT_OFF, isOverHint ? V_HINT_ON : V_HINT_OFF, HINT_SQUARE, HINT_SQUARE);
-
-        // Text needs to be rendered last since it will interfere with alpha rendering
-        int color = this.isMouseOverTitle(mouseX, mouseY) && !this.isOverClose && !isOverHint ? 0xFFF65B : 0xFFFFFF;
-        drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST), startX + 20, startY + 4, color);
-
-        // Render dragging and tooltip hints
-        boolean isOverIcon = MathUtil.isWithinBox(mouseX, mouseY, this.x + 6, this.y + 3, 9, 9);
-        if (isOverIcon)
-        {
-            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
-            screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
-        }
-
-        if (isOverHint && this.hint)
-        {
-            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_LIST_HINT), 36);
-            screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
-        }
-
-        RenderSystem.disableBlend();
+        // Render hint tooltip
+        this.renderTooltipHint(poseStack, mouseX, mouseY);
     }
 }

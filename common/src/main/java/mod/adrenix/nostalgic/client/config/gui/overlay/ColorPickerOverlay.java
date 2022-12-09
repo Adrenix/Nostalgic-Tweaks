@@ -25,19 +25,52 @@ import java.util.List;
  * All overlay windows will have all sliders accessible. Hex management must be handled separately.
  */
 
-public class ColorPicker extends Overlay
+public class ColorPickerOverlay extends Overlay
 {
-    /* Singleton Constructor */
+    /* Static Fields */
 
     public static final int OVERLAY_WIDTH = 176;
     public static final int OVERLAY_HEIGHT = 125;
 
-    private ColorPicker() { super(OVERLAY_WIDTH, OVERLAY_HEIGHT); }
+    /* Constructor & Initialize */
 
-    /* Register Overlay */
+    /**
+     * Start a new color picker overlay window instance.
+     * @param hex A client tweak cache with a string value that stores a hex value.
+     */
+    public ColorPickerOverlay(TweakClientCache<String> hex)
+    {
+        super(OVERLAY_WIDTH, OVERLAY_HEIGHT);
 
-    public static final ColorPicker OVERLAY = new ColorPicker();
-    static { Overlay.register(OVERLAY); }
+        this.tweak = hex;
+        this.init();
+    }
+
+    /**
+     * Sets up overlay fields based on current game window properties.
+     */
+    @Override
+    public void init()
+    {
+        Minecraft minecraft = Minecraft.getInstance();
+        Screen screen = minecraft.screen;
+
+        if (screen == null)
+            return;
+
+        this.isJustOpened = true;
+        this.hint = false;
+        this.x = (screen.width / 2.0D) - (this.width / 2.0D);
+        this.y = (screen.height / 2.0D) - (this.height / 2.0D);
+
+        int[] rgba = TextUtil.toHexRGBA(this.tweak.getValue());
+        this.r = rgba[0];
+        this.g = rgba[1];
+        this.b = rgba[2];
+        this.a = rgba[3];
+
+        this.generateWidgets();
+    }
 
     /* Rendering Constants */
 
@@ -54,7 +87,7 @@ public class ColorPicker extends Overlay
 
     /* Overlay Fields */
 
-    private TweakClientCache<String> tweak;
+    private final TweakClientCache<String> tweak;
     private boolean hint = false;
     private int r;
     private int g;
@@ -76,7 +109,7 @@ public class ColorPicker extends Overlay
     private int getHintX() { return (int) this.x + 150; }
     private int getHintY() { return (int) this.y + 4; }
 
-    /* Widgets Override */
+    /* Overlay Overrides */
 
     /**
      * Defines the widgets that are used by this overlay.
@@ -91,57 +124,11 @@ public class ColorPicker extends Overlay
         int h = 20;
         int dy = 24;
 
-        widgets.clear();
-        widgets.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
-        widgets.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
-        widgets.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
-        widgets.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
-    }
-
-    /* Overlay Opening */
-
-    /**
-     * Start a new color picker overlay window instance.
-     * @param hex A client tweak cache with a string value that stores a hex value.
-     */
-    public void open(TweakClientCache<String> hex)
-    {
-        Overlay.start(ColorPicker.OVERLAY);
-
-        Minecraft minecraft = Minecraft.getInstance();
-        Screen screen = minecraft.screen;
-
-        if (screen == null)
-            return;
-
-        this.isJustOpened = true;
-        this.tweak = hex;
-        this.hint = false;
-        this.x = (screen.width / 2.0D) - (this.width / 2.0D);
-        this.y = (screen.height / 2.0D) - (this.height / 2.0D);
-
-        int[] rgba = TextUtil.toHexRGBA(this.tweak.getValue());
-        this.r = rgba[0];
-        this.g = rgba[1];
-        this.b = rgba[2];
-        this.a = rgba[3];
-
-        this.generateWidgets();
-    }
-
-    /* Overlay Overrides */
-
-    /**
-     * Handler method for when the game window is resized.
-     * Widget references will be reset when this happens.
-     */
-    @Override
-    public void onResize()
-    {
-        TweakClientCache<String> current = this.tweak;
-
-        this.onClose();
-        this.open(current);
+        this.widgets.clear();
+        this.widgets.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
+        this.widgets.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
+        this.widgets.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
+        this.widgets.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
     }
 
     /**
@@ -260,23 +247,27 @@ public class ColorPicker extends Overlay
 
         // Text needs to be rendered last since it will interfere with alpha rendering
         int color = this.isMouseOverTitle(mouseX, mouseY) && !this.isOverClose && !isOverHint ? 0xFFF65B : 0xFFFFFF;
-        drawString(Component.translatable(LangUtil.Gui.GUI_OVERLAY_COLOR), startX + 19, startY + 5, color);
+        drawString(Component.translatable(LangUtil.Gui.OVERLAY_COLOR), startX + 19, startY + 5, color);
 
         // Render dragging and tooltip hints
         boolean isOverIcon = MathUtil.isWithinBox(mouseX, mouseY, this.x + 7, this.y + 3, 8, 9);
 
+        poseStack.pushPose();
+        poseStack.translate(0.0D, 0.0D, 500.0D);
+
         if (isOverIcon)
         {
-            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_DRAG_TIP), 36);
+            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.OVERLAY_DRAG_TIP), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 
         if (isOverHint && this.hint)
         {
-            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.GUI_OVERLAY_COLOR_HINT), 36);
+            List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.OVERLAY_COLOR_HINT), 36);
             screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY);
         }
 
+        poseStack.popPose();
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }

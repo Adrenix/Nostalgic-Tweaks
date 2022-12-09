@@ -19,5 +19,8 @@ public enum ContainerId
     SHORTCUTS_CONFIG,
     TITLE_TAGS_CONFIG,
     TREE_CONFIG,
-    ROW_CONFIG
+    ROW_CONFIG,
+    LIST_HELP,
+    SAVED_ITEMS,
+    ALL_ITEMS
 }
