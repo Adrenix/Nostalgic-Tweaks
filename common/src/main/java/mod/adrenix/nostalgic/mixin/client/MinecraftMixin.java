@@ -183,7 +183,7 @@ public abstract class MinecraftMixin
         BlockHitResult result = (BlockHitResult) this.hitResult;
         boolean isNull = this.level == null || this.player == null || this.gameMode == null || result == null;
 
-        if (!NostalgicTweaks.isNetworkVerified() || isNull || this.player.isCreative())
+        if (!NostalgicTweaks.isNetworkVerified() || isNull || this.player.isCreative() || this.player.isShiftKeyDown())
             return;
 
         BlockState state = this.level.getBlockState(result.getBlockPos());
