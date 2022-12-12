@@ -8,16 +8,16 @@ package mod.adrenix.nostalgic.util.server;
 public abstract class WorldServerUtil
 {
     /**
-     * Checks if the given chunk x,z and section x,z are within the defined view distance.
+     * Checks if the given chunk x,z and section x,z are within the defined square view distance.
      * @param chunkX The x-position of the chunk.
      * @param chunkZ The z-position of the chunk.
      * @param secX The x-position of the section.
      * @param secZ The z-position of the section.
      * @param viewDistance The current viewing distance.
-     * @return If the given positions are within the defined chessboard constraints.
+     * @return Whether the given positions are within the defined chessboard constraints.
      */
     public static boolean isChunkInRange(int chunkX, int chunkZ, int secX, int secZ, int viewDistance)
     {
-        return Math.max(Math.abs(chunkX - secX), Math.abs(chunkZ - secZ)) <= viewDistance;
+        return Math.max(Math.abs(chunkX - secX), Math.abs(chunkZ - secZ)) <= viewDistance + 1;
     }
 }
