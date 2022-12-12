@@ -43,7 +43,7 @@ public class ItemGroup
     public ItemGroup(AbstractListScreen screen)
     {
         this.screen = screen;
-        this.items = screen.getItems();
+        this.items = screen.getSelectableItems();
         this.list = screen.getConfigRowList();
     }
 
@@ -87,7 +87,7 @@ public class ItemGroup
 
         if (itemsAdded == 0)
         {
-            Component translate = Component.translatable(LangUtil.Gui.LIST_NOTHING_FOUND);
+            Component translate = Component.translatable(LangUtil.Gui.LIST_NO_ITEMS);
             Component text = Component.literal(ChatFormatting.RED + translate.getString());
 
             rows.clear();

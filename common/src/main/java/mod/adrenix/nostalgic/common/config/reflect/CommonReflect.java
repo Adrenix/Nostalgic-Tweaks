@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.common.config.reflect;
 
 import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
@@ -165,6 +166,10 @@ public abstract class CommonReflect
 
         for (Field field : reference.getFields())
         {
+            // Don't include fields that should be ignored
+            if (field.getAnnotation(TweakData.Ignore.class) != null)
+                continue;
+
             try
             {
                 fields.put(field.getName(), field.get(instance));

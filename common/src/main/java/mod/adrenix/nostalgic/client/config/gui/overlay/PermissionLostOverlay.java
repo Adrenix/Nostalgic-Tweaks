@@ -24,7 +24,7 @@ import java.util.Set;
  * while this overlay is open, the text will update and the "X" button will be activated.
  */
 
-public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverlay.WidgetProvider>
+public class PermissionLostOverlay extends ListScreenOverlay<PermissionLostOverlay.WidgetProvider>
 {
     /* Static Fields */
 
@@ -42,7 +42,7 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
     /**
      * Start a new lost permission overlay window instance.
      */
-    public LostPermissionOverlay()
+    public PermissionLostOverlay()
     {
         super
         (
@@ -89,10 +89,10 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
             this.exitWithoutSaving = this.createWithoutSaving();
             this.exitSaveLocally = this.createSaveLocally();
 
-            LostPermissionOverlay.this.widgets.add(this.headerText);
-            LostPermissionOverlay.this.widgets.add(this.messageText);
-            LostPermissionOverlay.this.widgets.add(this.exitWithoutSaving);
-            LostPermissionOverlay.this.widgets.add(this.exitSaveLocally);
+            PermissionLostOverlay.this.widgets.add(this.headerText);
+            PermissionLostOverlay.this.widgets.add(this.messageText);
+            PermissionLostOverlay.this.widgets.add(this.exitWithoutSaving);
+            PermissionLostOverlay.this.widgets.add(this.exitSaveLocally);
 
             this.children = Set.of(headerText, messageText, exitWithoutSaving, exitSaveLocally);
         }
@@ -100,27 +100,27 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
         /**
          * @return The starting x-position for widgets in this overlay.
          */
-        private int getStartX() { return LostPermissionOverlay.this.getOverlayStartX() + 2; }
+        private int getStartX() { return PermissionLostOverlay.this.getOverlayStartX() + 2; }
 
         /**
          * @return The starting y-position for widgets in this overlay.
          */
-        private int getStartY() { return LostPermissionOverlay.this.getOverlayStartY() + 4; }
+        private int getStartY() { return PermissionLostOverlay.this.getOverlayStartY() + 4; }
 
         /**
          * @return The width for confirmation buttons.
          */
-        private int getButtonWidth() { return LostPermissionOverlay.this.getDrawWidth() - 20; }
+        private int getButtonWidth() { return PermissionLostOverlay.this.getDrawWidth() - 20; }
 
         /**
          * @return The starting x-position for buttons in this overlay.
          */
         private int getButtonStartX()
         {
-            int windowWidth = LostPermissionOverlay.this.getDrawWidth() / 2;
+            int windowWidth = PermissionLostOverlay.this.getDrawWidth() / 2;
             int buttonWidth = this.getButtonWidth() / 2;
 
-            return LostPermissionOverlay.this.getOverlayStartX() + windowWidth - buttonWidth + 5;
+            return PermissionLostOverlay.this.getOverlayStartX() + windowWidth - buttonWidth + 5;
         }
 
         /**
@@ -137,7 +137,7 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
                 TextAlign.CENTER,
                 this.getStartX() + 2,
                 this.getStartY(),
-                LostPermissionOverlay.this.getDrawWidth()
+                PermissionLostOverlay.this.getDrawWidth()
             );
         }
 
@@ -153,7 +153,7 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
                 TextAlign.LEFT,
                 this.getStartX(),
                 this.headerText.getBottomY() + 2,
-                LostPermissionOverlay.this.getDrawWidth()
+                PermissionLostOverlay.this.getDrawWidth()
             );
         }
 
@@ -173,7 +173,7 @@ public class LostPermissionOverlay extends ListScreenOverlay<LostPermissionOverl
                 (button) ->
                 {
                     Overlay.close();
-                    LostPermissionOverlay.this.listScreen.closeWithoutSaving();
+                    PermissionLostOverlay.this.listScreen.closeWithoutSaving();
                 }
             );
         }

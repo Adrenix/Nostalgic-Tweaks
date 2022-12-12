@@ -42,18 +42,17 @@ public class TweakServerCache<T> extends TweakCommonCache
         }
         else
         {
-            Arrays.stream(TweakGroup.values()).forEach((group) ->
-                ServerReflect.getGroup(group).forEach((key, value) ->
-                {
-                    if (CommonReflect.getAnnotation(group, key, TweakData.Ignore.class) == null)
+            Arrays.stream(TweakGroup.values()).forEach
+            (
+                (group) ->
+                    ServerReflect.getGroup(group).forEach((key, value) ->
                     {
                         TweakData.Server server = CommonReflect.getAnnotation(group, key, TweakData.Server.class);
                         TweakData.Dynamic dynamic = CommonReflect.getAnnotation(group, key, TweakData.Dynamic.class);
 
                         if (server != null || dynamic != null)
                             CACHE.put(generateKey(group, key), new TweakServerCache<>(group, key, value));
-                    }
-                })
+                    })
             );
         }
     }

@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class implements a modified row list abstraction. This abstraction is based on vanilla's container object
@@ -219,10 +220,11 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         boolean isGroup = widget instanceof ContainerButton;
         boolean isReset = widget.equals(row.reset);
         boolean isDelete = widget.equals(row.delete);
+        boolean isRemove = widget.equals(row.remove);
         boolean isController = widget.equals(row.controller);
-        boolean isInactive = (isGroup || isReset || isDelete || isController) && !widget.isActive();
+        boolean isInactive = (isGroup || isReset || isDelete || isRemove || isController) && !widget.isActive();
 
-        return isInactive || (!isGroup && !isReset && !isDelete && !isController);
+        return isInactive || (!isGroup && !isReset && !isDelete && !isRemove && !isController);
     }
 
     /**
@@ -261,6 +263,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
     /**
      * Generate a configuration row based on the given group type and value.
+     * Unchecked type casting is fine here since the config validator ensures proper values are loaded into memory.
+     *
      * @param group The group associated with the key and value (e.g., eye candy or animations).
      * @param key A tweak key that identifies the configuration row.
      * @param value The value that will be controlled by this row.
@@ -270,11 +274,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     public <E extends Enum<E>> Row rowFromTweak(TweakGroup group, String key, Object value)
     {
         if (value instanceof Boolean)
+        {
             return new ConfigRowTweak.BooleanRow(group, key, (Boolean) value).generate();
+        }
         else if (value instanceof Integer)
+        {
             return new ConfigRowTweak.IntSliderRow(group, key, (Integer) value).generate();
+        }
         else if (value instanceof Enum)
+        {
             return new ConfigRowTweak.EnumRow<E>(group, key, value).generate();
+        }
         else if (value instanceof String)
         {
             if (CommonReflect.getAnnotation(group, key, TweakData.Color.class) != null)
@@ -282,8 +292,20 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             return new ConfigRowTweak.StringRow(group, key, (String) value).generate();
         }
+        else if (value instanceof Set)
+        {
+            //noinspection unchecked
+            return new ConfigRowTweak.ListSetRow(group, key, (Set<String>) value).generate();
+        }
+        else if (value instanceof Map<?, ?>)
+        {
+            //noinspection unchecked
+            return new ConfigRowTweak.ListMapRow<>(group, key, (Map<String, ?>) value).generate();
+        }
         else
+        {
             return new ConfigRowTweak.InvalidRow(group, key, value).generate();
+        }
     }
 
     /**
@@ -330,6 +352,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         @Nullable public final AbstractWidget controller;
         @Nullable public ResetButton reset = null;
         @Nullable public DeleteButton delete = null;
+        @Nullable public RemoveButton remove = null;
 
         /* Fields */
 
@@ -365,6 +388,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             {
                 if (widget instanceof ResetButton button)
                     this.reset = button;
+                else if (widget instanceof RemoveButton button)
+                    this.remove = button;
                 else if (widget instanceof DeleteButton button)
                     this.delete = button;
             }
@@ -922,7 +947,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 if (isEllipsis && isOverText && this.tweak != null)
                 {
                     screen.renderLast.add(() ->
-                        screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(Component.translatable(this.tweak.getTranslation()), 35), mouseX, mouseY))
+                        screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(this.tweak.getComponentTranslation(), 35), mouseX, mouseY))
                     ;
                 }
 

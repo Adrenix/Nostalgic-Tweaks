@@ -10,14 +10,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * The delete button is the last button to the right of all abstract custom list entry rows.
+ * The delete button is the last button to the right of all custom map list rows.
  *
- * This button is utilized by both the map and set list types.
+ * This button is utilized only by the map list type.
  * When an entry is deleted, this button will turn into an undo button.
  */
 
@@ -58,31 +56,28 @@ public class DeleteButton extends Button
     }
 
     /**
-     * This on press handler is used by map entry list screens.
-     * @param entry The entry that is being managed.
+     * This on press handler.
      * @param isDeleted Whether the current entry is deleted.
      * @param onDelete Instructions to perform when the entry is deleted.
      * @param onUndo Instructions to perform when deletion is undone.
      */
-    private static void onMapPress
+    private static void onPress
     (
-        Map.Entry<String, ?> entry,
         Supplier<Boolean> isDeleted,
-        Consumer<Map.Entry<String, ?>> onDelete,
-        Consumer<Map.Entry<String, ?>> onUndo
+        Runnable onDelete,
+        Runnable onUndo
     )
     {
         if (isDeleted.get())
-            onUndo.accept(entry);
+            onUndo.run();
         else
-            onDelete.accept(entry);
+            onDelete.run();
     }
 
     /* Constructor */
 
     /**
      * Create a new delete button instance.
-     * @param entry A map entry this that is associated with this button.
      * @param resetButton The reset button that is the neighbor of this button.
      * @param isDeleted A boolean supplier that determines if the entry is deleted.
      * @param onDelete Instructions to perform when the entry is deleted.
@@ -90,11 +85,10 @@ public class DeleteButton extends Button
      */
     public DeleteButton
     (
-        Map.Entry<String, ?> entry,
         ResetButton resetButton,
         Supplier<Boolean> isDeleted,
-        Consumer<Map.Entry<String, ?>> onDelete,
-        Consumer<Map.Entry<String, ?>> onUndo
+        Runnable onDelete,
+        Runnable onUndo
     )
     {
         super
@@ -104,7 +98,7 @@ public class DeleteButton extends Button
             DeleteButton.getDeleteWidth(),
             ConfigRowList.BUTTON_HEIGHT,
             DeleteButton.getDeleteTitle(isDeleted),
-            (button) -> onMapPress(entry, isDeleted, onDelete, onUndo)
+            (button) -> onPress(isDeleted, onDelete, onUndo)
         );
 
         this.resetButton = resetButton;
@@ -130,10 +124,10 @@ public class DeleteButton extends Button
             int endX = this.x + this.width - 1;
             int startX = endX;
 
-            while (!ConfigRowList.getInstance().isTooLong(endX))
+            while (ConfigRowList.getInstance().isTooLong(endX))
                 endX--;
 
-            diffX = startX - endX;
+            diffX = startX - endX + 4;
             this.x -= diffX;
         }
 

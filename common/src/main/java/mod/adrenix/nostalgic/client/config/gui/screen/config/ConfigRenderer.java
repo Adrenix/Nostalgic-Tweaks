@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
@@ -19,7 +18,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowTweak;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
-import mod.adrenix.nostalgic.common.config.list.ListId;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.widget.*;
@@ -917,11 +916,8 @@ public record ConfigRenderer(ConfigScreen parent)
 
             ListMapScreen<Integer> swingScreen = new ListMapScreen<>
             (
-                this.parent,
                 Component.translatable(LangUtil.Gui.CUSTOM_SPEEDS),
-                ClientConfigCache.getRoot().customSwingSpeeds,
-                DefaultConfig.Swing.OLD_SPEED,
-                ListId.CUSTOM_SWING
+                ConfigList.CUSTOM_SWING
             );
 
             ConfigRowBuild.SingleCenteredRow custom = new ConfigRowBuild.SingleCenteredRow

@@ -13,6 +13,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Tweak Row Templates
@@ -104,6 +106,45 @@ public abstract class ConfigRowTweak
 
         @Override
         public ConfigRowList.Row generate() { return new ConfigRowList.Row(new ArrayList<>(), this.tweak); }
+    }
+
+    /**
+     * This row is used when the provided value is a map type.
+     * @param <V> The value type kept in the value column of the map.
+     */
+    public static class ListMapRow<V> extends AbstractRow<Map<String, V>>
+    {
+        /**
+         * Create a row within a row list that has a map object type.
+         * This is used by automatic generation and has no manual use case.
+         *
+         * @param group The group type associated with a tweak.
+         * @param key A tweak client cache map identifier.
+         * @param map The map associated with a tweak.
+         */
+        public ListMapRow(TweakGroup group, String key, Map<String, V> map) { super(group, key, map); }
+
+        @Override
+        public ConfigRowList.Row generate() { return this.create(new ListMapButton<>(this.tweak)); }
+    }
+
+    /**
+     * This row is used when the provided value is a set type that holds item resource keys.
+     */
+    public static class ListSetRow extends AbstractRow<Set<String>>
+    {
+        /**
+         * Create a row within a row list that has a set object type.
+         * This is used by automatic generation and has no manual use case.
+         *
+         * @param group The group type associated with a tweak.
+         * @param key A tweak client cache map identifier.
+         * @param set The set of item resource keys associated with a tweak.
+         */
+        public ListSetRow(TweakGroup group, String key, Set<String> set) { super(group, key, set); }
+
+        @Override
+        public ConfigRowList.Row generate() { return this.create(new ListSetButton(this.tweak)); }
     }
 
     /**

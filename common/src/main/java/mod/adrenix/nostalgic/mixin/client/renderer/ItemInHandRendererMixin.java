@@ -6,6 +6,7 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -251,11 +251,11 @@ public abstract class ItemInHandRendererMixin
     )
     private void NT$onRenderItem(LivingEntity entity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
+        boolean isDisabled = ConfigList.IGNORED_ITEM_HOLDING.isItemInList(itemStack.getItem());
         boolean isBlockItem = itemStack.getItem() instanceof BlockItem;
         boolean isUsingItem = itemStack == entity.getUseItem() && entity.isUsingItem() && entity.getUseItemRemainingTicks() > 0;
-        boolean isCrossbow = itemStack.is(Items.CROSSBOW);
 
-        if (ModConfig.Candy.oldItemHolding() && !isBlockItem && !isUsingItem && !isCrossbow)
+        if (ModConfig.Candy.oldItemHolding() && !isDisabled && !isBlockItem && !isUsingItem)
         {
             poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5.0F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);

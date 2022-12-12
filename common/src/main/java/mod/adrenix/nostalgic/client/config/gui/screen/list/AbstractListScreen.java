@@ -1,26 +1,30 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.list;
 
+import com.google.common.collect.Sets;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.gui.overlay.*;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerId;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.StateWidget;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.StateButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.ItemGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
+import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.list.AbstractList;
+import mod.adrenix.nostalgic.common.config.list.ListFilter;
 import mod.adrenix.nostalgic.common.config.list.ListId;
-import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.common.config.list.ListInclude;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.function.TriConsumer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -37,6 +41,8 @@ import net.minecraft.world.item.*;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * A list screen contains a list of every item in the game, and those items can be assigned data by special instances of
@@ -49,13 +55,19 @@ public abstract class AbstractListScreen extends ConfigScreen
     /* Fields */
 
     public final ArrayList<TriConsumer<PoseStack, Integer, Integer>> renderOverlayTooltips = new ArrayList<>();
+
     protected final Set<ListFilter> filters = new HashSet<>();
-    protected final ListFilter originalFilter;
+    protected final ListInclude onlyInclude;
     protected final ListId listId;
     protected final Screen parentScreen;
+    protected final Set<String> disabledDefaults;
+    protected final Set<String> undoDisabledDefaults;
+
     private final Minecraft minecraft;
-    private final NonNullList<ItemStack> items;
+    private final NonNullList<ItemStack> allItems;
+    private final NonNullList<ItemStack> selectableItems;
     private final Set<Widget> listWidgets;
+
     private WidgetProvider widgetProvider;
     private ItemStack highlightItem;
 
@@ -67,52 +79,28 @@ public abstract class AbstractListScreen extends ConfigScreen
 
     /**
      * Constructor for an abstract list screen.
-     * @param parentScreen The parent configuration screen.
      * @param title The list screen title.
-     * @param listId A list screen identifier.
-     * @param listFilter A list filter that controls what items appear in the all items list.
-     * @param flags A var args list of list flags for this screen.
+     * @param list An abstract list instance.
      */
-    public AbstractListScreen
-    (
-        ConfigScreen parentScreen,
-        Component title,
-        ListId listId,
-        ListFilter listFilter,
-        ListFlags ...flags
-    )
+    public AbstractListScreen(Component title, AbstractList list)
     {
         super(Minecraft.getInstance().screen, title);
 
-        this.listId = listId;
-        this.originalFilter = listFilter;
-        this.parentScreen = parentScreen;
+        this.listId = list.getId();
+        this.onlyInclude = list.getInclude();
+        this.disabledDefaults = list.getDisabledDefaults();
+        this.undoDisabledDefaults = Sets.newHashSet(list.getDisabledDefaults());
+        this.parentScreen = Minecraft.getInstance().screen;
         this.minecraft = Minecraft.getInstance();
-        this.items = NonNullList.create();
+        this.allItems = NonNullList.create();
+        this.selectableItems = NonNullList.create();
         this.listWidgets = new HashSet<>();
         this.highlightItem = null;
 
         this.updateItemTags();
-        this.setupFlags(flags);
-        this.filters.add(listFilter);
-    }
 
-    /* List Flags */
-
-    /**
-     * Set up the list flags for this screen.
-     * @param flags A var args list of flags.
-     */
-    @SuppressWarnings("SwitchStatementWithTooFewBranches") // This will be expanded when more flags are made
-    private void setupFlags(ListFlags ...flags)
-    {
-        for (ListFlags flag : flags)
-        {
-            switch (flag)
-            {
-                case WATCH_PERMISSIONS -> this.watchPermissions();
-            }
-        }
+        if (list.getTweak().getClientCache() != null && !list.getTweak().getClientCache().isClient())
+            this.watchPermissions();
     }
 
     /**
@@ -120,7 +108,7 @@ public abstract class AbstractListScreen extends ConfigScreen
      * permissions. If the user loses permissions while changing this list, a pop-up window will inform the user of what
      * happened and will provide two options for managing changed list data.
      */
-    private void watchPermissions() { this.permissionWatch = true; }
+    public void watchPermissions() { this.permissionWatch = true; }
 
     /* Flag Getters */
 
@@ -138,16 +126,28 @@ public abstract class AbstractListScreen extends ConfigScreen
      */
     private void updateItemTags()
     {
-        if (this.minecraft.level != null)
-            return;
-
-        NonNullList<ItemStack> allItems = NonNullList.create();
-
         for (Item item : Registry.ITEM)
-            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, allItems);
+            item.fillItemCategory(CreativeModeTab.TAB_SEARCH, this.allItems);
 
-        this.minecraft.populateSearchTree(SearchRegistry.CREATIVE_NAMES, allItems);
-        this.minecraft.populateSearchTree(SearchRegistry.CREATIVE_TAGS, allItems);
+        if (this.minecraft.level == null)
+        {
+            this.minecraft.populateSearchTree(SearchRegistry.CREATIVE_NAMES, this.allItems);
+            this.minecraft.populateSearchTree(SearchRegistry.CREATIVE_TAGS, this.allItems);
+        }
+
+        switch (this.onlyInclude)
+        {
+            case ALL -> this.filters.add(ListFilter.NONE);
+            case NO_TOOLS -> this.filters.add(ListFilter.TOOLS);
+            case NO_ITEMS -> this.filters.add(ListFilter.ITEMS);
+            case NO_BLOCKS -> this.filters.add(ListFilter.BLOCKS);
+            case ONLY_TOOLS -> this.filters.addAll(Set.of(ListFilter.BLOCKS, ListFilter.ITEMS));
+            case ONLY_ITEMS -> this.filters.addAll(Set.of(ListFilter.BLOCKS, ListFilter.TOOLS));
+            case ONLY_BLOCKS -> this.filters.addAll(Set.of(ListFilter.ITEMS, ListFilter.TOOLS));
+            case ONLY_EDIBLE -> this.filters.addAll(Set.of(ListFilter.ITEMS, ListFilter.TOOLS, ListFilter.BLOCKS));
+        }
+
+        this.filterItems(this.allItems);
     }
 
     /* Abstractions */
@@ -170,7 +170,30 @@ public abstract class AbstractListScreen extends ConfigScreen
      *
      * @return A list of config row list rows.
      */
-    protected abstract ArrayList<ConfigRowList.Row> getSavedItems();
+    protected abstract ArrayList<ConfigRowList.Row> getSavedRows();
+
+    /**
+     * Get the rows associated with a list's default entries. If no default entries are available, then no "Default
+     * Entries" container should be generated.
+     *
+     * @return A list of config row list rows.
+     */
+    protected abstract ArrayList<ConfigRowList.Row> getDefaultRows();
+
+    /**
+     * @return The number of default entries associated with a list.
+     */
+    protected abstract int getDefaultCount();
+
+    /**
+     * Disables all default entries for a list.
+     */
+    public abstract void disableAllDefaults();
+
+    /**
+     * Enables all default entries for a list.
+     */
+    public abstract void enableAllDefaults();
 
     /**
      * Adds an item to the list's saved entries. No changes are saved to the disk until confirmed by the user.
@@ -264,7 +287,7 @@ public abstract class AbstractListScreen extends ConfigScreen
      * A getter method for getting the items associated with this list screen.
      * @return A non-null list of item stacks.
      */
-    public NonNullList<ItemStack> getItems() { return this.items; }
+    public NonNullList<ItemStack> getSelectableItems() { return this.selectableItems; }
 
     /**
      * A getter method for getting the widgets associated with this list screen.
@@ -273,10 +296,62 @@ public abstract class AbstractListScreen extends ConfigScreen
     public Set<Widget> getListWidgets() { return this.listWidgets; }
 
     /**
+     * A getter method for getting the list filters currently applied to this list screen.
+     * @return A set of list filter enumeration values.
+     */
+    public Set<ListFilter> getFilters() { return this.filters; }
+
+    /**
      * A getter method for getting the list identifier associated with this list screen.
      * @return A list id enumeration value.
      */
     public ListId getListId() { return this.listId; }
+
+    /* Common Utility */
+
+    /**
+     * Disables a default entry by adding it to the disabled default entries set.
+     * @param resourceKey The item resource key to add to the disabled default entries set.
+     */
+    public void disableDefaultItem(String resourceKey) { this.disabledDefaults.add(resourceKey); }
+
+    /**
+     * Enables a default entry by removing it from the deleted default entries set.
+     * @param resourceKey The item resource key to remove from the disabled default entries set.
+     */
+    public void enableDefaultItem(String resourceKey) { this.disabledDefaults.remove(resourceKey); }
+
+    /**
+     * Checks if the given item resource key is contained within the deleted default entries set.
+     * @param resourceKey The item resource key to check.
+     * @return Whether the given resource key is a disabled default entry.
+     */
+    public boolean isDefaultItemDisabled(String resourceKey) { return this.disabledDefaults.contains(resourceKey); }
+
+    /**
+     * Checks if the given item is eligible to be added to a list.
+     * @param item The item to check to see if it can be added.
+     * @return Whether the item can be added to a list.
+     */
+    public boolean isItemEligible(Item item)
+    {
+        String resourceKey = ItemCommonUtil.getResourceKey(item);
+
+        for (ItemStack compareItem : this.allItems)
+        {
+            if (ItemCommonUtil.getResourceKey(compareItem.getItem()).equals(resourceKey))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Shortcut for checking if an item stack is eligible to be added to a list.
+     * @param itemStack The item stack to check to see if it can be added.
+     * @return Whether the item stack can be added to a list.
+     */
+    public boolean isItemEligible(ItemStack itemStack) { return this.isItemEligible(itemStack.getItem()); }
 
     /* Methods */
 
@@ -315,6 +390,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         // Initial container expansion
         ContainerButton.expand(ContainerId.LIST_HELP);
+        ContainerButton.expand(ContainerId.DEFAULT_ITEMS);
         ContainerButton.expand(ContainerId.SAVED_ITEMS);
         ContainerButton.expand(ContainerId.ALL_ITEMS);
 
@@ -333,6 +409,7 @@ public abstract class AbstractListScreen extends ConfigScreen
     public void highlightItem(ItemStack itemStack)
     {
         this.refreshSearchResults();
+
         ContainerButton.expand(ContainerId.SAVED_ITEMS);
         ContainerButton.expand(ContainerId.ALL_ITEMS);
 
@@ -340,19 +417,79 @@ public abstract class AbstractListScreen extends ConfigScreen
     }
 
     /**
-     * Adds found items from the query in the search box to the given items list.
-     * @param allItems A non-null list of item stacks.
+     * Gets an arrow list of config row list rows based on the current search query.
+     * @param entrySet A set of entries to loop through.
+     * @param resourceKey A function that accepts the type value for the set and returns an item resource key.
+     * @param addRow A bi-consumer that accepts an array list of config row list rows and a type value for the set.
+     * @param <T> The type value of the set.
+     * @return An array list of config row list rows that are relevant to the current search query and the given set.
      */
-    protected void addSearchedItems(NonNullList<ItemStack> allItems)
+    protected <T> ArrayList<ConfigRowList.Row> getSearchedItems
+    (
+        String langKey,
+        Set<T> entrySet,
+        Function<T, String> resourceKey,
+        BiConsumer<ArrayList<ConfigRowList.Row>, T> addRow
+    )
     {
-        allItems.clear();
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+        String query = this.getSearchBox().getValue();
+
+        if (query.isEmpty())
+        {
+            for (T entry : entrySet)
+                addRow.accept(rows, entry);
+        }
+        else
+        {
+            NonNullList<ItemStack> allItems = NonNullList.create();
+
+            for (T entry : entrySet)
+            {
+                if (ItemCommonUtil.isValidKey(resourceKey.apply(entry)))
+                    allItems.add(ItemCommonUtil.getItemStack(resourceKey.apply(entry)));
+            }
+
+            this.addSearchedItems(allItems);
+
+            for (T entry : entrySet)
+            {
+                for (ItemStack itemStack : allItems)
+                {
+                    if (ItemCommonUtil.getResourceKey(itemStack.getItem()).equals(resourceKey.apply(entry)))
+                    {
+                        addRow.accept(rows, entry);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (rows.size() == 0)
+        {
+            Component translate = Component.translatable(langKey);
+            Component text = Component.literal(ChatFormatting.RED + translate.getString());
+
+            rows.addAll(new TextGroup(text, TextAlign.CENTER).generate());
+        }
+
+        return rows;
+    }
+
+    /**
+     * Adds found items from the query in the search box to the given items list.
+     * @param itemList A non-null list of item stacks.
+     */
+    protected void addSearchedItems(NonNullList<ItemStack> itemList)
+    {
+        itemList.clear();
 
         String query = this.getSearchBox().getValue();
 
         if (query.isEmpty())
         {
             for (Item item : Registry.ITEM)
-                item.fillItemCategory(CreativeModeTab.TAB_SEARCH, allItems);
+                item.fillItemCategory(CreativeModeTab.TAB_SEARCH, itemList);
         }
         else
         {
@@ -366,10 +503,10 @@ public abstract class AbstractListScreen extends ConfigScreen
             else
                 searchTree = this.minecraft.getSearchTree(SearchRegistry.CREATIVE_NAMES);
 
-            allItems.addAll(searchTree.search(query.toLowerCase(Locale.ROOT)));
+            itemList.addAll(searchTree.search(query.toLowerCase(Locale.ROOT)));
         }
 
-        this.filterItem(allItems);
+        this.filterItems(itemList);
     }
 
     /**
@@ -379,7 +516,7 @@ public abstract class AbstractListScreen extends ConfigScreen
     public void refreshSearchResults()
     {
         this.resetRowList();
-        this.addSearchedItems(this.items);
+        this.addSearchedItems(this.selectableItems);
         this.generateContainers();
     }
 
@@ -389,7 +526,7 @@ public abstract class AbstractListScreen extends ConfigScreen
      */
     public void manageFilter(ListFilter filter, boolean state)
     {
-        this.filters.remove(ListFilter.ALL);
+        this.filters.remove(ListFilter.NONE);
 
         if (state)
             this.filters.add(filter);
@@ -397,20 +534,20 @@ public abstract class AbstractListScreen extends ConfigScreen
             this.filters.remove(filter);
 
         if (this.filters.size() == 0)
-            this.filters.add(ListFilter.ALL);
+            this.filters.add(ListFilter.NONE);
     }
 
     /**
      * Filter out item stacks out of the given items list for this screen. The current list filter will be used.
      * @param allItems The list of items to filter through.
      */
-    private void filterItem(NonNullList<ItemStack> allItems)
+    private void filterItems(NonNullList<ItemStack> allItems)
     {
         ArrayList<ItemStack> filteredItems = new ArrayList<>();
 
         for (ItemStack itemStack : allItems)
         {
-            ItemStack copyStack = ItemClientUtil.getItemStack(ItemClientUtil.getResourceKey(itemStack.getItem()));
+            ItemStack copyStack = ItemCommonUtil.getItemStack(ItemCommonUtil.getResourceKey(itemStack.getItem()));
 
             if (itemStack.getTag() != null && !itemStack.getTag().equals(copyStack.getTag()))
             {
@@ -418,7 +555,7 @@ public abstract class AbstractListScreen extends ConfigScreen
                 continue;
             }
 
-            if (this.filters.contains(ListFilter.ALL))
+            if (this.filters.contains(ListFilter.NONE))
                 continue;
 
             Item item = itemStack.getItem();
@@ -431,9 +568,9 @@ public abstract class AbstractListScreen extends ConfigScreen
             boolean isItemsFiltered = isItem && this.filters.contains(ListFilter.ITEMS);
             boolean isToolsFiltered = isTool && this.filters.contains(ListFilter.TOOLS);
             boolean isBlocksFiltered = isBlock && this.filters.contains(ListFilter.BLOCKS);
-            boolean isEdibleFiltered = isEdible && this.filters.contains(ListFilter.EDIBLE);
+            boolean isNotFood = this.onlyInclude == ListInclude.ONLY_EDIBLE && !isEdible;
 
-            if (isItemsFiltered || isToolsFiltered || isBlocksFiltered || isEdibleFiltered)
+            if (isItemsFiltered || isToolsFiltered || isBlocksFiltered || isNotFood)
                 filteredItems.add(itemStack);
         }
 
@@ -450,28 +587,80 @@ public abstract class AbstractListScreen extends ConfigScreen
         ConfigRowGroup.ContainerRow tutorial = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.LIST_HELP_TITLE),
-            this::getTutorial,
+            this::getTutorialRows,
             ContainerId.LIST_HELP
         );
 
         ConfigRowGroup.ContainerRow savedItems = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.LIST_SAVED_ITEMS),
-            this::getSavedItems,
+            this::getSavedRows,
             ContainerId.SAVED_ITEMS
         );
 
-        ConfigRowGroup.ContainerRow allItems = new ConfigRowGroup.ContainerRow
+        ConfigRowGroup.ContainerRow defaultItems = new ConfigRowGroup.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.LIST_DEFAULT_ITEMS),
+            this::getRowsForDefaultItems,
+            ContainerId.DEFAULT_ITEMS
+        );
+
+        ConfigRowGroup.ContainerRow selectableItems = new ConfigRowGroup.ContainerRow
         (
             Component.translatable(LangUtil.Gui.LIST_ALL_ITEMS),
-            this::getAllItems,
+            this::getRowsFromSelectableItems,
             ContainerId.ALL_ITEMS
         );
 
         this.getConfigRowList().addRow(tutorial.generate());
+
+        if (this.getDefaultCount() > 0)
+            this.getConfigRowList().addRow(defaultItems.generate());
+
         this.getConfigRowList().addRow(savedItems.generate());
-        this.getConfigRowList().addRow(allItems.generate());
+        this.getConfigRowList().addRow(selectableItems.generate());
     }
+
+    /**
+     * @return Generates the tutorial paragraph for a container.
+     */
+    private ArrayList<ConfigRowList.Row> getTutorialRows()
+    {
+        return new TextGroup(Component.translatable(LangUtil.Gui.LIST_TUTORIAL)).generate();
+    }
+
+    /**
+     * @return Generates the rows for a default entries container.
+     */
+    private ArrayList<ConfigRowList.Row> getRowsForDefaultItems()
+    {
+        Component title = Component.translatable(LangUtil.Gui.BUTTON_MANAGE_DEFAULTS);
+        ControlButton button = new ControlButton(title, this::manageDefaults);
+        ConfigRowList.Row manager = new ConfigRowBuild.SingleCenteredRow(button).generate();
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
+
+        if (this.getSearchBox().getValue().isEmpty())
+            rows.add(manager);
+
+        rows.addAll(this.getDefaultRows());
+
+        return rows;
+    }
+
+    /**
+     * Get rows that contain items from within the game. The buttons within these rows are clickable and will bring
+     * up a new overlay window with options for the user. The selectable buttons will be filtered based on the current
+     * list filters and search query.
+     *
+     * @return A list of config row list rows.
+     */
+    private ArrayList<ConfigRowList.Row> getRowsFromSelectableItems() { return new ItemGroup(this).generate(); }
+
+    /**
+     * Functional consumer that accepts an ignored button and opens a new default entries overlay window.
+     * @param button A button widget.
+     */
+    private void manageDefaults(Button button) { new DefaultEntriesOverlay(); }
 
     /**
      * Jump to a saved entry row within the row list based on the given item stack.
@@ -484,7 +673,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         for (ConfigRowList.Row row : this.getConfigRowList().children())
         {
-            if (row.getResourceKey().equals(ItemClientUtil.getResourceKey(itemStack.getItem())))
+            if (row.getResourceKey().equals(ItemCommonUtil.getResourceKey(itemStack.getItem())))
             {
                 this.getConfigRowList().setScrollOn(row);
                 break;
@@ -494,22 +683,6 @@ public abstract class AbstractListScreen extends ConfigScreen
         if (this.highlightItem == itemStack)
             this.highlightItem = null;
     }
-
-    /**
-     * @return Generates the tutorial paragraph for a container.
-     */
-    private ArrayList<ConfigRowList.Row> getTutorial()
-    {
-        return new TextGroup(Component.translatable(LangUtil.Gui.LIST_TUTORIAL)).generate();
-    }
-
-    /**
-     * Get rows that contain all items within the game. The buttons within these rows are clickable and will bring
-     * up a new overlay window with options for the user.
-     *
-     * @return A list of config row list rows.
-     */
-    private ArrayList<ConfigRowList.Row> getAllItems() { return new ItemGroup(this).generate(); }
 
     /**
      * Handler method for tick events.
@@ -583,8 +756,14 @@ public abstract class AbstractListScreen extends ConfigScreen
         String query = this.getSearchBox().getValue();
         boolean isEsc = keyCode == GLFW.GLFW_KEY_ESCAPE;
 
-        if (Overlay.getVisible() instanceof LostPermissionOverlay)
+        if (Overlay.getVisible() instanceof PermissionLostOverlay)
             return false;
+
+        if (Overlay.getVisible() != null)
+        {
+            Overlay.close();
+            return true;
+        }
 
         if (this.getSearchBox().keyPressed(keyCode, scanCode, modifiers))
         {
@@ -635,11 +814,22 @@ public abstract class AbstractListScreen extends ConfigScreen
                 button.active = true;
 
                 // Widget auto-add button check
-                if (this.minecraft.level == null)
+                boolean isLevelAbsent = this.minecraft.level == null;
+                boolean isItemIneligible = false;
+                boolean isItemListed = false;
+
+                if (this.minecraft.player != null)
+                {
+                    ItemStack itemStack = this.minecraft.player.getMainHandItem();
+                    isItemIneligible = !this.isItemEligible(itemStack);
+                    isItemListed = this.isItemSaved(itemStack);
+                }
+
+                if (isLevelAbsent || isItemIneligible || isItemListed)
                     this.widgetProvider.autoButton.active = false;
 
-                // Filter list button check
-                if (this.originalFilter == ListFilter.EDIBLE)
+                // List inclusion check
+                if (this.onlyInclude != ListInclude.ALL)
                     this.widgetProvider.filterButton.active = false;
             }
         }
@@ -689,10 +879,10 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         if (this.isPermissionWatched() && !NetUtil.isPlayerOp())
         {
-            if (ClassUtil.isNotInstanceOf(overlay, LostPermissionOverlay.class))
-                new LostPermissionOverlay();
+            if (ClassUtil.isNotInstanceOf(overlay, PermissionLostOverlay.class))
+                new PermissionLostOverlay();
         }
-        else if (this.isPermissionWatched() && NetUtil.isPlayerOp() && overlay instanceof LostPermissionOverlay)
+        else if (this.isPermissionWatched() && NetUtil.isPlayerOp() && overlay instanceof PermissionLostOverlay)
             Overlay.close();
 
         // Overlay rendering

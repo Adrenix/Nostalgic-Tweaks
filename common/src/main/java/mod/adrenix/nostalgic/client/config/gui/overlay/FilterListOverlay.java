@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.overlay;
 
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.AbstractWidgetProvider;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.ListScreenOverlay;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.ListFilter;
+import mod.adrenix.nostalgic.common.config.list.ListFilter;
 import mod.adrenix.nostalgic.client.config.gui.widget.ToggleCheckbox;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
@@ -21,12 +21,6 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
 
     public static final int OVERLAY_WIDTH = 176;
     public static final int OVERLAY_HEIGHT = 98;
-
-    /* Overlay Fields */
-
-    private boolean toolFiltered;
-    private boolean itemFiltered;
-    private boolean blockFiltered;
 
     /* Constructor & Initialize */
 
@@ -64,17 +58,17 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
     /**
      * @return Whether tool items should be filtered in the current abstract list screen.
      */
-    public boolean isToolFiltered() { return this.toolFiltered; }
+    public boolean isToolFiltered() { return this.listScreen.getFilters().contains(ListFilter.TOOLS); }
 
     /**
      * @return Whether regular items should be filtered in the current abstract list screen.
      */
-    public boolean isItemFiltered() { return this.itemFiltered; }
+    public boolean isItemFiltered() { return this.listScreen.getFilters().contains(ListFilter.ITEMS); }
 
     /**
      * @return Whether block items should be filtered in the current abstract list screen.
      */
-    public boolean isBlockFiltered() { return this.blockFiltered; }
+    public boolean isBlockFiltered() { return this.listScreen.getFilters().contains(ListFilter.BLOCKS); }
 
     /* Setters */
 
@@ -84,8 +78,6 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
      */
     public void setToolFiltered(boolean state)
     {
-        this.toolFiltered = state;
-
         this.listScreen.manageFilter(ListFilter.TOOLS, state);
         this.listScreen.refreshSearchResults();
     }
@@ -96,8 +88,6 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
      */
     public void setItemFiltered(boolean state)
     {
-        this.itemFiltered = state;
-
         this.listScreen.manageFilter(ListFilter.ITEMS, state);
         this.listScreen.refreshSearchResults();
     }
@@ -108,8 +98,6 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
      */
     public void setBlockFiltered(boolean state)
     {
-        this.blockFiltered = state;
-
         this.listScreen.manageFilter(ListFilter.BLOCKS, state);
         this.listScreen.refreshSearchResults();
     }

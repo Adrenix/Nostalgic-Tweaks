@@ -97,7 +97,10 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
          */
         private int getButtonStartX()
         {
-            return NukeListOverlay.this.getOverlayStartX() + (NukeListOverlay.this.getDrawWidth() / 2) - (this.getButtonWidth() / 2) + 5;
+            int startX = NukeListOverlay.this.getOverlayStartX();
+            int width = NukeListOverlay.this.getDrawWidth();
+
+            return startX + (width / 2) - (this.getButtonWidth() / 2) + 5;
         }
 
         /**
@@ -135,7 +138,7 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
         }
 
         /**
-         * Create a button, that when clicked, closes the overlay and clears the saved entries list.
+         * Create a button that, when clicked, closes the overlay and clears the saved entries list.
          * @return A button widget instance.
          */
         private Button createConfirmYes()
@@ -156,7 +159,7 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
         }
 
         /**
-         * Create a button, that when clicked, closes the overlay and does nothing else.
+         * Create a button that, when clicked, closes the overlay and does nothing else.
          * @return A button widget instance.
          */
         private Button createConfirmNo()

@@ -21,6 +21,7 @@ public enum ContainerId
     TREE_CONFIG,
     ROW_CONFIG,
     LIST_HELP,
+    DEFAULT_ITEMS,
     SAVED_ITEMS,
     ALL_ITEMS
 }

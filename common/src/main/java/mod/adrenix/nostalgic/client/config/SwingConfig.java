@@ -2,15 +2,12 @@ package mod.adrenix.nostalgic.client.config;
 
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
 import mod.adrenix.nostalgic.common.config.tweak.SwingTweak;
-import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.item.*;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,28 +22,8 @@ public abstract class SwingConfig
     /* Static Fields */
 
     private static final ClientConfig.Swing SWING = ClientConfigCache.getSwing();
-    private static final Map<String, Integer> CUSTOM_LIST = ClientConfigCache.getRoot().customSwingSpeeds;
 
     /* Static Utility */
-
-    /**
-     * Get a configuration map entry from an item instance.
-     * @param item An item instance to get a configuration map entry from.
-     * @return A configuration map entry (if it exists) that is associated with the given item instance.
-     */
-    @Nullable
-    public static Map.Entry<String, Integer> getEntryFromItem(Item item)
-    {
-        List<Map.Entry<String, Integer>> entries = new ArrayList<>(CUSTOM_LIST.entrySet());
-
-        for (Map.Entry<String, Integer> entry : entries)
-        {
-            if (entry.getKey().equals(ItemClientUtil.getResourceKey(item)))
-                return entry;
-        }
-
-        return null;
-    }
 
     /**
      * Get the swing speed from an item instance.
@@ -55,7 +32,7 @@ public abstract class SwingConfig
      */
     private static int getSpeedFromItem(Item item)
     {
-        Map.Entry<String, Integer> entry = getEntryFromItem(item);
+        Map.Entry<String, Integer> entry = ConfigList.CUSTOM_SWING.getEntryFromItem(item);
 
         if (isSpeedGlobal())
             return SWING.global;

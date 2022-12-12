@@ -1,23 +1,15 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.list;
 
-import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
-import mod.adrenix.nostalgic.common.config.list.ListId;
-import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowKey;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
+import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import com.google.common.collect.Maps;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The list map screen is responsible for managing configuration lists that use maps. The keys associated with these
@@ -33,6 +25,7 @@ public class ListMapScreen<V> extends AbstractListScreen
     /* Fields */
 
     private final ArrayList<Map.Entry<String, V>> deletedEntries = new ArrayList<>();
+    private final Map<String, V> defaultMap;
     private final Map<String, V> configMap;
     private final Map<String, V> copyMap;
     private final Map<String, V> undoMap;
@@ -42,55 +35,20 @@ public class ListMapScreen<V> extends AbstractListScreen
 
     /**
      * Create a new list screen that controls a map.
-     * @param parentScreen The parent configuration screen.
      * @param title The list screen title.
-     * @param configMap A map from the client config.
-     * @param resetValue A value to reset to when the reset button is pressed.
-     * @param listId A list screen identifier.
-     * @param listFilter A list filter that controls what items appear in the all items list.
-     * @param flags A var args list of list flags for this map screen.
+     * @param listMap A list map instance.
      */
-    public ListMapScreen
-    (
-        ConfigScreen parentScreen,
-        Component title,
-        Map<String, V> configMap,
-        V resetValue,
-        ListId listId,
-        ListFilter listFilter,
-        ListFlags ...flags
-    )
+    public ListMapScreen(Component title, ListMap<V> listMap)
     {
-        super(parentScreen, title, listId, listFilter, flags);
+        super(title, listMap);
 
-        this.resetValue = resetValue;
-        this.configMap = configMap;
+        this.resetValue = listMap.getResetValue();
+        this.defaultMap = listMap.getDefaultMap();
+        this.configMap = listMap.getConfigMap();
         this.copyMap = Maps.newHashMap();
-        this.undoMap = Maps.newHashMap(configMap);
+        this.undoMap = Maps.newHashMap(this.configMap);
 
         this.sortByResource();
-    }
-
-    /**
-     * Create a new list screen (with no filters) that controls a map.
-     * @param parentScreen The parent configuration screen.
-     * @param title The list screen title.
-     * @param configMap A map from the client config.
-     * @param resetValue A value to reset to when the reset button is pressed.
-     * @param listId A list screen identifier.
-     * @param flags A var args list of list flags for this map screen.
-     */
-    public ListMapScreen
-    (
-        ConfigScreen parentScreen,
-        Component title,
-        Map<String, V> configMap,
-        V resetValue,
-        ListId listId,
-        ListFlags ...flags
-    )
-    {
-        this(parentScreen, title, configMap, resetValue, listId, ListFilter.ALL, flags);
     }
 
     /* Getters */
@@ -152,21 +110,13 @@ public class ListMapScreen<V> extends AbstractListScreen
     {
         for (Map.Entry<String, V> entry : this.configMap.entrySet())
         {
-            if (entry.getKey().equals(ItemClientUtil.getResourceKey(item)))
+            if (entry.getKey().equals(ItemCommonUtil.getResourceKey(item)))
             {
                 this.delete(entry);
                 break;
             }
         }
     }
-
-    /**
-     * Checks if the given item is in the undo map, if not, then this item was added.
-     * @param item The item to check to see if it is added to the list.
-     * @return Whether the given item was added by the user this session.
-     */
-    @Override
-    public boolean isItemAdded(Item item) { return !this.undoMap.containsKey(ItemClientUtil.getResourceKey(item)); }
 
     /**
      * Clears all saved entries from this list's config map.
@@ -191,11 +141,172 @@ public class ListMapScreen<V> extends AbstractListScreen
     {
         for (Map.Entry<String, V> entry : this.deletedEntries)
         {
-            if (ItemClientUtil.getResourceKey(item).equals(entry.getKey()))
+            if (ItemCommonUtil.getResourceKey(item).equals(entry.getKey()))
                 return true;
         }
 
         return false;
+    }
+
+    /**
+     * Save an item to this list's entries map. No changes are saved until confirmed by the user.
+     * @param item The item to save.
+     */
+    @Override
+    public void addItem(Item item)
+    {
+        if (this.isItemSaved(item) || !this.isItemEligible(item))
+            return;
+
+        this.configMap.put(ItemCommonUtil.getResourceKey(item), this.resetValue);
+        this.sortByResource();
+    }
+
+    /**
+     * Checks if the given item is in the undo map, if not, then this item was added.
+     * @param item The item to check to see if it is added to the list.
+     * @return Whether the given item was added by the user this session.
+     */
+    @Override
+    public boolean isItemAdded(Item item) { return !this.undoMap.containsKey(ItemCommonUtil.getResourceKey(item)); }
+
+    /**
+     * Checks if the given item is saved to the list's saved entries.
+     * @param item The item to check.
+     */
+    @Override
+    public boolean isItemSaved(Item item)
+    {
+        for (Map.Entry<String, V> entry : this.configMap.entrySet())
+        {
+            if (entry.getKey().equals(ItemCommonUtil.getResourceKey(item)))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Sorts two localized item names alphabetically.
+     * @param first The first entry.
+     * @param second The second entry.
+     * @return A negative integer, zero, or a positive integer ignoring case considerations.
+     */
+    private int getLocalizedItem(Map.Entry<String, V> first, Map.Entry<String, V> second)
+    {
+        String firstItem = ItemCommonUtil.getLocalizedItem(first.getKey());
+        String secondItem = ItemCommonUtil.getLocalizedItem(second.getKey());
+
+        return firstItem.compareToIgnoreCase(secondItem);
+    }
+
+    /**
+     * Sorts the lists configuration entry map alphabetically.
+     */
+    private void sortByResource()
+    {
+        List<Map.Entry<String, V>> list = new ArrayList<>(this.configMap.entrySet());
+        Map<String, V> unknowns = new LinkedHashMap<>();
+        Map<String, V> result = new LinkedHashMap<>();
+
+        for (Map.Entry<String, V> entry : list)
+        {
+            if (!ItemCommonUtil.isValidKey(entry.getKey()))
+                unknowns.put(entry.getKey(), entry.getValue());
+        }
+
+        for (Map.Entry<String, V> entry : unknowns.entrySet())
+            list.remove(entry);
+
+        list.sort(this::getLocalizedItem);
+
+        for (Map.Entry<String, V> entry : list)
+            result.put(entry.getKey(), entry.getValue());
+
+        this.configMap.clear();
+        this.configMap.putAll(unknowns);
+        this.configMap.putAll(result);
+    }
+
+    /**
+     * Gets the item resource key from an entry.
+     * @param entry The entry to get the item resource key from.
+     * @return The item resource key from the map entry.
+     */
+    private String getResourceKey(Map.Entry<String, V> entry) { return entry.getKey(); }
+
+    /**
+     * Adds a config row from a map entry to the given array list of rows.
+     * @param rows The array list of config row list rows.
+     * @param entry A map entry to reference.
+     */
+    private void addSavedRow(ArrayList<ConfigRowList.Row> rows, Map.Entry<String, V> entry)
+    {
+        rows.add(this.getConfigRowList().rowFromEntry(entry, this.resetValue));
+    }
+
+    /**
+     * Adds a default entry config row from a set item resource key to the given array list of rows.
+     * @param rows The array list of config row list rows.
+     * @param entry A default map entry.
+     */
+    private void addDefaultRow(ArrayList<ConfigRowList.Row> rows, Map.Entry<String, V> entry)
+    {
+        rows.add(new ConfigRowKey.DefaultRow(entry.getKey()).generate());
+    }
+
+    /**
+     * Get the rows associated with a list's saved items. If no items are saved, then a row with a message stating
+     * that no items are saved will be shown.
+     *
+     * @return A list of config row list rows based on the current search query.
+     */
+    @Override
+    protected ArrayList<ConfigRowList.Row> getSavedRows()
+    {
+        String langKey = LangUtil.Gui.LIST_NO_SAVED_ITEMS;
+
+        return this.getSearchedItems(langKey, this.configMap.entrySet(), this::getResourceKey, this::addSavedRow);
+    }
+
+    /**
+     * Get the rows associated with a list's default items. If no default entries are available, then the container that
+     * shows default entries will not be available within the config row list.
+     *
+     * @return A list of config row list rows based on the current search query.
+     */
+    @Override
+    protected ArrayList<ConfigRowList.Row> getDefaultRows()
+    {
+        String langKey = LangUtil.Gui.LIST_NO_DEFAULT_ITEMS;
+
+        return this.getSearchedItems(langKey, this.defaultMap.entrySet(), this::getResourceKey, this::addDefaultRow);
+    }
+
+    /**
+     * @return The number of default entries associated with this list.
+     */
+    @Override
+    protected int getDefaultCount() { return this.defaultMap.size(); }
+
+    /**
+     * Disables all default entries by adding them to the disabled default entries set.
+     */
+    @Override
+    public void disableAllDefaults()
+    {
+        for (Map.Entry<String, V> entry : this.defaultMap.entrySet())
+            this.disabledDefaults.add(entry.getKey());
+    }
+
+    /**
+     * Enables all default entries by removing them from the disabled default entries set.
+     */
+    @Override
+    public void enableAllDefaults()
+    {
+        for (Map.Entry<String, V> entry : this.defaultMap.entrySet())
+            this.disabledDefaults.remove(entry.getKey());
     }
 
     /**
@@ -207,28 +318,14 @@ public class ListMapScreen<V> extends AbstractListScreen
     {
         if (this.undoMap.size() != this.configMap.size())
             return true;
+        else if (this.undoDisabledDefaults.size() != this.disabledDefaults.size())
+            return true;
         else if (this.deletedEntries.size() > 0)
             return true;
 
         for (Map.Entry<String, V> entry : this.configMap.entrySet())
         {
             if (!this.undoMap.get(entry.getKey()).equals(entry.getValue()))
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks if the given item is saved to the list's saved entries.
-     * @param item The item to check.
-     */
-    @Override
-    public boolean isItemSaved(Item item)
-    {
-        for (Map.Entry<String, V> entry : this.configMap.entrySet())
-        {
-            if (entry.getKey().equals(ItemClientUtil.getResourceKey(item)))
                 return true;
         }
 
@@ -251,116 +348,14 @@ public class ListMapScreen<V> extends AbstractListScreen
         {
             this.configMap.clear();
             this.configMap.putAll(this.undoMap);
+
+            this.disabledDefaults.clear();
+            this.disabledDefaults.addAll(this.undoDisabledDefaults);
+
             this.sortByResource();
         }
 
         this.deletedEntries.clear();
         this.getMinecraft().setScreen(this.parentScreen);
-    }
-
-    /**
-     * Save an item to this list's entries map. No changes are saved until confirmed by the user.
-     * @param item The item to save.
-     */
-    @Override
-    public void addItem(Item item)
-    {
-        this.configMap.put(ItemClientUtil.getResourceKey(item), this.resetValue);
-        this.sortByResource();
-    }
-
-    /**
-     * Sorts two localized item names alphabetically.
-     * @param first The first entry.
-     * @param second The second entry.
-     * @return A negative integer, zero, or a positive integer ignoring case considerations.
-     */
-    private int getLocalizedItem(Map.Entry<String, V> first, Map.Entry<String, V> second)
-    {
-        String firstItem = ItemClientUtil.getLocalizedItem(first.getKey());
-        String secondItem = ItemClientUtil.getLocalizedItem(second.getKey());
-
-        return firstItem.compareToIgnoreCase(secondItem);
-    }
-
-    /**
-     * Sorts the lists configuration entry map alphabetically.
-     */
-    private void sortByResource()
-    {
-        List<Map.Entry<String, V>> list = new ArrayList<>(this.configMap.entrySet());
-        Map<String, V> unknowns = new LinkedHashMap<>();
-        Map<String, V> result = new LinkedHashMap<>();
-
-        for (Map.Entry<String, V> entry : list)
-        {
-            if (!ItemClientUtil.isValidEntry(entry.getKey()))
-                unknowns.put(entry.getKey(), entry.getValue());
-        }
-
-        for (Map.Entry<String, V> entry : unknowns.entrySet())
-            list.remove(entry);
-
-        list.sort(this::getLocalizedItem);
-
-        for (Map.Entry<String, V> entry : list)
-            result.put(entry.getKey(), entry.getValue());
-
-        this.configMap.clear();
-        this.configMap.putAll(unknowns);
-        this.configMap.putAll(result);
-    }
-
-    /**
-     * Get the rows associated with a list's saved items. If no items are saved, then a row with a message stating
-     * that no items are saved will be shown.
-     *
-     * @return A list of config row list rows.
-     */
-    @Override
-    protected ArrayList<ConfigRowList.Row> getSavedItems()
-    {
-        ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
-        String query = this.getSearchBox().getValue();
-
-        if (query.isEmpty())
-        {
-            for (Map.Entry<String, V> entry : this.configMap.entrySet())
-                rows.add(this.getConfigRowList().rowFromEntry(entry, this.resetValue));
-        }
-        else
-        {
-            NonNullList<ItemStack> allItems = NonNullList.create();
-
-            for (Map.Entry<String, V> entry : this.configMap.entrySet())
-            {
-                if (ItemClientUtil.isValidEntry(entry.getKey()))
-                    allItems.add(ItemClientUtil.getItemStack(entry.getKey()));
-            }
-
-            this.addSearchedItems(allItems);
-
-            for (Map.Entry<String, V> entry : this.configMap.entrySet())
-            {
-                for (ItemStack itemStack : allItems)
-                {
-                    if (ItemClientUtil.getResourceKey(itemStack.getItem()).equals(entry.getKey()))
-                    {
-                        rows.add(this.getConfigRowList().rowFromEntry(entry, this.resetValue));
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (rows.size() == 0)
-        {
-            Component translate = Component.translatable(LangUtil.Gui.LIST_NOTHING_SAVED);
-            Component text = Component.literal(ChatFormatting.RED + translate.getString());
-
-            rows.addAll(new TextGroup(text, TextAlign.CENTER).generate());
-        }
-
-        return rows;
     }
 }

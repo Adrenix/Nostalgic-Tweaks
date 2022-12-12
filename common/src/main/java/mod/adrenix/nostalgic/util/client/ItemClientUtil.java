@@ -6,7 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
-import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,13 +15,9 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -35,74 +30,6 @@ import java.util.List;
 
 public abstract class ItemClientUtil
 {
-    /**
-     * Get an item instance based on the provided resource location key.
-     * @param resourceKey An item's resource location key.
-     * @return An item instance from the registry if that item exists.
-     */
-    public static Item getItem(String resourceKey) { return Registry.ITEM.get(ResourceLocation.tryParse(resourceKey)); }
-
-    /**
-     * Get an item stack instance based on the provided resource location key.
-     * @param resourceKey An item's resource location key.
-     * @return An item stack instance from the registry if that item exists.
-     */
-    public static ItemStack getItemStack(String resourceKey) { return getItem(resourceKey).getDefaultInstance(); }
-
-    /**
-     * Get a block based on the provided resource location key.
-     * @param resourceKey The block's resource location key.
-     * @return A block from the registry if it exists.
-     */
-    public static Block getBlock(String resourceKey) { return Registry.BLOCK.get(ResourceLocation.tryParse(resourceKey)); }
-
-    /**
-     * Get a block based on the provided item.
-     * @param item An item instance to get block data from.
-     * @return A block from the registry if it exists.
-     */
-    public static Block getBlockFromItem(Item item) { return getBlock(getResourceKey(item)); }
-
-    /**
-     * Generates a unique key that will be associated with an item instance. This key is the toString method associated
-     * with the item registry.
-     *
-     * @param item The item instance to get registry key information from.
-     * @return A unique item key that can be stored in a configuration file.
-     */
-    public static String getResourceKey(Item item) { return Registry.ITEM.getKey(item).toString(); }
-
-    /**
-     * Checks if a resource location key exists within the registry.
-     * @param resourceKey An item's resource location key.
-     * @return Whether the given resource location key exists.
-     */
-    public static boolean isValidEntry(String resourceKey)
-    {
-        return getResourceKey(getItem(resourceKey)).equals(resourceKey);
-    }
-
-    /**
-     * Get a localized item name.
-     * @param resourceKey An item's resource location key.
-     * @return A localized item name (if it exists) that is associated with the given key.
-     */
-    public static String getLocalizedItem(String resourceKey)
-    {
-        String localized = getItem(resourceKey).getDefaultInstance().getHoverName().getString();
-        Item item = getItem(resourceKey);
-
-        if (getResourceKey(item).equals("minecraft:air"))
-        {
-            if (isValidEntry(resourceKey))
-                return Component.translatable(LangUtil.Gui.SWING_HAND).getString();
-            else
-                return Component.translatable(LangUtil.Gui.SWING_UNKNOWN).getString();
-        }
-
-        return localized;
-    }
-
     /**
      * Used to enhance the old reequipping logic by preventing visual glitches when pulling items out of the player's hand.
      * @param originalItemStack The original item stack.

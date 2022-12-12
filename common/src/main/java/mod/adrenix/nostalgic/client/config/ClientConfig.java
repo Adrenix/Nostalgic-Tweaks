@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.client.config;
 
-import com.google.common.collect.Maps;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
@@ -18,6 +17,8 @@ import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.tweak.*;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -668,9 +669,16 @@ public class ClientConfig implements ConfigData
         public boolean oldItemHolding = DefaultConfig.Candy.OLD_ITEM_HOLDING;
         static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
 
-        // TODO:
-//        public Set<String> disableItemHolding = DefaultConfig.Candy.DISABLED_ITEM_HOLDING;
-//        static { CandyTweak.DISABLED_ITEM_HOLDING.setKey("disableItemHolding"); }
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
+        @TweakGui.Category(container = TweakCategory.ITEM_CANDY)
+        @TweakData.List(id = ListId.IGNORED_ITEM_HOLDING)
+        public Set<String> ignoredHoldingItems = new HashSet<>();
+        static { CandyTweak.IGNORED_ITEM_HOLDING.setKey("ignoredHoldingItems"); }
+
+        @TweakData.Ignore
+        public Set<String> disabledIgnoredHoldingItems = new HashSet<>();
 
         // Item - Merging
 
@@ -2087,5 +2095,6 @@ public class ClientConfig implements ConfigData
 
     @TweakData.Ignore
     @TweakData.List(id = ListId.CUSTOM_SWING)
-    public Map<String, Integer> customSwingSpeeds = Maps.newHashMap();
+    public Map<String, Integer> customSwingSpeeds = new HashMap<>();
+    static { SwingTweak.CUSTOM_SWING.setKey("customSwingSpeeds"); }
 }

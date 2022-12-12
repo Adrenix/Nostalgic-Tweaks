@@ -2,8 +2,10 @@ package mod.adrenix.nostalgic.common.config.list;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is responsible for checking the lists within a config. List validation can be performed by both the client
@@ -27,8 +29,13 @@ public abstract class ValidateList
         return switch (id)
         {
             case CUSTOM_SWING -> customSwings((Map<String, Integer>) list);
+            case IGNORED_ITEM_HOLDING -> ignoredHoldings((Set<String>) list);
         };
     }
+
+    /* Static Fields */
+
+    private static final String INVALID_KEY = "%s no longer exists in the game's registry - consider cleaning this list";
 
     /* List Validators */
 
@@ -54,8 +61,27 @@ public abstract class ValidateList
 
                 isValid = false;
             }
+
+            if (!ItemCommonUtil.isValidKey(key))
+                NostalgicTweaks.LOGGER.warn(INVALID_KEY, key);
         }
 
         return isValid;
+    }
+
+    /**
+     * Validate the contents of the old holding ignored items list.
+     * @param list A set of item resource key locations.
+     * @return Whether validation is successful.
+     */
+    private static boolean ignoredHoldings(Set<String> list)
+    {
+        for (String key : list)
+        {
+            if (!ItemCommonUtil.isValidKey(key))
+                NostalgicTweaks.LOGGER.warn(INVALID_KEY, key);
+        }
+
+        return true;
     }
 }

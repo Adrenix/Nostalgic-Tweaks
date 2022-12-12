@@ -38,8 +38,10 @@ public abstract class LangUtil
         public static final String LIST_TUTORIAL = "gui.nostalgic_tweaks.list.tutorial";
         public static final String LIST_ALL_ITEMS = "gui.nostalgic_tweaks.list.all_items";
         public static final String LIST_SAVED_ITEMS = "gui.nostalgic_tweaks.list.saved_items";
-        public static final String LIST_NOTHING_SAVED = "gui.nostalgic_tweaks.list.nothing_saved";
-        public static final String LIST_NOTHING_FOUND = "gui.nostalgic_tweaks.list.nothing_found";
+        public static final String LIST_DEFAULT_ITEMS = "gui.nostalgic_tweaks.list.default_items";
+        public static final String LIST_NO_DEFAULT_ITEMS = "gui.nostalgic_tweaks.list.no_default_items";
+        public static final String LIST_NO_SAVED_ITEMS = "gui.nostalgic_tweaks.list.no_saved_items";
+        public static final String LIST_NO_ITEMS = "gui.nostalgic_tweaks.list.no_items";
         public static final String LIST_ITEM_KEY = "gui.nostalgic_tweaks.list.item_key";
 
         public static final String CONFIRM_QUIT_TITLE = "gui.nostalgic_tweaks.confirm.quit_title";
@@ -48,8 +50,15 @@ public abstract class LangUtil
         public static final String CONFIRM_QUIT_CANCEL = "gui.nostalgic_tweaks.confirm.quit_cancel";
 
         public static final String BUTTON_SAVE_AND_DONE = "gui.nostalgic_tweaks.button.save_and_done";
+        public static final String BUTTON_MANAGE_DEFAULTS = "gui.nostalgic_tweaks.button.manage_defaults";
         public static final String BUTTON_EXIT_LOCAL_SAVE = "gui.nostalgic_tweaks.button.exit_local_save";
         public static final String BUTTON_EXIT_NO_SAVE = "gui.nostalgic_tweaks.button.exit_no_save";
+        public static final String BUTTON_DISABLE_ALL = "gui.nostalgic_tweaks.button.disable_all";
+        public static final String BUTTON_ENABLE_ALL = "gui.nostalgic_tweaks.button.enable_all";
+        public static final String BUTTON_EDIT_LIST = "gui.nostalgic_tweaks.button.edit_list";
+        public static final String BUTTON_DISABLE = "gui.nostalgic_tweaks.button.disable";
+        public static final String BUTTON_ENABLE = "gui.nostalgic_tweaks.button.enable";
+        public static final String BUTTON_REMOVE = "gui.nostalgic_tweaks.button.remove";
         public static final String BUTTON_DELETE = "gui.nostalgic_tweaks.button.delete";
         public static final String BUTTON_RESET = "gui.nostalgic_tweaks.button.reset";
         public static final String BUTTON_UNDO = "gui.nostalgic_tweaks.button.undo";
@@ -91,6 +100,9 @@ public abstract class LangUtil
         public static final String OVERLAY_FILTER_BLOCK_TOOLTIP = "gui.nostalgic_tweaks.overlay.filter.block.@Tooltip";
         public static final String OVERLAY_FILTER_ITEM = "gui.nostalgic_tweaks.overlay.filter.item";
         public static final String OVERLAY_FILTER_ITEM_TOOLTIP = "gui.nostalgic_tweaks.overlay.filter.item.@Tooltip";
+        public static final String OVERLAY_DEFAULTS = "gui.nostalgic_tweaks.overlay.defaults";
+        public static final String OVERLAY_DEFAULTS_HEADER = "gui.nostalgic_tweaks.overlay.defaults.header";
+        public static final String OVERLAY_DEFAULTS_MESSAGE = "gui.nostalgic_tweaks.overlay.defaults.message";
         public static final String OVERLAY_NUKE = "gui.nostalgic_tweaks.overlay.nuke";
         public static final String OVERLAY_NUKE_HEADER = "gui.nostalgic_tweaks.overlay.nuke.header";
         public static final String OVERLAY_NUKE_MESSAGE = "gui.nostalgic_tweaks.overlay.nuke.message";

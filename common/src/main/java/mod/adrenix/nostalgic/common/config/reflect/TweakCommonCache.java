@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.common.config.reflect;
 
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import net.minecraft.network.chat.Component;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 
 /**
@@ -40,6 +42,14 @@ public abstract class TweakCommonCache
      */
     protected TweakStatus status;
 
+    /* Cached Metadata */
+
+    /**
+     * Some tweaks may be associated with a custom list. These lists can be used by the server, so metadata is cached
+     * here if it is present.
+     */
+    @Nullable protected final TweakData.List list;
+
     /* Common Constructor */
 
     protected TweakCommonCache(TweakGroup group, String key)
@@ -47,6 +57,8 @@ public abstract class TweakCommonCache
         this.group = group;
         this.key = key;
         this.id = generateKey(group, key);
+
+        this.list = this.getMetadata(TweakData.List.class);
 
         if (this.isMetadataPresent(TweakData.EntryStatus.class))
             this.status = this.getMetadata(TweakData.EntryStatus.class).status();
@@ -93,6 +105,13 @@ public abstract class TweakCommonCache
      */
     public String getId() { return this.id; }
 
+    /* Common Metadata */
+
+    /**
+     * @return A tweak's list data if it is present.
+     */
+    @Nullable public TweakData.List getList() { return this.list; }
+
     /* Common Methods */
 
     /**
@@ -137,4 +156,18 @@ public abstract class TweakCommonCache
     {
         return this.getMetadata(annotation) == null;
     }
+
+    /* Translation Getters */
+
+    public static final String RELATED_APPENDIX = ".@Related";
+
+    public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
+    public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
+    public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
+    public String getOptifineKey() { return this.getLangKey() + ".@Optifine"; }
+    public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
+    public String getRelatedKey() { return this.getLangKey() + RELATED_APPENDIX; }
+    public String getTranslation() { return this.getComponentTranslation().getString(); }
+    public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
+    public Component getComponentTranslation() { return Component.translatable(this.getLangKey()); }
 }

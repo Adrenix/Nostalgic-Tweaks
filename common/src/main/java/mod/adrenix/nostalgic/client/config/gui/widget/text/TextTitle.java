@@ -4,12 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.client.ItemClientUtil;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -24,6 +22,7 @@ import net.minecraft.world.item.Items;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A title widget is responsible for rendering text that is associated with a saved list entry. Different rendering
@@ -34,31 +33,45 @@ public class TextTitle<V> extends AbstractWidget
 {
     /* Fields */
 
+    private static final int START_X = 0;
+    private static final int START_Y = 0;
+    private static final int HEIGHT = 12;
+    private static final int WIDTH = ConfigRowList.getInstance().getRowWidth();
+
     private final String resourceKey;
 
+    @Nullable private final RemoveType removeType;
     @Nullable private final Map.Entry<String, V> entry;
+    @Nullable private final Supplier<Boolean> isRemoved;
     @Nullable private final V currentValue;
 
     /* Constructors */
 
-    public TextTitle(@Nullable ListMapScreen<V> listMapScreen, @Nullable Map.Entry<String, V> entry, String resourceKey)
+    public TextTitle(ListMapScreen<V> listMapScreen, Map.Entry<String, V> entry, String resourceKey)
     {
-        super(0, 0, ConfigRowList.getInstance().getRowWidth(), 12, Component.empty());
+        super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
 
         this.entry = entry;
         this.resourceKey = resourceKey;
-
-        if (listMapScreen != null && this.entry != null)
-            this.currentValue = listMapScreen.getCopiedValue(entry);
-        else
-            this.currentValue = null;
+        this.currentValue = listMapScreen.getCopiedValue(entry);
+        this.removeType = null;
+        this.isRemoved = null;
     }
 
     /**
      * Create a new entry title widget without it being associated with a map entry.
      * @param resourceKey The item resource key associated with the item title.
      */
-    public TextTitle(String resourceKey) { this(null, null, resourceKey); }
+    public TextTitle(RemoveType removeType, String resourceKey, Supplier<Boolean> isRemoved)
+    {
+        super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
+
+        this.entry = null;
+        this.currentValue = null;
+        this.resourceKey = resourceKey;
+        this.removeType = removeType;
+        this.isRemoved = isRemoved;
+    }
 
     /* Methods */
 
@@ -84,51 +97,54 @@ public class TextTitle<V> extends AbstractWidget
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        boolean isInvalid = !ItemClientUtil.isValidEntry(this.resourceKey);
+        boolean isInvalid = !ItemCommonUtil.isValidKey(this.resourceKey);
         int startX = ConfigRowList.getStartX();
         Font font = Minecraft.getInstance().font;
-        AbstractListScreen screen = (AbstractListScreen) Minecraft.getInstance().screen;
+        AbstractListScreen listScreen = (AbstractListScreen) Minecraft.getInstance().screen;
 
-        if (ClassUtil.isNotInstanceOf(screen, AbstractListScreen.class))
+        if (ClassUtil.isNotInstanceOf(listScreen, AbstractListScreen.class))
             return;
 
-        ItemStack itemStack = isInvalid ? new ItemStack(Items.BARRIER) : ItemClientUtil.getItemStack(this.resourceKey);
-        String itemName = ItemClientUtil.getLocalizedItem(this.resourceKey);
+        ItemStack itemStack = isInvalid ? new ItemStack(Items.BARRIER) : ItemCommonUtil.getItemStack(this.resourceKey);
+        String itemName = ItemCommonUtil.getLocalizedItem(this.resourceKey);
         Component entryTitle = Component.literal(itemName);
         Component literalKey = Component.translatable(LangUtil.Gui.LIST_ITEM_KEY, this.resourceKey);
         List<Component> tooltip = TextUtil.Wrap.tooltip(literalKey, 50);
 
-        if (this.entry != null)
-        {
-            if (!this.entry.getValue().equals(this.currentValue))
-                entryTitle = Component.literal(ChatFormatting.ITALIC + entryTitle.copy().getString());
+        boolean isEntryChanged = this.entry != null && !this.entry.getValue().equals(this.currentValue);
+        boolean isKeyChanged = this.isRemoved != null && this.isRemoved.get();
+        boolean isItalics = this.removeType == RemoveType.SAVED && (isEntryChanged || isKeyChanged);
 
-            if (Minecraft.getInstance().screen instanceof ListMapScreen<?> mapScreen)
-            {
-                if (mapScreen.getDeletedEntries().contains(this.entry))
-                    entryTitle = Component.literal(ChatFormatting.RED + entryTitle.copy().getString());
-            }
+        if (isItalics)
+            entryTitle = Component.literal(ChatFormatting.ITALIC + entryTitle.copy().getString());
 
-            if (isInvalid)
-                entryTitle = Component.literal(ChatFormatting.GOLD + entryTitle.copy().getString());
-            else if (screen.isItemAdded(itemStack))
-                entryTitle = Component.literal(ChatFormatting.GREEN + entryTitle.copy().getString());
-        }
+        boolean isEntryDeleted = listScreen instanceof ListMapScreen<?> mapScreen && mapScreen.getDeletedEntries().contains(this.entry);
+        boolean isKeyDeleted = listScreen instanceof ListSetScreen setScreen && setScreen.getDeletedKeys().contains(this.resourceKey);
+        boolean isDefaultDisabled = listScreen.isDefaultItemDisabled(this.resourceKey);
+        boolean isTitleRed = this.removeType == RemoveType.SAVED ? (isEntryDeleted || isKeyDeleted) : isDefaultDisabled;
+
+        if (isTitleRed)
+            entryTitle = Component.literal(ChatFormatting.RED + entryTitle.copy().getString());
+
+        if (isInvalid)
+            entryTitle = Component.literal(ChatFormatting.GOLD + entryTitle.copy().getString());
+        else if (listScreen.isItemAdded(itemStack) && this.removeType != RemoveType.DEFAULT)
+            entryTitle = Component.literal(ChatFormatting.GREEN + entryTitle.copy().getString());
 
         int startY = this.y + 1;
 
         if (itemStack.getItem() instanceof BlockItem)
             startY += 1;
 
-        screen.getItemRenderer().renderGuiItem(itemStack, startX, startY);
+        listScreen.getItemRenderer().renderGuiItem(itemStack, startX, startY);
         Screen.drawString(poseStack, font, entryTitle, startX + 21, this.y + 6, 0xFFFFFF);
 
         boolean isHovering = MathUtil.isWithinBox(mouseX, mouseY, startX, this.y + 4, font.width(entryTitle) + 21, 14);
         boolean isAbove = mouseY <= ConfigWidgets.ROW_LIST_TOP;
-        boolean isBelow = mouseY >= screen.height - ConfigWidgets.ROW_LIST_BOTTOM_OFFSET;
+        boolean isBelow = mouseY >= listScreen.height - ConfigWidgets.ROW_LIST_BOTTOM_OFFSET;
 
-        if (isHovering && !isAbove && !isBelow)
-            screen.renderLast.add(() -> screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
+        if (isHovering && !isAbove && !isBelow && this.removeType != RemoveType.DEFAULT)
+            listScreen.renderLast.add(() -> listScreen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 
     /* Required Overrides */

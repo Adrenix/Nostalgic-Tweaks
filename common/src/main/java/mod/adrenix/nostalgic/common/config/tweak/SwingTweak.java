@@ -17,7 +17,8 @@ public enum SwingTweak implements Tweak
 {
     // Swing
 
-    OVERRIDE_SPEEDS;
+    OVERRIDE_SPEEDS,
+    CUSTOM_SWING;
 
     /* Fields */
 

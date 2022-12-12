@@ -6,7 +6,6 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.ResetButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.GenericSlider;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextTitle;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 
@@ -31,8 +30,10 @@ public abstract class ConfigRowEntry
     {
         /* Fields */
 
+        protected final ListMapScreen<T> screen;
         protected final Map.Entry<String, T> entry;
         protected final T reset;
+        protected final T undo;
 
         /* Constructor */
 
@@ -40,60 +41,81 @@ public abstract class ConfigRowEntry
          * Generate a new abstract row.
          * @param entry The list entry associated with this row.
          */
+        @SuppressWarnings("unchecked") // The map screen uses the same type as its map entry values
         protected AbstractEntryRow(Map.Entry<String, T> entry, T reset)
         {
             this.entry = entry;
             this.reset = reset;
+            this.screen = (ListMapScreen<T>) Minecraft.getInstance().screen;
+
+            if (this.screen == null)
+                throw new RuntimeException("Could not create an abstract entry row since 'screen' is 'null'");
+
+            this.undo = this.screen.getCopiedValue(this.entry);
         }
 
         /* Methods */
 
         /**
-         * Create a new config row list row instance.
+         * Performs reset instructions when the reset button is pressed.
+         * @param controller The abstract widget controller for this row.
+         */
+        private void onReset(AbstractWidget controller)
+        {
+            this.screen.copy(this.entry);
+            this.entry.setValue(this.isChanged() ? this.undo : this.reset);
+
+            if (!this.isChanged())
+                this.screen.copy(this.entry);
+
+            if (controller instanceof GenericSlider slider)
+                slider.update();
+        }
+
+        /**
+         * Determines of the current entry value has changed from its undo value.
+         * @return Whether the current entry has changed.
+         */
+        private boolean isChanged()
+        {
+            if (this.entry.getValue() instanceof Integer && this.undo instanceof Integer)
+                return ((Integer) this.entry.getValue()).compareTo((Integer) this.undo) != 0;
+
+            return !this.entry.equals(this.undo);
+        }
+
+        /**
+         * Determines if this entry is contained within this screen's deleted entries map.
+         * @return Whether this entry should be considered as deleted.
+         */
+        private boolean isDeleted() { return this.screen.isDeleted(this.entry); }
+
+        /**
+         * Deletes this entry by adding it to the screen's deleted entries map.
+         */
+        private void onDelete() { this.screen.delete(this.entry); }
+
+        /**
+         * Undoes the deletion of an entry by removing it from the screen's deleted entries map.
+         */
+        private void onUndo() { this.screen.undo(this.entry); }
+
+        /**
+         * Create a new config row list row instance for a map entry contained within a list map screen.
          * @param controller The main widget controller for this row.
          * @return A new config row list row instance.
          */
-        @SuppressWarnings("unchecked") // The map screen uses the same type as its map entry values.
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            ListMapScreen<T> screen = (ListMapScreen<T>) Minecraft.getInstance().screen;
 
-            if (ClassUtil.isNotInstanceOf(screen, ListMapScreen.class))
-                return new ConfigRowList.Row(widgets, controller, null);
+            ResetButton reset = new ResetButton(controller, this::isChanged, this::onReset);
+            DeleteButton delete = new DeleteButton(reset, this::isDeleted, this::onDelete, this::onUndo);
 
-            TextTitle<T> textTitle = new TextTitle<>(screen, this.entry, this.entry.getKey());
-            T undoValue = screen.getCopiedValue(this.entry);
-
-            ResetButton resetButton = new ResetButton
-            (
-                screen,
-                controller,
-                this.entry,
-                this.reset,
-                undoValue,
-                () ->
-                {
-                    if (this.entry.getValue() instanceof Integer && undoValue instanceof Integer)
-                        return ((Integer) this.entry.getValue()).compareTo((Integer) undoValue) != 0;
-
-                    return !this.entry.equals(undoValue);
-                }
-            );
-
-            DeleteButton deleteButton = new DeleteButton
-            (
-                this.entry,
-                resetButton,
-                () -> screen.isDeleted(this.entry),
-                (entry) -> screen.delete((Map.Entry<String, T>) entry),
-                (entry) -> screen.undo((Map.Entry<String, T>) entry)
-            );
-
-            widgets.add(textTitle);
+            widgets.add(new TextTitle<>(this.screen, this.entry, this.entry.getKey()));
             widgets.add(controller);
-            widgets.add(resetButton);
-            widgets.add(deleteButton);
+            widgets.add(reset);
+            widgets.add(delete);
 
             ConfigRowList.Row row = new ConfigRowList.Row(widgets, controller, null);
 

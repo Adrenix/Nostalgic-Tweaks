@@ -5,7 +5,6 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
-import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
@@ -43,12 +42,11 @@ public class TweakClientCache<T> extends TweakCommonCache
 
     static
     {
-        Arrays.stream(TweakGroup.values()).forEach((group) ->
-            ClientReflect.getGroup(group).forEach((key, value) ->
-            {
-                if (CommonReflect.getAnnotation(group, key, TweakData.Ignore.class) == null)
-                    TweakClientCache.CACHE.put(generateKey(group, key), new TweakClientCache<>(group, key, value));
-            })
+        Arrays.stream(TweakGroup.values()).forEach
+        (
+            (group) ->
+                ClientReflect.getGroup(group).forEach((key, value) ->
+                    TweakClientCache.CACHE.put(generateKey(group, key), new TweakClientCache<>(group, key, value)))
         );
     }
 
@@ -542,21 +540,4 @@ public class TweakClientCache<T> extends TweakCommonCache
 
         return "";
     }
-
-    /*
-       The key is used to identify a tweak within a group.
-       Additionally, the key is also used in the language definition files.
-     */
-
-    public static final String RELATED_KEY = ".@Related";
-
-    public String getKey() { return this.key; }
-    public String getLangKey() { return this.group.getLangKey() + "." + this.key; }
-    public String getTooltipKey() { return this.getLangKey() + ".@Tooltip"; }
-    public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
-    public String getOptifineKey() { return this.getLangKey() + ".@Optifine"; }
-    public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
-    public String getRelatedKey() { return this.getLangKey() + RELATED_KEY; }
-    public String getTranslation() { return Component.translatable(this.getLangKey()).getString(); }
-    public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
 }

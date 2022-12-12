@@ -10,5 +10,6 @@ package mod.adrenix.nostalgic.common.config.list;
 
 public enum ListId
 {
-    CUSTOM_SWING
+    CUSTOM_SWING,
+    IGNORED_ITEM_HOLDING
 }

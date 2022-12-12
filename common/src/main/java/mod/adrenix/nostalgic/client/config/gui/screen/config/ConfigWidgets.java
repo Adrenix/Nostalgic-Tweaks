@@ -556,7 +556,7 @@ public class ConfigWidgets
      */
     private boolean areWordsUnrelated(String[] words)
     {
-        return words.length == 0 || words[0].contains(TweakClientCache.RELATED_KEY.toLowerCase());
+        return words.length == 0 || words[0].contains(TweakClientCache.RELATED_APPENDIX.toLowerCase());
     }
 
     /**
