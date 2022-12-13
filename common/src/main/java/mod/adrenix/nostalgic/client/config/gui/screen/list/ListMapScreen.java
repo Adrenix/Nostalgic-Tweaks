@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.list;
 
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowKey;
 import mod.adrenix.nostalgic.common.config.list.ListMap;
@@ -357,5 +358,8 @@ public class ListMapScreen<V> extends AbstractListScreen
 
         this.deletedEntries.clear();
         this.getMinecraft().setScreen(this.parentScreen);
+
+        if (this.parentScreen instanceof ConfigScreen configScreen)
+            configScreen.restoreCache();
     }
 }

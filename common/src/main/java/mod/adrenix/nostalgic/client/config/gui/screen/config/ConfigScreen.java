@@ -142,7 +142,7 @@ public class ConfigScreen extends Screen
     /**
      * Caches important widget values so that those values can be restored at a later point in time.
      */
-    private void setupCache()
+    public void setupCache()
     {
         this.searchCache = this.getWidgets().getSearchInput().getValue();
         this.rowHeightCache = this.getWidgets().getConfigRowList().getRowHeight();
@@ -151,7 +151,7 @@ public class ConfigScreen extends Screen
     /**
      * Restores important widget values that were cached at an earlier point in time.
      */
-    private void restoreCache()
+    public void restoreCache()
     {
         this.getWidgets().getSearchInput().setValue(this.searchCache);
         this.getWidgets().getConfigRowList().setRowHeight(this.rowHeightCache);
@@ -298,8 +298,10 @@ public class ConfigScreen extends Screen
         if (focused != null)
         {
             for (AbstractWidget widget : focused.children)
+            {
                 if (widget instanceof EditBox)
                     widget.charTyped(codePoint, modifiers);
+            }
         }
 
         return false;

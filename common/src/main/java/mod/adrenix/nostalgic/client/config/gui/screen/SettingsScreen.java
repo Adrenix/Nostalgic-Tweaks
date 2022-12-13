@@ -4,10 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
-import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
@@ -218,11 +216,7 @@ public class SettingsScreen extends Screen
      * All configuration values are saved to disk when this screen closes.
      */
     @Override
-    public void onClose()
-    {
-        AutoConfig.getConfigHolder(ClientConfig.class).save();
-        this.minecraft.setScreen(parent);
-    }
+    public void onClose() { this.minecraft.setScreen(parent); }
 
     /* Rendering */
 

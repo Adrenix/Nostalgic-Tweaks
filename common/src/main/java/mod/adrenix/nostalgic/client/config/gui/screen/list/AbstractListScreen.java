@@ -19,6 +19,7 @@ import mod.adrenix.nostalgic.common.config.list.AbstractList;
 import mod.adrenix.nostalgic.common.config.list.ListFilter;
 import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.common.config.list.ListInclude;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
@@ -366,6 +367,10 @@ public abstract class AbstractListScreen extends ConfigScreen
     {
         // Creates required widgets needed from the parent config screen
         super.init();
+
+        // Caches any important information from the parent config screen
+        if (this.parentScreen instanceof ConfigScreen configScreen)
+            configScreen.setupCache();
 
         // Removes any widgets created by the parent config screen
         this.clearWidgets();
@@ -765,6 +770,19 @@ public abstract class AbstractListScreen extends ConfigScreen
             return true;
         }
 
+        if (KeyUtil.isSearching(keyCode))
+        {
+            if (this.getSearchBox().isFocused())
+            {
+                this.getSearchBox().setValue("");
+                this.refreshSearchResults();
+            }
+
+            this.getSearchBox().setFocus(true);
+
+            return true;
+        }
+
         if (this.getSearchBox().keyPressed(keyCode, scanCode, modifiers))
         {
             if (!this.getSearchBox().getValue().equals(query))
@@ -956,10 +974,7 @@ public abstract class AbstractListScreen extends ConfigScreen
         public void accept(boolean understood)
         {
             if (understood)
-            {
                 AbstractListScreen.this.closeList(true);
-                AbstractListScreen.this.minecraft.setScreen(AbstractListScreen.this.parentScreen);
-            }
             else
                 AbstractListScreen.this.minecraft.setScreen(AbstractListScreen.this);
         }
