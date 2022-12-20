@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.mixin.widen.SheepAccessor;
 import mod.adrenix.nostalgic.network.packet.PacketS2CHurtDirection;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import mod.adrenix.nostalgic.util.server.ItemServerUtil;
@@ -13,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -219,6 +221,17 @@ public abstract class LivingEntityMixin extends Entity
             ItemServerUtil.splitLoot(callback, this, new ItemStack(item, zeroToTwo));
         }
         else if (isSheep)
+        {
+            if (!ModConfig.Gameplay.oldSheepPunching())
+            {
+                Sheep sheep = (Sheep) type.tryCast(this);
+                ItemLike item = SheepAccessor.NT$ITEM_BYE_DYE().get(sheep.getColor());
+
+                if (!sheep.isSheared())
+                    ItemServerUtil.splitLoot(callback, this, new ItemStack(item, 1 + luck));
+            }
+
             callback.cancel();
+        }
     }
 }
