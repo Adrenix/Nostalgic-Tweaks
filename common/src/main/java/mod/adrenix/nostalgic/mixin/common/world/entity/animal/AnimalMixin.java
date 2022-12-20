@@ -89,7 +89,7 @@ public abstract class AnimalMixin extends Mob
 
             for (int i = 0; i < cap; i++)
             {
-                ItemEntity entity = sheep.spawnAtLocation(SheepAccessor.NT$ITEM_BYE_DYE().get(sheep.getColor()), 1);
+                ItemEntity entity = sheep.spawnAtLocation(SheepAccessor.NT$ITEM_BY_DYE().get(sheep.getColor()), 1);
 
                 if (entity == null)
                     continue;

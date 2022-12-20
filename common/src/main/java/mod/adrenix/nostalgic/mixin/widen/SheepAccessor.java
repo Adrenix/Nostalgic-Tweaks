@@ -11,5 +11,5 @@ import java.util.Map;
 @Mixin(Sheep.class)
 public interface SheepAccessor
 {
-    @Accessor("ITEM_BY_DYE") static Map<DyeColor, ItemLike> NT$ITEM_BYE_DYE() { throw new AssertionError(); }
+    @Accessor("ITEM_BY_DYE") static Map<DyeColor, ItemLike> NT$ITEM_BY_DYE() { throw new AssertionError(); }
 }

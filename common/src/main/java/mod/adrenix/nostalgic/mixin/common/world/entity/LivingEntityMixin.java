@@ -225,7 +225,7 @@ public abstract class LivingEntityMixin extends Entity
             if (!ModConfig.Gameplay.oldSheepPunching())
             {
                 Sheep sheep = (Sheep) type.tryCast(this);
-                ItemLike item = SheepAccessor.NT$ITEM_BYE_DYE().get(sheep.getColor());
+                ItemLike item = SheepAccessor.NT$ITEM_BY_DYE().get(sheep.getColor());
 
                 if (!sheep.isSheared())
                     ItemServerUtil.splitLoot(callback, this, new ItemStack(item, 1 + luck));
