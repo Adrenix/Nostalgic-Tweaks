@@ -40,6 +40,9 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
+    // Apple Skin Support
+    modCompileOnly "maven.modrinth:appleskin:forge-mc1.19-2.4.1"
+
     // Fuzzy Searching
     common "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
     shadowCommon "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
@@ -85,7 +88,7 @@ remapJar {
 }
 
 jar {
-    archivesBaseName = "${rootProject.archives_base_name}-Forge-${rootProject.minecraft_version}"
+    archivesBaseName = "${rootProject.archives_base_name}-${rootProject.minecraft_range}-Forge"
     classifier "dev"
 }
 

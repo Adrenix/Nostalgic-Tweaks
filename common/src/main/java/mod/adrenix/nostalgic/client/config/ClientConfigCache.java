@@ -102,8 +102,10 @@ public abstract class ClientConfigCache
 
         // List loaded tweaks
         NostalgicTweaks.LOGGER.info("Loaded %d tweaks", TweakClientCache.all().size());
-
-        // List loaded maps and sets
-        NostalgicTweaks.LOGGER.info("Registered %d customized swing speeds", cache.customSwingSpeeds.size());
     }
+
+    /**
+     * Saves the current state of the client config to disk.
+     */
+    public static void save() { AutoConfig.getConfigHolder(ClientConfig.class).save(); }
 }

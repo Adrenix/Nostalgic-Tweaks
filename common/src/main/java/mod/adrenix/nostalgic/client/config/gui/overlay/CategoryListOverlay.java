@@ -26,6 +26,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -369,7 +370,7 @@ public class CategoryListOverlay extends GenericOverlay
      * There is no setter method for this field. This is handled by widget handlers automatically.
      * @return A selected config row, null otherwise.
      */
-    @Nullable
+    @CheckForNull
     public ConfigRowList.Row getSelected() { return this.selected; }
 
     /**

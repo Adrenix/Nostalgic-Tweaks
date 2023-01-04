@@ -70,7 +70,7 @@ public abstract class ConfigRowKey
         {
             List<AbstractWidget> widgets = new ArrayList<>();
 
-            RemoveButton remove = new RemoveButton(RemoveType.SAVED, this::isRemoved, this::onRemove, this::onUndo);
+            RemoveButton remove = new RemoveButton(RemoveType.SAVED, this.resourceKey, this::isRemoved, this::onRemove, this::onUndo);
             TextTitle<?> title = new TextTitle<>(RemoveType.SAVED, this.resourceKey, this::isRemoved);
 
             widgets.add(title);
@@ -132,7 +132,7 @@ public abstract class ConfigRowKey
         {
             List<AbstractWidget> widgets = new ArrayList<>();
 
-            RemoveButton remove = new RemoveButton(RemoveType.DEFAULT, this::isRemoved, this::onDisable, this::onEnable);
+            RemoveButton remove = new RemoveButton(RemoveType.DEFAULT, this.resourceKey, this::isRemoved, this::onDisable, this::onEnable);
             TextTitle<?> title = new TextTitle<>(RemoveType.DEFAULT, this.resourceKey, this::isRemoved);
 
             widgets.add(title);

@@ -1,8 +1,9 @@
 package mod.adrenix.nostalgic.mixin.client.world.entity;
 
 import mod.adrenix.nostalgic.client.config.SwingConfig;
-import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
+import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.AnimationUtil;
 import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -34,7 +35,7 @@ import java.util.Objects;
  */
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements ICameraPitch
+public abstract class LivingEntityMixin extends Entity implements CameraPitching
 {
     /* Dummy Constructor */
 
@@ -42,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
 
     private LivingEntityMixin(EntityType<?> entityType, Level level) { super(entityType, level); }
 
-    /* Camera Pitching Ducking */
+    /* Camera Pitching Implementation */
 
     @Unique private float NT$cameraPitch = 0.0F;
     @Unique public float NT$prevCameraPitch = 0.0F;
@@ -69,11 +70,23 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
         else if (this.getType() == EntityType.PLAYER)
         {
             Player entity = (Player) this.getType().tryCast(this);
+
             if (entity == null || !entity.isLocalPlayer())
                 return;
         }
 
-        int mod = SwingConfig.getSwingSpeed(player);
+        if (ModConfig.Animation.oldClassicSwing())
+        {
+            switch (AnimationUtil.swingType)
+            {
+                case LEFT_CLICK -> callback.setReturnValue(7);
+                case RIGHT_CLICK -> callback.setReturnValue(3);
+            }
+
+            return;
+        }
+
+        int speed = SwingConfig.getSwingSpeed(player);
 
         if (SwingConfig.isSpeedGlobal())
             callback.setReturnValue(SwingConfig.getSwingSpeed());
@@ -82,14 +95,14 @@ public abstract class LivingEntityMixin extends Entity implements ICameraPitch
         else if (SwingConfig.isOverridingFatigue() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
             callback.setReturnValue(SwingConfig.getFatigueSpeed());
         else if (MobEffectUtil.hasDigSpeed(player))
-            callback.setReturnValue(mod - (1 + MobEffectUtil.getDigSpeedAmplification(player)));
+            callback.setReturnValue(speed - (1 + MobEffectUtil.getDigSpeedAmplification(player)));
         else
         {
             callback.setReturnValue
             (
                 player.hasEffect(MobEffects.DIG_SLOWDOWN) ?
-                    mod + (1 + Objects.requireNonNull(player.getEffect(MobEffects.DIG_SLOWDOWN)).getAmplifier()) * 2 :
-                    mod
+                    speed + (1 + Objects.requireNonNull(player.getEffect(MobEffects.DIG_SLOWDOWN)).getAmplifier()) * 2 :
+                    speed
             );
         }
     }

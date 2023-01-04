@@ -23,7 +23,7 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
 {
     /* Static Fields */
 
-    public static final int OVERLAY_WIDTH = 220;
+    public static final int OVERLAY_WIDTH = 262;
     public static final int OVERLAY_HEIGHT = 138;
 
     /* Constructor & Initialize */
@@ -90,7 +90,7 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
         /**
          * @return The width for buttons.
          */
-        private int getButtonWidth() { return DefaultEntriesOverlay.this.getDrawWidth() - 20; }
+        private int getButtonWidth() { return DefaultEntriesOverlay.this.getDrawWidth() - 80; }
 
         /**
          * @return The starting x-position for buttons in this overlay.
@@ -110,7 +110,7 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
         private TextWidget createHeaderText()
         {
             String translation = Component.translatable(LangUtil.Gui.OVERLAY_DEFAULTS_HEADER).getString();
-            Component header = Component.literal(ChatFormatting.YELLOW + translation);
+            Component header = Component.literal(ChatFormatting.UNDERLINE + translation);
 
             return new TextWidget
             (

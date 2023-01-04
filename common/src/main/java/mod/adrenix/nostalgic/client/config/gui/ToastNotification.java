@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.client.config.gui;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.TimeWatcher;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.Toast;
@@ -20,10 +20,10 @@ public abstract class ToastNotification
     /* Fields */
 
     /**
-     * This long integer keeps track of when the last pop-up occurred on screen.
-     * To prevent spam, a pop-up can only appear every 5 seconds.
+     * This time watcher keeps track of when the last pop-up occurred on screen.
+     * To prevent spam, a pop-up toast can only appear every 5 seconds.
      */
-    private static long timeSinceLast = 0L;
+    private static final TimeWatcher TIMER = new TimeWatcher(5000L);
 
     /* Methods */
 
@@ -33,14 +33,8 @@ public abstract class ToastNotification
      */
     public static void add(Toast toast)
     {
-        if (timeSinceLast == 0L)
-            timeSinceLast = Util.getMillis() - 5000L;
-
-        if (Util.getMillis() - timeSinceLast >= 5000L)
-        {
-            timeSinceLast = Util.getMillis();
+        if (TIMER.isReady())
             Minecraft.getInstance().getToasts().addToast(toast);
-        }
     }
 
     /**
@@ -59,7 +53,7 @@ public abstract class ToastNotification
     /**
      * Notifies the client that a tweak update was sent to the client from the server.
      */
-    public static void addTweakUpdate()
+    public static void tweakUpdate()
     {
         if (!NetUtil.isMultiplayer())
             return;
@@ -70,7 +64,7 @@ public abstract class ToastNotification
     /**
      * Notifies the client that a tweak was sent to the server.
      */
-    public static void addTweakChange()
+    public static void sentChanges()
     {
         if (!NetUtil.isMultiplayer())
             return;
@@ -81,7 +75,7 @@ public abstract class ToastNotification
     /**
      * Notifies the client that it connected to a world with Nostalgic Tweaks installed.
      */
-    public static void addServerHandshake()
+    public static void gotServerHandshake()
     {
         if (!NostalgicTweaks.isNetworkVerified() || NetUtil.isSingleplayer())
             return;

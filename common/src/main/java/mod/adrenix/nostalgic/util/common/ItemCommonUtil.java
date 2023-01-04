@@ -61,7 +61,7 @@ public abstract class ItemCommonUtil
      */
     public static Set<String> getKeysFromItems(Item ...items)
     {
-        Set<String> keys = new HashSet<>();
+        Set<String> keys = new LinkedHashSet<>();
 
         for (Item item : items)
             keys.add(getResourceKey(item));

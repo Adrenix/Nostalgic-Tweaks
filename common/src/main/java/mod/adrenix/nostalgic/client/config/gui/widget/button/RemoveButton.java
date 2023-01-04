@@ -2,7 +2,9 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
@@ -33,6 +35,7 @@ public class RemoveButton extends Button
 
     private final Supplier<Boolean> isRemoved;
     private final RemoveType removeType;
+    private final String resourceKey;
 
     /* Constructor Helpers */
 
@@ -88,7 +91,7 @@ public class RemoveButton extends Button
      * @param onRemove Instructions to perform when the resource key is removed.
      * @param onUndo Instructions to perform when removal is undone.
      */
-    public RemoveButton(RemoveType removeType, Supplier<Boolean> isRemoved, Runnable onRemove, Runnable onUndo)
+    public RemoveButton(RemoveType removeType, String resourceKey, Supplier<Boolean> isRemoved, Runnable onRemove, Runnable onUndo)
     {
         super
         (
@@ -100,6 +103,7 @@ public class RemoveButton extends Button
             (button) -> onPress(isRemoved, onRemove, onUndo)
         );
 
+        this.resourceKey = resourceKey;
         this.removeType = removeType;
         this.isRemoved = isRemoved;
     }
@@ -139,7 +143,11 @@ public class RemoveButton extends Button
         this.setMessage(RemoveButton.getRemoveTitle(this.removeType, this.isRemoved));
         this.updateX();
 
-        this.active = !Overlay.isOpened();
+        if (this.removeType == RemoveType.DEFAULT && Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+            this.active = !listScreen.isItemSaved(ItemCommonUtil.getItem(this.resourceKey));
+
+        if (Overlay.isOpened())
+            this.active = false;
 
         super.render(poseStack, mouseX, mouseY, partialTick);
     }

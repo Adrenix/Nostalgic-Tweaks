@@ -16,14 +16,6 @@ import java.net.URL;
 
 public abstract class LinkUtil
 {
-    /* Static Fields */
-
-    public static final String DISCORD = "https://discord.gg/jWdfVh3";
-    public static final String KO_FI = "https://ko-fi.com/adrenix";
-    public static final String GOLDEN_DAYS = "https://github.com/PoeticRainbow/golden-days/releases";
-
-    /* Static Methods */
-
     /**
      * Provides logic that handles button presses with URL jumps.
      * @param url The URL the button is referencing.

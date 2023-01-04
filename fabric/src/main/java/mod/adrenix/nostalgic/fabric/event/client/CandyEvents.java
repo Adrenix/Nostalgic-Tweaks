@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.fabric.event.client;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 
 /**
  * Fabric eye candy related event instructions and registration.
@@ -14,30 +15,15 @@ public abstract class CandyEvents
     /**
      * Registers candy related Fabric events.
      */
-    public static void register()
-    {
-        // Screen Events
-
-        onSetScreen();
-    }
-
-    /* Screen Events */
+    public static void register() { ScreenEvents.AFTER_INIT.register(CandyEvents::setScreen); }
 
     /**
      * Changes specific vanilla screens so that the mod's screen appears instead.
      * Any further screen redirects are handled by the mod screens.
      */
-    public static void onSetScreen()
+    private static void setScreen(Minecraft minecraft, Screen screen, int width, int height)
     {
-        Minecraft minecraft = Minecraft.getInstance();
-
-        ScreenEvents.AFTER_INIT.register
-        (
-            (client, screen, scaledWidth, scaledHeight) ->
-            {
-                ClientEventHelper.classicTitleScreen(screen, minecraft::setScreen);
-                ClientEventHelper.classicProgressScreen(screen, minecraft::setScreen);
-            }
-        );
+        ClientEventHelper.classicTitleScreen(screen, minecraft::setScreen);
+        ClientEventHelper.classicProgressScreen(screen, minecraft::setScreen);
     }
 }

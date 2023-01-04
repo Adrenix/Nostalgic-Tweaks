@@ -2,16 +2,20 @@ package mod.adrenix.nostalgic;
 
 import com.google.common.base.Suppliers;
 import dev.architectury.networking.NetworkChannel;
+import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
+import net.fabricmc.api.EnvType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.util.function.Supplier;
 
 /**
@@ -42,10 +46,56 @@ public class NostalgicTweaks
     public static final ModLogger LOGGER = new ModLogger(MOD_NAME);
 
     /**
+     * Uses Architectury to get the mod's current version. Getting the mod's version is mod loader platform dependant.
+     * A memoized supplier is used here since the version will never change during runtime.
+     */
+    public static final Supplier<String> VERSION = Suppliers.memoize(Platform.getMod(MOD_ID)::getVersion);
+
+    /**
+     * This will give a version number where all additional information attached to a version string is removed.
+     * @return A tiny version number formatted as '#.#.#'.
+     */
+    public static String getTinyVersion() { return TextUtil.extract(VERSION.get(), "(\\d\\.\\d\\.\\d)"); }
+
+    /**
+     * This will give the beta version number. If the build is not in beta, then an empty string is returned.
+     * @return A beta version number formatted as 'Beta.#'.
+     */
+    public static String getBetaVersion() { return TextUtil.extract(VERSION.get(), "Beta\\.\\d+"); }
+
+    /**
+     * This will follow the same filename format that is used on the mod's approved distribution sites.
+     * @return A version number with a prefixed title case mod loader name and Minecraft version.
+     */
+    public static String getFullVersion()
+    {
+        return String.format("%s-%s-%s", TextUtil.toTitleCase(getLoader()), Platform.getMinecraftVersion(), VERSION.get());
+    }
+
+    /**
+     * This will follow the same filename format as above but without the mod loader name.
+     * @return A version number with a prefixed Minecraft version.
+     */
+    public static String getShortVersion()
+    {
+        return String.format("%s-%s", Platform.getMinecraftVersion(), VERSION.get());
+    }
+
+    /**
      * Check if the logger is in debug mode.
      * @return Whether the internal mod logger is in debugging mode.
      */
     public static boolean isDebugging() { return LOGGER.isDebugMode(); }
+
+    /**
+     * Flag that indicates if the event API is being tested.
+     */
+    private static final boolean isEventTesting = false;
+
+    /**
+     * @return Whether event tests should be registered by the mod.
+     */
+    public static boolean isEventTesting() { return Platform.isDevelopmentEnvironment() && isEventTesting; }
 
     /* Other Mod Tracking */
 
@@ -77,10 +127,17 @@ public class NostalgicTweaks
     public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));
 
     /**
-     * This is the mod's network current protocol version. If there are any new or removed packets, then a change in
-     * this version is required.
+     * This is the mod's network current protocol version. If there are any changes made to the mod's network code that
+     * will cause communication issues with older versions of the mod, then this value needs bumped up. Typically,
+     * changes such as new or removed packets and changes in tweak data serialization will require a bump.
      */
-    public static final String PROTOCOL = "1.1";
+    public static final String PROTOCOL = "1.2";
+
+    /**
+     * Shortcut method for supplying the network's protocol version.
+     * @return The mod's network protocol version.
+     */
+    public static String getProtocol() { return PROTOCOL; }
 
     /**
      * This field indicates if the client is connected to a level with Nostalgic Tweaks installed. This field will
@@ -109,95 +166,40 @@ public class NostalgicTweaks
      *
      * @return A minecraft server instance.
      */
-    @Nullable public static MinecraftServer getServer() { return NostalgicTweaks.server; }
-
-    /* Side & Environment States */
-
-    /**
-     * This enumeration is a universal side checker that is used in common mod code.
-     * Each mod loader has their own version of this.
-     */
-
-    public enum Side { CLIENT, SERVER }
-
-    /**
-     * This enumeration is a universal mod loader checker this is used in common mod code.
-     * Some unique instructions will need executed depending on which mod loader is being used.
-     */
-
-    public enum Environment { FABRIC, FORGE }
-
-    /**
-     * This field indicates which logical side the mod is running on.
-     * This will either be client or server and should never change during runtime.
-     */
-    private static Side side;
-
-    /**
-     * This field indicates which mod loader environment the mod is running on.
-     * This will either be Forge or Fabric and should never change during runtime.
-     */
-    private static Environment environment;
-
-    /**
-     * Set the logical side the mod is running on.
-     * @param side A side enumeration type value.
-     */
-    private static void setSide(Side side) { NostalgicTweaks.side = side; }
-
-    /**
-     * Set the mod loader environment the mod is running on.
-     * @param environment An environment enumeration type value.
-     */
-    private static void setEnvironment(Environment environment) { NostalgicTweaks.environment = environment; }
+    @CheckForNull
+    public static MinecraftServer getServer() { return NostalgicTweaks.server; }
 
     /* State Checkers */
-
-    /**
-     * This field tracks whether the mod is currently running in a development environment. Each mod loader has a unique
-     * way of checking whether the mod is in development mode.
-     */
-    private static boolean isDevEnv = false;
-
-    /**
-     * Set whether the mod is in a development environment.
-     * @param state Whether the mod is in a development environment.
-     */
-    public static void setDevelopmentEnvironment(boolean state)
-    {
-        NostalgicTweaks.LOGGER.setDebug(state);
-        NostalgicTweaks.isDevEnv = state;
-    }
-
-    /**
-     * Getter method for checking if the mod is running in a development.
-     * @return Whether the mod is running in a development environment.
-     */
-    public static boolean isDevelopmentEnvironment() { return NostalgicTweaks.isDevEnv; }
 
     /**
      * Getter method for checking if the mod is running on the logical client.
      * @return Whether the mod is running on the client.
      */
-    public static boolean isClient() { return NostalgicTweaks.side == Side.CLIENT; }
+    public static boolean isClient() { return Platform.getEnv() == EnvType.CLIENT; }
 
     /**
      * Getter method for checking if the mod is running on the logical server.
      * @return Whether the mod is running on the server.
      */
-    public static boolean isServer() { return NostalgicTweaks.side == Side.SERVER; }
+    public static boolean isServer() { return Platform.getEnv() == EnvType.SERVER; }
 
     /**
      * Getter method for checking if the mod is running on Fabric.
      * @return Whether the mod is loaded by a Fabric loader.
      */
-    public static boolean isFabric() { return NostalgicTweaks.environment == Environment.FABRIC; }
+    public static boolean isFabric() { return Platform.isFabric(); }
 
     /**
      * Getter method for checking if the mod is running on Forge.
      * @return Whether the mod is loaded by a Forge loader.
      */
-    public static boolean isForge() { return NostalgicTweaks.environment == Environment.FORGE; }
+    public static boolean isForge() { return Platform.isForge(); }
+
+    /**
+     * Gets a string representation of the current mod loader the user is using.
+     * @return The mod loader name in caps.
+     */
+    public static String getLoader() { return isForge() ? "FORGE" : "FABRIC"; }
 
     /**
      * This checks if the network is verified. This will always be <code>true</code> when the mod is running on the
@@ -230,33 +232,28 @@ public class NostalgicTweaks
 
     /**
      * Instructions for when the mod is initialized by a logical server.
-     * @param environment The mod loader environment initializing the mod.
      */
-    public static void initServer(Environment environment)
+    public static void initServer()
     {
+        DefaultConfig.initialize();
         ServerConfigCache.initialize();
+        PacketRegistry.initialize();
 
         NostalgicTweaks.LOGGER.warn("Nostalgic Tweaks server support is still in-development");
         NostalgicTweaks.LOGGER.warn("Please report any problems you encounter");
-
-        NostalgicTweaks.setSide(Side.SERVER);
-        NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString()));
-        PacketRegistry.initialize();
+        NostalgicTweaks.LOGGER.info("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
     }
 
     /**
      * Instructions for when the mod is initialized by a logical client.
-     * @param environment The mod loader environment initializing the mod.
      */
-    public static void initClient(Environment environment)
+    public static void initClient()
     {
+        DefaultConfig.initialize();
         ClientConfigCache.initialize();
-
-        NostalgicTweaks.setSide(Side.CLIENT);
-        NostalgicTweaks.setEnvironment(environment);
-        NostalgicTweaks.LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, environment.toString()));
         PacketRegistry.initialize();
+
+        NostalgicTweaks.LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
 
         if (OPTIFINE.get())
             NostalgicTweaks.LOGGER.warn("Optifine is installed - some tweaks may not work as intended");

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 @Mixin(Block.class)
-public abstract class BlockMixin
+public abstract class BlockCommonMixin
 {
     /**
      * Multiplayer:

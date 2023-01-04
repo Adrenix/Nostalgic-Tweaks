@@ -7,11 +7,8 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ColorSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
@@ -63,7 +60,7 @@ public class ColorPickerOverlay extends Overlay
         this.x = (screen.width / 2.0D) - (this.width / 2.0D);
         this.y = (screen.height / 2.0D) - (this.height / 2.0D);
 
-        int[] rgba = TextUtil.toHexRGBA(this.tweak.getValue());
+        int[] rgba = ColorUtil.toHexRGBA(this.tweak.getValue());
         this.r = rgba[0];
         this.g = rgba[1];
         this.b = rgba[2];
@@ -179,7 +176,7 @@ public class ColorPickerOverlay extends Overlay
         if (screen == null || !this.isOpen())
             return;
 
-        this.tweak.setValue(TextUtil.toHexString(new int[] {this.r, this.g, this.b, this.a}));
+        this.tweak.setValue(ColorUtil.toHexString(new int[] {this.r, this.g, this.b, this.a}));
 
         int startX = (int) this.x;
         int startY = (int) this.y;
@@ -211,11 +208,11 @@ public class ColorPickerOverlay extends Overlay
         int leftX = startX + 14;
         int topY = startY + 21;
 
-        int[] rgba = TextUtil.toHexRGBA(this.tweak.getValue());
-        int r = TextUtil.toHexInt("#" + (rgba[0] < 16 ? "0" : "") + Integer.toHexString(rgba[0]) + "0000FF");
-        int g = TextUtil.toHexInt("#00" + (rgba[1] < 16 ? "0" : "") + Integer.toHexString(rgba[1]) + "00FF");
-        int b = TextUtil.toHexInt("#0000" + (rgba[2] < 16 ? "0" : "") + Integer.toHexString(rgba[2]) + "FF");
-        int a = TextUtil.toHexInt(this.tweak.getValue());
+        int[] rgba = ColorUtil.toHexRGBA(this.tweak.getValue());
+        int r = ColorUtil.toHexInt("#" + (rgba[0] < 16 ? "0" : "") + Integer.toHexString(rgba[0]) + "0000FF");
+        int g = ColorUtil.toHexInt("#00" + (rgba[1] < 16 ? "0" : "") + Integer.toHexString(rgba[1]) + "00FF");
+        int b = ColorUtil.toHexInt("#0000" + (rgba[2] < 16 ? "0" : "") + Integer.toHexString(rgba[2]) + "FF");
+        int a = ColorUtil.toHexInt(this.tweak.getValue());
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         RenderUtil.fill(buffer, matrix, leftX, leftX + 18, topY, topY + 18, r);

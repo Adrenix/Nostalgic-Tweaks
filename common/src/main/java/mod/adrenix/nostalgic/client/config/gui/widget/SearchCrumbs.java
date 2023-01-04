@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.MathUtil;
@@ -147,7 +148,7 @@ public class SearchCrumbs extends AbstractWidget
     private boolean isOverCrumb(double mouseX, double mouseY, Crumb crumb)
     {
         // This prevents clicking when the crumbs haven't received a y-position from the row list yet.
-        if (this.y == 0)
+        if (this.y == 0 || ConfigWidgets.isOutsideRowList(mouseY))
             return false;
 
         Font font = Minecraft.getInstance().font;

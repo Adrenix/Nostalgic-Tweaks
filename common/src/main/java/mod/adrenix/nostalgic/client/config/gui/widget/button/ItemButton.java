@@ -10,7 +10,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -141,15 +141,11 @@ public class ItemButton extends Button
         // Item button rendering
 
         PoseStack viewStack = RenderSystem.getModelViewStack();
-
-        boolean isOutsideTop = mouseY <= ConfigWidgets.ROW_LIST_TOP;
-        boolean isOutsideBottom = mouseY >= this.screen.height - ConfigWidgets.ROW_LIST_BOTTOM_OFFSET;
-        boolean isOutside = isOutsideTop || isOutsideBottom;
-        boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && !isOutside;
+        boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY);
 
         int startX = this.x + 2;
         int startY = this.y + 1;
-        int color = TextUtil.toHexInt((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
+        int color = ColorUtil.toHexInt((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
 
         if (this.itemStack.getItem() instanceof BlockItem)
             startY = this.y + 2;

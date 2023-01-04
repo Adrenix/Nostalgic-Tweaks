@@ -28,7 +28,7 @@ public class ListSetScreen extends AbstractListScreen
     private final Set<String> configSet;
     private final Set<String> undoSet;
 
-    /* Constructors */
+    /* Constructor */
 
     /**
      * Create a new list screen that controls a set.
@@ -42,6 +42,19 @@ public class ListSetScreen extends AbstractListScreen
         this.defaultSet = listSet.getDefaultSet();
         this.configSet = listSet.getConfigSet();
         this.undoSet = Sets.newHashSet(this.configSet);
+
+        this.sortConfig();
+    }
+
+    /* Sorting */
+
+    /**
+     * Sorts the main and default config sets from A-Z based on item resource key translations.
+     */
+    private void sortConfig()
+    {
+        this.sortEntries(this.configSet, this::getResourceKey, this.configSet::addAll, this.configSet::clear);
+        this.sortEntries(this.defaultSet, this::getResourceKey, this.defaultSet::addAll, this.defaultSet::clear);
     }
 
     /* Getters */
@@ -89,7 +102,10 @@ public class ListSetScreen extends AbstractListScreen
     public void addItem(Item item)
     {
         if (this.isItemEligible(item))
+        {
             this.configSet.add(ItemCommonUtil.getResourceKey(item));
+            this.sortConfig();
+        }
     }
 
     /**

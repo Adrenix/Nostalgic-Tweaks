@@ -36,6 +36,8 @@ public enum TweakEmbed
 
     // World (Eye Candy) - Embedded Subcategories
 
+    CUSTOM_SKY_CANDY(TweakSubcategory.WORLD_SKY_CANDY, LangUtil.Gui.CANDY_EMBED_SKY_CUSTOM),
+    CUSTOM_FOG_CANDY(TweakSubcategory.WORLD_FOG_CANDY, LangUtil.Gui.CANDY_EMBED_CUSTOM_FOG),
     WATER_FOG_CANDY(TweakSubcategory.WORLD_FOG_CANDY, LangUtil.Gui.CANDY_EMBED_WATER_FOG),
     SHADER_LIGHT(TweakSubcategory.LIGHTING_WORLD_CANDY, LangUtil.Gui.CANDY_EMBED_SHADER_LIGHT),
 

@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
-import mod.adrenix.nostalgic.mixin.duck.IWidgetManager;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.mixin.duck.WidgetManager;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -19,14 +19,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
-public abstract class ScreenMixin extends GuiComponent implements IWidgetManager
+public abstract class ScreenMixin extends GuiComponent implements WidgetManager
 {
     /* Shadows */
 
     @Shadow protected abstract void removeWidget(GuiEventListener listener);
     @Shadow protected abstract GuiEventListener addRenderableWidget(GuiEventListener widget);
 
-    /* Widget Manager Overrides */
+    /* Widget Manager Implementation */
 
     @Override
     public <T extends GuiEventListener & Widget> void NT$addRenderableWidget(T widget)
@@ -75,8 +75,8 @@ public abstract class ScreenMixin extends GuiComponent implements IWidgetManager
     {
         if (ModConfig.Candy.customGuiBackground())
         {
-            int top = TextUtil.toHexInt(ModConfig.Candy.customTopGradient());
-            int bottom = TextUtil.toHexInt(ModConfig.Candy.customBottomGradient());
+            int top = ColorUtil.toHexInt(ModConfig.Candy.customTopGradient());
+            int bottom = ColorUtil.toHexInt(ModConfig.Candy.customBottomGradient());
 
             this.fillGradient(poseStack, x, y, w, h, top, bottom);
         }

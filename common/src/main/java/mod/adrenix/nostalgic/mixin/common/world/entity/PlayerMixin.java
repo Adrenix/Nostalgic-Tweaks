@@ -32,10 +32,7 @@ public abstract class PlayerMixin extends LivingEntity
 {
     /* Dummy Constructor */
 
-    private PlayerMixin(EntityType<? extends LivingEntity> type, Level level)
-    {
-        super(type, level);
-    }
+    private PlayerMixin(EntityType<? extends LivingEntity> type, Level level) { super(type, level); }
 
     /* Shadows */
 
@@ -64,6 +61,7 @@ public abstract class PlayerMixin extends LivingEntity
     {
         if (ModConfig.Gameplay.instantEat())
             return;
+
         instance.playSound(player, x, y, z, sound, category, volume, pitch);
     }
 
@@ -100,6 +98,7 @@ public abstract class PlayerMixin extends LivingEntity
     {
         if (ModConfig.Gameplay.disableSweep())
             return new ArrayList<>();
+
         return instance.getEntitiesOfClass(aClass, aabb);
     }
 
@@ -137,6 +136,7 @@ public abstract class PlayerMixin extends LivingEntity
     {
         if (ModConfig.Animation.oldCreativeCrouch() && this.abilities.flying)
             return 1.62F;
+
         return ModConfig.Animation.oldSneaking() ? ModConfig.Animation.getSneakHeight() : 1.27F;
     }
 }

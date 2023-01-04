@@ -3,7 +3,9 @@ package mod.adrenix.nostalgic.client.config.gui.screen.list;
 import com.google.common.collect.Sets;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
+import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
 import mod.adrenix.nostalgic.client.config.gui.overlay.*;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
@@ -14,16 +16,21 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.common.config.list.AbstractList;
 import mod.adrenix.nostalgic.common.config.list.ListFilter;
 import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.common.config.list.ListInclude;
+import mod.adrenix.nostalgic.mixin.duck.MaxSizeChanger;
+import mod.adrenix.nostalgic.network.packet.PacketC2SChangeTweak;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.PacketUtil;
 import mod.adrenix.nostalgic.util.common.function.TriConsumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -43,6 +50,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,6 +68,7 @@ public abstract class AbstractListScreen extends ConfigScreen
     protected final Set<ListFilter> filters = new HashSet<>();
     protected final ListInclude onlyInclude;
     protected final ListId listId;
+    protected final AbstractList list;
     protected final Screen parentScreen;
     protected final Set<String> disabledDefaults;
     protected final Set<String> undoDisabledDefaults;
@@ -71,6 +80,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
     private WidgetProvider widgetProvider;
     private ItemStack highlightItem;
+    private double scrollAmountCache;
 
     /* Flags */
 
@@ -87,6 +97,7 @@ public abstract class AbstractListScreen extends ConfigScreen
     {
         super(Minecraft.getInstance().screen, title);
 
+        this.list = list;
         this.listId = list.getId();
         this.onlyInclude = list.getInclude();
         this.disabledDefaults = list.getDisabledDefaults();
@@ -97,10 +108,11 @@ public abstract class AbstractListScreen extends ConfigScreen
         this.selectableItems = NonNullList.create();
         this.listWidgets = new HashSet<>();
         this.highlightItem = null;
+        this.scrollAmountCache = 0.0D;
 
         this.updateItemTags();
 
-        if (list.getTweak().getClientCache() != null && !list.getTweak().getClientCache().isClient())
+        if (TweakClientCache.get(list.getTweak()).isClient())
             this.watchPermissions();
     }
 
@@ -397,7 +409,7 @@ public abstract class AbstractListScreen extends ConfigScreen
         ContainerButton.expand(ContainerId.LIST_HELP);
         ContainerButton.expand(ContainerId.DEFAULT_ITEMS);
         ContainerButton.expand(ContainerId.SAVED_ITEMS);
-        ContainerButton.expand(ContainerId.ALL_ITEMS);
+        ContainerButton.expand(ContainerId.SELECTABLE_ITEMS);
 
         // Add renderable widgets
         this.listWidgets.forEach((child) ->
@@ -416,9 +428,58 @@ public abstract class AbstractListScreen extends ConfigScreen
         this.refreshSearchResults();
 
         ContainerButton.expand(ContainerId.SAVED_ITEMS);
-        ContainerButton.expand(ContainerId.ALL_ITEMS);
+        ContainerButton.expand(ContainerId.SELECTABLE_ITEMS);
 
         this.highlightItem = itemStack;
+    }
+
+    /**
+     * Sorts translated item names alphabetically.
+     * @param firstKey The first resource key.
+     * @param secondKey The second resource key.
+     * @return A negative integer, zero, or a positive integer ignoring case considerations.
+     */
+    private int getLocalizedItem(String firstKey, String secondKey)
+    {
+        String firstItem = ItemCommonUtil.getLocalizedItem(firstKey);
+        String secondItem = ItemCommonUtil.getLocalizedItem(secondKey);
+
+        return firstItem.compareToIgnoreCase(secondItem);
+    }
+
+    /**
+     * Sorts the given entry set alphabetically by translated item names.
+     * @param entrySet A set of entries to sort.
+     * @param resourceKey A function that accepts the type value for the set and returns an item resource key.
+     * @param sortedConsumer A consumer that accepts a set of sorted values.
+     * @param listClear A runnable that clears a set or map. This happens before sorting consumers accept sorted sets.
+     * @param <T> The type value of the set.
+     */
+    protected <T> void sortEntries
+    (
+        Set<T> entrySet,
+        Function<T, String> resourceKey,
+        Consumer<Set<T>> sortedConsumer,
+        Runnable listClear
+    )
+    {
+        List<T> list = new ArrayList<>(entrySet);
+        Set<T> unknowns = new LinkedHashSet<>();
+
+        for (T entry : list)
+        {
+            if (!ItemCommonUtil.isValidKey(resourceKey.apply(entry)))
+                unknowns.add(entry);
+        }
+
+        for (T entry : unknowns)
+            list.remove(entry);
+
+        list.sort((firstKey, secondKey) -> this.getLocalizedItem(resourceKey.apply(firstKey), resourceKey.apply(secondKey)));
+
+        listClear.run();
+        sortedConsumer.accept(unknowns);
+        sortedConsumer.accept(new LinkedHashSet<>(list));
     }
 
     /**
@@ -552,9 +613,13 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         for (ItemStack itemStack : allItems)
         {
+            MaxSizeChanger injector = (MaxSizeChanger) itemStack.getItem();
             ItemStack copyStack = ItemCommonUtil.getItemStack(ItemCommonUtil.getResourceKey(itemStack.getItem()));
 
-            if (itemStack.getTag() != null && !itemStack.getTag().equals(copyStack.getTag()))
+            boolean isUniqueItem = itemStack.getTag() != null && !itemStack.getTag().equals(copyStack.getTag());
+            boolean isSizeExceeded = injector.NT$getOriginalSize() == 1 && this.listId == ListId.CUSTOM_ITEM_STACKING;
+
+            if (isUniqueItem || isSizeExceeded)
             {
                 filteredItems.add(itemStack);
                 continue;
@@ -573,9 +638,13 @@ public abstract class AbstractListScreen extends ConfigScreen
             boolean isItemsFiltered = isItem && this.filters.contains(ListFilter.ITEMS);
             boolean isToolsFiltered = isTool && this.filters.contains(ListFilter.TOOLS);
             boolean isBlocksFiltered = isBlock && this.filters.contains(ListFilter.BLOCKS);
-            boolean isNotFood = this.onlyInclude == ListInclude.ONLY_EDIBLE && !isEdible;
 
-            if (isItemsFiltered || isToolsFiltered || isBlocksFiltered || isNotFood)
+            if (this.onlyInclude == ListInclude.ONLY_EDIBLE)
+            {
+                if (!isEdible)
+                    filteredItems.add(itemStack);
+            }
+            else if (isItemsFiltered || isToolsFiltered || isBlocksFiltered)
                 filteredItems.add(itemStack);
         }
 
@@ -612,17 +681,17 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         ConfigRowGroup.ContainerRow selectableItems = new ConfigRowGroup.ContainerRow
         (
-            Component.translatable(LangUtil.Gui.LIST_ALL_ITEMS),
+            Component.translatable(LangUtil.Gui.LIST_SELECTABLE_ITEMS),
             this::getRowsFromSelectableItems,
-            ContainerId.ALL_ITEMS
+            ContainerId.SELECTABLE_ITEMS
         );
 
         this.getConfigRowList().addRow(tutorial.generate());
+        this.getConfigRowList().addRow(savedItems.generate());
 
         if (this.getDefaultCount() > 0)
             this.getConfigRowList().addRow(defaultItems.generate());
 
-        this.getConfigRowList().addRow(savedItems.generate());
         this.getConfigRowList().addRow(selectableItems.generate());
     }
 
@@ -707,6 +776,7 @@ public abstract class AbstractListScreen extends ConfigScreen
     public void resize(Minecraft minecraft, int width, int height)
     {
         String query = this.getSearchBox().getValue();
+        this.scrollAmountCache = this.getConfigRowList().getScrollAmount();
 
         this.init(minecraft, width, height);
         this.getSearchBox().setValue(query);
@@ -766,7 +836,9 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         if (Overlay.getVisible() != null)
         {
-            Overlay.close();
+            if (isEsc)
+                Overlay.close();
+
             return true;
         }
 
@@ -880,6 +952,14 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
         this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
+
+        // Reset scrollbar position without flashing
+        if (this.scrollAmountCache > 0.0D)
+        {
+            this.getConfigRowList().render(poseStack, mouseX, mouseY, partialTick);
+            this.getConfigRowList().setScrollAmount(this.scrollAmountCache);
+            this.scrollAmountCache = 0.0D;
+        }
 
         // Row list rendering
         this.getConfigRowList().render(poseStack, mouseX, mouseY, partialTick);
@@ -1040,7 +1120,9 @@ public abstract class AbstractListScreen extends ConfigScreen
                 )
             );
 
-            if (AbstractListScreen.this.getListId() == ListId.CUSTOM_SWING)
+            ListId listId = AbstractListScreen.this.getListId();
+
+            if (listId == ListId.LEFT_CLICK_SPEEDS || listId == ListId.RIGHT_CLICK_SPEEDS)
                 children.add(this.swingButton);
 
             AbstractListScreen.this.listWidgets.addAll(children);
@@ -1081,7 +1163,18 @@ public abstract class AbstractListScreen extends ConfigScreen
                 (button) ->
                 {
                     AbstractListScreen.this.closeList(false);
-                    AutoConfig.getConfigHolder(ClientConfig.class).save();
+
+                    TweakServerCache<?> serverTweak = AbstractListScreen.this.list.getTweak().getServerCache();
+                    boolean isServerTweak = serverTweak != null;
+                    boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer();
+
+                    if (isServerTweak && isMultiplayer)
+                    {
+                        PacketUtil.sendToServer(new PacketC2SChangeTweak(serverTweak));
+                        ToastNotification.sentChanges();
+                    }
+                    else
+                        AutoConfig.getConfigHolder(ClientConfig.class).save();
                 }
             );
         }
@@ -1185,7 +1278,9 @@ public abstract class AbstractListScreen extends ConfigScreen
 
             return new StateButton(StateWidget.SWING, search.x + search.getWidth() + 22, search.y - 1, (button) ->
             {
-                if (AbstractListScreen.this.getListId() == ListId.CUSTOM_SWING)
+                ListId listId = AbstractListScreen.this.getListId();
+
+                if (listId == ListId.LEFT_CLICK_SPEEDS || listId == ListId.RIGHT_CLICK_SPEEDS)
                     new SpeedOverlay();
             });
         }

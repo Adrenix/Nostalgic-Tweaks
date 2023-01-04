@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.ResetButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.GenericSlider;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextTitle;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 
@@ -14,26 +15,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Entry Row Templates
+ * Map Entry Row Templates
  *
  * The following classes are used to generate configuration rows based on a specific value associated with a list config
- * entry. Any unknown types will be defaulted to an invalid row instance.
+ * map entry. Any unknown types will be defaulted to an invalid row instance.
  */
 
 public abstract class ConfigRowEntry
 {
     /**
      * Template class for value-specific rows.
-     * @param <T> The type of the controlled value that will be handled.
+     * @param <V> The type of the controlled value that will be handled.
      */
-    private abstract static class AbstractEntryRow<T>
+    private abstract static class AbstractEntryRow<V>
     {
         /* Fields */
 
-        protected final ListMapScreen<T> screen;
-        protected final Map.Entry<String, T> entry;
-        protected final T reset;
-        protected final T undo;
+        protected final ListMap<V> listMap;
+        protected final ListMapScreen<V> screen;
+        protected final Map.Entry<String, V> entry;
+        protected final V reset;
+        protected final V undo;
 
         /* Constructor */
 
@@ -42,16 +44,17 @@ public abstract class ConfigRowEntry
          * @param entry The list entry associated with this row.
          */
         @SuppressWarnings("unchecked") // The map screen uses the same type as its map entry values
-        protected AbstractEntryRow(Map.Entry<String, T> entry, T reset)
+        protected AbstractEntryRow(ListMap<V> listMap, Map.Entry<String, V> entry, V reset)
         {
+            this.listMap = listMap;
             this.entry = entry;
             this.reset = reset;
-            this.screen = (ListMapScreen<T>) Minecraft.getInstance().screen;
+            this.screen = (ListMapScreen<V>) Minecraft.getInstance().screen;
 
             if (this.screen == null)
                 throw new RuntimeException("Could not create an abstract entry row since 'screen' is 'null'");
 
-            this.undo = this.screen.getCopiedValue(this.entry);
+            this.undo = this.screen.getCachedValue(this.entry);
         }
 
         /* Methods */
@@ -62,11 +65,7 @@ public abstract class ConfigRowEntry
          */
         private void onReset(AbstractWidget controller)
         {
-            this.screen.copy(this.entry);
             this.entry.setValue(this.isChanged() ? this.undo : this.reset);
-
-            if (!this.isChanged())
-                this.screen.copy(this.entry);
 
             if (controller instanceof GenericSlider slider)
                 slider.update();
@@ -145,7 +144,10 @@ public abstract class ConfigRowEntry
          *
          * @param entry The entry associated with this row.
          */
-        public InvalidEntryRow(Map.Entry<String, Object> entry, Object reset) { super(entry, reset); }
+        public InvalidEntryRow(ListMap<Object> listMap, Map.Entry<String, Object> entry, Object reset)
+        {
+            super(listMap, entry, reset);
+        }
 
         @Override
         public ConfigRowList.Row generate() { return super.generate(); }
@@ -162,8 +164,15 @@ public abstract class ConfigRowEntry
          *
          * @param entry The integer valued entry associated with this row.
          */
-        public IntegerEntryRow(Map.Entry<String, Integer> entry, int reset) { super(entry, reset); }
+        public IntegerEntryRow(ListMap<Integer> listMap, Map.Entry<String, Integer> entry, int reset)
+        {
+            super(listMap, entry, reset);
+        }
 
+        /**
+         * Create a row with widgets associated with a list map that has integer values.
+         * @return A config row list row instance.
+         */
         @Override
         public ConfigRowList.Row generate()
         {
@@ -171,7 +180,7 @@ public abstract class ConfigRowEntry
             (
                 this.entry::setValue,
                 this.entry::getValue,
-                null,
+                this.listMap.getTweak(),
                 ConfigRowList.getInstance().getRowWidth() - 206,
                 ConfigRowList.BUTTON_START_Y,
                 ConfigRowList.BUTTON_WIDTH,

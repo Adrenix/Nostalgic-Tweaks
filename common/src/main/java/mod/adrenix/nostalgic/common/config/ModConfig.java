@@ -3,6 +3,9 @@ package mod.adrenix.nostalgic.common.config;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
+import mod.adrenix.nostalgic.common.config.list.ListSet;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.tweak.*;
 import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
@@ -132,6 +135,7 @@ public abstract class ModConfig
 
         if (isDynamic || (cache != null && NostalgicTweaks.isNetworkVerified()))
             return cache.getServerCache();
+
         return client;
     }
 
@@ -185,6 +189,38 @@ public abstract class ModConfig
     }
 
     /**
+     * Get a sided list map using the given tweak.
+     * @param tweak The tweak to get a list map from.
+     * @param <V> The value of map entries.
+     * @return A list map with the given value type and associated with the given tweak.
+     */
+    @SuppressWarnings("unchecked") // List value types are assured from their connected tweaks
+    private static <V> ListMap<V> getListMap(Tweak tweak)
+    {
+        loadTweak(tweak);
+
+        if (NostalgicTweaks.isServer())
+            return (ListMap<V>) ConfigList.getMapFromTweak(tweak.getServerCache());
+
+        return (ListMap<V>) ConfigList.getMapFromTweak(tweak.getClientCache());
+    }
+
+    /**
+     * Get a sided list set using the given tweak.
+     * @param tweak The tweak to get a list set from.
+     * @return A list set with associated with the given tweak.
+     */
+    private static ListSet getListSet(Tweak tweak)
+    {
+        loadTweak(tweak);
+
+        if (NostalgicTweaks.isServer())
+            return ConfigList.getSetFromTweak(tweak.getServerCache());
+
+        return ConfigList.getSetFromTweak(tweak.getClientCache());
+    }
+
+    /**
      * Get a parsed colored string with placeholders replaced with the given text and value.
      * @param text The input text to parse.
      * @param value The value to replace %v with.
@@ -205,9 +241,20 @@ public abstract class ModConfig
 
     public static class Sound
     {
+        public static boolean disableGlowSquidAmbience() { return getBoolTweak(SoundTweak.DISABLE_GLOW_SQUID_AMBIENCE, SOUND.disableGlowSquidAmbience); }
+        public static boolean disableGlowSquidOther() { return getBoolTweak(SoundTweak.DISABLE_GLOW_SQUID_OTHER, SOUND.disableGlowSquidOther); }
+        public static boolean disableNetherAmbience() { return getBoolTweak(SoundTweak.DISABLE_NETHER_AMBIENCE, SOUND.disableNetherAmbience); }
+        public static boolean disableWaterAmbience() { return getBoolTweak(SoundTweak.DISABLE_WATER_AMBIENCE, SOUND.disableWaterAmbience); }
+        public static boolean disableLavaAmbience() { return getBoolTweak(SoundTweak.DISABLE_LAVA_AMBIENCE, SOUND.disableLavaAmbience); }
+        public static boolean disableGenericSwim() { return getBoolTweak(SoundTweak.DISABLE_GENERIC_SWIM, SOUND.disableGenericSwim); }
         public static boolean ignoreModdedStep() { return getBoolTweak(SoundTweak.IGNORE_MODDED_STEP, SOUND.ignoreModdedStep); }
+        public static boolean disableFishDeath() { return getBoolTweak(SoundTweak.DISABLE_FISH_DEATH, SOUND.disableFishDeath); }
+        public static boolean disableFishSwim() { return getBoolTweak(SoundTweak.DISABLE_FISH_SWIM, SOUND.disableFishSwim); }
+        public static boolean disableFishHurt() { return getBoolTweak(SoundTweak.DISABLE_FISH_HURT, SOUND.disableFishHurt); }
         public static boolean disableXpPickup() { return getBoolTweak(SoundTweak.DISABLE_PICKUP, SOUND.disableXpPickup); }
+        public static boolean disableFurnace() { return getBoolTweak(SoundTweak.DISABLE_FURNACE, SOUND.disableFurnace); }
         public static boolean disableXpLevel() { return getBoolTweak(SoundTweak.DISABLE_LEVEL, SOUND.disableXpLevel); }
+        public static boolean disableLavaPop() { return getBoolTweak(SoundTweak.DISABLE_LAVA_POP, SOUND.disableLavaPop); }
         public static boolean disableGrowth() { return getBoolTweak(SoundTweak.DISABLE_GROWTH, SOUND.disableGrowth); }
         public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
         public static boolean disableSquid() { return getBoolTweak(SoundTweak.DISABLE_SQUID, SOUND.disableSquid); }
@@ -218,6 +265,7 @@ public abstract class ModConfig
         public static boolean oldChest() { return getBoolTweak(SoundTweak.OLD_CHEST, SOUND.oldChest); }
         public static boolean oldFall() { return getBoolTweak(SoundTweak.OLD_FALL, SOUND.oldFall); }
         public static boolean oldStep() { return getBoolTweak(SoundTweak.OLD_STEP, SOUND.oldStep); }
+        public static boolean oldBed() { return getBoolTweak(SoundTweak.OLD_BED, SOUND.oldBed); }
         public static boolean oldXp() { return getBoolTweak(SoundTweak.OLD_XP, SOUND.oldXp); }
     }
 
@@ -247,6 +295,13 @@ public abstract class ModConfig
         public static boolean oldSoulTorchModel() { return getModelState(CandyTweak.SOUL_TORCH_MODEL, CANDY.oldSoulTorchModel); }
         public static boolean oldTorchModel() { return getModelState(CandyTweak.TORCH_MODEL, CANDY.oldTorchModel); }
 
+        // Block Candy - Outlines
+        public static boolean oldStairOutline() { return getBoolTweak(CandyTweak.OLD_STAIR_OUTLINE, CANDY.oldStairOutline); }
+        public static boolean oldFenceOutline() { return getBoolTweak(CandyTweak.OLD_FENCE_OUTLINE, CANDY.oldFenceOutline); }
+        public static boolean oldSlabOutline() { return getBoolTweak(CandyTweak.OLD_SLAB_OUTLINE, CANDY.oldSlabOutline); }
+        public static boolean oldWallOutline() { return getBoolTweak(CandyTweak.OLD_WALL_OUTLINE, CANDY.oldWallOutline); }
+        public static ListSet getFullOutlines() { return getListSet(CandyTweak.FULL_BLOCK_OUTLINE); }
+
         // Interface - Generic & Title Candy
         public static TweakType.Corner oldOverlayCorner() { return getEnum(CandyTweak.VERSION_CORNER, CANDY.oldOverlayCorner); }
         public static boolean oldPlainSelectedItemName() { return getBoolTweak(CandyTweak.PLAIN_SELECTED_ITEM_NAME, CANDY.oldPlainSelectedItemName); }
@@ -257,6 +312,10 @@ public abstract class ModConfig
         public static boolean oldLoadingScreens() { return getBoolTweak(CandyTweak.LOADING_SCREENS, CANDY.oldLoadingScreens); }
         public static boolean removeLoadingBar() { return getBoolTweak(CandyTweak.REMOVE_LOADING_BAR, CANDY.removeLoadingBar); }
         public static boolean oldButtonHover() { return getBoolTweak(CandyTweak.BUTTON_HOVER, CANDY.oldButtonHover); }
+
+        // Interface - Chat Candy
+        public static int getChatOffset() { return CANDY.chatOffset; }
+        public static boolean disableSignatureBoxes() { return getBoolTweak(CandyTweak.SIGNATURE_BOXES, CANDY.disableSignatureBoxes); }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 
@@ -270,6 +329,7 @@ public abstract class ModConfig
         public static String customTopGradient() { return CANDY.customTopGradient; }
         public static String customBottomGradient() { return CANDY.customBottomGradient; }
         public static String debugBackgroundColor() { return CANDY.debugBackgroundColor; }
+        public static boolean removeExtraPauseButtons() { return getBoolTweak(CandyTweak.PAUSE_REMOVE_EXTRA, CANDY.removeExtraPauseButtons); }
         public static boolean showDebugTextShadow() { return getBoolTweak(CandyTweak.DEBUG_SHOW_SHADOW, CANDY.showDebugTextShadow); }
         public static boolean showDebugBackground() { return getBoolTweak(CandyTweak.DEBUG_SHOW_COLOR, CANDY.showDebugBackground); }
         public static boolean showDebugTargetData() { return getBoolTweak(CandyTweak.DEBUG_TARGETED, CANDY.showDebugTargetData); }
@@ -287,7 +347,8 @@ public abstract class ModConfig
         public static boolean oldFurnaceScreen() { return getBoolTweak(CandyTweak.FURNACE_SCREEN, CANDY.oldFurnaceScreen); }
         public static boolean displayPieChart() { return getBoolTweak(CandyTweak.DEBUG_PIE_CHART, CANDY.showDebugPieChart); }
         public static boolean displayTpsChart() { return getBoolTweak(CandyTweak.DEBUG_TPS_CHART, CANDY.showDebugTpsChart); }
-        public static boolean debugEntityId() { return getBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId); }
+        public static boolean oldAnvilScreen() { return getBoolTweak(CandyTweak.ANVIL_SCREEN, CANDY.oldAnvilScreen); }
+        public static boolean debugEntityId() { return getSidedBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId, SERVER_CANDY.debugEntityId); }
         public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
 
         // Interface - Tooltip Candy
@@ -299,29 +360,36 @@ public abstract class ModConfig
 
         // Item Candy
         public static boolean fixItemModelGaps() { return getBoolTweak(CandyTweak.FIX_ITEM_MODEL_GAP, CANDY.fixItemModelGap); }
-        public static boolean oldFloatingItems() { return getBoolTweak(CandyTweak.FLAT_ITEMS, CANDY.old2dItems); }
-        public static boolean oldFlatRendering() { return getBoolTweak(CandyTweak.FLAT_RENDERING, CANDY.old2dRendering); }
+        public static boolean oldDamageArmorTint() { return getBoolTweak(CandyTweak.DAMAGE_ARMOR_TINT, CANDY.oldDamageArmorTint); }
         public static boolean oldFlatEnchantment() { return getBoolTweak(CandyTweak.FLAT_ENCHANTED_ITEMS, CANDY.old2dEnchantedItems) && oldFloatingItems(); }
+        public static boolean oldFlatRendering() { return getBoolTweak(CandyTweak.FLAT_RENDERING, CANDY.old2dRendering); }
+        public static boolean oldFloatingItems() { return getBoolTweak(CandyTweak.FLAT_ITEMS, CANDY.old2dItems); }
         public static boolean oldFlatThrowing() { return getBoolTweak(CandyTweak.FLAT_THROW_ITEMS, CANDY.old2dThrownItems); }
         public static boolean oldItemHolding() { return getBoolTweak(CandyTweak.ITEM_HOLDING, CANDY.oldItemHolding); }
         public static boolean oldItemMerging() { return getSidedBoolTweak(CandyTweak.ITEM_MERGING, CANDY.oldItemMerging, SERVER_CANDY.oldItemMerging); }
         public static boolean oldFlatFrames() { return getBoolTweak(CandyTweak.FLAT_FRAMES, CANDY.old2dFrames); }
         public static boolean oldFlatColors() { return getBoolTweak(CandyTweak.FLAT_COLORS, CANDY.old2dColors); }
 
+        public static ListSet getIgnoredItemHoldings() { return getListSet(CandyTweak.IGNORED_ITEM_HOLDING); }
+
         // Lighting Candy
         public static boolean disableLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.disableLightFlicker); }
         public static boolean disableBrightness() { return getBoolTweak(CandyTweak.DISABLE_BRIGHTNESS, CANDY.disableBrightness); }
+        public static boolean fixChunkBorderLag() { return getBoolTweak(CandyTweak.FIX_CHUNK_BORDER_LAG, CANDY.fixChunkBorderLag); }
         public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLightRendering); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }
         public static boolean oldLeavesLighting() { return getBoolTweak(CandyTweak.LEAVES_LIGHTING, CANDY.oldLeavesLighting); }
         public static boolean oldWaterLighting() { return getBoolTweak(CandyTweak.WATER_LIGHTING, CANDY.oldWaterLighting); }
+        public static boolean oldClassicLight() { return getSidedBoolTweak(CandyTweak.CLASSIC_LIGHTING, CANDY.oldClassicLighting, SERVER_CANDY.oldClassicLighting); }
         public static boolean oldLightColor() { return getBoolTweak(CandyTweak.LIGHT_COLOR, CANDY.oldLightColor); }
 
         // Particle Candy
+        public static boolean disableModelDestructionParticles() { return getBoolTweak(CandyTweak.NO_MODEL_DESTRUCTION_PARTICLES, CANDY.disableModelDestructionParticles); }
         public static boolean unoptimizedExplosionParticles() { return getBoolTweak(CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES, CANDY.unoptimizedExplosionParticles); }
-        public static boolean oldNoCriticalHitParticles() { return getBoolTweak(CandyTweak.NO_CRIT_PARTICLES, CANDY.oldNoCritParticles); }
+        public static boolean disableUnderwaterParticles() { return getBoolTweak(CandyTweak.NO_UNDERWATER_PARTICLES, CANDY.disableUnderwaterParticles); }
         public static boolean oldMixedExplosionParticles() { return getBoolTweak(CandyTweak.MIXED_EXPLOSION_PARTICLES, CANDY.oldMixedExplosionParticles); }
+        public static boolean oldNoCriticalHitParticles() { return getBoolTweak(CandyTweak.NO_CRIT_PARTICLES, CANDY.oldNoCritParticles); }
         public static boolean disableSprintingParticles() { return getBoolTweak(CandyTweak.NO_SPRINTING_PARTICLES, CANDY.disableSprintingParticles); }
         public static boolean oldNoEnchantHitParticles() { return getBoolTweak(CandyTweak.NO_MAGIC_HIT_PARTICLES, CANDY.oldNoMagicHitParticles); }
         public static boolean disableFallingParticles() { return getBoolTweak(CandyTweak.NO_FALLING_PARTICLES, CANDY.disableFallingParticles); }
@@ -329,6 +397,7 @@ public abstract class ModConfig
         public static boolean disableNetherParticles() { return getBoolTweak(CandyTweak.NO_NETHER_PARTICLES, CANDY.disableNetherParticles); }
         public static boolean disableLeverParticles() { return getBoolTweak(CandyTweak.NO_LEVER_PARTICLES, CANDY.disableLeverParticles); }
         public static boolean oldExplosionParticles() { return getBoolTweak(CandyTweak.EXPLOSION_PARTICLES, CANDY.oldExplosionParticles); }
+        public static boolean disableLavaParticles() { return getBoolTweak(CandyTweak.NO_LAVA_PARTICLES, CANDY.disableLavaParticles); }
         public static boolean oldNoDamageParticles() { return getBoolTweak(CandyTweak.NO_DAMAGE_PARTICLES, CANDY.oldNoDamageParticles); }
         public static boolean oldOpaqueExperience() { return getBoolTweak(CandyTweak.OPAQUE_EXPERIENCE, CANDY.oldOpaqueExperience); }
         public static boolean oldSweepParticles() { return getBoolTweak(CandyTweak.SWEEP, CANDY.oldSweepParticles); }
@@ -350,17 +419,36 @@ public abstract class ModConfig
         public static boolean disableSunriseSunsetColor() { return getBoolTweak(CandyTweak.DISABLE_SUNRISE_SUNSET_COLOR, CANDY.disableSunriseSunsetColors); }
         public static boolean oldSunriseSunsetFog() { return getBoolTweak(CandyTweak.SUNRISE_SUNSET_FOG, CANDY.oldSunriseSunsetFog); }
         public static boolean oldBlueVoidOverride() { return getBoolTweak(CandyTweak.BLUE_VOID_OVERRIDE, CANDY.oldBlueVoidOverride); }
+        public static boolean oldDynamicSkyColor() { return getBoolTweak(CandyTweak.DYNAMIC_SKY_COLOR, CANDY.oldDynamicSkyColor); }
+        public static boolean oldDynamicFogColor() { return getBoolTweak(CandyTweak.DYNAMIC_FOG_COLOR, CANDY.oldDynamicFogColor); }
         public static boolean smoothWaterDensity() { return getBoolTweak(CandyTweak.SMOOTH_WATER_DENSITY, CANDY.smoothWaterDensity); }
         public static boolean oldWaterFogDensity() { return getBoolTweak(CandyTweak.WATER_FOG_DENSITY, CANDY.oldWaterFogDensity); }
         public static boolean oldDarkVoidHeight() { return getBoolTweak(CandyTweak.DARK_VOID_HEIGHT, CANDY.oldDarkVoidHeight); }
         public static boolean oldSunriseAtNorth() { return getBoolTweak(CandyTweak.SUNRISE_AT_NORTH, CANDY.oldSunriseAtNorth); }
+        public static boolean disableHorizonFog() { return getBoolTweak(CandyTweak.DISABLE_HORIZON_FOG, CANDY.disableHorizonFog); }
         public static boolean smoothWaterColor() { return getBoolTweak(CandyTweak.SMOOTH_WATER_COLOR, CANDY.smoothWaterColor); }
         public static boolean oldWaterFogColor() { return getBoolTweak(CandyTweak.WATER_FOG_COLOR, CANDY.oldWaterFogColor); }
         public static boolean oldSquareBorder() { return getSidedBoolTweak(CandyTweak.SQUARE_BORDER, CANDY.oldSquareBorder, SERVER_CANDY.oldSquareBorder); }
-        public static boolean oldTerrainFog() { return getBoolTweak(CandyTweak.TERRAIN_FOG, CANDY.oldTerrainFog); }
-        public static boolean oldHorizonFog() { return getBoolTweak(CandyTweak.HORIZON_FOG, CANDY.oldHorizonFog); }
         public static boolean oldNetherFog() { return getBoolTweak(CandyTweak.NETHER_FOG, CANDY.oldNetherFog); }
+        public static boolean oldNetherSky() { return getBoolTweak(CandyTweak.NETHER_SKY, CANDY.oldNetherSky); }
         public static boolean oldNameTags() { return getBoolTweak(CandyTweak.NAME_TAGS, CANDY.oldNameTags); }
+        public static boolean oldDarkFog() { return getBoolTweak(CandyTweak.DARK_FOG, CANDY.oldDarkFog); }
+
+        // Custom Fog
+        public static String getTerrainFogColor() { return CANDY.customTerrainFogColor; }
+        public static String getNetherFogColor() { return CANDY.customNetherFogColor; }
+        public static boolean isTerrainFogCustom() { return getBoolTweak(CandyTweak.CUSTOM_TERRAIN_FOG, CANDY.customTerrainFog); }
+        public static boolean isNetherFogCustom() { return getBoolTweak(CandyTweak.CUSTOM_NETHER_FOG, CANDY.customNetherFog); }
+
+        // Custom Sky
+        public static String getWorldSkyColor() { return CANDY.customWorldSkyColor; }
+        public static String getNetherSkyColor() { return CANDY.customNetherSkyColor; }
+        public static boolean isWorldSkyCustom() { return getBoolTweak(CandyTweak.CUSTOM_WORLD_SKY, CANDY.customWorldSky); }
+        public static boolean isNetherSkyCustom() { return getBoolTweak(CandyTweak.CUSTOM_NETHER_SKY, CANDY.customNetherSky); }
+
+        // Custom Void
+        public static String getVoidSkyColor() { return CANDY.customVoidSkyColor; }
+        public static boolean isVoidSkyCustom() { return getBoolTweak(CandyTweak.CUSTOM_VOID_SKY, CANDY.customVoidSky); }
 
         // Void Fog
         public static String getVoidFogColor() { return CANDY.voidFogColor; }
@@ -371,15 +459,16 @@ public abstract class ModConfig
 
         /* Version Tweaks */
 
+        public static TweakVersion.WorldFog getWorldFog() { return getEnum(CandyTweak.WORLD_FOG, CANDY.oldWorldFog); }
         public static TweakVersion.TitleLayout getButtonLayout() { return getEnum(CandyTweak.TITLE_BUTTON_LAYOUT, CANDY.oldButtonLayout); }
         public static TweakVersion.PauseLayout getPauseLayout() { return getEnum(CandyTweak.PAUSE_LAYOUT, CANDY.oldPauseMenu); }
         public static TweakVersion.Overlay getLoadingOverlay() { return getEnum(CandyTweak.LOADING_OVERLAY, CANDY.oldLoadingOverlay); }
         public static TweakVersion.Generic getDebugScreen() { return getEnum(CandyTweak.DEBUG_SCREEN, CANDY.oldDebug); }
-        public static TweakVersion.Generic getSkyColor() { return getEnum(CandyTweak.SKY_COLOR, CANDY.oldSkyColor); }
-        public static TweakVersion.Generic getFogColor() { return getEnum(CandyTweak.FOG_COLOR, CANDY.oldFogColor); }
         public static TweakVersion.Generic getBlueVoid() { return getEnum(CandyTweak.BLUE_VOID, CANDY.oldBlueVoid); }
         public static TweakVersion.Generic getStars() { return getEnum(CandyTweak.STARS, CANDY.oldStars); }
         public static TweakVersion.Hotbar getHotbar() { return getSidedEnum(CandyTweak.CREATIVE_HOTBAR, CANDY.oldCreativeHotbar, SERVER_CANDY.oldCreativeHotbar); }
+        public static TweakVersion.FogColor getUniversalFog() { return getEnum(CandyTweak.UNIVERSAL_FOG_COLOR, CANDY.universalFogColor); }
+        public static TweakVersion.SkyColor getUniversalSky() { return getEnum(CandyTweak.UNIVERSAL_SKY_COLOR, CANDY.universalSkyColor); }
 
         /* String Tweaks */
 
@@ -410,6 +499,8 @@ public abstract class ModConfig
             return isTweakOn(GameplayTweak.ARROW_SPEED) ? getSidedTweak(GameplayTweak.ARROW_SPEED, GAMEPLAY.arrowSpeed, SERVER_GAMEPLAY.arrowSpeed) : 0;
         }
 
+        public static boolean disableCriticalHit() { return getSidedBoolTweak(GameplayTweak.DISABLE_CRITICAL_HIT, GAMEPLAY.disableCriticalHit, SERVER_GAMEPLAY.disableCriticalHit); }
+        public static boolean oldDamageValues() { return getSidedBoolTweak(GameplayTweak.DAMAGE_VALUES, GAMEPLAY.oldDamageValues, SERVER_GAMEPLAY.oldDamageValues); }
         public static boolean disableMissTime() { return getSidedBoolTweak(GameplayTweak.DISABLE_MISS_TIMER, GAMEPLAY.disableMissTimer, SERVER_GAMEPLAY.disableMissTimer); }
         public static boolean disableCooldown() { return getSidedBoolTweak(GameplayTweak.DISABLE_COOLDOWN, GAMEPLAY.disableCooldown, SERVER_GAMEPLAY.disableCooldown); }
         public static boolean invincibleBow() { return getSidedBoolTweak(GameplayTweak.INVINCIBLE_BOW, GAMEPLAY.invincibleBow, SERVER_GAMEPLAY.invincibleBow); }
@@ -453,6 +544,8 @@ public abstract class ModConfig
         // Experience System
         public static TweakType.Corner alternativeProgressCorner() { return getEnum(GameplayTweak.XP_PROGRESS_CORNER, GAMEPLAY.altXpProgressCorner); }
         public static TweakType.Corner alternativeLevelCorner() { return getEnum(GameplayTweak.XP_LEVEL_CORNER, GAMEPLAY.altXpLevelCorner); }
+        public static boolean displayAlternativeLevelCreative() { return getBoolTweak(GameplayTweak.SHOW_XP_LEVEL_CREATIVE, GAMEPLAY.showXpLevelInCreative); }
+        public static boolean displayAlternativeProgressCreative() { return getBoolTweak(GameplayTweak.SHOW_XP_PROGRESS_CREATIVE, GAMEPLAY.showXpProgressInCreative); }
         public static boolean displayAlternativeProgressText() { return getBoolTweak(GameplayTweak.SHOW_XP_PROGRESS, GAMEPLAY.showXpProgressText); }
         public static boolean displayAlternativeLevelText() { return getBoolTweak(GameplayTweak.SHOW_XP_LEVEL, GAMEPLAY.showXpLevelText); }
         public static boolean useDynamicProgressColor() { return getBoolTweak(GameplayTweak.USE_DYNAMIC_PROGRESS_COLOR, GAMEPLAY.useDynamicProgressColor); }
@@ -463,6 +556,7 @@ public abstract class ModConfig
         public static boolean disableAnvil() { return getSidedBoolTweak(GameplayTweak.ANVIL, GAMEPLAY.disableAnvil, SERVER_GAMEPLAY.disableAnvil); }
 
         // Game Mechanics
+        public static boolean disableBedBounce() { return getSidedBoolTweak(GameplayTweak.BED_BOUNCE, GAMEPLAY.disableBedBounce, SERVER_GAMEPLAY.disableBedBounce); }
         public static boolean tilledGrassSeeds() { return getSidedBoolTweak(GameplayTweak.TILLED_GRASS_SEEDS, GAMEPLAY.tilledGrassSeeds, SERVER_GAMEPLAY.tilledGrassSeeds); }
         public static boolean instantBonemeal() { return getSidedBoolTweak(GameplayTweak.INSTANT_BONE_MEAL, GAMEPLAY.instantBonemeal, SERVER_GAMEPLAY.instantBonemeal); }
         public static boolean leftClickButton() { return getSidedBoolTweak(GameplayTweak.LEFT_CLICK_BUTTON, GAMEPLAY.leftClickButton, SERVER_GAMEPLAY.leftClickButton); }
@@ -486,6 +580,10 @@ public abstract class ModConfig
         public static boolean disableHunger() { return getSidedBoolTweak(GameplayTweak.HUNGER, GAMEPLAY.disableHunger, SERVER_GAMEPLAY.disableHunger); }
         public static boolean instantEat() { return getSidedBoolTweak(GameplayTweak.INSTANT_EAT, GAMEPLAY.instantEat, SERVER_GAMEPLAY.instantEat); }
 
+        public static ListMap<Integer> getFoodHealth() { return getListMap(GameplayTweak.CUSTOM_FOOD_HEALTH); }
+        public static ListMap<Integer> getFoodStacking() { return getListMap(GameplayTweak.CUSTOM_FOOD_STACKING); }
+        public static ListMap<Integer> getItemStacking() { return getListMap(GameplayTweak.CUSTOM_ITEM_STACKING); }
+
         /* String Tweaks */
 
         public static String getAlternativeSaturationText(String saturation) { return parseColor(GAMEPLAY.altHungerSaturationText, saturation); }
@@ -507,6 +605,7 @@ public abstract class ModConfig
 
         public static boolean oldSwing() { return getBoolTweak(AnimationTweak.ITEM_SWING, ANIMATION.oldSwing); }
         public static boolean oldArmSway() { return getBoolTweak(AnimationTweak.ARM_SWAY, ANIMATION.oldArmSway); }
+        public static boolean oldClassicSwing() { return getBoolTweak(AnimationTweak.CLASSIC_SWING, ANIMATION.oldClassicSwing); }
         public static boolean oldSwingDropping() { return getBoolTweak(AnimationTweak.SWING_DROP, ANIMATION.oldSwingDropping); }
         public static boolean oldInterruptSwing() { return getBoolTweak(AnimationTweak.SWING_INTERRUPT, ANIMATION.oldSwingInterrupt); }
         public static boolean shouldMirrorArmSway() { return getBoolTweak(AnimationTweak.ARM_SWAY_MIRROR, ANIMATION.armSwayMirror); }

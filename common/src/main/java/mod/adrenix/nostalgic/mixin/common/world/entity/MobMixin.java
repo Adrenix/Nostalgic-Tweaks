@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
+import mod.adrenix.nostalgic.mixin.duck.GhastCounter;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Mob.class)
-public abstract class MobMixin extends LivingEntity implements IGhastAttack
+public abstract class MobMixin extends LivingEntity implements GhastCounter
 {
     /* Dummy Constructor */
 
@@ -25,13 +25,10 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
 
     @Unique private int NT$attackCounter = 0;
 
-    /* Overrides */
+    /* Ghast Counter Implementation */
 
     @Override
-    public int NT$getAttackCounter()
-    {
-        return this.NT$attackCounter;
-    }
+    public int NT$getAttackCounter() { return this.NT$attackCounter; }
 
     /* Injections */
 

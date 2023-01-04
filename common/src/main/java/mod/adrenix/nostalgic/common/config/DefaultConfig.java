@@ -3,17 +3,38 @@ package mod.adrenix.nostalgic.common.config;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class DefaultConfig
 {
+    // Setup default item maps after items are registered
+    public static void initialize()
+    {
+        Gameplay.setFoodHealth();
+        Gameplay.setFoodSizes();
+    }
+
     public static class Sound
     {
+        // Ambient Sounds
+        public static final boolean DISABLE_NETHER_AMBIENCE = true;
+        public static final boolean DISABLE_WATER_AMBIENCE = true;
+
         // Block Sounds
+        public static final boolean OLD_BED = true;
         public static final boolean OLD_CHEST = true;
         public static final boolean DISABLE_CHEST = true;
         public static final boolean DISABLE_GROWTH = true;
+        public static final boolean DISABLE_FURNACE = true;
         public static final boolean DISABLE_DOOR_PLACE = true;
         public static final boolean DISABLE_BED_PLACE = true;
+        public static final boolean DISABLE_LAVA_AMBIENCE = true;
+        public static final boolean DISABLE_LAVA_POP = true;
 
         // Damage Sounds
         public static final boolean OLD_ATTACK = true;
@@ -28,6 +49,12 @@ public abstract class DefaultConfig
         // Mob Sounds
         public static final boolean OLD_STEP = true;
         public static final boolean DISABLE_SQUID = true;
+        public static final boolean DISABLE_FISH_SWIM = true;
+        public static final boolean DISABLE_FISH_HURT = true;
+        public static final boolean DISABLE_FISH_DEATH = true;
+        public static final boolean DISABLE_GENERIC_SWIM = true;
+        public static final boolean DISABLE_GLOW_SQUID_OTHER = true;
+        public static final boolean DISABLE_GLOW_SQUID_AMBIENCE = false;
         public static final boolean IGNORE_MODDED_STEP = false;
     }
 
@@ -45,15 +72,24 @@ public abstract class DefaultConfig
         public static final boolean OLD_TORCH_MODEL = true;
         public static final boolean OLD_SOUL_TORCH_MODEL = true;
         public static final boolean OLD_REDSTONE_TORCH_MODEL = true;
+        public static final boolean OLD_STAIR_OUTLINE = true;
+        public static final boolean OLD_FENCE_OUTLINE = true;
+        public static final boolean OLD_WALL_OUTLINE = true;
+        public static final boolean OLD_SLAB_OUTLINE = false;
 
         /* Interface Candy */
 
         public static final TweakVersion.Hotbar OLD_CREATIVE_HOTBAR = TweakVersion.Hotbar.CLASSIC;
         public static final boolean OLD_BUTTON_HOVER = true;
 
+        // Interface - Anvil Screen
+        public static final boolean OLD_ANVIL_SCREEN = true;
+
         // Interface - Chat Screen
+        public static final int CHAT_OFFSET = 0;
         public static final boolean OLD_CHAT_INPUT = true;
         public static final boolean OLD_CHAT_BOX = true;
+        public static final boolean DISABLE_SIGNATURE_BOXES = false;
 
         // Interface - Crafting & Furnace Screen
         public static final TweakType.RecipeBook CRAFTING_BOOK = TweakType.RecipeBook.DISABLED;
@@ -83,6 +119,7 @@ public abstract class DefaultConfig
         public static final boolean INCLUDE_MODS_ON_PAUSE = true;
         public static final boolean OLD_LOADING_SCREENS = true;
         public static final boolean REMOVE_LOADING_BAR = false;
+        public static final boolean REMOVE_EXTRA_PAUSE_BUTTONS = false;
 
         // Interface - Inventory Screen
         public static final TweakType.RecipeBook INVENTORY_BOOK = TweakType.RecipeBook.DISABLED;
@@ -138,6 +175,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_2D_THROWN_ITEMS = true;
         public static final boolean OLD_2D_ENCHANTED_ITEMS = false;
         public static final boolean OLD_DURABILITY_COLORS = true;
+        public static final boolean OLD_DAMAGE_ARMOR_TINT = true;
         public static final boolean OLD_NO_SELECTED_ITEM_NAME = true;
         public static final boolean OLD_PLAIN_SELECTED_ITEM_NAME = false;
 
@@ -151,13 +189,18 @@ public abstract class DefaultConfig
         public static final boolean OLD_WATER_LIGHTING = true;
         public static final boolean DISABLE_BRIGHTNESS = true;
         public static final boolean DISABLE_LIGHT_FLICKER = true;
+        public static final boolean FIX_CHUNK_BORDER_LAG = true;
+        public static final boolean OLD_CLASSIC_LIGHTING = false;
 
         // Particle Candy
+        public static final boolean DISABLE_MODEL_DESTRUCTION_PARTICLES = true;
+        public static final boolean DISABLE_UNDERWATER_PARTICLES = true;
         public static final boolean DISABLE_SPRINTING_PARTICLES = true;
         public static final boolean DISABLE_FALLING_PARTICLES = true;
         public static final boolean DISABLE_GROWTH_PARTICLES = true;
         public static final boolean DISABLE_NETHER_PARTICLES = true;
         public static final boolean DISABLE_LEVER_PARTICLES = true;
+        public static final boolean DISABLE_LAVA_PARTICLES = false;
         public static final boolean OLD_SWEEP_PARTICLES = true;
         public static final boolean OLD_OPAQUE_EXPERIENCE = true;
         public static final boolean OLD_NO_DAMAGE_PARTICLES = true;
@@ -168,22 +211,35 @@ public abstract class DefaultConfig
         public static final boolean UNOPTIMIZED_EXPLOSION_PARTICLES = false;
 
         // World Candy
+        public static final String CUSTOM_TERRAIN_FOG_COLOR = "#FFFFFFFF";
+        public static final String CUSTOM_NETHER_FOG_COLOR = "#FF0000FF";
+        public static final String CUSTOM_WORLD_SKY_COLOR = "#FFFFFFFF";
+        public static final String CUSTOM_NETHER_SKY_COLOR = "#FF0000FF";
+        public static final String CUSTOM_VOID_SKY_COLOR = "#0000FFFF";
         public static final int OLD_CLOUD_HEIGHT = 108;
         public static final int DISABLED_CLOUD_HEIGHT = 192;
         public static final boolean OLD_NAME_TAGS = false;
-        public static final boolean OLD_TERRAIN_FOG = true;
-        public static final boolean OLD_HORIZON_FOG = true;
         public static final boolean OLD_DARK_VOID_HEIGHT = false;
         public static final boolean OLD_SUNRISE_SUNSET_FOG = true;
         public static final boolean OLD_NETHER_FOG = true;
+        public static final boolean OLD_NETHER_SKY = true;
         public static final boolean OLD_WATER_FOG_COLOR = true;
         public static final boolean OLD_WATER_FOG_DENSITY = true;
         public static final boolean OLD_SUNRISE_AT_NORTH = true;
+        public static final boolean OLD_DYNAMIC_SKY = true;
+        public static final boolean OLD_DYNAMIC_FOG = true;
+        public static final boolean OLD_DARK_FOG = true;
         public static final boolean OLD_SQUARE_BORDER = true;
         public static final boolean OLD_BLUE_VOID_OVERRIDE = true;
         public static final boolean SMOOTH_WATER_COLOR = true;
         public static final boolean SMOOTH_WATER_DENSITY = true;
+        public static final boolean DISABLE_HORIZON_FOG = false;
         public static final boolean DISABLE_SUNRISE_SUNSET_COLORS = false;
+        public static final boolean CUSTOM_TERRAIN_FOG = false;
+        public static final boolean CUSTOM_NETHER_FOG = false;
+        public static final boolean CUSTOM_WORLD_SKY = false;
+        public static final boolean CUSTOM_NETHER_SKY = false;
+        public static final boolean CUSTOM_VOID_SKY = false;
 
         // World Candy - Void Fog
         public static final String VOID_FOG_COLOR = "#0C0C0CFF";
@@ -197,10 +253,12 @@ public abstract class DefaultConfig
         public static final boolean CREATIVE_VOID_PARTICLE = true;
         public static final boolean LIGHT_REMOVES_VOID_FOG = true;
 
-        public static final TweakVersion.Generic OLD_STARS = TweakVersion.Generic.ALPHA;
-        public static final TweakVersion.Generic OLD_SKY_COLOR = TweakVersion.Generic.ALPHA;
-        public static final TweakVersion.Generic OLD_FOG_COLOR = TweakVersion.Generic.ALPHA;
+        // Eye Candy - Tweak Types
+        public static final TweakVersion.SkyColor UNIVERSAL_SKY_COLOR = TweakVersion.SkyColor.DISABLED;
+        public static final TweakVersion.FogColor UNIVERSAL_FOG_COLOR = TweakVersion.FogColor.DISABLED;
+        public static final TweakVersion.WorldFog OLD_WORLD_FOG = TweakVersion.WorldFog.ALPHA_R164;
         public static final TweakVersion.Generic OLD_BLUE_VOID = TweakVersion.Generic.ALPHA;
+        public static final TweakVersion.Generic OLD_STARS = TweakVersion.Generic.ALPHA;
     }
 
     public static class Gameplay
@@ -241,7 +299,9 @@ public abstract class DefaultConfig
         public static final boolean INVINCIBLE_BOW = true;
         public static final boolean DISABLE_COOLDOWN = true;
         public static final boolean DISABLE_MISS_TIMER = true;
+        public static final boolean DISABLE_CRITICAL_HIT = true;
         public static final boolean DISABLE_SWEEP = true;
+        public static final boolean OLD_DAMAGE_VALUES = true;
 
         // Experience System
         public static final String XP_LEVEL_TEXT = "Level: %a%v";
@@ -250,6 +310,8 @@ public abstract class DefaultConfig
         public static final TweakType.Corner XP_PROGRESS_CORNER = TweakType.Corner.TOP_LEFT;
         public static final boolean SHOW_XP_LEVEL_TEXT = false;
         public static final boolean SHOW_XP_PROGRESS_TEXT = false;
+        public static final boolean SHOW_XP_PROGRESS_CREATIVE = false;
+        public static final boolean SHOW_XP_LEVEL_TEXT_CREATIVE = false;
         public static final boolean USE_DYNAMIC_PROGRESS_COLOR = true;
 
         public static final boolean DISABLE_EXPERIENCE_BAR = true;
@@ -265,6 +327,7 @@ public abstract class DefaultConfig
         public static final boolean INSTANT_BONE_MEAL = true;
         public static final boolean DISABLE_SWIM = true;
         public static final boolean DISABLE_SPRINT = true;
+        public static final boolean DISABLE_BED_BOUNCE = true;
         public static final boolean LEFT_CLICK_DOOR = true;
         public static final boolean LEFT_CLICK_LEVER = false;
         public static final boolean LEFT_CLICK_BUTTON = false;
@@ -284,6 +347,109 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_HUNGER = true;
         public static final boolean INSTANT_EAT = true;
         public static final boolean OLD_FOOD_STACKING = false;
+
+        /* Custom Maps */
+
+        /**
+         * Gets the edible item's resource key for the default old food stacking map.
+         * @param item An edible food item.
+         * @return An item resource key.
+         */
+        private static String getKey(Item item) { return ItemCommonUtil.getResourceKey(item); }
+
+        // Food Health
+        public static final int HEALTH_MIN = 0;
+        public static final int HEALTH_MAX = 20;
+        public static final int HEALTH_RESET = 10;
+        public static final Map<String, Integer> DEFAULT_FOOD_HEALTH = new LinkedHashMap<>();
+
+        /**
+         * Put the given edible food item into the custom food health map with the given value.
+         * @param item An edible food item.
+         * @param value The amount of half-hearts to restore.
+         */
+        private static void setHealth(Item item, int value) { DEFAULT_FOOD_HEALTH.put(getKey(item), value); }
+
+        // Populate Health Map
+        private static void setFoodHealth()
+        {
+            setHealth(Items.ROTTEN_FLESH, 0);
+            setHealth(Items.SPIDER_EYE, 0);
+            setHealth(Items.CARROT, 1);
+            setHealth(Items.MELON_SLICE, 1);
+            setHealth(Items.CHORUS_FRUIT, 1);
+            setHealth(Items.SWEET_BERRIES, 1);
+            setHealth(Items.GLOW_BERRIES, 1);
+            setHealth(Items.MUSHROOM_STEW, 10);
+            setHealth(Items.BEETROOT_SOUP, 10);
+            setHealth(Items.RABBIT_STEW, 10);
+            setHealth(Items.SUSPICIOUS_STEW, 10);
+            setHealth(Items.GOLDEN_APPLE, 20);
+            setHealth(Items.ENCHANTED_GOLDEN_APPLE, 20);
+        }
+
+        // Food Stacking
+        public static final int ITEM_STACK_MIN = 1;
+        public static final int ITEM_STACK_MAX = 64;
+        public static final int ITEM_STACK_RESET = 64;
+        public static final int FOOD_STACK_RESET = 1;
+        public static final Map<String, Integer> DEFAULT_OLD_FOOD_STACKING = new LinkedHashMap<>();
+
+        /**
+         * Put the given edible food item into the default old food stacking map with a stack size of eight.
+         * @param item An edible food item.
+         */
+        private static void setEight(Item item) { DEFAULT_OLD_FOOD_STACKING.put(getKey(item), 8); }
+
+        /**
+         * Put the given edible food item into the default old food stacking map with a stack size of one.
+         * @param item An edible food item.
+         */
+        private static void setOne(Item item) { DEFAULT_OLD_FOOD_STACKING.put(getKey(item), 1); }
+
+        // Populate Stacking Map
+        private static void setFoodSizes()
+        {
+            setEight(Items.COOKIE);
+            setEight(Items.BEETROOT);
+            setEight(Items.CARROT);
+            setEight(Items.CHORUS_FRUIT);
+            setEight(Items.DRIED_KELP);
+            setEight(Items.MELON_SLICE);
+            setEight(Items.POTATO);
+            setEight(Items.POISONOUS_POTATO);
+            setEight(Items.SWEET_BERRIES);
+            setEight(Items.GLOW_BERRIES);
+
+            setOne(Items.APPLE);
+            setOne(Items.BAKED_POTATO);
+            setOne(Items.BEEF);
+            setOne(Items.BEETROOT_SOUP);
+            setOne(Items.BREAD);
+            setOne(Items.CHICKEN);
+            setOne(Items.COD);
+            setOne(Items.COOKED_BEEF);
+            setOne(Items.COOKED_CHICKEN);
+            setOne(Items.COOKED_COD);
+            setOne(Items.COOKED_MUTTON);
+            setOne(Items.COOKED_PORKCHOP);
+            setOne(Items.COOKED_RABBIT);
+            setOne(Items.COOKED_SALMON);
+            setOne(Items.ENCHANTED_GOLDEN_APPLE);
+            setOne(Items.GOLDEN_APPLE);
+            setOne(Items.GOLDEN_CARROT);
+            setOne(Items.HONEY_BOTTLE);
+            setOne(Items.MUSHROOM_STEW);
+            setOne(Items.MUTTON);
+            setOne(Items.PORKCHOP);
+            setOne(Items.PUFFERFISH);
+            setOne(Items.PUMPKIN_PIE);
+            setOne(Items.RABBIT);
+            setOne(Items.RABBIT_STEW);
+            setOne(Items.SALMON);
+            setOne(Items.SUSPICIOUS_STEW);
+            setOne(Items.TROPICAL_FISH);
+        }
     }
 
     public static class Animation
@@ -295,6 +461,7 @@ public abstract class DefaultConfig
         public static final boolean OLD_SWING = true;
         public static final boolean OLD_SWING_INTERRUPT = true;
         public static final boolean OLD_SWING_DROPPING = true;
+        public static final boolean OLD_CLASSIC_SWING = false;
 
         // Item Animations
         public static final boolean OLD_ITEM_COOLDOWN = true;
@@ -319,6 +486,7 @@ public abstract class DefaultConfig
 
     public static class Swing
     {
+        public static final boolean LEFT_SPEED_ON_RIGHT_INTERACT = true;
         public static final boolean OVERRIDE_SPEEDS = false;
         public static final int MIN_SPEED = 0;
         public static final int MAX_SPEED = 16;
@@ -338,6 +506,7 @@ public abstract class DefaultConfig
     public static class Gui
     {
         public static final MenuOption DEFAULT_SCREEN = MenuOption.MAIN_MENU;
+        public static final boolean DISPLAY_DONATOR_BANNER = true;
         public static final boolean DISPLAY_NEW_TAGS = true;
         public static final boolean DISPLAY_SIDED_TAGS = true;
         public static final boolean DISPLAY_TAG_TOOLTIPS = true;
@@ -347,5 +516,6 @@ public abstract class DefaultConfig
         public static final boolean DO_ROW_HIGHLIGHT_FADE = true;
         public static final String CATEGORY_TREE_COLOR = "#8B8B8B7F";
         public static final String ROW_HIGHLIGHT_COLOR = "#FFFFFF32";
+        public static final int NUMBER_OF_BACKUPS = 5;
     }
 }

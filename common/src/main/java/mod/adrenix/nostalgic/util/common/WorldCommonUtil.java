@@ -9,8 +9,10 @@ import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +25,19 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class WorldCommonUtil
 {
+    /**
+     * Get the vanilla brightness value from the provided light layer and block position.
+     *
+     * @param level An object that implements the {@link BlockAndTintGetter} interface.
+     * @param lightLayer The light layer to retrieve data from.
+     * @param blockPos A block position to retrieve data from.
+     * @return A vanilla brightness value (0-15)
+     */
+    public static int getBrightness(BlockAndTintGetter level, LightLayer lightLayer, BlockPos blockPos)
+    {
+        return level.getLightEngine().getLayerListener(lightLayer).getLightValue(blockPos);
+    }
+
     /**
      * Returns a new skylight value based on the time of day.
      * @param level A level instance.

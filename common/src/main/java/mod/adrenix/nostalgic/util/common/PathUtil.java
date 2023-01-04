@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.util.common;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.BackupConfig;
+import net.minecraft.Util;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +37,12 @@ public abstract class PathUtil
     }
 
     /* Path Utilities */
+
+    /**
+     * On Windows, it is a backslash, on other operating systems, it is a forward slash.
+     * @return A directory separator symbol.
+     */
+    public static String getDirectorySlash() { return Util.getPlatform() == Util.OS.WINDOWS ? "\\" : "/"; }
 
     /**
      * Lazily get a list of files within a directory.
@@ -170,16 +177,16 @@ public abstract class PathUtil
     /**
      * @return The mod's main config directory.
      */
-    public static Path getConfigPath() { return getPath("nostalgic_tweaks"); }
+    public static Path getConfigPath() { return getPath(NostalgicTweaks.MOD_ID); }
 
     /**
      * @return The mod's backup config directory.
      */
-    public static Path getBackupPath() { return getPath("nostalgic_tweaks/backup"); }
+    public static Path getBackupPath() { return getPath(NostalgicTweaks.MOD_ID + "/backup"); }
 
     /**
      * @return The mod's preset config directory.
      */
     @SuppressWarnings("unused") // This will eventually be used for the mod's config preset system
-    public static Path getPresetPath() { return getPath("nostalgic_tweaks/presets"); }
+    public static Path getPresetPath() { return getPath(NostalgicTweaks.MOD_ID + "/presets"); }
 }

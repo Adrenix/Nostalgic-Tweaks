@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import net.fabricmc.api.EnvType;
 
 public enum GameplayTweak implements Tweak
 {
@@ -47,15 +47,19 @@ public enum GameplayTweak implements Tweak
     ARROW_SPEED,
     DISABLE_COOLDOWN,
     DISABLE_MISS_TIMER,
+    DISABLE_CRITICAL_HIT,
     DISABLE_SWEEP,
+    DAMAGE_VALUES,
 
     // Experience System
 
     DISABLE_EXP_BAR,
     SHOW_XP_LEVEL,
+    SHOW_XP_LEVEL_CREATIVE,
     XP_LEVEL_CORNER,
     XP_LEVEL_TEXT,
     SHOW_XP_PROGRESS,
+    SHOW_XP_PROGRESS_CREATIVE,
     USE_DYNAMIC_PROGRESS_COLOR,
     XP_PROGRESS_CORNER,
     XP_PROGRESS_TEXT,
@@ -78,11 +82,15 @@ public enum GameplayTweak implements Tweak
     HUNGER,
     INSTANT_EAT,
     FOOD_STACKING,
+    CUSTOM_FOOD_HEALTH,
+    CUSTOM_FOOD_STACKING,
+    CUSTOM_ITEM_STACKING,
 
     // Game Mechanics
 
     SPRINT,
     SWIM,
+    BED_BOUNCE,
     FIRE_SPREAD,
     INSTANT_AIR,
     LEFT_CLICK_DOOR,
@@ -103,7 +111,7 @@ public enum GameplayTweak implements Tweak
     /**
      * Keeps track of whether this tweak is client or server controller.
      */
-    private NostalgicTweaks.Side side = null;
+    private EnvType env = null;
 
     /**
      * Keeps track of whether this tweak has had its enumeration queried.
@@ -122,8 +130,8 @@ public enum GameplayTweak implements Tweak
     @Override public void setKey(String key) { this.key = key; }
     @Override public String getKey() { return this.key; }
 
-    @Override public void setSide(NostalgicTweaks.Side side) { this.side = side; }
-    @Override public NostalgicTweaks.Side getSide() { return this.side; }
+    @Override public void setEnv(EnvType env) { this.env = env; }
+    @Override public EnvType getEnv() { return this.env; }
 
     @Override public void setClientCache(TweakClientCache<?> cache) { this.clientCache = cache; }
     @Override public TweakClientCache<?> getClientCache() { return this.clientCache; }

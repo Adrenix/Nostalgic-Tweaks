@@ -24,7 +24,7 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -217,6 +217,9 @@ public abstract class LevelRendererMixin
 
     /**
      * Sets the transparency of the sun/moon when void fog is rendering.
+     *
+     * The sun/moon is rendered transparent if the render distance is less than 4 and the old world fog tweak is set to
+     * alpha - r1.6.4.
      */
     @Inject
     (
@@ -233,6 +236,12 @@ public abstract class LevelRendererMixin
     private void NT$onSetSunMoonShading(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         FogUtil.Void.setCelestialTransparency();
+
+        boolean isAlphaFog = ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.ALPHA_R164;
+        boolean isShort = this.minecraft.options.renderDistance().get() <= 4;
+
+        if (ModConfig.Candy.oldClassicLight() || (isAlphaFog && isShort))
+            RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
     }
 
     /**
@@ -305,6 +314,9 @@ public abstract class LevelRendererMixin
             transparency = FogUtil.Void.getStarAlpha();
 
         RenderSystem.setShaderColor(color, color, color, transparency);
+
+        if (ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.ALPHA_R164 && this.minecraft.options.renderDistance().get() <= 4)
+            RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
     }
 
     /**
@@ -312,12 +324,23 @@ public abstract class LevelRendererMixin
      * If a user wishes to change the voxel shape for a true nostalgic experience, the server will have to facilitate
      * a change in the chest's voxel shape.
      *
-     * Controlled by various old chest tweaks.
+     * Controlled by various old chest tweaks and the custom full block outline list tweak.
      */
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void NT$onRenderHitOutline(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo callback)
     {
-        if (!BlockCommonUtil.isOldChest(state.getBlock()))
+        Block block = state.getBlock();
+
+        boolean isOldChest = BlockCommonUtil.isOldChest(block);
+        boolean isOldFence = ModConfig.Candy.oldFenceOutline() && (block instanceof FenceBlock || block instanceof FenceGateBlock);
+        boolean isOldStair = ModConfig.Candy.oldStairOutline() && block instanceof StairBlock;
+        boolean isOldSlab = ModConfig.Candy.oldSlabOutline() && block instanceof SlabBlock;
+        boolean isOldWall = ModConfig.Candy.oldWallOutline() && block instanceof WallBlock;
+        boolean isCustom = ModConfig.Candy.getFullOutlines().isItemInList(block.asItem());
+
+        boolean isFullOutline = isOldChest || isOldFence || isOldStair || isOldSlab || isOldWall || isCustom;
+
+        if (!isFullOutline)
             return;
 
         LevelRendererAccessor.NT$renderShape
@@ -361,7 +384,7 @@ public abstract class LevelRendererMixin
 
         // If old light rendering is disabled then old water lighting logic happens here
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, pos))
-            return BlockCommonUtil.getWaterLightBlock(level.getBrightness(layer, pos));
+            return BlockCommonUtil.getWaterLightBlock(level, pos);
 
         return level.getBrightness(layer, pos);
     }
@@ -394,7 +417,10 @@ public abstract class LevelRendererMixin
     @Inject(method = "compileChunks", at = @At("HEAD"))
     private void NT$onCompileChunks(Camera camera, CallbackInfo callback)
     {
-        if (WorldClientUtil.isRelightCheckEnqueued() && !NostalgicTweaks.isSodiumInstalled && this.viewArea != null)
+        boolean isModReady = ModConfig.Candy.oldLightRendering() && WorldClientUtil.isRelightCheckEnqueued();
+        boolean isSodium = NostalgicTweaks.isSodiumInstalled;
+
+        if (isModReady && !isSodium && this.viewArea != null)
         {
             for (ChunkRenderDispatcher.RenderChunk chunk : this.viewArea.chunks)
                 chunk.setDirty(true);

@@ -142,6 +142,8 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
                     Overlay.close();
                     ManageItemOverlay.this.listScreen.addItem(ManageItemOverlay.this.itemStack);
                     ManageItemOverlay.this.listScreen.highlightItem(ManageItemOverlay.this.itemStack);
+                    ManageItemOverlay.this.listScreen.getSearchBox().setValue("");
+                    ManageItemOverlay.this.listScreen.refreshSearchResults();
                 }
             );
         }

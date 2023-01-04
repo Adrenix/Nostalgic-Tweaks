@@ -26,13 +26,14 @@ public class ListMapScreen<V> extends AbstractListScreen
     /* Fields */
 
     private final ArrayList<Map.Entry<String, V>> deletedEntries = new ArrayList<>();
+    private final ListMap<V> listMap;
     private final Map<String, V> defaultMap;
     private final Map<String, V> configMap;
-    private final Map<String, V> copyMap;
+    private final Map<String, V> cacheMap;
     private final Map<String, V> undoMap;
     private final V resetValue;
 
-    /* Constructors */
+    /* Constructor */
 
     /**
      * Create a new list screen that controls a map.
@@ -43,16 +44,54 @@ public class ListMapScreen<V> extends AbstractListScreen
     {
         super(title, listMap);
 
+        this.listMap = listMap;
         this.resetValue = listMap.getResetValue();
         this.defaultMap = listMap.getDefaultMap();
         this.configMap = listMap.getConfigMap();
-        this.copyMap = Maps.newHashMap();
+        this.cacheMap = Maps.newHashMap(this.configMap);
         this.undoMap = Maps.newHashMap(this.configMap);
 
-        this.sortByResource();
+        this.sortConfig();
+    }
+
+    /* Sorting */
+
+    /**
+     * Sorts the main and default config maps from A-Z based on item resource key translations.
+     */
+    private void sortConfig()
+    {
+        this.sortEntries(this.configMap.entrySet(), this::getResourceKey, this::configPutAll, this.configMap::clear);
+        this.sortEntries(this.defaultMap.entrySet(), this::getResourceKey, this::defaultPutAll, this.defaultMap::clear);
+    }
+
+    /**
+     * Accepts a sorted set of config map entries and puts them into the main config map.
+     * @param sorted A set of sorted config entries.
+     */
+    private void configPutAll(Set<Map.Entry<String, V>> sorted)
+    {
+        for (Map.Entry<String, V> entry : sorted)
+            this.configMap.put(entry.getKey(), entry.getValue());
+    }
+
+    /**
+     * Accepts a sorted set of default map entries and puts them into the default map.
+     * @param sorted A set of sorted default entries.
+     */
+    private void defaultPutAll(Set<Map.Entry<String, V>> sorted)
+    {
+        for (Map.Entry<String, V> entry : sorted)
+            this.defaultMap.put(entry.getKey(), entry.getValue());
     }
 
     /* Getters */
+
+    /**
+     * Get the list map associated with this screen.
+     * @return A list map manager instance.
+     */
+    public ListMap<V> getListMap() { return this.listMap; }
 
     /**
      * Get this screen's current list of deleted map entries.
@@ -61,27 +100,15 @@ public class ListMapScreen<V> extends AbstractListScreen
     public ArrayList<Map.Entry<String, V>> getDeletedEntries() { return this.deletedEntries; }
 
     /**
-     * Get the copied reset value associated with the given entry. If there is no cached value, then the provided
+     * Get the cached reset value associated with the given entry. If there is no cached value, then the provided
      * entry's value will be returned.
      *
-     * @param entry The map entry to check for a copied reset value.
-     * @return A cached copied reset value or the given entry's current value.
+     * @param entry The map entry to check for a cached reset value.
+     * @return A cached reset value or the given entry's current value.
      */
-    public V getCopiedValue(Map.Entry<String, V> entry)
-    {
-        if (this.copyMap.containsKey(entry.getKey()))
-            return this.copyMap.get(entry.getKey());
-
-        return entry.getValue();
-    }
+    public V getCachedValue(Map.Entry<String, V> entry) { return this.cacheMap.get(entry.getKey()); }
 
     /* Methods */
-
-    /**
-     * Copy an entry's value into the reset cache map for later use.
-     * @param entry The map entry to cache in the reset map.
-     */
-    public void copy(Map.Entry<String, V> entry) { this.copyMap.put(entry.getKey(), entry.getValue()); }
 
     /**
      * Delete an entry from the map. The changes are not saved until confirmed by the user.
@@ -160,7 +187,9 @@ public class ListMapScreen<V> extends AbstractListScreen
             return;
 
         this.configMap.put(ItemCommonUtil.getResourceKey(item), this.resetValue);
-        this.sortByResource();
+        this.cacheMap.put(ItemCommonUtil.getResourceKey(item), this.resetValue);
+
+        this.sortConfig();
     }
 
     /**
@@ -188,48 +217,6 @@ public class ListMapScreen<V> extends AbstractListScreen
     }
 
     /**
-     * Sorts two localized item names alphabetically.
-     * @param first The first entry.
-     * @param second The second entry.
-     * @return A negative integer, zero, or a positive integer ignoring case considerations.
-     */
-    private int getLocalizedItem(Map.Entry<String, V> first, Map.Entry<String, V> second)
-    {
-        String firstItem = ItemCommonUtil.getLocalizedItem(first.getKey());
-        String secondItem = ItemCommonUtil.getLocalizedItem(second.getKey());
-
-        return firstItem.compareToIgnoreCase(secondItem);
-    }
-
-    /**
-     * Sorts the lists configuration entry map alphabetically.
-     */
-    private void sortByResource()
-    {
-        List<Map.Entry<String, V>> list = new ArrayList<>(this.configMap.entrySet());
-        Map<String, V> unknowns = new LinkedHashMap<>();
-        Map<String, V> result = new LinkedHashMap<>();
-
-        for (Map.Entry<String, V> entry : list)
-        {
-            if (!ItemCommonUtil.isValidKey(entry.getKey()))
-                unknowns.put(entry.getKey(), entry.getValue());
-        }
-
-        for (Map.Entry<String, V> entry : unknowns.entrySet())
-            list.remove(entry);
-
-        list.sort(this::getLocalizedItem);
-
-        for (Map.Entry<String, V> entry : list)
-            result.put(entry.getKey(), entry.getValue());
-
-        this.configMap.clear();
-        this.configMap.putAll(unknowns);
-        this.configMap.putAll(result);
-    }
-
-    /**
      * Gets the item resource key from an entry.
      * @param entry The entry to get the item resource key from.
      * @return The item resource key from the map entry.
@@ -243,7 +230,7 @@ public class ListMapScreen<V> extends AbstractListScreen
      */
     private void addSavedRow(ArrayList<ConfigRowList.Row> rows, Map.Entry<String, V> entry)
     {
-        rows.add(this.getConfigRowList().rowFromEntry(entry, this.resetValue));
+        rows.add(this.getConfigRowList().rowFromEntry(this.listMap, entry, this.resetValue));
     }
 
     /**
@@ -352,10 +339,9 @@ public class ListMapScreen<V> extends AbstractListScreen
 
             this.disabledDefaults.clear();
             this.disabledDefaults.addAll(this.undoDisabledDefaults);
-
-            this.sortByResource();
         }
 
+        this.cacheMap.clear();
         this.deletedEntries.clear();
         this.getMinecraft().setScreen(this.parentScreen);
 

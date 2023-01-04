@@ -6,9 +6,10 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
-import mod.adrenix.nostalgic.common.config.list.ConfigList;
-import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
+import mod.adrenix.nostalgic.util.client.AnimationUtil;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
+import mod.adrenix.nostalgic.util.client.SwingType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -35,10 +36,11 @@ public abstract class ItemInHandRendererMixin
 {
     /* Shadows */
 
+    @Shadow @Final private Minecraft minecraft;
     @Shadow private float mainHandHeight;
     @Shadow private ItemStack mainHandItem;
     @Shadow private ItemStack offHandItem;
-    @Shadow @Final private Minecraft minecraft;
+    @Shadow protected abstract void applyItemArmAttackTransform(PoseStack matrixStack, HumanoidArm hand, float swingProgress);
 
     /**
      * Blocks the rotation of the hand renderer on the x-axis when arm sway is disabled.
@@ -61,6 +63,7 @@ public abstract class ItemInHandRendererMixin
 
         float intensity = ModConfig.Animation.getArmSwayIntensity();
         float xBobInterpolate = Mth.lerp(partialTicks, player.xBobO, player.xBob);
+
         poseStack.mulPose(Vector3f.XP.rotationDegrees(((player.getViewXRot(partialTicks) - xBobInterpolate) * 0.1F) * intensity));
     }
 
@@ -85,6 +88,7 @@ public abstract class ItemInHandRendererMixin
 
         float intensity = ModConfig.Animation.getArmSwayIntensity();
         float yBobInterpolate = Mth.lerp(partialTicks, player.yBobO, player.yBob);
+
         poseStack.mulPose(Vector3f.YP.rotationDegrees(((player.getViewYRot(partialTicks) - yBobInterpolate) * 0.1F) * intensity));
     }
 
@@ -95,7 +99,6 @@ public abstract class ItemInHandRendererMixin
     @ModifyArg
     (
         method = "renderHandsWithItems",
-        index = 5,
         at = @At
         (
             value = "INVOKE",
@@ -105,7 +108,7 @@ public abstract class ItemInHandRendererMixin
     )
     private ItemStack NT$onRenderItem(AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack itemStack, float equippedProgress, PoseStack matrix, MultiBufferSource buffer, int combinedLight)
     {
-        return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (SlotTracker) player);
     }
 
     /**
@@ -180,7 +183,7 @@ public abstract class ItemInHandRendererMixin
         if (!ModConfig.Animation.oldItemReequip() || player == null)
             return;
 
-        IReequipSlot injector = (IReequipSlot) player;
+        SlotTracker injector = (SlotTracker) player;
         ItemStack main = player.getMainHandItem();
         int slot = player.getInventory().selected;
 
@@ -230,9 +233,9 @@ public abstract class ItemInHandRendererMixin
             return;
 
         equippedProgress = SwingConfig.getGlobalSpeed() == DefaultConfig.Swing.PHOTOSENSITIVE ? 0 : equippedProgress;
-        int i = arm == HumanoidArm.RIGHT ? 1 : -1;
+        int flip = arm == HumanoidArm.RIGHT ? 1 : -1;
 
-        poseStack.translate((float) i * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
+        poseStack.translate((float) flip * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
         callback.cancel();
     }
 
@@ -251,7 +254,7 @@ public abstract class ItemInHandRendererMixin
     )
     private void NT$onRenderItem(LivingEntity entity, ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        boolean isDisabled = ConfigList.IGNORED_ITEM_HOLDING.isItemInList(itemStack.getItem());
+        boolean isDisabled = ModConfig.Candy.getIgnoredItemHoldings().isItemInList(itemStack.getItem());
         boolean isBlockItem = itemStack.getItem() instanceof BlockItem;
         boolean isUsingItem = itemStack == entity.getUseItem() && entity.isUsingItem() && entity.getUseItemRemainingTicks() > 0;
 
@@ -277,5 +280,37 @@ public abstract class ItemInHandRendererMixin
             poseStack.translate(-0.12F * progress, 0.085F * progress, 0.0F);
             poseStack.scale(scale, scale, scale);
         }
+    }
+
+    /**
+     * Changes the arm with item rendering instructions.
+     * Controlled by the old classic swing tweak is enabled.
+     */
+    @Redirect(method = "renderArmWithItem", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmAttackTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V"))
+    private void NT$onRenderArmWithItem(ItemInHandRenderer instance, PoseStack poseStack, HumanoidArm hand, float swingProgress, AbstractClientPlayer player, float partialTick, float pitch, InteractionHand hand2, float swingProgress2, ItemStack stack, float equippedProgress)
+    {
+        if (ModConfig.Animation.oldClassicSwing())
+        {
+            poseStack.popPose();
+            poseStack.pushPose();
+
+            float flip = hand == HumanoidArm.RIGHT ? 1.0F : -1.0F;
+            float rotateProgress = Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI);
+
+            poseStack.translate(flip * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
+
+            if (AnimationUtil.swingType == SwingType.LEFT_CLICK)
+            {
+                float x = -0.4F * Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI);
+                float y = 0.2F * Mth.sin(Mth.sqrt(swingProgress) * ((float) Math.PI * 2));
+                float z = -0.2F * Mth.sin(swingProgress * (float) Math.PI);
+
+                poseStack.translate(flip * x, y, z);
+            }
+            else
+                poseStack.translate(0.0F, rotateProgress * -0.15F, 0.0F);
+        }
+        else
+            this.applyItemArmAttackTransform(poseStack, hand, swingProgress);
     }
 }

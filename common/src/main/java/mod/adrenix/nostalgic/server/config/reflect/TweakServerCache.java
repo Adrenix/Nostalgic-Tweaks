@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
 import mod.adrenix.nostalgic.common.config.tweak.Tweak;
+import net.fabricmc.api.EnvType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class TweakServerCache<T> extends TweakCommonCache
     @SuppressWarnings("unchecked") // Since groups and keys are unique to tweaks, their returned type is assured.
     public static <T> TweakServerCache<T> get(Tweak tweak)
     {
-        if (tweak.getSide() == NostalgicTweaks.Side.CLIENT)
+        if (tweak.getEnv() == EnvType.CLIENT)
             return null;
 
         if (tweak.getServerCache() == null)

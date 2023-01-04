@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -37,7 +36,7 @@ public abstract class EntityRendererMixin
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void NT$onRender(Entity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        boolean isRenderable = ModConfig.Candy.debugEntityId() && NostalgicTweaks.isNetworkVerified() && Minecraft.getInstance().options.renderDebug;
+        boolean isRenderable = ModConfig.Candy.debugEntityId() && Minecraft.getInstance().options.renderDebug;
         boolean isValidEntity = entity instanceof LivingEntity && !(entity instanceof Player);
 
         if (isRenderable && isValidEntity)

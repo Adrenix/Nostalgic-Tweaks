@@ -5,6 +5,20 @@ import net.minecraft.util.Mth;
 public abstract class MathUtil
 {
     /**
+     * Checks if the given number is an even number.
+     * @param number The number to check.
+     * @return Whether the given number is evenly divisible by 2, if so, then it is even.
+     */
+    public static boolean isEven(int number) { return number % 2 == 0; }
+
+    /**
+     * Checks if the given number is an odd number.
+     * @param number The number to check.
+     * @return Whether the given number is not evenly divisible by 2, if so, then it is odd.
+     */
+    public static boolean isOdd(int number) { return !isEven(number); }
+
+    /**
      * Turns given <code>bytes</code> into megabytes.
      * @param bytes The bytes to turn into megabytes.
      * @return Bytes turned into megabytes.

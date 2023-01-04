@@ -1,7 +1,10 @@
 package mod.adrenix.nostalgic.common.config.list;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.tweak.Tweak;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -17,6 +20,7 @@ public abstract class AbstractList
     private final ListId listId;
     private final ListInclude listInclude;
     private final Set<String> disabledDefaults;
+    private final Set<String> serverDisabledDefaults;
 
     /* Constructor */
 
@@ -29,10 +33,14 @@ public abstract class AbstractList
      */
     public AbstractList(Tweak tweak, ListId listId, ListInclude listInclude, Set<String> disabledDefaults)
     {
+        if (!tweak.isLoaded())
+            tweak.setEnabled();
+
         this.tweak = tweak;
         this.listId = listId;
         this.listInclude = listInclude;
         this.disabledDefaults = disabledDefaults;
+        this.serverDisabledDefaults = new LinkedHashSet<>(disabledDefaults);
     }
 
     /* Getters */
@@ -68,14 +76,31 @@ public abstract class AbstractList
      *
      * @return A set of disabled item resource keys.
      */
-    public Set<String> getDisabledDefaults() { return this.disabledDefaults; }
+    public Set<String> getDisabledDefaults()
+    {
+        return this.isServerNeeded() ? this.serverDisabledDefaults : this.disabledDefaults;
+    }
 
     /* Methods */
+
+    /**
+     * If this method is run on the server, then the config list kept on disk should be returned. Otherwise, if the
+     * client is connected to a Nostalgic Tweaks server, then the server-synced list should be returned.
+     *
+     * @return Whether the server list should be returned.
+     */
+    public boolean isServerNeeded()
+    {
+        if (NostalgicTweaks.isServer() || NetUtil.isLocalHost())
+            return false;
+
+        return NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer() && this.tweak.getServerCache() != null;
+    }
 
     /**
      * Checks if the given item resource key is contained within the disabled default set.
      * @param resourceKey The item resource key to check.
      * @return Whether the given item resource key default is disabled.
      */
-    public boolean isDefaultDisabled(String resourceKey) { return this.disabledDefaults.contains(resourceKey); }
+    public boolean isDefaultDisabled(String resourceKey) { return this.getDisabledDefaults().contains(resourceKey); }
 }

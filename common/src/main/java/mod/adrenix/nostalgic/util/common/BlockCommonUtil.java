@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -32,20 +33,30 @@ public abstract class BlockCommonUtil
 
     /**
      * Gets the correct skylight block value for water based on its stored skylight level.
-     * @param skylight The stored skylight from the level.
+     * @param level An object that implements the {@link BlockAndTintGetter} interface.
+     * @param blockPos The block position to get skylight data from.
      * @return A new light block amount.
      */
-    public static int getWaterLightBlock(int skylight)
+    public static int getWaterLightBlock(BlockAndTintGetter level, BlockPos blockPos)
     {
-        return switch (skylight)
+        BlockPos abovePos = blockPos.above();
+        int numberOfWater = 1;
+
+        for (int i = 0; i < 4; i++)
         {
-            case 15 -> 15;
-            case 14 -> 12;
-            case 13 -> 9;
-            case 12 -> 6;
-            case 11 -> 3;
-            default -> 0;
-        };
+            if (isInWater(level, abovePos))
+            {
+                numberOfWater++;
+                abovePos = abovePos.above();
+            }
+            else
+                break;
+        }
+
+        int skylight = WorldCommonUtil.getBrightness(level, LightLayer.SKY, blockPos);
+        int subtract = numberOfWater * 3;
+
+        return Math.max(0, skylight - subtract + numberOfWater);
     }
 
     /**

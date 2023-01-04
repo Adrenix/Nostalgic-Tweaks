@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,7 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public abstract class ItemClientUtil
      * @param player The current player.
      * @return What should be considered the last item stack.
      */
-    public static ItemStack getLastItem(ItemStack originalItemStack, ItemStack rendererItemStack, ItemStack playerItemStack, IReequipSlot player)
+    public static ItemStack getLastItem(ItemStack originalItemStack, ItemStack rendererItemStack, ItemStack playerItemStack, SlotTracker player)
     {
         // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
         boolean isUnequipped = rendererItemStack.toString().equals("0 air") && playerItemStack.toString().equals("1 air");
@@ -57,7 +57,7 @@ public abstract class ItemClientUtil
     /**
      * Used to cache the current level pose stack position matrix for re-enabling diffused lighting after flat rendering.
      */
-    @Nullable
+    @CheckForNull
     public static PoseStack.Pose levelPoseStack;
 
     /**

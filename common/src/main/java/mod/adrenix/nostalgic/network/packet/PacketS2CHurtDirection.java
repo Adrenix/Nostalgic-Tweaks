@@ -44,10 +44,7 @@ public class PacketS2CHurtDirection
      *
      * @param hurtDir A hurt direction.
      */
-    public PacketS2CHurtDirection(float hurtDir)
-    {
-        this.hurtDir = hurtDir;
-    }
+    public PacketS2CHurtDirection(float hurtDir) { this.hurtDir = hurtDir; }
 
     /**
      * Create a new hurt direction packet with a buffer.
@@ -55,10 +52,7 @@ public class PacketS2CHurtDirection
      *
      * @param buffer A friendly byte buffer instance.
      */
-    public PacketS2CHurtDirection(FriendlyByteBuf buffer)
-    {
-        this.hurtDir = buffer.readFloat();
-    }
+    public PacketS2CHurtDirection(FriendlyByteBuf buffer) { this.hurtDir = buffer.readFloat(); }
 
     /* Methods */
 
@@ -66,11 +60,12 @@ public class PacketS2CHurtDirection
      * Encode data into the packet.
      * @param buffer A friendly byte buffer instance.
      */
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeFloat(this.hurtDir);
-    }
+    public void encode(FriendlyByteBuf buffer) { buffer.writeFloat(this.hurtDir); }
 
+    /**
+     * Handle packet data.
+     * @param supplier A packet context supplier.
+     */
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
         // Client received packet data

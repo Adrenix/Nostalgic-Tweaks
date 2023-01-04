@@ -4,7 +4,10 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
@@ -87,5 +90,41 @@ public abstract class RenderUtil
 
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    /**
+     * Render a texture from a texture sheet (256x256).
+     * @param resource A resource location that points to the texture sheet.
+     * @param poseStack The current pose stack.
+     * @param x The x-position on the screen to place the texture.
+     * @param y The y-position on the screen to place the texture.
+     * @param uOffset The x-position of the texture on the texture sheet.
+     * @param vOffset The y-position of the texture on the texture sheet.
+     * @param uWidth The width of the texture on the texture sheet.
+     * @param vHeight The height of the texture on the texture sheet.
+     */
+    public static void blit256(ResourceLocation resource, PoseStack poseStack, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
+    {
+        RenderSystem.setShaderTexture(0, resource);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+        Screen screen = Minecraft.getInstance().screen;
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        Matrix4f matrix = poseStack.last().pose();
+
+        int offset = screen != null ? screen.getBlitOffset() : 0;
+        float x2 = x + uWidth;
+        float y2 = y + vHeight;
+        float minU = uOffset / 256.0F;
+        float maxU = (uOffset + uWidth) / 256.0F;
+        float minV = vOffset / 256.0F;
+        float maxV = (vOffset + vHeight) / 256.0F;
+
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        builder.vertex(matrix, x, y2, offset).uv(minU, maxV).endVertex();
+        builder.vertex(matrix, x2, y2, offset).uv(maxU, maxV).endVertex();
+        builder.vertex(matrix, x2, y, offset).uv(maxU, minV).endVertex();
+        builder.vertex(matrix, x, y, offset).uv(minU, minV).endVertex();
+        BufferUploader.drawWithShader(builder.end());
     }
 }

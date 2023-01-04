@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
@@ -17,6 +18,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowTweak;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
@@ -24,6 +26,7 @@ import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
@@ -39,6 +42,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,19 +71,19 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     /* Static Row List Tracking */
 
     // Holds the current row that is rendering.
-    @Nullable
+    @CheckForNull
     private static ConfigRowList.Row rendering = null;
 
     // Holds the current tweak that the mouse is over in the search tab.
-    @Nullable
+    @CheckForNull
     public static String overTweakId = null;
 
     // Holds a tweak identification string for tweak search jumping.
-    @Nullable
+    @CheckForNull
     public static String jumpToTweakId = null;
 
     // Holds a group identification string for crumb search jumping.
-    @Nullable
+    @CheckForNull
     public static Object jumpToContainerId = null;
 
     // Holds the current indentation for expanding containers
@@ -271,8 +275,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      * @param <E> A type that is associated with a provided enumeration value.
      * @return A configuration row instance that handles the given value.
      */
+    @CheckForNull
     public <E extends Enum<E>> Row rowFromTweak(TweakGroup group, String key, Object value)
     {
+        if (TweakClientCache.get(group, key).isNotAutomated())
+            return null;
+
         if (value instanceof Boolean)
         {
             return new ConfigRowTweak.BooleanRow(group, key, (Boolean) value).generate();
@@ -309,18 +317,43 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     }
 
     /**
+     * Overload method for adding a config row list row from a tweak.
+     * @param tweak The tweak to get metadata from.
+     * @return A configuration row instance that handles the given tweak.
+     */
+    @CheckForNull
+    public Row rowFromTweak(TweakClientCache<?> tweak)
+    {
+        return this.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue());
+    }
+
+    /**
      * Generate a configuration row based on the given list entry.
      * @param entry The map entry that will be associated with the new row.
-     * @param <E> The value type of the map entry.
+     * @param <V> The value type of the map entry.
      * @return A configuration row instance that handles the given value.
      */
     @SuppressWarnings("unchecked") // All entries will have string keys from the JSON file, only the value is typed checked
-    public <E> Row rowFromEntry(Map.Entry<String, E> entry, E reset)
+    public <V> Row rowFromEntry(ListMap<V> map, Map.Entry<String, V> entry, V reset)
     {
         if (entry.getValue() instanceof Integer)
-            return new ConfigRowEntry.IntegerEntryRow((Map.Entry<String, Integer>) entry, (Integer) reset).generate();
+        {
+            return new ConfigRowEntry.IntegerEntryRow
+            (
+                (ListMap<Integer>) map,
+                (Map.Entry<String, Integer>) entry,
+                (Integer) reset
+            ).generate();
+        }
         else
-            return new ConfigRowEntry.InvalidEntryRow((Map.Entry<String, Object>) entry, reset).generate();
+        {
+            return new ConfigRowEntry.InvalidEntryRow
+            (
+                (ListMap<Object>) map,
+                (Map.Entry<String, Object>) entry,
+                reset
+            ).generate();
+        }
     }
 
     /**
@@ -330,12 +363,20 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     public void addRow(ConfigRowList.Row row) { this.addEntry(row); }
 
     /**
-     * Alternative method for automatically adding rows based on the provided value.
+     * If a tweak is annotated as not automated, then the row returned from the generator will be null.
+     * This method catches that scenario and ignores adding a new row entry when that occurs.
+     *
      * @param group The group associated with the key and value (e.g., eye candy or animations).
      * @param key A tweak key that identifies the configuration row.
      * @param value The value that will be controlled by this row.
      */
-    public void addRow(TweakGroup group, String key, Object value) { this.addEntry(this.rowFromTweak(group, key, value)); }
+    public void addRow(TweakGroup group, String key, Object value)
+    {
+        Row row = this.rowFromTweak(group, key, value);
+
+        if (row != null)
+            this.addEntry(row);
+    }
 
     /**
      * This is the class that defines the children of the configuration row list. These entries will be instances of the
@@ -347,12 +388,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
     {
         /* Nullable Fields */
 
-        @Nullable private ContainerButton group;
-        @Nullable public final TweakClientCache<?> tweak;
-        @Nullable public final AbstractWidget controller;
-        @Nullable public ResetButton reset = null;
-        @Nullable public DeleteButton delete = null;
-        @Nullable public RemoveButton remove = null;
+        @CheckForNull private ContainerButton group;
+        @CheckForNull public final TweakClientCache<?> tweak;
+        @CheckForNull public final AbstractWidget controller;
+        @CheckForNull public ResetButton reset = null;
+        @CheckForNull public DeleteButton delete = null;
+        @CheckForNull public RemoveButton remove = null;
 
         /* Fields */
 
@@ -473,7 +514,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         /**
          * @return Get the container button for this row.
          */
-        @Nullable public ContainerButton getGroup() { return this.group; }
+        @CheckForNull
+        public ContainerButton getGroup() { return this.group; }
 
         /* Overrides & Rendering */
 
@@ -549,7 +591,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             float z = 0.0F;
             boolean isFaded = (Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue();
-            int[] rgba = TextUtil.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
+            int[] rgba = ColorUtil.toHexRGBA((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
             int r = rgba[0];
             int g = rgba[1];
             int b = rgba[2];
@@ -610,7 +652,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-            int rgba = TextUtil.toHexInt(color.getValue());
+            int rgba = ColorUtil.toHexInt(color.getValue());
 
             float leftX = this.indent - 16.0F;
             float rightX = leftX + 10.0F;
@@ -736,7 +778,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             // Row highlights
             if ((Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue())
             {
-                if (this.isMouseOver(mouseX, mouseY))
+                if (this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY))
                     this.fade = MathUtil.moveClampTowards(this.fade, 1.0F, 0.05F, 0.0F, 1.0F);
                 else
                     this.fade = MathUtil.moveClampTowards(this.fade, 0.0F, 0.05F, 0.0F, 1.0F);

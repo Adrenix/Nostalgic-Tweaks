@@ -11,6 +11,7 @@ package mod.adrenix.nostalgic.util.common.function;
  */
 
 @FunctionalInterface
+@SuppressWarnings("unused")
 public interface TriFunction<T, U, V, R>
 {
     /**
@@ -20,5 +21,5 @@ public interface TriFunction<T, U, V, R>
      * @param v The third function argument.
      * @return The function result.
      */
-    R apply(T t, U u, V v) throws IllegalAccessException;
+    R apply(T t, U u, V v);
 }

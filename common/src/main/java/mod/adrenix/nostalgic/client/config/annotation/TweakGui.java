@@ -63,6 +63,14 @@ public abstract class TweakGui
     public @interface NoTooltip {}
 
     /**
+     * This annotation is intended for tweaks that are not meant to have automatic row generation within the config
+     * screen's config row list.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface NotAutomated {}
+
+    /**
      * This will prevent tweaks from getting their states toggled when a user disables/enables all
      * tweaks. This works for all tweak types.
      *
@@ -190,6 +198,7 @@ public abstract class TweakGui
     public enum SliderType
     {
         GENERIC,
+        HEARTS,
         SWING,
         CLOUD,
         INTENSITY
@@ -237,7 +246,13 @@ public abstract class TweakGui
 
         VOID_CONFLICT(AlertCondition::isVoidConflict),
         LIGHT_CONFLICT(AlertCondition::isLightConflict),
-        SHIELD_CONFLICT(AlertCondition::isShieldConflict);
+        SHIELD_CONFLICT(AlertCondition::isShieldConflict),
+        DYNAMIC_FOG_CONFLICT(AlertCondition::isDynamicFogConflict),
+        DYNAMIC_SKY_CONFLICT(AlertCondition::isDynamicSkyConflict),
+        UNIVERSAL_FOG_CONFLICT(AlertCondition::isUniversalFogConflict),
+        UNIVERSAL_SKY_CONFLICT(AlertCondition::isUniversalSkyConflict),
+        CUSTOM_FOOD_HEALTH_CONFLICT(AlertCondition::isCustomFoodHealthConflict),
+        CUSTOM_FOOD_STACKING_CONFLICT(AlertCondition::isCustomFoodStackingConflict);
 
         /* Fields */
 

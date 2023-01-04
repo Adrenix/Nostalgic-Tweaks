@@ -3,11 +3,13 @@ package mod.adrenix.nostalgic.util.server;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * This utility is used by the server. For safety, keep client-only code out.
@@ -89,5 +91,41 @@ public abstract class ItemServerUtil
 
         if (ModConfig.Candy.oldItemMerging() && isBelowLimit && !isNeighborStacked)
             callback.cancel();
+    }
+
+    /* Combat Damage */
+
+    private static final Map<Class<? extends TieredItem>, Function<TieredItem, Float>> OLD_DAMAGE = Map.of
+    (
+        SwordItem.class, item -> item.getTier().getAttackDamageBonus() + 4.0F,
+        AxeItem.class, item -> item.getTier().getAttackDamageBonus() + 3.0F,
+        PickaxeItem.class, item -> item.getTier().getAttackDamageBonus() + 2.0F,
+        ShovelItem.class, item -> item.getTier().getAttackDamageBonus() + 1.0F,
+        HoeItem.class, item -> item.getTier().getAttackDamageBonus()
+    );
+
+    /**
+     * Get the old damage value based on the provided tiered item instance.
+     * @param item The tiered item instance.
+     * @return An old damage value, if it is in the old damage map, 0.0F otherwise.
+     */
+    public static float getOldDamage(TieredItem item)
+    {
+        Class<? extends TieredItem> tierClass = item.getClass();
+
+        if (OLD_DAMAGE.containsKey(tierClass))
+            return OLD_DAMAGE.get(tierClass).apply(item);
+
+        return 0.0F;
+    }
+
+    /**
+     * Checks if the given tiered item instance has a tier and is within the old damage map.
+     * @param item The tiered item instance to check.
+     * @return Whether the tiered item instance is within the old damage map.
+     */
+    public static boolean isVanillaTiered(TieredItem item)
+    {
+        return item.getTier() != null && OLD_DAMAGE.containsKey(item.getClass());
     }
 }

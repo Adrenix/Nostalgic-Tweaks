@@ -2,11 +2,12 @@ package mod.adrenix.nostalgic.util.client;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.WorldCommonUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -68,42 +69,103 @@ public abstract class FogUtil
     }
 
     /**
-     * Gets a modified render distance to help simulate the old fog rendering.
-     * @return The game's render distance multiplied by a modifier based on the current distance.
-     */
-    private static int getRenderDistance()
-    {
-        int renderDistance = Minecraft.getInstance().options.renderDistance().get();
-        int multiplier = renderDistance <= 6 ? 16 : 32;
-        return renderDistance * multiplier;
-    }
-
-    /**
      * Changes the game's terrain fog starting and ending points.
      * @param fogMode The fog mode that is rendering.
+     * @param worldFog The current world fog type.
      */
-    private static void setTerrainFog(FogRenderer.FogMode fogMode)
+    private static void setTerrainFog(FogRenderer.FogMode fogMode, TweakVersion.WorldFog worldFog)
     {
         if (fogMode != FogRenderer.FogMode.FOG_TERRAIN)
             return;
 
-        float distance = Math.min(1024, getRenderDistance());
+        int farPlaneDistance;
+        int renderDistance = Minecraft.getInstance().options.renderDistance().get();
+
+        if (worldFog == TweakVersion.WorldFog.CLASSIC)
+        {
+            farPlaneDistance = switch (renderDistance)
+            {
+                case 2 -> 18;
+                case 3, 4 -> 96;
+                case 5, 6, 7, 8 -> 302;
+                case 9, 10, 11, 12, 13, 14, 15 -> 824;
+                default -> 1028;
+            };
+
+            RenderSystem.setShaderFogStart(0.0F);
+            RenderSystem.setShaderFogEnd(farPlaneDistance * 0.8F);
+
+            return;
+        }
+
+        if (worldFog == TweakVersion.WorldFog.ALPHA_R164)
+        {
+            farPlaneDistance = switch (renderDistance)
+            {
+                case 2, 3 -> 8;
+                case 4, 5 -> 32;
+                case 6, 7, 8, 9 -> 256;
+                case 10, 11, 12, 13, 14, 15, 16 -> 512;
+                default -> renderDistance * 32;
+            };
+        }
+        else
+            farPlaneDistance = renderDistance * 16;
+
+        float linearEnding = switch (farPlaneDistance)
+        {
+            case 8 -> 4.6F;
+            case 32 -> 2.2F;
+            default -> 0.8F;
+        };
+
         RenderSystem.setShaderFogStart(0.0F);
-        RenderSystem.setShaderFogEnd(distance * 0.8F);
+        RenderSystem.setShaderFogEnd(farPlaneDistance * linearEnding);
     }
 
     /**
      * Changes the game's horizon fog starting and ending points.
      * @param fogMode The fog mode that is rendering.
+     * @param worldFog The current world fog type.
      */
-    private static void setHorizonFog(FogRenderer.FogMode fogMode)
+    private static void setHorizonFog(FogRenderer.FogMode fogMode, TweakVersion.WorldFog worldFog)
     {
-        if (fogMode != FogRenderer.FogMode.FOG_SKY)
+        if (fogMode != FogRenderer.FogMode.FOG_SKY || !ModConfig.Candy.disableHorizonFog())
             return;
 
-        float distance = Math.min(512, getRenderDistance());
-        RenderSystem.setShaderFogStart(distance * 0.25F);
-        RenderSystem.setShaderFogEnd(distance);
+        int farPlaneDistance;
+        int renderDistance = Minecraft.getInstance().options.renderDistance().get();
+
+        if (worldFog == TweakVersion.WorldFog.CLASSIC)
+        {
+            farPlaneDistance = switch (renderDistance)
+            {
+                case 2, 3, 4 -> 128;
+                case 5, 6, 7, 8 -> 256;
+                default -> 512;
+            };
+
+            RenderSystem.setShaderFogStart(farPlaneDistance * 0.2F);
+            RenderSystem.setShaderFogEnd(farPlaneDistance);
+
+            return;
+        }
+
+        if (worldFog == TweakVersion.WorldFog.ALPHA_R164)
+        {
+            farPlaneDistance = switch (renderDistance)
+            {
+                case 2, 3 -> 8;
+                case 4, 5 -> 32;
+                case 6, 7, 8, 9 -> 256;
+                default -> 512;
+            };
+        }
+        else
+            farPlaneDistance = renderDistance * 16;
+
+        RenderSystem.setShaderFogStart(farPlaneDistance * 0.25F);
+        RenderSystem.setShaderFogEnd(farPlaneDistance);
     }
 
     /**
@@ -112,17 +174,34 @@ public abstract class FogUtil
      */
     private static void renderFog(FogRenderer.FogMode fogMode)
     {
-        boolean isTerrain = ModConfig.Candy.oldTerrainFog();
-        boolean isHorizon = ModConfig.Candy.oldHorizonFog();
+        TweakVersion.WorldFog worldFog = ModConfig.Candy.getWorldFog();
 
-        if (isTerrain)
-            setTerrainFog(fogMode);
+        if (worldFog != TweakVersion.WorldFog.MODERN)
+        {
+            if (worldFog != TweakVersion.WorldFog.R17_R118)
+            {
+                setTerrainFog(fogMode, worldFog);
+                setHorizonFog(fogMode, worldFog);
+            }
+            else
+            {
+                int renderDistance = Minecraft.getInstance().options.renderDistance().get();
+                int farPlaneDistance = renderDistance * 16;
 
-        if (isHorizon)
-            setHorizonFog(fogMode);
+                if (fogMode == FogRenderer.FogMode.FOG_TERRAIN)
+                {
+                    RenderSystem.setShaderFogStart(farPlaneDistance * 0.75F);
+                    RenderSystem.setShaderFogEnd(farPlaneDistance);
+                }
+                else
+                {
+                    RenderSystem.setShaderFogStart(0.0F);
+                    RenderSystem.setShaderFogEnd(farPlaneDistance);
+                }
+            }
 
-        if (isTerrain || isHorizon)
             RenderSystem.setShaderFogShape(FogShape.SPHERE);
+        }
     }
 
     /**
@@ -566,7 +645,7 @@ public abstract class FogUtil
          */
         public static int getSkylight(Entity entity)
         {
-            return NostalgicLevel.getVanillaBrightness(entity.level, LightLayer.SKY, entity.blockPosition());
+            return WorldCommonUtil.getBrightness(entity.level, LightLayer.SKY, entity.blockPosition());
         }
 
         /**
@@ -690,7 +769,7 @@ public abstract class FogUtil
             else
             {
                 final float[] CURRENT_FOG = RenderSystem.getShaderFogColor();
-                final int[] CUSTOM_FOG = TextUtil.toHexRGBA(ModConfig.Candy.getVoidFogColor());
+                final int[] CUSTOM_FOG = ColorUtil.toHexRGBA(ModConfig.Candy.getVoidFogColor());
 
                 final float LIGHT = (float) getBrightness(camera.getEntity());
                 final float FOG_R = Mth.clamp(CURRENT_FOG[0] * LIGHT + (CUSTOM_FOG[0] / 255.0F), 0.0F, 1.0F);

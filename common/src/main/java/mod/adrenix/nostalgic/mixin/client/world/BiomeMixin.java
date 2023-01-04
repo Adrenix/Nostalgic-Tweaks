@@ -1,7 +1,10 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.client.WorldClientUtil;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -32,28 +35,7 @@ public abstract class BiomeMixin
         return Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.OVERWORLD;
     }
 
-    /**
-     * Brings back the old fog universal fog colors in the overworld and the nether.
-     * Controlled by the old biome colors tweak.
-     */
-    @Inject(method = "getFogColor", at = @At(value = "HEAD"), cancellable = true)
-    private void NT$onGetFogColor(CallbackInfoReturnable<Integer> callback)
-    {
-        TweakVersion.Generic fog = ModConfig.Candy.getFogColor();
-
-        if (fog == TweakVersion.Generic.MODERN)
-            callback.setReturnValue(this.specialEffects.getFogColor());
-        else if (isNether())
-            callback.setReturnValue(0x100400);
-        else if (isOverworld())
-        {
-            switch (fog)
-            {
-                case ALPHA -> callback.setReturnValue(0xb0d0ff);
-                case BETA -> callback.setReturnValue(0xb0c6ff);
-            }
-        }
-    }
+    /* Injections */
 
     /**
      * Brings back the old universal sky color in the overworld.
@@ -62,19 +44,39 @@ public abstract class BiomeMixin
     @Inject(method = "getSkyColor", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onGetSkyColor(CallbackInfoReturnable<Integer> callback)
     {
-        TweakVersion.Generic sky = ModConfig.Candy.getSkyColor();
-
-        if (sky == TweakVersion.Generic.MODERN)
-            callback.setReturnValue(this.specialEffects.getSkyColor());
-        else if (isNether())
-            callback.setReturnValue(0x100400);
-        else if (isOverworld())
+        if (isOverworld())
         {
-            switch (sky)
+            if (Minecraft.getInstance().options.renderDistance().get() <= 4)
             {
-                case ALPHA -> callback.setReturnValue(0x88bbff);
-                case BETA -> callback.setReturnValue(0x92a6ff);
+                callback.setReturnValue(ColorUtil.toIntFromRGBA(RenderSystem.getShaderFogColor()));
+                return;
             }
+
+            TweakVersion.SkyColor skyColor = ModConfig.Candy.getUniversalSky();
+
+            if (ModConfig.Candy.isWorldSkyCustom())
+                callback.setReturnValue(ColorUtil.toHexInt(ModConfig.Candy.getWorldSkyColor()));
+            else if (ModConfig.Candy.oldDynamicSkyColor())
+                callback.setReturnValue(WorldClientUtil.getSkyColorFromBiome());
+            else if (skyColor == TweakVersion.SkyColor.DISABLED)
+                callback.setReturnValue(this.specialEffects.getSkyColor());
+            else
+            {
+                switch (skyColor)
+                {
+                    case CLASSIC -> callback.setReturnValue(0x9CCDFF);
+                    case INF_DEV -> callback.setReturnValue(0xC6DEFF);
+                    case ALPHA -> callback.setReturnValue(0x8BBDFF);
+                    case BETA -> callback.setReturnValue(0x97A3FF);
+                }
+            }
+        }
+        else if (isNether())
+        {
+            if (ModConfig.Candy.isNetherSkyCustom())
+                callback.setReturnValue(ColorUtil.toHexInt(ModConfig.Candy.getNetherSkyColor()));
+            else if (ModConfig.Candy.oldNetherSky())
+                callback.setReturnValue(0x210505);
         }
     }
 }

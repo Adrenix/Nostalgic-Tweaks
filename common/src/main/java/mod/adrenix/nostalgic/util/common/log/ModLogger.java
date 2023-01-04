@@ -1,7 +1,11 @@
 package mod.adrenix.nostalgic.util.common.log;
 
+import dev.architectury.platform.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * The mod's custom logger wrapper.
@@ -18,7 +22,7 @@ public record ModLogger(String prefix)
     /**
      * Whether the mod is in debugging mode.
      */
-    private static boolean isDebugging = true;
+    private static boolean isDebugging = Platform.isDevelopmentEnvironment();
 
     /**
      * Checks if the mod is in debug mode.
@@ -33,10 +37,21 @@ public record ModLogger(String prefix)
     public void setDebug(boolean state) { ModLogger.isDebugging = state; }
 
     /**
+     * Some consoles will put a red color on the error message which will cause visual glitches for this logger.
+     * This assures the starting bracket of the message is reset before the rest of the message is printed.
+     *
+     * @return A left bracket that has a reset ansi code applied to it.
+     */
+    private String getStartBracket() { return String.format("%s", LogColor.apply(LogColor.RESET, "[")); }
+
+    /**
      * Get the prefix of this record's <code>prefix</code>.
      * @return A colored square bracketed prefix with this record's <code>prefix</code>.
      */
-    private String getPrefix() { return String.format("[%s] ", LogColor.apply(LogColor.BLUE, this.prefix)); }
+    private String getPrefix()
+    {
+        return String.format("%s%s] ", this.getStartBracket(), LogColor.apply(LogColor.BLUE, this.prefix));
+    }
 
     /**
      * Changes known strings to specific colors, such as applying a green color to instances of 'true' within a string.
@@ -51,6 +66,7 @@ public record ModLogger(String prefix)
 
         for (LogColor color : LogColor.values())
             input = color.convert(input);
+
         return input;
     }
 
@@ -102,10 +118,29 @@ public record ModLogger(String prefix)
 
     /**
      * Convenience overload method to output an error message as a formatted string.
+     * If an exception is included in the var args then it will automatically have its stacktrace printed.
      * @param message The error message to log.
      * @param args String formatting arguments.
      */
-    public void error(String message, Object ...args) { this.error(String.format(message, args)); }
+    public void error(String message, Object ...args)
+    {
+        for (int i = 0; i < args.length; i++)
+        {
+            Object arg = args[i];
+
+            if (arg instanceof Error exception)
+            {
+                StringWriter writer = new StringWriter();
+                PrintWriter printer = new PrintWriter(writer);
+
+                exception.printStackTrace(printer);
+
+                args[i] = writer.toString();
+            }
+        }
+
+        this.error(String.format(message, args));
+    }
 
     /**
      * Create a debugging logging statement.

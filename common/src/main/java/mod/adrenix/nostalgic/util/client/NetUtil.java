@@ -3,7 +3,8 @@ package mod.adrenix.nostalgic.util.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 /**
  * Network utility methods for the client.
@@ -14,7 +15,15 @@ public abstract class NetUtil
 {
     /* Minecraft Instance */
 
-    private static final Minecraft minecraft = Minecraft.getInstance();
+    /**
+     * Gets the current Minecraft instance. This may be <code>null</code> if the network utility is accessed before the
+     * main game class is instantiated. This should only be <code>null</code> during registry setup.
+     *
+     * @return The current {@link Minecraft} instance.
+     */
+    @Nullable
+    @SuppressWarnings("DataFlowIssue") // Prevents NPEs in case this utility is invoked too early
+    private static Minecraft getMinecraft() { return Minecraft.getInstance(); }
 
     /**
      * Check if a certain player has operator permissions.
@@ -23,8 +32,9 @@ public abstract class NetUtil
      */
     public static boolean isPlayerOp(Player player)
     {
-        if (minecraft.hasSingleplayerServer())
+        if (getMinecraft() == null || getMinecraft().hasSingleplayerServer())
             return true;
+
         return player.hasPermissions(2);
     }
 
@@ -35,10 +45,10 @@ public abstract class NetUtil
      */
     public static boolean isPlayerOp()
     {
-        if (minecraft.player == null)
+        if (getMinecraft() == null || getMinecraft().player == null)
             return true;
         else
-            return isPlayerOp(minecraft.player);
+            return isPlayerOp(getMinecraft().player);
     }
 
     /**
@@ -47,7 +57,10 @@ public abstract class NetUtil
      */
     public static boolean isConnected()
     {
-        return minecraft.getConnection() != null && minecraft.getConnection().getConnection().isConnected();
+        if (getMinecraft() == null)
+            return false;
+
+        return getMinecraft().getConnection() != null && getMinecraft().getConnection().getConnection().isConnected();
     }
 
     /**
@@ -56,7 +69,10 @@ public abstract class NetUtil
      */
     public static boolean isSingleplayer()
     {
-        return minecraft.getSingleplayerServer() != null && !minecraft.getSingleplayerServer().isPublished();
+        if (getMinecraft() == null)
+            return false;
+
+        return getMinecraft().getSingleplayerServer() != null && !getMinecraft().getSingleplayerServer().isPublished();
     }
 
     /**
@@ -65,7 +81,10 @@ public abstract class NetUtil
      */
     public static boolean isLocalHost()
     {
-        return minecraft.getSingleplayerServer() != null && minecraft.getSingleplayerServer().isPublished();
+        if (getMinecraft() == null)
+            return false;
+
+        return getMinecraft().getSingleplayerServer() != null && getMinecraft().getSingleplayerServer().isPublished();
     }
 
     /**
@@ -75,7 +94,7 @@ public abstract class NetUtil
     @Nullable
     public static IntegratedServer getIntegratedServer()
     {
-        return isLocalHost() ? minecraft.getSingleplayerServer() : null;
+        return isLocalHost() && getMinecraft() != null ? getMinecraft().getSingleplayerServer() : null;
     }
 
     /**
@@ -88,8 +107,12 @@ public abstract class NetUtil
      */
     public static boolean isMultiplayer()
     {
+        if (getMinecraft() == null)
+            return false;
+
         if (isLocalHost())
             return true;
-        return !isSingleplayer() && minecraft.getConnection() != null;
+
+        return !isSingleplayer() && getMinecraft().getConnection() != null;
     }
 }

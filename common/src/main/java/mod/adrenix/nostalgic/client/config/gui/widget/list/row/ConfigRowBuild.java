@@ -58,6 +58,7 @@ public abstract class ConfigRowBuild
             assert screen != null;
 
             List<AbstractWidget> widgets = new ArrayList<>();
+            this.controller.setWidth(200);
             this.controller.x = (screen.width / 2) - (this.controller.getWidth() / 2);
             this.controller.y = 0;
 

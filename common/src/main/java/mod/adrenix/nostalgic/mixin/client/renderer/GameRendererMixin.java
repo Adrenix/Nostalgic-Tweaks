@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.ICameraPitch;
+import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
@@ -34,7 +34,7 @@ public abstract class GameRendererMixin
     {
         if (ModConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
         {
-            ICameraPitch injector = (ICameraPitch) player;
+            CameraPitching injector = (CameraPitching) player;
 
             float distDelta = player.walkDist - player.walkDistO;
             float walkDist = -(player.walkDist + distDelta * partialTicks);

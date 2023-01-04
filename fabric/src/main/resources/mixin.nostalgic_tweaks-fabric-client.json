@@ -5,8 +5,10 @@
   "priority": 1001,
   "client": [
     "BlockRenderDispatcherFabricMixin",
+    "ClientPacketListenerFabricMixin",
     "FogRendererFabricMixin",
     "GuiFabricMixin",
+    "HumanoidArmorLayerFabricMixin",
     "ItemColorsFabricMixin",
     "TerrainRenderContextMixin"
   ]

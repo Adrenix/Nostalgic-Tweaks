@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.util.client.KeyUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -72,6 +73,6 @@ public abstract class ClientEventHandler
      * Also overrides the overlays for armor, food, and air level bar.
      * Controlled by various HUD tweaks.
      */
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPreRenderOverlay(RenderGuiOverlayEvent.Pre event) { GuiEvents.overlayOverride(event); }
 }

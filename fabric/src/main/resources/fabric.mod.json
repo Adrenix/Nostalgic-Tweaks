@@ -38,6 +38,12 @@
     ],
     "main": [
       "mod.adrenix.nostalgic.fabric.NostalgicCommonFabric"
+    ],
+    "nostalgic_tweaks": [
+      "mod.adrenix.nostalgic.fabric.api.test.ApiTestHandler"
+    ],
+    "appleskin": [
+      "mod.adrenix.nostalgic.fabric.event.client.support.AppleSkinEvents"
     ]
   },
 
@@ -52,7 +58,7 @@
 
   "depends": {
     "fabric-api": "*",
-    "minecraft": ">=1.19.2",
+    "minecraft": "=1.19.2",
     "architectury": ">=${architectury_version}"
   },
 

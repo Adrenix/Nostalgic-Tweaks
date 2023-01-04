@@ -7,6 +7,9 @@ import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
+import mod.adrenix.nostalgic.common.config.list.ListSet;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
@@ -52,10 +55,7 @@ public class PacketS2CTweakUpdate
      *
      * @param tweak A tweak server cache instance.
      */
-    public PacketS2CTweakUpdate(TweakServerCache<?> tweak)
-    {
-        this.json = new TweakSerializer(tweak).serialize();
-    }
+    public PacketS2CTweakUpdate(TweakServerCache<?> tweak) { this.json = new TweakSerializer(tweak).serialize(); }
 
     /**
      * Create a new tweak update packet with a buffer.
@@ -63,10 +63,7 @@ public class PacketS2CTweakUpdate
      *
      * @param buffer A friendly byte buffer instance.
      */
-    public PacketS2CTweakUpdate(FriendlyByteBuf buffer)
-    {
-        this.json = buffer.readUtf();
-    }
+    public PacketS2CTweakUpdate(FriendlyByteBuf buffer) { this.json = buffer.readUtf(); }
 
     /* Methods */
 
@@ -74,11 +71,12 @@ public class PacketS2CTweakUpdate
      * Encode data into the packet.
      * @param buffer A friendly byte buffer instance.
      */
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeUtf(this.json);
-    }
+    public void encode(FriendlyByteBuf buffer) { buffer.writeUtf(this.json); }
 
+    /**
+     * Handle any received tweak update packet data.
+     * @param supplier A supplier that provides network packet context.
+     */
     public void handle(Supplier<NetworkManager.PacketContext> supplier)
     {
         // Client received packet data
@@ -106,20 +104,68 @@ public class PacketS2CTweakUpdate
         }
 
         TweakSerializer serializer = TweakSerializer.deserialize(this.json);
-        TweakServerCache<?> serverCache = TweakServerCache.get(serializer.getGroup(), serializer.getKey());
+        TweakServerCache<?> cache = TweakServerCache.get(serializer.getGroup(), serializer.getKey());
 
-        // Ensure cache is available and that the class value received over the wire matches what is cached.
-        if (serverCache != null && serverCache.getValue().getClass().equals(serializer.getValue().getClass()))
+        boolean isCached = cache != null;
+        boolean isValueMatched = isCached && cache.getValue().getClass().equals(serializer.getValue().getClass());
+        boolean isListMatched = isCached && cache.getList() != null && cache.getList().id() == serializer.getListId();
+
+        // Check if sent value is a list, and if so, ensure list ids received over the wire matches what is cached
+        if (isListMatched)
         {
-            boolean isValueChanged = !serverCache.getServerCache().equals(serializer.getValue());
+            ListSet listSet = ConfigList.getSetFromId(serializer.getListId());
+            ListMap<?> listMap = ConfigList.getMapFromId(serializer.getListId());
 
-            serverCache.setValue(serializer.getValue());
-            serverCache.setStatus(serializer.getStatus());
-            serverCache.setServerCache(serializer.getValue());
+            if (listSet != null)
+            {
+                listSet.getConfigSet().clear();
+                listSet.getConfigSet().addAll(serializer.getValue());
+
+                listSet.getDisabledDefaults().clear();
+                listSet.getDisabledDefaults().addAll(serializer.getDisabledDefaults());
+            }
+            else if (listMap != null)
+            {
+                listMap.getConfigMap().clear();
+                listMap.getConfigMap().putAll(serializer.getValue());
+
+                listMap.getDisabledDefaults().clear();
+                listMap.getDisabledDefaults().addAll(serializer.getDisabledDefaults());
+            }
+
+            // Notify the client that a tweak list was updated
+            if (NostalgicTweaks.isNetworkVerified())
+                ToastNotification.tweakUpdate();
+
+            // Update the client's config if this is a LAN session
+            if (NetUtil.isLocalHost())
+                AutoConfig.getConfigHolder(ClientConfig.class).save();
+
+            // Add debug information to console
+            String information = String.format
+            (
+                "Updated client's server list cache in group (%s) and key (%s)",
+                LogColor.apply(LogColor.LIGHT_PURPLE, serializer.getGroup().toString()),
+                LogColor.apply(LogColor.GREEN, serializer.getKey())
+            );
+
+            NostalgicTweaks.LOGGER.debug(information);
+
+            return;
+        }
+
+        // Ensure cache is available and that the class value received over the wire matches what is cached
+        if (isValueMatched)
+        {
+            boolean isValueChanged = !cache.getServerCache().equals(serializer.getValue());
+
+            cache.setValue(serializer.getValue());
+            cache.setStatus(serializer.getStatus());
+            cache.setServerCache(serializer.getValue());
 
             // Notify client that a tweak was updated
             if (NostalgicTweaks.isNetworkVerified() && isValueChanged)
-                ToastNotification.addTweakUpdate();
+                ToastNotification.tweakUpdate();
 
             // Update the client's config if this is a LAN session
             if (NetUtil.isLocalHost() && isValueChanged)
@@ -141,7 +187,7 @@ public class PacketS2CTweakUpdate
 
             NostalgicTweaks.LOGGER.debug(information);
         }
-        else if (serverCache == null)
+        else if (cache == null)
         {
             String warning = String.format
             (
@@ -157,7 +203,7 @@ public class PacketS2CTweakUpdate
             String warning = String.format
             (
                 "Client's server cache (%s) didn't match deserialized (%s)",
-                LogColor.apply(LogColor.GREEN, serverCache.getValue().getClass().toString()),
+                LogColor.apply(LogColor.GREEN, cache.getValue().getClass().toString()),
                 LogColor.apply(LogColor.RED, serializer.getValue().getClass().toString())
             );
 

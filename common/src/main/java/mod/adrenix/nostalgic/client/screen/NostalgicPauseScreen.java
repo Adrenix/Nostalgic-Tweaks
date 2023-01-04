@@ -21,7 +21,7 @@ import net.minecraft.network.chat.Component;
  * Different layout styles are set up based on the user's current configuration.
  */
 
-public class NostalgicPauseScreen extends Screen
+public class NostalgicPauseScreen extends PauseScreen
 {
     /* Fields */
 
@@ -34,11 +34,24 @@ public class NostalgicPauseScreen extends Screen
     private final Component toUpperBack = Component.translatable(LangUtil.Vanilla.MENU_RETURN_TO_GAME);
     private final Component toLowerBack = Component.translatable(LangUtil.Gui.PAUSE_RETURN_LOWER);
     private final Component achievements = Component.translatable(LangUtil.Gui.PAUSE_ACHIEVEMENTS);
+    private boolean isFirstRender = false;
 
     /* Constructor */
 
     /**
-     * Constructor helper that provides a title language file key based on pause layout.
+     * Create a new nostalgic pause screen instance.
+     */
+    public NostalgicPauseScreen()
+    {
+        super(true);
+
+        this.layout = ModConfig.Candy.getPauseLayout();
+    }
+
+    /* Utility */
+
+    /**
+     * Helper that provides a title language key based on pause layout.
      * @return A language file key.
      */
     private static String getPauseTitle()
@@ -50,23 +63,17 @@ public class NostalgicPauseScreen extends Screen
         };
     }
 
-    /**
-     * Create a new nostalgic pause screen instance.
-     */
-    public NostalgicPauseScreen()
-    {
-        super(Component.translatable(getPauseTitle()));
-
-        this.layout = ModConfig.Candy.getPauseLayout();
-    }
-
     /* Overrides */
 
     /**
      * Handler method that provides instructions for when the screen is initialized.
      */
     @Override
-    protected void init() { this.setLayout(); }
+    protected void init()
+    {
+        ((ScreenAccessor) this).NT$setTitle(Component.translatable(getPauseTitle()));
+        this.setLayout();
+    }
 
     /**
      * Handler method that provides instructions for when the screen is ticked.
@@ -84,8 +91,17 @@ public class NostalgicPauseScreen extends Screen
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        this.renderBackground(poseStack);
-        Screen.drawCenteredString(poseStack, this.font, this.title, this.width / 2, 40, 0xFFFFFF);
+        if (!this.isFirstRender)
+        {
+            if (ModConfig.Candy.removeExtraPauseButtons())
+            {
+                this.clearWidgets();
+                this.init();
+            }
+
+            this.isFirstRender = true;
+        }
+
         super.render(poseStack, mouseX, mouseY, partialTick);
     }
 

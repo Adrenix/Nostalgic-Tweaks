@@ -87,7 +87,7 @@ public class ColorInput extends AbstractWidget
     public String clean(String input)
     {
         input = input.replaceAll("[^a-fA-F\\d]", "");
-        return "#" + input;
+        return ("#" + input).trim().toUpperCase();
     }
 
     /**
@@ -104,8 +104,11 @@ public class ColorInput extends AbstractWidget
             return true;
         else
         {
+            input = input.trim().toUpperCase();
+
             if (!input.startsWith("#"))
                 input = "#" + input;
+
             return input.matches("^#[a-fA-F\\d]+$");
         }
     }
@@ -122,9 +125,9 @@ public class ColorInput extends AbstractWidget
         String cached = ClientReflect.getCurrent(this.tweak.getGroup(), this.tweak.getKey());
 
         if (cached.equals(input))
-            this.tweak.setValue(cached);
+            this.tweak.setValue(cached.trim().toUpperCase());
         else
-            this.tweak.setValue(input);
+            this.tweak.setValue(input.trim().toUpperCase());
     }
 
     /* Overrides */
@@ -160,7 +163,7 @@ public class ColorInput extends AbstractWidget
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        int color = TextUtil.toHexInt(this.tweak.getValue());
+        int color = ColorUtil.toHexInt(this.tweak.getValue());
         int border = this.input.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0;
 
         float leftX = this.x;

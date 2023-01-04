@@ -1,103 +1,140 @@
-# Nightly.08 Changelog
-Nightly.08 Changelog:
-- Removed cloth-config as a required dependency
-- Did codebase optimizations so FPS should run smoother
-- Potentially fixed crash caused by the old torch model tweaks
-- Fixed lag spikes when crossing certain chunk borders
-- Fixed old water lighting not being calculated correctly
-- Fixed disable light flicker tweak not appearing in the config menu
-- Fixed old debug entity id nametags not rendering as full-bright like it was in beta
-- Fixed old debug menu not respecting the reduced debug info game rule
-- Fixed incorrect holding positions of some items with old item holding enabled
-- Fixed players being able to sprint with enabled swimming but disabled sprinting
-- Fixed water fog colors being influenced by block light when old light rendering is enabled
-- Fixed zombie pigmen spawning rare drops when old drops is enabled
-- Fixed old light rendering issues during weather events
-- Fixed void fog rendering issues due to old light rendering
-- Fixed sneak + attack placing blocks with old left click tweaks enabled
-- Fixed text paragraphs not rendering correctly on certain GUI scales
-- Fixed search results visual issues when returning from the cancel changes screen
-- Made search results clickable when hovering over search crumbs or tweak titles
-- Moved mod's config file to a new config folder where backups and presets are stored
-- Moved debug client light data into new subcategory called extra debug information
-- Redid universal old fog tweak
-> This tweak now comes with `Classic`, `Inf-dev`, `Alpha - Beta`, and `Modern`
-- Redid the old fog rendering logic so that fog looks more like it did in alpha/beta
-- Redid the old blue void tweak so that the color is correct at night and during weather events
-- Redid the old universal fog tweak so that the color is correct at night and during weather events
-- Redid the old nether fog and old nether sky colors so that they match alpha/beta colors
-- Redid the old swing speed list screen
-- Improved search results so that words that are closely related to tweaks appear in the results
-- Added display biome data and block target info tweaks to extra debug information subcategory
-- Added client-only filter checkbox to the disable/enable all tweak changes section
-- Added see changes button to the all tweak changes section
-- Added automatic config backups when a config file needs reset due to a structure change or invalid data
-- Added level modding API
-- Added dynamic alert tags that appear when two tweak values conflict with each other
-- Changed the infinite burn tweak to be disabled by default to prevent performance issues
-- Cleaned up the mod's codebase
+# Beta.08 Changelog
+Beta.08 Changelog:
+- Removed cloth-config as a required dependency.
+- Added a supporter banner to the top of the mod's home settings screen.
+> This can be toggled and the toggle state will be remembered.
+- Added a new title logo (by Sea Pickle) to the mod's home settings screen.
+- Updated the mod's home settings screen gear logo and changed the splash text to the jar's version number.
+- Did some codebase optimizations so FPS should run smoother.
+- Potentially fixed crash caused by the old torch model tweaks.
+- Fixed mod buttons not appearing on the old pause screen (this can be toggled).
+- Fixed lag spikes when crossing certain chunk borders.
+- Fixed old water lighting not being calculated correctly.
+- Fixed disable light flicker tweak not appearing in the config menu.
+- Fixed old debug entity id nametags not rendering as full-bright like it was in beta.
+- Fixed old debug menu not respecting the reduced debug info game rule.
+- Fixed incorrect holding positions of some items with old item holding enabled.
+- Fixed players being able to sprint with enabled swimming but disabled sprinting.
+- Fixed water fog colors being influenced by block light when old light rendering is enabled.
+- Fixed zombie pigmen spawning rare drops when old drops is enabled.
+- Fixed old light rendering issues during weather events.
+- Fixed old nether lighting not updating after toggling.
+- Fixed void fog rendering issues due to old light rendering.
+- Fixed sneak + attack placing blocks with old left click tweaks enabled.
+- Fixed text paragraphs not rendering correctly on certain GUI scales.
+- Fixed search results visual issues when returning from the cancel changes screen.
+- Made search results clickable when hovering over search crumbs or tweak titles.
+- Moved mod's config file to a new config folder where backups and presets are stored.
+- Moved debug client light data into new subcategory called extra debug information.
+- Redid universal old fog tweak.
+> This tweak now comes with `Classic`, `Inf-dev`, `Alpha - Beta`, and `Modern`.
+- Redid the old fog rendering logic so that fog looks more like it did in alpha/beta.
+- Redid the old blue void tweak so that the color is correct at night and during weather events.
+- Redid the old universal fog tweak so that the color is correct at night and during weather events.
+- Redid the old nether fog and old nether sky colors so that they match alpha/beta colors.
+- Redid the old swing speed list screen.
+- Improved search results so that words that are closely related to tweaks appear in the results.
+- Added display biome data and block target info tweaks to extra debug information subcategory.
+- Added client-only filter checkbox to the disable/enable all tweak changes section.
+- Added see changes button to the all tweak changes section.
+- Added automatic config backups when a config file needs reset due to a structure change or invalid data.
+- Added dynamic alert tags that appear when two tweak values conflict with each other.
+- Added mod loader specific APIs for Nostalgic Tweaks.
+> Documentation on how to develop against the API is included in the 1.19.2-multiplayer README file.
+- Added AppleSkin support for old HUD tweaks.
+- Changed the infinite burn tweak to be disabled by default to prevent performance issues.
+- Cleaned up the mod's codebase.
+- Added network protocol verification so that servers running Nostalgic Tweaks requires the client to have it as well.
+> The mod version does not have to match, only the protocol version does.
+> The protocol version does not change often.
+- Added a new `Config Management` category to the `General` config group.
+> You can open the config file directory, create a new backup config file, and change the max number of backup files allowed.
 - Added new `World Lighting` tweak: `Fix Chunk Border Lag`
-> This tweak fixes reported lag spike issues when crossing chunk borders
+> This tweak fixes reported lag spike issues when crossing chunk borders.
 - Added new `Fog Candy` tweak: `Old World Fog`
-> This changes world fog based on the selected game version range
+> This changes world fog based on the selected game version range.
 - Added new `Fog Candy` tweak: `Old Dynamic Fog`
-> This changes fog color depending on biome temperature and render distance
+> This changes fog color depending on biome temperature and render distance.
 - Added new `Fog Candy` tweak: `Old Nether Fog`
-> This separates the old nether fog color out from the `Old Universal Fog Color` tweak
+> This separates the old nether fog color out from the `Old Universal Fog Color` tweak.
 - Added new `Sky Candy` tweak: `Old Nether Sky`
-> This separates the old nether sky color out from the `Old Universal Sky Color` tweak
+> This separates the old nether sky color out from the `Old Universal Sky Color` tweak.
 - Added new `Sky Candy` tweak: `Old Dynamic Sky`
-> This changes sky color depending on biome temperature
+> This changes sky color depending on biome temperature.
 - Added new `Item Candy` tweak: `Ignored Items For Old Holding`
-> Add, edit, and/or remove items that will be ignored by the old item holding tweak
+> Add, edit, and/or remove items that will be ignored by the old item holding tweak.
 - Added new `Fog Candy > Custom Fog` embedded subcategory
-> This embedded subcategory contains **4** new tweaks to customize overworld and nether fog colors
+> This embedded subcategory contains **4** new tweaks to customize overworld and nether fog colors.
 - Added new `Sky Candy > Custom Sky` embedded subcategory
-> This embedded subcategory contains **4** new tweaks to customize overworld and nether sky colors
+> This embedded subcategory contains **4** new tweaks to customize overworld and nether sky colors.
 - Added new `Block Candy > Hitbox Outlines` subcategory
-> This category contains **5** new tweaks
+> This category contains **5** new tweaks.
 - Added new `Hitbox Outlines` tweak: `Old Fence Outline`
 - Added new `Hitbox Outlines` tweak: `Old Slab Outline`
 - Added new `Hitbox Outlines` tweak: `Old Stair Outline`
 - Added new `Hitbox Outlines` tweak: `Old Wall Outlines`
 - Added new `Hitbox Outlines` tweak: `Custom Full Block Outlines`
-> Add, edit, and/or remove block items that will have full block outlines
-- Added new `Gameplay > Hunger System > Food` tweak: `Custom Food Stacking`
-> This new list screen replaces the previous food stacking system
-- Added new `Gameplay > Hunger System > Food` tweak: `Custom Food Health`
-> This new list screen replaces the old nutritional value system
+> Add, edit, and/or remove block items that will have full block outlines.
+- Added new `Hunger System > Food` tweak: `Custom Food Stacking`
+> This new list screen replaces the previous food stacking system.
+- Added new `Hunger System > Food` tweak: `Custom Food Health`
+> This new list screen replaces the old nutritional value system.
+- Added new `Game Mechanics > Block` tweak: `Disable Bed Bounce`
+> Disable entities bouncing on beds and disable fall damage reduction when landing on beds.
+- Added new `Item Candy` tweak: `Old Damage Armor Tint`
+> The armor will now have a red tint when the wearer receives damage.
 - Added new `Anvil Screen` tweak: `Old Anvil Screen`
-> Bring back the old anvil screen from before Minecraft 1.13
+> Bring back the old anvil screen from before Minecraft 1.13.
 - Added new `World Lighting` tweak: `Old Classic Light Rendering`
 > This tweak is controlled by the server since this could be considered cheating in vanilla.
 > The sun/moon doesn't render when this tweak is enabled.
 - Added new `Fog Candy` tweak: `Old Dark Fog`
-> Fog will get darker when the max light value surrounding the player gets darker
+> Fog will get darker when the max light value surrounding the player gets darker.
 - Added new `Arm Animations` tweak: `Old Classic Swing`
-> Changes the breaking swing animation and placement swing animation to simulate Minecraft classic
+> Changes the breaking swing animation and placement swing animation to simulate Minecraft classic.
 - Added new `Block Particles` tweak: `Disable Lava Particles`
-> Prevents the lava pop particles from appearing (_not enabled by default_)
+> Prevents the lava pop particles from appearing (_not enabled by default_).
 - Added new `Block Particles` tweak: `Disable Model Destruction Particles`
-> Disables the voxel shape of a block model from influencing the amount of particles that appear when the block is destroyed
+> Disables the voxel shape of a block model from influencing the amount of particles that appear when the block is destroyed.
 - Added new `Particle Candy` tweak: `Disable Underwater Particles`
-> Disables the particles that spawn while the player is underwater
+> Disables the particles that spawn while the player is underwater.
+- Added new `Bed Sound` tweak: `Old Bed Sounds`
+> Replaces the wood sounds with stone sounds when breaking or walking on beds.
 - Added new `Ambience Sound` tweak: `Disable Nether Ambience`
-> Disables the ambient sounds that play while the player is in a Nether biome
+> Disables the ambient sounds that play while the player is in a Nether biome.
 - Added new `Ambience Sound` tweak: `Disable Water Ambience`
-> Disables the ambient sounds that play while the player is underwater
+> Disables the ambient sounds that play while the player is underwater.
 - Added new `Fish Sound` tweaks: `Disable Fish Swim`, `Disable Fish Hurt`, and `Disable Fish Death`
-> Disable various sounds from all fish entities
-- Added new `Block Sound` tweaks: `Disable Lava Ambience` and `Disable Lava Pop`
-> Disable ambient lava or lava pop sounds
+> Disable various sounds from all fish entities.
+- Added new `Lava Sound` tweaks: `Disable Lava Ambience` and `Disable Lava Pop`
+> Disable ambient lava or lava pop sounds.
+- Added new `Block Sound` tweak: `Disable Furnace Sounds`
+> Disable the sounds emitted by furnace blocks when items are being cooked.
 - Added new `Squid Sound` tweaks: `Disable Glow Squid Ambience` and `Disable Glow Squid Other`
-> Disable various sounds from glow squids
+> Disable various sounds from glow squids.
 - Added new `Generic Sound` tweak: `Disable Swim Sounds`
-> Disable player swim sounds
+> Disable player swim sounds.
+- Added new `Chat Screen` tweak: `Chat Offset`
+> Offset the start position for chat messages by a certain amount.
+> This is useful for mods that add things in front of chat messages such as the chat heads mod.
+- Added new `Chat Screen` tweak: `Disable Signature Boxes`
+> Removes the colored chat signature rectangles that appear in front of chat messages (off by default).
+- Added new `Pause Screen` tweak: `Remove Extra Buttons`
+> Remove any extra buttons that are added by other mods from the nostalgic pause screen.
+> This will not remove extra buttons from the modern pause screen.
+- Added new `Alternative Level Text` tweak: `Show in Creative`
+> Shows the alternative xp level text while in creative mode (off by default).
+- Added new `Alternative Progress Text` tweak: `Show in Creative`
+> Shows the alternative xp progress text while in creative mode (off by default).
+- Added new `Combat System` tweak: `Disable Critical Hit`
+> Removes the ability for players to perform critical hit attacks.
 - Added new `Combat System` tweak: `Old Damage Values`
-> Changes the damage dealt by swords and tool items.
-> Axes are now nerfed.
-- Revamped Swing Speeds
-> Since the old classic swing tweak introduced the ability for swing speeds to be separated from left/right clicking, the custom swing speed tweaks have been redone to match this new logic. It is now possible to change swinging animation speeds based on whether the player is attacking (left-click) or using an item (right-click). The old custom speed list has been separated into a custom left-click speed list and custom right-click speed list.
+> Reverts the damage dealt by swords and tool items back to their old values.
+- Revamped Swing Speeds.
+> Since the old classic swing tweak introduced the ability for swing speeds to be separated into left and right components,
+> the custom swing speed tweaks have been redone to match this new logic. It is now possible to change swinging animation
+> speeds based on whether the player is attacking (left-click) or using an item (right-click). The old custom speed list
+> has been separated into a custom left-click speed list and custom right-click speed list.
 - Removed Herobrine
 
 # N.T (Forge & Fabric): 1.19-v2.0.0 (Multiplayer)

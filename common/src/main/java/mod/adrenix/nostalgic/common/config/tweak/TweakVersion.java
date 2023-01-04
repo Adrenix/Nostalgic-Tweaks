@@ -234,4 +234,121 @@ public abstract class TweakVersion
         @Override
         public Hotbar getDisabledValue() { return MODERN; }
     }
+
+    /**
+     * The world fog rendering enumeration is used by tweaks that change the fog rendering in the overworld. Other
+     * dimensions are not effected.
+     */
+    public enum WorldFog implements DisabledTweak<WorldFog>
+    {
+        /* Enumerations */
+
+        MODERN(Generic.MODERN.getLangKey()),
+        CLASSIC(LangUtil.Gui.BASIC_CLASSIC),
+        ALPHA_R164(LangUtil.Gui.FOG_ALPHA_R164),
+        R17_R118(LangUtil.Gui.FOG_R17_R118);
+
+        /* Fields */
+
+        private final String langKey;
+
+        /* Constructor */
+
+        WorldFog(String langKey) { this.langKey = langKey; }
+
+        /* Methods */
+
+        /**
+         * Overrides the toString method so that it returns a translation.
+         * @return A translation from a language file.
+         */
+        @Override
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+
+        /**
+         * The default disabled value is modern.
+         * @return A disabled default fog rendering enumeration value.
+         */
+        @Override
+        public WorldFog getDisabledValue() { return MODERN; }
+    }
+
+    /**
+     * The fog color enumeration is used by tweaks that change the terrain fog colors. Classic used a color of (#E2F0FF).
+     * Inf-dev used a fog color of (#B0D0FF). The fog color remained constant through alpha - beta (#C0D8FF).
+     * Modern fog uses (#ADCBFF).
+     */
+    public enum FogColor implements DisabledTweak<FogColor>
+    {
+        /* Enumerations */
+
+        DISABLED(LangUtil.Gui.SETTINGS_DISABLED),
+        ALPHA_BETA(LangUtil.Gui.ALPHA_BETA),
+        CLASSIC(LangUtil.Gui.BASIC_CLASSIC),
+        INF_DEV(LangUtil.Gui.BASIC_INF_DEV);
+
+        /* Fields */
+
+        private final String langKey;
+
+        /* Constructor */
+
+        FogColor(String langKey) { this.langKey = langKey; }
+
+        /* Methods */
+
+        /**
+         * Overrides the toString method so that it returns a translation.
+         * @return A translation from a language file.
+         */
+        @Override
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+
+        /**
+         * The default is disabled universal fog.
+         * @return A disabled default fog color enumeration value.
+         */
+        @Override
+        public FogColor getDisabledValue() { return DISABLED; }
+    }
+
+    /**
+     * The sky color enumeration is used by the universal sky tweak. Classic used a color of (#A6D1FE). Inf-dev used a
+     * sky color of (#C6DEFF). The sky color in alpha was (#8BBDFF). The sky color is beta changed depending on the
+     * temperature of the biome. The universal color used by this enumeration is (#97A3FF).
+     */
+    public enum SkyColor implements DisabledTweak<SkyColor>
+    {
+        /* Enumerations */
+
+        DISABLED(LangUtil.Gui.SETTINGS_DISABLED),
+        ALPHA(Generic.ALPHA.getLangKey()),
+        BETA(Generic.BETA.getLangKey()),
+        CLASSIC(LangUtil.Gui.BASIC_CLASSIC),
+        INF_DEV(LangUtil.Gui.BASIC_INF_DEV);
+
+        /* Fields */
+
+        private final String langKey;
+
+        /* Constructor */
+
+        SkyColor(String langKey) { this.langKey = langKey; }
+
+        /* Methods */
+
+        /**
+         * Overrides the toString method so that it returns a translation.
+         * @return A translation from a language file.
+         */
+        @Override
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+
+        /**
+         * The default is disabled universal sky.
+         * @return A disabled default sky color enumeration value.
+         */
+        @Override
+        public SkyColor getDisabledValue() { return DISABLED; }
+    }
 }

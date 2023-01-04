@@ -81,6 +81,7 @@ public class ConfigScreen extends Screen
     private ConfigTab configTab = ConfigTab.GENERAL;
     private String searchCache = "";
     private int rowHeightCache = 0;
+    private double scrollAmountCache = 0.0D;
     private static boolean isCacheReflected = false;
 
     /* Getters */
@@ -146,6 +147,7 @@ public class ConfigScreen extends Screen
     {
         this.searchCache = this.getWidgets().getSearchInput().getValue();
         this.rowHeightCache = this.getWidgets().getConfigRowList().getRowHeight();
+        this.scrollAmountCache = this.getWidgets().getConfigRowList().getScrollAmount();
     }
 
     /**
@@ -341,7 +343,7 @@ public class ConfigScreen extends Screen
 
         if (this.configTab == ConfigTab.SEARCH)
         {
-            if (ConfigRowList.overTweakId != null)
+            if (ConfigRowList.overTweakId != null && ConfigWidgets.isInsideRowList(mouseY))
             {
                 ContainerButton.collapseAll();
                 ConfigRowList.jumpToTweakId = ConfigRowList.overTweakId;
@@ -798,6 +800,20 @@ public class ConfigScreen extends Screen
         String configKey = LangUtil.Config.CONFIG_TITLE;
         String title = Component.translatable(tabKey).getString() + " " + Component.translatable(configKey).getString();
 
+        // Config Row Generation for Group Tabs
+
+        if (list.children().isEmpty())
+            this.getRenderer().generateAndRender(poseStack, mouseX, mouseY, partialTick);
+
+        // Reset scrollbar position without flashing
+
+        if (this.scrollAmountCache > 0.0D)
+        {
+            list.render(poseStack, mouseX, mouseY, partialTick);
+            this.getWidgets().getConfigRowList().setScrollAmount(this.scrollAmountCache);
+            this.scrollAmountCache = 0.0D;
+        }
+
         // Background Rendering
 
         if (this.minecraft.level != null)
@@ -808,10 +824,7 @@ public class ConfigScreen extends Screen
         this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
         this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
 
-        // Config Row Generation for Group Tabs
-
-        if (list.children().isEmpty())
-            this.getRenderer().generateAndRender(poseStack, mouseX, mouseY, partialTick);
+        // Render config row list
 
         list.render(poseStack, mouseX, mouseY, partialTick);
 

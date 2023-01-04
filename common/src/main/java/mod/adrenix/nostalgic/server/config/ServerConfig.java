@@ -8,6 +8,11 @@ import mod.adrenix.nostalgic.common.config.auto.ConfigData;
 import mod.adrenix.nostalgic.common.config.auto.annotation.Config;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The fields in this config need to stay in sync with the fields in the client config.
  * Any updates in that class or this class will require an update in both config classes.
@@ -25,6 +30,17 @@ public class ServerConfig implements ConfigData
 
     @Override public void validatePostLoad() throws ValidationException { ValidateConfig.scan(this); }
 
+    /* Constants */
+
+    @TweakData.Ignore private static final int HEALTH_MIN = DefaultConfig.Gameplay.HEALTH_MIN;
+    @TweakData.Ignore private static final int HEALTH_MAX = DefaultConfig.Gameplay.HEALTH_MAX;
+    @TweakData.Ignore private static final int HEALTH_RESET = DefaultConfig.Gameplay.HEALTH_RESET;
+
+    @TweakData.Ignore private static final int ITEM_MIN = DefaultConfig.Gameplay.ITEM_STACK_MIN;
+    @TweakData.Ignore private static final int ITEM_MAX = DefaultConfig.Gameplay.ITEM_STACK_MAX;
+    @TweakData.Ignore private static final int ITEM_RESET = DefaultConfig.Gameplay.ITEM_STACK_RESET;
+    @TweakData.Ignore private static final int FOOD_RESET = DefaultConfig.Gameplay.FOOD_STACK_RESET;
+
     /* Server Config */
 
     public EyeCandy eyeCandy = new EyeCandy();
@@ -37,6 +53,8 @@ public class ServerConfig implements ConfigData
         public boolean oldChestVoxel = DefaultConfig.Candy.OLD_CHEST_VOXEL;
         public boolean oldItemMerging = DefaultConfig.Candy.OLD_ITEM_MERGING;
         public boolean oldSquareBorder = DefaultConfig.Candy.OLD_SQUARE_BORDER;
+        public boolean oldClassicLighting = DefaultConfig.Candy.OLD_CLASSIC_LIGHTING;
+        public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
     }
 
     public Gameplay gameplay = new Gameplay();
@@ -82,7 +100,9 @@ public class ServerConfig implements ConfigData
         public boolean invincibleBow = DefaultConfig.Gameplay.INVINCIBLE_BOW;
         public boolean disableCooldown = DefaultConfig.Gameplay.DISABLE_COOLDOWN;
         public boolean disableMissTimer = DefaultConfig.Gameplay.DISABLE_MISS_TIMER;
+        public boolean disableCriticalHit = DefaultConfig.Gameplay.DISABLE_CRITICAL_HIT;
         public boolean disableSweep = DefaultConfig.Gameplay.DISABLE_SWEEP;
+        public boolean oldDamageValues = DefaultConfig.Gameplay.OLD_DAMAGE_VALUES;
 
         // Experience System
         public boolean disableOrbSpawn = DefaultConfig.Gameplay.DISABLE_ORB_SPAWN;
@@ -98,6 +118,7 @@ public class ServerConfig implements ConfigData
         public boolean leftClickButton = DefaultConfig.Gameplay.LEFT_CLICK_BUTTON;
         public boolean instantBonemeal = DefaultConfig.Gameplay.INSTANT_BONE_MEAL;
         public boolean tilledGrassSeeds = DefaultConfig.Gameplay.TILLED_GRASS_SEEDS;
+        public boolean disableBedBounce = DefaultConfig.Gameplay.DISABLE_BED_BOUNCE;
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
         public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
 
@@ -105,6 +126,19 @@ public class ServerConfig implements ConfigData
         public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
         public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
         public boolean oldFoodStacking = DefaultConfig.Gameplay.OLD_FOOD_STACKING;
+
+        @TweakData.BoundedSlider(min = HEALTH_MIN, max = HEALTH_MAX, reset = HEALTH_RESET)
+        public Map<String, Integer> customFoodHealth = new HashMap<>();
+
+        @TweakData.BoundedSlider(min = ITEM_MIN, max = ITEM_MAX, reset = FOOD_RESET)
+        public Map<String, Integer> customFoodStacking = new HashMap<>();
+
+        public Set<String> disabledFoodHealth = new HashSet<>();
+        public Set<String> disabledFoodStacking = new HashSet<>();
+
+        // Item Stacking
+        @TweakData.BoundedSlider(min = ITEM_MIN, max = ITEM_MAX, reset = ITEM_RESET)
+        public Map<String, Integer> customItemStacking = new HashMap<>();
     }
 
     public Animation animation = new Animation();

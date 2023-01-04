@@ -36,11 +36,9 @@ public class ClientConfig implements ConfigData
 
     @Override public void validatePostLoad() throws ValidationException { ValidateConfig.scan(this); }
 
-    /* Root Key */
+    /* Universal State */
 
     @TweakData.Ignore public static final String ROOT_KEY = "isModEnabled";
-
-    /* Client Config */
 
     @TweakGui.NoTooltip
     @TweakData.Client
@@ -48,13 +46,46 @@ public class ClientConfig implements ConfigData
     @TweakReload.Resources
     public boolean isModEnabled = true;
 
+    /* Client Config */
+
     @TweakData.Ignore
     public Sound sound = new Sound();
     public static class Sound
     {
         /**
+         * Ambient Sounds
+         */
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.AMBIENT_SOUND)
+        public boolean disableNetherAmbience = DefaultConfig.Sound.DISABLE_NETHER_AMBIENCE;
+        static { SoundTweak.DISABLE_NETHER_AMBIENCE.setKey("disableNetherAmbience"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.AMBIENT_SOUND)
+        public boolean disableWaterAmbience = DefaultConfig.Sound.DISABLE_WATER_AMBIENCE;
+        static { SoundTweak.DISABLE_WATER_AMBIENCE.setKey("disableWaterAmbience"); }
+
+        /**
          * Block Sounds
          */
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_BED_SOUND)
+        public boolean oldBed = DefaultConfig.Sound.OLD_BED;
+        static { SoundTweak.OLD_BED.setKey("oldBed"); }
+
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_BED_SOUND)
+        public boolean disableBedPlace = DefaultConfig.Sound.DISABLE_BED_PLACE;
+        static { SoundTweak.DISABLE_BED.setKey("disableBedPlace"); }
 
         @TweakGui.New
         @TweakData.Client
@@ -73,21 +104,36 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_LAVAL_SOUND)
+        public boolean disableLavaAmbience = DefaultConfig.Sound.DISABLE_LAVA_AMBIENCE;
+        static { SoundTweak.DISABLE_LAVA_AMBIENCE.setKey("disableLavaAmbience"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_LAVAL_SOUND)
+        public boolean disableLavaPop = DefaultConfig.Sound.DISABLE_LAVA_POP;
+        static { SoundTweak.DISABLE_LAVA_POP.setKey("disableLavaPop"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.BLOCK_SOUND)
         public boolean disableGrowth = DefaultConfig.Sound.DISABLE_GROWTH;
         static { SoundTweak.DISABLE_GROWTH.setKey("disableGrowth"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.BLOCK_SOUND)
+        public boolean disableFurnace = DefaultConfig.Sound.DISABLE_FURNACE;
+        static { SoundTweak.DISABLE_FURNACE.setKey("disableFurnace"); }
 
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.BLOCK_SOUND)
         public boolean disableDoorPlace = DefaultConfig.Sound.DISABLE_DOOR_PLACE;
         static { SoundTweak.DISABLE_DOOR.setKey("disableDoorPlace"); }
-
-        @TweakData.Client
-        @TweakData.EntryStatus
-        @TweakGui.Category(container = TweakCategory.BLOCK_SOUND)
-        public boolean disableBedPlace = DefaultConfig.Sound.DISABLE_BED_PLACE;
-        static { SoundTweak.DISABLE_BED.setKey("disableBedPlace"); }
 
         /**
          * Damage Sounds
@@ -139,18 +185,60 @@ public class ClientConfig implements ConfigData
          * Mob Sounds
          */
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_GENERIC_SOUND)
+        public boolean disableGenericSwim = DefaultConfig.Sound.DISABLE_GENERIC_SWIM;
+        static { SoundTweak.DISABLE_GENERIC_SWIM.setKey("disableGenericSwim"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_FISH_SOUND)
+        public boolean disableFishSwim = DefaultConfig.Sound.DISABLE_FISH_SWIM;
+        static { SoundTweak.DISABLE_FISH_SWIM.setKey("disableFishSwim"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_FISH_SOUND)
+        public boolean disableFishHurt = DefaultConfig.Sound.DISABLE_FISH_HURT;
+        static { SoundTweak.DISABLE_FISH_HURT.setKey("disableFishHurt"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_FISH_SOUND)
+        public boolean disableFishDeath = DefaultConfig.Sound.DISABLE_FISH_DEATH;
+        static { SoundTweak.DISABLE_FISH_DEATH.setKey("disableFishDeath"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_SQUID_SOUND)
+        public boolean disableSquid = DefaultConfig.Sound.DISABLE_SQUID;
+        static { SoundTweak.DISABLE_SQUID.setKey("disableSquid"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_SQUID_SOUND)
+        public boolean disableGlowSquidOther = DefaultConfig.Sound.DISABLE_GLOW_SQUID_OTHER;
+        static { SoundTweak.DISABLE_GLOW_SQUID_OTHER.setKey("disableGlowSquidOther"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MOB_SQUID_SOUND)
+        public boolean disableGlowSquidAmbience = DefaultConfig.Sound.DISABLE_GLOW_SQUID_AMBIENCE;
+        static { SoundTweak.DISABLE_GLOW_SQUID_AMBIENCE.setKey("disableGlowSquidAmbience"); }
+
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.MOB_SOUND)
         public boolean oldStep = DefaultConfig.Sound.OLD_STEP;
         static { SoundTweak.OLD_STEP.setKey("oldStep"); }
-
-        @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
-        @TweakGui.Category(container = TweakCategory.MOB_SOUND)
-        public boolean disableSquid = DefaultConfig.Sound.DISABLE_SQUID;
-        static { SoundTweak.DISABLE_SQUID.setKey("disableSquid"); }
 
         @TweakGui.New
         @TweakData.Client
@@ -191,6 +279,45 @@ public class ClientConfig implements ConfigData
         @TweakReload.Chunks
         public boolean disableFlowerOffset = DefaultConfig.Candy.DISABLE_FLOWER_OFFSET;
         static { CandyTweak.DISABLE_FLOWER_OFFSET.setKey("disableFlowerOffset"); }
+
+        // Block - Hitbox Outlines
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_OUTLINE_CANDY)
+        public boolean oldStairOutline = DefaultConfig.Candy.OLD_STAIR_OUTLINE;
+        static { CandyTweak.OLD_STAIR_OUTLINE.setKey("oldStairOutline"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_OUTLINE_CANDY)
+        public boolean oldFenceOutline = DefaultConfig.Candy.OLD_FENCE_OUTLINE;
+        static { CandyTweak.OLD_FENCE_OUTLINE.setKey("oldFenceOutline"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_OUTLINE_CANDY)
+        public boolean oldSlabOutline = DefaultConfig.Candy.OLD_SLAB_OUTLINE;
+        static { CandyTweak.OLD_SLAB_OUTLINE.setKey("oldSlabOutline"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_OUTLINE_CANDY)
+        public boolean oldWallOutline = DefaultConfig.Candy.OLD_WALL_OUTLINE;
+        static { CandyTweak.OLD_WALL_OUTLINE.setKey("oldWallOutline"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_OUTLINE_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
+        @TweakData.List(id = ListId.FULL_BLOCK_OUTLINE)
+        public Set<String> oldBlockOutlines = new HashSet<>();
+        static { CandyTweak.FULL_BLOCK_OUTLINE.setKey("oldBlockOutlines"); }
 
         // Block - Chest Candy
 
@@ -292,8 +419,8 @@ public class ClientConfig implements ConfigData
         static { CandyTweak.DEBUG_SCREEN.setKey("oldDebug"); }
 
         @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
+        @TweakData.Server
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
         public boolean debugEntityId = DefaultConfig.Candy.DEBUG_ENTITY_ID;
@@ -559,6 +686,22 @@ public class ClientConfig implements ConfigData
         public boolean includeModsOnPause = DefaultConfig.Candy.INCLUDE_MODS_ON_PAUSE;
         static { CandyTweak.PAUSE_MODS.setKey("includeModsOnPause"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_PAUSE_CANDY)
+        public boolean removeExtraPauseButtons = DefaultConfig.Candy.REMOVE_EXTRA_PAUSE_BUTTONS;
+        static { CandyTweak.PAUSE_REMOVE_EXTRA.setKey("removeExtraPauseButtons"); }
+
+        // Interface - Anvil Screen
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_ANVIL_CANDY)
+        public boolean oldAnvilScreen = DefaultConfig.Candy.OLD_ANVIL_SCREEN;
+        static { CandyTweak.ANVIL_SCREEN.setKey("oldAnvilScreen"); }
+
         // Interface - Crafting Screen
 
         @TweakGui.New
@@ -608,6 +751,23 @@ public class ClientConfig implements ConfigData
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_CHAT_CANDY)
         public boolean oldChatBox = DefaultConfig.Candy.OLD_CHAT_BOX;
         static { CandyTweak.CHAT_BOX.setKey("oldChatBox"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_CHAT_CANDY)
+        public boolean disableSignatureBoxes = DefaultConfig.Candy.DISABLE_SIGNATURE_BOXES;
+        static { CandyTweak.SIGNATURE_BOXES.setKey("disableSignatureBoxes"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = 0, max = 32, reset = DefaultConfig.Candy.CHAT_OFFSET)
+        @TweakGui.Slider(type = TweakGui.SliderType.GENERIC, langKey = LangUtil.Gui.SLIDER_OFFSET)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_CHAT_CANDY)
+        public int chatOffset = DefaultConfig.Candy.CHAT_OFFSET;
+        static { CandyTweak.CHAT_OFFSET.setKey("chatOffset"); }
 
         /* Interface - Tooltip Candy */
 
@@ -663,12 +823,21 @@ public class ClientConfig implements ConfigData
         public boolean fixItemModelGap = DefaultConfig.Candy.FIX_ITEM_MODEL_GAP;
         static { CandyTweak.FIX_ITEM_MODEL_GAP.setKey("fixItemModelGap"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Optifine
+        @TweakGui.Category(container = TweakCategory.ITEM_CANDY)
+        public boolean oldDamageArmorTint = DefaultConfig.Candy.OLD_DAMAGE_ARMOR_TINT;
+        static { CandyTweak.DAMAGE_ARMOR_TINT.setKey("oldDamageArmorTint"); }
+
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.ITEM_CANDY)
         public boolean oldItemHolding = DefaultConfig.Candy.OLD_ITEM_HOLDING;
         static { CandyTweak.ITEM_HOLDING.setKey("oldItemHolding"); }
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
@@ -770,19 +939,36 @@ public class ClientConfig implements ConfigData
         @TweakData.EntryStatus
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
+        public boolean fixChunkBorderLag = DefaultConfig.Candy.FIX_CHUNK_BORDER_LAG;
+        static { CandyTweak.FIX_CHUNK_BORDER_LAG.setKey("fixChunkBorderLag"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
         public boolean disableBrightness = DefaultConfig.Candy.DISABLE_BRIGHTNESS;
         static { CandyTweak.DISABLE_BRIGHTNESS.setKey("disableBrightness"); }
 
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
         public boolean disableLightFlicker = DefaultConfig.Candy.DISABLE_LIGHT_FLICKER;
         static { CandyTweak.LIGHT_FLICKER.setKey("disableLightFlicker"); }
 
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
+        @TweakReload.Chunks
+        public boolean oldClassicLighting = DefaultConfig.Candy.OLD_CLASSIC_LIGHTING;
+        static { CandyTweak.CLASSIC_LIGHTING.setKey("oldClassicLighting"); }
+
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
+        @TweakReload.Chunks
         public boolean oldNetherLighting = DefaultConfig.Candy.OLD_NETHER_LIGHTING;
         static { CandyTweak.NETHER_LIGHTING.setKey("oldNetherLighting"); }
 
@@ -854,7 +1040,21 @@ public class ClientConfig implements ConfigData
         public boolean disableNetherParticles = DefaultConfig.Candy.DISABLE_NETHER_PARTICLES;
         static { CandyTweak.NO_NETHER_PARTICLES.setKey("disableNetherParticles"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.PARTICLE_CANDY)
+        public boolean disableUnderwaterParticles = DefaultConfig.Candy.DISABLE_UNDERWATER_PARTICLES;
+        static { CandyTweak.NO_UNDERWATER_PARTICLES.setKey("disableUnderwaterParticles"); }
+
         // Particle - Block Candy
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.PARTICLE_BLOCK_CANDY)
+        public boolean disableLavaParticles = DefaultConfig.Candy.DISABLE_LAVA_PARTICLES;
+        static { CandyTweak.NO_LAVA_PARTICLES.setKey("disableLavaParticles"); }
 
         @TweakGui.New
         @TweakData.Client
@@ -862,6 +1062,13 @@ public class ClientConfig implements ConfigData
         @TweakGui.Subcategory(container = TweakSubcategory.PARTICLE_BLOCK_CANDY)
         public boolean disableLeverParticles = DefaultConfig.Candy.DISABLE_LEVER_PARTICLES;
         static { CandyTweak.NO_LEVER_PARTICLES.setKey("disableLeverParticles"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.PARTICLE_BLOCK_CANDY)
+        public boolean disableModelDestructionParticles = DefaultConfig.Candy.DISABLE_MODEL_DESTRUCTION_PARTICLES;
+        static { CandyTweak.NO_MODEL_DESTRUCTION_PARTICLES.setKey("disableModelDestructionParticles"); }
 
         @TweakGui.New
         @TweakData.Client
@@ -1051,19 +1258,21 @@ public class ClientConfig implements ConfigData
 
         // World - Fog Candy
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.WORLD_FOG_CANDY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
-        public boolean oldTerrainFog = DefaultConfig.Candy.OLD_TERRAIN_FOG;
-        static { CandyTweak.TERRAIN_FOG.setKey("oldTerrainFog"); }
+        public TweakVersion.WorldFog oldWorldFog = DefaultConfig.Candy.OLD_WORLD_FOG;
+        static { CandyTweak.WORLD_FOG.setKey("oldWorldFog"); }
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.WORLD_FOG_CANDY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
-        public boolean oldHorizonFog = DefaultConfig.Candy.OLD_HORIZON_FOG;
-        static { CandyTweak.HORIZON_FOG.setKey("oldHorizonFog"); }
+        public boolean disableHorizonFog = DefaultConfig.Candy.DISABLE_HORIZON_FOG;
+        static { CandyTweak.DISABLE_HORIZON_FOG.setKey("disableHorizonFog"); }
 
         @TweakData.Client
         @TweakData.EntryStatus
@@ -1079,12 +1288,67 @@ public class ClientConfig implements ConfigData
         public boolean oldSunriseSunsetFog = DefaultConfig.Candy.OLD_SUNRISE_SUNSET_FOG;
         static { CandyTweak.SUNRISE_SUNSET_FOG.setKey("oldSunriseSunsetFog"); }
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.WORLD_FOG_CANDY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
-        public TweakVersion.Generic oldFogColor = DefaultConfig.Candy.OLD_FOG_COLOR;
-        static { CandyTweak.FOG_COLOR.setKey("oldFogColor"); }
+        public boolean oldDarkFog = DefaultConfig.Candy.OLD_DARK_FOG;
+        static { CandyTweak.DARK_FOG.setKey("oldDarkFog"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.DYNAMIC_FOG_CONFLICT, langKey = LangUtil.Gui.ALERT_DYNAMIC_FOG)
+        @TweakGui.Subcategory(container = TweakSubcategory.WORLD_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 6)
+        public boolean oldDynamicFogColor = DefaultConfig.Candy.OLD_DYNAMIC_FOG;
+        static { CandyTweak.DYNAMIC_FOG_COLOR.setKey("oldDynamicFogColor"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.UNIVERSAL_FOG_CONFLICT, langKey = LangUtil.Gui.ALERT_UNIVERSAL_FOG)
+        @TweakGui.Subcategory(container = TweakSubcategory.WORLD_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 7)
+        public TweakVersion.FogColor universalFogColor = DefaultConfig.Candy.UNIVERSAL_FOG_COLOR;
+        static { CandyTweak.UNIVERSAL_FOG_COLOR.setKey("universalFogColor"); }
+
+        // World - Fog Candy - Custom
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        public boolean customTerrainFog = DefaultConfig.Candy.CUSTOM_TERRAIN_FOG;
+        static { CandyTweak.CUSTOM_TERRAIN_FOG.setKey("customTerrainFog"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_TERRAIN_FOG_COLOR)
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public String customTerrainFogColor = DefaultConfig.Candy.CUSTOM_TERRAIN_FOG_COLOR;
+        static { CandyTweak.CUSTOM_TERRAIN_FOG_COLOR.setKey("customTerrainFogColor"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        public boolean customNetherFog = DefaultConfig.Candy.CUSTOM_NETHER_FOG;
+        static { CandyTweak.CUSTOM_NETHER_FOG.setKey("customNetherFog"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_NETHER_FOG_COLOR)
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_FOG_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public String customNetherFogColor = DefaultConfig.Candy.CUSTOM_NETHER_FOG_COLOR;
+        static { CandyTweak.CUSTOM_NETHER_FOG_COLOR.setKey("customNetherFogColor"); }
 
         // World - Fog Candy - Water
 
@@ -1141,11 +1405,30 @@ public class ClientConfig implements ConfigData
         public TweakVersion.Generic oldStars = DefaultConfig.Candy.OLD_STARS;
         static { CandyTweak.STARS.setKey("oldStars"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.DYNAMIC_SKY_CONFLICT, langKey = LangUtil.Gui.ALERT_DYNAMIC_SKY)
+        @TweakGui.Subcategory(container = TweakSubcategory.WORLD_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 1)
+        public boolean oldDynamicSkyColor = DefaultConfig.Candy.OLD_DYNAMIC_SKY;
+        static { CandyTweak.DYNAMIC_SKY_COLOR.setKey("oldDynamicSkyColor"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.UNIVERSAL_SKY_CONFLICT, langKey = LangUtil.Gui.ALERT_UNIVERSAL_SKY)
+        @TweakGui.Subcategory(container = TweakSubcategory.WORLD_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.BOTTOM, order = 2)
+        public TweakVersion.SkyColor universalSkyColor = DefaultConfig.Candy.UNIVERSAL_SKY_COLOR;
+        static { CandyTweak.UNIVERSAL_SKY_COLOR.setKey("universalSkyColor"); }
+
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.WORLD_SKY_CANDY)
-        public TweakVersion.Generic oldSkyColor = DefaultConfig.Candy.OLD_SKY_COLOR;
-        static { CandyTweak.SKY_COLOR.setKey("oldSkyColor"); }
+        public boolean oldNetherSky = DefaultConfig.Candy.OLD_NETHER_SKY;
+        static { CandyTweak.NETHER_SKY.setKey("oldNetherSky"); }
 
         @TweakData.Client
         @TweakData.EntryStatus
@@ -1155,6 +1438,42 @@ public class ClientConfig implements ConfigData
         @TweakGui.Slider(type = TweakGui.SliderType.CLOUD)
         public int oldCloudHeight = DefaultConfig.Candy.OLD_CLOUD_HEIGHT;
         static { CandyTweak.CLOUD_HEIGHT.setKey("oldCloudHeight"); }
+
+        // World - Custom Sky
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        public boolean customWorldSky = DefaultConfig.Candy.CUSTOM_WORLD_SKY;
+        static { CandyTweak.CUSTOM_WORLD_SKY.setKey("customWorldSky"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_WORLD_SKY_COLOR)
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public String customWorldSkyColor = DefaultConfig.Candy.CUSTOM_WORLD_SKY_COLOR;
+        static { CandyTweak.CUSTOM_WORLD_SKY_COLOR.setKey("customWorldSkyColor"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        public boolean customNetherSky = DefaultConfig.Candy.CUSTOM_NETHER_SKY;
+        static { CandyTweak.CUSTOM_NETHER_SKY.setKey("customNetherSky"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_NETHER_SKY_COLOR)
+        @TweakGui.Embed(container = TweakEmbed.CUSTOM_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public String customNetherSkyColor = DefaultConfig.Candy.CUSTOM_NETHER_SKY_COLOR;
+        static { CandyTweak.CUSTOM_NETHER_SKY_COLOR.setKey("customNetherSkyColor"); }
 
         /* World - Void Candy */
 
@@ -1178,9 +1497,26 @@ public class ClientConfig implements ConfigData
         @TweakData.EntryStatus
         @TweakGui.Alert(condition = TweakGui.Condition.VOID_CONFLICT, langKey = LangUtil.Gui.ALERT_VOID)
         @TweakGui.Embed(container = TweakEmbed.VOID_SKY_CANDY)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         public boolean oldDarkVoidHeight = DefaultConfig.Candy.OLD_DARK_VOID_HEIGHT;
         static { CandyTweak.DARK_VOID_HEIGHT.setKey("oldDarkVoidHeight"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Embed(container = TweakEmbed.VOID_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public boolean customVoidSky = DefaultConfig.Candy.CUSTOM_VOID_SKY;
+        static { CandyTweak.CUSTOM_VOID_SKY.setKey("customVoidSky"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.Color(reset = DefaultConfig.Candy.CUSTOM_VOID_SKY_COLOR)
+        @TweakGui.Embed(container = TweakEmbed.VOID_SKY_CANDY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
+        public String customVoidSkyColor = DefaultConfig.Candy.CUSTOM_VOID_SKY_COLOR;
+        static { CandyTweak.CUSTOM_VOID_SKY_COLOR.setKey("customVoidSkyColor"); }
 
         // Void Fog Candy
 
@@ -1473,6 +1809,14 @@ public class ClientConfig implements ConfigData
         @TweakData.Server
         @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.COMBAT_GAMEPLAY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        public boolean oldDamageValues = DefaultConfig.Gameplay.OLD_DAMAGE_VALUES;
+        static { GameplayTweak.DAMAGE_VALUES.setKey("oldDamageValues"); }
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.COMBAT_GAMEPLAY)
         public boolean disableCooldown = DefaultConfig.Gameplay.DISABLE_COOLDOWN;
         static { GameplayTweak.DISABLE_COOLDOWN.setKey("disableCooldown"); }
 
@@ -1482,6 +1826,13 @@ public class ClientConfig implements ConfigData
         @TweakGui.Category(container = TweakCategory.COMBAT_GAMEPLAY)
         public boolean disableMissTimer = DefaultConfig.Gameplay.DISABLE_MISS_TIMER;
         static { GameplayTweak.DISABLE_MISS_TIMER.setKey("disableMissTimer"); }
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.COMBAT_GAMEPLAY)
+        public boolean disableCriticalHit = DefaultConfig.Gameplay.DISABLE_CRITICAL_HIT;
+        static { GameplayTweak.DISABLE_CRITICAL_HIT.setKey("disableCriticalHit"); }
 
         @TweakGui.New
         @TweakData.Server
@@ -1543,9 +1894,17 @@ public class ClientConfig implements ConfigData
 
         @TweakGui.New
         @TweakData.Client
-        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.EntryStatus
         @TweakGui.Embed(container = TweakEmbed.ALT_XP_LEVEL_GAMEPLAY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public boolean showXpLevelInCreative = DefaultConfig.Gameplay.SHOW_XP_LEVEL_TEXT_CREATIVE;
+        static { GameplayTweak.SHOW_XP_LEVEL_CREATIVE.setKey("showXpLevelInCreative"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Embed(container = TweakEmbed.ALT_XP_LEVEL_GAMEPLAY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         public TweakType.Corner altXpLevelCorner = DefaultConfig.Gameplay.XP_LEVEL_CORNER;
         static { GameplayTweak.XP_LEVEL_CORNER.setKey("altXpLevelCorner"); }
 
@@ -1553,7 +1912,7 @@ public class ClientConfig implements ConfigData
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Embed(container = TweakEmbed.ALT_XP_LEVEL_GAMEPLAY)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
         public String altXpLevelText = DefaultConfig.Gameplay.XP_LEVEL_TEXT;
         static { GameplayTweak.XP_LEVEL_TEXT.setKey("altXpLevelText"); }
 
@@ -1569,9 +1928,17 @@ public class ClientConfig implements ConfigData
 
         @TweakGui.New
         @TweakData.Client
-        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.EntryStatus
         @TweakGui.Embed(container = TweakEmbed.ALT_XP_PROGRESS_GAMEPLAY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public boolean showXpProgressInCreative = DefaultConfig.Gameplay.SHOW_XP_PROGRESS_CREATIVE;
+        static { GameplayTweak.SHOW_XP_PROGRESS_CREATIVE.setKey("showXpProgressInCreative"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Embed(container = TweakEmbed.ALT_XP_PROGRESS_GAMEPLAY)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         public boolean useDynamicProgressColor = DefaultConfig.Gameplay.USE_DYNAMIC_PROGRESS_COLOR;
         static { GameplayTweak.USE_DYNAMIC_PROGRESS_COLOR.setKey("useDynamicProgressColor"); }
 
@@ -1579,7 +1946,7 @@ public class ClientConfig implements ConfigData
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Embed(container = TweakEmbed.ALT_XP_PROGRESS_GAMEPLAY)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
         public TweakType.Corner altXpProgressCorner = DefaultConfig.Gameplay.XP_PROGRESS_CORNER;
         static { GameplayTweak.XP_PROGRESS_CORNER.setKey("altXpProgressCorner"); }
 
@@ -1587,7 +1954,7 @@ public class ClientConfig implements ConfigData
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakGui.Embed(container = TweakEmbed.ALT_XP_PROGRESS_GAMEPLAY)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
         public String altXpProgressText = DefaultConfig.Gameplay.XP_PROGRESS_TEXT;
         static { GameplayTweak.XP_PROGRESS_TEXT.setKey("altXpProgressText"); }
 
@@ -1710,6 +2077,15 @@ public class ClientConfig implements ConfigData
         public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
         static { GameplayTweak.SWIM.setKey("disableSwim"); }
 
+        // Mechanics Block
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MECHANICS_BLOCK_GAMEPLAY)
+        public boolean disableBedBounce = DefaultConfig.Gameplay.DISABLE_BED_BOUNCE;
+        static { GameplayTweak.BED_BOUNCE.setKey("disableBedBounce"); }
+
         /**
          * Hunger System
          */
@@ -1798,16 +2174,39 @@ public class ClientConfig implements ConfigData
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.HUNGER_FOOD_GAMEPLAY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
-        public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
-        static { GameplayTweak.HUNGER.setKey("disableHunger"); }
+        public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
+        static { GameplayTweak.INSTANT_EAT.setKey("instantEat"); }
+
+        // Hunger - Nutrition
 
         @TweakGui.New
         @TweakData.Server
         @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.HUNGER_FOOD_GAMEPLAY)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
-        public boolean instantEat = DefaultConfig.Gameplay.INSTANT_EAT;
-        static { GameplayTweak.INSTANT_EAT.setKey("instantEat"); }
+        public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;
+        static { GameplayTweak.HUNGER.setKey("disableHunger"); }
+
+        @TweakData.Ignore private static final int HEALTH_MIN = DefaultConfig.Gameplay.HEALTH_MIN;
+        @TweakData.Ignore private static final int HEALTH_MAX = DefaultConfig.Gameplay.HEALTH_MAX;
+        @TweakData.Ignore private static final int HEALTH_RESET = DefaultConfig.Gameplay.HEALTH_RESET;
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.List(id = ListId.CUSTOM_FOOD_HEALTH)
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = HEALTH_MIN, max = HEALTH_MAX, reset = HEALTH_RESET)
+        @TweakGui.Alert(condition = TweakGui.Condition.CUSTOM_FOOD_HEALTH_CONFLICT, langKey = LangUtil.Gui.ALERT_FOOD_HEALTH)
+        @TweakGui.Subcategory(container = TweakSubcategory.HUNGER_FOOD_GAMEPLAY)
+        @TweakGui.Slider(type = TweakGui.SliderType.HEARTS)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public Map<String, Integer> customFoodHealth = new HashMap<>();
+        static { GameplayTweak.CUSTOM_FOOD_HEALTH.setKey("customFoodHealth"); }
+
+        @TweakData.Ignore
+        public Set<String> disabledFoodHealth = new HashSet<>();
+
+        // Hunger - Stacking
 
         @TweakGui.New
         @TweakData.Server
@@ -1816,6 +2215,39 @@ public class ClientConfig implements ConfigData
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
         public boolean oldFoodStacking = DefaultConfig.Gameplay.OLD_FOOD_STACKING;
         static { GameplayTweak.FOOD_STACKING.setKey("oldFoodStacking"); }
+
+        @TweakData.Ignore private static final int ITEM_MIN = DefaultConfig.Gameplay.ITEM_STACK_MIN;
+        @TweakData.Ignore private static final int ITEM_MAX = DefaultConfig.Gameplay.ITEM_STACK_MAX;
+        @TweakData.Ignore private static final int FOOD_RESET = DefaultConfig.Gameplay.FOOD_STACK_RESET;
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.List(id = ListId.CUSTOM_FOOD_STACKING)
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = ITEM_MIN, max = ITEM_MAX, reset = FOOD_RESET)
+        @TweakGui.Alert(condition = TweakGui.Condition.CUSTOM_FOOD_STACKING_CONFLICT, langKey = LangUtil.Gui.ALERT_FOOD_STACKING)
+        @TweakGui.Subcategory(container = TweakSubcategory.HUNGER_FOOD_GAMEPLAY)
+        @TweakGui.Slider(type = TweakGui.SliderType.GENERIC, langKey = LangUtil.Gui.SLIDER_STACK)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
+        public Map<String, Integer> customFoodStacking = new HashMap<>();
+        static { GameplayTweak.CUSTOM_FOOD_STACKING.setKey("customFoodStacking"); }
+
+        @TweakData.Ignore
+        public Set<String> disabledFoodStacking = new HashSet<>();
+
+        // Custom Item Stacking
+
+        @TweakData.Ignore private static final int ITEM_RESET = DefaultConfig.Gameplay.ITEM_STACK_RESET;
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.List(id = ListId.CUSTOM_ITEM_STACKING)
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = ITEM_MIN, max = ITEM_MAX, reset = ITEM_RESET)
+        @TweakGui.Slider(type = TweakGui.SliderType.GENERIC, langKey = LangUtil.Gui.SLIDER_STACK)
+        @TweakGui.Category(container = TweakCategory.MECHANICS_GAMEPLAY)
+        public Map<String, Integer> customItemStacking = new HashMap<>();
+        static { GameplayTweak.CUSTOM_ITEM_STACKING.setKey("customItemStacking"); }
     }
 
     @TweakData.Ignore
@@ -1864,6 +2296,13 @@ public class ClientConfig implements ConfigData
         @TweakGui.Category(container = TweakCategory.ARM_ANIMATION)
         public boolean oldSwingDropping = DefaultConfig.Animation.OLD_SWING_DROPPING;
         static { AnimationTweak.SWING_DROP.setKey("oldSwingDropping"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.ARM_ANIMATION)
+        public boolean oldClassicSwing = DefaultConfig.Animation.OLD_CLASSIC_SWING;
+        static { AnimationTweak.CLASSIC_SWING.setKey("oldClassicSwing"); }
 
         /**
          * Item Animations
@@ -1986,66 +2425,160 @@ public class ClientConfig implements ConfigData
         public boolean overrideSpeeds = DefaultConfig.Swing.OVERRIDE_SPEEDS;
         static { SwingTweak.OVERRIDE_SPEEDS.setKey("overrideSpeeds"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.DisabledBoolean(value = true)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public boolean leftClickSpeedOnBlockInteract = DefaultConfig.Swing.LEFT_SPEED_ON_RIGHT_INTERACT;
+
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
-        public int global = DefaultConfig.Swing.GLOBAL;
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        public int leftGlobalSpeed = DefaultConfig.Swing.GLOBAL;
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public int rightGlobalSpeed = DefaultConfig.Swing.GLOBAL;
 
         /* Item Swing Speeds */
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.ITEM)
         @TweakGui.Category(container = TweakCategory.ITEM_SWING)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
-        public int item = DefaultConfig.Swing.ITEM;
+        public int leftItemSpeed = DefaultConfig.Swing.ITEM;
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.ITEM)
+        @TweakGui.Category(container = TweakCategory.ITEM_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        public int rightItemSpeed = DefaultConfig.Swing.ITEM;
+
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.TOOL)
         @TweakGui.Category(container = TweakCategory.ITEM_SWING)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
-        public int tool = DefaultConfig.Swing.TOOL;
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        public int leftToolSpeed = DefaultConfig.Swing.TOOL;
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.TOOL)
+        @TweakGui.Category(container = TweakCategory.ITEM_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public int rightToolSpeed = DefaultConfig.Swing.TOOL;
+
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.BLOCK)
         @TweakGui.Category(container = TweakCategory.ITEM_SWING)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
-        public int block = DefaultConfig.Swing.BLOCK;
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 5)
+        public int leftBlockSpeed = DefaultConfig.Swing.BLOCK;
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.BLOCK)
+        @TweakGui.Category(container = TweakCategory.ITEM_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 6)
+        public int rightBlockSpeed = DefaultConfig.Swing.BLOCK;
+
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.SWORD)
         @TweakGui.Category(container = TweakCategory.ITEM_SWING)
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
-        public int sword = DefaultConfig.Swing.SWORD;
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 7)
+        public int leftSwordSpeed = DefaultConfig.Swing.SWORD;
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = MIN, max = MAX, reset = DefaultConfig.Swing.SWORD)
+        @TweakGui.Category(container = TweakCategory.ITEM_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 8)
+        public int rightSwordSpeed = DefaultConfig.Swing.SWORD;
 
         /* Potion Swing Speeds */
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
         @TweakGui.Category(container = TweakCategory.POTION_SWING)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
-        public int haste = DefaultConfig.Swing.HASTE;
+        public int leftHasteSpeed = DefaultConfig.Swing.HASTE;
 
+        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
         @TweakGui.Category(container = TweakCategory.POTION_SWING)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
-        public int fatigue = DefaultConfig.Swing.FATIGUE;
+        public int rightHasteSpeed = DefaultConfig.Swing.HASTE;
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
+        @TweakGui.Category(container = TweakCategory.POTION_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        public int leftFatigueSpeed = DefaultConfig.Swing.FATIGUE;
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakData.BoundedSlider(min = GLOBAL, max = MAX, reset = GLOBAL)
+        @TweakGui.Category(container = TweakCategory.POTION_SWING)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 4)
+        public int rightFatigueSpeed = DefaultConfig.Swing.FATIGUE;
+
+        /* Custom Swing Speeds */
+
+        @TweakGui.NotAutomated
+        @TweakData.List(id = ListId.LEFT_CLICK_SPEEDS)
+        public Map<String, Integer> leftClickSwingSpeeds = new HashMap<>();
+        static { SwingTweak.LEFT_CLICK_SPEEDS.setKey("leftClickSwingSpeeds"); }
+
+        @TweakGui.NotAutomated
+        @TweakData.List(id = ListId.RIGHT_CLICK_SPEEDS)
+        public Map<String, Integer> rightClickSwingSpeeds = new HashMap<>();
+        static { SwingTweak.RIGHT_CLICK_SPEEDS.setKey("rightClickSwingSpeeds"); }
     }
 
     @TweakData.Ignore
     public Gui gui = new Gui();
     public static class Gui
     {
+        /**
+         * Control flag that determines if the donator banner is displayed when the settings screen is opened.
+         * This field is saved when the banner toggle button is clicked.
+         */
+        @TweakData.Ignore
+        public boolean displayDonatorBanner = DefaultConfig.Gui.DISPLAY_DONATOR_BANNER;
+
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
         public MenuOption defaultScreen = DefaultConfig.Gui.DEFAULT_SCREEN;
         static { GuiTweak.DEFAULT_SCREEN.setKey("defaultScreen"); }
+
+        @TweakGui.Slider(type = TweakGui.SliderType.GENERIC, langKey = LangUtil.Gui.GENERAL_MANAGEMENT_MAX_SLIDER)
+        @TweakData.BoundedSlider(min = -1, max = 64, reset = DefaultConfig.Gui.NUMBER_OF_BACKUPS)
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        public int numberOfBackups = DefaultConfig.Gui.NUMBER_OF_BACKUPS;
+        static { GuiTweak.MAXIMUM_BACKUPS.setKey("numberOfBackups"); }
 
         @SuppressWarnings("unused")
         @TweakData.EntryStatus(status = TweakStatus.LOADED)
@@ -2092,9 +2625,4 @@ public class ClientConfig implements ConfigData
         public String rowHighlightColor = DefaultConfig.Gui.ROW_HIGHLIGHT_COLOR;
         static { GuiTweak.ROW_HIGHLIGHT_COLOR.setKey("rowHighlightColor"); }
     }
-
-    @TweakData.Ignore
-    @TweakData.List(id = ListId.CUSTOM_SWING)
-    public Map<String, Integer> customSwingSpeeds = new HashMap<>();
-    static { SwingTweak.CUSTOM_SWING.setKey("customSwingSpeeds"); }
 }

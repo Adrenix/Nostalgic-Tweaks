@@ -10,7 +10,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.network.NetworkConstants;
 
 /**
  * The mod's main class for Forge. This is accessed by both the client and server.
@@ -20,6 +19,28 @@ import net.minecraftforge.network.NetworkConstants;
 @Mod(NostalgicTweaks.MOD_ID)
 public class NostalgicForge
 {
+    /* Network Verification */
+
+    /**
+     * Checks if the mod protocol sent from the server matches what is on the client.
+     * @param remoteVersion The sent mod protocol version.
+     * @param isFromServer Not used, but is intended to accept any version from a server.
+     * @return Whether the mod's network protocol versions matched.
+     */
+    private static boolean isProtocolMatched(String remoteVersion, boolean isFromServer)
+    {
+        return remoteVersion.equals(NostalgicTweaks.PROTOCOL);
+    }
+
+    /**
+     * Creates a new display test instance that checks the mod's network protocol version.
+     * @return A new display test instance.
+     */
+    private static IExtensionPoint.DisplayTest getDisplayTest()
+    {
+        return new IExtensionPoint.DisplayTest(NostalgicTweaks::getProtocol, NostalgicForge::isProtocolMatched);
+    }
+
     /* Constructor */
 
     /**
@@ -28,31 +49,22 @@ public class NostalgicForge
      */
     public NostalgicForge()
     {
-        // Mod Event Bus
+        // Mod event bus
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Let the connection be rejected by the server if there is a protocol mismatch
-        ModLoadingContext.get().registerExtensionPoint
-        (
-            IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest
-            (
-                () -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true
-            )
-        );
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, NostalgicForge::getDisplayTest);
 
-        // Initialize Common Setup
+        // Common setup
         bus.addListener(CommonSetup::init);
-
-        // Development Environment
-        NostalgicTweaks.setDevelopmentEnvironment(!FMLLoader.isProduction());
 
         // Register sounds
         NostalgicSoundInit.SOUNDS.register(bus);
         NostalgicSoundInit.init();
 
-        // Perform Sided Initialization
+        // Initialization
         if (FMLLoader.getDist().isDedicatedServer())
-            NostalgicTweaks.initServer(NostalgicTweaks.Environment.FORGE);
+            NostalgicTweaks.initServer();
         else
             bus.addListener(ClientRegistry::init);
     }

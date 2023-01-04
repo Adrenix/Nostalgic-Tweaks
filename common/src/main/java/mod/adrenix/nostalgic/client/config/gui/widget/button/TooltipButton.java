@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
@@ -81,7 +82,10 @@ public class TooltipButton extends Button
 
         screen.blit(poseStack, startX, startY, 0, 0, uWidth, vHeight);
 
-        if (MathUtil.isWithinBox(mouseX, mouseY, startX, startY, uWidth, vHeight))
+        boolean isOverBubble = MathUtil.isWithinBox(mouseX, mouseY, startX, startY, uWidth, vHeight);
+        boolean isWithinList = ConfigWidgets.isInsideRowList(mouseY);
+
+        if (isOverBubble && isWithinList)
             screen.renderLast.add(() -> screen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 }

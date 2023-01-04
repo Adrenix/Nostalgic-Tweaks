@@ -17,7 +17,7 @@ import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -185,13 +185,14 @@ public class TweakClientCache<T> extends TweakCommonCache
     private final boolean isAnnotatedClient;
     private final boolean isAnnotatedServer;
     private final boolean isAnnotatedDynamic;
+    private final boolean isAnnotatedNotAutomated;
     private final boolean isAnnotatedReloadChunks;
     private final boolean isAnnotatedReloadResources;
 
-    @Nullable private final TweakGui.Placement placement;
-    @Nullable private final TweakGui.Category category;
-    @Nullable private final TweakGui.Subcategory subcategory;
-    @Nullable private final TweakGui.Embed embed;
+    @CheckForNull private final TweakGui.Placement placement;
+    @CheckForNull private final TweakGui.Category category;
+    @CheckForNull private final TweakGui.Subcategory subcategory;
+    @CheckForNull private final TweakGui.Embed embed;
 
     /**
      * This field will track the tweak enumeration associated with this cache. Once defined, this will speed up value
@@ -239,6 +240,7 @@ public class TweakClientCache<T> extends TweakCommonCache
         this.isAnnotatedClient = this.isMetadataMissing(TweakData.Server.class);
         this.isAnnotatedServer = this.isMetadataPresent(TweakData.Server.class);
         this.isAnnotatedDynamic = this.isMetadataPresent(TweakData.Dynamic.class);
+        this.isAnnotatedNotAutomated = this.isMetadataPresent(TweakGui.NotAutomated.class);
         this.isAnnotatedReloadChunks = this.isMetadataPresent(TweakReload.Chunks.class);
         this.isAnnotatedReloadResources = this.isMetadataPresent(TweakReload.Resources.class);
 
@@ -352,7 +354,8 @@ public class TweakClientCache<T> extends TweakCommonCache
      * @see mod.adrenix.nostalgic.client.config.ClientConfig
      * @return Whether the tweak is ordered at the top or bottom of a category.
      */
-    @Nullable public TweakGui.Position getPosition() { return this.position; }
+    @CheckForNull
+    public TweakGui.Position getPosition() { return this.position; }
 
     /**
      * This ordering is set in the client configuration class. Ordering is done least to greatest.
@@ -389,11 +392,12 @@ public class TweakClientCache<T> extends TweakCommonCache
 
     /**
      * Saves a tweak's new value to config cache, or sends an update packet to the server if a tweak is not handled by
-     * the client. Once the settings screen is closed, all updated tweaks will be saved to disk.
+     * the client. Once the settings screen is closed, all updated tweaks will be saved to disk. Tweaks with list data
+     * do not need saved here since their saving instructions is handled by the abstract list screen.
      */
     public void save()
     {
-        if (!this.isSavable())
+        if (this.getList() != null || !this.isSavable())
             return;
 
         if (this.isAnnotatedReloadChunks)
@@ -416,7 +420,7 @@ public class TweakClientCache<T> extends TweakCommonCache
         if (isServerTweak && isMultiplayer)
         {
             PacketUtil.sendToServer(new PacketC2SChangeTweak(this.getServerTweak()));
-            ToastNotification.addTweakChange();
+            ToastNotification.sentChanges();
         }
 
         T value = isDynamic && isMultiplayer ? this.getServerTweak().getValue() : this.value;
@@ -504,24 +508,29 @@ public class TweakClientCache<T> extends TweakCommonCache
     }
 
     /**
+     * @return If a tweak is not automated, then its configuration row must be manually created.
+     */
+    public boolean isNotAutomated() { return this.isAnnotatedNotAutomated; }
+
+    /**
      * @return A tweak's container placement data if it is present.
      */
-    @Nullable public TweakGui.Placement getPlacement() { return this.placement; }
+    @CheckForNull public TweakGui.Placement getPlacement() { return this.placement; }
 
     /**
      * @return A tweak's category if it is present.
      */
-    @Nullable public TweakGui.Category getCategory() { return this.category; }
+    @CheckForNull public TweakGui.Category getCategory() { return this.category; }
 
     /**
      * @return A tweak's subcategory if it is present.
      */
-    @Nullable public TweakGui.Subcategory getSubcategory() { return this.subcategory; }
+    @CheckForNull public TweakGui.Subcategory getSubcategory() { return this.subcategory; }
 
     /**
      * @return A tweak's embed if it is present.
      */
-    @Nullable public TweakGui.Embed getEmbed() { return this.embed; }
+    @CheckForNull public TweakGui.Embed getEmbed() { return this.embed; }
 
     /**
      * Get the translation of this tweak's container. If this tweak does not reside in a container then an empty string

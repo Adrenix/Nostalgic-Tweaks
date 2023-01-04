@@ -58,6 +58,7 @@ public abstract class ClientLevelMixin
     {
         if (ModConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;
+
         return instance.constantAmbientLight();
     }
 
@@ -189,7 +190,10 @@ public abstract class ClientLevelMixin
     @Inject(method = "playSound", at = @At("HEAD"), cancellable = true)
     private void NT$onPlaySimpleSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean delayed, long seed, CallbackInfo callback)
     {
-        if (ModConfig.Sound.disableGrowth() && sound == SoundEvents.BONE_MEAL_USE)
+        boolean isGrowthOff = ModConfig.Sound.disableGrowth() && sound == SoundEvents.BONE_MEAL_USE;
+        boolean isSwimOff = ModConfig.Sound.disableGenericSwim() && sound == SoundEvents.GENERIC_SWIM || sound == SoundEvents.PLAYER_SWIM;
+
+        if (isGrowthOff || isSwimOff)
             callback.cancel();
     }
 
@@ -236,6 +240,54 @@ public abstract class ClientLevelMixin
         ;
 
         if (ModConfig.Sound.disableSquid() && isSquid)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isGlowSquid = sound == SoundEvents.GLOW_SQUID_DEATH ||
+            sound == SoundEvents.GLOW_SQUID_HURT ||
+            sound == SoundEvents.GLOW_SQUID_SQUIRT;
+
+        if (ModConfig.Sound.disableGlowSquidOther() && isGlowSquid)
+        {
+            callback.cancel();
+            return;
+        }
+
+        if (ModConfig.Sound.disableGlowSquidAmbience() && sound == SoundEvents.GLOW_SQUID_AMBIENT)
+        {
+            callback.cancel();
+            return;
+        }
+
+        /* Fish Sounds */
+
+        if (ModConfig.Sound.disableFishSwim() && sound == SoundEvents.FISH_SWIM)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isFishHurt = sound == SoundEvents.COD_HURT ||
+            sound == SoundEvents.PUFFER_FISH_HURT ||
+            sound == SoundEvents.SALMON_HURT ||
+            sound == SoundEvents.TADPOLE_HURT ||
+            sound == SoundEvents.TROPICAL_FISH_HURT;
+
+        if (ModConfig.Sound.disableFishHurt() && isFishHurt)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isFishDeath = sound == SoundEvents.COD_DEATH ||
+            sound == SoundEvents.PUFFER_FISH_DEATH ||
+            sound == SoundEvents.SALMON_DEATH ||
+            sound == SoundEvents.TADPOLE_DEATH ||
+            sound == SoundEvents.TROPICAL_FISH_DEATH;
+
+        if (ModConfig.Sound.disableFishDeath() && isFishDeath)
         {
             callback.cancel();
             return;

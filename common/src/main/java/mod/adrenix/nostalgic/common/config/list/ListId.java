@@ -10,6 +10,11 @@ package mod.adrenix.nostalgic.common.config.list;
 
 public enum ListId
 {
-    CUSTOM_SWING,
+    CUSTOM_ITEM_STACKING,
+    CUSTOM_FOOD_STACKING,
+    CUSTOM_FOOD_HEALTH,
+    LEFT_CLICK_SPEEDS,
+    RIGHT_CLICK_SPEEDS,
+    FULL_BLOCK_OUTLINE,
     IGNORED_ITEM_HOLDING
 }

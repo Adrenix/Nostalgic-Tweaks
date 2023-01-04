@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.fabric;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.event.ArchitecturyClientEvents;
+import mod.adrenix.nostalgic.fabric.api.NostalgicFabricApi;
 import mod.adrenix.nostalgic.fabric.config.KeyRegistry;
-import mod.adrenix.nostalgic.fabric.event.ClientEventHandler;
+import mod.adrenix.nostalgic.fabric.event.ClientEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -23,12 +25,36 @@ public class NostalgicClientFabric implements ClientModInitializer
         NostalgicTweaks.isSodiumInstalled = FabricLoader.getInstance().getModContainer("sodium").isPresent();
 
         // Initialize mod
-        NostalgicTweaks.initClient(NostalgicTweaks.Environment.FABRIC);
+        NostalgicTweaks.initClient();
 
         // Subscribe key mappings
         KeyRegistry.registerKeyMappings();
 
-        // Register client
-        ClientEventHandler.register();
+        // Register client events
+        ClientEvents.register();
+
+        // Register architectury events
+        ArchitecturyClientEvents.register();
+
+        // Register Nostalgic API events
+        FabricLoader.getInstance().getEntrypointContainers(NostalgicTweaks.MOD_ID, NostalgicFabricApi.class).forEach
+        (
+            entrypoint ->
+            {
+                try
+                {
+                    entrypoint.getEntrypoint().registerEvents();
+                }
+                catch (Throwable exception)
+                {
+                    NostalgicTweaks.LOGGER.error
+                    (
+                        "Failed to load entrypoint for mod %s\n%s",
+                        entrypoint.getProvider().getMetadata().getId(),
+                        exception
+                    );
+                }
+            }
+        );
     }
 }

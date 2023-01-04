@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.forge.event.common.GameplayEvents;
 import mod.adrenix.nostalgic.server.event.ServerEventHelper;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
@@ -42,4 +43,10 @@ public abstract class CommonEventHandler
      */
     @SubscribeEvent
     public static void onSquidInteract(PlayerInteractEvent.EntityInteract event) { GameplayEvents.milkSquid(event); }
+
+    /**
+     * Disables critical hit attacks.
+     */
+    @SubscribeEvent
+    public static void onCriticalHit(CriticalHitEvent event) { GameplayEvents.criticalHit(event); }
 }

@@ -2,10 +2,13 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.client.WorldClientUtil;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
+import mod.adrenix.nostalgic.util.common.WorldCommonUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -32,6 +35,19 @@ public abstract class FogRendererMixin
     @Shadow private static float fogGreen;
     @Shadow private static float fogBlue;
 
+    /* Helpers */
+
+    /**
+     * Change the fog renderer's colors.
+     * @param rgba An array of floats from 0.0F to 1.0F.
+     */
+    private static void setFogRGB(float[] rgba)
+    {
+        fogRed = rgba[0];
+        fogGreen = rgba[1];
+        fogBlue = rgba[2];
+    }
+
     /* Injections */
 
     /**
@@ -44,13 +60,41 @@ public abstract class FogRendererMixin
         if (ModConfig.Candy.oldWaterFogColor() && camera.getFluidInCamera() == FogType.WATER)
         {
             float respiration = (float) EnchantmentHelper.getRespiration((LivingEntity) camera.getEntity()) * 0.2F;
-            int brightness = NostalgicLevel.getVanillaBrightness(level, LightLayer.SKY, camera.getBlockPosition());
+            int brightness = WorldCommonUtil.getBrightness(level, LightLayer.SKY, camera.getBlockPosition());
 
             fogRed = FogUtil.Water.getRed(brightness, respiration);
             fogGreen = FogUtil.Water.getGreen(brightness, respiration);
             fogBlue = FogUtil.Water.getBlue(brightness, respiration);
 
             RenderSystem.clearColor(fogRed, fogGreen, fogBlue, 0.0F);
+        }
+        else if (camera.getFluidInCamera() == FogType.NONE)
+        {
+            if (FogUtil.isOverworld(camera))
+            {
+                TweakVersion.FogColor fogColor = ModConfig.Candy.getUniversalFog();
+
+                if (ModConfig.Candy.isTerrainFogCustom())
+                    setFogRGB(WorldClientUtil.getCustomInfluencedFog(ColorUtil.toFloatRGBA(ModConfig.Candy.getTerrainFogColor())));
+                else if (ModConfig.Candy.oldDynamicFogColor())
+                    setFogRGB(WorldClientUtil.getOldInfluencedFog(WorldClientUtil.getFogColorFromBiome()));
+                else if (fogColor != TweakVersion.FogColor.DISABLED)
+                {
+                    switch (fogColor)
+                    {
+                        case ALPHA_BETA -> setFogRGB(WorldClientUtil.getOldInfluencedFog(ColorUtil.toFloatRGBA("0xC0D8FF")));
+                        case CLASSIC -> setFogRGB(WorldClientUtil.getOldInfluencedFog(ColorUtil.toFloatRGBA("0xE1F0FF")));
+                        case INF_DEV -> setFogRGB(WorldClientUtil.getOldInfluencedFog(ColorUtil.toFloatRGBA("0xB0D0FF")));
+                    }
+                }
+            }
+            else if (FogUtil.isNether(camera))
+            {
+                if (ModConfig.Candy.isNetherFogCustom())
+                    setFogRGB(ColorUtil.toFloatRGBA(ModConfig.Candy.getNetherFogColor()));
+                else if (ModConfig.Candy.oldNetherFog())
+                    setFogRGB(ColorUtil.toFloatRGBA("0x210505"));
+            }
         }
     }
 
@@ -62,9 +106,7 @@ public abstract class FogRendererMixin
     private static void NT$onLevelFogColor(CallbackInfo callback)
     {
         FogUtil.Void.setFogRGB(fogRed, fogGreen, fogBlue);
-
-        if (FogUtil.Void.isRendering())
-            FogUtil.Void.setColor(Minecraft.getInstance().gameRenderer.getMainCamera());
+        FogUtil.Void.setColor(Minecraft.getInstance().gameRenderer.getMainCamera());
     }
 
     /**

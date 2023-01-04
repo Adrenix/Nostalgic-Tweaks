@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
@@ -36,7 +37,22 @@ public class StatusButton extends Button
     /**
      * @return The current state of the flashing flag.
      */
-    public static boolean getFlipState() { return flipState; }
+    public static boolean isFlashOff() { return flipState; }
+
+    /**
+     * Update the flip state flag for exclamation or alert tag flashing.
+     */
+    public static void update()
+    {
+        if (currentTime == 0)
+            currentTime = Util.getMillis();
+
+        if (Util.getMillis() - currentTime > 1000)
+        {
+            currentTime = 0;
+            flipState = !flipState;
+        }
+    }
 
     /* Fields */
 
@@ -133,15 +149,7 @@ public class StatusButton extends Button
         int yStart = this.anchor.y;
 
         RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
-
-        if (currentTime == 0)
-            currentTime = Util.getMillis();
-
-        if (Util.getMillis() - currentTime > 1000)
-        {
-            currentTime = 0;
-            flipState = !flipState;
-        }
+        StatusButton.update();
 
         if (isStatusProblem && !flipState)
             screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
@@ -158,7 +166,10 @@ public class StatusButton extends Button
             }
         }
 
-        if (MathUtil.isWithinBox(mouseX, mouseY, xStart, yStart, uWidth, vHeight))
+        boolean isOverSymbol = MathUtil.isWithinBox(mouseX, mouseY, xStart, yStart, uWidth, vHeight);
+        boolean isWithinList = ConfigWidgets.isInsideRowList(mouseY);
+
+        if (isOverSymbol && isWithinList)
         {
             if (!isNetVerified)
                 this.renderTooltip(screen, LangUtil.Gui.STATUS_NET, poseStack, mouseX, mouseY);

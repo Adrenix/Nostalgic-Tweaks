@@ -39,6 +39,7 @@ import java.util.List;
  * - Cleaned up class to match codebase styling
  * - Added inferred documentation
  * - Added reset backup protection
+ * - Added mod config startup backup protection
  *
  * @param <T> The class type that defines config structure.
  */
@@ -70,7 +71,9 @@ public class ConfigManager<T extends ConfigData> implements ConfigHolder<T>
         this.definition = definition;
         this.configClass = configClass;
         this.serializer = serializer;
-        
+
+        this.startup();
+
         if (this.load())
             this.save();
     }
@@ -111,6 +114,23 @@ public class ConfigManager<T extends ConfigData> implements ConfigHolder<T>
     public void registerSaveListener(ConfigSerializeEvent.Save<T> save) { this.saveEvent.add(save); }
 
     /**
+     * Creates a startup backup file of this config manager in the mod's backup directory. Instead of being labelled as
+     * a "backup" it will instead be labelled as a "startup_backup" file. Every time the mod starts, a startup backup
+     * file will be created in case something bad happens to the config file during file read and/or backup creation.
+     */
+    public void startup()
+    {
+        try
+        {
+            BackupConfig.startup(this.serializer);
+        }
+        catch (IOException exception)
+        {
+            NostalgicTweaks.LOGGER.error("could not created a startup backup config file (%s)", exception.toString());
+        }
+    }
+
+    /**
      * Sends a save event to the config handler and tries to serialize the current config.
      * Serialization exceptions are caught and an error printed to the console.
      */
@@ -134,6 +154,23 @@ public class ConfigManager<T extends ConfigData> implements ConfigHolder<T>
         catch (ConfigSerializer.SerializationException exception)
         {
             NostalgicTweaks.LOGGER.error("Failed to save config '{}'", this.configClass, exception);
+        }
+    }
+
+    /**
+     * Create a backup file of the current config saved on disk.
+     * A runtime exception is thrown if there is an IO issue.
+     */
+    @Override
+    public void backup()
+    {
+        try
+        {
+            BackupConfig.save(this.serializer);
+        }
+        catch (IOException exception)
+        {
+            throw new RuntimeException("could not create a backup config file", exception);
         }
     }
 
@@ -193,14 +230,7 @@ public class ConfigManager<T extends ConfigData> implements ConfigHolder<T>
     @Override
     public void resetToDefault()
     {
-        try
-        {
-            BackupConfig.save(this.serializer);
-        }
-        catch (IOException exception)
-        {
-            throw new RuntimeException("could not create a backup config file", exception);
-        }
+        this.backup();
 
         this.config = serializer.createDefault();
 

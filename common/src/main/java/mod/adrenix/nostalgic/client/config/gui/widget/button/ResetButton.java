@@ -15,6 +15,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -37,7 +38,7 @@ public class ResetButton extends Button
     private final Supplier<Boolean> isEntryChanged;
     private final AbstractWidget controller;
 
-    @Nullable
+    @CheckForNull
     private final TweakClientCache<?> tweak;
 
     /* Constructor Helpers */

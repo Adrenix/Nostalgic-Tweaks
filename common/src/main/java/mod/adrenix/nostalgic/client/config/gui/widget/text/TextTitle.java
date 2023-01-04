@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -40,10 +41,10 @@ public class TextTitle<V> extends AbstractWidget
 
     private final String resourceKey;
 
-    @Nullable private final RemoveType removeType;
-    @Nullable private final Map.Entry<String, V> entry;
-    @Nullable private final Supplier<Boolean> isRemoved;
-    @Nullable private final V currentValue;
+    @CheckForNull private final RemoveType removeType;
+    @CheckForNull private final Map.Entry<String, V> entry;
+    @CheckForNull private final Supplier<Boolean> isRemoved;
+    @CheckForNull private final V currentValue;
 
     /* Constructors */
 
@@ -53,8 +54,8 @@ public class TextTitle<V> extends AbstractWidget
 
         this.entry = entry;
         this.resourceKey = resourceKey;
-        this.currentValue = listMapScreen.getCopiedValue(entry);
-        this.removeType = null;
+        this.currentValue = listMapScreen.getCachedValue(entry);
+        this.removeType = RemoveType.SAVED;
         this.isRemoved = null;
     }
 
@@ -74,6 +75,35 @@ public class TextTitle<V> extends AbstractWidget
     }
 
     /* Methods */
+
+    /**
+     * Gets the default value associated with a map resource key.
+     * @param mapScreen The map screen associated with this text title widget.
+     * @return A formatted string with a custom prefix, color, and value.
+     */
+    private String getDefaultTitle(ListMapScreen<?> mapScreen)
+    {
+        ListId listId = mapScreen.getListId();
+        Object value = mapScreen.getListMap().getDefaultMap().get(this.resourceKey);
+        String prefix = Component.translatable(LangUtil.Gui.SLIDER_VALUE).getString();
+        String color = ChatFormatting.YELLOW.toString();
+        String gray = ChatFormatting.GRAY.toString();
+
+        if (listId == ListId.CUSTOM_FOOD_STACKING)
+            prefix = Component.translatable(LangUtil.Gui.SLIDER_STACK).getString();
+
+        if (listId == ListId.CUSTOM_FOOD_HEALTH)
+        {
+            prefix = Component.translatable(LangUtil.Gui.SLIDER_HEARTS).getString();
+            color = ChatFormatting.GREEN.toString();
+            value = (int) value / 2.0F;
+        }
+
+        if (value instanceof Boolean bool)
+            color = bool ? ChatFormatting.GREEN.toString() : ChatFormatting.RED.toString();
+
+        return String.format(" %s(%s: %s%s%s)", gray, prefix, color, TextUtil.toTitleCase(value.toString()), gray);
+    }
 
     /**
      * Handler method for when the mouse clicks on an entry title widget.
@@ -98,7 +128,7 @@ public class TextTitle<V> extends AbstractWidget
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         boolean isInvalid = !ItemCommonUtil.isValidKey(this.resourceKey);
-        int startX = ConfigRowList.getStartX();
+        int startX = ConfigRowList.getStartX() - 1;
         Font font = Minecraft.getInstance().font;
         AbstractListScreen listScreen = (AbstractListScreen) Minecraft.getInstance().screen;
 
@@ -111,6 +141,9 @@ public class TextTitle<V> extends AbstractWidget
         Component literalKey = Component.translatable(LangUtil.Gui.LIST_ITEM_KEY, this.resourceKey);
         List<Component> tooltip = TextUtil.Wrap.tooltip(literalKey, 50);
 
+        if (this.removeType == RemoveType.DEFAULT && listScreen instanceof ListMapScreen<?> mapScreen)
+            entryTitle = Component.literal(entryTitle.getString() + this.getDefaultTitle(mapScreen));
+
         boolean isEntryChanged = this.entry != null && !this.entry.getValue().equals(this.currentValue);
         boolean isKeyChanged = this.isRemoved != null && this.isRemoved.get();
         boolean isItalics = this.removeType == RemoveType.SAVED && (isEntryChanged || isKeyChanged);
@@ -122,8 +155,9 @@ public class TextTitle<V> extends AbstractWidget
         boolean isKeyDeleted = listScreen instanceof ListSetScreen setScreen && setScreen.getDeletedKeys().contains(this.resourceKey);
         boolean isDefaultDisabled = listScreen.isDefaultItemDisabled(this.resourceKey);
         boolean isTitleRed = this.removeType == RemoveType.SAVED ? (isEntryDeleted || isKeyDeleted) : isDefaultDisabled;
+        boolean isOverridden = this.removeType == RemoveType.DEFAULT && listScreen.isItemSaved(itemStack);
 
-        if (isTitleRed)
+        if (isTitleRed || isOverridden)
             entryTitle = Component.literal(ChatFormatting.RED + entryTitle.copy().getString());
 
         if (isInvalid)
@@ -136,14 +170,20 @@ public class TextTitle<V> extends AbstractWidget
         if (itemStack.getItem() instanceof BlockItem)
             startY += 1;
 
+        if (this.removeType == RemoveType.DEFAULT && listScreen.isItemSaved(itemStack))
+        {
+            String saved = Component.translatable(LangUtil.Gui.LIST_SAVED_ITEMS).getString();
+            entryTitle = Component.literal(entryTitle.getString() + ChatFormatting.RED + " (" + saved + ")");
+        }
+
         listScreen.getItemRenderer().renderGuiItem(itemStack, startX, startY);
         Screen.drawString(poseStack, font, entryTitle, startX + 21, this.y + 6, 0xFFFFFF);
 
         boolean isHovering = MathUtil.isWithinBox(mouseX, mouseY, startX, this.y + 4, font.width(entryTitle) + 21, 14);
-        boolean isAbove = mouseY <= ConfigWidgets.ROW_LIST_TOP;
-        boolean isBelow = mouseY >= listScreen.height - ConfigWidgets.ROW_LIST_BOTTOM_OFFSET;
+        boolean isInBounds = ConfigWidgets.isInsideRowList(mouseY);
+        boolean isNotDefault = this.removeType != RemoveType.DEFAULT;
 
-        if (isHovering && !isAbove && !isBelow && this.removeType != RemoveType.DEFAULT)
+        if (isHovering && isInBounds && isNotDefault)
             listScreen.renderLast.add(() -> listScreen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
 

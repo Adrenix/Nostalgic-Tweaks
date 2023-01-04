@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import net.fabricmc.api.EnvType;
 
 public enum CandyTweak implements Tweak
 {
@@ -17,6 +17,11 @@ public enum CandyTweak implements Tweak
     TORCH_MODEL,
     SOUL_TORCH_MODEL,
     REDSTONE_TORCH_MODEL,
+    OLD_STAIR_OUTLINE,
+    OLD_FENCE_OUTLINE,
+    OLD_SLAB_OUTLINE,
+    FULL_BLOCK_OUTLINE,
+    OLD_WALL_OUTLINE,
     DISABLE_FLOWER_OFFSET,
     DISABLE_ALL_OFFSET,
 
@@ -25,9 +30,14 @@ public enum CandyTweak implements Tweak
     CREATIVE_HOTBAR,
     BUTTON_HOVER,
 
+    // Interface Candy - Anvil Screen
+    ANVIL_SCREEN,
+
     // Interface Candy - Chat Screen
     CHAT_INPUT,
     CHAT_BOX,
+    CHAT_OFFSET,
+    SIGNATURE_BOXES,
 
     // Interface Candy - Crafting Screen
     CRAFTING_SCREEN,
@@ -70,6 +80,7 @@ public enum CandyTweak implements Tweak
     // Interface Candy - Pause Screen
     PAUSE_LAYOUT,
     PAUSE_MODS,
+    PAUSE_REMOVE_EXTRA,
 
     // Interface Candy - Screen Candy
     OLD_GUI_BACKGROUND,
@@ -95,6 +106,7 @@ public enum CandyTweak implements Tweak
     ITEM_HOLDING,
     ITEM_MERGING,
     ITEM_MERGE_LIMIT,
+    DAMAGE_ARMOR_TINT,
 
     // Item Candy - 2D Items
     FLAT_ITEMS,
@@ -118,17 +130,22 @@ public enum CandyTweak implements Tweak
     SMOOTH_LIGHTING,
     LEAVES_LIGHTING,
     WATER_LIGHTING,
+    CLASSIC_LIGHTING,
     DISABLE_BRIGHTNESS,
+    FIX_CHUNK_BORDER_LAG,
 
     // Particle Candy
     SWEEP,
     OPAQUE_EXPERIENCE,
+    NO_MODEL_DESTRUCTION_PARTICLES,
+    NO_UNDERWATER_PARTICLES,
     NO_SPRINTING_PARTICLES,
     NO_FALLING_PARTICLES,
     NO_NETHER_PARTICLES,
     NO_GROWTH_PARTICLES,
     NO_DAMAGE_PARTICLES,
     NO_LEVER_PARTICLES,
+    NO_LAVA_PARTICLES,
     NO_CRIT_PARTICLES,
     NO_MAGIC_HIT_PARTICLES,
     EXPLOSION_PARTICLES,
@@ -151,19 +168,33 @@ public enum CandyTweak implements Tweak
 
     // World Candy
     NAME_TAGS,
-    TERRAIN_FOG,
-    HORIZON_FOG,
     NETHER_FOG,
+    NETHER_SKY,
+    WORLD_FOG,
     WATER_FOG_COLOR,
     WATER_FOG_DENSITY,
     SMOOTH_WATER_COLOR,
     SMOOTH_WATER_DENSITY,
+    DISABLE_HORIZON_FOG,
     DISABLE_SUNRISE_SUNSET_COLOR,
     SUNRISE_SUNSET_FOG,
     SUNRISE_AT_NORTH,
-    FOG_COLOR,
-    SKY_COLOR,
+    CUSTOM_TERRAIN_FOG_COLOR,
+    CUSTOM_TERRAIN_FOG,
+    CUSTOM_NETHER_FOG_COLOR,
+    CUSTOM_NETHER_FOG,
+    CUSTOM_NETHER_SKY_COLOR,
+    CUSTOM_NETHER_SKY,
+    CUSTOM_WORLD_SKY_COLOR,
+    CUSTOM_WORLD_SKY,
+    CUSTOM_VOID_SKY_COLOR,
+    CUSTOM_VOID_SKY,
+    UNIVERSAL_FOG_COLOR,
+    UNIVERSAL_SKY_COLOR,
+    DYNAMIC_FOG_COLOR,
+    DYNAMIC_SKY_COLOR,
     SQUARE_BORDER,
+    DARK_FOG,
     STARS,
     CLOUD_HEIGHT,
 
@@ -193,7 +224,7 @@ public enum CandyTweak implements Tweak
     /**
      * Keeps track of whether this tweak is client or server controller.
      */
-    private NostalgicTweaks.Side side = null;
+    private EnvType env = null;
 
     /**
      * Keeps track of whether this tweak has had its enumeration queried.
@@ -212,8 +243,8 @@ public enum CandyTweak implements Tweak
     @Override public void setKey(String key) { this.key = key; }
     @Override public String getKey() { return this.key; }
 
-    @Override public void setSide(NostalgicTweaks.Side side) { this.side = side; }
-    @Override public NostalgicTweaks.Side getSide() { return this.side; }
+    @Override public void setEnv(EnvType env) { this.env = env; }
+    @Override public EnvType getEnv() { return this.env; }
 
     @Override public void setClientCache(TweakClientCache<?> cache) { this.clientCache = cache; }
     @Override public TweakClientCache<?> getClientCache() { return this.clientCache; }

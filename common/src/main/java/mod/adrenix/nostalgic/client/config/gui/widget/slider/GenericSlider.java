@@ -6,14 +6,17 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -32,51 +35,60 @@ public class GenericSlider extends AbstractSliderButton
     private final Consumer<Integer> setCurrent;
     private final Supplier<Integer> current;
 
-    @Nullable private final Supplier<String> text;
-    @Nullable private final TweakGui.Slider sliderData;
+    @CheckForNull
+    private final TweakGui.Slider sliderData;
 
     /* Constructors */
 
     /**
      * This constructor should be used when the slider controls a client tweak instance.
      * @param tweak The tweak client cache instance.
-     * @param text A supplier that provides a string for slider text.
      * @param x A starting x-position.
      * @param y A starting y-position.
      * @param width The slider's width.
      * @param height The slider's height.
      */
-    public GenericSlider(TweakClientCache<Integer> tweak, @Nullable Supplier<String> text, int x, int y, int width, int height)
+    public GenericSlider(TweakClientCache<Integer> tweak, int x, int y, int width, int height)
     {
         super(x, y, width, height, Component.empty(), (double) tweak.getValue());
 
         this.sliderData = tweak.getMetadata(TweakGui.Slider.class);
         this.setCurrent = tweak::setValue;
         this.current = tweak::getValue;
-        this.text = text;
 
         this.updateMessage();
         this.setValue(current.get());
     }
 
     /**
-     * This constructor should be used when the slider does not control a tweak instance.
+     * This constructor is used by the config row map entry system.
      * @param setCurrent A consumer that accepts an integer.
      * @param current A supplier that provides a starting integer.
-     * @param text A supplier that provides a string for slider text.
+     * @param tweak An object that inherits the tweak interface.
      * @param x A starting x-position.
      * @param y A starting y-position.
      * @param width The slider's width.
      * @param height The slider's height.
      */
-    public GenericSlider(Consumer<Integer> setCurrent, Supplier<Integer> current, @Nullable Supplier<String> text, int x, int y, int width, int height)
+    public GenericSlider(Consumer<Integer> setCurrent, Supplier<Integer> current, Tweak tweak, int x, int y, int width, int height)
     {
         super(x, y, width, height, Component.empty(), (double) current.get());
 
         this.setCurrent = setCurrent;
         this.current = current;
-        this.text = text;
-        this.sliderData = null;
+
+        this.sliderData = TweakClientCache.get(tweak).getMetadata(TweakGui.Slider.class);
+
+        if (this.sliderData != null)
+            this.sliderType = sliderData.type();
+
+        TweakData.BoundedSlider bounds = TweakClientCache.get(tweak).getMetadata(TweakData.BoundedSlider.class);
+
+        if (bounds != null)
+        {
+            this.setMinimum((int) bounds.min());
+            this.setMaximum((int) bounds.max());
+        }
 
         this.updateMessage();
         this.setValue(current.get());
@@ -173,13 +185,17 @@ public class GenericSlider extends AbstractSliderButton
     @Override
     public void updateMessage()
     {
+        if (this.sliderType == TweakGui.SliderType.HEARTS)
+        {
+            this.setMessage(Component.empty());
+            return;
+        }
+
         ChatFormatting color = this.getColorFromInt();
         String title = "";
         String suffix = "";
 
-        if (this.text != null)
-            title = this.text.get();
-        else if (this.sliderType == TweakGui.SliderType.SWING)
+        if (this.sliderType == TweakGui.SliderType.SWING)
             title = Component.translatable(LangUtil.Gui.SETTINGS_SPEED).getString();
         else if (this.sliderType == TweakGui.SliderType.INTENSITY)
         {
@@ -230,12 +246,47 @@ public class GenericSlider extends AbstractSliderButton
     @Override
     protected void renderBg(PoseStack poseStack, Minecraft minecraft, int mouseX, int mouseY)
     {
-        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+        // Render Slider
+
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
 
         int dy = !this.active ? 0 : (this.isHoveredOrFocused() ? 2 : 1) * 20;
 
         this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)), this.y, 0, 46 + dy, 4, 20);
         this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)) + 4, this.y, 196, 46 + dy, 4, 20);
+
+        // Render Hearts
+
+        if (this.sliderType == TweakGui.SliderType.HEARTS)
+        {
+            if (!this.active)
+                RenderSystem.setShaderColor(0.3F, 0.3F, 0.3F, 1.0F);
+
+            RenderSystem.setShaderTexture(0, GUI_ICONS_LOCATION);
+
+            int x = this.x + (this.width / 2) - 45;
+            int y = this.y + 6;
+            int dx = x;
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.blit(poseStack, dx, y, 16, 0, 9, 9);
+                dx += 9;
+            }
+
+            dx = x;
+
+            for (int i = 0; i < this.current.get(); i++)
+            {
+                if (MathUtil.isOdd(i))
+                {
+                    this.blit(poseStack, dx, y, 52, 0, 9, 9);
+                    dx += 9;
+                }
+                else
+                    this.blit(poseStack, dx, y, 61, 0, 9, 9);
+            }
+        }
     }
 }

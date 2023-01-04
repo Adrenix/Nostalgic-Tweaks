@@ -5,6 +5,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.ChunkStatus;
 import me.jellysquid.mods.sodium.client.render.chunk.ChunkTracker;
 import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
 import me.jellysquid.mods.sodium.client.util.frustum.Frustum;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -33,7 +34,7 @@ public abstract class SodiumWorldRendererMixin
     @Inject(method = "updateChunks", at = @At("HEAD"))
     private void NT$onUpdateChunks(Camera camera, Frustum frustum, int frame, boolean spectator, CallbackInfo callback)
     {
-        if (WorldClientUtil.isRelightCheckEnqueued())
+        if (WorldClientUtil.isRelightCheckEnqueued() && ModConfig.Candy.oldLightRendering())
         {
             this.chunkTracker.getChunks(ChunkStatus.FLAG_HAS_BLOCK_DATA).forEach((pos) ->
             {

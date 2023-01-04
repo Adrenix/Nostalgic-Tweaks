@@ -7,7 +7,8 @@ import net.minecraft.world.food.FoodData;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+
+import java.util.Map;
 
 /**
  * This class overrides the vanilla food data system.
@@ -56,47 +57,15 @@ public class OldFoodData extends FoodData
      */
     public void eat(Item item, ItemStack stack)
     {
-        if (ModConfig.Gameplay.disableHunger())
+        FoodProperties properties = item.getFoodProperties();
+        boolean isFood = item.isEdible() && properties != null;
+
+        if (ModConfig.Gameplay.disableHunger() && isFood)
         {
-            if (item.isEdible())
-            {
-                FoodProperties foodProperties = item.getFoodProperties();
-                if (foodProperties != null)
-                {
-                    int nutrition = foodProperties.getNutrition();
+            Map.Entry<String, Integer> entry = ModConfig.Gameplay.getFoodHealth().getEntryFromItem(item);
+            int nutrition = entry != null ? entry.getValue() : properties.getNutrition();
 
-                    boolean isRottenFlesh = item.equals(Items.ROTTEN_FLESH);
-                    boolean isSpiderEye = item.equals(Items.SPIDER_EYE);
-                    boolean isZeroHearts = isRottenFlesh || isSpiderEye;
-
-                    boolean isCarrot = item.equals(Items.CARROT);
-                    boolean isMelonSlice = item.equals(Items.MELON_SLICE);
-                    boolean isChorusFruit = item.equals(Items.CHORUS_FRUIT);
-                    boolean isBerry = item.equals(Items.SWEET_BERRIES) || item.equals(Items.GLOW_BERRIES);
-                    boolean isHalfHeart = isCarrot || isMelonSlice || isChorusFruit || isBerry;
-
-                    boolean isMushroomStew = item.equals(Items.MUSHROOM_STEW);
-                    boolean isBeetrootStew = item.equals(Items.BEETROOT_SOUP);
-                    boolean isRabbitStew = item.equals(Items.RABBIT_STEW);
-                    boolean isSuspiciousStew = item.equals(Items.SUSPICIOUS_STEW);
-                    boolean isFiveHearts = isMushroomStew || isBeetrootStew || isRabbitStew || isSuspiciousStew;
-
-                    boolean isGoldenApple = item.equals(Items.GOLDEN_APPLE);
-                    boolean isNotchApple = item.equals(Items.ENCHANTED_GOLDEN_APPLE);
-                    boolean isFullHearts = isGoldenApple || isNotchApple;
-
-                    if (isZeroHearts)
-                        nutrition = 0;
-                    else if (isHalfHeart)
-                        nutrition = 1;
-                    else if (isFiveHearts)
-                        nutrition = 10;
-                    else if (isFullHearts)
-                        nutrition = 20;
-
-                    this.eat(nutrition, foodProperties.getSaturationModifier());
-                }
-            }
+            this.eat(nutrition, properties.getSaturationModifier());
         }
         else
             this.vanilla.eat(item, stack);
@@ -173,21 +142,21 @@ public class OldFoodData extends FoodData
     }
 
     /**
-     * Retrieves the player's exhaustion level. If hunger is disabled, then the max food level is returned.
+     * Retrieves the player's exhaustion level. If hunger is disabled, then the value of 0.0F is returned.
      * @return The player's exhaustion level.
      */
     public float getExhaustionLevel()
     {
-        return ModConfig.Gameplay.disableHunger() ? MAX_FOOD_LEVEL : this.vanilla.getExhaustionLevel();
+        return ModConfig.Gameplay.disableHunger() ? 0.0F : this.vanilla.getExhaustionLevel();
     }
 
     /**
-     * Get the player's food saturation level. If hunger is disabled, then the max food level is returned.
+     * Get the player's food saturation level. If hunger is disabled, then the max of 20.0F is returned.
      * @return The player's saturation level.
      */
     public float getSaturationLevel()
     {
-        return ModConfig.Gameplay.disableHunger() ? MAX_FOOD_LEVEL : this.vanilla.getSaturationLevel();
+        return ModConfig.Gameplay.disableHunger() ? 20.0F : this.vanilla.getSaturationLevel();
     }
 
     /**

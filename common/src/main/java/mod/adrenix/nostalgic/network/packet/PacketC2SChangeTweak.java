@@ -3,11 +3,15 @@ package mod.adrenix.nostalgic.network.packet;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.list.ConfigList;
+import mod.adrenix.nostalgic.common.config.list.ListMap;
+import mod.adrenix.nostalgic.common.config.list.ListSet;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.common.config.tweak.TweakSerializer;
 import mod.adrenix.nostalgic.server.config.ServerConfig;
 import mod.adrenix.nostalgic.server.config.reflect.ServerReflect;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
+import mod.adrenix.nostalgic.util.common.log.LogColor;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,10 +53,7 @@ public class PacketC2SChangeTweak
      *
      * @param tweak A tweak server cache instance.
      */
-    public PacketC2SChangeTweak(TweakServerCache<?> tweak)
-    {
-        this.json = new TweakSerializer(tweak).serialize();
-    }
+    public PacketC2SChangeTweak(TweakServerCache<?> tweak) { this.json = new TweakSerializer(tweak).serialize(); }
 
     /**
      * Create a new change tweak packet with a buffer.
@@ -60,10 +61,7 @@ public class PacketC2SChangeTweak
      *
      * @param buffer A friendly byte buffer instance.
      */
-    public PacketC2SChangeTweak(FriendlyByteBuf buffer)
-    {
-        this.json = buffer.readUtf();
-    }
+    public PacketC2SChangeTweak(FriendlyByteBuf buffer) { this.json = buffer.readUtf(); }
 
     /* Methods */
 
@@ -71,10 +69,7 @@ public class PacketC2SChangeTweak
      * Encode data into the packet.
      * @param buffer A friendly byte buffer instance.
      */
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeUtf(this.json);
-    }
+    public void encode(FriendlyByteBuf buffer) { buffer.writeUtf(this.json); }
 
     /**
      * Handle packet data.
@@ -112,8 +107,68 @@ public class PacketC2SChangeTweak
         TweakSerializer serializer = TweakSerializer.deserialize(this.json);
         TweakServerCache<?> cache = TweakServerCache.get(serializer.getGroup(), serializer.getKey());
 
+        boolean isCached = cache != null;
+        boolean isValueMatched = isCached && cache.getValue().getClass().equals(serializer.getValue().getClass());
+        boolean isListMatched = isCached && cache.getList() != null && cache.getList().id() == serializer.getListId();
+
+        // Check if sent value is a list, and if so, ensure list ids received over the wire matches what is cached
+        if (NostalgicTweaks.isServer() && isListMatched)
+        {
+            ListSet listSet = ConfigList.getSetFromId(serializer.getListId());
+            ListMap<?> listMap = ConfigList.getMapFromId(serializer.getListId());
+
+            String lastConfig = "";
+            String lastDisabled = "";
+
+            if (listSet != null)
+            {
+                lastConfig = String.format("%s did have %s", listSet.getId(), listSet.getConfigSet());
+                lastDisabled = String.format("%s did have disabled defaults %s", listSet.getId(), listSet.getDisabledDefaults());
+
+                listSet.getConfigSet().clear();
+                listSet.getConfigSet().addAll(serializer.getValue());
+
+                listSet.getDisabledDefaults().clear();
+                listSet.getDisabledDefaults().addAll(serializer.getDisabledDefaults());
+            }
+            else if (listMap != null)
+            {
+                lastConfig = String.format("%s did have %s", listMap.getId(), listMap.getConfigMap());
+                lastDisabled = String.format("%s did have disabled defaults %s", listMap.getId(), listMap.getDisabledDefaults());
+
+                listMap.getConfigMap().clear();
+                listMap.getConfigMap().putAll(serializer.getValue());
+
+                listMap.getDisabledDefaults().clear();
+                listMap.getDisabledDefaults().addAll(serializer.getDisabledDefaults());
+            }
+
+            // Send tweak update to all connected players
+            List<ServerPlayer> players = player.server.getPlayerList().getPlayers();
+            PacketUtil.sendToAll(players, new PacketS2CTweakUpdate(cache));
+
+            // Save list changes to disk
+            AutoConfig.getConfigHolder(ServerConfig.class).save();
+
+            // Add information output to console
+            String information = String.format
+            (
+                "Updated server list cache in group (%s) and key (%s)",
+                LogColor.apply(LogColor.LIGHT_PURPLE, serializer.getGroup().toString()),
+                LogColor.apply(LogColor.GREEN, serializer.getKey())
+            );
+
+            NostalgicTweaks.LOGGER.info(information);
+            NostalgicTweaks.LOGGER.info(lastConfig);
+            NostalgicTweaks.LOGGER.info(lastDisabled);
+            NostalgicTweaks.LOGGER.info("%s now has %s", serializer.getListId(), serializer.getValue());
+            NostalgicTweaks.LOGGER.info("%s now has disabled defaults %s", serializer.getListId(), serializer.getDisabledDefaults());
+
+            return;
+        }
+
         // Check if value received from client matches server cached value
-        if (cache != null && cache.getValue().getClass().equals(serializer.getValue().getClass()))
+        if (isValueMatched)
         {
             // Even though this packet is handled by the server, we don't want singleplayer worlds to access the server config.
             if (NostalgicTweaks.isServer())

@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
  * Adds the ability to manage widgets from screens.
  */
 
-public interface IWidgetManager
+public interface WidgetManager
 {
     <T extends GuiEventListener & Widget>
     void NT$addRenderableWidget(T widget);

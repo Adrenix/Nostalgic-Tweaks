@@ -6,14 +6,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Transformation;
-import mod.adrenix.nostalgic.api.NostalgicLevel;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
 import mod.adrenix.nostalgic.mixin.widen.MinecraftAccessor;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.WorldCommonUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
@@ -74,7 +75,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         if (!ModConfig.Candy.showDebugBackground())
             return;
 
-        int color = TextUtil.toHexInt(ModConfig.Candy.debugBackgroundColor());
+        int color = ColorUtil.toHexInt(ModConfig.Candy.debugBackgroundColor());
         int scaledWidth = this.minecraft.getWindow().getGuiScaledWidth();
         int fontWidth = this.font.width(info);
         int fontHeight = this.font.lineHeight;
@@ -120,7 +121,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     private void NT$onDrawGameInformationColor(PoseStack poseStack, int minX, int minY, int maxX, int maxY, int color)
     {
         if (ModConfig.Candy.showDebugBackground())
-            DebugScreenOverlay.fill(poseStack, minX, minY, maxX, maxY, TextUtil.toHexInt(ModConfig.Candy.debugBackgroundColor()));
+            DebugScreenOverlay.fill(poseStack, minX, minY, maxX, maxY, ColorUtil.toHexInt(ModConfig.Candy.debugBackgroundColor()));
     }
 
     /**
@@ -141,7 +142,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     private void NT$onDrawSystemInformationColor(PoseStack poseStack, int minX, int minY, int maxX, int maxY, int color)
     {
         if (ModConfig.Candy.showDebugBackground())
-            DebugScreenOverlay.fill(poseStack, minX, minY, maxX, maxY, TextUtil.toHexInt(ModConfig.Candy.debugBackgroundColor()));
+            DebugScreenOverlay.fill(poseStack, minX, minY, maxX, maxY, ColorUtil.toHexInt(ModConfig.Candy.debugBackgroundColor()));
     }
 
     /**
@@ -235,8 +236,8 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
                 left.add(String.format("Nostalgic Light: %d (%d sky, %d block)", nostalgicClientLight, nostalgicSkyLight, nostalgicBlockLight));
 
                 int clientLight = this.minecraft.level.getChunkSource().getLightEngine().getRawBrightness(blockPos, 0);
-                int vanillaSkyLight = NostalgicLevel.getVanillaBrightness(this.minecraft.level, LightLayer.SKY, blockPos);
-                int vanillaBlockLight = NostalgicLevel.getVanillaBrightness(this.minecraft.level, LightLayer.BLOCK, blockPos);
+                int vanillaSkyLight = WorldCommonUtil.getBrightness(this.minecraft.level, LightLayer.SKY, blockPos);
+                int vanillaBlockLight = WorldCommonUtil.getBrightness(this.minecraft.level, LightLayer.BLOCK, blockPos);
 
                 left.add(String.format("Vanilla Light: %d (%d sky, %d block)", clientLight, vanillaSkyLight, vanillaBlockLight));
             }

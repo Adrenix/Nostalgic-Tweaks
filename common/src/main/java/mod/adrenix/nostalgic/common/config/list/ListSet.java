@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import net.minecraft.world.item.Item;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -16,6 +16,7 @@ public class ListSet extends AbstractList
 {
     /* Fields */
 
+    private final Set<String> serverSet;
     private final Set<String> configSet;
     private final Set<String> defaultSet;
 
@@ -42,6 +43,7 @@ public class ListSet extends AbstractList
     {
         super(tweak, listId, listInclude, disabledDefaults);
 
+        this.serverSet = new LinkedHashSet<>();
         this.configSet = configSet;
         this.defaultSet = defaultSet;
     }
@@ -55,7 +57,7 @@ public class ListSet extends AbstractList
      */
     public ListSet(Tweak tweak, ListId listId, ListInclude listInclude, Set<String> configSet)
     {
-        this(tweak, listId, listInclude, new HashSet<>(), configSet, new HashSet<>());
+        this(tweak, listId, listInclude, new LinkedHashSet<>(), configSet, new LinkedHashSet<>());
     }
 
     /* Getters */
@@ -66,7 +68,7 @@ public class ListSet extends AbstractList
      *
      * @return The configuration set that is kept on disk.
      */
-    public Set<String> getConfigSet() { return this.configSet; }
+    public Set<String> getConfigSet() { return this.isServerNeeded() ? this.serverSet : this.configSet; }
 
     /**
      * The default config set is pre-programmed. This set is used by abstract list screens to restore a list set back
@@ -87,13 +89,13 @@ public class ListSet extends AbstractList
     {
         String resourceKey = ItemCommonUtil.getResourceKey(item);
 
-        for (String key : this.configSet)
+        for (String key : this.getConfigSet())
         {
             if (key.equals(resourceKey))
                 return key;
         }
 
-        for (String key : this.defaultSet)
+        for (String key : this.getDefaultSet())
         {
             if (key.equals(resourceKey) && !this.isDefaultDisabled(key))
                 return key;

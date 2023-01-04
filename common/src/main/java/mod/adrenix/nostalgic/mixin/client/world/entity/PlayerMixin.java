@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
 import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -22,20 +22,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
+public abstract class PlayerMixin extends LivingEntity implements SlotTracker
 {
     /* Dummy Constructor */
 
-    private PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level)
-    {
-        super(entityType, level);
-    }
+    private PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) { super(entityType, level); }
 
     /* Shadows */
 
     @Shadow private ItemStack lastItemInMainHand;
 
-    /* Reequip and Slot Tracking Ducking */
+    /* Slot Tracker Implementation */
 
     @Unique public int NT$lastSlot = -1;
     @Unique public boolean NT$reequip = false;
@@ -72,6 +69,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
 
         // Fixes weird bug that occurs when standing on a slime block.
         boolean isGrounded = deltaY < -0.07 && deltaY > -0.08;
+
         if (isGrounded || this.onGround || this.getHealth() <= 0.0F)
             rotation = 0.0F;
 
@@ -89,6 +87,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
             return current;
         else if (this.walkDist == this.walkDistO)
             return 0.0F;
+
         return current;
     }
 
@@ -109,6 +108,7 @@ public abstract class PlayerMixin extends LivingEntity implements IReequipSlot
     {
         if (ModConfig.Animation.oldSwingDropping())
             return;
+
         player.swing(InteractionHand.MAIN_HAND);
     }
 

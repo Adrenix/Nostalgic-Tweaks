@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import net.fabricmc.api.EnvType;
 
 /**
  * The Tweak interface has two important services. First, each tweak will have an enumeration associated with its
@@ -39,16 +40,16 @@ public interface Tweak
     String getKey();
 
     /**
-     * Each tweak must have a logical side associated with it.
-     * @param side A side type enumeration value (client/server).
+     * Each tweak must have an environment associated with it.
+     * @param side An environment enumeration value (client/server).
      */
-    void setSide(NostalgicTweaks.Side side);
+    void setEnv(EnvType side);
 
     /**
-     * Get a tweak's logical side. This will either be client or server.
-     * @return A side type enumeration value.
+     * Get a tweak's environment. This will either be client or server.
+     * @return An environment type enumeration value.
      */
-    NostalgicTweaks.Side getSide();
+    EnvType getEnv();
 
     /**
      * Set the client cache value associated with this tweak.
@@ -106,7 +107,7 @@ public interface Tweak
         TweakClientCache<Object> clientCache = TweakClientCache.get(this);
         TweakServerCache<Object> serverCache = TweakServerCache.get(this);
 
-        this.setSide(clientCache != null && serverCache == null ? NostalgicTweaks.Side.CLIENT : NostalgicTweaks.Side.SERVER);
+        this.setEnv(clientCache != null && serverCache == null ? EnvType.CLIENT : EnvType.SERVER);
 
         if (clientCache != null)
             clientCache.setTweak(this);

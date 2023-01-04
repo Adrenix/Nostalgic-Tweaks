@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
+import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
@@ -184,8 +185,9 @@ public class TweakTag extends AbstractWidget
 
         // Prevents tooltip rendering when the row list has not assigned a y-position yet
         boolean isInitialized = startY != 4;
+        boolean isWithinList = ConfigWidgets.isInsideRowList(mouseY);
 
-        if (isMouseOver && isInitialized && screen instanceof ConfigScreen configScreen)
+        if (isMouseOver && isWithinList && isInitialized && screen instanceof ConfigScreen configScreen)
             configScreen.renderLast.add(() ->
                 screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(tooltip, 38), mouseX, mouseY));
     }
@@ -206,6 +208,8 @@ public class TweakTag extends AbstractWidget
         if (screen == null)
             return;
 
+        StatusButton.update();
+
         TweakGui.New newTag = this.tweak.getMetadata(TweakGui.New.class);
         TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);
         TweakData.Server serverTag = this.tweak.getMetadata(TweakData.Server.class);
@@ -220,7 +224,7 @@ public class TweakTag extends AbstractWidget
         Component optifineTitle = Component.literal("Optifine");
         Component sodiumTitle = Component.literal("Sodium");
 
-        ChatFormatting flashColor = StatusButton.getFlipState() ? ChatFormatting.GRAY : ChatFormatting.RED;
+        ChatFormatting flashColor = StatusButton.isFlashOff() ? ChatFormatting.GRAY : ChatFormatting.RED;
 
         Component title = Component.literal(this.title);
         Component newTitle = Component.translatable(LangUtil.Gui.TAG_NEW);
@@ -254,6 +258,7 @@ public class TweakTag extends AbstractWidget
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, newTitle, newTooltip, lastX, startY, mouseX, mouseY);
+
             lastX = renderTag(screen, poseStack, newTitle, lastX, startY, U_NEW_OFFSET, this.render);
         }
 
@@ -261,6 +266,7 @@ public class TweakTag extends AbstractWidget
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, clientTitle, clientTooltip, lastX, startY, mouseX, mouseY);
+
             lastX = renderTag(screen, poseStack, clientTitle, lastX, startY, U_CLIENT_OFFSET, this.render);
         }
 
@@ -268,6 +274,7 @@ public class TweakTag extends AbstractWidget
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, serverTitle, serverTooltip, lastX, startY, mouseX, mouseY);
+
             lastX = renderTag(screen, poseStack, serverTitle, lastX, startY, U_SERVER_OFFSET, this.render);
         }
 
@@ -275,6 +282,7 @@ public class TweakTag extends AbstractWidget
         {
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, dynamicTitle, dynamicTooltip, lastX, startY, mouseX, mouseY);
+
             lastX = renderTag(screen, poseStack, dynamicTitle, lastX, startY, U_DYNAMIC_OFFSET, this.render);
         }
 

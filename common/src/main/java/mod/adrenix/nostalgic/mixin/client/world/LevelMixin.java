@@ -35,11 +35,14 @@ public abstract class LevelMixin implements BlockAndTintGetter
         if (!this.isClientSide())
             return this.getLightEngine().getLayerListener(layer).getLightValue(blockPos);
 
+        if (ModConfig.Candy.oldClassicLight())
+            return WorldClientUtil.getClassicLight(blockPos);
+
         int skyLight = this.getLightEngine().getLayerListener(LightLayer.SKY).getLightValue(blockPos);
         int blockLight = this.getLightEngine().getLayerListener(LightLayer.BLOCK).getLightValue(blockPos);
 
         if (ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(this, blockPos))
-            skyLight = BlockCommonUtil.getWaterLightBlock(skyLight);
+            skyLight = BlockCommonUtil.getWaterLightBlock(this, blockPos);
 
         if (!ModConfig.Candy.oldLightRendering())
         {

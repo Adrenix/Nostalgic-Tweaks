@@ -8,7 +8,7 @@ import mod.adrenix.nostalgic.fabric.init.NostalgicSoundInit;
  * Registers common Fabric events that run on both client and server.
  */
 
-public abstract class CommonEventHandler
+public abstract class CommonEvents
 {
     /**
      * Invokes the registration methods of various event group helper classes.

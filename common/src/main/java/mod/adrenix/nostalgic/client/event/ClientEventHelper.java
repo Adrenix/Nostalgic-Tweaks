@@ -21,11 +21,7 @@ import net.minecraft.network.chat.Component;
 
 public abstract class ClientEventHelper
 {
-    /*
-       Client Network Helpers
-
-       The following methods are used by the client's networking events.
-     */
+    /* Client Helpers */
 
     /**
      * This method provides instructions for the mod to perform after a player disconnects from a level.
@@ -39,17 +35,31 @@ public abstract class ClientEventHelper
             // Reset static fog utility trackers
             FogUtil.Void.reset();
 
-            // Reset world lighting trackers
+            // Reset client world utility caches
             WorldClientUtil.resetLightingCache();
+            WorldClientUtil.resetWorldInterpolationCache();
 
             // Reset network verification and server cache
             NostalgicTweaks.setNetworkVerification(false);
 
-            TweakServerCache.all().forEach((id, tweak) -> {
+            TweakServerCache.all().forEach((id, tweak) ->
+            {
                 if (tweak.isDynamic())
                     tweak.setValue(TweakClientCache.all().get(id).getValue());
             });
         }
+
+
+    }
+
+    /**
+     * This method provides instructions for the mod to perform after a player changes dimensions. Some utility caches
+     * need to reset when this event occurs.
+     */
+    public static void onChangeDimension()
+    {
+        // Resets world interpolation animation caches
+        WorldClientUtil.resetWorldInterpolationCache();
     }
 
     /*

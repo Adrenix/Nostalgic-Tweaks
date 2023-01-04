@@ -5,12 +5,15 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.duck.ILocalSwing;
+import mod.adrenix.nostalgic.mixin.duck.SwingBlocker;
+import mod.adrenix.nostalgic.util.client.AnimationUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
+import mod.adrenix.nostalgic.util.client.SwingType;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -31,10 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -71,7 +71,7 @@ public abstract class MinecraftMixin
     )
     private void NT$onDropItem(CallbackInfo callback)
     {
-        ILocalSwing injector = (ILocalSwing) this.player;
+        SwingBlocker injector = (SwingBlocker) this.player;
         if (ModConfig.Animation.oldSwingDropping() && injector != null)
             injector.NT$setSwingBlocked(true);
     }
@@ -221,6 +221,8 @@ public abstract class MinecraftMixin
     @Inject(method = "startAttack", at = @At("HEAD"))
     private void NT$onStartAttack(CallbackInfoReturnable<Boolean> callback)
     {
+        AnimationUtil.swingType = SwingType.LEFT_CLICK;
+
         if (ModConfig.Animation.oldInterruptSwing() && this.player != null)
         {
             this.player.attackAnim = 0.0F;
@@ -229,6 +231,31 @@ public abstract class MinecraftMixin
 
         if (ModConfig.Gameplay.disableMissTime())
             this.missTime = 0;
+    }
+
+    /**
+     * Sets the animation utility swing type tracker field to right-click when the player uses an item.
+     */
+    @Inject(method = "startUseItem", at = @At("HEAD"))
+    private void NT$onStartUseItem(CallbackInfo callback)
+    {
+        AnimationUtil.swingType = SwingType.RIGHT_CLICK;
+    }
+
+    /**
+     * Sets the animation utility swing type back to left if left-click speed on right-click interact is enabled.
+     * The classic swing tweak being enabled will prevent this.
+     */
+    @Inject
+    (
+        method = "startUseItem",
+        slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;")),
+        at = @At(value = "INVOKE", ordinal = 0, shift = At.Shift.BEFORE, target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V")
+    )
+    private void NT$onStartUseItemOn(CallbackInfo callback)
+    {
+        if (SwingConfig.isLeftSpeedOnBlockInteract() && !ModConfig.Animation.oldClassicSwing())
+            AnimationUtil.swingType = SwingType.LEFT_CLICK;
     }
 
     /**

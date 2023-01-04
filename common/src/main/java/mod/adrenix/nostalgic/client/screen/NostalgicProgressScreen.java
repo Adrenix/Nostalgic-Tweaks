@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ProgressListener;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 /**
@@ -27,8 +28,8 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
 {
     /* Fields */
 
-    private @Nullable Component header;
-    private @Nullable Component stage;
+    private @CheckForNull Component header;
+    private @CheckForNull Component stage;
 
     private int progress = 0;
     private double pauseTicking = 0.98;
@@ -103,13 +104,15 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
      * Gets the last dimension that the player was in.
      * @return A level resource key.
      */
-    public static @Nullable ResourceKey<Level> getPreviousDimension() { return previousDimension; }
+    @CheckForNull
+    public static ResourceKey<Level> getPreviousDimension() { return previousDimension; }
 
     /**
      * Gets the current dimension that the player is in.
      * @return A level resource key.
      */
-    public static @Nullable ResourceKey<Level> getCurrentDimension() { return currentDimension; }
+    @CheckForNull
+    public static ResourceKey<Level> getCurrentDimension() { return currentDimension; }
 
     /* Overrides */
 
@@ -142,7 +145,8 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        if (this.minecraft == null) return;
+        if (this.minecraft == null)
+            return;
 
         this.setHeaderAndStage();
 
@@ -232,7 +236,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
 
         boolean isTextNeeded = header == null && this.stage == null;
         boolean isMultiplayer = minecraft.getConnection() != null;
-        boolean isConnectedLevel = isMultiplayer && minecraft.getConnection().getLevel() != null;
+        boolean isConnectedLevel = isMultiplayer && minecraft.level != null;
         boolean isChangingLevel = minecraft.player != null && currentLevel != null && previousLevel != null;
 
         if (isTextNeeded && (!isMultiplayer || isConnectedLevel) && isChangingLevel)

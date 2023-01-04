@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.util.common;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 
 public abstract class ArrayUtil
 {
@@ -24,7 +24,7 @@ public abstract class ArrayUtil
      * @param <T> The item from the given index.
      * @return Item at the given index within the array. Will be null if the index is out-of-bounds.
      */
-    @Nullable
+    @CheckForNull
     public static <T> T get(T[] array, int index)
     {
         int bound = array.length - 1;

@@ -10,6 +10,8 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.LinkLocation;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.ChatFormatting;
@@ -18,7 +20,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import org.lwjgl.glfw.GLFW;
 
@@ -45,7 +50,10 @@ public class SettingsScreen extends Screen
     protected final Minecraft minecraft;
     private final Screen parent;
     private final ArrayList<Button> buttons = new ArrayList<>();
+    private final GearSpinner spinner = new GearSpinner();
+    private DonatorBanner banner;
     private boolean isRedirected;
+    private boolean isMouseOverSupportToggle = false;
 
     /* Constructors */
 
@@ -58,9 +66,11 @@ public class SettingsScreen extends Screen
     public SettingsScreen(Screen parent, Component title, boolean isRedirected)
     {
         super(title);
+
         this.parent = parent;
         this.minecraft = Minecraft.getInstance();
         this.isRedirected = isRedirected;
+        this.banner = new DonatorBanner();
     }
 
     /**
@@ -94,7 +104,7 @@ public class SettingsScreen extends Screen
         int i = 1;
         int row = 0;
         int startX = this.width / 2 - 102;
-        int startY = this.height / 4 + 24 - 8;
+        int startY = this.height / 4 + 54 - 8;
         int lastX = this.width / 2 + 4;
         boolean isNextLarge = false;
         Button prevButton = this.buttons.get(0);
@@ -164,13 +174,13 @@ public class SettingsScreen extends Screen
         this.buttons.add(preset);
 
         // Support
-        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_SUPPORT), LinkUtil.onPress(LinkUtil.KO_FI));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_SUPPORT), LinkUtil.onPress(LinkLocation.KO_FI));
 
         // Discord
-        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_DISCORD), LinkUtil.onPress(LinkUtil.DISCORD));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_DISCORD), LinkUtil.onPress(LinkLocation.DISCORD));
 
         // Golden Days Button
-        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_GOLDEN_DAYS), LinkUtil.onPress(LinkUtil.GOLDEN_DAYS));
+        this.addButton(Component.translatable(LangUtil.Gui.SETTINGS_GOLDEN_DAYS), LinkUtil.onPress(LinkLocation.GOLDEN_DAYS));
 
         // Done Button
         this.addButton(Component.translatable(LangUtil.Vanilla.GUI_DONE), (button) -> this.onClose());
@@ -212,11 +222,52 @@ public class SettingsScreen extends Screen
     }
 
     /**
+     * Handles a mouse click event.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether something was clicked.
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        boolean isClicked = super.mouseClicked(mouseX, mouseY, button);
+
+        if (this.isMouseOverSupportToggle)
+        {
+            DonatorBanner.toggle();
+
+            ClientConfigCache.getGui().displayDonatorBanner = DonatorBanner.isOpen();
+            ClientConfigCache.save();
+
+            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
+            return true;
+        }
+
+        return isClicked;
+    }
+
+    /**
      * Handler for when the screen closes.
      * All configuration values are saved to disk when this screen closes.
      */
     @Override
     public void onClose() { this.minecraft.setScreen(parent); }
+
+    /**
+     * Handler for when the screen resizes.
+     * @param minecraft The Minecraft instance.
+     * @param width The new screen width.
+     * @param height The new screen height.
+     */
+    @Override
+    public void resize(Minecraft minecraft, int width, int height)
+    {
+        super.resize(minecraft, width, height);
+
+        this.banner = new DonatorBanner();
+    }
 
     /* Rendering */
 
@@ -235,28 +286,56 @@ public class SettingsScreen extends Screen
         else
             this.renderDirtBackground(0);
 
-        this.renderScreenTitle(poseStack, this.height / 4 - 42);
         this.renderLogo(poseStack);
 
         if (NostalgicTweaks.isDebugging())
             this.renderDebug(poseStack);
         else
         {
+            this.banner.render(poseStack, partialTick);
+
+            if (DonatorBanner.isOpen())
+            {
+                int height = DonatorBanner.getHeight();
+                this.fillGradient(poseStack, 0, height - 5, this.width, height - 2, 0, 0x8F000000);
+                this.fillGradient(poseStack, 0, 0, this.width, 3, 0x8F000000, 0);
+            }
+
+            this.renderSupportToggle(poseStack, mouseX, mouseY);
+
             Component hint = Component.literal("Debug (Ctrl + Shift + D)").withStyle(ChatFormatting.DARK_GRAY);
-            drawString(poseStack, this.font, hint, 2, this.height - 10, 0xFFFFFF);
+            SettingsScreen.drawString(poseStack, this.font, hint, 2, this.height - 10, 0xFFFFFF);
         }
 
         super.render(poseStack, mouseX, mouseY, partialTick);
     }
 
     /**
-     * Renders the screen's title while being centered.
+     * Renders the toggle "button" text that controls support banner opening.
      * @param poseStack The current pose stack.
-     * @param height The height of the screen.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
      */
-    protected void renderScreenTitle(PoseStack poseStack, int height)
+    private void renderSupportToggle(PoseStack poseStack, int mouseX, int mouseY)
     {
-        drawCenteredString(poseStack, this.font, this.title.getString(), this.width / 2, height, 0xFFFFFF);
+        MutableComponent button = DonatorBanner.isOpen() ?
+            Component.literal("\u274c").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.RED) :
+            Component.literal("\u2764").withStyle(ChatFormatting.RED)
+        ;
+
+        boolean isOpen = DonatorBanner.isOpen();
+        float textHeight = this.font.lineHeight;
+        float textWidth = this.font.width(button);
+        float startX = this.width - textWidth - 2.0F;
+        float startY = isOpen ? DonatorBanner.getHeight() : 2.0F;
+        boolean isOver = MathUtil.isWithinBox(mouseX, mouseY, startX, startY, textWidth, textHeight);
+        int color = isOver ? 0xFFFFA0 : 0xFFFFFF;
+        this.isMouseOverSupportToggle = isOver;
+
+        if (isOver)
+            button.withStyle(ChatFormatting.DARK_RED);
+
+        this.font.drawShadow(poseStack, button, startX, startY, color);
     }
 
     /**
@@ -280,9 +359,10 @@ public class SettingsScreen extends Screen
     {
         GuiUtil.CornerManager manager = new GuiUtil.CornerManager();
 
-        drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 5, 0xFFFF00);
+        drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 2, 0xFFFF00);
 
         GuiUtil.drawText(poseStack, String.format("Loader: §d%s", NostalgicTweaks.isForge() ? "Forge" : "Fabric"), TweakType.Corner.TOP_LEFT, manager);
+        GuiUtil.drawText(poseStack, String.format("Version: §e%s", NostalgicTweaks.getShortVersion()), TweakType.Corner.TOP_LEFT, manager);
         GuiUtil.drawText(poseStack, String.format("Protocol: §b%s", NostalgicTweaks.PROTOCOL), TweakType.Corner.TOP_LEFT, manager);
 
         GuiUtil.drawText(poseStack, String.format("Singleplayer: %s", getColored(NetUtil.isSingleplayer())), TweakType.Corner.BOTTOM_LEFT, manager);
@@ -305,22 +385,52 @@ public class SettingsScreen extends Screen
      */
     private void renderLogo(PoseStack poseStack)
     {
+        RenderSystem.enableBlend();
+
+        int gearX = this.width / 2 - 23;
+        int gearY = (this.height / 4 + 1);
+        int titleX = this.width / 2 - 130;
+        int titleY = (this.height / 4 - 25);
+
+        this.spinner.render(poseStack, gearX, gearY);
+
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.GEAR_LOGO);
+        RenderSystem.setShaderTexture(0, ModUtil.Resource.NOSTALGIC_LOGO);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        SettingsScreen.blit(poseStack, this.width / 2 - 16, this.height / 4 - 24, 0, 0, 32, 32, 32, 32);
+        float titleScale = 0.03325F;
 
         poseStack.pushPose();
-        poseStack.translate((float) this.width / 2 + 10, (float) this.height / 4 + 5, 0.0);
+        poseStack.translate(titleX, titleY, 1.0D);
+        poseStack.scale(titleScale, titleScale, titleScale);
+        SettingsScreen.blit(poseStack, 0, 0, 0, 0, 7808, 742, 7808, 742);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate((float) this.width / 2 + 10, (float) this.height / 4 + 35, 1.0);
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
 
-        String splash = "N.T";
+        String splash = "v" + NostalgicTweaks.getTinyVersion();
         float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
-        scale = scale * 13.0F / (float) (this.font.width(splash));
+        scale = scale * 17.0F / (float) (this.font.width(splash));
 
         poseStack.scale(scale, scale, scale);
-        SettingsScreen.drawCenteredString(poseStack, this.font, splash, 0, -8, 0xFFFFFF00);
+        SettingsScreen.drawCenteredString(poseStack, this.font, splash, 1, -6, 0xFFFF00);
         poseStack.popPose();
+
+        String beta = NostalgicTweaks.getBetaVersion();
+
+        if (beta.isEmpty())
+            return;
+
+        float betaScale = (int) this.minecraft.getWindow().getGuiScale() % 2 == 0 ? 0.5F : 0.6F;
+
+        poseStack.pushPose();
+        poseStack.translate(gearX + 46, gearY + 34, 1.0D);
+        poseStack.scale(betaScale, betaScale, betaScale);
+        this.font.drawShadow(poseStack, beta, 0, 0, 0xFFFF00);
+        poseStack.popPose();
+
+        RenderSystem.disableBlend();
     }
 }

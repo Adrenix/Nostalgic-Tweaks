@@ -18,6 +18,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowTweak;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.common.config.list.ConfigList;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
@@ -28,7 +29,9 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.PathUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
+import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -234,11 +237,25 @@ public record ConfigRenderer(ConfigScreen parent)
         SortedMap<String, TweakClientCache<?>> sortMiddle = new TreeMap<>(translated);
         SortedMap<Integer, TweakClientCache<?>> sortBottom = new TreeMap<>(bottom);
 
-        sortTop.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
-        sortMiddle.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
-        sortBottom.forEach((key, tweak) -> rows.add(list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue())));
+        sortTop.forEach((key, tweak) -> addRowFromTweak(rows, list, tweak));
+        sortMiddle.forEach((key, tweak) -> addRowFromTweak(rows, list, tweak));
+        sortBottom.forEach((key, tweak) -> addRowFromTweak(rows, list, tweak));
 
         return rows;
+    }
+
+    /**
+     * Add a new config row list row to the given list of rows if the tweak allows automatic config setup.
+     * @param rows An array list of config row list rows.
+     * @param list A config row list instance.
+     * @param tweak A tweak client cache instance.
+     */
+    private static void addRowFromTweak(ArrayList<ConfigRowList.Row> rows, ConfigRowList list, TweakClientCache<?> tweak)
+    {
+        ConfigRowList.Row row = list.rowFromTweak(tweak);
+
+        if (row != null)
+            rows.add(row);
     }
 
     /**
@@ -397,11 +414,13 @@ public record ConfigRenderer(ConfigScreen parent)
      */
     private void addSearchRow(TweakClientCache<?> tweak)
     {
-        SearchCrumbs crumbs = new SearchCrumbs(tweak);
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
-        ConfigRowList.Row row = list.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue());
+        ConfigRowList.Row row = list.rowFromTweak(tweak);
 
-        row.children.add(crumbs);
+        if (row == null)
+            return;
+
+        row.children.add(new SearchCrumbs(tweak));
         list.addRow(row);
     }
 
@@ -561,6 +580,43 @@ public record ConfigRenderer(ConfigScreen parent)
         rows.add(disable.generate());
         rows.add(enable.generate());
         rows.add(review.generate());
+
+        return rows;
+    }
+
+    /**
+     * Generates rows for the config manager.
+     * @return An array list of config row instances.
+     */
+    private ArrayList<ConfigRowList.Row> getConfigManagementList()
+    {
+        Button.OnPress onBackup = (button) ->
+        {
+            AutoConfig.getConfigHolder(ClientConfig.class).backup();
+            Util.getPlatform().openFile(PathUtil.getBackupPath().toFile());
+        };
+
+        Button.OnPress onOpen = (button) -> Util.getPlatform().openFile(PathUtil.getConfigPath().toFile());
+
+        ControlButton backup = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_MANAGEMENT_BACKUP), onBackup);
+        ControlButton open = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_MANAGEMENT_OPEN), onOpen);
+
+        TextGroup groupHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_MANAGEMENT_HELP));
+        TextGroup maxHelp = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_MANAGEMENT_MAX_HELP));
+
+        ConfigRowBuild.BlankRow blank = new ConfigRowBuild.BlankRow();
+        ConfigRowBuild.SingleCenteredRow backupRow = new ConfigRowBuild.SingleCenteredRow(backup);
+        ConfigRowBuild.SingleCenteredRow openRow = new ConfigRowBuild.SingleCenteredRow(open);
+
+        ArrayList<ConfigRowList.Row> rows = new ArrayList<>(groupHelp.generate());
+        ConfigRowList list = this.parent.getWidgets().getConfigRowList();
+
+
+        rows.add(openRow.generate());
+        rows.add(backupRow.generate());
+        rows.add(blank.generate());
+        rows.addAll(maxHelp.generate());
+        rows.add(list.rowFromTweak(TweakClientCache.get(GuiTweak.MAXIMUM_BACKUPS)));
 
         return rows;
     }
@@ -821,6 +877,17 @@ public record ConfigRenderer(ConfigScreen parent)
 
         list.addRow(new ConfigRowTweak.BooleanRow(TweakGroup.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
 
+        /* Config Manager */
+
+        ConfigRowGroup.ContainerRow configManagement = new ConfigRowGroup.ContainerRow
+        (
+            Component.translatable(LangUtil.Gui.GENERAL_MANAGEMENT_TITLE),
+            this::getConfigManagementList,
+            ContainerId.CONFIG_MANAGEMENT
+        );
+
+        list.addRow(configManagement.generate());
+
         /* All Tweak Overrides */
 
         ConfigRowGroup.ContainerRow changeAllTweaks = new ConfigRowGroup.ContainerRow
@@ -914,22 +981,39 @@ public record ConfigRenderer(ConfigScreen parent)
         {
             this.parent.getWidgets().getSwingSpeedPrefix().render(poseStack, mouseX, mouseY, partialTick);
 
-            ListMapScreen<Integer> swingScreen = new ListMapScreen<>
+            ListMapScreen<Integer> leftSpeedsScreen = new ListMapScreen<>
             (
-                Component.translatable(LangUtil.Gui.CUSTOM_SPEEDS),
-                ConfigList.CUSTOM_SWING
+                Component.translatable(LangUtil.Gui.LEFT_SPEEDS),
+                ConfigList.LEFT_CLICK_SPEEDS
             );
 
-            ConfigRowBuild.SingleCenteredRow custom = new ConfigRowBuild.SingleCenteredRow
+            ConfigRowBuild.SingleCenteredRow leftSpeedsButton = new ConfigRowBuild.SingleCenteredRow
             (
                 new ControlButton
                 (
-                    Component.translatable(LangUtil.Gui.CUSTOM_SPEEDS),
-                    (button) -> this.parent.getMinecraft().setScreen(swingScreen)
+                    Component.translatable(LangUtil.Gui.LEFT_SPEEDS),
+                    (button) -> this.parent.getMinecraft().setScreen(leftSpeedsScreen)
                 )
             );
 
-            this.parent.getWidgets().getConfigRowList().addRow(custom.generate());
+            this.parent.getWidgets().getConfigRowList().addRow(leftSpeedsButton.generate());
+
+            ListMapScreen<Integer> rightSpeedsScreen = new ListMapScreen<>
+            (
+                Component.translatable(LangUtil.Gui.RIGHT_SPEEDS),
+                ConfigList.RIGHT_CLICK_SPEEDS
+            );
+
+            ConfigRowBuild.SingleCenteredRow rightSpeedsButton = new ConfigRowBuild.SingleCenteredRow
+            (
+                new ControlButton
+                (
+                    Component.translatable(LangUtil.Gui.RIGHT_SPEEDS),
+                    (button) -> this.parent.getMinecraft().setScreen(rightSpeedsScreen)
+                )
+            );
+
+            this.parent.getWidgets().getConfigRowList().addRow(rightSpeedsButton.generate());
         }
         else if (this.parent.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && this.parent.search.isEmpty())
         {

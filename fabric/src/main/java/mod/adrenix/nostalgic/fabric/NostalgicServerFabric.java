@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.fabric.event.ServerEventHandler;
+import mod.adrenix.nostalgic.fabric.event.ServerEvents;
 import net.fabricmc.api.DedicatedServerModInitializer;
 
 /**
@@ -18,9 +18,9 @@ public class NostalgicServerFabric implements DedicatedServerModInitializer
     public void onInitializeServer()
     {
         // Initialize mod
-        NostalgicTweaks.initServer(NostalgicTweaks.Environment.FABRIC);
+        NostalgicTweaks.initServer();
 
         // Register server
-        ServerEventHandler.register();
+        ServerEvents.register();
     }
 }

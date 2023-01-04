@@ -6,6 +6,9 @@
   "priority": 1001,
   "client": [
     "client.BlockRenderDispatcherForgeMixin",
+    "client.ClientPacketListenerForgeMixin",
+    "client.ForgeGuiMixin",
+    "client.HumanoidArmorLayerForgeMixin",
     "client.ItemColorsForgeMixin",
     "client.ItemInHandRendererForgeMixin",
     "client.ProgressScreenForgeMixin",
@@ -13,6 +16,7 @@
   ],
   "mixins": [
     "common.BoneMealItemForgeMixin",
+    "common.FoodDataForgeMixin",
     "common.HoeItemForgeMixin",
     "common.ItemEntityForgeMixin",
     "common.LivingEntityForgeMixin"

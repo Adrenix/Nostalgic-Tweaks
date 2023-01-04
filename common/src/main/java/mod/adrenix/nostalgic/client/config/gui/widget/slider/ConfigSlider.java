@@ -30,7 +30,7 @@ public class ConfigSlider extends GenericSlider implements PermissionLock
      */
     public ConfigSlider(TweakClientCache<Integer> tweak)
     {
-        super(tweak, null, ConfigRowList.getControlStartX(), 0, ConfigRowList.BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT);
+        super(tweak, ConfigRowList.getControlStartX(), 0, ConfigRowList.BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT);
 
         this.tweak = tweak;
         TweakData.BoundedSlider bounds = this.tweak.getMetadata(TweakData.BoundedSlider.class);

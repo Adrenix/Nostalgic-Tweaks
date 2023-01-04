@@ -41,10 +41,7 @@ public abstract class LivingEntityMixin extends Entity
 {
     /* Dummy Constructor */
 
-    private LivingEntityMixin(EntityType<?> entity, Level level)
-    {
-        super(entity, level);
-    }
+    private LivingEntityMixin(EntityType<?> entity, Level level) { super(entity, level); }
 
     /* Shadows */
 

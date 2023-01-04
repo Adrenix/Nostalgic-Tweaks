@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public abstract class CommonReflect
      * Get a class/subclass reference from the client config.
      * @param group A group type.
      * @param config A client config instance.
-     * @return A data pair with a class/subclass reference on the left and a client config instance on the right.
+     * @return A data pair with a class/subclass type on the left and a client config instance on the right.
      */
     public static Pair<Class<?>, Object> getGroupClass(TweakGroup group, ClientConfig config)
     {
@@ -49,7 +49,7 @@ public abstract class CommonReflect
 
     /**
      * Helper method for setting a field in a given class instance.
-     * @param groupClass A data pair with a class reference on the left and a class instance on the right.
+     * @param groupClass A data pair with a class type on the left and a class instance on the right.
      * @param key A config key that is available in the given class instance.
      * @param value The value to store in the config class instance.
      */
@@ -77,7 +77,7 @@ public abstract class CommonReflect
 
     /**
      * Helper method for getting a field within a given class instance.
-     * @param groupClass A data pair with a class reference on the left and a class instance on the right.
+     * @param groupClass A data pair with a class type on the left and a class instance on the right.
      * @param key A config key that is available in the given class instance.
      * @return The value stored in the class instance at the given key.
      */
@@ -111,7 +111,7 @@ public abstract class CommonReflect
      * @param <T> A class that extends the Annotation interface.
      * @return The annotation if it was found.
      */
-    @Nullable
+    @CheckForNull
     public static <T extends Annotation> T getAnnotation(TweakGroup group, String key, Class<T> annotation)
     {
         return getFieldAnnotation(group, key, annotation);
@@ -124,7 +124,7 @@ public abstract class CommonReflect
      * @param <T> The class type of annotation.
      * @return An annotation instance if it was found.
      */
-    @Nullable
+    @CheckForNull
     public static <T extends Annotation> T getAnnotation(TweakCommonCache cache, Class<T> annotation)
     {
         return getAnnotation(cache.getGroup(), cache.getKey(), annotation);
@@ -138,7 +138,7 @@ public abstract class CommonReflect
      * @param <T> A class that extends the Annotation interface.
      * @return The annotation if it was found.
      */
-    @Nullable
+    @CheckForNull
     private static <T extends Annotation> T getFieldAnnotation(TweakGroup group, String key, Class<T> annotation)
     {
         Pair<Class<?>, Object> groupClass = getGroupClass(group, DEFAULT_CONFIG);
@@ -155,7 +155,7 @@ public abstract class CommonReflect
 
     /**
      * Helper method for getting fields in a class instance.
-     * @param groupClass A data pair with a class reference on the left and a class instance on the right.
+     * @param groupClass A data pair with a class type on the left and a class instance on the right.
      * @return A map of tweaks that was found in the class/subclass.
      */
     public static HashMap<String, Object> fetchFieldsHelper(Pair<Class<?>, Object> groupClass)

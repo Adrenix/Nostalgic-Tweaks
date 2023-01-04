@@ -8,6 +8,16 @@ import net.minecraft.client.model.geom.ModelPart;
 
 public abstract class AnimationUtil
 {
+    /* Swing Animations */
+
+    /**
+     * Changes the swinging animation based on the current swing type. This is used by the old classic swing tweak since
+     * different animations played depending on whether the mouse was left-clicked or right-clicked.
+     */
+    public static SwingType swingType = SwingType.LEFT_CLICK;
+
+    /* Mob Animations */
+
     /**
      * Makes arm models parallel to the ground like in the old days.
      * @param rightArm The right arm of the model.

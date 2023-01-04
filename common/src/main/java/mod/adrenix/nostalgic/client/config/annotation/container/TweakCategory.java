@@ -12,6 +12,7 @@ public enum TweakCategory
 {
     // Sound Categories
 
+    AMBIENT_SOUND(TweakGroup.SOUND, LangUtil.Gui.SOUND_CATEGORY_AMBIENT),
     BLOCK_SOUND(TweakGroup.SOUND, LangUtil.Gui.SOUND_CATEGORY_BLOCK),
     DAMAGE_SOUND(TweakGroup.SOUND, LangUtil.Gui.SOUND_CATEGORY_DAMAGE),
     EXPERIENCE_SOUND(TweakGroup.SOUND, LangUtil.Gui.SOUND_CATEGORY_EXPERIENCE),

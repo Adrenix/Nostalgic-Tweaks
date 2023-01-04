@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.forge.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.IReequipSlot;
+import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -31,7 +31,6 @@ public abstract class ItemInHandRendererForgeMixin
     @ModifyArg
     (
         method = "renderHandsWithItems",
-        index = 8,
         at = @At
         (
             remap = false,
@@ -43,10 +42,11 @@ public abstract class ItemInHandRendererForgeMixin
     private ItemStack NT$onRenderItem(InteractionHand hand, PoseStack matrix, MultiBufferSource buffer, int packedLight, float partialTick, float interpolPitch, float swingProgress, float equipProgress, ItemStack itemStack)
     {
         LocalPlayer player = Minecraft.getInstance().player;
+
         if (player == null)
             return itemStack;
 
-        return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (IReequipSlot) player);
+        return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (SlotTracker) player);
     }
 
     /**
@@ -72,6 +72,7 @@ public abstract class ItemInHandRendererForgeMixin
     {
         if (!ModConfig.Animation.oldItemReequip())
             return ForgeHooksClient.shouldCauseReequipAnimation(from, to, slot);
+
         return true;
     }
 }

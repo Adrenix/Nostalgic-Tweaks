@@ -30,6 +30,7 @@ import java.util.function.Supplier;
  * Changes made:
  * - Cleaned up class to match codebase styling
  * - Added inferred documentation
+ * - Added backup method
  *
  * @param <T> The class type that defines config structure.
  */
@@ -60,6 +61,12 @@ public interface ConfigHolder<T extends ConfigData> extends Supplier<T>
      * @return Whether the loading process was successful.
      */
     boolean load();
+
+    /**
+     * Create a backup file which will be a verbatim copy of what is currently saved on disk.
+     * A runtime exception will be thrown if there is an IO issue.
+     */
+    void backup();
 
     /**
      * Register a listener for when the config file is saved.

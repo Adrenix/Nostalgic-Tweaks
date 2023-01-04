@@ -54,15 +54,39 @@ public abstract class LightTextureMixin
     @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
-        if (!ModConfig.Candy.oldLightRendering() || !ModConfig.Candy.oldLightColor() || !this.updateLightTexture)
-            return;
-
-        this.updateLightTexture = false;
-        this.minecraft.getProfiler().push("lightTex");
-
         ClientLevel level = this.minecraft.level;
-        if (level == null || this.minecraft.player == null)
+
+        if (level == null || this.minecraft.player == null || !this.updateLightTexture)
             return;
+
+        if (ModConfig.Candy.oldClassicLight())
+        {
+            this.minecraft.getProfiler().push("lightTex");
+            this.updateLightTexture = false;
+
+            for (int y = 0; y < 16; y++)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    if (x == 15 || y == 15)
+                        this.lightPixels.setPixelRGBA(x, y, 255 << 24 | 255 << 16 | 255 << 8 | 255);
+                    else
+                        this.lightPixels.setPixelRGBA(x, y, 255 << 24 | 153 << 16 | 153 << 8 | 153);
+                }
+            }
+
+            this.lightTexture.upload();
+            this.minecraft.getProfiler().pop();
+
+            callback.cancel();
+            return;
+        }
+
+        if (!ModConfig.Candy.oldLightRendering() || !ModConfig.Candy.oldLightColor())
+            return;
+
+        this.minecraft.getProfiler().push("lightTex");
+        this.updateLightTexture = false;
 
         double gammaSetting = this.minecraft.options.gamma().get();
         float darknessScale = this.minecraft.options.darknessEffectScale().get().floatValue();

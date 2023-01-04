@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.common.config.reflect;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import net.minecraft.network.chat.Component;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import java.lang.annotation.Annotation;
 
 /**
@@ -48,7 +48,8 @@ public abstract class TweakCommonCache
      * Some tweaks may be associated with a custom list. These lists can be used by the server, so metadata is cached
      * here if it is present.
      */
-    @Nullable protected final TweakData.List list;
+    @CheckForNull
+    protected final TweakData.List list;
 
     /* Common Constructor */
 
@@ -110,7 +111,8 @@ public abstract class TweakCommonCache
     /**
      * @return A tweak's list data if it is present.
      */
-    @Nullable public TweakData.List getList() { return this.list; }
+    @CheckForNull
+    public TweakData.List getList() { return this.list; }
 
     /* Common Methods */
 

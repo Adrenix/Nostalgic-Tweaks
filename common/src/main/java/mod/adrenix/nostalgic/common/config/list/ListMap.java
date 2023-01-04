@@ -15,6 +15,12 @@ public class ListMap<V> extends AbstractList
 {
     /* Fields */
 
+    /**
+     * The server map is used by tweaks whose lists are to be in sync with a server running Nostalgic Tweaks. The server
+     * will always use the config map. The client will use the server map when connected to a multiplayer world with the
+     * mod installed.
+     */
+    private final Map<String, V> serverMap;
     private final Map<String, V> configMap;
     private final Map<String, V> defaultMap;
     private final V resetValue;
@@ -44,6 +50,7 @@ public class ListMap<V> extends AbstractList
     {
         super(tweak, listId, listInclude, disabledDefaults);
 
+        this.serverMap = new LinkedHashMap<>();
         this.configMap = configMap;
         this.defaultMap = defaultMap;
         this.resetValue = resetValue;
@@ -59,7 +66,7 @@ public class ListMap<V> extends AbstractList
      */
     public ListMap(Tweak tweak, ListId listId, ListInclude listInclude, V resetValue, Map<String, V> configMap)
     {
-        this(tweak, listId, listInclude, resetValue, new HashMap<>(), configMap, new HashSet<>());
+        this(tweak, listId, listInclude, resetValue, new LinkedHashMap<>(), configMap, new LinkedHashSet<>());
     }
 
     /* Getters */
@@ -76,9 +83,9 @@ public class ListMap<V> extends AbstractList
      * The config map is what's currently stored on disk. The pre-programmed default config map can be restored within
      * an abstract list screen.
      *
-     * @return The configuration map that is kept on disk.
+     * @return The configuration map that is kept on disk or the map sent from a server.
      */
-    public Map<String, V> getConfigMap() { return this.configMap; }
+    public Map<String, V> getConfigMap() { return this.isServerNeeded() ? this.serverMap : this.configMap; }
 
     /**
      * The default config map is pre-programmed. This map is used by abstract list screens to restore a list to its
@@ -98,8 +105,8 @@ public class ListMap<V> extends AbstractList
     public Map.Entry<String, V> getEntryFromItem(Item item)
     {
         String resourceKey = ItemCommonUtil.getResourceKey(item);
-        List<Map.Entry<String, V>> saved = new ArrayList<>(this.configMap.entrySet());
-        List<Map.Entry<String, V>> defaults = new ArrayList<>(this.defaultMap.entrySet());
+        List<Map.Entry<String, V>> saved = new ArrayList<>(this.getConfigMap().entrySet());
+        List<Map.Entry<String, V>> defaults = new ArrayList<>(this.getDefaultMap().entrySet());
 
         for (Map.Entry<String, V> entry : saved)
         {

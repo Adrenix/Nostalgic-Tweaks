@@ -44,10 +44,7 @@ public class PacketS2CHandshake
      * Create a new handshake packet.
      * This creates a packet using the mod's current network protocol version.
      */
-    public PacketS2CHandshake()
-    {
-        this.protocol = NostalgicTweaks.PROTOCOL;
-    }
+    public PacketS2CHandshake() { this.protocol = NostalgicTweaks.PROTOCOL; }
 
     /**
      * Create a new handshake packet with a buffer.
@@ -55,10 +52,7 @@ public class PacketS2CHandshake
      *
      * @param buffer A friendly byte buffer instance.
      */
-    public PacketS2CHandshake(FriendlyByteBuf buffer)
-    {
-        this.protocol = buffer.readUtf();
-    }
+    public PacketS2CHandshake(FriendlyByteBuf buffer) { this.protocol = buffer.readUtf(); }
 
     /* Methods */
 
@@ -66,10 +60,7 @@ public class PacketS2CHandshake
      * Encode data into the packet.
      * @param buffer A friendly byte buffer instance.
      */
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeUtf(this.protocol);
-    }
+    public void encode(FriendlyByteBuf buffer) { buffer.writeUtf(this.protocol); }
 
     /**
      * Handle packet data.
@@ -104,7 +95,7 @@ public class PacketS2CHandshake
         if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
         {
             NostalgicTweaks.setNetworkVerification(true);
-            ToastNotification.addServerHandshake();
+            ToastNotification.gotServerHandshake();
 
             String info = String.format
             (
@@ -117,16 +108,17 @@ public class PacketS2CHandshake
         else
         {
             NostalgicTweaks.setNetworkVerification(false);
-            NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received incorrect protocol.");
+            NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received an incorrect protocol");
 
             String info = String.format
             (
-                "Received (%s) :: Expected (%s)",
+                "The server sent (%s) but the client has (%s)",
                 LogColor.apply(LogColor.RED, this.protocol),
                 LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
             );
 
             NostalgicTweaks.LOGGER.warn(info);
+            NostalgicTweaks.LOGGER.warn("This shouldn't happen! Continuing to play on this server is at your own risk!");
         }
     }
 }

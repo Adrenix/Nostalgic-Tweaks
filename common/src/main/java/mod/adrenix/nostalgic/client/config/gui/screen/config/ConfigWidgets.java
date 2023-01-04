@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -40,6 +41,30 @@ public class ConfigWidgets
     public static final int INPUT_HEIGHT = 18;
     public static final int INPUT_WIDTH = 196;
     public static final int TOP_ROW = 24;
+
+    /* Widget Helpers */
+
+    /**
+     * Checks if a mouse y-position is outside the config row list.
+     * @param mouseY A mouse y-position.
+     * @return Whether the mouse is outside the config row list.
+     */
+    public static boolean isOutsideRowList(double mouseY)
+    {
+        Screen screen = Minecraft.getInstance().screen;
+
+        if (screen == null)
+            return false;
+
+        return mouseY <= ROW_LIST_TOP || mouseY >= screen.height - ROW_LIST_BOTTOM_OFFSET;
+    }
+
+    /**
+     * Checks if a mouse y-position is inside the config row list.
+     * @param mouseY A mouse y-position.
+     * @return Whether the mouse is inside the config row list.
+     */
+    public static boolean isInsideRowList(double mouseY) { return !isOutsideRowList(mouseY); }
 
     /* Widget Instances */
 
@@ -495,7 +520,7 @@ public class ConfigWidgets
         }
 
         if (atTag == null || !atTag.startsWith("@"))
-            search.setValue(String.format("@%s %s", SearchTag.CLIENT, query).replaceAll("\s+", " "));
+            search.setValue(String.format("@%s %s", SearchTag.CLIENT, query).replaceAll(" +", " "));
         else
         {
             SearchTag[] searchTags = SearchTag.values();
@@ -535,7 +560,7 @@ public class ConfigWidgets
             if (next == null)
                 next = SearchTag.CLIENT;
 
-            search.setValue(("@" + next + " " + query).replaceAll("\s+", " "));
+            search.setValue(("@" + next + " " + query).replaceAll(" +", " "));
         }
     }
 
@@ -546,7 +571,7 @@ public class ConfigWidgets
      */
     private String[] getRelatedWords(TweakClientCache<?> tweak)
     {
-        return Component.translatable(tweak.getRelatedKey()).getString().toLowerCase().trim().split("\s*,\s*");
+        return Component.translatable(tweak.getRelatedKey()).getString().toLowerCase().trim().split(" *, *");
     }
 
     /**
@@ -670,7 +695,7 @@ public class ConfigWidgets
                     case CLIENT -> isTagged = tweak.isClient();
                     case SERVER -> isTagged = tweak.isServer();
                     case CONFLICT -> isTagged = tweak.getStatus() != TweakStatus.LOADED;
-                    case RESET -> isTagged = tweak.isResettable();
+                    case RESET -> isTagged = tweak.isResettable() && tweak.getList() == null;
                     case SAVE -> isTagged = tweak.isSavable();
                 }
             }
@@ -683,7 +708,7 @@ public class ConfigWidgets
             if ((!isTagged && tag != null) || (!isTagged && search.contains("@")))
                 continue;
 
-            String query = searchBuilder.toString().replaceAll("\s+", " ").trim().toLowerCase();
+            String query = searchBuilder.toString().replaceAll(" +", " ").trim().toLowerCase();
 
             // Fuzzy search or exact search - can be expanded with a tooltip bubble search
             if (this.getFuzzy().getState())

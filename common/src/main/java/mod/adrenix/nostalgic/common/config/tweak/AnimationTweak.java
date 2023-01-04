@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.common.config.tweak;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import net.fabricmc.api.EnvType;
 
 public enum AnimationTweak implements Tweak
 {
@@ -15,6 +15,7 @@ public enum AnimationTweak implements Tweak
     ITEM_SWING,
     SWING_INTERRUPT,
     SWING_DROP,
+    CLASSIC_SWING,
 
     // Item Animations
 
@@ -50,7 +51,7 @@ public enum AnimationTweak implements Tweak
     /**
      * Keeps track of whether this tweak is client or server controller.
      */
-    private NostalgicTweaks.Side side = null;
+    private EnvType env = null;
 
     /**
      * Keeps track of whether this tweak has had its enumeration queried.
@@ -69,8 +70,8 @@ public enum AnimationTweak implements Tweak
     @Override public void setKey(String key) { this.key = key; }
     @Override public String getKey() { return this.key; }
 
-    @Override public void setSide(NostalgicTweaks.Side side) { this.side = side; }
-    @Override public NostalgicTweaks.Side getSide() { return this.side; }
+    @Override public void setEnv(EnvType env) { this.env = env; }
+    @Override public EnvType getEnv() { return this.env; }
 
     @Override public void setClientCache(TweakClientCache<?> cache) { this.clientCache = cache; }
     @Override public TweakClientCache<?> getClientCache() { return this.clientCache; }

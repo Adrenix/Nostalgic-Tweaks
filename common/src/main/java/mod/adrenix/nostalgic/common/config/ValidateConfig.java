@@ -6,13 +6,13 @@ import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.auto.ConfigData;
 import mod.adrenix.nostalgic.common.config.list.ValidateList;
-import mod.adrenix.nostalgic.util.common.TextUtil;
-import mod.adrenix.nostalgic.util.common.function.TriFunction;
+import mod.adrenix.nostalgic.util.common.ColorUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class provides common validation methods for ensuring values read from a config value will not cause issues for
@@ -21,6 +21,20 @@ import java.util.HashMap;
 
 public abstract class ValidateConfig
 {
+    /* Tri-Function Validator */
+
+    /**
+     * Functional interface for validating config annotations.
+     * @param <Fields> An array of reflection fields.
+     * @param <Config> A config object.
+     * @param <Annotation> An annotation class type.
+     * @param <Result> A {@link Scan} result.
+     */
+    interface TriFunction<Fields, Config, Annotation, Result>
+    {
+        Result apply(Fields fields, Config config, Annotation annotation) throws IllegalAccessException;
+    }
+
     /* Validation Fields */
 
     /**
@@ -33,11 +47,13 @@ public abstract class ValidateConfig
      * never appear in the container within the config row list. Duplicate placement order numbers is a developer error
      * so any issues will be caught by the placement validator during development.
      */
-    private static final HashMap<String, String> TWEAK_PLACEMENT = new HashMap<>();
+    private static final Map<String, String> TWEAK_PLACEMENT = new HashMap<>();
 
     /* Scanning Messages */
 
     private static final String NO_METADATA = "NO_METADATA";
+    private static final String NO_CLASS_DATA = "NO_CLASS_DATA";
+    private static final String SKIP_HASH_MAP = "SKIPPED_HASH_MAP";
     private static final String VALIDATE_FIELD = "SHOULD_NOT_APPEAR";
     private static final String LIST_VALIDATED = "LIST_VALIDATED";
     private static final String PASSED_VALIDATION = "PASSED_VALIDATION";
@@ -124,6 +140,10 @@ public abstract class ValidateConfig
         String name = field.getName();
         Object saved = field.get(container); // This can be defined as an int or a long
 
+        // Some map based tweaks use bounded slider annotations to define bounds for entries in the map
+        if (saved instanceof Map<?, ?>)
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.LIGHT_PURPLE, SKIP_HASH_MAP));
+
         long min = slider.min();
         long max = slider.max();
         long reset = slider.reset();
@@ -170,7 +190,7 @@ public abstract class ValidateConfig
         String saved = (String) field.get(container);
         String reset = color.reset();
 
-        if (!TextUtil.isValidHexString(reset))
+        if (!ColorUtil.isValidHexString(reset))
         {
             String reason = "[%s %s]: reset is an invalid hexadecimal (reset: %s)";
             String message = String.format(reason, container.toString(), name, reset);
@@ -178,7 +198,7 @@ public abstract class ValidateConfig
             return new Pair<>(Scan.STOP, message);
         }
 
-        if (TextUtil.isValidHexString(saved))
+        if (ColorUtil.isValidHexString(saved))
             return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.GREEN, PASSED_VALIDATION));
         else
         {
@@ -331,6 +351,9 @@ public abstract class ValidateConfig
             if (result.getFirst() == Scan.STOP)
                 return result;
         }
+
+        if (container == null)
+            return new Pair<>(Scan.CONTINUE, LogColor.apply(LogColor.DARK_RED, NO_CLASS_DATA));
 
         final String CHECKED = LogColor.apply(LogColor.GOLD, container.getClass().getSimpleName());
         final String ANNOTATION = LogColor.apply(LogColor.AQUA, annotation.getSimpleName());
