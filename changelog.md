@@ -67,6 +67,9 @@ Beta.08 Changelog:
 > This embedded subcategory contains **4** new tweaks to customize overworld and nether fog colors.
 - Added new `Sky Candy > Custom Sky` embedded subcategory
 > This embedded subcategory contains **4** new tweaks to customize overworld and nether sky colors.
+- Added new `Block Candy > Old Missing Texture`
+> Brings back the old missing textures ranging from Beta 1.4 until 1.12.
+> Missing texture logic contributed by forkiesassds on GitHub.
 - Added new `Block Candy > Hitbox Outlines` subcategory
 > This category contains **5** new tweaks.
 - Added new `Hitbox Outlines` tweak: `Old Fence Outline`

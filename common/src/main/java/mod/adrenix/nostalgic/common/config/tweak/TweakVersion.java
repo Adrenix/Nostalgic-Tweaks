@@ -383,8 +383,8 @@ public abstract class TweakVersion
         public String toString() { return Component.translatable(this.langKey).getString(); }
 
         /**
-         * The default is disabled universal sky.
-         * @return A disabled default sky color enumeration value.
+         * The default is the modern missing texture.
+         * @return A disabled missing texture enumeration value.
          */
         @Override
         public MissingTexture getDisabledValue() { return MODERN; }
