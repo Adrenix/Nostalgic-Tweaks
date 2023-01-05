@@ -112,7 +112,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         this.updateItemTags();
 
-        if (TweakClientCache.get(list.getTweak()).isClient())
+        if (TweakClientCache.get(list.getTweak()).isServer())
             this.watchPermissions();
     }
 

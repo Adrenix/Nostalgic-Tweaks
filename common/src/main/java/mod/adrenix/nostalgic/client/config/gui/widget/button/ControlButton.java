@@ -1,7 +1,5 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -33,20 +31,5 @@ public class ControlButton extends Button
             title,
             onPress
         );
-    }
-
-    /**
-     * Handler method for rendering control buttons.
-     * @param poseStack The current pose stack.
-     * @param mouseX The current x-position of the mouse.
-     * @param mouseY The current y-position of the mouse.
-     * @param partialTick The change in game frame time.
-     */
-    @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
-    {
-        this.active = Overlay.getVisible() == null;
-
-        super.render(poseStack, mouseX, mouseY, partialTick);
     }
 }

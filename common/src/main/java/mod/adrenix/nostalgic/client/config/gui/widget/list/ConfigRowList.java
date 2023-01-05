@@ -964,13 +964,11 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     cacheY = widget.y + (widget instanceof EditBox ? -1 : 0);
                 }
 
-                // Render final widget
+                // Activate and render widget
                 widget.active = !Overlay.isOpened();
 
                 // Apply row locking for multiplayer
-                if (widget instanceof PermissionLock && Minecraft.getInstance().player != null)
-                    widget.active = !isRowLocked;
-                else if (isRowLocked && widget instanceof ResetButton)
+                if (widget instanceof PermissionLock && isRowLocked)
                     widget.active = false;
 
                 widget.render(poseStack, mouseX, mouseY, partialTick);
