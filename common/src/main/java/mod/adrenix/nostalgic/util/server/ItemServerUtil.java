@@ -124,8 +124,5 @@ public abstract class ItemServerUtil
      * @param item The tiered item instance to check.
      * @return Whether the tiered item instance is within the old damage map.
      */
-    public static boolean isVanillaTiered(TieredItem item)
-    {
-        return item.getTier() != null && OLD_DAMAGE.containsKey(item.getClass());
-    }
+    public static boolean isVanillaTiered(TieredItem item) { return OLD_DAMAGE.containsKey(item.getClass()); }
 }

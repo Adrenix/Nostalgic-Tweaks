@@ -13,7 +13,7 @@ N/a
 - [1.19](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19)
 - [1.19 Multiplayer](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19-multiplayer)
 
-## Fabric Mod API For Develops
+## Nostalgic Tweaks API For Developers (Fabric)
 > **ATTENTION**
 > 
 > This part of the guide is written for Fabric. For Forge, see the section below.
@@ -81,7 +81,7 @@ be seen in the mod loader's respective package. In the `fabric` root folder, it 
 `mod.adrenix.nostalgic.api`. There is also a `test` package within the `api` package if you want to see a more in-depth
 example of how to set up each event.
 
-## Forge Mod API For Developers
+## Nostalgic Tweaks API For Developers (Forge)
 > **ATTENTION**
 >
 > This part of the guide is written for Forge. For Fabric, see the section above.

@@ -611,7 +611,6 @@ public record ConfigRenderer(ConfigScreen parent)
         ArrayList<ConfigRowList.Row> rows = new ArrayList<>(groupHelp.generate());
         ConfigRowList list = this.parent.getWidgets().getConfigRowList();
 
-
         rows.add(openRow.generate());
         rows.add(backupRow.generate());
         rows.add(blank.generate());

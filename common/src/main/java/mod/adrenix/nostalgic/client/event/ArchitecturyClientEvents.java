@@ -12,7 +12,6 @@ public abstract class ArchitecturyClientEvents
     /**
      * Registers Architectury events. This is used when there is not a Fabric related event to a Forge event. In this
      * instance, using the wrapper events provided by Architectury resolves this problem.
-     *
      */
     public static void register()
     {
