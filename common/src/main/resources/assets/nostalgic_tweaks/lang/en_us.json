@@ -445,6 +445,8 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy": "Eye Candy",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion": "Fix Ambient Occlusion",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixAmbientOcclusion.@Tooltip": "Fixes ambient occlusion for broken vanilla blocks such as composters and powdered snow.",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldMissingTexture": "Old Missing Texture",
+  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldMissingTexture.@Tooltip": "Brings back the old missing textures ranging from Beta 1.4 until 1.12.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableFlowerOffset": "Disable Flower Offsets",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableFlowerOffset.@Tooltip": "Disables random offset positions for§e flower§r blocks.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableAllOffset": "Disable All Offsets",

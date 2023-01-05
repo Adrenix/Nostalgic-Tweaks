@@ -22,6 +22,7 @@ public enum CandyTweak implements Tweak
     OLD_SLAB_OUTLINE,
     FULL_BLOCK_OUTLINE,
     OLD_WALL_OUTLINE,
+    OLD_MISSING_TEXTURE,
     DISABLE_FLOWER_OFFSET,
     DISABLE_ALL_OFFSET,
 

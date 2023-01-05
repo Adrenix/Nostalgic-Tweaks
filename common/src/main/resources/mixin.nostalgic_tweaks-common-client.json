@@ -38,6 +38,7 @@
     "renderer.LightTextureMixin",
     "renderer.LiquidBlockRendererMixin",
     "renderer.LivingEntityRendererMixin",
+    "renderer.MissingTextureAtlasSpriteMixin",
     "renderer.ThrownItemRendererMixin",
     "sounds.BiomeAmbientSoundsHandlerMixin",
     "sounds.UnderwaterAmbientSoundHandlerMixin",

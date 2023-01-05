@@ -351,4 +351,42 @@ public abstract class TweakVersion
         @Override
         public SkyColor getDisabledValue() { return DISABLED; }
     }
+
+    /**
+     * The missing texture enumeration is used by the missing texture tweak. This tweak was contributed by
+     * forkiesassds on GitHub.
+     */
+    public enum MissingTexture implements DisabledTweak<MissingTexture>
+    {
+        /* Enumerations */
+
+        MODERN(Generic.MODERN.getLangKey()),
+        BETA(Generic.BETA.getLangKey()),
+        R15("§61.5§r"),
+        R16_R112("§61.6§r - §61.12");
+
+        /* Fields */
+
+        private final String langKey;
+
+        /* Constructor */
+
+        MissingTexture(String langKey) { this.langKey = langKey; }
+
+        /* Methods */
+
+        /**
+         * Overrides the toString method so that it returns a translation.
+         * @return A translation from a language file.
+         */
+        @Override
+        public String toString() { return Component.translatable(this.langKey).getString(); }
+
+        /**
+         * The default is disabled universal sky.
+         * @return A disabled default sky color enumeration value.
+         */
+        @Override
+        public MissingTexture getDisabledValue() { return MODERN; }
+    }
 }

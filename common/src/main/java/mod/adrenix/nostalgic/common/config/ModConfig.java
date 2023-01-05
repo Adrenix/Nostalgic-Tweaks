@@ -276,6 +276,7 @@ public abstract class ModConfig
         /* Boolean Tweaks */
 
         // Block Candy
+        public static TweakVersion.MissingTexture oldMissingTexture() { return getEnum(CandyTweak.OLD_MISSING_TEXTURE, CANDY.oldMissingTexture); }
         public static boolean fixAmbientOcclusion() { return getBoolTweak(CandyTweak.FIX_AO, CANDY.fixAmbientOcclusion); }
         public static boolean disableFlowerOffset() { return getBoolTweak(CandyTweak.DISABLE_FLOWER_OFFSET, CANDY.disableFlowerOffset); }
         public static boolean disableAllOffset() { return getBoolTweak(CandyTweak.DISABLE_ALL_OFFSET, CANDY.disableAllOffset); }

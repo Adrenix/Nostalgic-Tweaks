@@ -280,6 +280,14 @@ public class ClientConfig implements ConfigData
         public boolean disableFlowerOffset = DefaultConfig.Candy.DISABLE_FLOWER_OFFSET;
         static { CandyTweak.DISABLE_FLOWER_OFFSET.setKey("disableFlowerOffset"); }
 
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Category(container = TweakCategory.BLOCK_CANDY)
+        @TweakReload.Resources
+        public TweakVersion.MissingTexture oldMissingTexture = DefaultConfig.Candy.OLD_MISSING_TEXTURE;
+        static { CandyTweak.OLD_MISSING_TEXTURE.setKey("oldMissingTexture"); }
+
         // Block - Hitbox Outlines
 
         @TweakGui.New

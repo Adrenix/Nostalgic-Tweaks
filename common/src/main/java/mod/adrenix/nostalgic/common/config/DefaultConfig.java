@@ -61,6 +61,7 @@ public abstract class DefaultConfig
     public static class Candy
     {
         // Block Candy
+        public static final TweakVersion.MissingTexture OLD_MISSING_TEXTURE = TweakVersion.MissingTexture.MODERN;
         public static final boolean DISABLE_ALL_OFFSET = false;
         public static final boolean DISABLE_FLOWER_OFFSET = true;
         public static final boolean FIX_AMBIENT_OCCLUSION = true;
