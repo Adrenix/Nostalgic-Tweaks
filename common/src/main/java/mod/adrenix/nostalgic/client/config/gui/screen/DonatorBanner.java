@@ -16,6 +16,7 @@ import javax.annotation.CheckForNull;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -80,8 +81,9 @@ public class DonatorBanner
 
     /* Fields */
 
-    private final Font font;
+    private final Font font = Minecraft.getInstance().font;
     private float messageX = 0.0F;
+    private int messageWidth = 0;
     private boolean isRunning = false;
 
     /* Constructor */
@@ -100,7 +102,7 @@ public class DonatorBanner
             this.connect();
         }
 
-        this.font = Minecraft.getInstance().font;
+        this.build();
     }
 
     /**
@@ -145,7 +147,7 @@ public class DonatorBanner
     }
 
     /**
-     * Creates the supporter message for this instance.
+     * Creates the supporter message and message width cache for this banner instance.
      */
     private void build()
     {
@@ -157,6 +159,13 @@ public class DonatorBanner
 
         for (Map.Entry<String, String> supporter : fromJson.entrySet())
             DonatorBanner.SUPPORTERS.add(ComponentUtil.color(supporter.getKey(), ColorUtil.toHexInt(supporter.getValue())));
+
+        Collections.shuffle(DonatorBanner.SUPPORTERS);
+
+        this.messageWidth = 0;
+
+        for (MutableComponent supporter : DonatorBanner.SUPPORTERS)
+            this.messageWidth += this.font.width(supporter) + this.font.width(NAME_SPACER);
     }
 
     /**
@@ -203,31 +212,41 @@ public class DonatorBanner
             return;
         }
 
-        int messageWith = 0;
-
-        for (MutableComponent supporter : DonatorBanner.SUPPORTERS)
-            messageWith += this.font.width(supporter) + this.font.width(NAME_SPACER);
-
-        float moveTowards = -messageWith;
+        float startX = getWidth() + 15.0F;
+        float offset = MathUtil.isOdd(getWidth()) ? 0.0F : 0.1F;
 
         if (!this.isRunning)
         {
-            this.messageX = getWidth() + 15.0F;
+            this.messageX = startX;
             this.isRunning = true;
         }
 
-        if (this.messageX <= moveTowards)
+        if (this.messageX <= -this.messageWidth)
+        {
             this.isRunning = false;
+            this.build();
+        }
 
-        this.messageX = MathUtil.moveTowards(this.messageX, moveTowards, partialTick);
+        this.messageX -= (1.2F + (1.0F / 3.0F)) * partialTick;
         float currentX = this.messageX;
 
         for (MutableComponent supporter : DonatorBanner.SUPPORTERS)
         {
-            RenderUtil.blit256(ModUtil.Resource.WIDGETS_LOCATION, poseStack, currentX - 12.5F, messageY, 0, 32, 9, 9);
+            if (currentX > startX)
+                break;
+
+            int width = this.font.width(supporter) + this.font.width(NAME_SPACER);
+
+            if (currentX + width < 0)
+            {
+                currentX += width;
+                continue;
+            }
+
+            RenderUtil.blit256(ModUtil.Resource.WIDGETS_LOCATION, poseStack, currentX - 12.5F + offset, messageY, 0, 32, 9, 9);
             this.font.drawShadow(poseStack, supporter, currentX, messageY, 0xFFFFFF);
 
-            currentX += this.font.width(supporter) + this.font.width(NAME_SPACER);
+            currentX += width;
         }
     }
 }
