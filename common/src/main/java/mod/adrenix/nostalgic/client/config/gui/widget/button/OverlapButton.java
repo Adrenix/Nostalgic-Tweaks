@@ -179,7 +179,7 @@ public class OverlapButton extends Button
 
         if (this.isListButton)
         {
-            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
             blit(poseStack, this.x, this.y, this.isHovered && this.active ? 20 : 0, 163, 20, 20);
         }
     }

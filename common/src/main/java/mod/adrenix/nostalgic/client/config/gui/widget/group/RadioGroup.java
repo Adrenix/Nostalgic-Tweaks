@@ -213,7 +213,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
         @Override
         public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
         {
-            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
             Minecraft minecraft = Minecraft.getInstance();
             Screen screen = minecraft.screen;

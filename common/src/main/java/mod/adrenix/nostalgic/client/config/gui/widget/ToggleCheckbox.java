@@ -150,7 +150,7 @@ public class ToggleCheckbox extends Checkbox
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
         int uOffset = 0;
         int vOffset = 103;

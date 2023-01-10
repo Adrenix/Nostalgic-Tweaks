@@ -243,7 +243,7 @@ public class DonatorBanner
                 continue;
             }
 
-            RenderUtil.blit256(TextureLocation.WIDGETS_LOCATION, poseStack, currentX - 12.5F + offset, messageY, 0, 32, 9, 9);
+            RenderUtil.blit256(TextureLocation.WIDGETS, poseStack, currentX - 12.5F + offset, messageY, 0, 32, 9, 9);
             this.font.drawShadow(poseStack, supporter, currentX, messageY, 0xFFFFFF);
 
             currentX += width;

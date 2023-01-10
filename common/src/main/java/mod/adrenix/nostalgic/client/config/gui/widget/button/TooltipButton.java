@@ -62,7 +62,7 @@ public class TooltipButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
         List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(this.tweak.getTooltipKey()), 38);
         Minecraft minecraft = Minecraft.getInstance();

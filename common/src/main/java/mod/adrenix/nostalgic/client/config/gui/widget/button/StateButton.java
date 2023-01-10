@@ -166,7 +166,7 @@ public class StateButton extends OverlapButton
     {
         super.renderButton(poseStack, mouseX, mouseY, partialTick);
 
-        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
         int uOffset = this.state ? 0 : 20;
         int blockX = this.x + 2;

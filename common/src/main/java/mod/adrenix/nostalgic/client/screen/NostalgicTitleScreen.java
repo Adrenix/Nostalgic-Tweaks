@@ -684,7 +684,7 @@ public class NostalgicTitleScreen extends TitleScreen
             if (pass == 0)
             {
                 RenderSystem.setShader(GameRenderer::getRendertypeCutoutShader);
-                RenderSystem.setShaderTexture(0, TextureLocation.BLACK_RESOURCE);
+                RenderSystem.setShaderTexture(0, TextureLocation.BLOCK_SHADOW);
             }
             else
             {

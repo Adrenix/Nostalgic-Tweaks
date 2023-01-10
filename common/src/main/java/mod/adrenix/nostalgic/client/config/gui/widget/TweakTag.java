@@ -133,7 +133,7 @@ public class TweakTag extends AbstractWidget
      */
     public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
-        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
         Font font = Minecraft.getInstance().font;
 
         int tagWidth = font.width(tag);

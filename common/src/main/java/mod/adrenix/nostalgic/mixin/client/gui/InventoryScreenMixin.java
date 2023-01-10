@@ -52,7 +52,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TextureLocation.OLD_INVENTORY);
+        RenderSystem.setShaderTexture(0, TextureLocation.INVENTORY);
     }
 
     @Unique

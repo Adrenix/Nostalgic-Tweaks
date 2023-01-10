@@ -55,7 +55,7 @@ public abstract class GuiUtil
             18,
             178,
             20,
-            TextureLocation.OLD_INVENTORY,
+            TextureLocation.INVENTORY,
             (button) ->
             {
                 parent.onPress();
@@ -80,7 +80,7 @@ public abstract class GuiUtil
             10,
             178,
             0,
-            TextureLocation.OLD_INVENTORY,
+            TextureLocation.INVENTORY,
             (button) ->
             {
                 parent.onPress();

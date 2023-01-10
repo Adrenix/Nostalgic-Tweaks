@@ -875,7 +875,7 @@ public class ConfigScreen extends Screen
 
         // Magnifying Glass Icon
 
-        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
 
         // Finish Screen Rendering
