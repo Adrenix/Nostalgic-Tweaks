@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.forge.mixin.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.forge.event.client.GuiEvents;
-import mod.adrenix.nostalgic.mixin.duck.GuiForgeOffset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -53,26 +52,14 @@ public abstract class ForgeGuiMixin
             target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"
         )
     )
-    private void NT$onRender(PoseStack poseStack, float partialTick, CallbackInfo callback)
+    private void NT$onBeforeEventPost(PoseStack poseStack, float partialTick, CallbackInfo callback)
     {
         if (isRendererBlocked())
         {
-            int height = ModConfig.Gameplay.disableExperienceBar() ? 32 : 39;
-            this.rightHeight = height;
-            this.leftHeight = height;
+            int offset = ModConfig.Gameplay.disableExperienceBar() ? 7 : 0;
+            this.rightHeight -= offset;
+            this.leftHeight -= offset;
         }
-    }
-
-    /**
-     * Prevents the Forge rendering of hearts so that the order of rendering can be controlled by the mod's HUD overlay
-     * rendering event handler.
-     *
-     * Controlled by whether the overlay is blocked from rendering.
-     */
-    @Inject(method = "renderHealth", remap = false, at = @At("RETURN"))
-    private void NT$onRenderHealth(int width, int height, PoseStack poseStack, CallbackInfo callback)
-    {
-        this.leftHeight = ((GuiForgeOffset) this).NT$getLeft();
     }
 
     /**

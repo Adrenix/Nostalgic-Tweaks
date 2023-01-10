@@ -6,7 +6,6 @@ import mod.adrenix.nostalgic.api.ClientEventFactory;
 import mod.adrenix.nostalgic.api.event.HudEvent;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.mixin.duck.GuiForgeOffset;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Options;
@@ -25,12 +24,16 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(Gui.class)
-public abstract class GuiMixin extends GuiComponent implements GuiForgeOffset
+/**
+ * All the mixins applied to this class are done at the absolute last possible time.
+ * Giving the priority flag the max integer value ensures our changes are applied last.
+ */
+
+@Mixin(value = Gui.class, priority = Integer.MAX_VALUE)
+public abstract class GuiMixin extends GuiComponent
 {
     /* Trackers */
 
-    @Unique private int NT$leftForgeOffset = 0;
     @Unique private int NT$leftHeight = 39;
     @Unique private int NT$rightHeight = 39;
     @Unique private int NT$heartIndex = -1;
@@ -42,15 +45,6 @@ public abstract class GuiMixin extends GuiComponent implements GuiForgeOffset
     @Shadow protected abstract Player getCameraPlayer();
     @Shadow private int screenWidth;
     @Shadow private int screenHeight;
-
-    /* Implementation */
-
-    /**
-     * Get the current height offset for the left side of the HUD.
-     * @return Current left height offset.
-     */
-    @Override
-    public int NT$getLeft() { return this.NT$leftForgeOffset; }
 
     /* Injections */
 
@@ -136,22 +130,18 @@ public abstract class GuiMixin extends GuiComponent implements GuiForgeOffset
     */
 
     /**
-     * @return A starting y-position based on whether the experience bar is enabled.
+     * Gets the starting y-position of the hotbar. Since our mixin is applied last, this receives the value modified by
+     * any other mods first.
      */
-    private static int getStartHeight()
+    @ModifyArg(method = "renderHotbar", index = 2, at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"))
+    private int NT$onRenderHotbar(int y)
     {
-        return ModConfig.Gameplay.disableExperienceBar() ? 32 : 39;
-    }
+        int height = this.screenHeight - y + 10;
+        int offset = ModConfig.Gameplay.disableExperienceBar() ? 0 : 7;
+        this.NT$leftHeight = height + offset;
+        this.NT$rightHeight = height + offset;
 
-    /**
-     * Resets the left/right offset trackers when the in-game HUD is rendered.
-     */
-    @Inject(method = "renderPlayerHealth", at = @At("HEAD"))
-    private void NT$onRenderHud(PoseStack poseStack, CallbackInfo callback)
-    {
-        int height = GuiMixin.getStartHeight();
-        this.NT$leftHeight = height;
-        this.NT$rightHeight = height;
+        return y;
     }
 
     /**
@@ -169,14 +159,10 @@ public abstract class GuiMixin extends GuiComponent implements GuiForgeOffset
         int healthRows = Mth.ceil((healthMax + (float) absorb) / 2.0F / 10.0F);
         int rowHeight = Math.max(10 - (healthRows - 2), 3);
 
-        this.NT$leftForgeOffset = GuiMixin.getStartHeight() + (healthRows * rowHeight);
         this.NT$leftHeight += healthRows * rowHeight;
 
         if (rowHeight != 10)
-        {
-            this.NT$leftForgeOffset += 10 - rowHeight;
             this.NT$leftHeight += 10 - rowHeight;
-        }
     }
 
     /**
