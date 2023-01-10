@@ -13,8 +13,8 @@ import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -133,7 +133,7 @@ public class TweakTag extends AbstractWidget
      */
     public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
         Font font = Minecraft.getInstance().font;
 
         int tagWidth = font.width(tag);

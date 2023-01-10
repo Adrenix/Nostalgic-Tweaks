@@ -7,8 +7,8 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
@@ -52,7 +52,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.OLD_INVENTORY);
+        RenderSystem.setShaderTexture(0, TextureLocation.OLD_INVENTORY);
     }
 
     @Unique

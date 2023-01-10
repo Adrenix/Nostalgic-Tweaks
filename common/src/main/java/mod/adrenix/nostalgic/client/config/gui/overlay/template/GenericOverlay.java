@@ -7,10 +7,7 @@ import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.OverlayFlag;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 
@@ -230,7 +227,7 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
     public void renderCloseButton(PoseStack poseStack, int mouseX, int mouseY)
     {
         RenderSystem.enableTexture();
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
+        RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int closeX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth();
         int closeY = (int) this.y + 4;
@@ -259,7 +256,7 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
     public void renderHintButton(PoseStack poseStack, int mouseX, int mouseY)
     {
         RenderSystem.enableTexture();
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
+        RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int hintX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth() - 10;
         int hintY = (int) this.y + 4;
@@ -286,7 +283,7 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
     public void renderBorder(PoseStack poseStack)
     {
         RenderSystem.enableTexture();
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.CATEGORY_LIST);
+        RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int startX = (int) this.x;
         int startY = (int) this.y;

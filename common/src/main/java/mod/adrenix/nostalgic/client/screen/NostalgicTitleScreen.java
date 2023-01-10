@@ -16,7 +16,7 @@ import mod.adrenix.nostalgic.mixin.widen.TitleScreenAccessor;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
@@ -253,7 +253,7 @@ public class NostalgicTitleScreen extends TitleScreen
         else
         {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, ModUtil.Resource.MINECRAFT_LOGO);
+            RenderSystem.setShaderTexture(0, TextureLocation.MINECRAFT_LOGO);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int width = this.width / 2 - 137;
@@ -684,7 +684,7 @@ public class NostalgicTitleScreen extends TitleScreen
             if (pass == 0)
             {
                 RenderSystem.setShader(GameRenderer::getRendertypeCutoutShader);
-                RenderSystem.setShaderTexture(0, ModUtil.Resource.BLACK_RESOURCE);
+                RenderSystem.setShaderTexture(0, TextureLocation.BLACK_RESOURCE);
             }
             else
             {

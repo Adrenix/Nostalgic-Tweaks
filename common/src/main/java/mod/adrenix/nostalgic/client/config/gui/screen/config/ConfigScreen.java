@@ -23,8 +23,8 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.client.RunUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.*;
@@ -875,7 +875,7 @@ public class ConfigScreen extends Screen
 
         // Magnifying Glass Icon
 
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
 
         // Finish Screen Rendering

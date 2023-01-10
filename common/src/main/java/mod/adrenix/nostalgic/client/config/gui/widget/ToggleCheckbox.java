@@ -4,8 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
@@ -150,7 +150,7 @@ public class ToggleCheckbox extends Checkbox
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
 
         int uOffset = 0;
         int vOffset = 103;

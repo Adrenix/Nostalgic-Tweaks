@@ -18,14 +18,16 @@ import java.util.ArrayList;
 public abstract class RunUtil
 {
     /**
-     * On-save Runnables:
-     *
+     * Used in loops that want to "simulate" work being done.
+     * This is used in the progress screen.
+     */
+    public static void nothing() {}
+
+    /**
      * This is an array list of functions to run after the user updates the config values saved on disk.
      * The standard runnables are defined in the static block below. Other runnables are defined elsewhere.
      */
     public static final ArrayList<Runnable> onSave = new ArrayList<>();
-
-    /* Standard Reload States */
 
     /**
      * This flag controls whether chunks should be reloaded after the config has been saved.
@@ -39,7 +41,7 @@ public abstract class RunUtil
      */
     public static boolean reloadResources = false;
 
-    /* Standard Reload Runnable */
+    /* Standard Reload Runnables */
     static
     {
         onSave.add(() ->

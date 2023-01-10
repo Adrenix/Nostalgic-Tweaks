@@ -6,10 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
-import mod.adrenix.nostalgic.util.common.TextUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -65,7 +62,7 @@ public class TooltipButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
 
         List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(this.tweak.getTooltipKey()), 38);
         Minecraft minecraft = Minecraft.getInstance();

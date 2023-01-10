@@ -6,7 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -179,7 +179,7 @@ public class OverlapButton extends Button
 
         if (this.isListButton)
         {
-            RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
             blit(poseStack, this.x, this.y, this.isHovered && this.active ? 20 : 0, 163, 20, 20);
         }
     }

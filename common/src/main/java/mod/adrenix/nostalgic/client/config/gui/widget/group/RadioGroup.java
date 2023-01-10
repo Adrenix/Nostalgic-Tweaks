@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -213,7 +213,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
         @Override
         public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
         {
-            RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+            RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
 
             Minecraft minecraft = Minecraft.getInstance();
             Screen screen = minecraft.screen;

@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.widen.ProgressScreenAccessor;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ProgressScreen;
@@ -204,7 +204,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
             double wait = (long) ((Math.random()) + (pause > this.pauseTicking ? Math.random() * 1000 : 0));
 
             while (Util.getMillis() - start < wait)
-                ModUtil.Run.nothing();
+                RunUtil.nothing();
 
             this.progress++;
 

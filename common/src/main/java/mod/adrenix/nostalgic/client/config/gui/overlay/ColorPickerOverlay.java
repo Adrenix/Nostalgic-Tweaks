@@ -196,7 +196,7 @@ public class ColorPickerOverlay extends Overlay
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.COLOR_PICKER);
+        RenderSystem.setShaderTexture(0, TextureLocation.COLOR_PICKER);
 
         blit(poseStack, startX, startY, 0, 0, this.width, this.height);
         blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);

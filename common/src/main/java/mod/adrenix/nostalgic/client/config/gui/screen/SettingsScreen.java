@@ -9,10 +9,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
-import mod.adrenix.nostalgic.util.common.LangUtil;
-import mod.adrenix.nostalgic.util.common.LinkLocation;
-import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -395,7 +392,7 @@ public class SettingsScreen extends Screen
         this.spinner.render(poseStack, gearX, gearY);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.NOSTALGIC_LOGO);
+        RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_LOGO);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         float titleScale = 0.03325F;

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -250,7 +250,7 @@ public class ContainerButton extends Button
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
         Minecraft minecraft = Minecraft.getInstance();
         Screen screen = minecraft.screen;
 

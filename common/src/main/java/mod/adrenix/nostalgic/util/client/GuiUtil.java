@@ -10,7 +10,7 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.WidgetManager;
 import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
 import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
-import mod.adrenix.nostalgic.util.common.ModUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.ImageButton;
@@ -55,7 +55,7 @@ public abstract class GuiUtil
             18,
             178,
             20,
-            ModUtil.Resource.OLD_INVENTORY,
+            TextureLocation.OLD_INVENTORY,
             (button) ->
             {
                 parent.onPress();
@@ -80,7 +80,7 @@ public abstract class GuiUtil
             10,
             178,
             0,
-            ModUtil.Resource.OLD_INVENTORY,
+            TextureLocation.OLD_INVENTORY,
             (button) ->
             {
                 parent.onPress();

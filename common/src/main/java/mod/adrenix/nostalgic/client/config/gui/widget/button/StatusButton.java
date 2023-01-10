@@ -148,7 +148,7 @@ public class StatusButton extends Button
         int xStart = this.anchor.x - ConfigRowList.ROW_WIDGET_GAP - uWidth;
         int yStart = this.anchor.y;
 
-        RenderSystem.setShaderTexture(0, ModUtil.Resource.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS_LOCATION);
         StatusButton.update();
 
         if (isStatusProblem && !flipState)
