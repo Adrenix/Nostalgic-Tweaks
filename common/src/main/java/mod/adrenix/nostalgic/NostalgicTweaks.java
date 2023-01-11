@@ -129,7 +129,7 @@ public class NostalgicTweaks
     /**
      * This is the mod's network current protocol version. If there are any changes made to the mod's network code that
      * will cause communication issues with older versions of the mod, then this value needs bumped up. Typically,
-     * changes such as new or removed packets and changes in tweak data serialization will require a bump.
+     * changes made to network packets and/or changes in tweak data serialization will require a bump.
      */
     public static final String PROTOCOL = "1.2";
 

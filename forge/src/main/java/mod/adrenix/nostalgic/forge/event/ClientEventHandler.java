@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.forge.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientKeyMapping;
+import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
 import mod.adrenix.nostalgic.forge.event.client.CandyEvents;
 import mod.adrenix.nostalgic.forge.event.client.GuiEvents;
@@ -30,6 +31,7 @@ public abstract class ClientEventHandler
         {
             KeyUtil.onOpenConfig(ClientKeyMapping.CONFIG_KEY);
             KeyUtil.onToggleFog(ClientKeyMapping.FOG_KEY);
+            NostalgicToast.tick();
         }
     }
 

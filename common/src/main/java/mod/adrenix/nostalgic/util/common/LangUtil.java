@@ -119,12 +119,14 @@ public abstract class LangUtil
         public static final String OVERLAY_INPUT_TIP = "gui.nostalgic_tweaks.overlay.input.@Tooltip";
         public static final String OVERLAY_DRAG_TIP = "gui.nostalgic_tweaks.overlay.drag.@Tooltip";
 
-        public static final String TOAST_TWEAK_UPDATE_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_update_header";
-        public static final String TOAST_TWEAK_UPDATE_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_update_body";
-        public static final String TOAST_TWEAK_SENT_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_sent_header";
-        public static final String TOAST_TWEAK_SENT_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_sent_body";
-        public static final String TOAST_SYNC_HEADER = "gui.nostalgic_tweaks.settings.toast.tweak_sync_header";
-        public static final String TOAST_SYNC_BODY = "gui.nostalgic_tweaks.settings.toast.tweak_sync_body";
+        public static final String TOAST_WELCOME_TITLE = "gui.nostalgic_tweaks.toast.welcome_title";
+        public static final String TOAST_WELCOME_MESSAGE = "gui.nostalgic_tweaks.toast.welcome_message";
+        public static final String TOAST_TWEAK_S2C_TITLE = "gui.nostalgic_tweaks.toast.tweak_s2c_title";
+        public static final String TOAST_TWEAK_S2C_MESSAGE = "gui.nostalgic_tweaks.toast.tweak_s2c_message";
+        public static final String TOAST_TWEAK_C2S_TITLE = "gui.nostalgic_tweaks.toast.tweak_c2s_title";
+        public static final String TOAST_TWEAK_C2S_MESSAGE = "gui.nostalgic_tweaks.toast.tweak_c2s_message";
+        public static final String TOAST_HANDSHAKE_TITLE = "gui.nostalgic_tweaks.toast.handshake_title";
+        public static final String TOAST_HANDSHAKE_MESSAGE = "gui.nostalgic_tweaks.toast.handshake_message";
 
         public static final String SETTINGS_PRESETS = "gui.nostalgic_tweaks.settings.presets";
         public static final String SETTINGS_TITLE = "gui.nostalgic_tweaks.settings.title";

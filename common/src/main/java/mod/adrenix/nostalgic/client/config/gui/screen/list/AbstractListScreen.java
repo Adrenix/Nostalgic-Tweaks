@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.client.config.gui.overlay.*;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;

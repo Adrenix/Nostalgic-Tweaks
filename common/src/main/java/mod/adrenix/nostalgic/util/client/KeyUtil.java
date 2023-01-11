@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utility class for the mod's available key mappings.
@@ -94,14 +95,14 @@ public abstract class KeyUtil
     /**
      * Finds a key mapping based on the given <code>langKey</code>
      * @param langKey The key to search for in the game's key mappings.
-     * @return A key mapping if one was found, <code>null</code> otherwise.
+     * @return A key mapping if one was found.
      */
-    public static KeyMapping find(String langKey)
+    public static Optional<KeyMapping> find(String langKey)
     {
         KeyMapping cache = MAPPING_CACHE.get(langKey);
 
         if (cache != null)
-            return cache;
+            return Optional.of(cache);
 
         KeyMapping[] allMappings = Minecraft.getInstance().options.keyMappings;
 
@@ -110,11 +111,11 @@ public abstract class KeyUtil
             if (keyMapping.getName().equals(langKey))
             {
                 MAPPING_CACHE.put(langKey, keyMapping);
-                return keyMapping;
+                return Optional.of(keyMapping);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**

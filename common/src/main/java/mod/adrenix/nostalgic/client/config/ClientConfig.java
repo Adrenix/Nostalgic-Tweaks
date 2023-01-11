@@ -2572,6 +2572,13 @@ public class ClientConfig implements ConfigData
     public static class Gui
     {
         /**
+         * Control flag that determines if the user has successfully interacted with the tutorial toast.
+         * If so, then the toast will not appear the next time a title screen is displayed.
+         */
+        @TweakData.Ignore
+        public boolean interactedWithConfig = false;
+
+        /**
          * Control flag that determines if the donator banner is displayed when the settings screen is opened.
          * This field is saved when the banner toggle button is clicked.
          */

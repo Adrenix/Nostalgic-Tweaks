@@ -6,6 +6,8 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastId;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
@@ -47,7 +49,6 @@ public class SettingsScreen extends Screen
     protected final Minecraft minecraft;
     private final Screen parent;
     private final ArrayList<Button> buttons = new ArrayList<>();
-    private final GearSpinner spinner = new GearSpinner();
     private DonatorBanner banner;
     private boolean isRedirected;
     private boolean isMouseOverSupportToggle = false;
@@ -68,6 +69,14 @@ public class SettingsScreen extends Screen
         this.minecraft = Minecraft.getInstance();
         this.isRedirected = isRedirected;
         this.banner = new DonatorBanner();
+
+        if (!ClientConfigCache.getGui().interactedWithConfig)
+        {
+            ClientConfigCache.getGui().interactedWithConfig = true;
+            ClientConfigCache.save();
+
+            NostalgicToast.getInstance(ToastId.WELCOME).close();
+        }
     }
 
     /**
@@ -389,7 +398,7 @@ public class SettingsScreen extends Screen
         int titleX = this.width / 2 - 130;
         int titleY = (this.height / 4 - 25);
 
-        this.spinner.render(poseStack, gearX, gearY);
+        GearSpinner.getInstance().render(poseStack, 44.279F, gearX, gearY);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_LOGO);

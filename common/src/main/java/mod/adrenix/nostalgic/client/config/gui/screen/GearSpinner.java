@@ -23,9 +23,9 @@ public class GearSpinner
     private final TimeWatcher timer;
     private int frame;
 
-    /* Constructor */
+    /* Singleton Construction */
 
-    public GearSpinner()
+    private GearSpinner()
     {
         this.timer = new TimeWatcher(30L);
         this.frame = 0;
@@ -39,15 +39,27 @@ public class GearSpinner
         }
     }
 
+    /**
+     * Singleton instance of the gear spinner.
+     */
+    private final static GearSpinner GEAR_SPINNER = new GearSpinner();
+
+    /**
+     * The spinner is used by the settings screen and nostalgic toasts.
+     * @return The singleton gear spinner instance.
+     */
+    public static GearSpinner getInstance() { return GEAR_SPINNER; }
+
     /* Methods */
 
     /**
      * Render the spinning gear logo.
      * @param poseStack The current pose stack.
+     * @param scale The scale of the gear.
      * @param x The starting x-position of where to render the gear logo.
      * @param y The starting y-position of where to render the gear logo.
      */
-    public void render(PoseStack poseStack, int x, int y)
+    public void render(PoseStack poseStack, float scale, int x, int y)
     {
         if (this.frame > 15)
             this.frame = 0;
@@ -56,7 +68,7 @@ public class GearSpinner
         RenderSystem.setShaderTexture(0, GEAR_RESOURCE.get(this.frame));
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        float gearScale = 44.279F / 512.0F;
+        float gearScale = scale / 512.0F;
 
         poseStack.pushPose();
         poseStack.translate(x, y, 1.0D);

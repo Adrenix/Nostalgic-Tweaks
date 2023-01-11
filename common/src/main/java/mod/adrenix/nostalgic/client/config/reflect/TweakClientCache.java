@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.reflect;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
-import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;

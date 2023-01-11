@@ -1,0 +1,279 @@
+package mod.adrenix.nostalgic.client.config.gui.toast;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.client.config.gui.screen.GearSpinner;
+import mod.adrenix.nostalgic.util.client.RenderUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
+import mod.adrenix.nostalgic.util.common.TimeWatcher;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.toasts.Toast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
+
+import javax.annotation.CheckForNull;
+import java.util.List;
+
+public class NostalgicToast implements Toast
+{
+    /* Singleton References */
+
+    private final static NostalgicToast WELCOME = new NostalgicToast(ToastId.WELCOME);
+    private final static NostalgicToast HANDSHAKE = new NostalgicToast(ToastId.HANDSHAKE);
+    private final static NostalgicToast TWEAK_C2S = new NostalgicToast(ToastId.TWEAK_C2S);
+    private final static NostalgicToast TWEAK_S2C = new NostalgicToast(ToastId.TWEAK_S2C);
+
+    /**
+     * Get a nostalgic toast singleton reference based on the given toast identifier.
+     * @param id A toast identifier enumeration value.
+     * @return A nostalgic toast singleton instance.
+     */
+    public static NostalgicToast getInstance(ToastId id)
+    {
+        return switch (id)
+        {
+            case WELCOME -> WELCOME;
+            case HANDSHAKE -> HANDSHAKE;
+            case TWEAK_C2S -> TWEAK_C2S;
+            case TWEAK_S2C -> TWEAK_S2C;
+        };
+    }
+
+    /**
+     * Utility method that will run at the end of each client tick that will check if certain conditions are met so that
+     * a toast can be opened or closed.
+     */
+    public static void tick()
+    {
+        if (!NostalgicToast.isInitialized)
+            return;
+
+        Screen screen = Minecraft.getInstance().screen;
+
+        if (WELCOME.isClosed() && screen == null)
+            return;
+
+        if (WELCOME.isClosed() && screen instanceof TitleScreen && !ClientConfigCache.getGui().interactedWithConfig)
+            WELCOME.open();
+
+        if (WELCOME.isOpened() && ClassUtil.isNotInstanceOf(screen, TitleScreen.class))
+            WELCOME.close();
+    }
+
+    /* Initialization */
+
+    /**
+     * Tracks whether the mod's toast system is initialized and ready to show toasts.
+     */
+    private static boolean isInitialized = false;
+
+    /**
+     * Set the mod's toast system as initialized.
+     * This should be done after the game has finished loading assets.
+     */
+    public static void init() { NostalgicToast.isInitialized = true; }
+
+    /* Fields */
+
+    @CheckForNull
+    private TimeWatcher timer = null;
+    private final Font font = Minecraft.getInstance().font;
+    private final ToastId id;
+    private int width;
+    private Component title;
+    private List<FormattedCharSequence> messageLines;
+    private boolean isVisible = false;
+
+    /* Constructor */
+
+    /**
+     * Create a new nostalgic toast instance.
+     * @param id A toast identifier enumeration value.
+     */
+    private NostalgicToast(ToastId id)
+    {
+        this.id = id;
+        this.setup();
+    }
+
+    /* Methods */
+
+    /**
+     * Sets the toast's title and message body.
+     */
+    private void setup()
+    {
+        this.title = switch (this.id)
+        {
+            case WELCOME -> Component.translatable(LangUtil.Gui.TOAST_WELCOME_TITLE);
+            case HANDSHAKE -> Component.translatable(LangUtil.Gui.TOAST_HANDSHAKE_TITLE);
+            case TWEAK_C2S -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_C2S_TITLE);
+            case TWEAK_S2C -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_S2C_TITLE);
+        };
+
+        String version = ChatFormatting.GOLD + NostalgicTweaks.getTinyVersion();
+
+        Component message = switch (this.id)
+        {
+            case WELCOME -> Component.translatable(LangUtil.Gui.TOAST_WELCOME_MESSAGE, version);
+            case HANDSHAKE -> Component.translatable(LangUtil.Gui.TOAST_HANDSHAKE_MESSAGE, "x.x.x"); // TODO: Replace with version sent from server
+            case TWEAK_C2S -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_C2S_MESSAGE);
+            case TWEAK_S2C -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_S2C_MESSAGE);
+        };
+
+        this.messageLines = this.font.split(message, 182);
+        this.width = 206;
+
+        if (this.messageLines.size() == 1)
+            this.width = Math.max(42 + this.font.width(this.title), 24 + this.font.width(this.messageLines.get(0)));
+    }
+
+    /**
+     * Change the visibility of the toast.
+     * @param visible Whether the toast is visible.
+     */
+    private void setVisible(boolean visible)
+    {
+        this.isVisible = visible;
+        this.setup();
+    }
+
+    /**
+     * Open this toast.
+     * This will add the toast to the game's toast system if it isn't there already.
+     */
+    public void open()
+    {
+        this.setVisible(true);
+        Minecraft.getInstance().getToasts().addToast(this);
+    }
+
+    /**
+     * Close this toast.
+     * This will remove the toast from the game's toast system if it wasn't already closed.
+     */
+    public void close() { this.setVisible(false); }
+
+    /**
+     * @return Whether this toast is opened.
+     */
+    public boolean isOpened() { return this.isVisible; }
+
+    /**
+     * @return Whether this toast is closed.
+     */
+    public boolean isClosed() { return !this.isOpened(); }
+
+    /**
+     * Set a timer for this toast instance.
+     * This will override any previous timer.
+     *
+     * @param timer A new time watcher instance.
+     * @return The toast instance so that additional instructions can be chained.
+     */
+    public NostalgicToast setTimer(TimeWatcher timer)
+    {
+        this.timer = timer;
+        this.timer.init();
+
+        return this;
+    }
+
+    /**
+     * Used by the game's internal toast system so that it can check if this toast is already open or not.
+     * @return A toast identifier enumeration value.
+     */
+    @Override
+    public Object getToken() { return this.id; }
+
+    /**
+     * Used by the renderer and internal toast system.
+     * @return Gets the maximum width of this toast instance.
+     */
+    @Override
+    public int width() { return this.width; }
+
+    /**
+     * Used by the internal toast system.
+     * @return Gets the maximum height of this toast instance.
+     */
+    @Override
+    public int height() { return 46 + this.messageLines.size() * 12; }
+
+    /**
+     * Used by the renderer.
+     * @return Gets the maximum drawing height for the toast.
+     */
+    private int drawHeight() { return this.height() - 9; }
+
+    /**
+     * Render the toast.
+     * @param poseStack The current pose stack.
+     * @param toast A toast component instance.
+     * @param timeSinceLastVisible The time in milliseconds.
+     * @return A visibility enumeration instance that indicates whether the toast is visible or not.
+     */
+    @Override
+    public Visibility render(PoseStack poseStack, ToastComponent toast, long timeSinceLastVisible)
+    {
+        RenderSystem.setShaderTexture(0, TextureLocation.TOASTS);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        toast.blit(poseStack, 0, 0, 0, 0, 8, 8);
+        toast.blit(poseStack, 0, this.drawHeight() - 8, 0, 9, 8, 8);
+        toast.blit(poseStack, this.width() - 8, 0, 9, 0, 8, 8);
+        toast.blit(poseStack, this.width() - 8, this.drawHeight() - 8, 9, 9, 8, 8);
+
+        for (int x = 8; x < this.width() - 8; x++)
+        {
+            toast.blit(poseStack, x, 0, 8, 0, 1, 8);
+            toast.blit(poseStack, x, this.drawHeight() - 8, 8, 9, 1, 8);
+        }
+
+        for (int y = 0; y < this.drawHeight() - 16; y++)
+        {
+            toast.blit(poseStack, 0, 8 + y, 0, 8, 8, 1);
+            toast.blit(poseStack, this.width() - 8, 8 + y, 9, 8, 8, 1);
+        }
+
+        RenderUtil.fill(poseStack, 8, this.width() - 8, 8, this.drawHeight() - 8, 0xAF000000);
+        GearSpinner.getInstance().render(poseStack, 16.0F, 10, 10);
+
+        poseStack.pushPose();
+        poseStack.translate(23.0F, 23.0F, 1.0);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
+
+        String splash = "N.T";
+        float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
+        scale = scale * 5.0F / (float) (this.font.width(splash));
+
+        poseStack.scale(scale, scale, scale);
+        GuiComponent.drawCenteredString(poseStack, this.font, splash, 1, -6, 0xFFFF00);
+        poseStack.popPose();
+
+        this.font.drawShadow(poseStack, this.title, 30.0F, 14.0F, 0xFFFF00);
+
+        for (int i = 0; i < this.messageLines.size(); i++)
+            this.font.drawShadow(poseStack, this.messageLines.get(i), 12.0F, 30.0F + i * 12.0F, 0xFFFFFF);
+
+        boolean isTimeout = this.timer != null && this.timer.isReady();
+
+        if (isTimeout)
+            this.close();
+
+        return this.isVisible ? Visibility.SHOW : Visibility.HIDE;
+    }
+}

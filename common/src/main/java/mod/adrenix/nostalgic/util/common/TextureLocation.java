@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public abstract class TextureLocation
 {
     public static final ResourceLocation BLOCK_SHADOW = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/block_shadow.png");
+    public static final ResourceLocation TOASTS = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/toasts.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/widgets.png");
     public static final ResourceLocation COLOR_PICKER = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/overlay_picker.png");
     public static final ResourceLocation CATEGORY_LIST = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/overlay_list.png");

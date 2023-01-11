@@ -75,13 +75,25 @@ public class TimeWatcher
     public boolean isMaxReached() { return this.repeated == this.maxRepeat; }
 
     /**
+     * Sets the time for this timer. Prevents the {@link TimeWatcher#isReady()} from returning <code>true</code> when
+     * called for the first time.
+     */
+    public void init()
+    {
+        if (this.timeSinceLast == 0L)
+            this.timeSinceLast = Util.getMillis() - this.timeInterval;
+    }
+
+    /**
      * Checks if enough time has elapsed, and if so, resets the time since the timer was last ready.
+     * This will always return <code>true</code> when called for the first time on a timer.
+     * To prevent this, use {@link TimeWatcher#init()}.
+     *
      * @return Whether enough time has elapsed for this timer to be considered ready.
      */
     public boolean isReady()
     {
-        if (this.timeSinceLast == 0L)
-            this.timeSinceLast = Util.getMillis() - this.timeInterval;
+        this.init();
 
         if (this.maxRepeat != NO_REPEAT && this.repeated >= this.maxRepeat)
             return false;

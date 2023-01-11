@@ -1,6 +1,10 @@
 package mod.adrenix.nostalgic.client.event;
 
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientScreenInputEvent;
 import dev.architectury.event.events.common.PlayerEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 
 /**
  * This class contains a registration helper method that will be used by the client initializers in Fabric and Forge.
@@ -16,5 +20,15 @@ public abstract class ArchitecturyClientEvents
     public static void register()
     {
         PlayerEvent.CHANGE_DIMENSION.register((player, oldDim, newDim) -> ClientEventHelper.onChangeDimension());
+        ClientScreenInputEvent.KEY_PRESSED_POST.register(ArchitecturyClientEvents::onSettingsKeyPressed);
+    }
+
+    /**
+     * Shortcut key that, when pressed, opens the mod's settings screen when at a title screen.
+     */
+    private static EventResult onSettingsKeyPressed(Minecraft minecraft, Screen screen, int keyCode, int scanCode, int modifiers)
+    {
+        ClientEventHelper.gotoSettingsOnMatchedKey(minecraft, screen, keyCode, scanCode);
+        return EventResult.pass();
     }
 }

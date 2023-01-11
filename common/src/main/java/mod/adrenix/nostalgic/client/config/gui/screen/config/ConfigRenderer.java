@@ -32,7 +32,6 @@ import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.PathUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import net.minecraft.Util;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -628,14 +627,8 @@ public record ConfigRenderer(ConfigScreen parent)
     {
         ArrayList<ConfigRowList.Row> rows = new ArrayList<>();
 
-        KeyMapping openConfig = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
-        KeyMapping toggleFog = KeyUtil.find(LangUtil.Key.TOGGLE_FOG);
-
-        if (openConfig != null)
-            rows.add(new ConfigRowBuild.BindingRow(openConfig).generate());
-
-        if (toggleFog != null)
-            rows.add(new ConfigRowBuild.BindingRow(toggleFog).generate());
+        KeyUtil.find(LangUtil.Key.OPEN_CONFIG).ifPresent(mapping -> rows.add(new ConfigRowBuild.BindingRow(mapping).generate()));
+        KeyUtil.find(LangUtil.Key.TOGGLE_FOG).ifPresent(mapping -> rows.add(new ConfigRowBuild.BindingRow(mapping).generate()));
 
         return rows;
     }

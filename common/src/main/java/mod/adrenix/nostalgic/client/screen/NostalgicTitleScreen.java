@@ -9,17 +9,14 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
 import mod.adrenix.nostalgic.mixin.widen.TitleScreenAccessor;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
-import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -114,12 +111,6 @@ public class NostalgicTitleScreen extends TitleScreen
      */
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
 
-    /**
-     * The options key is defined here so that the user may jump to the mod's config user interface menu from the title
-     * screen. This bypasses the need to go through a mod menu.
-     */
-    private final KeyMapping optionsKey = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
-
     /* Random Source & Button Layouts */
 
     private final RandomSource random = RandomSource.create();
@@ -191,8 +182,6 @@ public class NostalgicTitleScreen extends TitleScreen
             return false;
         else if (keyCode == GLFW.GLFW_KEY_M)
             this.minecraft.setScreen(new NostalgicTitleScreen());
-        else if (this.optionsKey != null && this.optionsKey.matches(keyCode, scanCode))
-            this.minecraft.setScreen(new SettingsScreen(this, true));
 
         return super.keyPressed(keyCode, scanCode, modifiers);
     }

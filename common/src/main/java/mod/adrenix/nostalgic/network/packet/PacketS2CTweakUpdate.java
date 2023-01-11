@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.network.packet;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.client.config.reflect.ClientReflect;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
@@ -135,7 +135,7 @@ public class PacketS2CTweakUpdate
 
             // Notify the client that a tweak list was updated
             if (NostalgicTweaks.isNetworkVerified())
-                ToastNotification.tweakUpdate();
+                ToastNotification.gotChanges();
 
             // Update the client's config if this is a LAN session
             if (NetUtil.isLocalHost())
@@ -165,7 +165,7 @@ public class PacketS2CTweakUpdate
 
             // Notify client that a tweak was updated
             if (NostalgicTweaks.isNetworkVerified() && isValueChanged)
-                ToastNotification.tweakUpdate();
+                ToastNotification.gotChanges();
 
             // Update the client's config if this is a LAN session
             if (NetUtil.isLocalHost() && isValueChanged)

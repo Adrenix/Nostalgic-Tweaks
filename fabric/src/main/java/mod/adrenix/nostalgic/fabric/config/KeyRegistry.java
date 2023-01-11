@@ -24,7 +24,7 @@ public abstract class KeyRegistry
     /**
      * Registers the mod's key mappings.
      */
-    public static void registerKeyMappings()
+    public static void register()
     {
         openConfig = KeyBindingHelper.registerKeyBinding(ClientKeyMapping.CONFIG_KEY);
         toggleFog = KeyBindingHelper.registerKeyBinding(ClientKeyMapping.FOG_KEY);

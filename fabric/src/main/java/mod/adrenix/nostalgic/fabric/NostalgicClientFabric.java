@@ -28,7 +28,7 @@ public class NostalgicClientFabric implements ClientModInitializer
         NostalgicTweaks.initClient();
 
         // Subscribe key mappings
-        KeyRegistry.registerKeyMappings();
+        KeyRegistry.register();
 
         // Register client events
         ClientEvents.register();

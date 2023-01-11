@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.network.packet;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.gui.ToastNotification;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
@@ -95,7 +95,7 @@ public class PacketS2CHandshake
         if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
         {
             NostalgicTweaks.setNetworkVerification(true);
-            ToastNotification.gotServerHandshake();
+            ToastNotification.handshake();
 
             String info = String.format
             (

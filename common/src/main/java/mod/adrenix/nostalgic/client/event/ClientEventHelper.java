@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicLoadingScreen;
@@ -8,11 +9,16 @@ import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.screen.NostalgicTitleScreen;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
+
+import java.util.Optional;
 
 /**
  * This helper class provides instructions for various client events. These methods are used by both mod loader event
@@ -48,8 +54,6 @@ public abstract class ClientEventHelper
                     tweak.setValue(TweakClientCache.all().get(id).getValue());
             });
         }
-
-
     }
 
     /**
@@ -60,6 +64,20 @@ public abstract class ClientEventHelper
     {
         // Resets world interpolation animation caches
         WorldClientUtil.resetWorldInterpolationCache();
+    }
+
+    /**
+     * This method provides instructions for the mod to perform after the settings screen shortcut key is pressed.
+     */
+    public static void gotoSettingsOnMatchedKey(Minecraft minecraft, Screen screen, int keyCode, int scanCode)
+    {
+        if (ClassUtil.isNotInstanceOf(screen, TitleScreen.class))
+            return;
+
+        Optional<KeyMapping> mapping = KeyUtil.find(LangUtil.Key.OPEN_CONFIG);
+
+        if (mapping.isPresent() && mapping.get().matches(keyCode, scanCode))
+            minecraft.setScreen(new SettingsScreen(screen, true));
     }
 
     /*
