@@ -187,7 +187,7 @@ public class NostalgicToast implements Toast
     public NostalgicToast setTimer(TimeWatcher timer)
     {
         this.timer = timer;
-        this.timer.init();
+        this.timer.skip();
 
         return this;
     }
@@ -269,9 +269,7 @@ public class NostalgicToast implements Toast
         for (int i = 0; i < this.messageLines.size(); i++)
             this.font.drawShadow(poseStack, this.messageLines.get(i), 12.0F, 30.0F + i * 12.0F, 0xFFFFFF);
 
-        boolean isTimeout = this.timer != null && this.timer.isReady();
-
-        if (isTimeout)
+        if (this.timer != null && this.timer.isReady())
             this.close();
 
         return this.isVisible ? Visibility.SHOW : Visibility.HIDE;

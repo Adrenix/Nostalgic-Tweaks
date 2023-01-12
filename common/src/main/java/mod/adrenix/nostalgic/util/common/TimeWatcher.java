@@ -19,6 +19,7 @@ public class TimeWatcher
 
     /* Fields */
 
+    private boolean skip;
     private boolean debug;
     private final long timeInterval;
     private final int maxRepeat;
@@ -34,6 +35,7 @@ public class TimeWatcher
      */
     public TimeWatcher(long timeInterval, int maxRepeat)
     {
+        this.skip = false;
         this.debug = true;
         this.timeSinceLast = 0L;
         this.timeInterval = timeInterval;
@@ -75,25 +77,29 @@ public class TimeWatcher
     public boolean isMaxReached() { return this.repeated == this.maxRepeat; }
 
     /**
-     * Sets the time for this timer. Prevents the {@link TimeWatcher#isReady()} from returning <code>true</code> when
-     * called for the first time.
+     * Prevents the {@link TimeWatcher#isReady()} method from returning <code>true</code> on the next call.
      */
-    public void init()
-    {
-        if (this.timeSinceLast == 0L)
-            this.timeSinceLast = Util.getMillis() - this.timeInterval;
-    }
+    public void skip() { this.skip = true; }
 
     /**
      * Checks if enough time has elapsed, and if so, resets the time since the timer was last ready.
      * This will always return <code>true</code> when called for the first time on a timer.
-     * To prevent this, use {@link TimeWatcher#init()}.
+     * To prevent this, use {@link TimeWatcher#skip()}.
      *
      * @return Whether enough time has elapsed for this timer to be considered ready.
      */
     public boolean isReady()
     {
-        this.init();
+        if (this.skip)
+        {
+            this.skip = false;
+            this.timeSinceLast = Util.getMillis();
+
+            return false;
+        }
+
+        if (this.timeSinceLast == 0L)
+            this.timeSinceLast = Util.getMillis() - this.timeInterval;
 
         if (this.maxRepeat != NO_REPEAT && this.repeated >= this.maxRepeat)
             return false;
