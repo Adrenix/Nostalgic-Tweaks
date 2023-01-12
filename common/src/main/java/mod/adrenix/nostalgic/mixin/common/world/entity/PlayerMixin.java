@@ -1,10 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import com.mojang.authlib.GameProfile;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.common.gameplay.OldFoodData;
 import mod.adrenix.nostalgic.mixin.widen.LivingEntityAccessor;
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -13,8 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.ProfilePublicKey;
-import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Final;
@@ -37,20 +32,9 @@ public abstract class PlayerMixin extends LivingEntity
     /* Shadows */
 
     @Shadow @Final private Abilities abilities;
-    @Shadow protected FoodData foodData;
     @Shadow public abstract float getCurrentItemAttackStrengthDelay();
 
     /* Injections */
-
-    /**
-     * Replaces the food system in the player class.
-     * Controlled by the old hunger tweak.
-     */
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void NT$onInitPlayer(Level level, BlockPos pos, float yaw, GameProfile profile, ProfilePublicKey key, CallbackInfo callback)
-    {
-        this.foodData = new OldFoodData((Player) (Object) this);
-    }
 
     /**
      * Blocks the eating sound emitted by players when consuming food items.
