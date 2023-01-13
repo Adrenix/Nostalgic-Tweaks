@@ -1,0 +1,10 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.mixin.server",
+  "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "server": [
+    "LivingEntityMixin"
+  ]
+}

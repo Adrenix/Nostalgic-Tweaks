@@ -1,0 +1,14 @@
+{
+  "blank": {
+    "sounds": [
+      "nostalgic_tweaks:blank"
+    ]
+  },
+  "entity.player.hurt": {
+    "sounds": [
+      "nostalgic_tweaks:damage/hit1",
+      "nostalgic_tweaks:damage/hit2",
+      "nostalgic_tweaks:damage/hit3"
+    ]
+  }
+}
