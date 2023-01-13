@@ -40,7 +40,7 @@ public abstract class ToastNotification
         if (!NetUtil.isMultiplayer())
             return;
 
-        ToastNotification.add(ToastId.TWEAK_S2C, 7500L);
+        ToastNotification.add(ToastId.TWEAK_S2C, 8500L);
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class ToastNotification
         if (!NetUtil.isMultiplayer())
             return;
 
-        ToastNotification.add(ToastId.TWEAK_C2S, 7500L);
+        ToastNotification.add(ToastId.TWEAK_C2S, 8500L);
     }
 
     /**
@@ -62,6 +62,6 @@ public abstract class ToastNotification
         if (!NostalgicTweaks.isNetworkVerified() || NetUtil.isSingleplayer())
             return;
 
-        ToastNotification.add(ToastId.HANDSHAKE, 8000L);
+        ToastNotification.add(ToastId.HANDSHAKE, 10000L);
     }
 }

@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.network.packet.PacketS2CHandshake;
 import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
+import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.server.PlayerServerUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +36,13 @@ public abstract class ServerEventHelper
     {
         if (player instanceof ServerPlayer)
         {
-            PacketUtil.sendToPlayer((ServerPlayer) player, new PacketS2CHandshake());
+            String loader = TextUtil.toTitleCase(NostalgicTweaks.getLoader());
+            String tiny = NostalgicTweaks.getTinyVersion();
+            String beta = NostalgicTweaks.getBetaVersion();
+            String version = beta.isEmpty() ? tiny : tiny + "-" + beta;
+            String protocol = NostalgicTweaks.getProtocol();
+
+            PacketUtil.sendToPlayer((ServerPlayer) player, new PacketS2CHandshake(loader, version, protocol));
 
             TweakServerCache.all().forEach((id, tweak) ->
             {

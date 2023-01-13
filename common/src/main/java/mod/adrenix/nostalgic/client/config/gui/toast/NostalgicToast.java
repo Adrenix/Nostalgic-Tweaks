@@ -6,6 +6,7 @@ import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.GearSpinner;
+import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -52,9 +53,24 @@ public class NostalgicToast implements Toast
         };
     }
 
+    /* Initialization */
+
     /**
-     * Utility method that will run at the end of each client tick that will check if certain conditions are met so that
-     * a toast can be opened or closed.
+     * Tracks whether the mod's toast system is initialized and ready to show toasts.
+     */
+    private static boolean isInitialized = false;
+
+    /**
+     * Set the mod's toast system as initialized.
+     * This should be done after the game has finished loading assets.
+     */
+    public static void init() { NostalgicToast.isInitialized = true; }
+
+    /* Ticking */
+
+    /**
+     * Ticking instructions that run at the end of each client tick. This will check if certain conditions are met so
+     * that toasts are properly opened and/or closed.
      */
     public static void tick()
     {
@@ -72,19 +88,6 @@ public class NostalgicToast implements Toast
         if (WELCOME.isOpened() && ClassUtil.isNotInstanceOf(screen, TitleScreen.class))
             WELCOME.close();
     }
-
-    /* Initialization */
-
-    /**
-     * Tracks whether the mod's toast system is initialized and ready to show toasts.
-     */
-    private static boolean isInitialized = false;
-
-    /**
-     * Set the mod's toast system as initialized.
-     * This should be done after the game has finished loading assets.
-     */
-    public static void init() { NostalgicToast.isInitialized = true; }
 
     /* Fields */
 
@@ -124,18 +127,22 @@ public class NostalgicToast implements Toast
             case TWEAK_S2C -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_S2C_TITLE);
         };
 
-        String version = ChatFormatting.GOLD + NostalgicTweaks.getTinyVersion();
+        NostalgicConnection connection = NostalgicTweaks.getConnection().orElseGet(NostalgicConnection::disconnected);
+
+        String client = ChatFormatting.GOLD + NostalgicTweaks.getTinyVersion();
+        String server = ChatFormatting.GOLD + connection.getVersion();
+        String loader = ChatFormatting.LIGHT_PURPLE + connection.getLoader();
 
         Component message = switch (this.id)
         {
-            case WELCOME -> Component.translatable(LangUtil.Gui.TOAST_WELCOME_MESSAGE, version);
-            case HANDSHAKE -> Component.translatable(LangUtil.Gui.TOAST_HANDSHAKE_MESSAGE, "x.x.x"); // TODO: Replace with version sent from server
+            case WELCOME -> Component.translatable(LangUtil.Gui.TOAST_WELCOME_MESSAGE, client);
+            case HANDSHAKE -> Component.translatable(LangUtil.Gui.TOAST_HANDSHAKE_MESSAGE, server, loader);
             case TWEAK_C2S -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_C2S_MESSAGE);
             case TWEAK_S2C -> Component.translatable(LangUtil.Gui.TOAST_TWEAK_S2C_MESSAGE);
         };
 
         this.messageLines = this.font.split(message, 182);
-        this.width = 206;
+        this.width = 24 + this.messageLines.stream().mapToInt(this.font::width).max().orElse(182);
 
         if (this.messageLines.size() == 1)
             this.width = Math.max(42 + this.font.width(this.title), 24 + this.font.width(this.messageLines.get(0)));
@@ -211,13 +218,13 @@ public class NostalgicToast implements Toast
      * @return Gets the maximum height of this toast instance.
      */
     @Override
-    public int height() { return 46 + this.messageLines.size() * 12; }
+    public int height() { return 37 + (this.messageLines.size() * 12); }
 
     /**
      * Used by the renderer.
      * @return Gets the maximum drawing height for the toast.
      */
-    private int drawHeight() { return this.height() - 9; }
+    private int drawHeight() { return this.height(); }
 
     /**
      * Render the toast.

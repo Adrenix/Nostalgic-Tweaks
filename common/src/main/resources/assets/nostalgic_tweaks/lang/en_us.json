@@ -101,7 +101,7 @@
   "gui.nostalgic_tweaks.toast.tweak_c2s_title": "Tweaks Changed",
   "gui.nostalgic_tweaks.toast.tweak_c2s_message": "Sent changes to server.",
   "gui.nostalgic_tweaks.toast.handshake_title": "Connected",
-  "gui.nostalgic_tweaks.toast.handshake_message": "You have logged into a server running§e Nostalgic Tweaks§f (§6v%s§f).",
+  "gui.nostalgic_tweaks.toast.handshake_message": "You have logged into a server running§e Nostalgic Tweaks§f (§6v%s§f) on §d%s§f.",
 
   "gui.nostalgic_tweaks.list.selectable_items": "Selectable Items",
   "gui.nostalgic_tweaks.list.saved_items": "Saved Entries",

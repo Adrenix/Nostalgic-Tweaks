@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.network.packet;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.toast.ToastNotification;
+import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.fabricmc.api.EnvType;
@@ -36,15 +37,22 @@ public class PacketS2CHandshake
 
     /* Fields */
 
-    private final String protocol;
+    private final String json;
 
     /* Constructors */
 
     /**
      * Create a new handshake packet.
-     * This creates a packet using the mod's current network protocol version.
+     * This creates a packet using the mod's current server data.
+     *
+     * @param loader The server mod loader.
+     * @param version The mod version on the server.
+     * @param protocol The mod protocol on the server.
      */
-    public PacketS2CHandshake() { this.protocol = NostalgicTweaks.PROTOCOL; }
+    public PacketS2CHandshake(String loader, String version, String protocol)
+    {
+        this.json = new NostalgicConnection(loader, version, protocol).serialize();
+    }
 
     /**
      * Create a new handshake packet with a buffer.
@@ -52,7 +60,7 @@ public class PacketS2CHandshake
      *
      * @param buffer A friendly byte buffer instance.
      */
-    public PacketS2CHandshake(FriendlyByteBuf buffer) { this.protocol = buffer.readUtf(); }
+    public PacketS2CHandshake(FriendlyByteBuf buffer) { this.json = buffer.readUtf(); }
 
     /* Methods */
 
@@ -60,7 +68,7 @@ public class PacketS2CHandshake
      * Encode data into the packet.
      * @param buffer A friendly byte buffer instance.
      */
-    public void encode(FriendlyByteBuf buffer) { buffer.writeUtf(this.protocol); }
+    public void encode(FriendlyByteBuf buffer) { buffer.writeUtf(this.json); }
 
     /**
      * Handle packet data.
@@ -92,18 +100,21 @@ public class PacketS2CHandshake
             return;
         }
 
-        if (this.protocol.equals(NostalgicTweaks.PROTOCOL))
+        NostalgicConnection.deserialize(this.json);
+        NostalgicConnection connection = NostalgicTweaks.getConnection().orElseGet(NostalgicConnection::disconnected);
+
+        NostalgicTweaks.LOGGER.info
+        (
+            "Connected to server running Nostalgic Tweaks [loader=%s, version=%s, protocol=%s]",
+            connection.getLoader(),
+            connection.getVersion(),
+            connection.getProtocol()
+        );
+
+        if (connection.getProtocol().equals(NostalgicTweaks.PROTOCOL))
         {
             NostalgicTweaks.setNetworkVerification(true);
             ToastNotification.handshake();
-
-            String info = String.format
-            (
-                "Successfully connected to a world with Nostalgic Tweaks with protocol (%s).",
-                LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
-            );
-
-            NostalgicTweaks.LOGGER.debug(info);
         }
         else
         {
@@ -113,7 +124,7 @@ public class PacketS2CHandshake
             String info = String.format
             (
                 "The server sent (%s) but the client has (%s)",
-                LogColor.apply(LogColor.RED, this.protocol),
+                LogColor.apply(LogColor.RED, connection.getProtocol()),
                 LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL)
             );
 

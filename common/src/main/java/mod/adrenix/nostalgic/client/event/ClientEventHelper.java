@@ -47,6 +47,7 @@ public abstract class ClientEventHelper
 
             // Reset network verification and server cache
             NostalgicTweaks.setNetworkVerification(false);
+            NostalgicTweaks.setConnection(null);
 
             TweakServerCache.all().forEach((id, tweak) ->
             {

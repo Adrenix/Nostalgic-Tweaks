@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
 import mod.adrenix.nostalgic.client.config.gui.toast.ToastId;
+import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
@@ -364,6 +365,7 @@ public class SettingsScreen extends Screen
     private void renderDebug(PoseStack poseStack)
     {
         GuiUtil.CornerManager manager = new GuiUtil.CornerManager();
+        NostalgicConnection connection = NostalgicTweaks.getConnection().orElseGet(NostalgicConnection::disconnected);
 
         drawCenteredString(poseStack, this.font, "Debug Mode (Ctrl + Shift + D)", this.width / 2, 2, 0xFFFF00);
 
@@ -378,7 +380,11 @@ public class SettingsScreen extends Screen
         GuiUtil.drawText(poseStack, String.format("Verified: %s", getColored(NostalgicTweaks.isNetworkVerified())), TweakType.Corner.BOTTOM_LEFT, manager);
         GuiUtil.drawText(poseStack, String.format("LAN: %s", getColored(NetUtil.isLocalHost())), TweakType.Corner.BOTTOM_LEFT, manager);
 
-        GuiUtil.drawText(poseStack, String.format("Integration: %s", getColored(NetUtil.getIntegratedServer())), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Server Protocol: §b%s", connection.getProtocol()), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Server Version: §e%s", connection.getVersion()), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Server Loader: §d%s", connection.getLoader()), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Server: %s", getColored(NostalgicTweaks.getConnection().isPresent())), TweakType.Corner.BOTTOM_RIGHT, manager);
+
         GuiUtil.drawText(poseStack, String.format("Optifine: %s", getColored(NostalgicTweaks.OPTIFINE.get())), TweakType.Corner.TOP_RIGHT, manager);
 
         if (NostalgicTweaks.isFabric())

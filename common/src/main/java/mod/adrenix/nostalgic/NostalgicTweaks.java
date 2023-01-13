@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
@@ -16,6 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -131,7 +134,7 @@ public class NostalgicTweaks
      * will cause communication issues with older versions of the mod, then this value needs bumped up. Typically,
      * changes made to network packets and/or changes in tweak data serialization will require a bump.
      */
-    public static final String PROTOCOL = "1.2";
+    public static final String PROTOCOL = "1.3";
 
     /**
      * Shortcut method for supplying the network's protocol version.
@@ -145,6 +148,34 @@ public class NostalgicTweaks
      * server with the mod installed. This field will be <code>false</code> when not playing on a level.
      */
     private static boolean isNetworkSupported = false;
+
+    /**
+     * This field stores the current connection state with a server running Nostalgic Tweaks. Once a handshake is
+     * performed between the server and the client, data from the Nostalgic Tweaks mod running on the server is sent to
+     * the client.
+     */
+    private static NostalgicConnection connection = null;
+
+    /**
+     * Change the server connection data that is stored on the client. The server has no need to invoke this method.
+     * If the user disconnects from a server running Nostalgic Tweaks, this value should be reset back to null.
+     *
+     * @param data A nostalgic connection instance.
+     */
+    public static void setConnection(@Nullable NostalgicConnection data) { NostalgicTweaks.connection = data; }
+
+    /**
+     * Get the current connection data between a server running Nostalgic Tweaks and the client. If the user is playing
+     * in singleplayer, there will be data stored here since the session could possibly move to LAN. It is up to the
+     * invoker to check for a singleplayer only world. If the user is not playing on a server running Nostalgic Tweaks,
+     * then no data will be stored.
+     *
+     * @return An optional nostalgic connection instance.
+     */
+    public static Optional<NostalgicConnection> getConnection()
+    {
+        return Optional.ofNullable(NostalgicTweaks.connection);
+    }
 
     /* Logical Server */
 
