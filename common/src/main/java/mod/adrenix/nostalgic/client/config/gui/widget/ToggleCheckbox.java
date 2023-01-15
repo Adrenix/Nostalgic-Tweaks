@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
@@ -170,7 +170,7 @@ public class ToggleCheckbox extends Checkbox
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
         {
-            if (this.screen instanceof AbstractListScreen listScreen)
+            if (this.screen instanceof ListScreen listScreen)
                 listScreen.renderOverlayTooltips.add(this::renderToolTip);
             else
                 this.renderToolTip(poseStack, mouseX, mouseY);

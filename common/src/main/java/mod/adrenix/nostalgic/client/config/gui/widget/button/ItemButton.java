@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.ManageItemOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
@@ -31,7 +31,7 @@ public class ItemButton extends Button
 
     /* Fields */
 
-    public AbstractListScreen screen;
+    public ListScreen screen;
     public ItemStack itemStack;
 
     /**
@@ -50,7 +50,7 @@ public class ItemButton extends Button
      * @param itemStack The item stack that is being used by this button.
      * @param startX The starting x-position of this button.
      */
-    public ItemButton(AbstractListScreen screen, ItemStack itemStack, int startX)
+    public ItemButton(ListScreen screen, ItemStack itemStack, int startX)
     {
         super(startX, 0, WIDTH, HEIGHT, Component.empty(), (ignored) -> {});
 

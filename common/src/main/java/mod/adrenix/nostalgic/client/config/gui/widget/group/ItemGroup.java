@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.group;
 
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ItemButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
@@ -29,7 +29,7 @@ public class ItemGroup
     /* Fields */
 
     private final NonNullList<ItemStack> items;
-    private final AbstractListScreen screen;
+    private final ListScreen screen;
     private final ConfigRowList list;
 
     /* Constructor */
@@ -40,7 +40,7 @@ public class ItemGroup
      *
      * @param screen A list screen instance to get items and a config row list instance.
      */
-    public ItemGroup(AbstractListScreen screen)
+    public ItemGroup(ListScreen screen)
     {
         this.screen = screen;
         this.items = screen.getSelectableItems();

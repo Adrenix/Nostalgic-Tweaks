@@ -59,7 +59,7 @@ import java.util.function.Function;
  * and other tweaks utilize this screen.
  */
 
-public abstract class AbstractListScreen extends ConfigScreen
+public abstract class ListScreen extends ConfigScreen
 {
     /* Fields */
 
@@ -93,7 +93,7 @@ public abstract class AbstractListScreen extends ConfigScreen
      * @param title The list screen title.
      * @param list An abstract list instance.
      */
-    public AbstractListScreen(Component title, AbstractList list)
+    public ListScreen(Component title, AbstractList list)
     {
         super(Minecraft.getInstance().screen, title);
 
@@ -1054,9 +1054,9 @@ public abstract class AbstractListScreen extends ConfigScreen
         public void accept(boolean understood)
         {
             if (understood)
-                AbstractListScreen.this.closeList(true);
+                ListScreen.this.closeList(true);
             else
-                AbstractListScreen.this.minecraft.setScreen(AbstractListScreen.this);
+                ListScreen.this.minecraft.setScreen(ListScreen.this);
         }
     }
 
@@ -1075,7 +1075,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         /* Widget Helpers */
 
-        private int getSmallWidth() { return Math.min(200, (AbstractListScreen.this.width - 50 - 12) / 3); }
+        private int getSmallWidth() { return Math.min(200, (ListScreen.this.width - 50 - 12) / 3); }
 
         /* List Widgets */
 
@@ -1092,7 +1092,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
         /**
          * Create a new widget provider instance. This constructor will define all widgets created by this provider.
-         * All widgets are added to the {@link AbstractListScreen#listWidgets} list. Any widget setup or handling must be
+         * All widgets are added to the {@link ListScreen#listWidgets} list. Any widget setup or handling must be
          * done elsewhere.
          */
         public WidgetProvider()
@@ -1120,12 +1120,12 @@ public abstract class AbstractListScreen extends ConfigScreen
                 )
             );
 
-            ListId listId = AbstractListScreen.this.getListId();
+            ListId listId = ListScreen.this.getListId();
 
             if (listId == ListId.LEFT_CLICK_SPEEDS || listId == ListId.RIGHT_CLICK_SPEEDS)
                 children.add(this.swingButton);
 
-            AbstractListScreen.this.listWidgets.addAll(children);
+            ListScreen.this.listWidgets.addAll(children);
         }
 
         /* Widget Creators */
@@ -1138,8 +1138,8 @@ public abstract class AbstractListScreen extends ConfigScreen
         {
             return new EditBox
             (
-                AbstractListScreen.this.font,
-                AbstractListScreen.this.width / 2 - 112,
+                ListScreen.this.font,
+                ListScreen.this.width / 2 - 112,
                 SEARCH_TOP_Y,
                 SEARCH_BOX_W,
                 SEARCH_BOX_H,
@@ -1155,16 +1155,16 @@ public abstract class AbstractListScreen extends ConfigScreen
         {
             return new Button
             (
-                AbstractListScreen.this.width / 2 + 3,
-                AbstractListScreen.this.height - SettingsScreen.DONE_BUTTON_TOP_OFFSET,
+                ListScreen.this.width / 2 + 3,
+                ListScreen.this.height - SettingsScreen.DONE_BUTTON_TOP_OFFSET,
                 this.getSmallWidth(),
                 SettingsScreen.BUTTON_HEIGHT,
                 Component.translatable(LangUtil.Gui.BUTTON_SAVE_AND_DONE),
                 (button) ->
                 {
-                    AbstractListScreen.this.closeList(false);
+                    ListScreen.this.closeList(false);
 
-                    TweakServerCache<?> serverTweak = AbstractListScreen.this.list.getTweak().getServerCache();
+                    TweakServerCache<?> serverTweak = ListScreen.this.list.getTweak().getServerCache();
                     boolean isServerTweak = serverTweak != null;
                     boolean isMultiplayer = NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer();
 
@@ -1189,12 +1189,12 @@ public abstract class AbstractListScreen extends ConfigScreen
         {
             return new Button
             (
-                AbstractListScreen.this.width / 2 - this.getSmallWidth() - 3,
-                AbstractListScreen.this.height - SettingsScreen.DONE_BUTTON_TOP_OFFSET,
+                ListScreen.this.width / 2 - this.getSmallWidth() - 3,
+                ListScreen.this.height - SettingsScreen.DONE_BUTTON_TOP_OFFSET,
                 this.getSmallWidth(),
                 SettingsScreen.BUTTON_HEIGHT,
                 Component.translatable(LangUtil.Vanilla.GUI_CANCEL),
-                (button) -> AbstractListScreen.this.exitList()
+                (button) -> ListScreen.this.exitList()
             );
         }
 
@@ -1238,16 +1238,16 @@ public abstract class AbstractListScreen extends ConfigScreen
         {
             return new StateButton(StateWidget.LIGHTNING, this.searchBox.x - 23, this.searchBox.y - 1, (button) ->
             {
-                if (AbstractListScreen.this.minecraft.player != null)
+                if (ListScreen.this.minecraft.player != null)
                 {
                     this.searchBox.setValue("");
                     this.searchBox.setFocus(false);
 
-                    ItemStack itemStack = AbstractListScreen.this.minecraft.player.getMainHandItem();
+                    ItemStack itemStack = ListScreen.this.minecraft.player.getMainHandItem();
 
-                    AbstractListScreen.this.addItem(itemStack);
-                    AbstractListScreen.this.refreshSearchResults();
-                    AbstractListScreen.this.highlightItem(itemStack);
+                    ListScreen.this.addItem(itemStack);
+                    ListScreen.this.refreshSearchResults();
+                    ListScreen.this.highlightItem(itemStack);
                 }
             });
         }
@@ -1264,7 +1264,7 @@ public abstract class AbstractListScreen extends ConfigScreen
             {
                 search.setValue("");
                 search.setFocus(true);
-                AbstractListScreen.this.refreshSearchResults();
+                ListScreen.this.refreshSearchResults();
             });
         }
 
@@ -1278,7 +1278,7 @@ public abstract class AbstractListScreen extends ConfigScreen
 
             return new StateButton(StateWidget.SWING, search.x + search.getWidth() + 22, search.y - 1, (button) ->
             {
-                ListId listId = AbstractListScreen.this.getListId();
+                ListId listId = ListScreen.this.getListId();
 
                 if (listId == ListId.LEFT_CLICK_SPEEDS || listId == ListId.RIGHT_CLICK_SPEEDS)
                     new SpeedOverlay();

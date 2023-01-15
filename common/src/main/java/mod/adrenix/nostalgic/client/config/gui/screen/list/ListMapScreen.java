@@ -21,7 +21,7 @@ import java.util.*;
  * @param <V> The value associated with this map.
  */
 
-public class ListMapScreen<V> extends AbstractListScreen
+public class ListMapScreen<V> extends ListScreen
 {
     /* Fields */
 

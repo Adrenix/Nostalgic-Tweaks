@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
@@ -207,7 +207,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         if (this.screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && isClicked)
             this.screen.getWidgets().getSearchInput().setFocus(false);
 
-        if (this.screen instanceof AbstractListScreen listScreen && isClicked)
+        if (this.screen instanceof ListScreen listScreen && isClicked)
             listScreen.getSearchBox().setFocus(false);
 
         return isClicked;
@@ -620,7 +620,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
             TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
 
-            boolean isListScreen = Minecraft.getInstance().screen instanceof AbstractListScreen;
+            boolean isListScreen = Minecraft.getInstance().screen instanceof ListScreen;
             boolean isTreeEnabled = tree.getValue();
             boolean isIndented = this.indent != TEXT_START;
 
@@ -787,7 +787,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 this.renderOnHover(poseStack, screen, top, height);
 
             // Abstract list screen rendering
-            if (Minecraft.getInstance().screen instanceof AbstractListScreen)
+            if (Minecraft.getInstance().screen instanceof ListScreen)
             {
                 for (AbstractWidget widget : this.children)
                 {

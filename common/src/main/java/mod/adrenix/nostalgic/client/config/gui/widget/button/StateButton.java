@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.ChatFormatting;
@@ -199,7 +199,7 @@ public class StateButton extends OverlapButton
     @Override
     public void onPress()
     {
-        if (ClassUtil.isNotInstanceOf(this.screen, AbstractListScreen.class))
+        if (ClassUtil.isNotInstanceOf(this.screen, ListScreen.class))
             this.state = !this.state;
 
         super.onPress();

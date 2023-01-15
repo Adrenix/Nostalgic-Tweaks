@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.AbstractWidgetProvider;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.ListScreenOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ItemButton;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.gui.components.Button;
@@ -117,7 +117,7 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
          */
         public ItemButton createItemButton()
         {
-            AbstractListScreen screen = ManageItemOverlay.this.listScreen;
+            ListScreen screen = ManageItemOverlay.this.listScreen;
             ItemStack itemStack = ManageItemOverlay.this.itemStack;
             int startX = ManageItemOverlay.this.getCenteredX();
 

@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -143,7 +143,7 @@ public class RemoveButton extends Button
         this.setMessage(RemoveButton.getRemoveTitle(this.removeType, this.isRemoved));
         this.updateX();
 
-        if (this.removeType == RemoveType.DEFAULT && Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+        if (this.removeType == RemoveType.DEFAULT && Minecraft.getInstance().screen instanceof ListScreen listScreen)
             this.active = !listScreen.isItemSaved(ItemCommonUtil.getItem(this.resourceKey));
 
         if (Overlay.isOpened())

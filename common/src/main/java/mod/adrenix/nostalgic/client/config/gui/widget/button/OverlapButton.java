@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
@@ -69,7 +69,7 @@ public class OverlapButton extends Button
 
         this.screen = (ConfigScreen) Minecraft.getInstance().screen;
 
-        if (Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+        if (Minecraft.getInstance().screen instanceof ListScreen listScreen)
             this.widgets = listScreen.getListWidgets();
         else if (Minecraft.getInstance().screen instanceof ConfigScreen configScreen)
             this.widgets = configScreen.getWidgets().children;

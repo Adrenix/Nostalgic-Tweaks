@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.text;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
@@ -130,9 +130,9 @@ public class TextTitle<V> extends AbstractWidget
         boolean isInvalid = !ItemCommonUtil.isValidKey(this.resourceKey);
         int startX = ConfigRowList.getStartX() - 1;
         Font font = Minecraft.getInstance().font;
-        AbstractListScreen listScreen = (AbstractListScreen) Minecraft.getInstance().screen;
+        ListScreen listScreen = (ListScreen) Minecraft.getInstance().screen;
 
-        if (ClassUtil.isNotInstanceOf(listScreen, AbstractListScreen.class))
+        if (ClassUtil.isNotInstanceOf(listScreen, ListScreen.class))
             return;
 
         ItemStack itemStack = isInvalid ? new ItemStack(Items.BARRIER) : ItemCommonUtil.getItemStack(this.resourceKey);

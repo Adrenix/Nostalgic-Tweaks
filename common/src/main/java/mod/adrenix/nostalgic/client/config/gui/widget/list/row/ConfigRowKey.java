@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.list.row;
 
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
@@ -94,14 +94,14 @@ public abstract class ConfigRowKey
         /* Fields */
 
         private final String resourceKey;
-        private final AbstractListScreen screen;
+        private final ListScreen screen;
 
         /* Constructor */
 
         public DefaultRow(String resourceKey)
         {
             this.resourceKey = resourceKey;
-            this.screen = (AbstractListScreen) Minecraft.getInstance().screen;
+            this.screen = (ListScreen) Minecraft.getInstance().screen;
         }
 
         /* Methods */

@@ -19,7 +19,7 @@ import java.util.Set;
  * like: <code>minecraft:diamond_pickaxe</code>.
  */
 
-public class ListSetScreen extends AbstractListScreen
+public class ListSetScreen extends ListScreen
 {
     /* Fields */
 
