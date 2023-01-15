@@ -776,16 +776,15 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             ConfigRowList.rendering = this;
 
             // Row highlights
-            if ((Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue())
-            {
-                if (this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY))
-                    this.fade = MathUtil.moveClampTowards(this.fade, 1.0F, 0.05F, 0.0F, 1.0F);
-                else
-                    this.fade = MathUtil.moveClampTowards(this.fade, 0.0F, 0.05F, 0.0F, 1.0F);
+            boolean isFaded = (Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue();
 
-                if (this.fade > 0.0F)
-                    this.renderOnHover(poseStack, screen, top, height);
-            }
+            if (this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY))
+                this.fade = isFaded ? MathUtil.moveClampTowards(this.fade, 1.0F, 0.05F, 0.0F, 1.0F) : 1.0F;
+            else
+                this.fade = isFaded ? MathUtil.moveClampTowards(this.fade, 0.0F, 0.05F, 0.0F, 1.0F) : 0.0F;
+
+            if (this.fade > 0.0F)
+                this.renderOnHover(poseStack, screen, top, height);
 
             // Abstract list screen rendering
             if (Minecraft.getInstance().screen instanceof AbstractListScreen)
