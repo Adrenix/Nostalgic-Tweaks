@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.util.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.widen.Matrix4fAccessor;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Matrix4f;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
@@ -111,7 +111,7 @@ public abstract class BlockClientUtil
 
             BlockState baseTorch = Blocks.TORCH.defaultBlockState();
             Direction direction = state.getValue(WallTorchBlock.FACING);
-            Matrix4fAccessor matrix = ((Matrix4fAccessor) poseStack.last().pose());
+            Matrix4f matrix = poseStack.last().pose();
 
             if (isRedstoneWallTorch)
                 baseTorch = Blocks.REDSTONE_TORCH.withPropertiesOf(state);
@@ -126,22 +126,22 @@ public abstract class BlockClientUtil
 
             if (direction == Direction.EAST)
             {
-                matrix.NT$setM01(shear);
+                matrix.m10(shear);
                 poseStack.translate(-xzShift, yShift, 0.0F);
             }
             else if (direction == Direction.WEST)
             {
-                matrix.NT$setM01(-shear);
+                matrix.m10(-shear);
                 poseStack.translate(xzShift, yShift, 0.0F);
             }
             else if (direction == Direction.SOUTH)
             {
-                matrix.NT$setM21(shear);
+                matrix.m12(shear);
                 poseStack.translate(0.0F, yShift, -xzShift);
             }
             else if (direction == Direction.NORTH)
             {
-                matrix.NT$setM21(-shear);
+                matrix.m12(-shear);
                 poseStack.translate(0.0F, yShift, xzShift);
             }
 

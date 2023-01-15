@@ -253,8 +253,8 @@ public class GenericSlider extends AbstractSliderButton
 
         int dy = !this.active ? 0 : (this.isHoveredOrFocused() ? 2 : 1) * 20;
 
-        this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)), this.y, 0, 46 + dy, 4, 20);
-        this.blit(poseStack, this.x + (int) (this.value * (double) (this.width - 8)) + 4, this.y, 196, 46 + dy, 4, 20);
+        this.blit(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 0, 46 + dy, 4, 20);
+        this.blit(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)) + 4, this.getY(), 196, 46 + dy, 4, 20);
 
         // Render Hearts
 
@@ -265,8 +265,8 @@ public class GenericSlider extends AbstractSliderButton
 
             RenderSystem.setShaderTexture(0, GUI_ICONS_LOCATION);
 
-            int x = this.x + (this.width / 2) - 45;
-            int y = this.y + 6;
+            int x = this.getX() + (this.width / 2) - 45;
+            int y = this.getY() + 6;
             int dx = x;
 
             for (int i = 0; i < 10; i++)

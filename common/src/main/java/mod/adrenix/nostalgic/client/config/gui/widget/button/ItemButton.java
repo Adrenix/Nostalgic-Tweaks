@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.ManageItemOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
@@ -31,7 +31,7 @@ public class ItemButton extends Button
 
     /* Fields */
 
-    public AbstractListScreen screen;
+    public ListScreen screen;
     public ItemStack itemStack;
 
     /**
@@ -50,9 +50,9 @@ public class ItemButton extends Button
      * @param itemStack The item stack that is being used by this button.
      * @param startX The starting x-position of this button.
      */
-    public ItemButton(AbstractListScreen screen, ItemStack itemStack, int startX)
+    public ItemButton(ListScreen screen, ItemStack itemStack, int startX)
     {
-        super(startX, 0, WIDTH, HEIGHT, Component.empty(), (ignored) -> {});
+        super(startX, 0, WIDTH, HEIGHT, Component.empty(), (ignored) -> {}, DEFAULT_NARRATION);
 
         this.screen = screen;
         this.itemStack = itemStack;
@@ -107,7 +107,6 @@ public class ItemButton extends Button
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
      */
-    @Override
     public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
     {
         this.screen.renderComponentTooltip(poseStack, this.screen.getTooltipFromItem(this.itemStack), mouseX, mouseY);
@@ -133,7 +132,7 @@ public class ItemButton extends Button
         {
             int dy = ItemClientUtil.isModelFlat(this.itemStack) ? 2 : 1;
 
-            this.y = itemOverlay.getOverlayStartY() + dy;
+            this.setY(itemOverlay.getOverlayStartY() + dy);
             this.active = true;
             this.visible = true;
         }
@@ -143,12 +142,12 @@ public class ItemButton extends Button
         PoseStack viewStack = RenderSystem.getModelViewStack();
         boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY);
 
-        int startX = this.x + 2;
-        int startY = this.y + 1;
+        int startX = this.getX() + 2;
+        int startY = this.getY() + 1;
         int color = ColorUtil.toHexInt((String) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_COLOR).getValue());
 
         if (this.itemStack.getItem() instanceof BlockItem)
-            startY = this.y + 2;
+            startY = this.getY() + 2;
 
         viewStack.pushPose();
 
@@ -158,7 +157,7 @@ public class ItemButton extends Button
         if (isMouseOver && !this.isForOverlay)
         {
             viewStack.translate(0.0F, -0.6F, 0.0F);
-            RenderUtil.fill(poseStack, this.x, this.x + this.width, this.y, this.y + this.height, color);
+            RenderUtil.fill(poseStack, this.getX(), this.getX() + this.width, this.getY(), this.getY() + this.height, color);
         }
 
         RenderSystem.applyModelViewMatrix();

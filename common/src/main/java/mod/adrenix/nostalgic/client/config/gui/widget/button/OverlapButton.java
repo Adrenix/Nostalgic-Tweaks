@@ -4,13 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class OverlapButton extends Button
      * This set is defined during constructions and will either be widgets from a config screen instance, or from a list
      * screen instance.
      */
-    private final Set<Widget> widgets;
+    private final Set<Renderable> widgets;
 
     /* Constructors */
 
@@ -65,11 +65,11 @@ public class OverlapButton extends Button
      */
     public OverlapButton(int startX, int startY, int width, int height, Component text, OnPress onPress)
     {
-        super(startX, startY, width, height, text, onPress);
+        super(startX, startY, width, height, text, onPress, DEFAULT_NARRATION);
 
         this.screen = (ConfigScreen) Minecraft.getInstance().screen;
 
-        if (Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+        if (Minecraft.getInstance().screen instanceof ListScreen listScreen)
             this.widgets = listScreen.getListWidgets();
         else if (Minecraft.getInstance().screen instanceof ConfigScreen configScreen)
             this.widgets = configScreen.getWidgets().children;
@@ -114,7 +114,7 @@ public class OverlapButton extends Button
     private boolean isMouseOver(AbstractWidget widget, int mouseX, int mouseY)
     {
         boolean isSame = widget.equals(this);
-        boolean isInBounds = MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight());
+        boolean isInBounds = MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
 
         return !isSame && isInBounds;
     }
@@ -129,7 +129,7 @@ public class OverlapButton extends Button
     {
         boolean isOtherHovered = false;
 
-        for (Widget child : this.widgets)
+        for (Renderable child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
             {
@@ -153,7 +153,7 @@ public class OverlapButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        for (Widget child : this.widgets)
+        for (Renderable child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
             {
@@ -180,7 +180,7 @@ public class OverlapButton extends Button
         if (this.isListButton)
         {
             RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
-            blit(poseStack, this.x, this.y, this.isHovered && this.active ? 20 : 0, 163, 20, 20);
+            blit(poseStack, this.getX(), this.getY(), this.isHovered && this.active ? 20 : 0, 163, 20, 20);
         }
     }
 }

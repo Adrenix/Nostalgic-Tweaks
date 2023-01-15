@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -55,7 +56,7 @@ public class ContainerButton extends Button
      */
     public ContainerButton(ConfigRowGroup.ContainerRow row, Enum<?> id, Component title, ConfigRowGroup.ContainerType containerType)
     {
-        super(ConfigRowGroup.ContainerRow.getIndent(containerType), 0, 0, 0, Component.empty(), (ignored) -> {});
+        super(ConfigRowGroup.ContainerRow.getIndent(containerType), 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
 
         this.id = id;
         this.row = row;
@@ -269,8 +270,8 @@ public class ContainerButton extends Button
         int vOffset = 0;
         int uWidth = 12;
         int vHeight = 18;
-        int blitX = this.x;
-        int blitY = this.y;
+        int blitX = this.getX();
+        int blitY = this.getY();
         int color = this.highlighted ? 0xFFAA00 : 0xFFFFFF;
         boolean isMouseOver = this.isMouseOver(expanded ? mouseX + 4 : mouseX, expanded ? mouseY - 4 : mouseY) || this.isFocused();
 
@@ -286,14 +287,14 @@ public class ContainerButton extends Button
         {
             uWidth = 18;
             vHeight = 12;
-            blitX = this.x - 4;
-            blitY = this.y + 4;
+            blitX = this.getX() - 4;
+            blitY = this.getY() + 4;
         }
 
         this.width = 20 + minecraft.font.width(this.title);
         this.active = !Overlay.isOpened();
 
         screen.blit(poseStack, blitX, blitY, uOffset, vOffset, uWidth, vHeight);
-        Screen.drawString(poseStack, minecraft.font, this.title, this.x + 20, this.y + 5, isMouseOver ? 0xFFD800 : color);
+        Screen.drawString(poseStack, minecraft.font, this.title, this.getX() + 20, this.getY() + 5, isMouseOver ? 0xFFD800 : color);
     }
 }

@@ -3,8 +3,6 @@ package mod.adrenix.nostalgic.client.config.gui.overlay;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.client.config.gui.widget.slider.ColorSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.common.*;
@@ -14,6 +12,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.List;
 

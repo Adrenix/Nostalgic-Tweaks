@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -164,10 +164,10 @@ public abstract class LightTextureMixin
     @Redirect
     (
         method = "updateLightTexture",
-        slice = @Slice(from = @At(value = "INVOKE", target = "Lcom/mojang/math/Vector3f;map(Lit/unimi/dsi/fastutil/floats/Float2FloatFunction;)V")),
-        at = @At(value = "INVOKE", target = "Lcom/mojang/math/Vector3f;mul(F)V")
+        slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LightTexture;notGamma(F)F")),
+        at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;mul(F)Lorg/joml/Vector3f;")
     )
-    private void NT$onFinalizeColor(Vector3f rgb, float multiplier)
+    private Vector3f NT$onFinalizeColor(Vector3f rgb, float multiplier)
     {
         if (ModConfig.Candy.oldLightColor())
         {
@@ -175,6 +175,6 @@ public abstract class LightTextureMixin
             rgb.set(average, average, average);
         }
 
-        rgb.mul(multiplier);
+        return rgb.mul(multiplier);
     }
 }

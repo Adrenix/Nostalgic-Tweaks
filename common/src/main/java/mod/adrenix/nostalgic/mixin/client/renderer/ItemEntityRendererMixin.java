@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
@@ -11,6 +10,7 @@ import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.item.ItemEntity;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,22 +36,22 @@ public abstract class ItemEntityRendererMixin
         at = @At
         (
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lcom/mojang/math/Quaternion;)V"
+            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V"
         )
     )
-    private void NT$rotationProxy(PoseStack poseStack, Quaternion quaternion, ItemEntity itemEntity, float entityYaw, float partialTicks)
+    private void NT$rotationProxy(PoseStack poseStack, Quaternionf quaternion, ItemEntity itemEntity, float entityYaw, float partialTicks)
     {
         if (ModConfig.Candy.oldFloatingItems())
         {
             BakedModel model = this.itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
 
             if (ItemClientUtil.isModelFlat(model))
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
+                poseStack.mulPose(Axis.YP.rotationDegrees(180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
             else
-                poseStack.mulPose(Vector3f.YP.rotation(itemEntity.getSpin(partialTicks)));
+                poseStack.mulPose(Axis.YP.rotation(itemEntity.getSpin(partialTicks)));
         }
         else
-            poseStack.mulPose(Vector3f.YP.rotation(itemEntity.getSpin(partialTicks)));
+            poseStack.mulPose(Axis.YP.rotation(itemEntity.getSpin(partialTicks)));
     }
 
     /**

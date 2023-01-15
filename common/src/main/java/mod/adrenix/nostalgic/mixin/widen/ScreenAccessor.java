@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.widen;
 
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface ScreenAccessor
 {
     @Accessor("renderables")
-    List<Widget> NT$getRenderables();
+    List<Renderable> NT$getRenderables();
 
     @Mutable
     @Accessor("title")

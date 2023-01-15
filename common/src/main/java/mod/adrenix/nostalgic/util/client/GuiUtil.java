@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.util.client;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.api.ClientEventFactory;
 import mod.adrenix.nostalgic.api.event.HudEvent;
 import mod.adrenix.nostalgic.common.config.ModConfig;
@@ -14,13 +13,14 @@ import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
+import org.joml.Matrix4f;
 
 import javax.annotation.CheckForNull;
 import java.util.function.Function;
@@ -59,7 +59,7 @@ public abstract class GuiUtil
             (button) ->
             {
                 parent.onPress();
-                ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 151, screen.NT$getTopPos() + 7);
+                button.setPosition(screen.NT$getLeftPos() + 151, screen.NT$getTopPos() + 7);
             }
         );
     }
@@ -84,7 +84,7 @@ public abstract class GuiUtil
             (button) ->
             {
                 parent.onPress();
-                ((ImageButton) button).setPosition(screen.NT$getLeftPos() + 160, screen.NT$getTopPos() + 7);
+                button.setPosition(screen.NT$getLeftPos() + 160, screen.NT$getTopPos() + 7);
             }
         );
     }
@@ -99,7 +99,7 @@ public abstract class GuiUtil
         ImageButton recipeButton = null;
         WidgetManager injector = (WidgetManager) Minecraft.getInstance().screen;
 
-        for (Widget widget : ((ScreenAccessor) screen).NT$getRenderables())
+        for (Renderable widget : ((ScreenAccessor) screen).NT$getRenderables())
         {
             if (widget instanceof ImageButton imageButton)
             {

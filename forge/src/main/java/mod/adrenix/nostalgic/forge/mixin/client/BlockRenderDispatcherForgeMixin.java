@@ -35,9 +35,9 @@ public abstract class BlockRenderDispatcherForgeMixin
         at = @At("HEAD"),
         remap = false,
         cancellable = true,
-        method = "renderBatched(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;Lnet/minecraftforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V"
+        method = "renderBatched(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;Lnet/minecraftforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;Z)V"
     )
-    private void NT$onRenderBatched(BlockState state, BlockPos position, BlockAndTintGetter level, PoseStack poseStack, VertexConsumer consumer, boolean isAo, RandomSource randomSource, ModelData model, RenderType renderType, CallbackInfo callback)
+    private void NT$onRenderBatched(BlockState state, BlockPos position, BlockAndTintGetter level, PoseStack poseStack, VertexConsumer consumer, boolean isAo, RandomSource randomSource, ModelData model, RenderType renderType, boolean queryModelSpecificData, CallbackInfo callback)
     {
         if (BlockClientUtil.isTorchModel(state))
         {

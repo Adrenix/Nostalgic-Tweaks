@@ -9,7 +9,6 @@
     "AbstractWidgetAccessor",
     "EntityAccessor",
     "LevelRendererAccessor",
-    "Matrix4fAccessor",
     "MinecraftAccessor",
     "ProgressScreenAccessor",
     "ScreenAccessor",

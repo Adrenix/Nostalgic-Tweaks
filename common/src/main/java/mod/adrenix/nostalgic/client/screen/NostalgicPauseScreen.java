@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.client.gui.screens.achievement.StatsScreen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
@@ -103,6 +103,8 @@ public class NostalgicPauseScreen extends PauseScreen
         }
 
         super.render(poseStack, mouseX, mouseY, partialTick);
+
+        NostalgicPauseScreen.drawCenteredString(poseStack, this.font, this.title, this.width / 2, this.height / 4 - 20, 0xFFFFFF);
     }
 
     /* Methods */
@@ -122,7 +124,7 @@ public class NostalgicPauseScreen extends PauseScreen
             case ACHIEVE_UPPER -> this.setUpperAchieveLayout();
         }
 
-        for (Widget widget : ((ScreenAccessor) this).NT$getRenderables())
+        for (Renderable widget : ((ScreenAccessor) this).NT$getRenderables())
         {
             if (widget instanceof Button button && button.getMessage().getString().equals(this.lan.getString()))
                 ((Button) widget).active = !NetUtil.isMultiplayer();
@@ -260,98 +262,119 @@ public class NostalgicPauseScreen extends PauseScreen
     private int getFifthRow() { return this.getFourthRow() + 24; }
     private int getSixthRow() { return this.getFifthRow() + 24; }
 
+    /* Button Builder */
+
+    /**
+     * Shortcut for building a button.
+     * @param x The x-position of where the button starts on the screen.
+     * @param y The y-position of where the button starts on the screen.
+     * @param width The button width.
+     * @param height The button height.
+     * @param title The button title.
+     * @param onPress Instructions to perform when pressed.
+     * @return A button instance.
+     */
+    private Button button(int x, int y, int width, int height, Component title, Button.OnPress onPress)
+    {
+        return Button.builder(title, onPress)
+            .pos(x, y)
+            .size(width, height)
+            .build()
+        ;
+    }
+
     /* Menu Layouts */
 
     private void setAlphaLayout()
     {
         // Back to game
-        this.addRenderableWidget(new Button(this.getX(), this.getY() + 24, this.getBigWidth(), this.getHeight(), this.toLowerBack, this::returnToGame));
+        this.addRenderableWidget(this.button(this.getX(), this.getY() + 24, this.getBigWidth(), this.getHeight(), this.toLowerBack, this::returnToGame));
 
         // Save and quit to title
-        this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 2), this.getBigWidth(), this.getHeight(), this.getSave(true), this::saveOrQuit));
+        this.addRenderableWidget(this.button(this.getX(), this.getY() + (24 * 2), this.getBigWidth(), this.getHeight(), this.getSave(true), this::saveOrQuit));
 
         // Mods and/or Options...
         if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
-            this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
-            this.addRenderableWidget(new Button(this.getSmallX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+            this.addRenderableWidget(this.button(this.getX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getSmallX(), this.getY() + (24 * 4), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
         }
         else
-            this.addRenderableWidget(new Button(this.getX(), this.getY() + (24 * 4), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getX(), this.getY() + (24 * 4), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
     }
 
     private void setLowerAchieveLayout()
     {
         // Back to game
-        this.addRenderableWidget(new Button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toLowerBack, this::returnToGame));
+        this.addRenderableWidget(this.button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toLowerBack, this::returnToGame));
 
         // Achievements
-        this.addRenderableWidget(new Button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
+        this.addRenderableWidget(this.button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
 
         // Statistics
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
+        this.addRenderableWidget(this.button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods and/or Options...
         if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
-            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
-            this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+            this.addRenderableWidget(this.button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
         }
         else
-            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Save and quit to title
-        this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(true), this::saveOrQuit));
+        this.addRenderableWidget(this.button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(true), this::saveOrQuit));
     }
 
     private void setUpperAchieveLayout()
     {
         // Back to Game
-        this.addRenderableWidget(new Button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
+        this.addRenderableWidget(this.button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
 
         // Achievements
-        this.addRenderableWidget(new Button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
+        this.addRenderableWidget(this.button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
 
         // Statistics
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight() , this.stats, this::gotoStats));
+        this.addRenderableWidget(this.button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight() , this.stats, this::gotoStats));
 
         // Mods and/or Options...
         if (ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null)
         {
-            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
-            this.addRenderableWidget(new Button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
+            this.addRenderableWidget(this.button(this.getX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getSmallX(), this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.mods, this::gotoMods));
         }
         else
-            this.addRenderableWidget(new Button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
+            this.addRenderableWidget(this.button(this.getX(), this.getFourthRow(), this.getBigWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Save and Quit to Title
-        this.addRenderableWidget(new Button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
+        this.addRenderableWidget(this.button(this.getX(), this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
     }
 
     private void setLanLayout()
     {
         // Back to Game
-        this.addRenderableWidget(new Button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
+        this.addRenderableWidget(this.button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
 
         // Achievements
-        this.addRenderableWidget(new Button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
+        this.addRenderableWidget(this.button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.achievements, this::gotoAchievements));
 
         // Statistics
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
+        this.addRenderableWidget(this.button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods
         boolean isMods = ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null;
         if (isMods)
-            this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
+            this.addRenderableWidget(this.button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
 
         // Options...
-        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+        this.addRenderableWidget(this.button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Open to LAN
-        this.addRenderableWidget(new Button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
+        this.addRenderableWidget(this.button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
 
         // Save and Quit to Title
-        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
+        this.addRenderableWidget(this.button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
     }
 
     private void setAdvancementLayout()
@@ -359,27 +382,27 @@ public class NostalgicPauseScreen extends PauseScreen
         Component advance = Component.translatable(LangUtil.Vanilla.GUI_ADVANCEMENTS);
 
         // Back to Game
-        this.addRenderableWidget(new Button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
+        this.addRenderableWidget(this.button(this.getX(), this.getFirstRow(), this.getBigWidth(), this.getHeight(), this.toUpperBack, this::returnToGame));
 
         // Advancements
-        this.addRenderableWidget(new Button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), advance, this::gotoAchievements));
+        this.addRenderableWidget(this.button(this.getX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), advance, this::gotoAchievements));
 
         // Statistics
-        this.addRenderableWidget(new Button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
+        this.addRenderableWidget(this.button(this.getSmallX(), this.getSecondRow(), this.getSmallWidth(), this.getHeight(), this.stats, this::gotoStats));
 
         // Mods
         boolean isMods = ModConfig.Candy.includeModsOnPause() && GuiUtil.modScreen != null;
 
         if (isMods)
-            this.addRenderableWidget(new Button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
+            this.addRenderableWidget(this.button(this.getX(), this.getThirdRow(), this.getBigWidth(), this.getHeight(), this.mods, this::gotoMods));
 
         // Options...
-        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
+        this.addRenderableWidget(this.button(this.getX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.options, this::gotoOptions));
 
         // Open to LAN
-        this.addRenderableWidget(new Button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
+        this.addRenderableWidget(this.button(this.getSmallX(), isMods ? this.getFifthRow() : this.getFourthRow(), this.getSmallWidth(), this.getHeight(), this.lan, this::gotoLan));
 
         // Save and Quit to Title
-        this.addRenderableWidget(new Button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
+        this.addRenderableWidget(this.button(this.getX(), isMods ? this.getSixthRow() : this.getFifthRow(), this.getBigWidth(), this.getHeight(), this.getSave(false), this::saveOrQuit));
     }
 }

@@ -134,10 +134,10 @@ public abstract class ItemClientUtil
      */
     public static void setNormalQuad(PoseStack.Pose pose, BakedQuad quad)
     {
-        pose.normal().setIdentity();
+        pose.normal().identity();
 
         if (quad.getDirection() == Direction.NORTH)
-            pose.normal().mul(-1.0F);
+            pose.normal().scale(-1.0F);
     }
 
     /**

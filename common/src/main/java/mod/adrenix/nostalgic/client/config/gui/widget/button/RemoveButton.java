@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -100,7 +100,8 @@ public class RemoveButton extends Button
             RemoveButton.getRemoveWidth(),
             ConfigRowList.BUTTON_HEIGHT,
             RemoveButton.getRemoveTitle(removeType, isRemoved),
-            (button) -> onPress(isRemoved, onRemove, onUndo)
+            (button) -> onPress(isRemoved, onRemove, onUndo),
+            DEFAULT_NARRATION
         );
 
         this.resourceKey = resourceKey;
@@ -115,18 +116,18 @@ public class RemoveButton extends Button
      */
     private void updateX()
     {
-        if (this.x == RemoveButton.START_X)
-            this.x = ConfigRowList.getInstance().getRowWidth() + 1;
+        if (this.getX() == RemoveButton.START_X)
+            this.setX(ConfigRowList.getInstance().getRowWidth() + 1);
 
-        if (ConfigRowList.getInstance().isTooLong(this.x + RemoveButton.getRemoveWidth()))
+        if (ConfigRowList.getInstance().isTooLong(this.getX() + RemoveButton.getRemoveWidth()))
         {
-            int endX = this.x + this.width - 1;
+            int endX = this.getX() + this.width - 1;
             int startX = endX;
 
             while (ConfigRowList.getInstance().isTooLong(endX))
                 endX--;
 
-            this.x -= startX - endX + 4;
+            this.setX(this.getX() - (startX - endX + 4));
         }
     }
 
@@ -143,7 +144,7 @@ public class RemoveButton extends Button
         this.setMessage(RemoveButton.getRemoveTitle(this.removeType, this.isRemoved));
         this.updateX();
 
-        if (this.removeType == RemoveType.DEFAULT && Minecraft.getInstance().screen instanceof AbstractListScreen listScreen)
+        if (this.removeType == RemoveType.DEFAULT && Minecraft.getInstance().screen instanceof ListScreen listScreen)
             this.active = !listScreen.isItemSaved(ItemCommonUtil.getItem(this.resourceKey));
 
         if (Overlay.isOpened())

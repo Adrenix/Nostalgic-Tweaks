@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.ChatFormatting;
@@ -169,15 +169,17 @@ public class StateButton extends OverlapButton
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
         int uOffset = this.state ? 0 : 20;
-        int blockX = this.x + 2;
-        int blockY = this.y + 2;
+        int blockX = this.getX() + 2;
+        int blockY = this.getY() + 2;
 
         switch (this.widget)
         {
             case NUKE -> ItemClientUtil.renderGuiItem(new ItemStack(Items.TNT), blockX, blockY, 0.85F, -0.5F);
-            case BUBBLE -> this.screen.blit(poseStack, this.x, this.y, uOffset, 123, this.width, this.height);
-            case FUZZY, FILTER -> this.screen.blit(poseStack, this.x, this.y, uOffset, 143, this.width, this.height);
+            case BUBBLE -> this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, 123, this.width, this.height);
+            case FUZZY, FILTER -> this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, 143, this.width, this.height);
         }
+
+        this.renderToolTip(poseStack, mouseX, mouseY);
     }
 
     /**
@@ -186,10 +188,9 @@ public class StateButton extends OverlapButton
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
      */
-    @Override
     public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
     {
-        if (this.shouldRenderToolTip(mouseX, mouseY) && !Screen.hasControlDown())
+        if (this.shouldRenderToolTip(mouseX, mouseY) && this.isMouseOver(mouseX, mouseY) && !Screen.hasControlDown())
             this.screen.renderLast.add(() -> this.showTooltip(poseStack, mouseX, mouseY));
     }
 
@@ -199,7 +200,7 @@ public class StateButton extends OverlapButton
     @Override
     public void onPress()
     {
-        if (ClassUtil.isNotInstanceOf(this.screen, AbstractListScreen.class))
+        if (ClassUtil.isNotInstanceOf(this.screen, ListScreen.class))
             this.state = !this.state;
 
         super.onPress();

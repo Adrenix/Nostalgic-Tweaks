@@ -68,7 +68,7 @@ public class ConfigWidgets
 
     /* Widget Instances */
 
-    public final Set<Widget> children = new HashSet<>();
+    public final Set<Renderable> children = new HashSet<>();
     public boolean focusInput = false;
     private Button[] categories;
     private EditBox input;
@@ -172,8 +172,8 @@ public class ConfigWidgets
         this.children.addAll(search);
 
         // Adds all generated widgets to the parent screen for rendering
-        for (Widget widget : this.children)
-            this.parent.addRenderableWidget((GuiEventListener & Widget & NarratableEntry) widget);
+        for (Renderable widget : this.children)
+            this.parent.addRenderableWidget((GuiEventListener & Renderable & NarratableEntry) widget);
 
         // Get the full width from all the config tab buttons
         for (Button button : this.categories)
@@ -189,8 +189,8 @@ public class ConfigWidgets
         // Align configuration tab buttons so that they are side-by-side
         for (Button button : this.categories)
         {
-            button.x = prevX;
-            prevX = button.x + button.getWidth() - 1;
+            button.setX(prevX);
+            prevX = button.getX() + button.getWidth() - 1;
         }
 
         /*
@@ -199,7 +199,7 @@ public class ConfigWidgets
            x-positions. Each button after the first two will follow the same pattern.
          */
 
-        boolean isOddChecked = general.x % 2 != 0;
+        boolean isOddChecked = general.getX() % 2 != 0;
 
         for (int i = 0; i < this.categories.length; i++)
         {
@@ -210,7 +210,7 @@ public class ConfigWidgets
             if (first == null || second == null)
                 break;
 
-            if (isOddChecked ? (first.x % 2 != 0 && second.x % 2 != 0) : (first.x % 2 == 0 && second.x % 2 == 0))
+            if (isOddChecked ? (first.getX() % 2 != 0 && second.getX() % 2 != 0) : (first.getX() % 2 == 0 && second.getX() % 2 == 0))
             {
                 adjust = true;
                 isOddChecked = !isOddChecked;
@@ -218,12 +218,12 @@ public class ConfigWidgets
 
             if (adjust)
             {
-                second.x -= 1;
+                second.setX(second.getX() - 1);
 
                 if (ArrayUtil.get(this.categories, i + 2) != null)
                 {
                     for (int j = i + 2; j < this.categories.length; j++)
-                        this.categories[j].x -= 1;
+                        this.categories[j].setX(this.categories[j].getX() - 1);
                 }
             }
         }
@@ -373,15 +373,11 @@ public class ConfigWidgets
      */
     private Button generateCancelButton()
     {
-        return new Button
-        (
-            this.parent.width / 2 - getSmallWidth() - 3,
-            this.parent.height - BOTTOM_OFFSET,
-            getSmallWidth(),
-            BUTTON_HEIGHT,
-            Component.translatable(LangUtil.Vanilla.GUI_CANCEL),
-            (button) -> this.parent.onCancel()
-        );
+        return Button.builder(Component.translatable(LangUtil.Vanilla.GUI_CANCEL), (button) -> this.parent.onCancel())
+            .pos(this.parent.width / 2 - getSmallWidth() - 3, this.parent.height - BOTTOM_OFFSET)
+            .size(getSmallWidth(), BUTTON_HEIGHT)
+            .build()
+        ;
     }
 
     /**
@@ -390,15 +386,11 @@ public class ConfigWidgets
      */
     private Button generateSaveButton()
     {
-        return new Button
-        (
-            this.parent.width / 2 + 3,
-            this.parent.height - BOTTOM_OFFSET,
-            getSmallWidth(),
-            BUTTON_HEIGHT,
-            Component.translatable(LangUtil.Gui.BUTTON_SAVE_AND_DONE),
-            (button) -> this.parent.onClose(false)
-        );
+        return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_SAVE_AND_DONE), (button) -> this.parent.onClose(false))
+            .pos(this.parent.width / 2 + 3, this.parent.height - BOTTOM_OFFSET)
+            .size(getSmallWidth(), BUTTON_HEIGHT)
+            .build()
+        ;
     }
 
     /**
@@ -436,7 +428,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(StateWidget.BUBBLE, search.x - 61, search.y - 1, false, (button) ->
+        return new StateButton(StateWidget.BUBBLE, search.getX() - 61, search.getY() - 1, false, (button) ->
         {
             this.runSearch(search.getValue());
             this.focusSearch();
@@ -451,7 +443,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(StateWidget.FUZZY, search.x - 42, search.y - 1, (button) ->
+        return new StateButton(StateWidget.FUZZY, search.getX() - 42, search.getY() - 1, (button) ->
         {
             this.runSearch(search.getValue());
             this.focusSearch();
@@ -466,7 +458,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(StateWidget.TAG, search.x - 23, search.y - 1, (button) ->
+        return new StateButton(StateWidget.TAG, search.getX() - 23, search.getY() - 1, (button) ->
         {
             ConfigWidgets.setTagCycle(search);
             this.focusSearch();
@@ -481,7 +473,7 @@ public class ConfigWidgets
     {
         EditBox search = this.getSearchInput();
 
-        return new StateButton(StateWidget.CLEAR, search.x + search.getWidth() + 3, search.y - 1, (button) ->
+        return new StateButton(StateWidget.CLEAR, search.getX() + search.getWidth() + 3, search.getY() - 1, (button) ->
         {
             search.setValue("");
             this.focusSearch();

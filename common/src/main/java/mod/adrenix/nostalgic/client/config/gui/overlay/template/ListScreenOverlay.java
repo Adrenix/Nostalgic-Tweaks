@@ -2,15 +2,15 @@ package mod.adrenix.nostalgic.client.config.gui.overlay.template;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.overlay.OverlayFlag;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 
 /**
- * Any overlays that extend this overlay template must be used while an {@link AbstractListScreen} is active. This
+ * Any overlays that extend this overlay template must be used while an {@link ListScreen} is active. This
  * template uses the generic overlay template.
  */
 
@@ -19,7 +19,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
     /* Fields */
 
     protected W widgetProvider;
-    protected AbstractListScreen listScreen;
+    protected ListScreen listScreen;
     protected int heightPadding = 46;
 
     /* Constructor */
@@ -67,9 +67,9 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
     public void init()
     {
         Minecraft minecraft = Minecraft.getInstance();
-        AbstractListScreen screen = (AbstractListScreen) minecraft.screen;
+        ListScreen screen = (ListScreen) minecraft.screen;
 
-        if (screen == null || ClassUtil.isNotInstanceOf(screen, AbstractListScreen.class))
+        if (screen == null || ClassUtil.isNotInstanceOf(screen, ListScreen.class))
             return;
 
         // Setup generic overlay x, y position initialization
@@ -85,7 +85,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
         // Update overlay width based on title and widgets
         this.width = Math.max(this.width, Minecraft.getInstance().font.width(this.title) + 44);
 
-        for (Widget child : this.widgets)
+        for (Renderable child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
                 this.width = Math.max(this.width, widget.getWidth() + 2);
@@ -100,7 +100,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
         // Update overlay height based on widgets
         int combinedHeight = 0;
 
-        for (Widget child : this.widgets)
+        for (Renderable child : this.widgets)
         {
             if (child instanceof AbstractWidget widget)
                 combinedHeight += widget.getHeight();

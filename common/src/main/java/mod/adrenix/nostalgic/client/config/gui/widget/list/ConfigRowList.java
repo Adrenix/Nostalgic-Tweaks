@@ -3,13 +3,12 @@ package mod.adrenix.nostalgic.client.config.gui.widget.list;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
@@ -41,6 +40,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import org.joml.Matrix4f;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -207,7 +207,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         if (this.screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && isClicked)
             this.screen.getWidgets().getSearchInput().setFocus(false);
 
-        if (this.screen instanceof AbstractListScreen listScreen && isClicked)
+        if (this.screen instanceof ListScreen listScreen && isClicked)
             listScreen.getSearchBox().setFocus(false);
 
         return isClicked;
@@ -620,7 +620,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             TweakClientCache<String> color = TweakClientCache.get(GuiTweak.CATEGORY_TREE_COLOR);
             TweakClientCache<Boolean> tree = TweakClientCache.get(GuiTweak.DISPLAY_CATEGORY_TREE);
 
-            boolean isListScreen = Minecraft.getInstance().screen instanceof AbstractListScreen;
+            boolean isListScreen = Minecraft.getInstance().screen instanceof ListScreen;
             boolean isTreeEnabled = tree.getValue();
             boolean isIndented = this.indent != TEXT_START;
 
@@ -747,7 +747,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          */
         private static boolean isRowClipped(Screen screen, AbstractWidget widget)
         {
-            return widget.x + widget.getWidth() >= screen.width - TEXT_FROM_END;
+            return widget.getX() + widget.getWidth() >= screen.width - TEXT_FROM_END;
         }
 
         /**
@@ -776,26 +776,25 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             ConfigRowList.rendering = this;
 
             // Row highlights
-            if ((Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue())
-            {
-                if (this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY))
-                    this.fade = MathUtil.moveClampTowards(this.fade, 1.0F, 0.05F, 0.0F, 1.0F);
-                else
-                    this.fade = MathUtil.moveClampTowards(this.fade, 0.0F, 0.05F, 0.0F, 1.0F);
+            boolean isFaded = (Boolean) TweakClientCache.get(GuiTweak.ROW_HIGHLIGHT_FADE).getValue();
 
-                if (this.fade > 0.0F)
-                    this.renderOnHover(poseStack, screen, top, height);
-            }
+            if (this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY))
+                this.fade = isFaded ? MathUtil.moveClampTowards(this.fade, 1.0F, 0.05F, 0.0F, 1.0F) : 1.0F;
+            else
+                this.fade = isFaded ? MathUtil.moveClampTowards(this.fade, 0.0F, 0.05F, 0.0F, 1.0F) : 0.0F;
+
+            if (this.fade > 0.0F)
+                this.renderOnHover(poseStack, screen, top, height);
 
             // Abstract list screen rendering
-            if (Minecraft.getInstance().screen instanceof AbstractListScreen)
+            if (Minecraft.getInstance().screen instanceof ListScreen)
             {
                 for (AbstractWidget widget : this.children)
                 {
                     if (Overlay.isOpened())
                         widget.active = false;
 
-                    widget.y = top;
+                    widget.setY(top);
                     widget.render(poseStack, mouseX, mouseY, partialTick);
                 }
 
@@ -817,8 +816,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             for (AbstractWidget widget : this.children)
             {
-                if (widget.x == TEXT_START && this.indent != TEXT_START)
-                    widget.x = this.indent;
+                if (widget.getX() == TEXT_START && this.indent != TEXT_START)
+                    widget.setX(this.indent);
 
                 if (widget.isFocused())
                     isFocused = true;
@@ -830,17 +829,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             {
                 if (widget instanceof ResetButton && isRowClipped(screen, widget))
                 {
-                    int prevX = widget.x;
+                    int prevX = widget.getX();
                     while (isRowClipped(screen, widget))
-                        widget.x--;
+                        widget.setX(widget.getX() - 1);
 
-                    diffX = prevX - widget.x;
+                    diffX = prevX - widget.getX();
                     break;
                 }
             }
 
             for (AbstractWidget widget : this.children)
-                widget.x -= diffX;
+                widget.setX(widget.getX() - diffX);
 
             // Ensure translation does not overlap controllers
             TweakTag tagger = null;
@@ -851,8 +850,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     if (widget instanceof TweakTag tag)
                     {
-                        boolean isUnchecked = tag.x == 0 || tag.getWidth() == 0;
-                        boolean isOverlap = tag.x + tag.getWidth() >= this.controller.x - 6;
+                        boolean isUnchecked = tag.getX() == 0 || tag.getWidth() == 0;
+                        boolean isOverlap = tag.getX() + tag.getWidth() >= this.controller.getX() - 6;
                         tagger = tag;
 
                         if (isUnchecked || isOverlap)
@@ -860,7 +859,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                             tag.setRender(false);
                             tag.render(poseStack, mouseX, mouseY, partialTick);
 
-                            while (tag.x + tag.getWidth() >= this.controller.x - 6)
+                            while (tag.getX() + tag.getWidth() >= this.controller.getX() - 6)
                             {
                                 tag.setTitle(TextUtil.ellipsis(tag.getTitle()));
                                 tag.render(poseStack, mouseX, mouseY, partialTick);
@@ -940,14 +939,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     ConfigRowList.overTweakId = null;
 
                 // Realign widgets
-                widget.y = top;
-                int cacheX = widget.x;
-                int cacheY = widget.y;
+                widget.setY(top);
+                int cacheX = widget.getX();
+                int cacheY = widget.getY();
 
                 if (widget instanceof EditBox)
                 {
-                    widget.x -= 1;
-                    widget.y += 1;
+                    widget.setX(widget.getX() - 1);
+                    widget.setY(widget.getY() + 1);
                 }
 
                 // Realign text rows if searching
@@ -955,13 +954,13 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     if (widget instanceof SearchCrumbs crumb)
                     {
-                        widget.x = crumb.startX;
-                        widget.y += 2;
+                        widget.setX(crumb.startX);
+                        widget.setY(widget.getY() + 2);
                     }
                     else
-                        widget.y += 11;
+                        widget.setY(widget.getY() + 11);
 
-                    cacheY = widget.y + (widget instanceof EditBox ? -1 : 0);
+                    cacheY = widget.getY() + (widget instanceof EditBox ? -1 : 0);
                 }
 
                 // Activate and render widget
@@ -976,8 +975,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 // Reset widget positions with caches
                 if (widget instanceof EditBox)
                 {
-                    widget.x = cacheX;
-                    widget.y = cacheY;
+                    widget.setX(cacheX);
+                    widget.setY(cacheY);
                 }
 
                 // If ellipsis, then give tooltip of full tweak name

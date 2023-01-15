@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.text;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.CheckForNull;
 import java.util.List;
@@ -48,7 +49,7 @@ public class TextTitle<V> extends AbstractWidget
 
     /* Constructors */
 
-    public TextTitle(ListMapScreen<V> listMapScreen, Map.Entry<String, V> entry, String resourceKey)
+    public TextTitle(ListMapScreen<V> listMapScreen, @NotNull Map.Entry<String, V> entry, String resourceKey)
     {
         super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
 
@@ -63,7 +64,7 @@ public class TextTitle<V> extends AbstractWidget
      * Create a new entry title widget without it being associated with a map entry.
      * @param resourceKey The item resource key associated with the item title.
      */
-    public TextTitle(RemoveType removeType, String resourceKey, Supplier<Boolean> isRemoved)
+    public TextTitle(@NotNull RemoveType removeType, String resourceKey, @NotNull Supplier<Boolean> isRemoved)
     {
         super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
 
@@ -130,9 +131,9 @@ public class TextTitle<V> extends AbstractWidget
         boolean isInvalid = !ItemCommonUtil.isValidKey(this.resourceKey);
         int startX = ConfigRowList.getStartX() - 1;
         Font font = Minecraft.getInstance().font;
-        AbstractListScreen listScreen = (AbstractListScreen) Minecraft.getInstance().screen;
+        ListScreen listScreen = (ListScreen) Minecraft.getInstance().screen;
 
-        if (ClassUtil.isNotInstanceOf(listScreen, AbstractListScreen.class))
+        if (ClassUtil.isNotInstanceOf(listScreen, ListScreen.class))
             return;
 
         ItemStack itemStack = isInvalid ? new ItemStack(Items.BARRIER) : ItemCommonUtil.getItemStack(this.resourceKey);
@@ -165,7 +166,7 @@ public class TextTitle<V> extends AbstractWidget
         else if (listScreen.isItemAdded(itemStack) && this.removeType != RemoveType.DEFAULT)
             entryTitle = Component.literal(ChatFormatting.GREEN + entryTitle.copy().getString());
 
-        int startY = this.y + 1;
+        int startY = this.getY() + 1;
 
         if (itemStack.getItem() instanceof BlockItem)
             startY += 1;
@@ -177,9 +178,9 @@ public class TextTitle<V> extends AbstractWidget
         }
 
         listScreen.getItemRenderer().renderGuiItem(itemStack, startX, startY);
-        Screen.drawString(poseStack, font, entryTitle, startX + 21, this.y + 6, 0xFFFFFF);
+        Screen.drawString(poseStack, font, entryTitle, startX + 21, this.getY() + 6, 0xFFFFFF);
 
-        boolean isHovering = MathUtil.isWithinBox(mouseX, mouseY, startX, this.y + 4, font.width(entryTitle) + 21, 14);
+        boolean isHovering = MathUtil.isWithinBox(mouseX, mouseY, startX, this.getY() + 4, font.width(entryTitle) + 21, 14);
         boolean isInBounds = ConfigWidgets.isInsideRowList(mouseY);
         boolean isNotDefault = this.removeType != RemoveType.DEFAULT;
 
@@ -190,5 +191,5 @@ public class TextTitle<V> extends AbstractWidget
     /* Required Overrides */
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

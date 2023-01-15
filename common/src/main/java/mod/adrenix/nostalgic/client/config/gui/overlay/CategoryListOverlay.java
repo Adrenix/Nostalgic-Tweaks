@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.GenericOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
@@ -21,10 +20,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix4f;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -121,7 +120,7 @@ public class CategoryListOverlay extends GenericOverlay
 
         public TextButton(ConfigScreen screen, ConfigRowList.Row row, int color, int startX, int startY, Component title, Button.OnPress onClick)
         {
-            super(startX, startY, getTextWidth(title), getTextHeight(), title, onClick);
+            super(startX, startY, getTextWidth(title), getTextHeight(), title, onClick, DEFAULT_NARRATION);
 
             this.screen = screen;
             this.title = title;
@@ -167,7 +166,7 @@ public class CategoryListOverlay extends GenericOverlay
             boolean isControl = this.title.getString().length() == 1;
             boolean isSelected = this.row.equals(overlay.getSelected()) && isControl;
             boolean isTabbed = this.isFocused() && !isTweak;
-            boolean isHover = MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, this.width, this.height) && !isTweak;
+            boolean isHover = MathUtil.isWithinBox(mouseX, mouseY, this.getX(), this.getY(), this.width, this.height) && !isTweak;
             int highlight = isHover ? 0xFFD800 : this.color;
 
             if (isTabbed)
@@ -176,13 +175,8 @@ public class CategoryListOverlay extends GenericOverlay
             if (isSelected && overlay.list.getLastSelection() == null)
                 overlay.list.setLastSelection(this);
 
-            drawString(poseStack, this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.x, this.y, highlight);
+            drawString(poseStack, this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.getX(), this.getY(), highlight);
         }
-
-        /* Required Widget Overrides */
-
-        @Override
-        public void updateNarration(NarrationElementOutput narrationElementOutput) { }
     }
 
     /**
@@ -348,7 +342,7 @@ public class CategoryListOverlay extends GenericOverlay
             // Update widget heights and render
             for (AbstractWidget widget : this.children)
             {
-                widget.y = top;
+                widget.setY(top);
                 widget.render(poseStack, mouseX, mouseY, partialTick);
             }
 

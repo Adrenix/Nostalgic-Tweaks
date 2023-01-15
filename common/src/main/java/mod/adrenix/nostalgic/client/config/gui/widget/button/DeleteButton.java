@@ -98,7 +98,8 @@ public class DeleteButton extends Button
             DeleteButton.getDeleteWidth(),
             ConfigRowList.BUTTON_HEIGHT,
             DeleteButton.getDeleteTitle(isDeleted),
-            (button) -> onPress(isDeleted, onDelete, onUndo)
+            (button) -> onPress(isDeleted, onDelete, onUndo),
+            DEFAULT_NARRATION
         );
 
         this.resetButton = resetButton;
@@ -114,27 +115,27 @@ public class DeleteButton extends Button
      */
     private void updateX()
     {
-        if (this.x == DeleteButton.START_X)
-            this.x = this.resetButton.x + this.resetButton.getWidth() + ConfigRowList.ROW_WIDGET_GAP;
+        if (this.getX() == DeleteButton.START_X)
+            this.setX(this.resetButton.getX() + this.resetButton.getWidth() + ConfigRowList.ROW_WIDGET_GAP);
 
         int diffX = 0;
 
-        if (ConfigRowList.getInstance().isTooLong(this.x + DeleteButton.getDeleteWidth()))
+        if (ConfigRowList.getInstance().isTooLong(this.getX() + DeleteButton.getDeleteWidth()))
         {
-            int endX = this.x + this.width - 1;
+            int endX = this.getX() + this.width - 1;
             int startX = endX;
 
             while (ConfigRowList.getInstance().isTooLong(endX))
                 endX--;
 
             diffX = startX - endX + 4;
-            this.x -= diffX;
+            this.setX(this.getX() - diffX);
         }
 
         if (diffX != 0)
         {
-            this.resetButton.x -= diffX;
-            this.resetButton.getController().x -= diffX;
+            this.resetButton.setX(this.resetButton.getX() - diffX);
+            this.resetButton.getController().setX(this.resetButton.getController().getX() - diffX);
         }
     }
 

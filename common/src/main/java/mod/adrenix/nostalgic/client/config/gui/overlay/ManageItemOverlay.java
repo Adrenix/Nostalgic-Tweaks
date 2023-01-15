@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.AbstractWidgetProvider;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.ListScreenOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ItemButton;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.gui.components.Button;
@@ -117,11 +117,24 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
          */
         public ItemButton createItemButton()
         {
-            AbstractListScreen screen = ManageItemOverlay.this.listScreen;
+            ListScreen screen = ManageItemOverlay.this.listScreen;
             ItemStack itemStack = ManageItemOverlay.this.itemStack;
             int startX = ManageItemOverlay.this.getCenteredX();
 
             return new ItemButton(screen, itemStack, startX).forOverlay();
+        }
+
+        /**
+         * Functional shortcut for creating a new item entry instance.
+         * @param button A button instance.
+         */
+        private void onCreate(Button button)
+        {
+            Overlay.close();
+            ManageItemOverlay.this.listScreen.addItem(ManageItemOverlay.this.itemStack);
+            ManageItemOverlay.this.listScreen.highlightItem(ManageItemOverlay.this.itemStack);
+            ManageItemOverlay.this.listScreen.getSearchBox().setValue("");
+            ManageItemOverlay.this.listScreen.refreshSearchResults();
         }
 
         /**
@@ -130,22 +143,21 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
          */
         public Button createAddButton()
         {
-            return new Button
-            (
-                ManageItemOverlay.this.getOverlayStartX(),
-                ManageItemOverlay.this.getOverlayStartY() + 22,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.OVERLAY_ITEM_ADD),
-                (button) ->
-                {
-                    Overlay.close();
-                    ManageItemOverlay.this.listScreen.addItem(ManageItemOverlay.this.itemStack);
-                    ManageItemOverlay.this.listScreen.highlightItem(ManageItemOverlay.this.itemStack);
-                    ManageItemOverlay.this.listScreen.getSearchBox().setValue("");
-                    ManageItemOverlay.this.listScreen.refreshSearchResults();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.OVERLAY_ITEM_ADD), this::onCreate)
+                .pos(ManageItemOverlay.this.getOverlayStartX(), ManageItemOverlay.this.getOverlayStartY() + 22)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
+        }
+
+        /**
+         * Functional shortcut when the edit button is pressed.
+         * @param button A button instance.
+         */
+        private void onEdit(Button button)
+        {
+            Overlay.close();
+            ManageItemOverlay.this.listScreen.jumpToEntry(ManageItemOverlay.this.itemStack);
         }
 
         /**
@@ -156,19 +168,22 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
          */
         public Button createEditButton()
         {
-            return new Button
-            (
-                ManageItemOverlay.this.getOverlayStartX(),
-                ManageItemOverlay.this.getOverlayStartY() + 44,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.OVERLAY_ITEM_EDIT),
-                (button) ->
-                {
-                    Overlay.close();
-                    ManageItemOverlay.this.listScreen.jumpToEntry(ManageItemOverlay.this.itemStack);
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.OVERLAY_ITEM_EDIT), this::onEdit)
+                .pos(ManageItemOverlay.this.getOverlayStartX(), ManageItemOverlay.this.getOverlayStartY() + 44)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
+        }
+
+        /**
+         * Functional shortcut for when an item entry is removed.
+         * @param button A button instance.
+         */
+        private void onRemove(Button button)
+        {
+            Overlay.close();
+            ManageItemOverlay.this.listScreen.deleteItem(ManageItemOverlay.this.itemStack);
+            ManageItemOverlay.this.listScreen.jumpToEntry(ManageItemOverlay.this.itemStack);
         }
 
         /**
@@ -179,20 +194,11 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
          */
         public Button createRemoveButton()
         {
-            return new Button
-            (
-                ManageItemOverlay.this.getOverlayStartX(),
-                ManageItemOverlay.this.getOverlayStartY() + 66,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.OVERLAY_ITEM_REMOVE),
-                (button) ->
-                {
-                    Overlay.close();
-                    ManageItemOverlay.this.listScreen.deleteItem(ManageItemOverlay.this.itemStack);
-                    ManageItemOverlay.this.listScreen.jumpToEntry(ManageItemOverlay.this.itemStack);
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.OVERLAY_ITEM_REMOVE), this::onRemove)
+                .pos(ManageItemOverlay.this.getOverlayStartX(), ManageItemOverlay.this.getOverlayStartY() + 66)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
         }
     }
 
@@ -211,7 +217,7 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
         // Widget management
         boolean isSaved = this.listScreen.isItemSaved(this.itemStack);
 
-        this.widgetProvider.itemButton.x = this.getCenteredX();
+        this.widgetProvider.itemButton.setX(this.getCenteredX());
         this.widgetProvider.editButton.active = isSaved;
         this.widgetProvider.removeButton.active = isSaved;
         this.widgetProvider.addButton.active = !this.listScreen.isItemSaved(this.itemStack);

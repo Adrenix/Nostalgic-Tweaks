@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.util.common;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -22,7 +22,10 @@ public abstract class ItemCommonUtil
      * @param resourceKey An item's resource location key.
      * @return An item instance from the registry if that item exists.
      */
-    public static Item getItem(String resourceKey) { return Registry.ITEM.get(ResourceLocation.tryParse(resourceKey)); }
+    public static Item getItem(String resourceKey)
+    {
+        return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(resourceKey));
+    }
 
     /**
      * Get an item stack instance based on the provided resource location key.
@@ -36,13 +39,17 @@ public abstract class ItemCommonUtil
      * @param resourceKey The block's resource location key.
      * @return A block from the registry if it exists.
      */
-    public static Block getBlock(String resourceKey) { return Registry.BLOCK.get(ResourceLocation.tryParse(resourceKey)); }
+    public static Block getBlock(String resourceKey)
+    {
+        return BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(resourceKey));
+    }
 
     /**
      * Get a block based on the provided item.
      * @param item An item instance to get block data from.
      * @return A block from the registry if it exists.
      */
+    @SuppressWarnings("unused")
     public static Block getBlockFromItem(Item item) { return getBlock(getResourceKey(item)); }
 
     /**
@@ -52,7 +59,7 @@ public abstract class ItemCommonUtil
      * @param item The item instance to get registry key information from.
      * @return A unique item key that can be stored in a configuration file.
      */
-    public static String getResourceKey(Item item) { return Registry.ITEM.getKey(item).toString(); }
+    public static String getResourceKey(Item item) { return BuiltInRegistries.ITEM.getKey(item).toString(); }
 
     /**
      * Generate a set of resource item keys from the given var args list of item instances.

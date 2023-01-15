@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.IdMapper;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
@@ -31,7 +31,7 @@ public abstract class ItemColorsSodiumMixin
     @Inject(remap = false, method = "getColorProvider", at = @At("HEAD"), cancellable = true)
     private void NT$onGetColorProvider(ItemStack itemStack, CallbackInfoReturnable<ItemColor> callback)
     {
-        ItemColor itemColor = this.itemColors.byId(Registry.ITEM.getId(itemStack.getItem()));
+        ItemColor itemColor = this.itemColors.byId(BuiltInRegistries.ITEM.getId(itemStack.getItem()));
 
         if (ItemClientUtil.isValidColorItem() && itemColor != null)
             callback.setReturnValue((stack, tintIndex) -> ItemClientUtil.getOldColor(itemColor, stack, tintIndex));

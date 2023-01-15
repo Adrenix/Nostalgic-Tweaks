@@ -2,11 +2,12 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.screen.list.AbstractListScreen;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -134,7 +135,6 @@ public class ToggleCheckbox extends Checkbox
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
      */
-    @Override
     public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
     {
         this.screen.renderComponentTooltip(poseStack, TextUtil.Wrap.tooltip(this.tooltip, this.tooltipWidth), mouseX, mouseY);
@@ -152,6 +152,7 @@ public class ToggleCheckbox extends Checkbox
     {
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 
+        Font font = Minecraft.getInstance().font;
         int uOffset = 0;
         int vOffset = 103;
         int uWidth = 20;
@@ -165,12 +166,12 @@ public class ToggleCheckbox extends Checkbox
         else if (this.selected())
             vOffset = 83;
 
-        this.screen.blit(poseStack, this.x, this.y, uOffset, vOffset, uWidth, vHeight);
-        ToggleCheckbox.drawString(poseStack, Minecraft.getInstance().font, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFF);
+        this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
+        ToggleCheckbox.drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
         {
-            if (this.screen instanceof AbstractListScreen listScreen)
+            if (this.screen instanceof ListScreen listScreen)
                 listScreen.renderOverlayTooltips.add(this::renderToolTip);
             else
                 this.renderToolTip(poseStack, mouseX, mouseY);

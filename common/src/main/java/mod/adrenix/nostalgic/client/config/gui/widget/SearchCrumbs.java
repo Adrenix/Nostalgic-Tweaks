@@ -122,7 +122,7 @@ public class SearchCrumbs extends AbstractWidget
     private void drawCrumb(PoseStack poseStack, Crumb crumb, boolean isUnderlined)
     {
         MutableComponent crumbText = isUnderlined ? crumb.text().copy().withStyle(ChatFormatting.UNDERLINE) : crumb.text();
-        drawString(poseStack, Minecraft.getInstance().font, crumbText, crumb.startX(), this.y, 0xFFFFFF);
+        drawString(poseStack, Minecraft.getInstance().font, crumbText, crumb.startX(), this.getY(), 0xFFFFFF);
     }
 
     /**
@@ -135,7 +135,7 @@ public class SearchCrumbs extends AbstractWidget
         Font font = Minecraft.getInstance().font;
         int startX = crumb.getEndX() - font.width(Component.literal("/"));
 
-        drawString(poseStack, font, this.slashText, startX, this.y, 0xFFFFFF);
+        drawString(poseStack, font, this.slashText, startX, this.getY(), 0xFFFFFF);
     }
 
     /**
@@ -148,14 +148,14 @@ public class SearchCrumbs extends AbstractWidget
     private boolean isOverCrumb(double mouseX, double mouseY, Crumb crumb)
     {
         // This prevents clicking when the crumbs haven't received a y-position from the row list yet.
-        if (this.y == 0 || ConfigWidgets.isOutsideRowList(mouseY))
+        if (this.getY() == 0 || ConfigWidgets.isOutsideRowList(mouseY))
             return false;
 
         Font font = Minecraft.getInstance().font;
         int width = font.width(crumb.text());
         int height = font.lineHeight;
 
-        return MathUtil.isWithinBox(mouseX, mouseY, crumb.startX(), this.y, width, height);
+        return MathUtil.isWithinBox(mouseX, mouseY, crumb.startX(), this.getY(), width, height);
     }
 
     /**
@@ -254,5 +254,5 @@ public class SearchCrumbs extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) { }
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

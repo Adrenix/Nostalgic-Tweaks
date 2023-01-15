@@ -3,11 +3,11 @@ package mod.adrenix.nostalgic.util.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix4f;
 
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.

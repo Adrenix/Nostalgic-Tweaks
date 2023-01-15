@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -64,7 +65,7 @@ public class StatusButton extends Button
 
     public StatusButton(TweakClientCache<?> tweak, AbstractWidget anchor)
     {
-        super(0, 0, 0, 0, Component.empty(), (ignored) -> {});
+        super(0, 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
 
         this.tweak = tweak;
         this.anchor = anchor;
@@ -145,8 +146,8 @@ public class StatusButton extends Button
 
         int uWidth = 4;
         int vHeight = 20;
-        int xStart = this.anchor.x - ConfigRowList.ROW_WIDGET_GAP - uWidth;
-        int yStart = this.anchor.y;
+        int xStart = this.anchor.getX() - ConfigRowList.ROW_WIDGET_GAP - uWidth;
+        int yStart = this.anchor.getY();
 
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
         StatusButton.update();

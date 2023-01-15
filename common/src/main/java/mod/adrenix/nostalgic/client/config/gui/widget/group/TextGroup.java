@@ -142,7 +142,7 @@ public class TextGroup extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
-    public void updateNarration(NarrationElementOutput ignored) { }
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 
     /**
      * This class defines the properties of a text row widget that will be used in a config row list row.
@@ -214,14 +214,14 @@ public class TextGroup extends AbstractWidget
 
             switch (TextGroup.this.align)
             {
-                case LEFT -> label.renderLeftAligned(poseStack, ConfigRowList.getStartX(), this.y - 1, font.lineHeight + 4, 0xFFFFFF);
-                case CENTER -> label.renderCentered(poseStack, TextGroup.this.list.getRowWidth() / 2, this.y - 1);
+                case LEFT -> label.renderLeftAligned(poseStack, ConfigRowList.getStartX(), this.getY() - 1, font.lineHeight + 4, 0xFFFFFF);
+                case CENTER -> label.renderCentered(poseStack, TextGroup.this.list.getRowWidth() / 2, this.getY() - 1);
             }
         }
 
         /* Required Widget Overrides */
 
         @Override
-        public void updateNarration(NarrationElementOutput ignored) {}
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
     }
 }

@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,10 +53,10 @@ public abstract class ItemInHandRendererMixin
         (
             value = "INVOKE",
             ordinal = 0,
-            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lcom/mojang/math/Quaternion;)V"
+            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V"
         )
     )
-    private void NT$armSwayXP(PoseStack poseStack, Quaternion q, float partialTicks, PoseStack ps2, MultiBufferSource.BufferSource b, LocalPlayer player)
+    private void NT$armSwayXP(PoseStack poseStack, Quaternionf quaternion, float partialTicks, PoseStack unused, MultiBufferSource.BufferSource buffer, LocalPlayer player)
     {
         if (ModConfig.Animation.oldArmSway())
             return;
@@ -64,7 +64,7 @@ public abstract class ItemInHandRendererMixin
         float intensity = ModConfig.Animation.getArmSwayIntensity();
         float xBobInterpolate = Mth.lerp(partialTicks, player.xBobO, player.xBob);
 
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(((player.getViewXRot(partialTicks) - xBobInterpolate) * 0.1F) * intensity));
+        poseStack.mulPose(Axis.XP.rotationDegrees(((player.getViewXRot(partialTicks) - xBobInterpolate) * 0.1F) * intensity));
     }
 
     /**
@@ -78,10 +78,10 @@ public abstract class ItemInHandRendererMixin
         (
             value = "INVOKE",
             ordinal = 1,
-            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lcom/mojang/math/Quaternion;)V"
+            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V"
         )
     )
-    private void NT$armSwayYP(PoseStack poseStack, Quaternion q, float partialTicks, PoseStack ps2, MultiBufferSource.BufferSource b, LocalPlayer player)
+    private void NT$armSwayYP(PoseStack poseStack, Quaternionf quaternion, float partialTicks, PoseStack unused, MultiBufferSource.BufferSource buffer, LocalPlayer player)
     {
         if (ModConfig.Animation.oldArmSway())
             return;
@@ -89,7 +89,7 @@ public abstract class ItemInHandRendererMixin
         float intensity = ModConfig.Animation.getArmSwayIntensity();
         float yBobInterpolate = Mth.lerp(partialTicks, player.yBobO, player.yBob);
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(((player.getViewYRot(partialTicks) - yBobInterpolate) * 0.1F) * intensity));
+        poseStack.mulPose(Axis.YP.rotationDegrees(((player.getViewYRot(partialTicks) - yBobInterpolate) * 0.1F) * intensity));
     }
 
     /**
@@ -260,7 +260,7 @@ public abstract class ItemInHandRendererMixin
 
         if (ModConfig.Candy.oldItemHolding() && !isDisabled && !isBlockItem && !isUsingItem)
         {
-            poseStack.mulPose(Vector3f.YP.rotationDegrees((leftHand ? -1 : 1) * 5.0F));
+            poseStack.mulPose(Axis.YP.rotationDegrees((leftHand ? -1 : 1) * 5.0F));
             poseStack.translate(-0.01F, -0.01F, -0.015F);
         }
     }

@@ -138,24 +138,26 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
         }
 
         /**
+         * Functional shortcut for when the yes button is pressed.
+         * @param button A button widget instance.
+         */
+        private void onConfirmYes(Button button)
+        {
+            Overlay.close();
+            NukeListOverlay.this.listScreen.clearAllSaved();
+        }
+
+        /**
          * Create a button that, when clicked, closes the overlay and clears the saved entries list.
          * @return A button widget instance.
          */
         private Button createConfirmYes()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY() + 2,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_YES),
-                (button) ->
-                {
-                    Overlay.close();
-                    NukeListOverlay.this.listScreen.clearAllSaved();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_YES), this::onConfirmYes)
+                .pos(this.getButtonStartX(), this.messageText.getBottomY() + 2)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
         }
 
         /**
@@ -164,15 +166,11 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
          */
         private Button createConfirmNo()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY() + 24,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_NO),
-                (button) -> Overlay.close()
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_NO), (button) -> Overlay.close())
+                .pos(this.getButtonStartX(), this.messageText.getBottomY() + 24)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
         }
     }
 }

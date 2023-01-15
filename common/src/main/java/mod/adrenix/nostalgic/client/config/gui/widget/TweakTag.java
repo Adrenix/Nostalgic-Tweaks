@@ -251,7 +251,7 @@ public class TweakTag extends AbstractWidget
         boolean isTooltipRenderable = (Boolean) TweakClientCache.get(GuiTweak.DISPLAY_TAG_TOOLTIPS).getValue();
 
         int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + (isTooltip ? 20 : 4);
-        int startY = this.controller.y + 4;
+        int startY = this.controller.getY() + 4;
         int lastX = startX;
 
         if (newTag != null && isNewRenderable)
@@ -329,11 +329,12 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(screen, poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        this.x = startX;
+        this.setX(startX);
         this.setWidth(lastX - startX);
     }
 
     /* Required Widget Overrides */
 
-    @Override public void updateNarration(NarrationElementOutput narrationElementOutput) { }
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

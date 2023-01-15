@@ -29,7 +29,8 @@ public class ControlButton extends Button
             ConfigRowList.BUTTON_WIDTH,
             ConfigRowList.BUTTON_HEIGHT,
             title,
-            onPress
+            onPress,
+            DEFAULT_NARRATION
         );
     }
 }

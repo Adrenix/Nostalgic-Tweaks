@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -209,12 +210,14 @@ public abstract class ClientLevelMixin
      */
     @Inject
     (
-        method = "playSeededSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFJ)V",
+        method = "playSeededSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
         at = @At("HEAD"),
         cancellable = true
     )
-    private void NT$onPlayPositionedSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, long seed, CallbackInfo callback)
+    private void NT$onPlayPositionedSound(Player player, double x, double y, double z, Holder<SoundEvent> soundHolder, SoundSource category, float volume, float pitch, long seed, CallbackInfo callback)
     {
+        SoundEvent sound = soundHolder.value();
+
         /* Attack Sounds */
 
         boolean isAttack = sound == SoundEvents.PLAYER_ATTACK_KNOCKBACK ||
@@ -331,13 +334,14 @@ public abstract class ClientLevelMixin
         if (isOldChest && Minecraft.getInstance().level != null)
         {
             SoundEvent chestSound = SoundEvents.WOODEN_DOOR_OPEN;
+            RandomSource randomSource = Minecraft.getInstance().level.random;
+
             if (sound == SoundEvents.CHEST_CLOSE || sound == SoundEvents.ENDER_CHEST_CLOSE)
                 chestSound = SoundEvents.WOODEN_DOOR_CLOSE;
 
-            RandomSource randomSource = Minecraft.getInstance().level.random;
             this.playLocalSound(x, y, z, chestSound, SoundSource.BLOCKS, 1.0F, randomSource.nextFloat() * 0.1f + 0.9f, false);
-
             callback.cancel();
+
             return;
         }
 
@@ -349,8 +353,9 @@ public abstract class ClientLevelMixin
          */
 
         boolean isBlockedSound = false;
+        boolean isPlacingSound = sound == SoundEvents.WOOD_PLACE || sound == SoundEvents.METAL_PLACE;
 
-        if (ModConfig.Sound.disableDoor() && state.getBlock() instanceof DoorBlock)
+        if (ModConfig.Sound.disableDoor() && isPlacingSound && state.getBlock() instanceof DoorBlock)
             isBlockedSound = true;
         else if (ModConfig.Sound.disableBed() && state.getBlock() instanceof BedBlock)
             isBlockedSound = true;

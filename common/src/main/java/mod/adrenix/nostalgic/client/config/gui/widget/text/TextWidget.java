@@ -57,7 +57,7 @@ public class TextWidget extends AbstractWidget
      *
      * @return The bottom y-position of this widget.
      */
-    public int getBottomY() { return this.y + this.height; }
+    public int getBottomY() { return this.getY() + this.height; }
 
     /* Methods */
 
@@ -80,19 +80,18 @@ public class TextWidget extends AbstractWidget
      * @param mouseY The y-position of the mouse.
      * @param partialTick The change in frame time.
      */
-    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         switch (this.align)
         {
-            case LEFT -> this.label.renderLeftAligned(poseStack, this.x, this.y, this.lineHeight, 0xFFFFFF);
-            case CENTER -> this.label.renderCentered(poseStack, this.x + (this.width / 2), this.y);
+            case LEFT -> this.label.renderLeftAligned(poseStack, this.getX(), this.getY(), this.lineHeight, 0xFFFFFF);
+            case CENTER -> this.label.renderCentered(poseStack, this.getX() + (this.width / 2), this.getY());
         }
     }
 
     /* Required Overrides */
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

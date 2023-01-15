@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -36,7 +37,7 @@ public class TooltipButton extends Button
      */
     public TooltipButton(TweakClientCache<?> tweak, AbstractWidget controller)
     {
-        super(0, 0, 0, 0, Component.empty(), (ignored) -> {});
+        super(0, 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
 
         this.tweak = tweak;
         this.controller = controller;
@@ -73,7 +74,7 @@ public class TooltipButton extends Button
         ConfigScreen screen = (ConfigScreen) minecraft.screen;
 
         int startX = ConfigRowList.getStartX() + minecraft.font.width(this.title) + 4;
-        int startY = this.controller.y + 4;
+        int startY = this.controller.getY() + 4;
         int uWidth = 12;
         int vHeight = 14;
 

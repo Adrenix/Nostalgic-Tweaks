@@ -62,9 +62,9 @@ public class NostalgicTweaks
 
     /**
      * This will give the beta version number. If the build is not in beta, then an empty string is returned.
-     * @return A beta version number formatted as 'Beta.#'.
+     * @return A beta version number formatted as 'Beta-#' or 'Beta-#.#'.
      */
-    public static String getBetaVersion() { return TextUtil.extract(VERSION.get(), "Beta\\.\\d+"); }
+    public static String getBetaVersion() { return TextUtil.extract(VERSION.get(), "Beta-\\d+(?:\\.\\d+)?"); }
 
     /**
      * This will follow the same filename format that is used on the mod's approved distribution sites.

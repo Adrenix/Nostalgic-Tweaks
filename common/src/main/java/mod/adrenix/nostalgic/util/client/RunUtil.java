@@ -1,6 +1,8 @@
 package mod.adrenix.nostalgic.util.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+
 import java.util.ArrayList;
 
 /**
@@ -22,6 +24,15 @@ public abstract class RunUtil
      * This is used in the progress screen.
      */
     public static void nothing() {}
+
+    /**
+     * Used in button builders. Simply accepts a button and does nothing.
+     * Useful for buttons that are used to only display information.
+     *
+     * @param button A button instance.
+     */
+    @SuppressWarnings("unused")
+    public static void nothing(Button button) {}
 
     /**
      * This is an array list of functions to run after the user updates the config values saved on disk.

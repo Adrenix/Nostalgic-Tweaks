@@ -1,20 +1,13 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.NativeImage;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.metadata.animation.AnimationFrame;
-import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.LazyLoadedValue;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -26,20 +19,21 @@ import java.awt.image.BufferedImage;
  * functional programming methods to prevent the need of restarting the game when the tweak changes.
  */
 
-@SuppressWarnings("deprecation")
 @Mixin(MissingTextureAtlasSprite.class)
 public abstract class MissingTextureAtlasSpriteMixin
 {
-    /* Modern Cache */
+    /* Injections */
 
-    @Unique private static LazyLoadedValue<NativeImage> NT$MODERN_MISSING_IMAGE_DATA;
-    @Unique private static TextureAtlasSprite.Info NT$MODERN_INFO;
-
-    /* Shadows */
-
-    @Shadow @Final @Mutable private static LazyLoadedValue<NativeImage> MISSING_IMAGE_DATA;
-    @Shadow @Final @Mutable private static TextureAtlasSprite.Info INFO;
-    @Shadow @Final private static ResourceLocation MISSING_TEXTURE_LOCATION;
+    /**
+     * Instructions for changing the missing texture image.
+     * Dependent on the current old missing texture tweak.
+     */
+    @Inject(method = "generateMissingImage", at = @At("HEAD"), cancellable = true)
+    private static void NT$onGenerateMissingImage(int x, int y, CallbackInfoReturnable<NativeImage> callback)
+    {
+        if (ModConfig.Candy.oldMissingTexture() != TweakVersion.MissingTexture.MODERN)
+            callback.setReturnValue(MissingTextureAtlasSpriteMixin.getImage());
+    }
 
     /* Mixin Utility */
 
@@ -122,44 +116,5 @@ public abstract class MissingTextureAtlasSpriteMixin
         nativeImage.untrack();
 
         return nativeImage;
-    }
-
-    /**
-     * Instructions for changing the missing texture image.
-     * Dependent on the current old missing texture tweak.
-     */
-    private static void update()
-    {
-        if (ModConfig.Candy.oldMissingTexture() != TweakVersion.MissingTexture.MODERN)
-        {
-            int textureSize = MissingTextureAtlasSpriteMixin.getTextureSize();
-
-            ImmutableList<AnimationFrame> frames = ImmutableList.of(new AnimationFrame(0, -1));
-            AnimationMetadataSection section = new AnimationMetadataSection(frames, textureSize, textureSize, 1, false);
-
-            MISSING_IMAGE_DATA = new LazyLoadedValue<>(MissingTextureAtlasSpriteMixin::getImage);
-            INFO = new TextureAtlasSprite.Info(MISSING_TEXTURE_LOCATION, textureSize, textureSize, section);
-        }
-        else
-        {
-            MISSING_IMAGE_DATA = NT$MODERN_MISSING_IMAGE_DATA;
-            INFO = NT$MODERN_INFO;
-        }
-    }
-
-    /* Injections */
-
-    /**
-     * Changes the missing texture image.
-     * Controlled by the old missing texture tweak.
-     */
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void NT$onStaticInit(CallbackInfo callback)
-    {
-        NT$MODERN_MISSING_IMAGE_DATA = MISSING_IMAGE_DATA;
-        NT$MODERN_INFO = INFO;
-
-        MissingTextureAtlasSpriteMixin.update();
-        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::update);
     }
 }

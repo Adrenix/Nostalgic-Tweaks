@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[44,)"
 issueTrackerURL = "${mod_issues}"
 license = "${mod_license}"
 
@@ -21,14 +21,14 @@ logoFile = "nt_forge_logo.png"
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[44,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.nostalgic_tweaks]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2]"
+versionRange = "[1.19.3]"
 ordering = "NONE"
 side = "BOTH"
 

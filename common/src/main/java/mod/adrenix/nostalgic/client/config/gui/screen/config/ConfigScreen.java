@@ -223,7 +223,7 @@ public class ConfigScreen extends Screen
      * @return The widget instance.
      * @param <T> The type of widget.
      */
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget)
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
     {
         return super.addRenderableWidget(widget);
     }
@@ -852,7 +852,7 @@ public class ConfigScreen extends Screen
 
         // Widget Rendering
 
-        for (Widget widget : this.getWidgets().children)
+        for (Renderable widget : this.getWidgets().children)
         {
             if (!(widget instanceof ConfigRowList))
                 widget.render(poseStack, mouseX, mouseY, partialTick);
@@ -876,7 +876,7 @@ public class ConfigScreen extends Screen
         // Magnifying Glass Icon
 
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
-        this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
+        this.blit(poseStack, this.getWidgets().getSearch().getX() + 5, this.getWidgets().getSearch().getY() + 4, 0, 15, 12, 12);
 
         // Finish Screen Rendering
 

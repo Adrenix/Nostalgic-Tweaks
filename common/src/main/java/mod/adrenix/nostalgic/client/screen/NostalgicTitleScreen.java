@@ -2,17 +2,15 @@ package mod.adrenix.nostalgic.client.screen;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.ScreenAccessor;
 import mod.adrenix.nostalgic.mixin.widen.TitleScreenAccessor;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.ChatFormatting;
@@ -22,7 +20,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.LanguageSelectScreen;
 import net.minecraft.client.gui.screens.OptionsScreen;
@@ -32,25 +30,15 @@ import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.block.Blocks;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.system.MemoryStack;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +50,6 @@ import java.util.List;
 
 public class NostalgicTitleScreen extends TitleScreen
 {
-    /* Static Fields */
-
     /**
      * This field determines whether the game has finished its first loading cycle. When the game first loads, the
      * loading overlay screen slowly fades away to the title screen. This effect overlaps the falling logo animation.
@@ -71,33 +57,17 @@ public class NostalgicTitleScreen extends TitleScreen
      */
     public static boolean isGameReady = false;
 
-    /* Fields */
-
-    private static final String[] MINECRAFT = {
-        " *   * * *   * *** *** *** *** *** ***",
-        " ** ** * **  * *   *   * * * * *    * ",
-        " * * * * * * * **  *   **  *** **   * ",
-        " *   * * *  ** *   *   * * * * *    * ",
-        " *   * * *   * *** *** * * * * *    * "
-    };
-
     /**
      * This field delays the falling logo animation.
      * Once the loading overlay fade away effect has finished, the falling logo animation can begin.
      */
-    private long updateScreenDelay;
+    private long updateScreenDelay = 0L;
 
     /**
      * This field, when <code>true</code>, will change the title to M I N C E R A F T. This Easter egg will be applied
      * to the vanilla logo and falling logo animation.
      */
-    private final boolean isEasterEgged;
-
-    /**
-     * This two-dimensional array holds falling block data.
-     * The array is set up in [x][y] format.
-     */
-    private LogoEffectRandomizer[][] logoEffects;
+    private final boolean isEasterEgged = RandomSource.create().nextFloat() < 1.0E-4;
 
     /* Widget Data */
 
@@ -113,27 +83,10 @@ public class NostalgicTitleScreen extends TitleScreen
 
     /* Random Source & Button Layouts */
 
-    private final RandomSource random = RandomSource.create();
-    private final List<Widget> alpha = new ArrayList<>();
-    private final List<Widget> beta = new ArrayList<>();
-    private final List<Widget> release = new ArrayList<>();
-
-    /* Constructor */
-
-    /**
-     * Create a new nostalgic title screen instance.
-     * Easter egg creation is done here if the user has won the lottery.
-     */
-    public NostalgicTitleScreen()
-    {
-        this.isEasterEgged = random.nextFloat() < 1.0E-4;
-        this.updateScreenDelay = 0L;
-
-        if (this.isEasterEgged)
-            MINECRAFT[2] = " * * * * * * * *   **  **  *** **   * ";
-        else
-            MINECRAFT[2] = " * * * * * * * **  *   **  *** **   * ";
-    }
+    private final List<Renderable> alpha = new ArrayList<>();
+    private final List<Renderable> beta = new ArrayList<>();
+    private final List<Renderable> release = new ArrayList<>();
+    private final NostalgicLogoRenderer logo = new NostalgicLogoRenderer(this.isEasterEgged);
 
     /* Overrides */
 
@@ -155,7 +108,7 @@ public class NostalgicTitleScreen extends TitleScreen
         this.createBetaOptions(x, y, rowHeight);
         this.createReleaseOptions(x, y, rowHeight);
 
-        List<Widget> widgets = switch (ModConfig.Candy.getButtonLayout())
+        List<Renderable> widgets = switch (ModConfig.Candy.getButtonLayout())
         {
             case ALPHA -> this.alpha;
             case BETA -> this.beta;
@@ -238,7 +191,7 @@ public class NostalgicTitleScreen extends TitleScreen
             return;
 
         if (ModConfig.Candy.oldAlphaLogo())
-            this.renderClassicLogo(partialTick);
+            this.logo.render(partialTick);
         else
         {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -298,7 +251,7 @@ public class NostalgicTitleScreen extends TitleScreen
         {
             poseStack.pushPose();
             poseStack.translate((float) this.width / 2 + 90, 70.0, 0.0);
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(-20.0F));
 
             float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
             scale = scale * 100.0F / (float) (this.font.width(titleAccessor.NT$getSplash()) + 32);
@@ -345,7 +298,7 @@ public class NostalgicTitleScreen extends TitleScreen
 
                 this.setButtonVisibility();
 
-                for (Widget widget : screenAccessor.NT$getRenderables())
+                for (Renderable widget : screenAccessor.NT$getRenderables())
                     widget.render(poseStack, mouseX, mouseY, partialTick);
 
                 if (titleAccessor.NT$getRealmsNotificationsEnabled())
@@ -376,11 +329,11 @@ public class NostalgicTitleScreen extends TitleScreen
     {
         ScreenAccessor screen = (ScreenAccessor) this;
 
-        for (Widget widget : screen.NT$getRenderables())
+        for (Renderable widget : screen.NT$getRenderables())
         {
-            if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 - 124)
+            if (widget instanceof ImageButton && ((ImageButton) widget).getX() == this.width / 2 - 124)
                 ((ImageButton) widget).visible = !ModConfig.Candy.removeLanguageButton();
-            else if (widget instanceof ImageButton && ((ImageButton) widget).x == this.width / 2 + 104)
+            else if (widget instanceof ImageButton && ((ImageButton) widget).getX() == this.width / 2 + 104)
                 ((ImageButton) widget).visible = !ModConfig.Candy.removeAccessibilityButton();
             else if (widget instanceof Button button)
             {
@@ -396,9 +349,9 @@ public class NostalgicTitleScreen extends TitleScreen
      * @param widgets A list of widgets.
      * @param visible A visibility boolean flag.
      */
-    private void setLayoutVisibility(List<Widget> widgets, boolean visible)
+    private void setLayoutVisibility(List<Renderable> widgets, boolean visible)
     {
-        for (Widget widget : widgets)
+        for (Renderable widget : widgets)
         {
             if (widget instanceof AbstractWidget)
                 ((AbstractWidget) widget).visible = visible;
@@ -413,11 +366,11 @@ public class NostalgicTitleScreen extends TitleScreen
      * @param button The mouse button that was clicked.
      * @return Whether a widget was clicked.
      */
-    private boolean getClicked(List<Widget> widgets, double mouseX, double mouseY, int button)
+    private boolean getClicked(List<Renderable> widgets, double mouseX, double mouseY, int button)
     {
         boolean isClicked = false;
 
-        for (Widget widget : widgets)
+        for (Renderable widget : widgets)
         {
             if (widget instanceof AbstractWidget)
                 isClicked = ((AbstractWidget) widget).mouseClicked(mouseX, mouseY, button);
@@ -524,24 +477,24 @@ public class NostalgicTitleScreen extends TitleScreen
         int row = 1;
 
         // Singleplayer
-        this.alpha.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+        this.alpha.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer).pos(x, y).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Multiplayer
-        this.alpha.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+        this.alpha.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer).pos(x, y + rowHeight).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Mods
         if (ModConfig.Candy.includeModsOnTitle() && GuiUtil.modScreen != null)
-            this.alpha.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods));
+            this.alpha.add(Button.builder(Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Tutorial
-        Button tutorial = new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.empty(), (button) -> {});
+        Button tutorial = Button.builder(Component.empty(), RunUtil::nothing).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build();
         tutorial.active = false;
         tutorial.setMessage(Component.translatable(LangUtil.Gui.CANDY_TITLE_TUTORIAL).withStyle(ChatFormatting.GRAY));
 
         this.alpha.add(tutorial);
 
         // Options
-        this.alpha.add(new Button(x, y + rowHeight * (++row + 1) - 12, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), this::onOptions));
+        this.alpha.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), this::onOptions).pos(x, y + rowHeight * (++row + 1) - 12).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
     }
 
     private void createBetaOptions(int x, int y, int rowHeight)
@@ -549,20 +502,21 @@ public class NostalgicTitleScreen extends TitleScreen
         int row = 1;
 
         // Singleplayer
-        this.beta.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+        this.beta.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer).pos(x, y).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Multiplayer
-        this.beta.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+        this.beta.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer).pos(x, y + rowHeight).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Mods & Texture Packs
         boolean isMods = ModConfig.Candy.includeModsOnTitle() && GuiUtil.modScreen != null;
-        if (isMods)
-            this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods));
 
-        this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(isMods ? LangUtil.Gui.CANDY_TITLE_TEXTURE_PACK : LangUtil.Gui.CANDY_TITLE_MODS_TEXTURE), this::onResources));
+        if (isMods)
+            this.beta.add(Button.builder(Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
+
+        this.beta.add(Button.builder(Component.translatable(isMods ? LangUtil.Gui.CANDY_TITLE_TEXTURE_PACK : LangUtil.Gui.CANDY_TITLE_MODS_TEXTURE), this::onResources).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Options
-        this.beta.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), this::onOptions));
+        this.beta.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), this::onOptions).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
     }
 
     private void createReleaseOptions(int x, int y, int rowHeight)
@@ -570,299 +524,39 @@ public class NostalgicTitleScreen extends TitleScreen
         int row = 1;
 
         // Singleplayer
-        this.release.add(new Button(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer));
+        this.release.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_SINGLEPLAYER), this::onSingleplayer).pos(x, y).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Multiplayer
-        this.release.add(new Button(x, y + rowHeight, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer));
+        this.release.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_MULTIPLAYER), this::onMultiplayer).pos(x, y + rowHeight).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Mods
         boolean isMods = ModConfig.Candy.includeModsOnTitle() && GuiUtil.modScreen != null;
+
         if (isMods)
-            this.release.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods));
+            this.release.add(Button.builder(Component.translatable(LangUtil.Gui.CANDY_TITLE_MODS), this::onMods).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         // Texture Packs
         if (ModConfig.Candy.getButtonLayout() == TweakVersion.TitleLayout.RELEASE_TEXTURE_PACK)
-            this.release.add(new Button(x, y + rowHeight * ++row, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.CANDY_TITLE_TEXTURE_PACK), this::onResources));
+            this.release.add(Button.builder(Component.translatable(LangUtil.Gui.CANDY_TITLE_TEXTURE_PACK), this::onResources).pos(x, y + rowHeight * ++row).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
 
         int lastRow = (this.height / 4 + 48) + 72 + 12;
+
         if (this.release.size() == 4)
             lastRow += 24;
 
         // Language
         if (this.minecraft != null && !ModConfig.Candy.removeLanguageButton())
-            this.release.add(new ImageButton(this.width / 2 - 124, lastRow, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), Component.translatable("narrator.button.language")));
+        {
+            LanguageSelectScreen screen = new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager());
+            ImageButton language = new ImageButton(this.width / 2 - 124, lastRow, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(screen), Component.translatable("narrator.button.language"));
+
+            this.release.add(language);
+        }
 
         // Options
-        this.release.add(new Button(this.width / 2 - 100, lastRow, 98, 20, Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
+        this.release.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_OPTIONS), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))).pos(this.width / 2 - 100, lastRow).size(98, 20).build());
 
         // Quit
-        this.release.add(new Button(this.width / 2 + 2, lastRow, 98, 20, Component.translatable(LangUtil.Vanilla.MENU_QUIT), button -> this.minecraft.stop()));
-    }
-
-    /* Classic Logo */
-
-    /**
-     * Instructions for rendering the classic logo and the introduction falling animation.
-     * @param partialTick The change in game frame time.
-     */
-    private void renderClassicLogo(float partialTick)
-    {
-        if (this.minecraft == null)
-            return;
-
-        if (this.logoEffects == null)
-        {
-            this.logoEffects = new LogoEffectRandomizer[MINECRAFT[0].length()][MINECRAFT.length];
-
-            for (int x = 0; x < this.logoEffects.length; x++)
-                for (int y = 0; y < this.logoEffects[x].length; y++)
-                    logoEffects[x][y] = new LogoEffectRandomizer(x, y);
-        }
-
-        for (LogoEffectRandomizer[] logoEffect : this.logoEffects)
-            for (LogoEffectRandomizer logoEffectRandomizer : logoEffect)
-                logoEffectRandomizer.update(partialTick);
-
-        Window window = this.minecraft.getWindow();
-        int scaleHeight = (int) (120 * window.getGuiScale());
-
-        RenderSystem.setProjectionMatrix(Matrix4f.perspective(70.0D, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F));
-        RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
-
-        PoseStack model = RenderSystem.getModelViewStack();
-        model.translate(-0.05F, 1.0F, 1987.0F);
-        model.scale(1.59F, 1.59F, 1.59F);
-
-        BakedModel stone = this.itemRenderer.getItemModelShaper().getItemModel(Blocks.STONE.asItem());
-
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.enableDepthTest();
-        RenderSystem.disableCull();
-        RenderSystem.depthMask(true);
-
-        for (int pass = 0; pass < 3; pass++)
-        {
-            model.pushPose();
-
-            if (pass == 0)
-            {
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-                model.translate(0.0F, -0.4F, 0.0F);
-                model.scale(0.98F, 1.0F, 1.0F);
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
-            }
-
-            if (pass == 1)
-            {
-                RenderSystem.disableBlend();
-                RenderSystem.clear(256, Minecraft.ON_OSX);
-            }
-
-            if (pass == 2)
-            {
-                RenderSystem.enableBlend();
-                RenderSystem.blendFunc(768, 1);
-            }
-
-            model.scale(1.0F, -1.0F, 1.0F);
-            model.mulPose(Vector3f.XP.rotationDegrees(15.0F));
-            model.scale(0.89F, 1.0F, 0.4F);
-            model.translate((float) (-MINECRAFT[0].length()) * 0.5F, (float) (-MINECRAFT.length) * 0.5F, 0.0F);
-
-            if (pass == 0)
-            {
-                RenderSystem.setShader(GameRenderer::getRendertypeCutoutShader);
-                RenderSystem.setShaderTexture(0, TextureLocation.BLOCK_SHADOW);
-            }
-            else
-            {
-                RenderSystem.setShader(GameRenderer::getBlockShader);
-                RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-            }
-
-            for (int y = 0; y < MINECRAFT.length; y++)
-            {
-                for (int x = 0; x < MINECRAFT[y].length(); x++)
-                {
-                    if (MINECRAFT[y].charAt(x) == ' ')
-                        continue;
-
-                    model.pushPose();
-
-                    float z = logoEffects[x][y].position;
-                    float scale = 1.0F;
-                    float alpha = 1.0F;
-
-                    if (pass == 0)
-                    {
-                        scale = z * 0.04F + 1.0F;
-                        alpha = 1.0F / scale;
-                        z = 0.0F;
-                    }
-
-                    model.translate(x, y, z);
-                    model.scale(scale, scale, scale);
-                    renderBlock(model, stone, pass, alpha);
-                    model.popPose();
-                }
-            }
-
-            model.popPose();
-        }
-
-        RenderSystem.disableBlend();
-        RenderSystem.setProjectionMatrix(Matrix4f.orthographic(0.0F, (float) window.getGuiScaledWidth(), 0.0F, (float) window.getGuiScaledHeight(), 1000.0F, 3000.0F));
-        RenderSystem.viewport(0, 0, window.getWidth(), window.getHeight());
-        model.setIdentity();
-        model.translate(0, 0, -2000);
-        RenderSystem.applyModelViewMatrix();
-        RenderSystem.enableCull();
-    }
-
-    /**
-     * Get a packed RGBA integer.
-     * @param red R
-     * @param green G
-     * @param blue B
-     * @param alpha A
-     * @return Packed RGBA integer.
-     */
-    private int getColorFromRGBA(float red, float green, float blue, float alpha)
-    {
-        return (int) (alpha * 255.0F) << 24 | (int) (red * 255.0F) << 16 | (int) (green * 255.0F) << 8 | (int) (blue * 255.0F);
-    }
-
-    /**
-     * Get a grayscale packed RGBA integer from a brightness and alpha value.
-     * @param brightness Brightness
-     * @param alpha Transparency
-     * @return A packed grayscale RGBA integer.
-     */
-    private int getColorFromBrightness(float brightness, float alpha)
-    {
-        return this.getColorFromRGBA(brightness, brightness, brightness, alpha);
-    }
-
-    /**
-     * Quad rendering instructions that allow for transparency.
-     * @param modelPose Model position matrix.
-     * @param builder Buffer builder instance.
-     * @param quad A baked quad.
-     * @param brightness The brightness of the quad.
-     * @param alpha The transparency of the quad.
-     */
-    private void renderQuad(PoseStack.Pose modelPose, BufferBuilder builder, BakedQuad quad, float brightness, float alpha)
-    {
-        int combinedLight = this.getColorFromBrightness(brightness, alpha);
-        int[] vertices = quad.getVertices();
-        Vec3i vec = quad.getDirection().getNormal();
-        Vector3f vec3f = new Vector3f(vec.getX(), vec.getY(), vec.getZ());
-        Matrix4f matrix = modelPose.pose();
-        vec3f.transform(modelPose.normal());
-
-        try (MemoryStack memoryStack = MemoryStack.stackPush())
-        {
-            ByteBuffer byteBuffer = memoryStack.malloc(DefaultVertexFormat.BLOCK.getVertexSize());
-            IntBuffer intBuffer = byteBuffer.asIntBuffer();
-
-            for (int i = 0; i < vertices.length / 8; i++)
-            {
-                intBuffer.clear();
-                intBuffer.put(vertices, i * 8, 8);
-                float x = byteBuffer.getFloat(0);
-                float y = byteBuffer.getFloat(4);
-                float z = byteBuffer.getFloat(8);
-
-                Vector4f vec4f = new Vector4f(x, y, z, 1.0F);
-                vec4f.transform(matrix);
-
-                builder.vertex(vec4f.x(), vec4f.y(), vec4f.z(), 1.0F, 1.0F, 1.0F, alpha, byteBuffer.getFloat(16), byteBuffer.getFloat(20), OverlayTexture.NO_OVERLAY, combinedLight, vec3f.x(), vec3f.y(), vec3f.z());
-            }
-        }
-    }
-
-    /**
-     * Render a block to the classic title screen.
-     * @param modelView Model view matrix.
-     * @param stone A stone block model.
-     * @param pass The rendering pass index.
-     * @param alpha A transparency value.
-     */
-    private void renderBlock(PoseStack modelView, BakedModel stone, int pass, float alpha)
-    {
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
-
-        for (Direction direction : Direction.values())
-        {
-            float brightness = switch (direction)
-            {
-                case DOWN -> 1.0F;
-                case UP -> 0.5F;
-                case NORTH -> 0.0F;
-                case SOUTH -> 0.8F;
-                case WEST, EAST -> 0.6F;
-            };
-
-            int color = this.getColorFromBrightness(brightness, alpha);
-
-            for (BakedQuad quad : stone.getQuads(null, direction, random))
-            {
-                if (pass == 0)
-                    renderQuad(modelView.last(), builder, quad, brightness, alpha);
-                else
-                    builder.putBulkData(modelView.last(), quad, brightness, brightness, brightness, color, OverlayTexture.NO_OVERLAY);
-            }
-        }
-
-        tesselator.end();
-    }
-
-    /* Logo Effect Randomizer */
-
-    /**
-     * This class tracks individual blocks for the falling animation.
-     * Updates of position values are handled by the screen renderer.
-     */
-
-    private static class LogoEffectRandomizer
-    {
-        /* Fields */
-
-        public float position;
-        public float speed;
-
-        /* Constructor */
-
-        /**
-         * Create a new logo effect randomizer instance.
-         * @param x The starting x-position.
-         * @param y The starting y-position.
-         */
-        public LogoEffectRandomizer(int x, int y)
-        {
-            this.position = (10 + y) + RandomSource.create().nextFloat() * 32.0F + x;
-        }
-
-        /**
-         * Update the position of this randomizer instance.
-         * @param partialTick The change in game frame time.
-         */
-        public void update(float partialTick)
-        {
-            if (this.position > 0.0F)
-                this.speed -= 0.4F;
-
-            this.position += this.speed * partialTick;
-            this.speed *= 0.9F;
-
-            if (this.position < 0.0F)
-            {
-                this.position = 0.0F;
-                this.speed = 0.0F;
-            }
-        }
+        this.release.add(Button.builder(Component.translatable(LangUtil.Vanilla.MENU_QUIT), button -> this.minecraft.stop()).pos(this.width / 2 + 2, lastRow).size(98, 20).build());
     }
 }

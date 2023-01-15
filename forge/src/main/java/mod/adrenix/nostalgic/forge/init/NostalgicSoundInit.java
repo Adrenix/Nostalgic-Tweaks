@@ -25,12 +25,12 @@ public abstract class NostalgicSoundInit
 
     public static final RegistryObject<SoundEvent> BLANK = SOUNDS.register
     (
-        SoundUtil.Key.BLANK, () -> new SoundEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.BLANK))
+        SoundUtil.Key.BLANK, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.BLANK))
     );
 
     public static final RegistryObject<SoundEvent> PLAYER_HURT = SOUNDS.register
     (
-        SoundUtil.Key.PLAYER_HURT, () -> new SoundEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
+        SoundUtil.Key.PLAYER_HURT, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
     );
 
     /* Initialization */

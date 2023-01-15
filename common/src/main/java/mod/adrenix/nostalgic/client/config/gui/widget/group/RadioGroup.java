@@ -134,7 +134,8 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
 
     /* Required Widget Overrides */
 
-    @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 
     /* Radio */
 
@@ -234,16 +235,17 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
             else if (this.isSelected())
                 vOffset = 63;
 
-            screen.blit(poseStack, this.x, this.y, uOffset, vOffset, uWidth, vHeight);
+            screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
 
             Component defaultText = Component.literal(this.isDefault() ? String.format(" (%s)", Component.translatable(LangUtil.Gui.DEFAULT).getString()) : "");
             Component optionText = Component.literal(this.label.apply(this.value).getString() + defaultText.getString());
 
-            RadioGroup.drawString(poseStack, Minecraft.getInstance().font, optionText, this.x + 24, this.y + (this.height - 8) / 2, 0xFFFFFF);
+            RadioGroup.drawString(poseStack, Minecraft.getInstance().font, optionText, this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
         }
 
         /* Required Widget Overrides */
 
-        @Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
     }
 }

@@ -29,7 +29,7 @@ public abstract class MultiPlayerGameModeMixin
     private void NT$onHasExperience(CallbackInfoReturnable<Boolean> callback)
     {
         LocalPlayer player = this.minecraft.player;
-        boolean isRidingWithoutJump = player != null && player.getVehicle() instanceof LivingEntity && !player.isRidingJumpable();
+        boolean isRidingWithoutJump = player != null && player.getVehicle() instanceof LivingEntity && player.jumpableVehicle() != null;
 
         if (ModConfig.Gameplay.disableExperienceBar() && !isRidingWithoutJump)
             callback.setReturnValue(false);

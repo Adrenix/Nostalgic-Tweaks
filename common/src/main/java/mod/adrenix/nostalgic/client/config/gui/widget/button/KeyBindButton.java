@@ -120,7 +120,7 @@ public class KeyBindButton extends ControlButton
         Component autoTooltip = Component.translatable(LangUtil.Gui.TAG_AUTO_TOOLTIP);
 
         int startX = ConfigRowList.getStartX() + minecraft.font.width(title) + 4;
-        int startY = this.y + 4;
+        int startY = this.getY() + 4;
         int lastX = startX;
 
         TweakTag.renderTooltip(screen, poseStack, syncTag, syncTooltip, lastX, startY, mouseX, mouseY);

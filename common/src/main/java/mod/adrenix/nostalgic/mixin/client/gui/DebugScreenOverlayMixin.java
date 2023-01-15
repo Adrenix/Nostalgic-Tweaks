@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Transformation;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
@@ -26,7 +25,7 @@ import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.FrameTimer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +36,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -256,7 +256,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
                 right.add("");
                 right.add(String.format(ChatFormatting.UNDERLINE + "Targeted Block: %s, %s, %s", targetPos.getX(), targetPos.getY(), targetPos.getZ()));
-                right.add(String.valueOf(Registry.BLOCK.getKey(targetState.getBlock())));
+                right.add(String.valueOf(BuiltInRegistries.BLOCK.getKey(targetState.getBlock())));
 
                 for (Map.Entry<Property<?>, Comparable<?>> entry : targetState.getValues().entrySet())
                     right.add(this.getPropertyValueString(entry));
@@ -271,7 +271,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
                 right.add("");
                 right.add(String.format(ChatFormatting.UNDERLINE + "Targeted Fluid: %s, %s, %s", targetPos.getX(), targetPos.getY(), targetPos.getZ()));
-                right.add(String.valueOf(Registry.FLUID.getKey(targetState.getType())));
+                right.add(String.valueOf(BuiltInRegistries.FLUID.getKey(targetState.getType())));
 
                 for (Map.Entry<Property<?>, Comparable<?>> entry : targetState.getValues().entrySet())
                     right.add(this.getPropertyValueString(entry));
@@ -283,7 +283,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
             {
                 right.add("");
                 right.add(ChatFormatting.UNDERLINE + "Targeted Entity:");
-                right.add(String.valueOf(Registry.ENTITY_TYPE.getKey(targetEntity.getType())));
+                right.add(String.valueOf(BuiltInRegistries.ENTITY_TYPE.getKey(targetEntity.getType())));
             }
         }
 

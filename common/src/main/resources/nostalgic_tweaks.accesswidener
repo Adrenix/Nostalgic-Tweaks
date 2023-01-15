@@ -1,6 +1,5 @@
 accessWidener v2 named
 
-extendable class com/mojang/math/Matrix4f
 accessible class net/minecraft/client/renderer/LevelRenderer$RenderChunkInfo
 
 mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I

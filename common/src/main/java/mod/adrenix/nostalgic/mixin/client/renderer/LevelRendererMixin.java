@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -105,8 +105,8 @@ public abstract class LevelRendererMixin
     @Inject(method = "renderSky", at = @At(value = "HEAD"))
     private void NT$onCacheSkyPose(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
-        WorldClientUtil.blueModelView = poseStack.last().pose().copy();
-        WorldClientUtil.blueProjection = projectionMatrix.copy();
+        WorldClientUtil.blueModelView = new Matrix4f(poseStack.last().pose());
+        WorldClientUtil.blueProjection = new Matrix4f(projectionMatrix);
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class LevelRendererMixin
         (
             ordinal = 2,
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexBuffer;drawWithShader(Lcom/mojang/math/Matrix4f;Lcom/mojang/math/Matrix4f;Lnet/minecraft/client/renderer/ShaderInstance;)V"
+            target = "Lcom/mojang/blaze3d/vertex/VertexBuffer;drawWithShader(Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;Lnet/minecraft/client/renderer/ShaderInstance;)V"
         )
     )
     private void NT$onRenderDarkVoid(VertexBuffer instance, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, ShaderInstance shaderInstance)
@@ -180,10 +180,10 @@ public abstract class LevelRendererMixin
      * Allows the dark void to follow the camera's height.
      * Controlled by the old dynamic void height tweak.
      */
-    @ModifyArg(method = "renderSky", index = 1, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
-    private double NT$onTranslateDarkSkyBuffer(double y)
+    @ModifyArg(method = "renderSky", index = 1, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"))
+    private float NT$onTranslateDarkSkyBuffer(float y)
     {
-        return ModConfig.Candy.oldDarkVoidHeight() ? y - Math.max(this.minecraft.gameRenderer.getMainCamera().getPosition().y - 65.0D, 0.0D) : y;
+        return ModConfig.Candy.oldDarkVoidHeight() ? (float) (y - Math.max(this.minecraft.gameRenderer.getMainCamera().getPosition().y - 65.0F, 0.0F)) : y;
     }
 
     /**
@@ -258,7 +258,7 @@ public abstract class LevelRendererMixin
      * Change the rotation of the sunrise/sunset sky disc color on ZP by 90 degrees.
      * Controlled by the old at north sunrise tweak.
      */
-    @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 2, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
+    @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 2, target = "Lcom/mojang/math/Axis;rotationDegrees(F)Lorg/joml/Quaternionf;"))
     private float NT$onRenderSkyDiscColor(float vanilla)
     {
         return WorldClientUtil.getSunriseRotation(vanilla);
@@ -268,7 +268,7 @@ public abstract class LevelRendererMixin
      * Change the rotation of the sun/moon renderer on YP by 90 degrees.
      * Controlled by the old at north sunrise tweak.
      */
-    @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Vector3f;rotationDegrees(F)Lcom/mojang/math/Quaternion;"))
+    @ModifyArg(method = "renderSky", at = @At(value = "INVOKE", ordinal = 3, target = "Lcom/mojang/math/Axis;rotationDegrees(F)Lorg/joml/Quaternionf;"))
     private float NT$onRenderSun(float vanilla)
     {
         return WorldClientUtil.getSunriseRotation(vanilla);

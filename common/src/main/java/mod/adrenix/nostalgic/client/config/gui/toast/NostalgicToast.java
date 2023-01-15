@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.toast;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.GearSpinner;
@@ -261,7 +261,7 @@ public class NostalgicToast implements Toast
 
         poseStack.pushPose();
         poseStack.translate(23.0F, 23.0F, 1.0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(-20.0F));
 
         String splash = "N.T";
         float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);

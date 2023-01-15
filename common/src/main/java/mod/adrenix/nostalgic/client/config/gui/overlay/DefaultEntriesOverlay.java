@@ -139,24 +139,36 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
         }
 
         /**
+         * Functional shortcut for the enable all button.
+         * @param button A button instance.
+         */
+        private void onEnable(Button button)
+        {
+            Overlay.close();
+            DefaultEntriesOverlay.this.listScreen.enableAllDefaults();
+        }
+
+        /**
          * Create a button that, when clicked, closes the overlay and enables all default entries.
          * @return A button widget instance.
          */
         private Button createEnableAll()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY() + 24,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_ENABLE_ALL),
-                (button) ->
-                {
-                    Overlay.close();
-                    DefaultEntriesOverlay.this.listScreen.enableAllDefaults();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_ENABLE_ALL), this::onEnable)
+                .pos(this.getButtonStartX(), this.messageText.getBottomY() + 24)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
+        }
+
+        /**
+         * Functional shortcut for the disable all button.
+         * @param button A button instance.
+         */
+        private void onDisable(Button button)
+        {
+            Overlay.close();
+            DefaultEntriesOverlay.this.listScreen.disableAllDefaults();
         }
 
         /**
@@ -165,19 +177,11 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
          */
         private Button createDisableAll()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY() + 2,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_DISABLE_ALL),
-                (button) ->
-                {
-                    Overlay.close();
-                    DefaultEntriesOverlay.this.listScreen.disableAllDefaults();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_DISABLE_ALL), this::onDisable)
+                .pos(this.getButtonStartX(), this.messageText.getBottomY() + 2)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
         }
     }
 }

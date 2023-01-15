@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.config.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfigCache;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.ChatFormatting;
@@ -99,7 +100,7 @@ public class SettingsScreen extends Screen
      */
     private void addButton(Component title, Button.OnPress onPress)
     {
-        this.buttons.add(new Button(0, 0, SMALL_WIDTH, BUTTON_HEIGHT, title, onPress));
+        this.buttons.add(Button.builder(title, onPress).size(SMALL_WIDTH, BUTTON_HEIGHT).build());
     }
 
     /**
@@ -118,7 +119,7 @@ public class SettingsScreen extends Screen
 
         for (Button button : this.buttons)
         {
-            button.x = (i % 2 == 0) ? lastX : startX;
+            button.setX((i % 2 == 0) ? lastX : startX);
 
             boolean isFontWide = this.minecraft.font.width(button.getMessage()) > SMALL_WIDTH;
             boolean isLastButton = button.equals(this.buttons.get(this.buttons.size() - 1));
@@ -135,8 +136,8 @@ public class SettingsScreen extends Screen
                 if (i % 2 == 0)
                 {
                     row++;
-                    button.x = startX;
-                    prevButton.x = startX;
+                    button.setX(startX);
+                    prevButton.setX(startX);
                     prevButton.setWidth(LARGE_WIDTH);
                 }
                 else
@@ -145,7 +146,7 @@ public class SettingsScreen extends Screen
                 button.setWidth(LARGE_WIDTH);
             }
 
-            button.y = startY + (row * 24);
+            button.setY(startY + (row * 24));
             prevButton = button;
 
             if (i % 2 == 0 || button.getWidth() == LARGE_WIDTH)
@@ -175,7 +176,11 @@ public class SettingsScreen extends Screen
         );
 
         // Config Presets (WIP)
-        Button preset = new Button(0, 0, SMALL_WIDTH, BUTTON_HEIGHT, Component.translatable(LangUtil.Gui.SETTINGS_PRESETS), (button) -> {});
+        Button preset = Button.builder(Component.translatable(LangUtil.Gui.SETTINGS_PRESETS), RunUtil::nothing)
+            .size(SMALL_WIDTH, BUTTON_HEIGHT)
+            .build()
+        ;
+
         preset.active = false;
 
         this.buttons.add(preset);
@@ -420,7 +425,7 @@ public class SettingsScreen extends Screen
 
         poseStack.pushPose();
         poseStack.translate((float) this.width / 2 + 10, (float) this.height / 4 + 35, 1.0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-20.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(-20.0F));
 
         String splash = "v" + NostalgicTweaks.getTinyVersion();
         float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);

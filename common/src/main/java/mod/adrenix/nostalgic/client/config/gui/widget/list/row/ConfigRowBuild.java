@@ -59,8 +59,8 @@ public abstract class ConfigRowBuild
 
             List<AbstractWidget> widgets = new ArrayList<>();
             this.controller.setWidth(200);
-            this.controller.x = (screen.width / 2) - (this.controller.getWidth() / 2);
-            this.controller.y = 0;
+            this.controller.setX((screen.width / 2) - (this.controller.getWidth() / 2));
+            this.controller.setY(0);
 
             widgets.add(this.controller);
 
@@ -82,8 +82,8 @@ public abstract class ConfigRowBuild
         public ConfigRowList.Row generate()
         {
             List<AbstractWidget> widgets = new ArrayList<>();
-            this.controller.x = indent;
-            this.controller.y = 0;
+            this.controller.setX(indent);
+            this.controller.setY(0);
 
             widgets.add(this.controller);
 

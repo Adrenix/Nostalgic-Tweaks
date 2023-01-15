@@ -4,17 +4,24 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
+import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import javax.annotation.CheckForNull;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Helper methods were adapted from the Item-Model-Fix mod by
@@ -24,6 +31,8 @@ import java.util.Map;
 @Mixin(ItemModelGenerator.class)
 public abstract class ItemModelGeneratorMixin
 {
+    /* Mixin Utility */
+
     private static float reduce(float start, float end, float delta) { return (start - delta * end) / (1 - delta); }
 
     private static void reduceUVs(float[] uvs, float delta)
@@ -37,17 +46,58 @@ public abstract class ItemModelGeneratorMixin
         uvs[3] = reduce(uvs[3], centerV, delta);
     }
 
+    /* Unique */
+
+    @CheckForNull @Unique private TextureAtlasSprite NT$atlasSprite = null;
+
+    /* Injections */
+
+    /**
+     * Attempts to grab the texture atlas sprite associated with the sprite contents before its frames are processed.
+     * A texture atlas sprite instance is needed so we can get the UV shrink ratio.
+     *
+     * This method no longer receives an atlas sprite after 1.19.2.
+     */
+    @Inject
+    (
+        locals = LocalCapture.CAPTURE_FAILSOFT,
+        method = "generateBlockModel",
+        slice = @Slice
+        (
+            from = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BlockModel;getMaterial(Ljava/lang/String;)Lnet/minecraft/client/resources/model/Material;"),
+            to = @At(value = "INVOKE", target = "Ljava/util/List;addAll(Ljava/util/Collection;)Z")
+        ),
+        at = @At
+        (
+            value = "INVOKE",
+            target = "Ljava/util/function/Function;apply(Ljava/lang/Object;)Ljava/lang/Object;"
+        )
+    )
+    private void NT$onGenerateBlockModel
+    (
+        Function<Material, TextureAtlasSprite> spriteGetter,
+        BlockModel model,
+        CallbackInfoReturnable<BlockModel> callback,
+        Map<?,?> map,
+        List<?> list,
+        int i,
+        String name,
+        Material material
+    )
+    {
+        this.NT$atlasSprite = spriteGetter.apply(material);
+    }
+
     /**
      * Fixes the transparent gaps seen in held item models.
      * Controlled by the fix item gap tweak.
      */
-
     @Inject(method = "processFrames", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void NT$onProcessFrames
     (
         int tintIndex,
         String texture,
-        TextureAtlasSprite sprite,
+        SpriteContents sprite,
         CallbackInfoReturnable<List<BlockElement>> callback,
         Map<Direction, BlockElementFace> faceMap,
         List<BlockElement> blockElements
@@ -63,10 +113,15 @@ public abstract class ItemModelGeneratorMixin
 
         boolean isForge = NostalgicTweaks.isForge() && !NostalgicTweaks.OPTIFINE.get();
 
-        for (BlockElement element : blockElements)
+        if (this.NT$atlasSprite != null)
         {
-            for (BlockElementFace face : element.faces.values())
-                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio() + (isForge ? 0.00193F : 0.0F));
+            for (BlockElement element : blockElements)
+            {
+                for (BlockElementFace face : element.faces.values())
+                    reduceUVs(face.uv.uvs, this.NT$atlasSprite.uvShrinkRatio() + (isForge ? 0.00193F : 0.0F));
+            }
+
+            this.NT$atlasSprite = null;
         }
     }
 }

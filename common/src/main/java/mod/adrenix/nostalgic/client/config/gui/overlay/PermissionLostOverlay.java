@@ -158,24 +158,36 @@ public class PermissionLostOverlay extends ListScreenOverlay<PermissionLostOverl
         }
 
         /**
+         * Functional shortcut for closing without saving.
+         * @param button A button instance.
+         */
+        private void onCloseWithoutSaving(Button button)
+        {
+            Overlay.close();
+            PermissionLostOverlay.this.listScreen.closeWithoutSaving();
+        }
+
+        /**
          * Create button, that when clicked, closes the overlay and closes the list screen without saving.
          * @return A button widget instance.
          */
         private Button createWithoutSaving()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY(),
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_EXIT_NO_SAVE),
-                (button) ->
-                {
-                    Overlay.close();
-                    PermissionLostOverlay.this.listScreen.closeWithoutSaving();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_EXIT_NO_SAVE), this::onCloseWithoutSaving)
+                .pos(this.getButtonStartX(), this.messageText.getBottomY())
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
+        }
+
+        /**
+         * Functional shortcut for saving locally.
+         * @param button A button instance.
+         */
+        private void onSaveLocally(Button button)
+        {
+            Overlay.close();
+            AutoConfig.getConfigHolder(ClientConfig.class).save();
         }
 
         /**
@@ -186,19 +198,11 @@ public class PermissionLostOverlay extends ListScreenOverlay<PermissionLostOverl
          */
         private Button createSaveLocally()
         {
-            return new Button
-            (
-                this.getButtonStartX(),
-                this.messageText.getBottomY() + 22,
-                this.getButtonWidth(),
-                SettingsScreen.BUTTON_HEIGHT,
-                Component.translatable(LangUtil.Gui.BUTTON_EXIT_LOCAL_SAVE),
-                (button) ->
-                {
-                    Overlay.close();
-                    AutoConfig.getConfigHolder(ClientConfig.class).save();
-                }
-            );
+            return Button.builder(Component.translatable(LangUtil.Gui.BUTTON_EXIT_LOCAL_SAVE), this::onSaveLocally)
+                .pos(this.getButtonStartX(), this.messageText.getBottomY() + 22)
+                .size(this.getButtonWidth(), SettingsScreen.BUTTON_HEIGHT)
+                .build()
+            ;
         }
     }
 

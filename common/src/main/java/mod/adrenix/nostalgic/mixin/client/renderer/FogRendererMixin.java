@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.client.FogUtil;
@@ -18,6 +17,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.FogType;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -144,8 +145,8 @@ public abstract class FogRendererMixin
      * Rotates where the custom sunrise/sunset fog color is.
      * This is controlled by the old sunrise/sunset tweak.
      */
-    @ModifyArg(method = "setupColor", at = @At(value = "INVOKE", target = "Lcom/mojang/math/Vector3f;dot(Lcom/mojang/math/Vector3f;)F"))
-    private static Vector3f NT$onRotateFogColor(Vector3f vanilla)
+    @ModifyArg(method = "setupColor", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;dot(Lorg/joml/Vector3fc;)F"))
+    private static Vector3fc NT$onRotateFogColor(Vector3fc vanilla)
     {
         return ModConfig.Candy.oldSunriseAtNorth() ? new Vector3f(0.0F, 0.0F, -vanilla.x()) : vanilla;
     }

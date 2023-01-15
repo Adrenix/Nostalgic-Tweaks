@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
@@ -22,7 +22,7 @@ public abstract class GameRendererMixin
 {
     /* Shadows & Uniques */
 
-    @Shadow @Final private Minecraft minecraft;
+    @Shadow @Final Minecraft minecraft;
     @Unique private boolean NT$isDirectionSet = false;
 
     /**
@@ -42,9 +42,9 @@ public abstract class GameRendererMixin
             float pitch = Mth.lerp(partialTicks, injector.NT$getPrevCameraPitch(), injector.NT$getCameraPitch());
 
             poseStack.translate(Mth.sin(walkDist * (float) Math.PI) * bob * 0.5F, -Math.abs(Mth.cos(walkDist * (float) Math.PI) * bob), 0.0F);
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(walkDist * (float) Math.PI) * bob * 3.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(Math.abs(Mth.cos(walkDist * (float) Math.PI - 0.2F) * bob) * 5.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(pitch));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(walkDist * (float) Math.PI) * bob * 3.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(Math.abs(Mth.cos(walkDist * (float) Math.PI - 0.2F) * bob) * 5.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
 
             callback.cancel();
         }

@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.client.config.gui.widget.input;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import mod.adrenix.nostalgic.client.config.gui.overlay.ColorPickerOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
@@ -17,6 +16,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix4f;
 
 /**
  * A color input widget provides an extra layer of logic over an input box widget. These color input boxes comes with
@@ -142,7 +142,7 @@ public class ColorInput extends AbstractWidget
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
+        if (MathUtil.isWithinBox(mouseX, mouseY, this.getX(), this.getY(), 20, 20))
         {
             new ColorPickerOverlay(this.tweak);
             this.playDownSound(Minecraft.getInstance().getSoundManager());
@@ -166,9 +166,9 @@ public class ColorInput extends AbstractWidget
         int color = ColorUtil.toHexInt(this.tweak.getValue());
         int border = this.input.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0;
 
-        float leftX = this.x;
+        float leftX = this.getX();
         float rightX = leftX + 20;
-        float topY = this.y;
+        float topY = this.getY();
         float bottomY = topY + 20;
 
         Tesselator tesselator = Tesselator.getInstance();
@@ -198,11 +198,11 @@ public class ColorInput extends AbstractWidget
 
         ConfigScreen screen = (ConfigScreen) Minecraft.getInstance().screen;
 
-        if (MathUtil.isWithinBox(mouseX, mouseY, this.x, this.y, 20, 20))
+        if (MathUtil.isWithinBox(mouseX, mouseY, this.getX(), this.getY(), 20, 20))
             screen.renderLast.add(() -> screen.renderTooltip(poseStack, Component.translatable(LangUtil.Gui.OVERLAY_INPUT_TIP), mouseX, mouseY));
 
-        this.input.x = this.x + 21;
-        this.input.y = this.y + 1;
+        this.input.setX(this.getX() + 21);
+        this.input.setY(this.getY() + 1);
 
         if (!this.input.getValue().equals(this.tweak.getValue()))
             this.input.setValue(this.tweak.getValue());
@@ -211,5 +211,5 @@ public class ColorInput extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) { }
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

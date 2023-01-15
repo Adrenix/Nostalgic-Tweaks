@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.config.gui.overlay.template;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 
 import java.util.Set;
 
@@ -14,7 +14,7 @@ public abstract class AbstractWidgetProvider
 {
     /* Widgets */
 
-    public Set<Widget> children = Set.of();
+    public Set<Renderable> children = Set.of();
 
     /* Methods */
 
@@ -33,7 +33,7 @@ public abstract class AbstractWidgetProvider
      */
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        for (Widget widget : this.children)
+        for (Renderable widget : this.children)
             widget.render(poseStack, mouseX, mouseY, partialTick);
     }
 }

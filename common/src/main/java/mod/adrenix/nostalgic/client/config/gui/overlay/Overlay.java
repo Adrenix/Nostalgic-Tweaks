@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.client.config.gui.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -10,8 +9,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
@@ -27,7 +28,8 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     /**
      * This field tracks the overlay that is currently visible. Only one overlay can be visible at a time.
      */
-    @Nullable private static Overlay visible = null;
+    @Nullable
+    private static Overlay visible = null;
 
     /**
      * Getter for retrieving the current visible overlay. This will return <code>null</code> if no overlay is currently
@@ -35,6 +37,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      *
      * @return An overlay instance.
      */
+    @CheckForNull
     public static Overlay getVisible() { return Overlay.visible; }
 
     /*
@@ -386,7 +389,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
 
         this.widgets.forEach((widget) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
                 widget.mouseScrolled(mouseX, mouseY, delta);
         });
 
@@ -416,7 +419,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
 
         this.widgets.forEach((widget) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
                 widget.mouseDragged(mouseX, mouseY, button, dragX, dragY);
         });
 
@@ -548,7 +551,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         // Send mouse release to widgets the mouse is over
         this.widgets.forEach((widget) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.x, widget.y, widget.getWidth(), widget.getHeight()))
+            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
                 widget.mouseReleased(mouseX, mouseY, button);
         });
     }
