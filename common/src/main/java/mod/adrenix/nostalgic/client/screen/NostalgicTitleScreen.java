@@ -81,7 +81,7 @@ public class NostalgicTitleScreen extends TitleScreen
      */
     private final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
 
-    /* Random Source & Button Layouts */
+    /* Button Layouts & Logo */
 
     private final List<Renderable> alpha = new ArrayList<>();
     private final List<Renderable> beta = new ArrayList<>();
@@ -221,7 +221,8 @@ public class NostalgicTitleScreen extends TitleScreen
             {
                 if (this.isEasterEgged)
                 {
-                    this.blitOutlineBlack(width, height, (x, y) -> {
+                    this.blitOutlineBlack(width, height, (x, y) ->
+                    {
                         this.blit(poseStack, x, y, 0, 0, 99, 44);
                         this.blit(poseStack, x + 99, y, 129, 0, 27, 44);
                         this.blit(poseStack, x + 99 + 26, y, 126, 0, 3, 44);
@@ -231,7 +232,8 @@ public class NostalgicTitleScreen extends TitleScreen
                 }
                 else
                 {
-                    this.blitOutlineBlack(width, height, (x, y) -> {
+                    this.blitOutlineBlack(width, height, (x, y) ->
+                    {
                         this.blit(poseStack, x, y, 0, 0, 155, 44);
                         this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
                     });
@@ -245,8 +247,6 @@ public class NostalgicTitleScreen extends TitleScreen
         TitleScreenAccessor titleAccessor = (TitleScreenAccessor) this;
         ScreenAccessor screenAccessor = (ScreenAccessor) this;
 
-        int color = Mth.ceil(255.0F) << 24;
-
         if (titleAccessor.NT$getSplash() != null)
         {
             poseStack.pushPose();
@@ -257,7 +257,7 @@ public class NostalgicTitleScreen extends TitleScreen
             scale = scale * 100.0F / (float) (this.font.width(titleAccessor.NT$getSplash()) + 32);
 
             poseStack.scale(scale, scale, scale);
-            TitleScreen.drawCenteredString(poseStack, this.font, titleAccessor.NT$getSplash(), 0, -8, 0xFFFF00 | color);
+            TitleScreen.drawCenteredString(poseStack, this.font, titleAccessor.NT$getSplash(), 0, -8, 0xFFFF00);
             poseStack.popPose();
         }
 
@@ -547,8 +547,8 @@ public class NostalgicTitleScreen extends TitleScreen
         // Language
         if (this.minecraft != null && !ModConfig.Candy.removeLanguageButton())
         {
-            LanguageSelectScreen screen = new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager());
-            ImageButton language = new ImageButton(this.width / 2 - 124, lastRow, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, button -> this.minecraft.setScreen(screen), Component.translatable("narrator.button.language"));
+            Button.OnPress onPress = (button) -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager()));
+            ImageButton language = new ImageButton(this.width / 2 - 124, lastRow, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, onPress, Component.translatable("narrator.button.language"));
 
             this.release.add(language);
         }
