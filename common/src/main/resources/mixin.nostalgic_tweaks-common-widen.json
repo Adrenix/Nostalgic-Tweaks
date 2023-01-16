@@ -2,13 +2,24 @@
   "minVersion": "0.8",
   "package": "mod.adrenix.nostalgic.mixin.widen",
   "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_16",
   "client": [
-    "IMixinAbstractSelectionList",
-    "IMixinEntity",
-    "IMixinLevelRenderer",
-    "IMixinProgressScreen",
-    "IMixinScreen",
-    "IMixinTitleScreen"
+    "AbstractContainerScreenAccessor",
+    "AbstractSelectionListAccessor",
+    "AbstractWidgetAccessor",
+    "EntityAccessor",
+    "LevelRendererAccessor",
+    "Matrix4fAccessor",
+    "MinecraftAccessor",
+    "ProgressScreenAccessor",
+    "ScreenAccessor",
+    "TitleScreenAccessor"
+  ],
+
+  "mixins": [
+    "ItemEntityAccessor",
+    "LivingEntityAccessor",
+    "MobAccessor",
+    "SheepAccessor"
   ]
 }

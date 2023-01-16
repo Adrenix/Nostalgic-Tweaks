@@ -1,61 +1,179 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
+import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.ComponentBackport;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.TranslatableComponent;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+/**
+ * The reset button is the last button to the right of all tweak cache rows within a config row list row.
+ * Depending on the type of tweak that is cached, different resetting logic is required.
+ *
+ * When used for custom list item entries, the reset button can turn into an undo button.
+ */
 
 public class ResetButton extends Button
 {
-    protected static final TranslatableComponent TITLE = new TranslatableComponent(NostalgicLang.Cloth.RESET);
-    @Nullable
-    protected final TweakCache<?> cache;
-    protected final AbstractWidget anchor;
+    /* Fields */
 
-    public ResetButton(@Nullable TweakCache<?> cache, AbstractWidget anchor)
+    private static final int START_X = 0;
+    private static final int START_Y = 0;
+    private static final Component RESET_TITLE = ComponentBackport.translatable(LangUtil.Gui.BUTTON_RESET);
+    private static final Component UNDO_TITLE = ComponentBackport.translatable(LangUtil.Gui.BUTTON_UNDO);
+    private final Supplier<Boolean> isEntryChanged;
+    private final AbstractWidget controller;
+
+    @CheckForNull
+    private final TweakClientCache<?> tweak;
+
+    /* Constructor Helpers */
+
+    /**
+     * Changes the width of the reset button based on the translation font width of this button title.
+     * @return A reset button width.
+     */
+    private static int getResetWidth()
     {
-        super(
-            0,
-            0,
-            getResetWidth(),
-            ConfigRowList.BUTTON_HEIGHT,
-            TITLE,
-            (button) -> {
-                if (cache != null)
-                {
-                    cache.reset();
-                    if (anchor instanceof EditBox && cache.getCurrent() instanceof String)
-                        ((EditBox) anchor).setValue((String) cache.getCurrent());
-                }
-                else if (anchor instanceof KeyBindButton)
-                    ((KeyBindButton) anchor).reset();
-            }
-        );
+        Font font = Minecraft.getInstance().font;
+        int resetWidth = font.width(ResetButton.RESET_TITLE.getString());
+        int undoWidth = font.width(ResetButton.UNDO_TITLE.getString());
 
-        this.cache = cache;
-        this.anchor = anchor;
-        setStartX();
+        return Math.max(resetWidth, undoWidth) + 8;
     }
 
-    public static int getResetWidth() { return Minecraft.getInstance().font.width(TITLE.getString()) + 8; }
+    /**
+     * Get the title of the reset button based on whether the current list entry is changed.
+     * @param isChanged A supplier that determines whether the entry has changed.
+     * @return A component title for the reset button.
+     */
+    private static Component getResetTitle(Supplier<Boolean> isChanged)
+    {
+        return isChanged.get() ? ResetButton.UNDO_TITLE : ResetButton.RESET_TITLE;
+    }
 
-    private void setStartX() { this.x = anchor.x + anchor.getWidth() + ConfigRowList.ROW_WIDGET_GAP; }
+    /**
+     * Resets the tweak client cache based on the neighboring widget controller.
+     * @param cache A nullable tweak client cache instance.
+     * @param controller A neighboring widget controller.
+     */
+    private static void resetTweak(@Nullable TweakClientCache<?> cache, AbstractWidget controller)
+    {
+        if (cache != null)
+        {
+            cache.reset();
 
+            if (controller instanceof EditBox input && cache.getValue() instanceof String value)
+                input.setValue(value);
+            else if (controller instanceof ColorInput color && cache.getValue() instanceof String value)
+                ((EditBox) color.getWidget()).setValue(value);
+        }
+        else if (controller instanceof KeyBindButton key)
+            key.reset();
+    }
+
+    /* Constructors */
+
+    /**
+     * Create a new reset button instance.
+     * @param tweak A nullable tweak client cache instance.
+     * @param controller The controller widget used in config row list row this reset button is attached to.
+     */
+    public ResetButton(@Nullable TweakClientCache<?> tweak, AbstractWidget controller)
+    {
+        super
+        (
+            ResetButton.START_X,
+            ResetButton.START_Y,
+            ResetButton.getResetWidth(),
+            ConfigRowList.BUTTON_HEIGHT,
+            ResetButton.RESET_TITLE,
+            (button) -> ResetButton.resetTweak(tweak, controller)
+        );
+
+        this.tweak = tweak;
+        this.controller = controller;
+        this.isEntryChanged = () -> false;
+
+        this.updateX();
+    }
+
+    /**
+     * Create a new reset button instance for a list entry.
+     * @param controller The controller widget for this entry.
+     * @param isChanged A supplier that checks if the entry has changed.
+     * @param onReset A consumer that accepts the abstract widget controller and performs reset instructions.
+     */
+    public ResetButton(AbstractWidget controller, Supplier<Boolean> isChanged, Consumer<AbstractWidget> onReset)
+    {
+        super
+        (
+            ResetButton.START_X,
+            ResetButton.START_Y,
+            ResetButton.getResetWidth(),
+            ConfigRowList.BUTTON_HEIGHT,
+            ResetButton.getResetTitle(isChanged),
+            (button) -> onReset.accept(controller)
+        );
+
+        this.tweak = null;
+        this.controller = controller;
+        this.isEntryChanged = isChanged;
+
+        this.updateX();
+    }
+
+    /* Methods */
+
+    /**
+     * @return Get this button's widget controller. This is the reset button's neighbor to the left.
+     */
+    public AbstractWidget getController() { return this.controller; }
+
+    /**
+     * Update the starting x-position based on controller position and standard row widget gap.
+     */
+    private void updateX() { this.x = this.controller.x + this.controller.getWidth() + ConfigRowList.ROW_WIDGET_GAP; }
+
+    /**
+     * Handler method for reset button rendering.
+     * @param poseStack The current pose stack.
+     * @param mouseX The current x-position of the mouse.
+     * @param mouseY The current y-position of the mouse.
+     * @param partialTick The change in game frame time.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        setStartX();
+        this.setMessage(ResetButton.getResetTitle(this.isEntryChanged));
+        this.updateX();
 
-        if (this.cache != null)
-            this.active = this.cache.isResettable();
-        else if (this.anchor instanceof KeyBindButton)
-            this.active = ((KeyBindButton) this.anchor).isResettable();
+        if (this.tweak != null)
+            this.active = this.tweak.isResettable();
+        else if (this.controller instanceof KeyBindButton key)
+            this.active = key.isResettable();
+
+        boolean isAutoGenerated = this.tweak != null && this.tweak.getList() != null;
+        boolean isNotListScreen = ClassUtil.isNotInstanceOf(Minecraft.getInstance().screen, ListScreen.class);
+        boolean isDisabled = isAutoGenerated && isNotListScreen;
+
+        if (Overlay.isOpened() || isDisabled)
+            this.active = false;
 
         super.render(poseStack, mouseX, mouseY, partialTick);
     }

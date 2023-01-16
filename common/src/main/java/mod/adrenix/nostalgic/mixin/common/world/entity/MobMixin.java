@@ -1,7 +1,8 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.mixin.duck.IGhastAttack;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.mixin.duck.GhastCounter;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -14,26 +15,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Mob.class)
-public abstract class MobMixin extends LivingEntity implements IGhastAttack
+public abstract class MobMixin extends LivingEntity implements GhastCounter
 {
     /* Dummy Constructor */
 
-    private MobMixin(EntityType<? extends LivingEntity> entity, Level leve)
-    {
-        super(entity, leve);
-    }
+    private MobMixin(EntityType<? extends LivingEntity> entity, Level leve) { super(entity, leve); }
 
     /* Unique Fields */
 
     @Unique private int NT$attackCounter = 0;
 
-    /* Overrides */
+    /* Ghast Counter Implementation */
 
     @Override
-    public int getAttackCounter()
-    {
-        return this.NT$attackCounter;
-    }
+    public int NT$getAttackCounter() { return this.NT$attackCounter; }
+
+    /* Injections */
 
     /**
      * Brings back the old ghast charging animation that was removed when singleplayer was turned into an internal server.
@@ -42,15 +39,31 @@ public abstract class MobMixin extends LivingEntity implements IGhastAttack
      * Controlled by the old ghast charging tweak.
      */
     @Inject(method = "tick", at = @At("TAIL"))
-    protected void NT$onTick(CallbackInfo callback)
+    private void NT$onTick(CallbackInfo callback)
     {
         if (ModConfig.Animation.oldGhastCharging() && this.getType() == EntityType.GHAST)
         {
             Ghast ghast = (Ghast) this.getType().tryCast(this);
+
             if (ghast != null && ghast.isCharging() && ghast.isAlive())
                 this.NT$attackCounter++;
             else if (ghast != null)
                 this.NT$attackCounter = 0;
         }
+    }
+
+    /**
+     * Prevents bows being dropped by skeletons.
+     * Controlled by old skeleton drops tweaks.
+     */
+    @Inject(method = "dropCustomDeathLoot", at = @At("HEAD"), cancellable = true)
+    private void NT$onDropCustomDeathLoot(DamageSource damageSource, int looting, boolean hitByPlayer, CallbackInfo callback)
+    {
+        boolean isZombiePigman = ModConfig.Gameplay.oldZombiePigmenDrops() && this.getType() == EntityType.ZOMBIFIED_PIGLIN;
+        boolean isSkeleton = ModConfig.Gameplay.oldSkeletonDrops() && this.getType() == EntityType.SKELETON;
+        boolean isStray = ModConfig.Gameplay.oldStrayDrops() && this.getType() == EntityType.STRAY;
+
+        if (isZombiePigman || isSkeleton || isStray)
+            callback.cancel();
     }
 }

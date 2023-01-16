@@ -1,26 +1,45 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.button;
 
-import mod.adrenix.nostalgic.client.config.gui.widget.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.reflect.TweakCache;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import net.minecraft.client.gui.components.Button;
+import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.common.ComponentBackport;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 
-public class BooleanButton extends Button
+/**
+ * This control button toggles a boolean state that is connected to a client tweak cache entry.
+ * Since this control can be used to toggle server tweaks, the permission lock interface has been attached.
+ */
+
+public class BooleanButton extends ControlButton implements PermissionLock
 {
-    protected final TweakCache<Boolean> cache;
+    /* Fields */
 
-    public BooleanButton(TweakCache<Boolean> cache, OnPress onPress)
+    private final TweakClientCache<Boolean> tweak;
+
+    /* Constructor */
+
+    /**
+     * Creates a new boolean button controller for a tweak.
+     * @param tweak A tweak client cache entry.
+     * @param onPress Instructions to perform when clicked.
+     */
+    public BooleanButton(TweakClientCache<Boolean> tweak, OnPress onPress)
     {
-        super(ConfigRowList.getControlStartX(), 0, ConfigRowList.CONTROL_BUTTON_WIDTH, ConfigRowList.BUTTON_HEIGHT, TextComponent.EMPTY, onPress);
-        this.cache = cache;
+        super(ComponentBackport.empty(), onPress);
+
+        this.tweak = tweak;
     }
 
+    /* Methods */
+
+    /**
+     * This message will either be "Yes" or "No".
+     * @return The message component associated with this controller.
+     */
     @Override
     public Component getMessage()
     {
-        return new TranslatableComponent(this.cache.getCurrent() ? NostalgicLang.Cloth.YES : NostalgicLang.Cloth.NO);
+        return ComponentBackport.translatable(this.tweak.getValue() ? LangUtil.Gui.BUTTON_YES : LangUtil.Gui.BUTTON_NO);
     }
 }

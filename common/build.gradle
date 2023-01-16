@@ -1,3 +1,11 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/nostalgic_tweaks.accesswidener")
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
@@ -5,19 +13,9 @@ dependencies {
     
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
-    
-    // Cloth Config
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.common_clothconfig_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-}
 
-architectury {
-    common(rootProject.enabled_platforms.split(","))
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/nostalgic_tweaks.accesswidener")
+    // Fuzzy Searching
+    implementation "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
 }
 
 publishing {

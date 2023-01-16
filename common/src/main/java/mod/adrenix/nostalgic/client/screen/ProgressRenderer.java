@@ -9,32 +9,61 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 
+/**
+ * This helper classed is used to render the old style green progress bar.
+ * There are two types of rendering progress, one is with chunk progress listener, and the other is with integers.
+ */
+
 public abstract class ProgressRenderer
 {
-    public static void drawTitleText(PoseStack poses, Screen screen, Component title)
+    /**
+     * Draws the title text to the top of the progress screen.
+     * @param poseStack The current pose stack.
+     * @param screen A screen instance.
+     * @param title The title to draw.
+     */
+    public static void drawTitleText(PoseStack poseStack, Screen screen, Component title)
     {
         Minecraft minecraft = Minecraft.getInstance();
         int scaledHeight = minecraft.getWindow().getGuiScaledHeight();
-        Screen.drawCenteredString(poses, minecraft.font, title, screen.width / 2, scaledHeight / 2 - 4 - 16, 16777215);
+
+        Screen.drawCenteredString(poseStack, minecraft.font, title, screen.width / 2, scaledHeight / 2 - 4 - 16, 16777215);
     }
 
-    public static void drawSubtitleText(PoseStack poses, Screen screen, Component subtitle)
+    /**
+     * Draws the subtitle text below the title of the progress screen.
+     * @param poseStack The current pose stack.
+     * @param screen A screen instance.
+     * @param subtitle The subtitle to draw.
+     */
+    public static void drawSubtitleText(PoseStack poseStack, Screen screen, Component subtitle)
     {
         Minecraft minecraft = Minecraft.getInstance();
         int scaledHeight = minecraft.getWindow().getGuiScaledHeight();
-        Screen.drawCenteredString(poses, minecraft.font, subtitle, screen.width / 2, scaledHeight / 2 - 4 + 8, 16777215);
+
+        Screen.drawCenteredString(poseStack, minecraft.font, subtitle, screen.width / 2, scaledHeight / 2 - 4 + 8, 16777215);
     }
 
+    /**
+     * Render a progress bar with a chunk progress listener.
+     * @param progressListener A storing chunk progress listener instance.
+     */
     public static void renderProgressWithChunks(StoringChunkProgressListener progressListener)
     {
         ProgressRenderer.render(progressListener.getProgress());
     }
 
-    public static void renderProgressWithInt(int progress)
-    {
-        ProgressRenderer.render(progress);
-    }
+    /**
+     * Render a progress bar with an integer.
+     * @param progress An integer between 0-100.
+     */
+    public static void renderProgressWithInt(int progress) { ProgressRenderer.render(progress); }
 
+    /**
+     * Renders a progress bar with an integer.
+     * The chunk progress listener will provide this via its get progress method.
+     * @param progress An integer between 0-100.
+     */
     private static void render(int progress)
     {
         Window window = Minecraft.getInstance().getWindow();

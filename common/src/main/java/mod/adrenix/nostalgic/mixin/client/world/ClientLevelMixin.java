@@ -1,11 +1,16 @@
 package mod.adrenix.nostalgic.mixin.client.world;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
+import mod.adrenix.nostalgic.util.client.FogUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,18 +21,18 @@ import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Random;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin
@@ -54,11 +59,147 @@ public abstract class ClientLevelMixin
     {
         if (ModConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
             return false;
+
         return instance.constantAmbientLight();
     }
 
     /**
-     * Disables on sounds when attacking.
+     * Adjusts the darkness of the sky color at night to match the old star colors.
+     * Controlled by the old stars tweak.
+     */
+    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    private float NT$onClampSkyColor(float vanilla)
+    {
+        return switch(ModConfig.Candy.getStars()) { case ALPHA, BETA -> 0.005F; default -> vanilla; };
+    }
+
+    /**
+     * Tracks and changes the current sky color, so it can be properly updated by cave/void fog.
+     * Updates controlled by the void fog tweak.
+     */
+
+    @ModifyArg(method = "getSkyColor", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorRed(double red)
+    {
+        FogUtil.Void.setSkyRed((float) red);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyRed() : red;
+    }
+
+    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorGreen(double green)
+    {
+        FogUtil.Void.setSkyGreen((float) green);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyGreen() : green;
+    }
+
+    @ModifyArg(method = "getSkyColor", index = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    private double NT$onSetSkyColorBlue(double blue)
+    {
+        FogUtil.Void.setSkyBlue((float) blue);
+        return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyBlue() : blue;
+    }
+
+    /**
+     * Attempts to block the spawning of falling particles.
+     * Controlled by the disable falling particles tweak.
+     */
+    @Inject(method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V", at = @At("HEAD"), cancellable = true)
+    private void NT$onAddParticle(ParticleOptions options, boolean alwaysRender, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfo callback)
+    {
+        LocalPlayer player = Minecraft.getInstance().player;
+        boolean isDisabled = ModConfig.Candy.disableFallingParticles() && options.getType().equals(ParticleTypes.BLOCK);
+        boolean isSprinting = player != null && player.canSpawnSprintParticle();
+
+        if (!isDisabled || isSprinting || player == null)
+            return;
+
+        boolean isParticleAtPlayer =
+            MathUtil.tolerance(player.getX(), x, 0.01F) &&
+            MathUtil.tolerance(player.getY(), y, 0.01F) &&
+            MathUtil.tolerance(player.getZ(), z, 0.01F)
+        ;
+
+        if (isParticleAtPlayer)
+            callback.cancel();
+    }
+
+    /**
+     * Adds void fog particles to the client level if conditions are met.
+     * Controlled by various void fog particle tweaks.
+     */
+    @Inject
+    (
+        method = "doAnimateTick",
+        at = @At
+        (
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBiome(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;"
+        )
+    )
+    private void NT$onAddBiomeParticles(int x, int y, int z, int randomBound, Random random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo callback)
+    {
+        Entity entity = Minecraft.getInstance().getCameraEntity();
+        ClientLevel level = Minecraft.getInstance().level;
+
+        boolean isFogDisabled = ModConfig.Candy.disableVoidFog() || !FogUtil.Void.isBelowHorizon();
+        boolean isCreativeDisabled = !ModConfig.Candy.creativeVoidParticles() && entity instanceof Player player && player.isCreative();
+        boolean isDisabled = isFogDisabled || isCreativeDisabled;
+
+        if (isDisabled || entity == null || level == null)
+            return;
+
+        BlockPos playerPos = entity.blockPosition();
+        int radius = ModConfig.Candy.getVoidParticleRadius();
+        int particleStart = ModConfig.Candy.getVoidParticleStart();
+
+        float density = (float) ModConfig.Candy.getVoidParticleDensity() / 100.0F;
+        float yLevel = (float) FogUtil.Void.getYLevel(entity);
+
+        if (Math.random() <= density && yLevel <= particleStart && level.dimension().equals(Level.OVERWORLD))
+        {
+            BlockPos randX = BlockClientUtil.getRandomPos(random, radius);
+            BlockPos randY = BlockClientUtil.getRandomPos(random, radius);
+            BlockPos randomPos = randX.subtract(randY).offset(playerPos);
+            BlockState state = level.getBlockState(randomPos);
+
+            if (state.isAir() && level.getFluidState(randomPos).isEmpty() && randomPos.getY() - level.getMinBuildHeight() <= particleStart)
+            {
+                if (random.nextInt(8) <= particleStart)
+                {
+                    boolean nearBedrock = BlockClientUtil.isNearBedrock(randomPos, level);
+
+                    level.addParticle
+                    (
+                        nearBedrock ? ParticleTypes.ASH : ParticleTypes.MYCELIUM,
+                        randomPos.getX() + random.nextFloat(),
+                        randomPos.getY() + random.nextFloat(),
+                        randomPos.getZ() + random.nextFloat(),
+                        0,
+                        nearBedrock ? random.nextFloat() : 0,
+                        0
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Disables growth sounds when using bone meal.
+     * Controlled by the disable growth sound tweak.
+     */
+    @Inject(method = "playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V", at = @At("HEAD"), cancellable = true)
+    private void NT$onPlaySimpleSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay, CallbackInfo callback)
+    {
+        boolean isGrowthOff = ModConfig.Sound.disableGrowth() && sound == SoundEvents.BONE_MEAL_USE;
+        boolean isSwimOff = ModConfig.Sound.disableGenericSwim() && sound == SoundEvents.GENERIC_SWIM || sound == SoundEvents.PLAYER_SWIM;
+
+        if (isGrowthOff || isSwimOff)
+            callback.cancel();
+    }
+
+    /**
+     * Disables sounds when attacking.
      * Controlled by the sound attack tweak.
      *
      * Disables chest sounds on opening.
@@ -91,6 +232,66 @@ public abstract class ClientLevelMixin
             return;
         }
 
+        /* Squid Sounds */
+
+        boolean isSquid = sound == SoundEvents.SQUID_AMBIENT ||
+            sound == SoundEvents.SQUID_DEATH ||
+            sound == SoundEvents.SQUID_HURT ||
+            sound == SoundEvents.SQUID_SQUIRT
+        ;
+
+        if (ModConfig.Sound.disableSquid() && isSquid)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isGlowSquid = sound == SoundEvents.GLOW_SQUID_DEATH ||
+            sound == SoundEvents.GLOW_SQUID_HURT ||
+            sound == SoundEvents.GLOW_SQUID_SQUIRT;
+
+        if (ModConfig.Sound.disableGlowSquidOther() && isGlowSquid)
+        {
+            callback.cancel();
+            return;
+        }
+
+        if (ModConfig.Sound.disableGlowSquidAmbience() && sound == SoundEvents.GLOW_SQUID_AMBIENT)
+        {
+            callback.cancel();
+            return;
+        }
+
+        /* Fish Sounds */
+
+        if (ModConfig.Sound.disableFishSwim() && sound == SoundEvents.FISH_SWIM)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isFishHurt = sound == SoundEvents.COD_HURT ||
+            sound == SoundEvents.PUFFER_FISH_HURT ||
+            sound == SoundEvents.SALMON_HURT ||
+            sound == SoundEvents.TROPICAL_FISH_HURT;
+
+        if (ModConfig.Sound.disableFishHurt() && isFishHurt)
+        {
+            callback.cancel();
+            return;
+        }
+
+        boolean isFishDeath = sound == SoundEvents.COD_DEATH ||
+            sound == SoundEvents.PUFFER_FISH_DEATH ||
+            sound == SoundEvents.SALMON_DEATH ||
+            sound == SoundEvents.TROPICAL_FISH_DEATH;
+
+        if (ModConfig.Sound.disableFishDeath() && isFishDeath)
+        {
+            callback.cancel();
+            return;
+        }
+
         /* Chest Sounds */
 
         BlockPos pos = new BlockPos(x, y, z);
@@ -104,15 +305,37 @@ public abstract class ClientLevelMixin
 
         BlockState state = level.getBlockState(pos);
 
-        if (ModConfig.Candy.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
+        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodenChest)
             isChestSound = true;
-        else if (ModConfig.Candy.oldEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+        else if (ModConfig.Sound.disableChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
             isChestSound = true;
-        else if (ModConfig.Candy.oldTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+        else if (ModConfig.Sound.disableChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
             isChestSound = true;
 
         if (isChestSound)
         {
+            callback.cancel();
+            return;
+        }
+
+        boolean isOldChest = false;
+
+        if (ModConfig.Sound.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
+            isOldChest = true;
+        else if (ModConfig.Sound.oldChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+            isOldChest = true;
+        else if (ModConfig.Sound.oldChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+            isOldChest = true;
+
+        if (isOldChest && Minecraft.getInstance().level != null)
+        {
+            SoundEvent chestSound = SoundEvents.WOODEN_DOOR_OPEN;
+            if (sound == SoundEvents.CHEST_CLOSE || sound == SoundEvents.ENDER_CHEST_CLOSE)
+                chestSound = SoundEvents.WOODEN_DOOR_CLOSE;
+
+            Random randomSource = Minecraft.getInstance().level.random;
+            this.playLocalSound(x, y, z, chestSound, SoundSource.BLOCKS, 1.0F, randomSource.nextFloat() * 0.1f + 0.9f, false);
+
             callback.cancel();
             return;
         }
@@ -125,10 +348,11 @@ public abstract class ClientLevelMixin
          */
 
         boolean isBlockedSound = false;
+        boolean isPlacingSound = sound == SoundEvents.WOOD_PLACE || sound == SoundEvents.METAL_PLACE;
 
-        if (ModConfig.Sound.oldDoor() && state.getBlock() instanceof DoorBlock)
+        if (ModConfig.Sound.disableDoor() && isPlacingSound && state.getBlock() instanceof DoorBlock)
             isBlockedSound = true;
-        else if (ModConfig.Sound.oldBed() && state.getBlock() instanceof BedBlock)
+        else if (ModConfig.Sound.disableBed() && state.getBlock() instanceof BedBlock)
             isBlockedSound = true;
 
         if (isBlockedSound)
@@ -158,9 +382,9 @@ public abstract class ClientLevelMixin
                 if (next instanceof ItemEntity)
                     continue;
 
-                boolean isX = NostalgicUtil.Numbers.tolerance((int) next.getX(), (int) x);
-                boolean isY = NostalgicUtil.Numbers.tolerance((int) next.getY(), (int) y);
-                boolean isZ = NostalgicUtil.Numbers.tolerance((int) next.getZ(), (int) z);
+                boolean isX = MathUtil.tolerance((int) next.getX(), (int) x);
+                boolean isY = MathUtil.tolerance((int) next.getY(), (int) y);
+                boolean isZ = MathUtil.tolerance((int) next.getZ(), (int) z);
 
                 if (isX && isY && isZ)
                 {
@@ -172,9 +396,13 @@ public abstract class ClientLevelMixin
             if (entity == null)
                 return;
 
-            if (entity instanceof Spider || entity instanceof Silverfish)
+            boolean isMinecraftEntity = entity.getType().getDescriptionId().contains("minecraft");
+            boolean isEntityIgnored = entity instanceof Spider || entity instanceof Silverfish;
+            boolean isModdedIgnored = ModConfig.Sound.ignoreModdedStep() && !isMinecraftEntity;
+
+            if (isEntityIgnored)
                 callback.cancel();
-            else
+            else if (!isModdedIgnored)
             {
                 BlockState standing = level.getBlockState(pos.below());
 
@@ -188,7 +416,7 @@ public abstract class ClientLevelMixin
 
                 BlockState inside = level.getBlockState(pos);
                 SoundType soundType = inside.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? inside.getSoundType() : standing.getSoundType();
-                this.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch(), false);
+                this.playLocalSound(x, y, z, soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch(), false);
 
                 callback.cancel();
             }

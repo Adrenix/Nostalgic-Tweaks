@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,10 +33,14 @@ public abstract class ModelBakeryMixin
             default -> namespace;
         };
 
+        if (namespace.equals(minecraft))
+            return vanilla;
+
         if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldEnderChest() && path.equals("item/ender_chest"))
             return new ResourceLocation(NostalgicTweaks.MOD_ID, "item/vanilla_ender_chest");
         else if (ModConfig.Candy.oldChest() && !ModConfig.Candy.oldTrappedChest() && path.equals("item/trapped_chest"))
             return new ResourceLocation(NostalgicTweaks.MOD_ID, "item/vanilla_trapped_chest");
+
         return new ResourceLocation(namespace, path);
     }
 }

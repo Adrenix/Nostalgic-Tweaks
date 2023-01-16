@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -13,10 +13,7 @@ public abstract class LeavesBlockMixin extends Block
 {
     /* Dummy Constructor */
 
-    private LeavesBlockMixin(Properties ignored)
-    {
-        super(ignored);
-    }
+    private LeavesBlockMixin(Properties ignored) { super(ignored); }
 
     /**
      * Overrides shade brightness so AO can be removed from touching full blocks.

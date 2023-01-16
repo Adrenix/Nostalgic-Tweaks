@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;

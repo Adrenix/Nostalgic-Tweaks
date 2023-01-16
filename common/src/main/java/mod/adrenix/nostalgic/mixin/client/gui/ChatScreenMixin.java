@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -22,10 +22,7 @@ public abstract class ChatScreenMixin extends Screen
 
     /* Dummy Constructor */
 
-    private ChatScreenMixin(Component ignored)
-    {
-        super(ignored);
-    }
+    private ChatScreenMixin(Component ignored) { super(ignored); }
 
     /**
      * Moves the input position further to the right to account for the new '>' symbol.
@@ -48,6 +45,7 @@ public abstract class ChatScreenMixin extends Screen
     {
         if (!ModConfig.Candy.oldChatInput())
             return;
+
         ChatScreen.drawString(poseStack, Minecraft.getInstance().font, ">", 4, this.height - 12, 0xFFFFFF);
     }
 }

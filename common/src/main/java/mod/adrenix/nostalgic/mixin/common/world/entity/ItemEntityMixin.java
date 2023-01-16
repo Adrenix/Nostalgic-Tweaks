@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,13 +13,13 @@ public abstract class ItemEntityMixin
     /**
      * Multiplayer:
      *
-     * Splits up the item stacks dropped by entities.
-     * Controlled by the old item merging tweak.
+     * If server merging optimization is disabled, then this injection will completely disable item merging.
+     * Controlled by the old item merging tweak and server optimization limits.
      */
     @Inject(method = "isMergable", at = @At(value = "HEAD"), cancellable = true)
     private void NT$onIsMergable(CallbackInfoReturnable<Boolean> callback)
     {
-        if (ModConfig.Candy.oldItemMerging())
+        if (ModConfig.Candy.oldItemMerging() && ModConfig.Candy.getItemMergeLimit() == 64)
             callback.setReturnValue(false);
     }
 }

@@ -3,15 +3,29 @@ package mod.adrenix.nostalgic.client.config.gui.screen.config;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import me.shedaniel.autoconfig.AutoConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.ClientConfig;
-import mod.adrenix.nostalgic.client.config.annotation.TweakEntry;
-import mod.adrenix.nostalgic.client.config.gui.widget.*;
+import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
+import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
+import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
+import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
-import mod.adrenix.nostalgic.client.config.reflect.*;
-import mod.adrenix.nostalgic.util.ModUtil;
-import mod.adrenix.nostalgic.util.NostalgicLang;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
+import mod.adrenix.nostalgic.common.config.annotation.TweakData;
+import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
+import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
+import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
+import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.common.ComponentBackport;
+import mod.adrenix.nostalgic.util.common.LangUtil;
+import mod.adrenix.nostalgic.util.client.RunUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.*;
@@ -19,53 +33,56 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.*;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
+/**
+ * This is the screen that appears when the settings button is clicked. Most of the user's time will be spent here.
+ * Tweaks are separated by groups. Within those groups are categories, subcategories, and embedded subcategories.
+ *
+ * All groups will be handled by {@link ConfigRowList}.
+ */
+
 public class ConfigScreen extends Screen
 {
     /* Configuration Tabs */
 
+    /**
+     * This enumeration provides the tabs listed near the top of this screen.
+     * Special tabs such as ALL and SEARCH are handled manually by different classes.
+     */
     public enum ConfigTab
     {
-        GENERAL(NostalgicLang.Vanilla.GENERAL),
-        SOUND(NostalgicLang.Cloth.SOUND_TITLE),
-        CANDY(NostalgicLang.Cloth.CANDY_TITLE),
-        ANIMATION(NostalgicLang.Cloth.ANIMATION_TITLE),
-        SWING(NostalgicLang.Cloth.SWING_TITLE),
-        SEARCH(NostalgicLang.Vanilla.SEARCH);
+        ALL(LangUtil.Gui.SETTINGS_ALL),
+        GENERAL(LangUtil.Vanilla.GENERAL),
+        SOUND(LangUtil.Config.SOUND_TITLE),
+        CANDY(LangUtil.Config.CANDY_TITLE),
+        GAMEPLAY(LangUtil.Config.GAMEPLAY_TITLE),
+        ANIMATION(LangUtil.Config.ANIMATION_TITLE),
+        SWING(LangUtil.Config.SWING_TITLE),
+        SEARCH(LangUtil.Vanilla.SEARCH);
 
         ConfigTab(String langKey) { this.langKey = langKey; }
 
         private final String langKey;
-        String getLangKey() { return this.langKey; }
-    }
-
-    /* Search Tags */
-
-    public enum SearchTag
-    {
-        NEW,
-        CONFLICT,
-        RESET,
-        CLIENT,
-        SERVER;
-
-        @Override
-        public String toString() { return super.toString().toLowerCase(); }
+        public String getLangKey() { return this.langKey; }
     }
 
     /* Instance Fields */
 
-    final Set<TweakCache<?>> search = new HashSet<>();
     public final ArrayList<Runnable> renderLast = new ArrayList<>();
+    protected final Map<String, TweakClientCache<?>> search = new TreeMap<>();
     private final Minecraft minecraft;
     private final Screen parentScreen;
     private ConfigWidgets widgetProvider;
     private ConfigRenderer rendererProvider;
     private ConfigTab configTab = ConfigTab.GENERAL;
+    private String searchCache = "";
+    private int rowHeightCache = 0;
+    private double scrollAmountCache = 0.0D;
     private static boolean isCacheReflected = false;
 
     /* Getters */
@@ -74,30 +91,19 @@ public class ConfigScreen extends Screen
     public Minecraft getMinecraft() { return this.minecraft; }
     public ConfigWidgets getWidgets() { return this.widgetProvider; }
     public ConfigRenderer getRenderer() { return this.rendererProvider; }
+    public ItemRenderer getItemRenderer() { return this.itemRenderer; }
     public ConfigTab getConfigTab() { return this.configTab; }
 
-    /* Setters */
+    /* Constructors */
 
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget)
+    /**
+     * Get a configuration screen with a custom title.
+     * @param parentScreen The parent screen.
+     * @param title The configuration screen's title.
+     */
+    public ConfigScreen(Screen parentScreen, Component title)
     {
-        return super.addRenderableWidget(widget);
-    }
-
-    public void setConfigTab(ConfigTab configTab)
-    {
-        this.configTab = configTab;
-        this.getWidgets().getConfigRowList().children().clear();
-        this.getWidgets().getConfigRowList().setScrollAmount(0);
-    }
-
-    public boolean isScrollbarVisible() { return this.getWidgets().getConfigRowList().getMaxScroll() > 0; }
-    public void resetScrollbar() { this.getWidgets().getConfigRowList().setScrollAmount(0); }
-
-    /* Constructor */
-
-    public ConfigScreen(Screen parentScreen)
-    {
-        super(new TextComponent(NostalgicLang.Cloth.CONFIG_TITLE));
+        super(title);
 
         this.minecraft = Minecraft.getInstance();
         this.parentScreen = parentScreen;
@@ -105,67 +111,309 @@ public class ConfigScreen extends Screen
         if (Minecraft.getInstance().level != null && !ConfigScreen.isCacheReflected)
         {
             ConfigScreen.isCacheReflected = true;
-            TweakCache.all().forEach((key, tweak) -> {
-                TweakEntry.Gui.EntryStatus entryStatus = ConfigReflect.getAnnotation(
-                    tweak.getGroup(),
-                    tweak.getKey(),
-                    TweakEntry.Gui.EntryStatus.class
-                );
 
-                if (entryStatus != null && tweak.getStatus() == StatusType.WAIT)
-                    tweak.setStatus(StatusType.FAIL);
+            TweakClientCache.all().forEach((key, tweak) ->
+            {
+                TweakData.EntryStatus entryStatus = tweak.getMetadata(TweakData.EntryStatus.class);
+
+                if (entryStatus != null && tweak.getStatus() == TweakStatus.WAIT)
+                    tweak.setStatus(TweakStatus.FAIL);
+            });
+
+            TweakServerCache.all().forEach((key, tweak) ->
+            {
+                TweakData.EntryStatus entryStatus = tweak.getMetadata(TweakData.EntryStatus.class);
+
+                if (entryStatus != null && tweak.getStatus() == TweakStatus.WAIT)
+                    tweak.setStatus(TweakStatus.FAIL);
             });
         }
     }
 
-    /* Overrides */
+    /**
+     * Get a configuration screen with the standard configuration title.
+     * @param parentScreen The parent screen.
+     */
+    public ConfigScreen(Screen parentScreen)
+    {
+        this(parentScreen, ComponentBackport.translatable(LangUtil.Config.CONFIG_TITLE));
+    }
 
+    /* Screen Methods */
+
+    /**
+     * Caches important widget values so that those values can be restored at a later point in time.
+     */
+    public void setupCache()
+    {
+        this.searchCache = this.getWidgets().getSearchInput().getValue();
+        this.rowHeightCache = this.getWidgets().getConfigRowList().getRowHeight();
+        this.scrollAmountCache = this.getWidgets().getConfigRowList().getScrollAmount();
+    }
+
+    /**
+     * Restores important widget values that were cached at an earlier point in time.
+     */
+    public void restoreCache()
+    {
+        this.getWidgets().getSearchInput().setValue(this.searchCache);
+        this.getWidgets().getConfigRowList().setRowHeight(this.rowHeightCache);
+
+        if (this.configTab == ConfigTab.SEARCH)
+            this.getWidgets().getSearchInput().setVisible(true);
+    }
+
+    /**
+     * Initializes the configuration screen.
+     */
     @Override
     protected void init()
     {
         this.widgetProvider = new ConfigWidgets(this);
         this.rendererProvider = new ConfigRenderer(this);
-        this.getWidgets().addWidgets();
+        this.getWidgets().generate();
     }
 
+    /**
+     * Handler method for when the game window is resized.
+     * @param minecraft A singleton Minecraft instance.
+     * @param width The new game window width.
+     * @param height The new game window height.
+     */
+    @Override
+    public void resize(Minecraft minecraft, int width, int height)
+    {
+        this.setupCache();
+
+        super.resize(minecraft, width, height);
+
+        this.restoreCache();
+
+        if (this.configTab == ConfigTab.SEARCH)
+            this.getWidgets().focusInput = true;
+
+        Overlay.resize();
+    }
+
+    /**
+     * Ticks the search input widget.
+     */
     @Override
     public void tick() { this.getWidgets().getSearchInput().tick(); }
 
+    /**
+     * Handler method for when this screen is closed.
+     */
     @Override
     public void onClose()
     {
+        // Save tweak cache and config file
         this.save();
         AutoConfig.getConfigHolder(ClientConfig.class).save();
+
+        // Clear expansion states stored in config rows
+        ContainerButton.collapseAll();
+
+        // Return to parent screen
         this.minecraft.setScreen(this.parentScreen);
     }
 
+    /**
+     * Public implementation of the screen's protected renderable widget addition method.
+     * @param widget The widget to add to this screen.
+     * @return The widget instance.
+     * @param <T> The type of widget.
+     */
+    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget)
+    {
+        return super.addRenderableWidget(widget);
+    }
+
+    /**
+     * Resets the configuration row list to a fresh empty state.
+     * Any previous tabbing selection will be discarded.
+     */
+    public void resetRowList()
+    {
+        this.getWidgets().getConfigRowList().children().clear();
+        this.getWidgets().getConfigRowList().setScrollAmount(0);
+        this.getWidgets().getConfigRowList().resetLastSelection();
+    }
+
+    /**
+     * Changes the screen's configuration tab. This method must be used when the configuration tab needs to be changed.
+     * State management and row list management is also handled by this method when the configuration tab is changed.
+     * @param configTab The new configuration tab.
+     */
+    public void setConfigTab(ConfigTab configTab)
+    {
+        if (this.configTab == configTab)
+            return;
+
+        if (this.configTab == ConfigTab.ALL || configTab == ConfigTab.ALL)
+            ContainerButton.collapseAll();
+
+        if (configTab == ConfigTab.SEARCH)
+            this.getWidgets().getConfigRowList().setRowHeight(36);
+        else
+            this.getWidgets().getConfigRowList().resetRowHeight();
+
+        this.configTab = configTab;
+
+        this.resetRowList();
+
+        if (configTab == ConfigTab.ALL)
+        {
+            if (!Overlay.isOpened())
+            {
+                this.getRenderer().generateRowsFromAllGroups();
+                new CategoryListOverlay();
+            }
+        }
+        else if (configTab == ConfigTab.SEARCH)
+        {
+            this.getWidgets().getSearchInput().setVisible(true);
+            this.getWidgets().runSearch(this.getWidgets().getSearchInput().getValue());
+        }
+    }
+
+    /**
+     * Handler method for when a character is typed.
+     * @param codePoint The character code.
+     * @param modifiers Modifiers.
+     * @return Whether the character that was typed was handled by this method.
+     */
     @Override
-    public boolean charTyped(char code, int modifiers)
+    public boolean charTyped(char codePoint, int modifiers)
     {
         if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused())
         {
-            boolean isCharTyped = this.getWidgets().getSearchInput().charTyped(code, modifiers);
+            boolean isCharTyped = this.getWidgets().getSearchInput().charTyped(codePoint, modifiers);
 
-            if (isCharTyped && !isModifierDown())
+            if (isCharTyped && !KeyUtil.isModifierDown())
                 this.getWidgets().getConfigRowList().children().clear();
 
             return isCharTyped;
         }
 
         ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+
         if (focused != null)
         {
             for (AbstractWidget widget : focused.children)
+            {
                 if (widget instanceof EditBox)
-                    widget.charTyped(code, modifiers);
+                    widget.charTyped(codePoint, modifiers);
+            }
         }
 
         return false;
     }
 
+    /**
+     * Handler method for when the mouse scrolls.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param delta Scroll amount.
+     * @return Whether this method handled the mouse scroll.
+     */
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta)
+    {
+        if (Overlay.isOpened())
+            return Overlay.mouseScrolled(mouseX, mouseY, delta);
+
+        return super.mouseScrolled(mouseX, mouseY, delta);
+    }
+
+    /**
+     * Handler method for when the mouse is clicked.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @return Whether this method handled the mouse being clicked.
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (Overlay.isOpened())
+            return Overlay.mouseClicked(mouseX, mouseY, button);
+
+        if (this.getWidgets().getSearchInput().isFocused())
+            this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
+
+        if (this.configTab == ConfigTab.SEARCH)
+        {
+            if (ConfigRowList.overTweakId != null && ConfigWidgets.isInsideRowList(mouseY))
+            {
+                ContainerButton.collapseAll();
+                ConfigRowList.jumpToTweakId = ConfigRowList.overTweakId;
+            }
+
+            for (ConfigRowList.Row row : this.getWidgets().getConfigRowList().children())
+            {
+                for (AbstractWidget widget : row.children)
+                {
+                    if (widget instanceof SearchCrumbs crumb)
+                    {
+                        boolean isClicked = crumb.mouseClicked(mouseX, mouseY, button);
+
+                        if (isClicked)
+                        {
+                            ContainerButton.collapseAll();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * Handler method for when the mouse moves while a mouse button is held down.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param button The mouse button that was clicked.
+     * @param dragX The mouse drag x-position.
+     * @param dragY The mouse drag y-position.
+     * @return Whether this method handled the mouse drag event.
+     */
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
+    {
+        if (Overlay.isOpened())
+            return Overlay.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    /**
+     * Handler method for when the mouse button is released after a dragging.
+     * @param mouseX The x-position of the mouse.
+     * @param mouseY The y-position of the mouse.
+     * @param button The mouse button that was released.
+     * @return Whether this method handled the mouse being released.
+     */
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button)
+    {
+        if (Overlay.isOpened())
+            Overlay.onRelease(mouseX, mouseY, button);
+
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    /* Key Utility & Handling */
+
+    /**
+     * @return Get the focused edit box within the configuration row list.
+     */
     private EditBox getEditBox()
     {
         ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+
         if (focused != null)
         {
             for (AbstractWidget widget : focused.children)
@@ -176,9 +424,13 @@ public class ConfigScreen extends Screen
         return null;
     }
 
+    /**
+     * @return Get the focused key mapping button within the configuration row list.
+     */
     private KeyBindButton getMappingInput()
     {
         ConfigRowList.Row focused = this.getWidgets().getConfigRowList().getFocused();
+
         if (focused != null)
         {
             for (AbstractWidget widget : focused.children)
@@ -189,21 +441,34 @@ public class ConfigScreen extends Screen
         return null;
     }
 
-    public static boolean isModifierDown() { return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown(); }
-    private static boolean isSearching(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F; }
-    private static boolean isSaving(int key) { return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S; }
-    private static boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
-    private static boolean isGoingRight(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT; }
-    public static boolean isTab(int key) { return key == GLFW.GLFW_KEY_TAB; }
-    public static boolean isEsc(int key) { return key == GLFW.GLFW_KEY_ESCAPE; }
-
+    /**
+     * Handler method for when a key is pressed.
+     * @param keyCode The key code that was pressed.
+     * @param scanCode A key scan code.
+     * @param modifiers Key code modifiers.
+     * @return Whether this method handled the key that was pressed.
+     */
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
+        // Debugging
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_D)
+            this.parentScreen.keyPressed(keyCode, scanCode, modifiers);
+
+        // Overlays
+        if (Overlay.isOpened())
+            return Overlay.keyPressed(keyCode, scanCode, modifiers);
+
+        // Config Row List
+        if (this.getWidgets().getConfigRowList().keyPressed(keyCode, scanCode, modifiers))
+            return true;
+
+        /* Config Screen */
+
         KeyBindButton mappingInput = this.getMappingInput();
         EditBox editBox = this.getEditBox();
 
-        if (isEsc(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
+        if (KeyUtil.isEsc(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
         {
             if (this.getWidgets().getSearchInput().isFocused())
                 this.getWidgets().getSearchInput().setFocus(false);
@@ -211,6 +476,7 @@ public class ConfigScreen extends Screen
                 editBox.setFocus(false);
             else
                 this.onCancel();
+
             return true;
         }
 
@@ -222,12 +488,12 @@ public class ConfigScreen extends Screen
             mappingInput.setKey(keyCode, scanCode);
             return true;
         }
-        else if (isSaving(keyCode))
+        else if (KeyUtil.isSaving(keyCode))
         {
             this.onClose();
             return true;
         }
-        else if (this.configTab != ConfigTab.SEARCH && (isGoingLeft(keyCode) || isGoingRight(keyCode)))
+        else if ((KeyUtil.isGoingLeft(keyCode) || KeyUtil.isGoingRight(keyCode)) && !this.getWidgets().getSearchInput().isFocused())
         {
             ConfigTab[] tabs = ConfigTab.values();
             ConfigTab last = ConfigTab.GENERAL;
@@ -236,43 +502,41 @@ public class ConfigScreen extends Screen
             {
                 ConfigTab tab = tabs[i];
 
-                if (tab == ConfigTab.SEARCH)
+                if (tab == ConfigTab.ALL && this.configTab != ConfigTab.ALL)
                     continue;
-                if (isGoingLeft(keyCode) && this.configTab == tab)
+                else if (this.configTab == ConfigTab.ALL)
+                    last = ConfigTab.ALL;
+
+                if (KeyUtil.isGoingLeft(keyCode) && this.configTab == tab)
                 {
                     this.setConfigTab(this.configTab != last ? last : tabs[tabs.length - 2]);
                     break;
                 }
-                else if (isGoingRight(keyCode) && this.configTab == tab)
+                else if (KeyUtil.isGoingRight(keyCode) && this.configTab == tab)
                 {
-                    this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[0]);
+                    this.setConfigTab(i + 1 < tabs.length - 1 ? tabs[i + 1] : tabs[1]);
                     break;
                 }
 
                 last = tab;
             }
-
-            if (this.configTab == ConfigTab.SEARCH)
-                this.getWidgets().focusInput = true;
         }
 
-        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !isEsc(keyCode))
+        if (this.configTab == ConfigTab.SEARCH && this.getWidgets().getSearchInput().isFocused() && !KeyUtil.isEsc(keyCode))
         {
             boolean isInputChanged = this.getWidgets().getSearchInput().keyPressed(keyCode, scanCode, modifiers);
+
             if (keyCode != GLFW.GLFW_KEY_LEFT && keyCode != GLFW.GLFW_KEY_RIGHT)
             {
-                if (isSearching(keyCode))
+                if (KeyUtil.isSearching(keyCode))
                 {
                     this.getWidgets().getSearchInput().setValue("");
                     this.getWidgets().getConfigRowList().setScrollAmount(0);
                 }
-                else if (isModifierDown() || isInputChanged)
+                else if (KeyUtil.isModifierDown() || isInputChanged)
                 {
                     if (isInputChanged)
-                    {
-                        this.getWidgets().getConfigRowList().children().clear();
-                        this.getWidgets().checkSearch(this.getWidgets().getSearchInput().getValue());
-                    }
+                        this.getWidgets().runSearch(this.getWidgets().getSearchInput().getValue());
 
                     return true;
                 }
@@ -281,45 +545,143 @@ public class ConfigScreen extends Screen
             return isInputChanged;
         }
 
-        if (isSearching(keyCode))
+        if (KeyUtil.isSearching(keyCode))
         {
             this.setConfigTab(ConfigTab.SEARCH);
             this.getWidgets().focusInput = true;
+
+            return true;
+        }
+        else if (KeyUtil.isSelectAll(keyCode))
+        {
+            this.setConfigTab(ConfigTab.ALL);
+
+            if (!Overlay.isOpened())
+                new CategoryListOverlay();
+
             return true;
         }
         else
         {
-            if (!isTab(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
+            if (!KeyUtil.isTab(keyCode) && super.keyPressed(keyCode, scanCode, modifiers))
                 return true;
+
             return keyCode == 257 || keyCode == 335;
         }
     }
 
-    @Override
-    public void resize(Minecraft minecraft, int width, int height)
+    /* Search Tab Jumping */
+
+    /**
+     * Get a configuration tab based on a provided language key for a group.
+     * @param groupLangKey A language file key.
+     * @return A configuration tab related to the provide language key.
+     */
+    private ConfigTab getTabFromGroupKey(String groupLangKey)
     {
-        String searching = this.getWidgets().getSearchInput().getValue();
-
-        super.resize(minecraft, width, height);
-
-        if (this.configTab == ConfigTab.SEARCH)
+        for (TweakGroup group : TweakGroup.values())
         {
-            this.getWidgets().focusInput = true;
-            this.getWidgets().getSearchInput().setValue(searching);
+            if (group.getLangKey().equals(groupLangKey))
+            {
+                return switch (group)
+                {
+                    case CANDY -> ConfigTab.CANDY;
+                    case SOUND -> ConfigTab.SOUND;
+                    case SWING -> ConfigTab.SWING;
+                    case GAMEPLAY -> ConfigTab.GAMEPLAY;
+                    case ANIMATION -> ConfigTab.ANIMATION;
+                    default -> ConfigTab.GENERAL;
+                };
+            }
+        }
+
+        return ConfigTab.GENERAL;
+    }
+
+    /**
+     * Sets this screen's configuration tab based on the provided language key associated with a tweak group.
+     * @param groupLangKey A language file key.
+     */
+    public void setTabFromGroupKey(String groupLangKey) { this.setConfigTab(this.getTabFromGroupKey(groupLangKey)); }
+
+    /**
+     * Sets the scrollbar on a configuration container row based on the provided container identifier.
+     * @param containerId An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
+     */
+    public void setScrollOnContainer(Object containerId) { ConfigRowList.jumpToContainerId = containerId; }
+
+    /**
+     * Jump to a configuration row entry that holds controllers for the provided tweak.
+     * @param tweak The tweak to jump to.
+     */
+    private void jumpToTweak(TweakClientCache<?> tweak)
+    {
+        ConfigRowList list = this.getWidgets().getConfigRowList();
+
+        for (ConfigRowList.Row row : list.children())
+        {
+            if (row.tweak == tweak)
+            {
+                list.setFocusOn(row.controller);
+                list.setScrollOn(row);
+            }
         }
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    /**
+     * Jump to a container that holds the provided tweak.
+     * @param tweak A tweak with container data.
+     */
+    private void jumpToContainerFromTweak(TweakClientCache<?> tweak)
     {
-        if (this.getWidgets().getSearchInput().isFocused())
-            this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
-        return super.mouseClicked(mouseX, mouseY, button);
+        if (tweak.getEmbed() != null)
+        {
+            this.jumpToContainer(tweak.getEmbed().container().getSubcategory().getCategory());
+            this.jumpToContainer(tweak.getEmbed().container().getSubcategory());
+            this.jumpToContainer(tweak.getEmbed().container());
+        }
+        else if (tweak.getSubcategory() != null)
+        {
+            this.jumpToContainer(tweak.getSubcategory().container().getCategory());
+            this.jumpToContainer(tweak.getSubcategory().container());
+        }
+        else if (tweak.getCategory() != null)
+            this.jumpToContainer(tweak.getCategory().container());
+    }
+
+    /**
+     * Jump to a container based on the provided container identifier.
+     * @param tweakContainer An enumeration value from {@link TweakGui} (category, subcategory, or embedded).
+     */
+    private void jumpToContainer(Object tweakContainer)
+    {
+        ConfigRowList list = this.getWidgets().getConfigRowList();
+
+        for (ConfigRowList.Row row : list.children())
+        {
+            for (AbstractWidget widget : row.children)
+            {
+                if (widget instanceof ContainerButton container)
+                {
+                    if (container.getId() == tweakContainer)
+                    {
+                        if (!container.isExpanded())
+                            container.silentPress();
+
+                        list.setFocusOn(container);
+                        list.setScrollOn(row);
+                    }
+                }
+            }
+        }
     }
 
     /* On-click Handlers */
 
-    void onCancel()
+    /**
+     * Confirms that the user wants to exit the current configuration screen instance.
+     */
+    protected void onCancel()
     {
         if (!this.isSavable())
         {
@@ -327,19 +689,26 @@ public class ConfigScreen extends Screen
             return;
         }
 
-        this.minecraft.setScreen(
-            new ConfirmScreen(
+        this.setupCache();
+
+        this.minecraft.setScreen
+        (
+            new ConfirmScreen
+            (
                 new CancelConsumer(),
-                new TranslatableComponent(NostalgicLang.Cloth.QUIT_CONFIG),
-                new TranslatableComponent(NostalgicLang.Cloth.QUIT_CONFIG_SURE),
-                new TranslatableComponent(NostalgicLang.Cloth.QUIT_DISCARD),
-                new TranslatableComponent(NostalgicLang.Vanilla.GUI_CANCEL)
+                ComponentBackport.translatable(LangUtil.Gui.CONFIRM_QUIT_TITLE),
+                ComponentBackport.translatable(LangUtil.Gui.CONFIRM_QUIT_BODY),
+                ComponentBackport.translatable(LangUtil.Gui.CONFIRM_QUIT_DISCARD),
+                ComponentBackport.translatable(LangUtil.Gui.CONFIRM_QUIT_CANCEL)
             )
         );
     }
 
     /* Closing Consumers */
 
+    /**
+     * Helper class that redirects the screen based on user input.
+     */
     private class CancelConsumer implements BooleanConsumer
     {
         @Override
@@ -351,15 +720,22 @@ public class ConfigScreen extends Screen
                 ConfigScreen.this.minecraft.setScreen(ConfigScreen.this.parentScreen);
             }
             else
+            {
                 ConfigScreen.this.minecraft.setScreen(ConfigScreen.this);
+                ConfigScreen.this.restoreCache();
+            }
         }
     }
 
-    void onClose(boolean isCancelled)
+    /**
+     * Handler method for when the screen is about to exit.
+     * @param isCancelled Whether to cancel any configuration changes.
+     */
+    protected void onClose(boolean isCancelled)
     {
         if (isCancelled)
         {
-            for (TweakCache<?> cache : TweakCache.all().values())
+            for (TweakClientCache<?> cache : TweakClientCache.all().values())
             {
                 if (cache.isSavable())
                     cache.undo();
@@ -371,13 +747,19 @@ public class ConfigScreen extends Screen
 
     /* Saving */
 
+    /**
+     * Checks if the save button should be active.
+     * @return Whether there is a tweak with a saved value that does not match the current client cache.
+     */
     public boolean isSavable()
     {
         boolean isCacheDifferent = false;
 
-        for (TweakCache<?> cache : TweakCache.all().values())
+        for (TweakClientCache<?> cache : TweakClientCache.all().values())
         {
-            if (isCacheDifferent) break;
+            if (isCacheDifferent)
+                break;
+
             if (cache.isSavable())
                 isCacheDifferent = true;
         }
@@ -385,48 +767,91 @@ public class ConfigScreen extends Screen
         return isCacheDifferent;
     }
 
+    /**
+     * Saves the client cache and runs any applicable runnables that need to run after the save button is pressed by the
+     * user.
+     */
     private void save()
     {
-        for (TweakCache<?> cache : TweakCache.all().values())
+        for (TweakClientCache<?> cache : TweakClientCache.all().values())
         {
             if (cache.isSavable())
                 cache.save();
         }
 
-        ModUtil.Run.onSave.forEach(Runnable::run);
+        RunUtil.onSave.forEach(Runnable::run);
+        NostalgicTweaks.LOGGER.debug("Ran (%s) onSave functions", RunUtil.onSave.size());
     }
 
     /* Rendering */
 
+    /**
+     * Handler method for rendering the configuration screen and its subscribed widgets.
+     * @param poseStack The current pose stack.
+     * @param mouseX The mouse x-position.
+     * @param mouseY The mouse y-position.
+     * @param partialTick The change in time between frames.
+     */
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        String title = new TranslatableComponent(this.configTab.getLangKey()).getString() + " " + new TranslatableComponent(NostalgicLang.Cloth.CONFIG_TITLE).getString();
+        ConfigRowList list = this.getWidgets().getConfigRowList();
+
+        String tabKey = this.configTab.getLangKey();
+        String configKey = LangUtil.Config.CONFIG_TITLE;
+        String title = ComponentBackport.translatable(tabKey).getString() + " " + ComponentBackport.translatable(configKey).getString();
+
+        // Config Row Generation for Group Tabs
+
+        if (list.children().isEmpty())
+            this.getRenderer().generateAndRender(poseStack, mouseX, mouseY, partialTick);
+
+        // Reset scrollbar position without flashing
+
+        if (this.scrollAmountCache > 0.0D)
+        {
+            list.render(poseStack, mouseX, mouseY, partialTick);
+            this.getWidgets().getConfigRowList().setScrollAmount(this.scrollAmountCache);
+            this.scrollAmountCache = 0.0D;
+        }
+
+        // Background Rendering
 
         if (this.minecraft.level != null)
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
         else
             this.renderDirtBackground(0);
 
-        if (this.getWidgets().getConfigRowList().children().isEmpty())
-            this.getRenderer().generateGroupList(poseStack, mouseX, mouseY, partialTick);
+        this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
+        this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
 
-        this.getWidgets().getConfigRowList().render(poseStack, mouseX, mouseY, partialTick);
+        // Render config row list
+
+        list.render(poseStack, mouseX, mouseY, partialTick);
+
+        // Widget Overlay Overrides
 
         for (Button button : this.getWidgets().getCategories())
-            button.active = true;
+            button.active = !Overlay.isOpened();
+
+        // Configuration Tab Activation
 
         switch (this.configTab)
         {
+            case ALL -> this.getWidgets().getList().active = !Overlay.isOpened();
             case GENERAL -> this.getWidgets().getGeneral().active = false;
             case SOUND -> this.getWidgets().getSound().active = false;
             case CANDY -> this.getWidgets().getCandy().active = false;
+            case GAMEPLAY -> this.getWidgets().getGameplay().active = false;
             case ANIMATION -> this.getWidgets().getAnimation().active = false;
             case SWING -> this.getWidgets().getSwing().active = false;
             case SEARCH -> this.getWidgets().getSearch().active = false;
         }
 
-        this.getWidgets().getSave().active = this.isSavable();
+        this.getWidgets().getSave().active = this.isSavable() && !Overlay.isOpened();
+        this.getWidgets().getCancel().active = !Overlay.isOpened();
+
+        // Widget Rendering
 
         for (Widget widget : this.getWidgets().children)
         {
@@ -437,22 +862,77 @@ public class ConfigScreen extends Screen
         if (this.configTab != ConfigTab.SEARCH)
         {
             this.getWidgets().getSearchInput().setVisible(false);
-            ConfigScreen.drawCenteredString(poseStack, this.font, title, this.width / 2, 7, 0xFFFFFF);
+            ConfigScreen.drawCenteredString(poseStack, this.font, title, this.width / 2, 8, 0xFFFFFF);
         }
         else if (this.getWidgets().focusInput)
         {
-            this.getWidgets().getSearchInput().setVisible(true);
-            this.getWidgets().getSearchInput().setFocus(true);
-            this.getWidgets().getSearchInput().setEditable(true);
+            this.getWidgets().focusSearch();
             this.getWidgets().focusInput = false;
         }
 
+        this.getWidgets().getClear().active = this.getWidgets().getSearchInput().getValue().length() > 0;
+        this.getWidgets().getSearchControls().forEach((button) -> button.visible = this.configTab == ConfigTab.SEARCH);
         this.getWidgets().getSearchInput().render(poseStack, mouseX, mouseY, partialTick);
 
-        RenderSystem.setShaderTexture(0, NostalgicUtil.Resource.WIDGETS_LOCATION);
+        // Magnifying Glass Icon
+
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
         this.blit(poseStack, this.getWidgets().getSearch().x + 5, this.getWidgets().getSearch().y + 4, 0, 15, 12, 12);
 
-        this.renderLast.forEach(Runnable::run);
+        // Finish Screen Rendering
+
+        if (!Overlay.isOpened())
+            this.renderLast.forEach(Runnable::run);
+
         this.renderLast.clear();
+
+        // Overlay Rendering
+
+        Overlay.render(poseStack, mouseX, mouseY, partialTick);
+
+        // Crumb & Tweak Jumping
+
+        if (ConfigRowList.jumpToContainerId != null)
+        {
+            if (ConfigRowList.jumpToContainerId instanceof TweakEmbed embed)
+            {
+                this.jumpToContainer(embed.getSubcategory().getCategory());
+                this.jumpToContainer(embed.getSubcategory());
+                this.jumpToContainer(embed);
+            }
+            else if (ConfigRowList.jumpToContainerId instanceof TweakSubcategory subcategory)
+            {
+                this.jumpToContainer(subcategory.getCategory());
+                this.jumpToContainer(subcategory);
+            }
+            else if (ConfigRowList.jumpToContainerId instanceof TweakCategory category)
+                this.jumpToContainer(category);
+
+            ConfigRowList.jumpToContainerId = null;
+        }
+
+
+        if (ConfigRowList.jumpToTweakId != null && this.configTab == ConfigTab.SEARCH)
+        {
+            TweakClientCache<?> tweak = TweakClientCache.all().get(ConfigRowList.jumpToTweakId);
+
+            this.getWidgets().getList().playDownSound(Minecraft.getInstance().getSoundManager());
+            this.setTabFromGroupKey(tweak.getGroup().getLangKey());
+        }
+        else if (ConfigRowList.jumpToTweakId != null)
+        {
+            TweakClientCache<?> tweak = TweakClientCache.all().get(ConfigRowList.jumpToTweakId);
+
+            this.jumpToContainerFromTweak(tweak);
+            this.jumpToTweak(tweak);
+
+            ConfigRowList.jumpToTweakId = null;
+            ConfigRowList.overTweakId = null;
+        }
+
+        // Debugging
+
+        if (NostalgicTweaks.isDebugging())
+            drawString(poseStack, this.font, "Debug: §2ON", 2, this.height - 10, 0xFFFF00);
     }
 }

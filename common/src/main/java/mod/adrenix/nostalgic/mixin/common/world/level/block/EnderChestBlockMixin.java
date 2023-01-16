@@ -1,6 +1,10 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.CandyTweak;
+import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,21 +41,40 @@ public abstract class EnderChestBlockMixin
      * Controlled by the old ender chest tweak.
      */
     @Inject(method = "animateTick", at = @At("HEAD"), cancellable = true)
-    private void NT$onAnimateTick(BlockState state, Level level, BlockPos pos, Random random, CallbackInfo callback)
+    private void NT$onAnimateTick(BlockState blockState, Level level, BlockPos blockPos, Random randomSource, CallbackInfo callback)
     {
         if (ModConfig.Candy.oldEnderChest())
             callback.cancel();
     }
 
     /**
+     * Multiplayer:
+     *
      * Changes the voxel shape of the ender chest to be a full block.
      * Controlled by the old chest voxel tweak.
      */
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void NT$onGetShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (!ModConfig.Candy.oldChestVoxel() || !ModConfig.Candy.oldEnderChest())
-            return;
-        callback.setReturnValue(Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0));
+        TweakServerCache<Boolean> cache = TweakServerCache.get(CandyTweak.CHEST_VOXEL);
+        VoxelShape shape = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+
+        if (NostalgicTweaks.isServer() && ModConfig.Candy.oldChestVoxel())
+            callback.setReturnValue(shape);
+        else if (NostalgicTweaks.isClient())
+        {
+            boolean isServerVoxel = cache != null && cache.getServerCache();
+
+            if (NostalgicTweaks.isNetworkVerified() && NetUtil.isMultiplayer() && isServerVoxel)
+            {
+                callback.setReturnValue(shape);
+                return;
+            }
+
+            if (!ModConfig.Candy.oldChestVoxel() || !ModConfig.Candy.oldEnderChest())
+                return;
+
+            callback.setReturnValue(shape);
+        }
     }
 }

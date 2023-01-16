@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.ItemModelGenerator;
@@ -15,18 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Helper methods were adapted from the Item-Model-Fix mod by
+ * <a href="https://github.com/PepperCode1/Item-Model-Fix/">Pepper_Bell</a>.
+ */
+
 @Mixin(ItemModelGenerator.class)
 public abstract class ItemModelGeneratorMixin
 {
-    /**
-     * Helper methods were adapted from the Item-Model-Fix mod by Pepper_Bell.
-     * https://github.com/PepperCode1/Item-Model-Fix/
-     */
-
-    private static float reduce(float start, float end, float delta)
-    {
-        return (start - delta * end) / (1 - delta);
-    }
+    private static float reduce(float start, float end, float delta) { return (start - delta * end) / (1 - delta); }
 
     private static void reduceUVs(float[] uvs, float delta)
     {
@@ -63,11 +61,12 @@ public abstract class ItemModelGeneratorMixin
         // Captures NoClassDefFoundError if config dependency is missing which allows forge to reach missing dependency screen
         catch (Error ignored) {}
 
+        boolean isForge = NostalgicTweaks.isForge() && !NostalgicTweaks.OPTIFINE.get();
 
         for (BlockElement element : blockElements)
         {
             for (BlockElementFace face : element.faces.values())
-                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio());
+                reduceUVs(face.uv.uvs, sprite.uvShrinkRatio() + (isForge ? 0.00193F : 0.0F));
         }
     }
 }

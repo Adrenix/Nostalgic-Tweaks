@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.model;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.util.ModUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.AnimationUtil;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
@@ -60,7 +60,7 @@ public abstract class SkeletonModelMixin <T extends Mob> extends HumanoidModel<T
         if (!ModConfig.Animation.oldSkeletonArms())
             return;
 
-        ModUtil.Animation.setStaticArms(this.rightArm, this.leftArm);
+        AnimationUtil.setStaticArms(this.rightArm, this.leftArm);
         AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
 
         callback.cancel();

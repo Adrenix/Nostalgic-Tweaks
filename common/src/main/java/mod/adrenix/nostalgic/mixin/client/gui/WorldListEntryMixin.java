@@ -1,12 +1,12 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.client.screen.ClassicProgressScreen;
-import mod.adrenix.nostalgic.util.NostalgicLang;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
+import mod.adrenix.nostalgic.util.common.ComponentBackport;
+import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -32,10 +32,10 @@ public abstract class WorldListEntryMixin
         if (!ModConfig.Candy.oldLoadingScreens())
             return genericScreen;
 
-        ClassicProgressScreen progressScreen = new ClassicProgressScreen(new ProgressScreen(false));
-        progressScreen.setHeader(new TranslatableComponent(NostalgicLang.Gui.LEVEL_LOADING));
-        progressScreen.setStage(new TranslatableComponent(NostalgicLang.Vanilla.READ_WORLD_DATA));
-        progressScreen.setPauseTicking(ClassicProgressScreen.NO_PAUSES);
+        NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
+        progressScreen.setHeader(ComponentBackport.translatable(LangUtil.Gui.LEVEL_LOADING));
+        progressScreen.setStage(ComponentBackport.translatable(LangUtil.Vanilla.READ_WORLD_DATA));
+        progressScreen.setPauseTicking(NostalgicProgressScreen.NO_PAUSES);
 
         return progressScreen;
     }

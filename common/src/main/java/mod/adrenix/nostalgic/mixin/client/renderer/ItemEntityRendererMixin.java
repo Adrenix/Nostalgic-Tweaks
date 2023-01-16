@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.util.ModUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
@@ -45,7 +45,7 @@ public abstract class ItemEntityRendererMixin
         {
             BakedModel model = this.itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
 
-            if (ModUtil.Item.isModelFlat(model))
+            if (ItemClientUtil.isModelFlat(model))
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
             else
                 poseStack.mulPose(Vector3f.YP.rotation(itemEntity.getSpin(partialTicks)));
@@ -73,10 +73,10 @@ public abstract class ItemEntityRendererMixin
         if (ModConfig.Candy.oldFloatingItems())
         {
             BakedModel model = itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
-            if (ModUtil.Item.isModelFlat(model))
+            if (ItemClientUtil.isModelFlat(model))
             {
-                ModUtil.Item.flatten(poseStack);
-                ModUtil.Item.disableDiffusedLighting();
+                ItemClientUtil.flatten(poseStack);
+                ItemClientUtil.disableDiffusedLighting();
             }
         }
     }
@@ -97,6 +97,6 @@ public abstract class ItemEntityRendererMixin
     )
     private void NT$onFinishRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
     {
-        ModUtil.Item.enableDiffusedLighting();
+        ItemClientUtil.enableDiffusedLighting();
     }
 }

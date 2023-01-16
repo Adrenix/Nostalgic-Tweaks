@@ -3,9 +3,12 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.client.config.tweak.TweakVersion;
-import mod.adrenix.nostalgic.util.NostalgicUtil;
+import mod.adrenix.nostalgic.client.config.ClientConfigCache;
+import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
+import mod.adrenix.nostalgic.client.config.gui.toast.ToastId;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LoadingOverlay;
@@ -16,6 +19,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,7 +36,8 @@ public abstract class LoadingOverlayMixin
     /* Shadows */
 
     @Shadow @Final static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
-    @Shadow @Final private Consumer<Optional<Throwable>> onFinish;
+
+    @Shadow @Final @Mutable private Consumer<Optional<Throwable>> onFinish;
     @Shadow @Final private ReloadInstance reload;
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private boolean fadeIn;
@@ -42,14 +47,35 @@ public abstract class LoadingOverlayMixin
 
     @Shadow protected abstract void drawProgressBar(PoseStack poseStack, int minX, int minY, int maxX, int maxY, float alpha);
 
+    /* Injections */
+
+    /**
+     * When a loading overlay finishes, the on finish consumer is fired. This is the time when the config helper toast
+     * should be opened.
+     */
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void NT$onInit(Minecraft minecraft, ReloadInstance reloadInstance, Consumer<Optional<Throwable>> consumer, boolean fadeIn, CallbackInfo callback)
+    {
+        this.onFinish = throwable ->
+        {
+            consumer.accept(throwable);
+
+            if (!ClientConfigCache.getGui().interactedWithConfig)
+                NostalgicToast.getInstance(ToastId.WELCOME).open();
+
+            NostalgicToast.init();
+        };
+    }
+
     /**
      * Overrides the overlay renderer, so we can display a retro loading screen.
      * Controlled by various interface tweaks.
      */
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "render", at = @At("RETURN"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
         TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
+
         if (overlay == TweakVersion.Overlay.MODERN)
             return;
 
@@ -69,10 +95,10 @@ public abstract class LoadingOverlayMixin
 
         final ResourceLocation BACKGROUND = switch (overlay)
         {
-            case ALPHA -> NostalgicUtil.Resource.MOJANG_ALPHA;
-            case BETA -> NostalgicUtil.Resource.MOJANG_BETA;
-            case RELEASE_ORANGE -> NostalgicUtil.Resource.MOJANG_RELEASE_ORANGE;
-            case RELEASE_BLACK -> NostalgicUtil.Resource.MOJANG_RELEASE_BLACK;
+            case ALPHA -> TextureLocation.MOJANG_ALPHA;
+            case BETA -> TextureLocation.MOJANG_BETA;
+            case RELEASE_ORANGE -> TextureLocation.MOJANG_RELEASE_ORANGE;
+            case RELEASE_BLACK -> TextureLocation.MOJANG_RELEASE_BLACK;
             default -> MOJANG_STUDIOS_LOGO_LOCATION;
         };
 

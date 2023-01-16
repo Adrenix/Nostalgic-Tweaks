@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.common.world.level.block;
 
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.util.ModUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,10 +26,10 @@ public abstract class BlockBehaviourMixin
     }
 
     /**
-     * Tricks the shade calculator thinking that chests are full-sized blocks.
+     * Tricks the shade calculator thinking that a block is full-sized.
      * This is needed so ambient occlusion can be applied correctly.
      *
-     * Controlled by various old chest tweaks.
+     * Controlled by various tweaks.
      */
     @Redirect
     (
@@ -42,8 +42,9 @@ public abstract class BlockBehaviourMixin
     )
     private boolean NT$onGetShadeFromShape(BlockState instance, BlockGetter blockGetter, BlockPos blockPos)
     {
-        if (ModUtil.Block.isBlockFullShape(instance.getBlock()))
+        if (BlockClientUtil.isFullShape(instance.getBlock()))
             return true;
+
         return instance.isCollisionShapeFullBlock(blockGetter, blockPos);
     }
 }

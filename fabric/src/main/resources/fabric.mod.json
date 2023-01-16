@@ -2,28 +2,29 @@
   "schemaVersion": 1,
   "id": "nostalgic_tweaks",
   "version": "${version}",
-  "name": "Nostalgic Tweaks",
-  "description": "Brings back a plethora of Minecraft Alpha/Beta gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft by tweaking the mod to their preference.",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "Adrenix"
+    "${mod_author}"
   ],
 
   "contributors": [
     {
-      "name": "See Source Contributors",
+      "name": "See source contributors",
       "contact": {
-        "homepage": "https://github.com/Adrenix/Nostalgic-Tweaks/blob/main/contributors.md"
+        "homepage": "${mod_credits}"
       }
     }
   ],
 
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/nostalgic-tweaks",
-    "sources": "https://github.com/Adrenix/Nostalgic-Tweaks",
-    "issues": "https://github.com/Adrenix/Nostalgic-Tweaks/issues"
+    "homepage": "${mod_curse}",
+    "sources": "${mod_source}",
+    "issues": "${mod_issues}"
   },
-  "license": "See Source License",
-  "icon": "assets/nostalgic_tweaks/logo.png",
+
+  "license": "${mod_license}",
+  "icon": "assets/nostalgic_tweaks/nt_fabric_logo.png",
   "environment": "*",
   "entrypoints": {
     "modmenu": [
@@ -34,27 +35,38 @@
     ],
     "server": [
       "mod.adrenix.nostalgic.fabric.NostalgicServerFabric"
+    ],
+    "main": [
+      "mod.adrenix.nostalgic.fabric.NostalgicCommonFabric"
+    ],
+    "nostalgic_tweaks": [
+      "mod.adrenix.nostalgic.fabric.api.test.ApiTestHandler"
+    ],
+    "appleskin": [
+      "mod.adrenix.nostalgic.fabric.event.client.support.AppleSkinEvents"
     ]
   },
+
   "mixins": [
     "mixin.nostalgic_tweaks-common.json",
     "mixin.nostalgic_tweaks-common-client.json",
     "mixin.nostalgic_tweaks-common-widen.json",
-    "mixin.nostalgic_tweaks-fabric.json"
+    "mixin.nostalgic_tweaks-fabric-client.json",
+    "mixin.nostalgic_tweaks-fabric-common.json",
+    "mixin.nostalgic_tweaks-sodium.json"
   ],
+
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "cloth-config": ">=6.2.57"
+    "minecraft": "=1.18.2",
+    "architectury": ">=${architectury_version}"
   },
-  "breaks": {
-    "optifabric": "*"
-  },
+
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/jWdfVh3",
-        "gui.nostalgic_tweaks.settings.support": "https://ko-fi.com/adrenix"
+        "modmenu.discord": "${mod_discord}",
+        "gui.nostalgic_tweaks.settings.support": "${mod_donate}"
       }
     }
   }

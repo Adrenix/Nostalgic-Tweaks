@@ -5,8 +5,8 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.client.config.ModConfig;
-import mod.adrenix.nostalgic.util.ModUtil;
+import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -51,7 +51,7 @@ public abstract class ItemRendererFirstMixin
     )
     private void NT$onGetGlint(ItemRenderer renderer, BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, ItemStack unused1, ItemTransforms.TransformType transformer, boolean leftHand, PoseStack unused2, MultiBufferSource buffer)
     {
-        boolean noGlobalGlint = ModConfig.Candy.oldFlatEnchantment() && ModUtil.Item.isLightingFlat();
+        boolean noGlobalGlint = ModConfig.Candy.oldFlatEnchantment() && ItemClientUtil.isLightingFlat();
         boolean noEntityGlint = ModConfig.Candy.oldFloatingItems() && transformer == ItemTransforms.TransformType.GROUND;
         boolean noFrameGlint = ModConfig.Candy.oldFlatFrames() && transformer == ItemTransforms.TransformType.FIXED;
 
