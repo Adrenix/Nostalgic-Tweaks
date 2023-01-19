@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.client.event;
 
 import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientScreenInputEvent;
 import dev.architectury.event.events.common.PlayerEvent;
+import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
@@ -21,6 +23,7 @@ public abstract class ArchitecturyClientEvents
     {
         PlayerEvent.CHANGE_DIMENSION.register((player, oldDim, newDim) -> ClientEventHelper.onChangeDimension());
         ClientScreenInputEvent.KEY_PRESSED_POST.register(ArchitecturyClientEvents::onSettingsKeyPressed);
+        ClientGuiEvent.RENDER_POST.register(NostalgicToast::onPostRender);
     }
 
     /**

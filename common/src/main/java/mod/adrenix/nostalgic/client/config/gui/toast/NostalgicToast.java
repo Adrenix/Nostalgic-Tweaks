@@ -53,35 +53,15 @@ public class NostalgicToast implements Toast
         };
     }
 
-    /* Initialization */
-
-    /**
-     * Tracks whether the mod's toast system is initialized and ready to show toasts.
-     */
-    private static boolean isInitialized = false;
-
-    /**
-     * Set the mod's toast system as initialized.
-     * This should be done after the game has finished loading assets.
-     */
-    public static void init() { NostalgicToast.isInitialized = true; }
-
     /* Ticking */
 
     /**
-     * Ticking instructions that run at the end of each client tick. This will check if certain conditions are met so
-     * that toasts are properly opened and/or closed.
+     * Ticking instructions that run at the end of each screen render cycle. This will check if certain conditions are
+     * met so that toasts are properly opened and/or closed.
      */
-    public static void tick()
+    @SuppressWarnings("unused") // Unused parameters are needed for functional shortcut
+    public static void onPostRender(Screen screen, PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        if (!NostalgicToast.isInitialized)
-            return;
-
-        Screen screen = Minecraft.getInstance().screen;
-
-        if (WELCOME.isClosed() && screen == null)
-            return;
-
         if (WELCOME.isClosed() && screen instanceof TitleScreen && !ClientConfigCache.getGui().interactedWithConfig)
             WELCOME.open();
 

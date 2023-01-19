@@ -1,15 +1,10 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.client.config.ClientConfigCache;
-import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
-import mod.adrenix.nostalgic.client.config.gui.toast.ToastId;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,7 +14,6 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,51 +21,24 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-
 @Mixin(LoadingOverlay.class)
 public abstract class LoadingOverlayMixin
 {
     /* Shadows */
 
     @Shadow @Final static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
-
-    @Shadow @Final @Mutable private Consumer<Optional<Throwable>> onFinish;
     @Shadow @Final private ReloadInstance reload;
     @Shadow @Final private Minecraft minecraft;
-    @Shadow @Final private boolean fadeIn;
     @Shadow private float currentProgress;
-    @Shadow private long fadeInStart;
-    @Shadow private long fadeOutStart;
-
     @Shadow protected abstract void drawProgressBar(PoseStack poseStack, int minX, int minY, int maxX, int maxY, float alpha);
 
     /* Injections */
 
     /**
-     * When a loading overlay finishes, the on finish consumer is fired. This is the time when the config helper toast
-     * should be opened.
-     */
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void NT$onInit(Minecraft minecraft, ReloadInstance reloadInstance, Consumer<Optional<Throwable>> consumer, boolean fadeIn, CallbackInfo callback)
-    {
-        this.onFinish = throwable ->
-        {
-            consumer.accept(throwable);
-
-            if (!ClientConfigCache.getGui().interactedWithConfig)
-                NostalgicToast.getInstance(ToastId.WELCOME).open();
-
-            NostalgicToast.init();
-        };
-    }
-
-    /**
      * Overrides the overlay renderer, so we can display a retro loading screen.
      * Controlled by various interface tweaks.
      */
-    @Inject(method = "render", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "render", at = @At("RETURN"))
     private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
         TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
@@ -79,15 +46,9 @@ public abstract class LoadingOverlayMixin
         if (overlay == TweakVersion.Overlay.MODERN)
             return;
 
-        long millis = Util.getMillis();
         int width = this.minecraft.getWindow().getGuiScaledWidth();
         int height = this.minecraft.getWindow().getGuiScaledHeight();
 
-        if (this.fadeIn && this.fadeInStart == -1L)
-            this.fadeInStart = millis;
-
-        float fadeOut = this.fadeOutStart > -1L ? (float)(millis - this.fadeOutStart) / 1000.0F : -1.0F;
-        float fadeIn = this.fadeInStart > -1L ? (float)(millis - this.fadeInStart) / 500.0F : -1.0F;
         int color = overlay == TweakVersion.Overlay.ALPHA ?
             FastColor.ARGB32.color(255, 55, 51, 99) :
             FastColor.ARGB32.color(255, 255, 255, 255)
@@ -107,8 +68,8 @@ public abstract class LoadingOverlayMixin
         float b = (float) (color & 0xFF) / 255.0F;
 
         LoadingOverlay.fill(poseStack, 0, 0, width, height, color);
-        GlStateManager._clearColor(r, g, b, 1.0F);
-        GlStateManager._clear(16384, Minecraft.ON_OSX);
+        RenderSystem.clearColor(r, g, b, 1.0F);
+        RenderSystem.clear(16384, Minecraft.ON_OSX);
 
         double longest = Math.min(width * 0.75, height) * 0.25;
         int scaleW = (int) ((longest * 4.0) * 0.5);
@@ -134,28 +95,8 @@ public abstract class LoadingOverlayMixin
         if (!ModConfig.Candy.removeLoadingBar())
             this.drawProgressBar(poseStack, width / 2 - scaleW, barHeight - 5, width / 2 + scaleW, barHeight + 5, 1.0F);
 
-        if (fadeOut >= 2.0F)
+        if (this.reload.isDone())
             this.minecraft.setOverlay(null);
-
-        if (this.fadeOutStart == -1L && this.reload.isDone() && (!this.fadeIn || fadeIn >= 2.0F))
-        {
-            try
-            {
-                this.reload.checkExceptions();
-                this.onFinish.accept(Optional.empty());
-            }
-            catch (Throwable throwable)
-            {
-                this.onFinish.accept(Optional.of(throwable));
-            }
-
-            this.fadeOutStart = Util.getMillis();
-
-            if (this.minecraft.screen != null)
-                this.minecraft.screen.init(this.minecraft, this.minecraft.getWindow().getGuiScaledWidth(), this.minecraft.getWindow().getGuiScaledHeight());
-        }
-
-        callback.cancel();
     }
 
     /**
