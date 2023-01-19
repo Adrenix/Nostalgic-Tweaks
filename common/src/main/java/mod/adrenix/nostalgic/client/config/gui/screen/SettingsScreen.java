@@ -401,13 +401,13 @@ public class SettingsScreen extends Screen
 
         int gearX = this.width / 2 - 23;
         int gearY = (this.height / 4 + 1);
-        int titleX = this.width / 2 - 130;
+        int titleX = this.width / 2 - 129;
         int titleY = (this.height / 4 - 25);
 
         GearSpinner.getInstance().render(poseStack, 44.279F, gearX, gearY);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_LOGO);
+        RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_TWEAKS);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         float titleScale = 0.03325F;
