@@ -401,7 +401,7 @@ public class SettingsScreen extends Screen
 
         int gearX = this.width / 2 - 23;
         int gearY = (this.height / 4 + 1);
-        int titleX = this.width / 2 - 130;
+        int titleX = this.width / 2 - 129;
         int titleY = (this.height / 4 - 25);
 
         GearSpinner.getInstance().render(poseStack, 44.279F, gearX, gearY);
