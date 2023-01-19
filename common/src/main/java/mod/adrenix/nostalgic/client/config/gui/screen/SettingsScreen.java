@@ -407,7 +407,7 @@ public class SettingsScreen extends Screen
         GearSpinner.getInstance().render(poseStack, 44.279F, gearX, gearY);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_LOGO);
+        RenderSystem.setShaderTexture(0, TextureLocation.NOSTALGIC_TWEAKS);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         float titleScale = 0.03325F;

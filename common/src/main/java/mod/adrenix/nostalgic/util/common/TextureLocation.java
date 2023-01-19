@@ -15,6 +15,6 @@ public abstract class TextureLocation
     public static final ResourceLocation MOJANG_BETA = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_beta.png");
     public static final ResourceLocation MOJANG_RELEASE_ORANGE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_orange.png");
     public static final ResourceLocation MOJANG_RELEASE_BLACK = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_black.png");
-    public static final ResourceLocation NOSTALGIC_LOGO = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/title.png");
+    public static final ResourceLocation NOSTALGIC_TWEAKS = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/nostalgic_tweaks.png");
     public static final ResourceLocation MINECRAFT_LOGO = new ResourceLocation("textures/gui/title/minecraft.png");
 }
