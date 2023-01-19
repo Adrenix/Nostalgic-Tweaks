@@ -11,6 +11,17 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 public interface HudEvent extends EventHandler
 {
     /**
+     * In situations where there are mod conflicts, some HUD events may not fire. It is recommended that this helper
+     * method be used to check if the vanilla HUD is being rendered.
+     *
+     * @return Whether the vanilla HUD has taken over rendering.
+     */
+    static boolean isVanilla()
+    {
+        return !ModConfig.Gameplay.disableHungerBar() && !ModConfig.Gameplay.disableExperienceBar();
+    }
+
+    /**
      * Get the current pose stack handling the rendering of hearts.
      * @return A pose stack instance.
      */

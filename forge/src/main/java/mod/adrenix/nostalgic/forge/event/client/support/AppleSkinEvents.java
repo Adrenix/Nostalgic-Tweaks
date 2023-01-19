@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.forge.event.client.support;
 
+import mod.adrenix.nostalgic.api.event.HudEvent;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,7 +20,7 @@ public class AppleSkinEvents
      */
     private static void overlay(HUDOverlayEvent event)
     {
-        if (ModConfig.Gameplay.disableHungerBar())
+        if (ModConfig.Gameplay.disableHungerBar() && !HudEvent.isVanilla())
             event.setCanceled(true);
     }
 
