@@ -46,6 +46,18 @@ public abstract class GuiMixin extends GuiComponent
     @Shadow private int screenWidth;
     @Shadow private int screenHeight;
 
+    /* Unique Helpers */
+
+    /**
+     * If both the disabled hunger bar and disable experience bar tweaks are off, then the vanilla HUD can take over.
+     * @return Whether the mod is no longer making changes to the HUD.
+     */
+    @Unique
+    private boolean NT$isHudVanilla()
+    {
+        return this.getPlayerVehicleWithHealth() != null || HudEvent.isVanilla();
+    }
+
     /* Injections */
 
     /**
@@ -198,8 +210,9 @@ public abstract class GuiMixin extends GuiComponent
             this.NT$heartRow += 1;
         }
 
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
         {
+            ClientEventFactory.RENDER_HEART.create(x, y, this.NT$heartIndex, this.NT$heartRow, poseStack).emit();
             instance.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
 
             GuiUtil.heartY = y;
@@ -233,7 +246,7 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onBlitArmor(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
             gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
@@ -253,7 +266,7 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onBlitFood(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
             gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
@@ -273,7 +286,7 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onBlitAir(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
             gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
@@ -284,7 +297,7 @@ public abstract class GuiMixin extends GuiComponent
     @Inject(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getArmorValue()I"))
     private void NT$onRenderFood(PoseStack poseStack, CallbackInfo callback)
     {
-        if (ModConfig.Gameplay.disableHungerBar() || this.getPlayerVehicleWithHealth() != null)
+        if (ModConfig.Gameplay.disableHungerBar() || this.NT$isHudVanilla())
             return;
 
         GuiUtil.renderFood((Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$rightHeight);
@@ -308,7 +321,7 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onRenderArmor(PoseStack poseStack, CallbackInfo callback)
     {
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
             return;
 
         GuiUtil.renderArmor
@@ -345,7 +358,7 @@ public abstract class GuiMixin extends GuiComponent
     @Inject(method = "renderPlayerHealth", at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"))
     private void NT$onRenderAir(PoseStack poseStack, CallbackInfo callback)
     {
-        if (this.getPlayerVehicleWithHealth() != null)
+        if (this.NT$isHudVanilla())
             return;
 
         GuiUtil.renderAir

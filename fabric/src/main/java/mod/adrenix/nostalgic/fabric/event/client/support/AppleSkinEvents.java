@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.fabric.event.client.support;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.api.event.HudEvent;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import squeek.appleskin.api.AppleSkinApi;
@@ -36,6 +37,9 @@ public class AppleSkinEvents implements AppleSkinApi
      */
     private static void setFoodPosition(HUDOverlayEvent event)
     {
+        if (HudEvent.isVanilla())
+            return;
+
         if (ModConfig.Gameplay.disableHungerBar())
             event.isCanceled = true;
         else
@@ -46,7 +50,13 @@ public class AppleSkinEvents implements AppleSkinApi
      * Updates the heart overlays based on tweak states.
      * @param event An AppleSkin HUD overlay event.
      */
-    private static void setHeartPosition(HUDOverlayEvent event) { event.y = GuiUtil.heartY; }
+    private static void setHeartPosition(HUDOverlayEvent event)
+    {
+        if (HudEvent.isVanilla())
+            return;
+
+        event.y = GuiUtil.heartY;
+    }
 
     /**
      * Prevents tooltip food data for food items if hunger is disabled.
