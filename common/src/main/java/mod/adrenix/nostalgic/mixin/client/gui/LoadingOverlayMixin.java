@@ -2,23 +2,18 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LoadingOverlay;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadInstance;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LoadingOverlay.class)
@@ -27,34 +22,56 @@ public abstract class LoadingOverlayMixin
     /* Shadows */
 
     @Shadow @Final static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
-    @Shadow @Final private ReloadInstance reload;
     @Shadow @Final private Minecraft minecraft;
-    @Shadow private float currentProgress;
-    @Shadow protected abstract void drawProgressBar(PoseStack poseStack, int minX, int minY, int maxX, int maxY, float alpha);
+    @Shadow private long fadeOutStart;
+
+    /**
+     * @return Will be truthful as long as the current old overlay is not set to modern.
+     */
+    private static boolean isModified()
+    {
+        return ModConfig.Candy.getLoadingOverlay() != TweakVersion.Overlay.MODERN;
+    }
 
     /* Injections */
 
     /**
-     * Overrides the overlay renderer, so we can display a retro loading screen.
-     * Controlled by various interface tweaks.
+     * Prevents the title screen from rendering until the fade out is finished.
+     * Controlled by the old overlay tweak.
      */
-    @Inject(method = "render", at = @At("RETURN"))
-    private void NT$onRender(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V"))
+    private void NT$onRenderTitleScreen(Screen screen, PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
+        float fade = this.fadeOutStart > -1L ? (float) (Util.getMillis() - this.fadeOutStart) / 1000.0F : -1.0F;
 
-        if (overlay == TweakVersion.Overlay.MODERN)
+        if (!isModified() || fade >= 2.0F)
+            screen.render(poseStack, mouseX, mouseY, partialTick);
+    }
+
+    /**
+     * Changes the shader color to be fully transparent before the modern overlay logo renders.
+     * Controlled by the old overlay tweak.
+     */
+    @ModifyArg(method = "render", index = 3, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"))
+    private float NT$onSetShaderColor(float vanilla)
+    {
+        return isModified() ? 0.0F : vanilla;
+    }
+
+    /**
+     * Renders an old Mojang logo before the progress bar is rendered.
+     * Controlled by the old overlay tweak.
+     */
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;disableBlend()V"))
+    private void NT$onRenderLogo(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
+    {
+        if (!isModified())
             return;
 
         int width = this.minecraft.getWindow().getGuiScaledWidth();
         int height = this.minecraft.getWindow().getGuiScaledHeight();
 
-        int color = overlay == TweakVersion.Overlay.ALPHA ?
-            FastColor.ARGB32.color(255, 55, 51, 99) :
-            FastColor.ARGB32.color(255, 255, 255, 255)
-        ;
-
-        final ResourceLocation BACKGROUND = switch (overlay)
+        ResourceLocation background = switch (ModConfig.Candy.getLoadingOverlay())
         {
             case ALPHA -> TextureLocation.MOJANG_ALPHA;
             case BETA -> TextureLocation.MOJANG_BETA;
@@ -63,40 +80,85 @@ public abstract class LoadingOverlayMixin
             default -> MOJANG_STUDIOS_LOGO_LOCATION;
         };
 
-        float r = (float) (color >> 16 & 0xFF) / 255.0F;
-        float g = (float) (color >> 8 & 0xFF) / 255.0F;
-        float b = (float) (color & 0xFF) / 255.0F;
-
-        LoadingOverlay.fill(poseStack, 0, 0, width, height, color);
-        RenderSystem.clearColor(r, g, b, 1.0F);
-        RenderSystem.clear(16384, Minecraft.ON_OSX);
-
-        double longest = Math.min(width * 0.75, height) * 0.25;
-        int scaleW = (int) ((longest * 4.0) * 0.5);
-
-        RenderSystem.setShaderTexture(0, BACKGROUND);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, background);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        LoadingOverlay.blit(poseStack, 0, 0, width, height, 0, 0, 1, 1, 128, 128);
+
         poseStack.pushPose();
         poseStack.scale(2.0F, 2.0F, 2.0F);
-        LoadingOverlay.blit(poseStack, (int) ((width / 4.0) - (128 / 2)), (int) ((height / 4.0) - (128 / 2)), 0, 0, 128, 128, 128, 128);
-        poseStack.popPose();
 
-        int barHeight = switch (overlay)
+        int x = (int) ((width / 4.0) - (128 / 2));
+        int y = (int) ((height / 4.0) - (128 / 2));
+
+        LoadingOverlay.blit(poseStack, x, y, 0, 0, 128, 128, 128, 128);
+
+        poseStack.popPose();
+    }
+
+    /**
+     * This keeps the progress bar rendered until the fade out is done.
+     * Controlled by the old overlay tweak.
+     */
+    @ModifyConstant
+    (
+        method = "render",
+        constant = @Constant(floatValue = 1.0F, ordinal = 1),
+        slice = @Slice
+        (
+            from = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ReloadInstance;getActualProgress()F"),
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/LoadingOverlay;drawProgressBar(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIF)V")
+        )
+    )
+    private float NT$onCheckAlphaForProgressBar(float vanilla)
+    {
+        return isModified() ? 3.0F : vanilla;
+    }
+
+    /**
+     * Prevents the progress bar from rendering if the user has opted-in.
+     * Controlled by the remove loading bar tweak.
+     */
+    @Inject(method = "drawProgressBar", at = @At("HEAD"), cancellable = true)
+    private void NT$onDrawProgressBar(PoseStack poseStack, int minX, int minY, int maxX, int maxY, float partialTick, CallbackInfo callback)
+    {
+        if (ModConfig.Candy.removeLoadingBar())
+            callback.cancel();
+    }
+
+    /**
+     * Changes the progress bar height based on the current old overlay.
+     * @param height The vanilla height.
+     * @return A new height value that is always different from the given height.
+     */
+    private static int getBarHeight(int height)
+    {
+        return switch (ModConfig.Candy.getLoadingOverlay())
         {
             case ALPHA -> (int) (height * 0.85);
             case BETA -> (int) (height * 0.95);
             default -> (int) (height * 0.69);
         };
+    }
 
-        float actualProgress = this.reload.getActualProgress();
-        this.currentProgress = Mth.clamp(this.currentProgress * 0.95F + actualProgress * 0.050000012F, 0.0F, 1.0F);
+    /**
+     * Changes the bottom-y position of the progress bar.
+     * Controlled by the old overlay tweak.
+     */
+    @ModifyVariable(method = "drawProgressBar", argsOnly = true, ordinal = 1, at = @At("HEAD"))
+    private int NT$onProgressBarMinY(int vanilla)
+    {
+        return isModified() ? getBarHeight(this.minecraft.getWindow().getGuiScaledHeight()) - 5 : vanilla;
+    }
 
-        if (!ModConfig.Candy.removeLoadingBar())
-            this.drawProgressBar(poseStack, width / 2 - scaleW, barHeight - 5, width / 2 + scaleW, barHeight + 5, 1.0F);
-
-        if (this.reload.isDone())
-            this.minecraft.setOverlay(null);
+    /**
+     * Changes the top-y position of the progress bar.
+     * Controlled by the old overlay tweak.
+     */
+    @ModifyVariable(method = "drawProgressBar", argsOnly = true, ordinal = 3, at = @At("HEAD"))
+    private int NT$onProgressBarMaxY(int vanilla)
+    {
+        return isModified() ? getBarHeight(this.minecraft.getWindow().getGuiScaledHeight()) + 5 : vanilla;
     }
 
     /**
@@ -108,12 +170,25 @@ public abstract class LoadingOverlayMixin
     @Redirect(method = "drawProgressBar", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FastColor$ARGB32;color(IIII)I"))
     private int NT$onSetProgressBarColor(int alpha, int red, int green, int blue)
     {
-        return switch(ModConfig.Candy.getLoadingOverlay())
+        TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
+
+        if (NostalgicTweaks.OPTIFINE.get())
+        {
+            return switch (overlay)
+            {
+                case ALPHA -> FastColor.ARGB32.color(255, 255, 255, 255);
+                case RELEASE_BLACK -> FastColor.ARGB32.color(255, 221, 31, 42);
+                case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
+                case MODERN -> FastColor.ARGB32.color(255, red, green, blue);
+            };
+        }
+
+        return switch(overlay)
         {
             case ALPHA -> FastColor.ARGB32.color(255, 142, 132, 255);
-            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
             case RELEASE_BLACK -> FastColor.ARGB32.color(255, 4, 7, 7);
-            case MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
+            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
+            case MODERN -> FastColor.ARGB32.color(255, red, green, blue);
         };
     }
 
