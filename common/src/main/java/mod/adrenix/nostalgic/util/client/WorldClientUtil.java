@@ -540,11 +540,11 @@ public abstract class WorldClientUtil
     }
 
     /**
-     * Since Sodium's important chunk reload is too expensive, it is better to do an unimportant reload and add a couple
-     * extra relight cycles after the last relight enqueue. The extra relight check will update Sodium's world renderer
-     * chunk cache every 8 seconds. This extra relight will execute 2 times until the timer is reset by a world relight.
+     * There are situations where the world relighting does not complete successfully. This timer will add a couple of
+     * extra relight cycles after the last relight enqueue. The extra relight check will update the world renderer chunk
+     * cache every 8 seconds. This extra relight will execute 2 times until the timer is reset by a world relight.
      */
-    private static final TimeWatcher SODIUM_ENQUEUE_TIME = new TimeWatcher(8000L, 2);
+    private static final TimeWatcher RELIGHT_TIMER = new TimeWatcher(8000L, 2);
 
     /**
      * Gets a new light value for blocks being rendered by the level.
@@ -567,12 +567,12 @@ public abstract class WorldClientUtil
         int skyDiff = 15 - currentSkyLight;
 
         boolean isBlockLightChanged = lastBlockLight == -1 || lastBlockLight != skyLight;
-        boolean isSodiumChanged = NostalgicTweaks.isSodiumInstalled && !enqueueRelightChecks && SODIUM_ENQUEUE_TIME.isReady();
+        boolean isExtraRelight = !enqueueRelightChecks && RELIGHT_TIMER.isReady();
 
-        if (isBlockLightChanged || isSodiumChanged)
+        if (isBlockLightChanged || isExtraRelight)
         {
-            if (!isSodiumChanged)
-                SODIUM_ENQUEUE_TIME.reset();
+            if (!isExtraRelight)
+                RELIGHT_TIMER.reset();
 
             lastBlockLight = skyLight;
             enqueueRelightChecks = true;

@@ -247,6 +247,7 @@ public abstract class TweakGui
         VOID_CONFLICT(AlertCondition::isVoidConflict),
         LIGHT_CONFLICT(AlertCondition::isLightConflict),
         SHIELD_CONFLICT(AlertCondition::isShieldConflict),
+        BRIGHTNESS_CONFLICT(AlertCondition::isBrightnessConflict),
         DYNAMIC_FOG_CONFLICT(AlertCondition::isDynamicFogConflict),
         DYNAMIC_SKY_CONFLICT(AlertCondition::isDynamicSkyConflict),
         UNIVERSAL_FOG_CONFLICT(AlertCondition::isUniversalFogConflict),

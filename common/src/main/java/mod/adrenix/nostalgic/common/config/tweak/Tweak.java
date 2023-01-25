@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.common.config.tweak;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.reflect.TweakCommonCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
@@ -75,6 +76,8 @@ public interface Tweak
 
     /**
      * Get the tweak server cache instance associated with this tweak.
+     * This will be <code>null</code> if this tweak is client-side only.
+     *
      * @return A tweak server cache instance.
      */
     TweakServerCache<?> getServerCache();
@@ -92,6 +95,23 @@ public interface Tweak
      * @return Whether this tweak is loaded.
      */
     boolean isLoaded();
+
+    /**
+     * Only retrieve this <b>after</b> this has been loaded.
+     * @return The common cache for this tweak.
+     * @throws AssertionError When this is called before the tweak has loaded.
+     */
+    default TweakCommonCache getCommonCache()
+    {
+        if (!this.isLoaded())
+            throw new AssertionError("Cannot get the common cache before the tweak is loaded");
+
+        // Check the server cache first since the client cache is guaranteed to have this
+        if (getServerCache() != null)
+            return getServerCache();
+
+        return getClientCache();
+    }
 
     /**
      * Invoke this default interface method when a tweak is being loaded.
