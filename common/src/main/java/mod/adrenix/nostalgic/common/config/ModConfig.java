@@ -53,7 +53,11 @@ public abstract class ModConfig
         // Code is querying this tweak - load it
         loadTweak(tweak);
 
-        // The server does not need to use a universal enabled/disable state.
+        // If the tweak is conflicting with another mod then block it here
+        if (tweak.getCommonCache().isConflict())
+            return false;
+
+        // The server does not need to use a universal enabled/disable state
         if (NostalgicTweaks.isServer())
             return true;
         else if (NetUtil.isLocalHost())

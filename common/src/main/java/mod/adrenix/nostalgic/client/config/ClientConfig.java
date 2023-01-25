@@ -948,6 +948,7 @@ public class ClientConfig implements ConfigData
         @TweakData.EntryStatus
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
+        @TweakGui.Alert(condition = TweakGui.Condition.BRIGHTNESS_CONFLICT, langKey = LangUtil.Gui.ALERT_BRIGHTNESS)
         public boolean disableBrightness = DefaultConfig.Candy.DISABLE_BRIGHTNESS;
         static { CandyTweak.DISABLE_BRIGHTNESS.setKey("disableBrightness"); }
 
@@ -976,6 +977,7 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
+        @TweakData.Conflict(modId = "lod")
         @TweakGui.Optifine(incompatible = false)
         @TweakGui.Sodium(incompatible = false)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)

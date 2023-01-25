@@ -215,6 +215,7 @@ public class TweakTag extends AbstractWidget
         TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);
         TweakData.Server serverTag = this.tweak.getMetadata(TweakData.Server.class);
         TweakData.Dynamic dynamicTag = this.tweak.getMetadata(TweakData.Dynamic.class);
+        TweakData.Conflict conflictTag = this.tweak.getMetadata(TweakData.Conflict.class);
         TweakGui.Alert alertTag = this.tweak.getMetadata(TweakGui.Alert.class);
         TweakGui.Sodium sodiumTag = this.tweak.getMetadata(TweakGui.Sodium.class);
         TweakGui.Restart restartTag = this.tweak.getMetadata(TweakGui.Restart.class);
@@ -302,6 +303,13 @@ public class TweakTag extends AbstractWidget
         if (alertTag != null && alertTag.condition().active())
         {
             Component tooltip = ComponentBackport.translatable(alertTag.langKey());
+            renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);
+            lastX = renderTag(screen, poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
+        }
+
+        if (conflictTag != null && this.tweak.isConflict())
+        {
+            Component tooltip = ComponentBackport.translatable(this.tweak.getConflictKey());
             renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);
             lastX = renderTag(screen, poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }

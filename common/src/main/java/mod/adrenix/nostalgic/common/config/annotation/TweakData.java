@@ -88,4 +88,15 @@ public abstract class TweakData
     {
         ListId id();
     }
+
+    /**
+     * Informs the mod that the mod id(s) associated with this annotation should prevent the tweak attached to this
+     * annotation from running.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface Conflict
+    {
+        String[] modId() default "";
+    }
 }

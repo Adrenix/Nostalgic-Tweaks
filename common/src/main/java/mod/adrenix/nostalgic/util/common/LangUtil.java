@@ -237,6 +237,7 @@ public abstract class LangUtil
         public static final String ALERT_VOID = "gui.nostalgic_tweaks.config.alert.void";
         public static final String ALERT_LIGHT = "gui.nostalgic_tweaks.config.alert.light";
         public static final String ALERT_SHIELD = "gui.nostalgic_tweaks.config.alert.shield";
+        public static final String ALERT_BRIGHTNESS = "gui.nostalgic_tweaks.config.alert.brightness";
         public static final String ALERT_DYNAMIC_FOG = "gui.nostalgic_tweaks.config.alert.dynamic_fog";
         public static final String ALERT_DYNAMIC_SKY = "gui.nostalgic_tweaks.config.alert.dynamic_sky";
         public static final String ALERT_UNIVERSAL_FOG = "gui.nostalgic_tweaks.config.alert.universal_fog";

@@ -1011,14 +1011,18 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                         List<Component> lines = new ArrayList<>();
                         Object clientCache = this.tweak.getSavedValue();
                         String clientColor = clientCache instanceof Boolean state ? state ? "§2" : "§4" : "";
+                        TweakServerCache<?> serverCache = this.tweak.getServerTweak();
+
                         lines.add(ComponentBackport.literal(String.format("Client Cache: %s%s", clientColor, clientCache)));
 
-                        TweakServerCache<?> serverCache = TweakServerCache.all().get(this.tweak.getId());
                         if (serverCache != null)
                         {
                             String serverColor = serverCache.getServerCache() instanceof Boolean state ? state ? "§2" : "§4" : "";
                             lines.add(ComponentBackport.literal(String.format("Server Cache: %s%s", serverColor, serverCache.getServerCache())));
                         }
+
+                        if (this.tweak.isConflict())
+                            lines.add(ComponentBackport.literal("Mod Conflict: §2true"));
 
                         screen.renderComponentTooltip(poseStack, lines, mouseX, mouseY);
                     }
