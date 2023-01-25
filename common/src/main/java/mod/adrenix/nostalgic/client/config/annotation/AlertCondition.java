@@ -44,6 +44,20 @@ public abstract class AlertCondition
     }
 
     /**
+     * Checks if the user has old light rendering disabled and disabled vanilla brightness enabled.
+     *
+     * Having disabled vanilla brightness enabled without old light rendering enabled will not work since the vanilla
+     * lightmap calculations are not impacted by the brightness tweak.
+     */
+    public static boolean isBrightnessConflict()
+    {
+        boolean isOldLight = (boolean) TweakClientCache.get(CandyTweak.LIGHT_RENDERING).getValue();
+        boolean isDisabledBrightness = (boolean) TweakClientCache.get(CandyTweak.DISABLE_BRIGHTNESS).getValue();
+
+        return !isOldLight && isDisabledBrightness;
+    }
+
+    /**
      * Checks if the user has both the dark void height and blue void override tweaks enabled.
      *
      * Having both enabled will not work since the blue void will always override the dark void. Therefore, the dark

@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,8 +25,7 @@ public abstract class LightTextureMixin
 
     @Shadow @Final private Minecraft minecraft;
     @Shadow @Final private NativeImage lightPixels;
-    @Shadow @Final private DynamicTexture lightTexture;
-    @Shadow private boolean updateLightTexture;
+    @Shadow private float blockLightRedFlicker;
     @Shadow protected abstract float getDarknessGamma(float partialTicks);
     @Shadow protected abstract float calculateDarknessScale(LivingEntity entity, float gamma, float partialTicks);
 
@@ -37,33 +35,58 @@ public abstract class LightTextureMixin
      * Disables the light flickering from light emitting sources.
      * Controlled by the old light flicker tweak.
      */
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("RETURN"))
     private void NT$onTick(CallbackInfo callback)
     {
         if (ModConfig.Candy.disableLightFlicker())
-        {
-            this.updateLightTexture = true;
-            callback.cancel();
-        }
+            this.blockLightRedFlicker = 0.0F;
+    }
+
+    /**
+     * This an optimization injection that prevents the assignment of light pixels from vanilla map calculations.
+     * Controlled by any old lighting tweak that changes the light texture map.
+     */
+    @ModifyConstant
+    (
+        method = "updateLightTexture",
+        constant = @Constant(intValue = 16),
+        slice = @Slice
+        (
+            from = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/LightTexture;blockLightRedFlicker:F"),
+            to = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LightTexture;getBrightness(Lnet/minecraft/world/level/dimension/DimensionType;I)F")
+        )
+    )
+    private int NT$onCreateLightmap(int vanilla)
+    {
+        if (ModConfig.Candy.oldClassicLight() || ModConfig.Candy.oldLightRendering())
+            return 0;
+
+        return vanilla;
     }
 
     /**
      * Simulates the old lighting engine by bringing back old light colors and abrupt skylight transitioning.
      * Controlled by old light rendering and old light colors tweaks.
      */
-    @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
+    @Inject
+    (
+        method = "updateLightTexture",
+        at = @At
+        (
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/texture/DynamicTexture;upload()V"
+        )
+    )
     private void NT$onUpdateLightTexture(float partialTicks, CallbackInfo callback)
     {
         ClientLevel level = this.minecraft.level;
 
-        if (level == null || this.minecraft.player == null || !this.updateLightTexture)
+        if (level == null || this.minecraft.player == null)
             return;
 
         if (ModConfig.Candy.oldClassicLight())
         {
-            this.minecraft.getProfiler().push("lightTex");
-            this.updateLightTexture = false;
-
             for (int y = 0; y < 16; y++)
             {
                 for (int x = 0; x < 16; x++)
@@ -75,18 +98,11 @@ public abstract class LightTextureMixin
                 }
             }
 
-            this.lightTexture.upload();
-            this.minecraft.getProfiler().pop();
-
-            callback.cancel();
             return;
         }
 
         if (!ModConfig.Candy.oldLightRendering() || !ModConfig.Candy.oldLightColor())
             return;
-
-        this.minecraft.getProfiler().push("lightTex");
-        this.updateLightTexture = false;
 
         double gammaSetting = this.minecraft.options.gamma().get();
         float darknessScale = this.minecraft.options.darknessEffectScale().get().floatValue();
@@ -150,11 +166,6 @@ public abstract class LightTextureMixin
                 this.lightPixels.setPixelRGBA(x, y, 255 << 24 | (int) light << 16 | (int) light << 8 | (int) light);
             }
         }
-
-        this.lightTexture.upload();
-        this.minecraft.getProfiler().pop();
-
-        callback.cancel();
     }
 
     /**

@@ -1,10 +1,13 @@
 package mod.adrenix.nostalgic.common.config.reflect;
 
+import com.google.common.base.Suppliers;
+import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.CheckForNull;
 import java.lang.annotation.Annotation;
+import java.util.function.Supplier;
 
 /**
  * Provides helpers for both the client and server tweak caches.
@@ -51,6 +54,13 @@ public abstract class TweakCommonCache
     @CheckForNull
     protected final TweakData.List list;
 
+    /**
+     * Some tweaks may be blocked from running if a certain mod is installed. This annotation provides an easy way to
+     * define and change conflicts within a config without updating any logic instructions.
+     */
+    @CheckForNull
+    protected final TweakData.Conflict conflict;
+
     /* Common Constructor */
 
     protected TweakCommonCache(TweakGroup group, String key)
@@ -60,6 +70,7 @@ public abstract class TweakCommonCache
         this.id = generateKey(group, key);
 
         this.list = this.getMetadata(TweakData.List.class);
+        this.conflict = this.getMetadata(TweakData.Conflict.class);
 
         if (this.isMetadataPresent(TweakData.EntryStatus.class))
             this.status = this.getMetadata(TweakData.EntryStatus.class).status();
@@ -113,6 +124,35 @@ public abstract class TweakCommonCache
      */
     @CheckForNull
     public TweakData.List getList() { return this.list; }
+
+    /**
+     * Logic that is only performed once to check for conflicting mods associated with this tweak.
+     * @return Whether a mod conflict was found for this tweak.
+     */
+    private boolean getConflict()
+    {
+        if (this.conflict == null)
+            return false;
+
+        for (String id : this.conflict.modId())
+        {
+            if (Platform.isModLoaded(id))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Since mods cannot be loaded/unloaded during runtime, this supplier can be memoized.
+     * When truthful, indicates that this tweak should not be enabled.
+     */
+    private final Supplier<Boolean> conflictSupplier = Suppliers.memoize(this::getConflict);
+
+    /**
+     * @return Checks if this tweak is conflicting with another mod.
+     */
+    public boolean isConflict() { return conflictSupplier.get(); }
 
     /* Common Methods */
 
@@ -168,6 +208,7 @@ public abstract class TweakCommonCache
     public String getWarningKey() { return this.getLangKey() + ".@Warning"; }
     public String getOptifineKey() { return this.getLangKey() + ".@Optifine"; }
     public String getSodiumKey() { return this.getLangKey() + ".@Sodium"; }
+    public String getConflictKey() { return this.getLangKey() + ".@Conflict"; }
     public String getRelatedKey() { return this.getLangKey() + RELATED_APPENDIX; }
     public String getTranslation() { return this.getComponentTranslation().getString(); }
     public String getTooltipTranslation() { return Component.translatable(this.getTooltipKey()).getString(); }
