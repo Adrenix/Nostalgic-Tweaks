@@ -610,10 +610,12 @@ public abstract class FogUtil
          */
         public static boolean isIgnored(Camera camera)
         {
-            return ModConfig.Candy.disableVoidFog() || ModConfig.Candy.getVoidFogStart() < getYLevel(camera.getEntity()) + 0.5D ||
-                !ModConfig.Candy.creativeVoidFog() && camera.getEntity() instanceof Player player && player.isCreative() ||
-                !isBelowHorizon()
-            ;
+            boolean isVoidFogDisabled = ModConfig.Candy.disableVoidFog();
+            boolean isHeightOutOfBounds = ModConfig.Candy.getVoidFogStart() < getYLevel(camera.getEntity()) + 0.5D;
+            boolean isNotSurvival = camera.getEntity() instanceof Player player && (player.isCreative() || player.isSpectator());
+            boolean isCreativeOverride = !ModConfig.Candy.creativeVoidFog() && isNotSurvival;
+
+            return isVoidFogDisabled || isHeightOutOfBounds || isCreativeOverride || !isBelowHorizon();
         }
 
         /**
