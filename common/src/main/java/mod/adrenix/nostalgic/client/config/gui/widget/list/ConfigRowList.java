@@ -826,15 +826,18 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             // Ensure reset buttons don't overlap scrollbar (different languages will change the width of this button)
             int diffX = 0;
+
             for (AbstractWidget widget : this.children)
             {
                 if (widget instanceof ResetButton && isRowClipped(screen, widget))
                 {
                     int prevX = widget.x;
+
                     while (isRowClipped(screen, widget))
                         widget.x--;
 
                     diffX = prevX - widget.x;
+
                     break;
                 }
             }
@@ -851,27 +854,30 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                 {
                     if (widget instanceof TweakTag tag)
                     {
-                        boolean isUnchecked = tag.x == 0 || tag.getWidth() == 0;
-                        boolean isOverlap = tag.x + tag.getWidth() >= this.controller.x - 6;
                         tagger = tag;
 
-                        if (isUnchecked || isOverlap)
+                        if (tag.isWidthChanged())
+                            tag.resetTag();
+
+                        // First render pass is invisible and calculates the width of all tweak tags
+                        tag.setRender(false);
+                        tag.render(poseStack, mouseX, mouseY, partialTick);
+
+                        // Second render pass continually shrinks the tweak translation title until it fits the row
+                        while (tag.x + tag.getWidth() >= this.controller.x - 6)
                         {
-                            tag.setRender(false);
+                            tag.setTitle(TextUtil.ellipsis(tag.getTitle()));
                             tag.render(poseStack, mouseX, mouseY, partialTick);
 
-                            while (tag.x + tag.getWidth() >= this.controller.x - 6)
-                            {
-                                tag.setTitle(TextUtil.ellipsis(tag.getTitle()));
-                                tag.render(poseStack, mouseX, mouseY, partialTick);
-
-                                if (tag.getTitle() == null || tag.getTitle().length() < 3)
-                                    break;
-                            }
-
-                            tag.setRender(true);
-                            break;
+                            if (tag.getTitle() == null || tag.getTitle().length() < 3)
+                                break;
                         }
+
+                        // Third pass is visible and renders the final tag result
+                        tag.setRender(true);
+                        tag.render(poseStack, mouseX, mouseY, partialTick);
+
+                        break;
                     }
                 }
             }
