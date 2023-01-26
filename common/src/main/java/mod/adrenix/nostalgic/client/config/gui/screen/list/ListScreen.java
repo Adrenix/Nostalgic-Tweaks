@@ -969,6 +969,13 @@ public abstract class ListScreen extends ConfigScreen
         for (Widget widget : this.listWidgets)
             this.renderWidget(widget, poseStack, mouseX, mouseY, partialTick);
 
+        // Mouse overlap highlight
+        for (Widget widget : this.listWidgets)
+        {
+            if (widget instanceof OverlapButton button && button.isMouseOver(mouseX, mouseY))
+                widget.render(poseStack, mouseX, mouseY, partialTick);
+        }
+
         // Screen title rendering
         drawCenteredString(poseStack, this.font, this.title.getString(), this.width / 2, 8, 0xFFFFFF);
 

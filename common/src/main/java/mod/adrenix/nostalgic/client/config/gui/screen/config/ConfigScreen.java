@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
@@ -872,6 +873,14 @@ public class ConfigScreen extends Screen
         this.getWidgets().getClear().active = this.getWidgets().getSearchInput().getValue().length() > 0;
         this.getWidgets().getSearchControls().forEach((button) -> button.visible = this.configTab == ConfigTab.SEARCH);
         this.getWidgets().getSearchInput().render(poseStack, mouseX, mouseY, partialTick);
+
+        // Render Highlighted Overlap
+
+        for (Widget widget : this.getWidgets().children)
+        {
+            if (widget instanceof OverlapButton button && button.isMouseOver(mouseX, mouseY))
+                button.render(poseStack, mouseX, mouseY, partialTick);
+        }
 
         // Magnifying Glass Icon
 
