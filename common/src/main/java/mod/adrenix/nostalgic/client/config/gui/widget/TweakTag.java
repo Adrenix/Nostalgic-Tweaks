@@ -50,6 +50,7 @@ public class TweakTag extends AbstractWidget
 
     private String title;
     private boolean render = true;
+    private boolean widthChanged = false;
     private final TweakClientCache<?> tweak;
     private final AbstractWidget controller;
     private final boolean isTooltip;
@@ -90,6 +91,20 @@ public class TweakTag extends AbstractWidget
      * @param state A flag that dictates tag rendering.
      */
     public void setRender(boolean state) { this.render = state; }
+
+    /**
+     * @return Checks if the tag width has changed.
+     */
+    public boolean isWidthChanged() { return this.widthChanged; }
+
+    /**
+     * Resets the title back to the original translation and acknowledges the width change.
+     */
+    public void resetTag()
+    {
+        this.widthChanged = false;
+        this.title = Component.translatable(this.tweak.getLangKey()).getString();
+    }
 
     /* Rendering Static Helpers */
 
@@ -145,7 +160,9 @@ public class TweakTag extends AbstractWidget
             TweakTag.draw(screen, poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
 
         TweakTag.draw(screen, poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
-        font.draw(poseStack, tag, startX + 4, startY + 2, 0xFFFFFF);
+
+        if (render)
+            font.draw(poseStack, tag, startX + 4, startY + 2, 0xFFFFFF);
 
         return endX + TAG_MARGIN;
     }
@@ -337,8 +354,12 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(screen, poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
+        int previousWidth = this.width;
         this.x = startX;
         this.setWidth(lastX - startX);
+
+        if (previousWidth != this.width)
+            this.widthChanged = true;
     }
 
     /* Required Widget Overrides */
