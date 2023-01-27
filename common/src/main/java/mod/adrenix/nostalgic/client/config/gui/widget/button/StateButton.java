@@ -45,7 +45,7 @@ public class StateButton extends OverlapButton
     {
         return switch (widget)
         {
-            case TAG -> ComponentBackport.literal("@");
+            case TAG -> ComponentBackport.literal("#");
             case SWING -> ComponentBackport.literal("?").withStyle(ChatFormatting.BOLD);
             case CLEAR -> ComponentBackport.literal("\u274c").withStyle(ChatFormatting.DARK_RED).withStyle(ChatFormatting.BOLD);
             case LIGHTNING -> ComponentBackport.literal("\u26a1").withStyle(ChatFormatting.YELLOW).withStyle(ChatFormatting.BOLD);

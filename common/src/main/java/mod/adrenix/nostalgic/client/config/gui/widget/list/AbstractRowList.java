@@ -99,6 +99,11 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
      */
     public void setScrollOn(R entry) { this.centerScrollOn(entry); }
 
+    /**
+     * Reset the scrollbar to the top of the list.
+     */
+    public void resetScrollbar() { this.setScrollAmount(0.0D); }
+
     /*
        Tab Key Utility
 
