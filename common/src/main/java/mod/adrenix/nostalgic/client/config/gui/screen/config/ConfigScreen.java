@@ -128,6 +128,8 @@ public class ConfigScreen extends Screen
                     tweak.setStatus(TweakStatus.FAIL);
             });
         }
+
+        NostalgicTweaks.LOGGER.debug("Found %s possibly conflicted tweaks", TweakClientCache.getConflicts());
     }
 
     /**
@@ -236,7 +238,7 @@ public class ConfigScreen extends Screen
     public void resetRowList()
     {
         this.getWidgets().getConfigRowList().children().clear();
-        this.getWidgets().getConfigRowList().setScrollAmount(0);
+        this.getWidgets().getConfigRowList().resetScrollbar();
         this.getWidgets().getConfigRowList().resetLastSelection();
     }
 
@@ -526,13 +528,10 @@ public class ConfigScreen extends Screen
         {
             boolean isInputChanged = this.getWidgets().getSearchInput().keyPressed(keyCode, scanCode, modifiers);
 
-            if (keyCode != GLFW.GLFW_KEY_LEFT && keyCode != GLFW.GLFW_KEY_RIGHT)
+            if (!KeyUtil.isLeftOrRight(keyCode))
             {
                 if (KeyUtil.isSearching(keyCode))
-                {
                     this.getWidgets().getSearchInput().setValue("");
-                    this.getWidgets().getConfigRowList().setScrollAmount(0);
-                }
                 else if (KeyUtil.isModifierDown() || isInputChanged)
                 {
                     if (isInputChanged)

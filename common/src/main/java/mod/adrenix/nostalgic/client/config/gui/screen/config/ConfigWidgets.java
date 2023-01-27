@@ -70,6 +70,7 @@ public class ConfigWidgets
 
     public final Set<Widget> children = new HashSet<>();
     public boolean focusInput = false;
+    private String lastSearch = "";
     private Button[] categories;
     private EditBox input;
     private Button list;
@@ -440,6 +441,7 @@ public class ConfigWidgets
         {
             this.runSearch(search.getValue());
             this.focusSearch();
+            this.configRowList.resetScrollbar();
         });
     }
 
@@ -455,6 +457,7 @@ public class ConfigWidgets
         {
             this.runSearch(search.getValue());
             this.focusSearch();
+            this.configRowList.resetScrollbar();
         });
     }
 
@@ -470,6 +473,7 @@ public class ConfigWidgets
         {
             ConfigWidgets.setTagCycle(search);
             this.focusSearch();
+            this.configRowList.resetScrollbar();
         });
     }
 
@@ -485,6 +489,7 @@ public class ConfigWidgets
         {
             search.setValue("");
             this.focusSearch();
+            this.configRowList.resetScrollbar();
         });
     }
 
@@ -515,12 +520,12 @@ public class ConfigWidgets
 
         for (String word : words)
         {
-            if (!word.contains("@"))
+            if (!word.contains("#"))
                 query.append(" ").append(word);
         }
 
-        if (atTag == null || !atTag.startsWith("@"))
-            search.setValue(String.format("@%s %s", SearchTag.CLIENT, query).replaceAll(" +", " "));
+        if (atTag == null || !atTag.startsWith("#"))
+            search.setValue(String.format("#%s %s", SearchTag.CLIENT, query).replaceAll(" +", " "));
         else
         {
             SearchTag[] searchTags = SearchTag.values();
@@ -531,7 +536,7 @@ public class ConfigWidgets
             {
                 SearchTag tag = searchTags[i];
 
-                if (atTag.replace("@", "").equals(tag.toString()))
+                if (atTag.replace("#", "").equals(tag.toString()))
                     found = tag;
 
                 if (found != null)
@@ -560,7 +565,7 @@ public class ConfigWidgets
             if (next == null)
                 next = SearchTag.CLIENT;
 
-            search.setValue(("@" + next + " " + query).replaceAll(" +", " "));
+            search.setValue(("#" + next + " " + query).replaceAll(" +", " "));
         }
     }
 
@@ -649,10 +654,18 @@ public class ConfigWidgets
      */
     public void runSearch(String search)
     {
+        if (this.lastSearch.equals(search))
+            return;
+        else
+        {
+            this.lastSearch = search;
+            this.getConfigRowList().resetScrollbar();
+        }
+
         this.getConfigRowList().children().clear();
         this.parent.search.clear();
 
-        if (search.isBlank() || search.equals("@"))
+        if (search.isBlank() || search.equals("#"))
             return;
 
         search = search.toLowerCase();
@@ -661,13 +674,13 @@ public class ConfigWidgets
         StringBuilder searchBuilder = new StringBuilder();
         String[] words = search.split(" ");
         String atTag = ArrayUtil.get(words, 0);
-        String requestedTag = atTag != null ? atTag.replace("@", "").toLowerCase() : "";
+        String requestedTag = atTag != null ? atTag.replace("#", "").toLowerCase() : "";
 
         SearchTag tag = null;
 
         for (String word : words)
         {
-            if (!word.contains("@"))
+            if (!word.contains("#"))
                 searchBuilder.append(" ").append(word);
         }
 
@@ -693,7 +706,7 @@ public class ConfigWidgets
                     case ALL -> isTagged = true;
                     case NEW -> isTagged = tweak.isNew();
                     case CLIENT -> isTagged = tweak.isClient();
-                    case SERVER -> isTagged = tweak.isServer();
+                    case SERVER -> isTagged = tweak.isServer() || tweak.isDynamic();
                     case CONFLICT -> isTagged = tweak.getStatus() != TweakStatus.LOADED;
                     case RESET -> isTagged = tweak.isResettable() && tweak.getList() == null;
                     case SAVE -> isTagged = tweak.isSavable();
@@ -705,7 +718,7 @@ public class ConfigWidgets
                 this.parent.search.put(tweak.getId(), tweak);
 
             // Don't add the tweak to the results if the tweak doesn't belong to the tag group
-            if ((!isTagged && tag != null) || (!isTagged && search.contains("@")))
+            if ((!isTagged && tag != null) || (!isTagged && search.contains("#")))
                 continue;
 
             String query = searchBuilder.toString().replaceAll(" +", " ").trim().toLowerCase();

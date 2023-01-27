@@ -435,7 +435,7 @@ public record ConfigRenderer(ConfigScreen parent)
         String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
         String first = ArrayUtil.get(words, 0);
 
-        boolean isTagOnly = first != null && first.startsWith("@") && words.length == 1;
+        boolean isTagOnly = first != null && first.startsWith("#") && words.length == 1;
 
         Map<String, TweakClientCache<?>> found = this.parent.search;
         Map<String, TweakClientCache<?>> sorted = isTagOnly ?
@@ -540,7 +540,7 @@ public record ConfigRenderer(ConfigScreen parent)
         Button.OnPress onReview = (button) ->
         {
             this.parent.setConfigTab(ConfigScreen.ConfigTab.SEARCH);
-            this.parent.getWidgets().getSearchInput().setValue(String.format("@%s ", ConfigWidgets.SearchTag.SAVE));
+            this.parent.getWidgets().getSearchInput().setValue(String.format("#%s ", ConfigWidgets.SearchTag.SAVE));
         };
 
         ControlButton disableAll = new ControlButton(Component.translatable(LangUtil.Gui.GENERAL_OVERRIDE_DISABLE), onDisable);
@@ -809,17 +809,6 @@ public record ConfigRenderer(ConfigScreen parent)
     }
 
     /**
-     * Generates information about any important notifications.
-     * @return An array list of config row instances.
-     */
-    private ArrayList<ConfigRowList.Row> getGeneralNotifyList()
-    {
-        TextGroup notify = new TextGroup(Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_CONFLICT, TweakClientCache.getConflicts()));
-
-        return new ArrayList<>(notify.generate());
-    }
-
-    /**
      * Generates information about search tags.
      * @return An array list of config row instances.
      */
@@ -913,17 +902,6 @@ public record ConfigRenderer(ConfigScreen parent)
 
         list.addRow(changeSettings.generate());
 
-        /* Notifications */
-
-        ConfigRowGroup.ContainerRow notifications = new ConfigRowGroup.ContainerRow
-        (
-            Component.translatable(LangUtil.Gui.GENERAL_NOTIFY_TITLE),
-            this::getGeneralNotifyList,
-            ContainerId.NOTIFY_CONFIG
-        );
-
-        list.addRow(notifications.generate());
-
         /* Search Tags */
 
         ConfigRowGroup.ContainerRow searchTags = new ConfigRowGroup.ContainerRow
@@ -1012,13 +990,13 @@ public record ConfigRenderer(ConfigScreen parent)
             String[] words = this.parent.getWidgets().getSearchInput().getValue().split(" ");
             String first = ArrayUtil.get(words, 0);
 
-            boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("@");
+            boolean isInvalidTag = this.parent.getWidgets().getSearchInput().getValue().startsWith("#");
 
             if (first != null)
             {
                 for (ConfigWidgets.SearchTag tag : ConfigWidgets.SearchTag.values())
                 {
-                    if (tag.toString().equals(first.replaceAll("@", "")))
+                    if (tag.toString().equals(first.replaceAll("#", "")))
                         isInvalidTag = false;
                 }
             }
