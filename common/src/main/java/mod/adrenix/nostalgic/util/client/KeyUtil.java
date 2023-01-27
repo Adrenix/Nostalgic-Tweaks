@@ -38,6 +38,13 @@ public abstract class KeyUtil
     public static boolean isGoingLeft(int key) { return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT; }
 
     /**
+     * Checks if the given key code is a left arrow key or right arrow key.
+     * @param key A pressed key.
+     * @return Whether the left or right arrow key is pressed.
+     */
+    public static boolean isLeftOrRight(int key) { return key == GLFW.GLFW_KEY_LEFT || key == GLFW.GLFW_KEY_RIGHT; }
+
+    /**
      * A key combination for searching.
      * @param key A pressed key.
      * @return Whether the ctrl key is held down and the F key is pressed.

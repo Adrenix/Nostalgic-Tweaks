@@ -281,8 +281,6 @@ public abstract class LangUtil
         public static final String GENERAL_CONFIG_TAG_TOOLTIPS_LABEL = "gui.nostalgic_tweaks.config.general.config.tagTooltips.label";
         public static final String GENERAL_CONFIG_TWEAK_STATUS_HELP = "gui.nostalgic_tweaks.config.general.config.tweakStatus.help";
         public static final String GENERAL_CONFIG_TWEAK_STATUS_LABEL = "gui.nostalgic_tweaks.config.general.config.tweakStatus.label";
-        public static final String GENERAL_NOTIFY_TITLE = "gui.nostalgic_tweaks.config.general.notify.title";
-        public static final String GENERAL_NOTIFY_CONFLICT = "gui.nostalgic_tweaks.config.general.notify.conflict";
         public static final String GENERAL_SEARCH_TITLE = "gui.nostalgic_tweaks.config.general.search.title";
         public static final String GENERAL_SEARCH_HELP = "gui.nostalgic_tweaks.config.general.search.help";
         public static final String GENERAL_SEARCH_NEW = "gui.nostalgic_tweaks.config.general.search.new";
