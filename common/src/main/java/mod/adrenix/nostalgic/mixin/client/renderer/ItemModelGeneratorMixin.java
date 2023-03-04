@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModTracker;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -111,7 +112,7 @@ public abstract class ItemModelGeneratorMixin
         // Captures NoClassDefFoundError if config dependency is missing which allows forge to reach missing dependency screen
         catch (Error ignored) {}
 
-        boolean isForge = NostalgicTweaks.isForge() && !NostalgicTweaks.OPTIFINE.get();
+        boolean isForge = NostalgicTweaks.isForge() && !ModTracker.OPTIFINE.isInstalled();
 
         if (this.NT$atlasSprite != null)
         {

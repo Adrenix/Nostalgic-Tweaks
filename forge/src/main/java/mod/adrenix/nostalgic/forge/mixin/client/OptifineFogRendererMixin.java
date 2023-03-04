@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin.client;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.FogUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.FogRenderer;
@@ -19,7 +19,7 @@ public abstract class OptifineFogRendererMixin
     @Inject(method = "setupFog", at = @At(value = "RETURN"))
     private static void NT$onSetupFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        if (NostalgicTweaks.OPTIFINE.get())
+        if (ModTracker.OPTIFINE.isInstalled())
         {
             FogUtil.setupFog(camera, fogMode);
             FogUtil.setupNetherFog(camera, fogMode);

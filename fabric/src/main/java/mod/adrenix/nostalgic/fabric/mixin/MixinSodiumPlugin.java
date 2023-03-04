@@ -12,8 +12,8 @@ import java.util.Set;
  * Do <b>not</b> class load any mod related classes here. Doing so will cause "applied too early" ASM errors during the
  * mixin application process.
  *
- * For example, it may seem intuitive to remove the <code>SODIUM_PRESENT</code> flag and instead use the mod's main
- * class flag <code>NostalgicTweaks.isSodiumInstalled</code>. Doing this will work if the mod is loaded by itself;
+ * For example, it may seem intuitive to remove the <code>isSodiumPresent</code> flag and instead use the mod's utility
+ * <code>ModTracker.SODIUM.isInstalled()</code>. Doing this will work if the mod is loaded by itself;
  * however, any mod that applies transformations to the <code>ResourceLocation</code> class will throw a mixin
  * application error because the <code>ResourceLocation</code> class was class loaded by this plugin before the mixin
  * processor could apply patches.

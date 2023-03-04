@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.client.config.gui.toast.NostalgicToast;
 import mod.adrenix.nostalgic.client.config.gui.toast.ToastId;
 import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import mod.adrenix.nostalgic.util.client.LinkUtil;
 import mod.adrenix.nostalgic.util.client.RunUtil;
@@ -390,10 +391,11 @@ public class SettingsScreen extends Screen
         GuiUtil.drawText(poseStack, String.format("Server Loader: §d%s", connection.getLoader()), TweakType.Corner.BOTTOM_RIGHT, manager);
         GuiUtil.drawText(poseStack, String.format("Server: %s", getColored(NostalgicTweaks.getConnection().isPresent())), TweakType.Corner.BOTTOM_RIGHT, manager);
 
-        GuiUtil.drawText(poseStack, String.format("Optifine: %s", getColored(NostalgicTweaks.OPTIFINE.get())), TweakType.Corner.TOP_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Flywheel: %s", getColored(ModTracker.FLYWHEEL.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
+        GuiUtil.drawText(poseStack, String.format("Optifine: %s", getColored(ModTracker.OPTIFINE.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
 
         if (NostalgicTweaks.isFabric())
-            GuiUtil.drawText(poseStack, String.format("Sodium: %s", getColored(NostalgicTweaks.isSodiumInstalled)), TweakType.Corner.TOP_RIGHT, manager);
+            GuiUtil.drawText(poseStack, String.format("Sodium: %s", getColored(ModTracker.SODIUM.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
     }
 
     /**

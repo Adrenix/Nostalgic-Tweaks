@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.client.config.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
@@ -12,6 +11,7 @@ import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
@@ -336,7 +336,7 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(screen, poseStack, warningTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }
 
-        if (sodiumTag != null && NostalgicTweaks.isSodiumInstalled)
+        if (sodiumTag != null && ModTracker.SODIUM.isInstalled())
         {
             if (sodiumTag.incompatible())
                 sodiumTooltip = Component.translatable(LangUtil.Gui.TAG_SODIUM_TOOLTIP);
@@ -345,7 +345,7 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(screen, poseStack, sodiumTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        if (optifineTag != null && NostalgicTweaks.OPTIFINE.get())
+        if (optifineTag != null && ModTracker.OPTIFINE.isInstalled())
         {
             if (optifineTag.incompatible())
                 optifineTooltip = Component.translatable(LangUtil.Gui.TAG_OPTIFINE_TOOLTIP);

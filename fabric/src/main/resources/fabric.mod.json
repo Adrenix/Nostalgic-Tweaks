@@ -57,7 +57,7 @@
   ],
 
   "depends": {
-    "fabric-api": "*",
+    "fabric-api": ">=${fabric_api_version}",
     "minecraft": "=1.19.3",
     "architectury": ">=${architectury_version}"
   },

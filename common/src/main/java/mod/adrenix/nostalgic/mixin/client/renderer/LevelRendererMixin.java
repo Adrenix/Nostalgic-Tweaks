@@ -2,10 +2,10 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.mixin.widen.LevelRendererAccessor;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.*;
 import mod.adrenix.nostalgic.util.common.BlockCommonUtil;
 import net.minecraft.client.Camera;
@@ -418,7 +418,7 @@ public abstract class LevelRendererMixin
     private void NT$onCompileChunks(Camera camera, CallbackInfo callback)
     {
         boolean isModReady = ModConfig.Candy.oldLightRendering() && WorldClientUtil.isRelightCheckEnqueued();
-        boolean isSodium = NostalgicTweaks.isSodiumInstalled;
+        boolean isSodium = ModTracker.SODIUM.isInstalled();
 
         if (isModReady && !isSodium && this.viewArea != null)
         {
@@ -435,7 +435,7 @@ public abstract class LevelRendererMixin
     @Redirect(method = "compileChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;"))
     private <T> T NT$onCompilePriority(OptionInstance<PrioritizeChunkUpdates> instance)
     {
-        return ModConfig.Candy.oldLightRendering() && !NostalgicTweaks.isSodiumInstalled ? (T) PrioritizeChunkUpdates.NONE : (T) instance.get();
+        return ModConfig.Candy.oldLightRendering() && !ModTracker.SODIUM.isInstalled() ? (T) PrioritizeChunkUpdates.NONE : (T) instance.get();
     }
 
     /**
@@ -447,7 +447,7 @@ public abstract class LevelRendererMixin
     @Inject(method = "compileChunks", at = @At("RETURN"))
     private void NT$onFinishChunkCompilation(Camera camera, CallbackInfo callback)
     {
-        if (WorldClientUtil.isRelightCheckEnqueued() && !NostalgicTweaks.isSodiumInstalled)
+        if (WorldClientUtil.isRelightCheckEnqueued() && !ModTracker.SODIUM.isInstalled())
             WorldClientUtil.setRelightFinished();
     }
 
