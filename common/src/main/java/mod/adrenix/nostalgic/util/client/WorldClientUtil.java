@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -436,12 +436,13 @@ public abstract class WorldClientUtil
         if (ModConfig.Candy.oldClassicLight())
             return WorldClientUtil.getClassicLight(blockPos);
 
-        int skyLight = level.getBrightness(LightLayer.SKY, blockPos);
-        int blockLight = level.getBrightness(LightLayer.BLOCK, blockPos);
-        boolean isWaterLight = ModConfig.Candy.oldWaterLighting() && BlockCommonUtil.isInWater(level, blockPos);
+        int skyLight = WorldCommonUtil.getBrightness(level, LightLayer.SKY, blockPos);
+        int blockLight = WorldCommonUtil.getBrightness(level, LightLayer.BLOCK, blockPos);
+        boolean isOldWater = ModConfig.Candy.oldWaterLighting();
+        boolean isWaterLight = isOldWater && BlockCommonUtil.isInWater(level, blockPos);
 
         // Water rendering in Sodium is handled differently - so don't modify skylight in water if Sodium is installed
-        if (isWaterLight && !NostalgicTweaks.isSodiumInstalled)
+        if (isWaterLight && !ModTracker.SODIUM.isInstalled())
             skyLight = BlockCommonUtil.getWaterLightBlock(level, blockPos);
 
         return WorldClientUtil.getMaxLight(skyLight, blockLight);
@@ -567,7 +568,7 @@ public abstract class WorldClientUtil
         int skyDiff = 15 - currentSkyLight;
 
         boolean isBlockLightChanged = lastBlockLight == -1 || lastBlockLight != skyLight;
-        boolean isExtraRelight = !enqueueRelightChecks && RELIGHT_TIMER.isReady();
+        boolean isExtraRelight = !isBlockLightChanged && !enqueueRelightChecks && RELIGHT_TIMER.isReady();
 
         if (isBlockLightChanged || isExtraRelight)
         {

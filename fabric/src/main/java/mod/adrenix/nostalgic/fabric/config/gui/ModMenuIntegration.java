@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.fabric.config.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.screen.SettingsScreen;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.client.Minecraft;
@@ -14,17 +13,7 @@ import net.minecraft.client.Minecraft;
 
 public class ModMenuIntegration implements ModMenuApi
 {
-    /*
-       Mod Menu Tracking
-
-       The following static block informs the mod that Mod Menu is installed and removes the null value from the mod
-       screen functional interface.
-     */
-    static
-    {
-        NostalgicTweaks.isModMenuInstalled = true;
-        GuiUtil.modScreen = ModMenuApi::createModsScreen;
-    }
+    static { GuiUtil.modScreen = ModMenuApi::createModsScreen; }
 
     /**
      * Override the mod config screen factory so that it points to the mod's built-in configuration graphical user

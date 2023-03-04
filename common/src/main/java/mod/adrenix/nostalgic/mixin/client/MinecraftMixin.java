@@ -56,6 +56,22 @@ public abstract class MinecraftMixin
     /* Injections */
 
     /**
+     * Changes the game's OS window title.
+     * Controlled by various game window title tweaks.
+     */
+    @Inject(method = "updateTitle", at = @At("RETURN"))
+    private void NT$onUpdateTitle(CallbackInfo callback)
+    {
+        if (!ModConfig.Candy.enableWindowTitle())
+            return;
+
+        if (ModConfig.Candy.matchVersionOverlay())
+            this.window.setTitle(ModConfig.Candy.getOverlayText().replaceAll("§.", ""));
+        else
+            this.window.setTitle(ModConfig.Candy.getWindowTitle().replaceAll("§.", ""));
+    }
+
+    /**
      * Prevents the hand swing animation when dropping an item.
      * Controlled the swing drop tweak.
      */

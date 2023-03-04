@@ -8,7 +8,7 @@ import mod.adrenix.nostalgic.common.NostalgicConnection;
 import mod.adrenix.nostalgic.common.config.DefaultConfig;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.TextUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
@@ -99,27 +99,6 @@ public class NostalgicTweaks
      * @return Whether event tests should be registered by the mod.
      */
     public static boolean isEventTesting() { return Platform.isDevelopmentEnvironment() && isEventTesting; }
-
-    /* Other Mod Tracking */
-
-    /**
-     * This field tracks whether Sodium is installed. This is a Fabric only mod, so it only requires a mod list check
-     * to set this field properly.
-     */
-    public static boolean isSodiumInstalled = false;
-
-    /**
-     * This field tracks whether Mod Menu is installed. This is a Fabric only mod, so it only requires a mod list check
-     * to set this field properly.
-     */
-    public static boolean isModMenuInstalled = false;
-
-    /**
-     * This field tracks whether Optifine is installed. This is a Forge mod, but has a Fabric relative known as Opti-
-     * Fabric. A supplier is needed since a hacky class check is required to determine if Optifine is present. This
-     * hacky check is needed because Optifine is a closed-source mod.
-     */
-    public static final Supplier<Boolean> OPTIFINE = Suppliers.memoize(ClassUtil::isOptifinePresent);
 
     /* Networking */
 
@@ -286,7 +265,7 @@ public class NostalgicTweaks
 
         NostalgicTweaks.LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
 
-        if (OPTIFINE.get())
+        if (ModTracker.OPTIFINE.isInstalled())
             NostalgicTweaks.LOGGER.warn("Optifine is installed - some tweaks may not work as intended");
     }
 }

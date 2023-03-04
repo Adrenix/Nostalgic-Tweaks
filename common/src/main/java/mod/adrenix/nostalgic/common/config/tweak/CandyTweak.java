@@ -31,6 +31,11 @@ public enum CandyTweak implements Tweak
     CREATIVE_HOTBAR,
     BUTTON_HOVER,
 
+    // Interface Candy - Window Title
+    WINDOW_TITLE,
+    MATCH_VERSION_OVERLAY,
+    ENABLE_WINDOW_TITLE,
+
     // Interface Candy - Anvil Screen
     ANVIL_SCREEN,
 

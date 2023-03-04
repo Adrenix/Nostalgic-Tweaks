@@ -25,10 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemInHandRenderer.class)
@@ -96,18 +93,12 @@ public abstract class ItemInHandRendererMixin
      * Prevents visual bug from flashing the previously held item when pulling an item out of the main hand.
      * Controlled by reequip tweak.
      */
-    @ModifyArg
-    (
-        method = "renderHandsWithItems",
-        at = @At
-        (
-            value = "INVOKE",
-            ordinal = 0,
-            target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
-        )
-    )
-    private ItemStack NT$onRenderItem(AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack itemStack, float equippedProgress, PoseStack matrix, MultiBufferSource buffer, int combinedLight)
+    @ModifyVariable(method = "renderArmWithItem", at = @At("HEAD"), argsOnly = true)
+    private ItemStack NT$onChangeRenderArmItemStack(ItemStack itemStack, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand)
     {
+        if (hand != InteractionHand.MAIN_HAND)
+            return itemStack;
+
         return ItemClientUtil.getLastItem(itemStack, this.mainHandItem, player.getMainHandItem(), (SlotTracker) player);
     }
 
@@ -119,6 +110,16 @@ public abstract class ItemInHandRendererMixin
     private float NT$onGetStrength(LocalPlayer player, float partialTick)
     {
         return ModConfig.Animation.oldItemCooldown() ? 1.0F : player.getAttackStrengthScale(partialTick);
+    }
+
+    /**
+     * Blocks the addition assignment operator from incrementing the hand height when unsolicited reequipping is disabled.
+     * Controlled by reequip tweak.
+     */
+    @ModifyArg(method = "tick", index = 0, at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    private float NT$onTickIncreaseMain(float current)
+    {
+        return ModConfig.Animation.oldItemReequip() ? 0.0F : current;
     }
 
     /**
@@ -139,16 +140,6 @@ public abstract class ItemInHandRendererMixin
             return 0.0F;
 
         return current;
-    }
-
-    /**
-     * Blocks the addition assignment operator from incrementing the hand height when unsolicited reequipping is disabled.
-     * Controlled by reequip tweak.
-     */
-    @Redirect(method = "tick", at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
-    private float NT$onTickIncreaseMain(float current, float min, float max)
-    {
-        return ModConfig.Animation.oldItemReequip() ? 0.0F : Mth.clamp(current, min, max);
     }
 
     /**
@@ -180,6 +171,7 @@ public abstract class ItemInHandRendererMixin
     private void NT$onTick(CallbackInfo callback)
     {
         LocalPlayer player = this.minecraft.player;
+
         if (!ModConfig.Animation.oldItemReequip() || player == null)
             return;
 

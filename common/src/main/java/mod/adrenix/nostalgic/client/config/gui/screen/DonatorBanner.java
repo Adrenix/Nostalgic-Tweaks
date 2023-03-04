@@ -36,6 +36,7 @@ public class DonatorBanner
 
     @CheckForNull
     private static JsonSupporters cache = null;
+    private static boolean downloaded = false;
     private static boolean opened = ClientConfigCache.getGui().displayDonatorBanner;
     private static int height = 0;
 
@@ -132,7 +133,6 @@ public class DonatorBanner
                     InputStreamReader reader = new InputStreamReader(url.openStream());
                     DonatorBanner.cache = new Gson().fromJson(reader, JsonSupporters.class);
 
-                    DonatorBanner.this.build();
                     NostalgicTweaks.LOGGER.info("Successfully downloaded supporter data from GitHub");
                 }
                 catch (Exception exception)
@@ -209,6 +209,12 @@ public class DonatorBanner
             this.connect();
 
             return;
+        }
+
+        if (DonatorBanner.cache != null && !DonatorBanner.downloaded)
+        {
+            DonatorBanner.downloaded = true;
+            this.build();
         }
 
         float startX = getWidth() + 15.0F;

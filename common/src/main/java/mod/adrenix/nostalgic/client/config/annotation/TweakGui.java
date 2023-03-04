@@ -250,6 +250,7 @@ public abstract class TweakGui
         BRIGHTNESS_CONFLICT(AlertCondition::isBrightnessConflict),
         DYNAMIC_FOG_CONFLICT(AlertCondition::isDynamicFogConflict),
         DYNAMIC_SKY_CONFLICT(AlertCondition::isDynamicSkyConflict),
+        WINDOW_TITLE_DISABLED(AlertCondition::isWindowTitleDisabled),
         UNIVERSAL_FOG_CONFLICT(AlertCondition::isUniversalFogConflict),
         UNIVERSAL_SKY_CONFLICT(AlertCondition::isUniversalSkyConflict),
         CUSTOM_FOOD_HEALTH_CONFLICT(AlertCondition::isCustomFoodHealthConflict),

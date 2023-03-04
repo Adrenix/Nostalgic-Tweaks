@@ -416,11 +416,41 @@ public class ClientConfig implements ConfigData
         public TweakVersion.Hotbar oldCreativeHotbar = DefaultConfig.Candy.OLD_CREATIVE_HOTBAR;
         static { CandyTweak.CREATIVE_HOTBAR.setKey("oldCreativeHotbar"); }
 
+        // Interface - Window Title
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.DisabledBoolean(value = false)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_WINDOW_CANDY)
+        public boolean enableWindowTitle = DefaultConfig.Candy.ENABLE_WINDOW_TITLE;
+        static { CandyTweak.ENABLE_WINDOW_TITLE.setKey("enableWindowTitle"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.WINDOW_TITLE_DISABLED, langKey = LangUtil.Gui.ALERT_WINDOW_TITLE_DISABLED)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_WINDOW_CANDY)
+        public boolean matchVersionOverlay = DefaultConfig.Candy.MATCH_VERSION_OVERLAY;
+        static { CandyTweak.MATCH_VERSION_OVERLAY.setKey("matchVersionOverlay"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus(status = TweakStatus.LOADED)
+        @TweakGui.Alert(condition = TweakGui.Condition.WINDOW_TITLE_DISABLED, langKey = LangUtil.Gui.ALERT_WINDOW_TITLE_DISABLED)
+        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 3)
+        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_WINDOW_CANDY)
+        public String windowTitleText = DefaultConfig.Candy.WINDOW_TITLE_TEXT;
+        static { CandyTweak.WINDOW_TITLE.setKey("windowTitleText"); }
+
         // Interface - Debug Screen Candy
 
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
+        @TweakGui.Alert(condition = TweakGui.Condition.WINDOW_TITLE_DISABLED, langKey = LangUtil.Gui.ALERT_WINDOW_TITLE_DISABLED)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
         public TweakVersion.Generic oldDebug = DefaultConfig.Candy.OLD_DEBUG;

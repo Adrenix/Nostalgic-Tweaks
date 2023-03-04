@@ -32,10 +32,19 @@ public abstract class AnvilScreenMixin
     {
         if (ModConfig.Candy.oldAnvilScreen())
         {
-            font.draw(poseStack, text, x + 3, y - 2, 0x203F08);
-            font.draw(poseStack, text, x + 3, y - 1, 0x203F08);
-            font.draw(poseStack, text, x + 2, y - 1, 0x203F08);
-            font.draw(poseStack, text, x + 2, y - 2, 0x80FF20);
+            int foreground = 0x203F08;
+            int background = 0x80FF20;
+
+            if (color == 0xFF6060)
+            {
+                foreground = 0x3F1818;
+                background = 0xFF6060;
+            }
+
+            font.draw(poseStack, text, x + 3, y - 2, foreground);
+            font.draw(poseStack, text, x + 3, y - 1, foreground);
+            font.draw(poseStack, text, x + 2, y - 1, foreground);
+            font.draw(poseStack, text, x + 2, y - 2, background);
         }
         else
             font.drawShadow(poseStack, text, x, y, color);

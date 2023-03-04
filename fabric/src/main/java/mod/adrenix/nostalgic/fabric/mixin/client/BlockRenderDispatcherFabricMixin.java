@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.fabric.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.BlockClientUtil;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
@@ -33,7 +33,7 @@ public abstract class BlockRenderDispatcherFabricMixin
     @Inject(method = "renderBatched", at = @At("HEAD"), cancellable = true)
     private void NT$onRenderBatched(BlockState state, BlockPos position, BlockAndTintGetter level, PoseStack poseStack, VertexConsumer consumer, boolean isAo, Random random, CallbackInfoReturnable<Boolean> callback)
     {
-        if (NostalgicTweaks.OPTIFINE.get() && BlockClientUtil.isTorchModel(state))
+        if (ModTracker.OPTIFINE.isInstalled() && BlockClientUtil.isTorchModel(state))
         {
             BlockClientUtil.oldTorch(poseStack, consumer, this.getBlockModel(state), state, position, random);
             callback.setReturnValue(true);

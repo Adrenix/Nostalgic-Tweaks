@@ -16,6 +16,14 @@ import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 public abstract class AlertCondition
 {
     /**
+     * An alert tag will be displayed by window title tweaks if the enable window title tweak is disabled.
+     */
+    public static boolean isWindowTitleDisabled()
+    {
+        return !((boolean) TweakClientCache.get(CandyTweak.ENABLE_WINDOW_TITLE).getValue());
+    }
+
+    /**
      * Checks if the user has selected the modern shield position while the old inventory tweak is enabled.
      *
      * The inventory slot cannot be in the modern position since it will be too close to the crafting grid and overlap

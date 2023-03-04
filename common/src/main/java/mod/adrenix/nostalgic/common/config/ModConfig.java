@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.network.packet.PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.server.config.ServerConfig;
 import mod.adrenix.nostalgic.server.config.ServerConfigCache;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.PacketUtil;
 import net.minecraft.SharedConstants;
@@ -292,7 +293,7 @@ public abstract class ModConfig
         // Block Candy - Torches
         private static boolean getModelState(Tweak tweak, boolean client)
         {
-            return !NostalgicTweaks.isSodiumInstalled && getBoolTweak(tweak, client);
+            return !ModTracker.SODIUM.isInstalled() && getBoolTweak(tweak, client);
         }
 
         public static boolean oldTorchBrightness() { return getBoolTweak(CandyTweak.TORCH_BRIGHTNESS, CANDY.oldTorchBrightness); }
@@ -322,6 +323,11 @@ public abstract class ModConfig
         public static int getChatOffset() { return CANDY.chatOffset; }
         public static boolean oldChatInput() { return getBoolTweak(CandyTweak.CHAT_INPUT, CANDY.oldChatInput); }
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
+
+        // Interface - Window Title
+        public static String getWindowTitle() { return CANDY.windowTitleText; }
+        public static boolean enableWindowTitle() { return getBoolTweak(CandyTweak.ENABLE_WINDOW_TITLE, CANDY.enableWindowTitle); }
+        public static boolean matchVersionOverlay() { return getBoolTweak(CandyTweak.MATCH_VERSION_OVERLAY, CANDY.matchVersionOverlay); }
 
         // Interface - Screen Candy
         public static TweakType.InventoryShield getInventoryShield() { return getEnum(CandyTweak.INVENTORY_SHIELD, CANDY.inventoryShield); }

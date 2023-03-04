@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.client.event.ArchitecturyClientEvents;
 import mod.adrenix.nostalgic.forge.api.event.NostalgicHudEvent;
 import mod.adrenix.nostalgic.forge.api.test.ApiTestEventHandler;
 import mod.adrenix.nostalgic.forge.event.client.support.AppleSkinEvents;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
@@ -48,6 +49,10 @@ public abstract class ClientRegistration
         // Define mod screen
         GuiUtil.modScreen = ModListScreen::new;
 
+        // Mod tracking
+        ModTracker.APPLE_SKIN.load(ModList.get()::isLoaded);
+        ModTracker.FLYWHEEL.load(ModList.get()::isLoaded);
+
         // Register key mappings
         ClientRegistry.registerKeyBinding(ClientKeyMapping.CONFIG_KEY);
         ClientRegistry.registerKeyBinding(ClientKeyMapping.FOG_KEY);
@@ -69,7 +74,7 @@ public abstract class ClientRegistration
         }
 
         // Mod support events
-        if (ModList.get().isLoaded("appleskin"))
+        if (ModTracker.APPLE_SKIN.isInstalled())
         {
             MinecraftForge.EVENT_BUS.register(new AppleSkinEvents());
             NostalgicTweaks.LOGGER.info("Registered AppleSkin support events");

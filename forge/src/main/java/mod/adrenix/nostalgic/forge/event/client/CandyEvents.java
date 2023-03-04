@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.forge.event.client;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.FogUtil;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ScreenOpenEvent;
@@ -28,7 +28,7 @@ public abstract class CandyEvents
      */
     public static void renderOldFog(EntityViewRenderEvent.RenderFogEvent event)
     {
-        if (NostalgicTweaks.OPTIFINE.get())
+        if (ModTracker.OPTIFINE.isInstalled())
             return;
 
         if (FogUtil.isOverworld(event.getCamera()))
