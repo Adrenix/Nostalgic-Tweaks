@@ -2,9 +2,9 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -172,7 +172,7 @@ public abstract class LoadingOverlayMixin
     {
         TweakVersion.Overlay overlay = ModConfig.Candy.getLoadingOverlay();
 
-        if (NostalgicTweaks.OPTIFINE.get())
+        if (ModTracker.OPTIFINE.isInstalled())
         {
             return switch (overlay)
             {

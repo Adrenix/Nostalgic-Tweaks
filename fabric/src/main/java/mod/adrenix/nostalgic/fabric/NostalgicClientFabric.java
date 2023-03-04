@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.client.event.ArchitecturyClientEvents;
 import mod.adrenix.nostalgic.fabric.api.NostalgicFabricApi;
 import mod.adrenix.nostalgic.fabric.config.KeyRegistry;
 import mod.adrenix.nostalgic.fabric.event.ClientEvents;
+import mod.adrenix.nostalgic.util.ModTracker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -22,7 +23,9 @@ public class NostalgicClientFabric implements ClientModInitializer
     public void onInitializeClient()
     {
         // Mod tracking
-        NostalgicTweaks.isSodiumInstalled = FabricLoader.getInstance().getModContainer("sodium").isPresent();
+        ModTracker.APPLE_SKIN.load(FabricLoader.getInstance()::isModLoaded);
+        ModTracker.SODIUM.load(FabricLoader.getInstance()::isModLoaded);
+        ModTracker.FLYWHEEL.load(FabricLoader.getInstance()::isModLoaded);
 
         // Initialize mod
         NostalgicTweaks.initClient();

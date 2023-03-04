@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.*;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -52,6 +52,6 @@ public abstract class ItemRendererLastMixin
     @ModifyVariable(method = "renderQuadList", at = @At("LOAD"), argsOnly = true)
     private List<BakedQuad> NT$onRenderQuadList(List<BakedQuad> quads)
     {
-        return ModConfig.Candy.oldFlatRendering() && !NostalgicTweaks.OPTIFINE.get() ? ItemClientUtil.getSprites(quads) : quads;
+        return ModConfig.Candy.oldFlatRendering() && !ModTracker.OPTIFINE.isInstalled() ? ItemClientUtil.getSprites(quads) : quads;
     }
 }

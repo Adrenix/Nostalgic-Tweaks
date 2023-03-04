@@ -159,6 +159,11 @@ public abstract class DefaultConfig
         public static final boolean SHOW_MODIFIERS_TIP = false;
         public static final boolean SHOW_DYE_TIP = false;
 
+        // Interface - Window Title
+        public static final String WINDOW_TITLE_TEXT = "Minecraft %v";
+        public static final boolean MATCH_VERSION_OVERLAY = false;
+        public static final boolean ENABLE_WINDOW_TITLE = false;
+
         // Interface - Version Overlay
         public static final TweakType.Corner OLD_OVERLAY_CORNER = TweakType.Corner.TOP_LEFT;
         public static final String OLD_OVERLAY_TEXT = "Minecraft %v";

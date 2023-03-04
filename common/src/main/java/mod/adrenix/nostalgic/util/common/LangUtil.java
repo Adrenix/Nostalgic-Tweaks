@@ -244,6 +244,7 @@ public abstract class LangUtil
         public static final String ALERT_UNIVERSAL_SKY = "gui.nostalgic_tweaks.config.alert.universal_sky";
         public static final String ALERT_FOOD_STACKING = "gui.nostalgic_tweaks.config.alert.food_stacking";
         public static final String ALERT_FOOD_HEALTH = "gui.nostalgic_tweaks.config.alert.food_health";
+        public static final String ALERT_WINDOW_TITLE_DISABLED = "gui.nostalgic_tweaks.config.alert.window_title_disabled";
 
         public static final String SEARCH_EMPTY = "gui.nostalgic_tweaks.config.search.empty";
         public static final String SEARCH_INVALID = "gui.nostalgic_tweaks.config.search.invalidTag";
@@ -371,6 +372,7 @@ public abstract class LangUtil
         public static final String CANDY_SUBCATEGORY_TITLE = "gui.nostalgic_tweaks.config.candy.subcategory.title";
         public static final String CANDY_SUBCATEGORY_LOADING = "gui.nostalgic_tweaks.config.candy.subcategory.loading";
         public static final String CANDY_SUBCATEGORY_VERSION = "gui.nostalgic_tweaks.config.candy.subcategory.version";
+        public static final String CANDY_SUBCATEGORY_WINDOW = "gui.nostalgic_tweaks.config.candy.subcategory.window";
         public static final String CANDY_SUBCATEGORY_PAUSE = "gui.nostalgic_tweaks.config.candy.subcategory.pause";
         public static final String CANDY_SUBCATEGORY_TOOLTIP = "gui.nostalgic_tweaks.config.candy.subcategory.tooltip";
         public static final String CANDY_SUBCATEGORY_FLAT = "gui.nostalgic_tweaks.config.candy.subcategory.flat";

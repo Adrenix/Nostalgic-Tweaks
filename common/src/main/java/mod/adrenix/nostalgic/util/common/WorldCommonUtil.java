@@ -27,6 +27,7 @@ public abstract class WorldCommonUtil
 {
     /**
      * Get the vanilla brightness value from the provided light layer and block position.
+     * This bypasses the old light rendering values.
      *
      * @param level An object that implements the {@link BlockAndTintGetter} interface.
      * @param lightLayer The light layer to retrieve data from.

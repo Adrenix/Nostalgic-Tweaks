@@ -37,7 +37,10 @@ dependencies {
     modCompileOnly "org.joml:joml:1.10.2"
 
     // Apple Skin Support
-    modCompileOnly "maven.modrinth:appleskin:fabric-mc1.19-2.4.1"
+    modCompileOnly "maven.modrinth:appleskin:${rootProject.appleskin_fabric_version}"
+
+    // Flywheel Support
+    modCompileOnly "com.jozufozu.flywheel:flywheel-fabric-1.19.2:${rootProject.flywheel_fabric_version}"
 
     // Fuzzy Searching
     implementation "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
@@ -61,6 +64,7 @@ processResources {
             "mod_donate": rootProject.mod_donate,
             "mod_discord": rootProject.mod_discord,
             "mod_description": rootProject.mod_description,
+            "fabric_api_version": rootProject.fabric_api_version,
             "architectury_version": rootProject.architectury_version
     }
 }
