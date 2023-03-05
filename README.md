@@ -23,7 +23,7 @@ This mod is also available on [Modrinth](https://modrinth.com/mod/nostalgic-twea
 
 Inspired by Exalm's Old Days mod, Nostalgic Tweaks brings back a plethora of Minecraft Alpha, Beta, and Post Release lost or changed gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft Java edition by tweaking the mod to their nostalgic preference.
 
-![Nostalgic Tweaks Banner](https://i.imgur.com/nYfaylP.gif)
+![Nostalgic Tweaks Banner](https://i.imgur.com/5NnxQy0.png)
 
 ## Mod Description
 Inspired by Exalm's **Old Days** mod, **Nostalgic Tweaks** brings back a plethora of **Minecraft Alpha, Beta, and Post Release** lost or changed gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft Java edition by tweaking the mod to their nostalgic preference.
