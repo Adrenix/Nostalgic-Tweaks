@@ -18,5 +18,5 @@ bugs that have not been found and/or fixed.
 - Updated the falling blocks animation so that it doesn't start too early when the game finishes loading
 - Updated light texture injections to add Distant Horizons mod support
 - Added new tweaks that change the game's OS window title
-- Removed Herobrine
 > These tweaks can be found under Eye Candy > Interface Candy > Window Title Text
+- Removed Herobrine
