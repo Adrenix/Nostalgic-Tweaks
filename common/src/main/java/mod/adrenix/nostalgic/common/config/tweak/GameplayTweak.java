@@ -98,6 +98,7 @@ public enum GameplayTweak implements Tweak
     LEFT_CLICK_BUTTON,
     TILLED_GRASS_SEEDS,
     INSTANT_BONE_MEAL,
+    CART_BOOSTING,
     INFINITE_BURN;
 
     /* Fields */

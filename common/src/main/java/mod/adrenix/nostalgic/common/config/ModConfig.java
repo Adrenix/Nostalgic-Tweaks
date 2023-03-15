@@ -566,6 +566,7 @@ public abstract class ModConfig
         public static boolean disableAnvil() { return getSidedBoolTweak(GameplayTweak.ANVIL, GAMEPLAY.disableAnvil, SERVER_GAMEPLAY.disableAnvil); }
 
         // Game Mechanics
+        public static boolean cartBoosting() { return getSidedBoolTweak(GameplayTweak.CART_BOOSTING, GAMEPLAY.cartBoosting, SERVER_GAMEPLAY.cartBoosting); }
         public static boolean disableBedBounce() { return getSidedBoolTweak(GameplayTweak.BED_BOUNCE, GAMEPLAY.disableBedBounce, SERVER_GAMEPLAY.disableBedBounce); }
         public static boolean tilledGrassSeeds() { return getSidedBoolTweak(GameplayTweak.TILLED_GRASS_SEEDS, GAMEPLAY.tilledGrassSeeds, SERVER_GAMEPLAY.tilledGrassSeeds); }
         public static boolean instantBonemeal() { return getSidedBoolTweak(GameplayTweak.INSTANT_BONE_MEAL, GAMEPLAY.instantBonemeal, SERVER_GAMEPLAY.instantBonemeal); }

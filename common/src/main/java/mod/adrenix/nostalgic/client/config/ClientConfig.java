@@ -2110,7 +2110,16 @@ public class ClientConfig implements ConfigData
         public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
         static { GameplayTweak.SWIM.setKey("disableSwim"); }
 
-        // Mechanics Block
+        // Mechanics - Cart
+
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.MECHANICS_CART_GAMEPLAY)
+        public boolean cartBoosting = DefaultConfig.Gameplay.CART_BOOSTING;
+        static { GameplayTweak.CART_BOOSTING.setKey("cartBoosting"); }
+
+        // Mechanics - Block
 
         @TweakGui.New
         @TweakData.Server
