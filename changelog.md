@@ -1,3 +1,7 @@
+# Nostalgic Tweaks (Forge & Fabric) 1.19.2-v2.0.0-Beta-9.0
+This beta introduces the mod's new preset system.
+- Added new old cart boosting mechanic tweak.
+
 # Nostalgic Tweaks (Forge & Fabric) 1.19.2-v2.0.0-Beta-8.2
 The first release of a 2.0.0 beta to CurseForge/Modrinth. This beta is deemed mostly stable; however, there may still be
 bugs that have not been found and/or fixed.
