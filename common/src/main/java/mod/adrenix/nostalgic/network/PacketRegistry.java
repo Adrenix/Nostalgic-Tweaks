@@ -1,5 +1,7 @@
 package mod.adrenix.nostalgic.network;
 
+import mod.adrenix.nostalgic.common.config.v2.network.packet.v2PacketC2SChangeTweak;
+import mod.adrenix.nostalgic.common.config.v2.network.packet.v2PacketS2CTweakUpdate;
 import mod.adrenix.nostalgic.network.packet.*;
 
 /**
@@ -15,6 +17,8 @@ public abstract class PacketRegistry
      */
     public static void initialize()
     {
+        v2PacketC2SChangeTweak.register();
+        v2PacketS2CTweakUpdate.register();
         PacketC2SChangeTweak.register();
         PacketS2CTweakUpdate.register();
         PacketS2CHurtDirection.register();
