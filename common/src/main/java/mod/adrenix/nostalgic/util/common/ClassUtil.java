@@ -1,5 +1,7 @@
 package mod.adrenix.nostalgic.util.common;
 
+import java.util.Optional;
+
 /**
  * Do <b>not</b> load <i>any</i> Minecraft code into this class. This utility is used by mixin plugins. If a vanilla
  * Minecraft class is loaded, then that class can't be modified by any mixins.
@@ -34,6 +36,20 @@ public abstract class ClassUtil
         {
             return false;
         }
+    }
+
+    /**
+     * Attempt a class cast on the given object. If the given object is not an instance of the given class type then
+     * a null value is returned.
+     *
+     * @param object An object to cast.
+     * @param classType The class type to get the cast from.
+     * @param <T> The class.
+     * @return The object with a class type cast or null if the object is not an instance of the class type.
+     */
+    public static <T> Optional<T> cast(Object object, Class<T> classType)
+    {
+        return Optional.ofNullable(classType.isInstance(object) ? classType.cast(object) : null);
     }
 
     /**
