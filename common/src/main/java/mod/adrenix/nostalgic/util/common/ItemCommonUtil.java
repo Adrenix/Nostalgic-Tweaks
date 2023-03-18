@@ -43,6 +43,7 @@ public abstract class ItemCommonUtil
      * @param item An item instance to get block data from.
      * @return A block from the registry if it exists.
      */
+    @SuppressWarnings("unused")
     public static Block getBlockFromItem(Item item) { return getBlock(getResourceKey(item)); }
 
     /**
@@ -59,9 +60,9 @@ public abstract class ItemCommonUtil
      * @param items The var args item list to get keys from.
      * @return A hash set of item resource keys.
      */
-    public static Set<String> getKeysFromItems(Item ...items)
+    public static LinkedHashSet<String> getKeysFromItems(Item ...items)
     {
-        Set<String> keys = new LinkedHashSet<>();
+        LinkedHashSet<String> keys = new LinkedHashSet<>();
 
         for (Item item : items)
             keys.add(getResourceKey(item));
