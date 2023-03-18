@@ -4,7 +4,9 @@ import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.network.chat.Component;
 
 /**
- * This class provides enumeration types that are not considered a "change by Minecraft version".
+ * This class provides enumeration types that are not considered a "change by Minecraft version". Instead, this utility
+ * class is intended for unique enumerations that are specific to a certain tweak.
+ *
  * This enumeration should be kept server safe, so keep vanilla client-only code out.
  *
  * For Minecraft version enumerations see {@link mod.adrenix.nostalgic.common.config.tweak.TweakVersion}.

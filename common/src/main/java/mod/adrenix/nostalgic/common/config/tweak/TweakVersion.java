@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
  * This class provides enumeration types that are considered a "change by Minecraft version".
  * This enumeration should be kept server safe, so keep vanilla client-only code out.
  *
- * For tweak types that should be a "change by Minecraft version" see {@link TweakType}.
+ * For tweak types that are not a "change by Minecraft version" see {@link TweakType}.
  *
  * Any enumeration that is used by the server will need to be updated in the serializer.
  * Failing to do so will result in an invalid packet and the tweak can never be changed in multiplayer.
