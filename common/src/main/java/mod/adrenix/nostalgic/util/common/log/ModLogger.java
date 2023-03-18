@@ -143,6 +143,25 @@ public record ModLogger(String prefix)
     }
 
     /**
+     * Prints an error stacktrace to the console without crashing the game. Useful if the game state received an
+     * unexpected event but does not put the mod into an unstable state.
+     *
+     * @param logHeader The logging header before the error message.
+     * @param errorHeader The error header before the stacktrace.
+     */
+    public void stacktrace(String logHeader, String errorHeader)
+    {
+        try
+        {
+            throw new AssertionError(errorHeader);
+        }
+        catch (AssertionError assertionError)
+        {
+            error(logHeader, assertionError);
+        }
+    }
+
+    /**
      * Create a debugging logging statement.
      * @param message The debug message to log.
      */
