@@ -4,12 +4,15 @@ import com.google.common.base.Suppliers;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
+import mod.adrenix.nostalgic.common.config.v2.cache.ConfigCache;
+import mod.adrenix.nostalgic.common.config.v2.cache.ConfigReflect;
 import mod.adrenix.nostalgic.common.config.v2.v2ModConfig;
 import mod.adrenix.nostalgic.common.config.v2.client.ClientConfig;
 import mod.adrenix.nostalgic.common.config.v2.container.TweakContainer;
 import mod.adrenix.nostalgic.common.config.v2.gui.TweakPlacement;
 import mod.adrenix.nostalgic.common.config.v2.gui.TweakSlider;
 import mod.adrenix.nostalgic.common.config.v2.server.ServerConfig;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 
 import javax.annotation.CheckForNull;
@@ -329,8 +332,10 @@ public class Tweak<T>
     }
 
     /**
-     * Change the value that is supposed to be saved on disk.
-     * This does not perform any saving operations.
+     * Change the value that is to be saved on disk via reflection.
+     *
+     * This does not perform any saving operations. Changes to disk must be done with {@link ConfigCache#saveClient()}
+     * or {@link ConfigCache#saveServer()}.
      *
      * @param value The new value that reflects what was saved on disk.
      * @throws AssertionError If value class type does not match disk value class type.
@@ -341,13 +346,33 @@ public class Tweak<T>
         Optional<T> cast = ClassUtil.cast(value, this.value.getClass());
 
         if (cast.isPresent())
+        {
             this.value = cast.get();
+
+            if (NostalgicTweaks.isClient())
+            {
+                boolean isSingleplayer = NetUtil.isSingleplayer() || NetUtil.isLocalHost();
+                boolean isMultiplayer = !NetUtil.isSingleplayer() && NetUtil.isConnected();
+                boolean isMainMenu = !NetUtil.isConnected();
+
+                boolean isSavable = this.side.equals(TweakSide.CLIENT) || isSingleplayer || isMainMenu;
+
+                if (isMultiplayer && !NostalgicTweaks.isNetworkVerified())
+                    isSavable = true;
+
+                if (isSavable)
+                    ConfigReflect.setClientField(this, value);
+            }
+            else
+                ConfigReflect.setServerField(this, value);
+        }
         else
         {
             String cacheId = this.getCacheKey();
             String diskType = this.value.getClass().toString();
             String sentType = value.getClass().toString();
-            String error = String.format("Cannot set value of [tweak={cacheId:%s, classType:%s}] with new classType%s", cacheId, diskType, sentType);
+            String message = "Cannot set value of [tweak={cacheId:%s, classType:%s}] with new classType (%s)";
+            String error = String.format(message, cacheId, diskType, sentType);
 
             throw new AssertionError(error);
         }
