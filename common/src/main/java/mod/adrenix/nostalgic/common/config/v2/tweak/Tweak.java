@@ -13,6 +13,7 @@ import mod.adrenix.nostalgic.common.config.v2.server.ServerConfig;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 
 import javax.annotation.CheckForNull;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -46,7 +47,33 @@ public class Tweak<T>
         return Tweak.CACHE.get(cacheId);
     }
 
-    /* Fields */
+    /* Reflection */
+
+    /**
+     * This holds the config field pointer for reflection.
+     * Caching this value prevents the unnecessary recalculations to find a field in a config class.
+     */
+    private Field field = null;
+
+    /**
+     * Set a config field pointer for reflection.
+     * @param field The field to cache.
+     */
+    public void setConfigField(Field field)
+    {
+        this.field = field;
+    }
+
+    /**
+     * A field pointer that has been previously calculated.
+     * @return An optional field pointer if it has been already found via reflection.
+     */
+    public Optional<Field> configField()
+    {
+        return Optional.ofNullable(field);
+    }
+
+    /* Tweak Fields */
 
     /**
      * The default value applied to a tweak if it has not yet been configured.
@@ -400,7 +427,22 @@ public class Tweak<T>
         if (this.configKey == null)
             throw new AssertionError("Config key was not properly set before retrieving its value");
 
-        return this.getContainer().getId() + "." + this.configKey;
+        return this.getContainer().getCacheKey() + "." + this.configKey;
+    }
+
+    /**
+     * Get the config JSON key for this tweak. This should only be used for reflection purposes. If you want to get a
+     * tweak from the cache map then use {@link Tweak#getCacheKey()}.
+     *
+     * @throws AssertionError If this tweak's JSON config key has not yet been set.
+     * @return The config JSON key of this tweak.
+     */
+    public String getConfigKey()
+    {
+        if (this.configKey == null)
+            throw new AssertionError("Config key was not properly set before retrieving its value");
+
+        return this.configKey;
     }
 
     /**

@@ -57,7 +57,7 @@ public class TweakContainer
     /**
      * Create a new category container.
      * The lang file key will be of the format <code>gui.nostalgic_tweaks.autoconfig.category.{id}</code>.
-     * @param id The id of the container.
+     * @param id The id of the container. <b>This must match the spelling of the config field name.</b>
      */
     public static TweakContainer category(String id)
     {
@@ -102,9 +102,29 @@ public class TweakContainer
      * @see TweakContainer#id
      * @return Whether this container has a blank id string.
      */
-    public boolean isNull()
+    public boolean isRoot()
     {
         return this.id.isBlank();
+    }
+
+    /**
+     * Get the root category of this container. If this is a category, then itself is returned.
+     * @return A root category container parent.
+     */
+    public TweakContainer getCategory()
+    {
+        if (this.parent == null)
+            return this;
+
+        TweakContainer scanning = this.parent;
+
+        while (true)
+        {
+            if (scanning.getParent().isEmpty())
+                return scanning;
+
+            scanning = scanning.getParent().get();
+        }
     }
 
     /**
@@ -115,9 +135,20 @@ public class TweakContainer
      *
      * @return A unique identifier string for the container.
      */
-    public String getId()
+    public String getCacheKey()
     {
         return this.parent != null ? String.format("%s.%s", this.parent.id, this.id) : this.id;
+    }
+
+    /**
+     * The string that is returned will be a lowercase value of the container's id. This method should only be used for
+     * category containers since this method is used for config reflection.
+     *
+     * @return The container id in lowercase format.
+     */
+    public String getConfigKey()
+    {
+        return this.id.toLowerCase();
     }
 
     /**
