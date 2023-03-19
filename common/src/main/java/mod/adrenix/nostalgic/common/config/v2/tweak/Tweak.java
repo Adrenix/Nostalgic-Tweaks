@@ -103,7 +103,9 @@ public class Tweak<T>
      * All tweaks start with the "AUTO" placement enumeration value and will be ordered alphabetically in the
      * configuration menu's automatic row builder. If this is not preferred, then you can define whether a tweak should
      * be pushed to the "TOP" or "BOTTOM". The order in which tweaks appear will depend on the order in which tweaks
-     * were built in the category or group.
+     * were placed in the cache which occurs when {@link Tweak#setAndGet(String)} is called. This method is invoked by
+     * both sided configs, but only the {@link ClientConfig} will dictate the order in which tweaks are placed in the
+     * cache.
      *
      * @see TweakPlacement
      */
@@ -307,10 +309,9 @@ public class Tweak<T>
      * @throws AssertionError If value class type does not match disk value class type.
      * @see Tweak#value
      */
-    @SuppressWarnings("unchecked") // Type assertion is lost when tweak values are sent over the network
     public void setValue(Object value)
     {
-        Optional<T> cast = ClassUtil.cast(value, (Class<T>) this.value.getClass());
+        Optional<T> cast = ClassUtil.cast(value, this.value.getClass());
 
         if (cast.isPresent())
             this.value = cast.get();
@@ -368,10 +369,9 @@ public class Tweak<T>
      * @param value The value that was sent by the server over the network.
      * @see Tweak#sentValue
      */
-    @SuppressWarnings("unchecked") // Type assertion is lost when tweak values are sent over the network
     public void setSentValue(Object value)
     {
-        Optional<T> cast = ClassUtil.cast(value, (Class<T>) this.value.getClass());
+        Optional<T> cast = ClassUtil.cast(value, this.value.getClass());
 
         if (cast.isPresent())
             this.sentValue = cast.get();
@@ -447,7 +447,7 @@ public class Tweak<T>
      * @see Tweak#value
      * @see Tweak#disabledValue
      */
-    @SuppressWarnings("unchecked") // Values are instanceof checked
+    @SuppressWarnings("unchecked") // Disable value and current values are of the same type so instanceof check on value is safe
     public T getDisabledValue()
     {
         if (this.ignore)
@@ -456,8 +456,11 @@ public class Tweak<T>
         if (this.disabledValue != null)
             return this.disabledValue;
 
-        if (this.getValue() instanceof Boolean bool && bool)
+        if (this.defaultValue instanceof Boolean bool && bool)
+        {
             this.disabledValue = (T) (Object) false;
+            return this.disabledValue;
+        }
 
         return this.getDefault();
     }

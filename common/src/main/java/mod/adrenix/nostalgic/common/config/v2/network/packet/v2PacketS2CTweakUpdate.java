@@ -16,8 +16,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.function.Supplier;
 
 /**
- * This packet sends a tweak state to the client.
- * The client will process the packet and update its server config cache.
+ * This packet sends a tweak update to the client.
+ * The client will process the packet and update the tweak's sent server value field.
  */
 
 public class v2PacketS2CTweakUpdate

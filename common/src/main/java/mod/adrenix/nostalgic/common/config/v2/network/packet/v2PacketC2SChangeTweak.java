@@ -15,6 +15,13 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * This packet sends a tweak update to the server.
+ *
+ * The server will process the packet and check if the sender is an operator before updating the server config file.
+ * Once the config data is saved, the server will forward the update to all connected clients.
+ */
+
 public class v2PacketC2SChangeTweak
 {
     /**

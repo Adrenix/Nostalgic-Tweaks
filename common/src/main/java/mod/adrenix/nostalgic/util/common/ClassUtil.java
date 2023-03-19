@@ -47,9 +47,10 @@ public abstract class ClassUtil
      * @param <T> The class.
      * @return The object with a class type cast or null if the object is not an instance of the class type.
      */
-    public static <T> Optional<T> cast(Object object, Class<T> classType)
+    @SuppressWarnings("unchecked") // The object is class type instanceof checked before the object receives a cast
+    public static <T> Optional<T> cast(Object object, Class<?> classType)
     {
-        return Optional.ofNullable(classType.isInstance(object) ? classType.cast(object) : null);
+        return Optional.ofNullable(classType.isInstance(object) ? (T) classType.cast(object) : null);
     }
 
     /**

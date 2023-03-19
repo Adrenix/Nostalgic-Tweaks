@@ -17,13 +17,26 @@ public class TweakContainer
 {
     /* Fields */
 
+    /**
+     * A container must be either a "CATEGORY" or a "GROUP".
+     */
     private final ContainerType type;
+
+    /**
+     * If this container is a category, then its id should be the JSON key that will appear in the config file.
+     * Otherwise, the id can be a general string if this is a group container since groups will not appear in the config
+     * file.
+     */
     private final String id;
 
+    /**
+     * If this is a group container then it must have a parent which will either be a category container or another
+     * group container.
+     */
     @Nullable
     private final TweakContainer parent;
 
-    /* Constructor */
+    /* Constructors */
 
     private TweakContainer(String id)
     {
@@ -64,26 +77,52 @@ public class TweakContainer
 
     /* Methods */
 
+    /**
+     * If this container is a group container then a parent will be present. Otherwise, the return value will be
+     * <code>null</code>.
+     *
+     * @return An optional containing a group container or <code>null</code> if this container is a category.
+     */
     public Optional<TweakContainer> getParent()
     {
         return Optional.ofNullable(this.parent);
     }
 
+    /**
+     * @return The container type will be either "CATEGORY" or "GROUP".
+     * @see ContainerType
+     */
     public ContainerType getType()
     {
         return this.type;
     }
 
+    /**
+     * Some containers may be only placeholders which is designated by a blank id string.
+     * @see TweakContainer#id
+     * @return Whether this container has a blank id string.
+     */
     public boolean isNull()
     {
         return this.id.isBlank();
     }
 
+    /**
+     * The string that is returned will not be a verbatim copy of the original id if this container has a parent.
+     * If this container has a parent then the format of this id will be <code>{parentId}.{thisId}</code>. For example,
+     * assume this container id was "fire" and it resides in the gameplay category subscribed to another container group
+     * called "mechanics". The id return will appear as <code>gameplay.mechanics.fire</code>.
+     *
+     * @return A unique identifier string for the container.
+     */
     public String getId()
     {
         return this.parent != null ? String.format("%s.%s", this.parent.id, this.id) : this.id;
     }
 
+    /**
+     * @return A translated container name using a lang file.
+     */
     @Override
     public String toString()
     {

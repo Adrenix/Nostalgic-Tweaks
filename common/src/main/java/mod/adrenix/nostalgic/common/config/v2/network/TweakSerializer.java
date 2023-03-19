@@ -8,10 +8,6 @@ import mod.adrenix.nostalgic.common.config.v2.tweak.Tweak;
 
 import java.lang.reflect.Type;
 
-/**
- * Prepares a cached server tweak for transmission over the network.
- */
-
 public class TweakSerializer<T>
 {
     /* Fields */
@@ -26,6 +22,10 @@ public class TweakSerializer<T>
 
     /* Constructor */
 
+    /**
+     * Prepares a tweak for transmission over the network.
+     * @param tweak The tweak to send data from.
+     */
     public TweakSerializer(Tweak<T> tweak)
     {
         this.cacheKey = tweak.getCacheKey();
