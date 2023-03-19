@@ -130,15 +130,18 @@ public class v2PacketS2CTweakUpdate
 
         NostalgicTweaks.LOGGER.debug(information);
 
-        // Update client server sent value
+        // Update the client's server sent value
         tweak.setSentValue(serializer.getSendingValue());
+
+        // Update the client's config if this is a LAN session
+        if (NetUtil.isLocalHost())
+        {
+            tweak.setValue(serializer.getSendingValue());
+            ConfigCache.saveClient();
+        }
 
         // Notify client that it was sent a tweak update
         if (NostalgicTweaks.isNetworkVerified())
             ToastNotification.gotChanges();
-
-        // Update the client's config if this is a LAN session
-        if (NetUtil.isLocalHost())
-            ConfigCache.saveClient();
     }
 }

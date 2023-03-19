@@ -147,12 +147,12 @@ public class v2PacketC2SChangeTweak
 
         NostalgicTweaks.LOGGER.info(information);
 
-        // Even though this packet is handled by the server, we don't want singleplayer worlds to access the server config
+        // Update server tweak value with data sent from client
+        tweak.setValue(serializer.getSendingValue());
+
+        // Even though this packet is handled by the server, we don't want singleplayer worlds to save a server config
         if (NostalgicTweaks.isServer())
             ConfigCache.saveServer();
-
-        // Update server disk value with data sent from client
-        tweak.setValue(serializer.getSendingValue());
 
         // Send tweak update to all connected players
         List<ServerPlayer> players = player.server.getPlayerList().getPlayers();
