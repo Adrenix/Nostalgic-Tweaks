@@ -36,6 +36,12 @@ public class TweakContainer
     @Nullable
     private final TweakContainer parent;
 
+    /**
+     * Each container will have a category reference. If the container itself is a category then this field points back
+     * to itself.
+     */
+    private TweakContainer category;
+
     /* Constructors */
 
     private TweakContainer(String id)
@@ -43,6 +49,7 @@ public class TweakContainer
         this.type = ContainerType.CATEGORY;
         this.id = id;
         this.parent = null;
+        this.category = this;
     }
 
     private TweakContainer(TweakContainer parent, String id)
@@ -50,6 +57,7 @@ public class TweakContainer
         this.type = ContainerType.GROUP;
         this.id = id;
         this.parent = parent;
+        this.category = this.getCategory();
     }
 
     /* Builders */
@@ -116,12 +124,18 @@ public class TweakContainer
         if (this.parent == null)
             return this;
 
+        if (this.category != null)
+            return this.category;
+
         TweakContainer scanning = this.parent;
 
         while (true)
         {
             if (scanning.getParent().isEmpty())
+            {
+                this.category = scanning;
                 return scanning;
+            }
 
             scanning = scanning.getParent().get();
         }
@@ -129,15 +143,16 @@ public class TweakContainer
 
     /**
      * The string that is returned will not be a verbatim copy of the original id if this container has a parent.
-     * If this container has a parent then the format of this id will be <code>{parentId}.{thisId}</code>. For example,
-     * assume this container id was "fire" and it resides in the gameplay category subscribed to another container group
-     * called "mechanics". The id return will appear as <code>gameplay.mechanics.fire</code>.
+     * If this container has a parent then the format of this id will be <code>{categoryId}.{thisId}</code>. For example,
+     * assume this container id was "mechanics_fire" and this container is subscribed to another container group with an
+     * id of "mechanics". The key that is returned will appear as <code>gameplay.mechanics_fire</code>. The mechanics
+     * group id is completely left off the string since it is not necessary due to how the JSON config is structured.
      *
      * @return A unique identifier string for the container.
      */
     public String getCacheKey()
     {
-        return this.parent != null ? String.format("%s.%s", this.parent.id, this.id) : this.id;
+        return this.parent != null ? String.format("%s.%s", this.getCategory().id, this.id) : this.id;
     }
 
     /**

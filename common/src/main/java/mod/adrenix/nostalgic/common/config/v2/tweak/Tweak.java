@@ -321,12 +321,8 @@ public class Tweak<T>
     public T setAndGet(String configKey)
     {
         this.configKey = configKey;
-        String cacheKey = this.getCacheKey();
 
-        if (Tweak.CACHE.containsKey(cacheKey))
-            throw new AssertionError(String.format("Cannot build tweak since %s has already been built", cacheKey));
-        else
-            Tweak.CACHE.put(cacheKey, this);
+        Tweak.CACHE.put(this.getCacheKey(), this);
 
         return this.defaultValue;
     }
