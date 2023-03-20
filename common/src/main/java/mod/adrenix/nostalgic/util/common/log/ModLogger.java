@@ -78,7 +78,7 @@ public record ModLogger(String prefix)
      */
     public void info(String message)
     {
-        String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.GREEN, "INFO"));
+        String input = String.format(this.getPrefix() + "[%s] ", LogColor.apply(LogColor.GREEN, "INFO")) + message;
         LOGGER.info(getOutput(input));
     }
 
@@ -95,7 +95,7 @@ public record ModLogger(String prefix)
      */
     public void warn(String message)
     {
-        String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.GOLD, "WARN"));
+        String input = String.format(this.getPrefix() + "[%s] ", LogColor.apply(LogColor.GOLD, "WARN")) + message;
         LOGGER.warn(getOutput(input));
     }
 
@@ -169,7 +169,7 @@ public record ModLogger(String prefix)
     {
         if (ModLogger.isDebugging)
         {
-            String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.LIGHT_PURPLE, "DEBUG"));
+            String input = String.format(this.getPrefix() + "[%s] ", LogColor.apply(LogColor.LIGHT_PURPLE, "DEBUG")) + message;
             LOGGER.info(getOutput(input));
         }
     }
