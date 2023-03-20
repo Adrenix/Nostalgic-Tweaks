@@ -112,7 +112,7 @@ public record ModLogger(String prefix)
      */
     public void error(String message)
     {
-        String input = String.format(this.getPrefix() + "[%s] " + message, LogColor.apply(LogColor.RED, "ERROR"));
+        String input = String.format(this.getPrefix() + "[%s] ", LogColor.apply(LogColor.RED, "ERROR")) + message;
         LOGGER.error(getOutput(input));
     }
 
