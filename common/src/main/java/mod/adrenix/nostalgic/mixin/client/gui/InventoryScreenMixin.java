@@ -6,8 +6,8 @@ import mod.adrenix.nostalgic.client.screen.SlotTracker;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.widen.AbstractContainerScreenAccessor;
-import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
+import mod.adrenix.nostalgic.util.common.MathUtil;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -67,25 +67,29 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
         {
             if (this.recipeBookComponent.isVisible())
             {
-                this.blit(poseStack, this.leftPos + 172, this.height / 2 + 51, 200, 33, 26, 32);
+                InventoryScreen.blit(poseStack, this.leftPos + 172, this.height / 2 + 51, 200, 33, 26, 32);
                 SlotTracker.OFF_HAND.move(this.NT$offHand, 174, 142);
             }
             else
             {
-                this.blit(poseStack, this.leftPos - 22, this.height / 2 + 51, 200, 0, 25, 32);
+                InventoryScreen.blit(poseStack, this.leftPos - 22, this.height / 2 + 51, 200, 0, 25, 32);
                 SlotTracker.OFF_HAND.move(this.NT$offHand, -14, 142);
             }
         }
         else if (shield.equals(TweakType.InventoryShield.MIDDLE_RIGHT) || isModernOverride)
-            this.blit(poseStack, this.leftPos + 151, this.height / 2 - 22, 178, 56, 18, 18);
+            InventoryScreen.blit(poseStack, this.leftPos + 151, this.height / 2 - 22, 178, 56, 18, 18);
 
         if (!ModConfig.Candy.oldInventory() && !shield.equals(TweakType.InventoryShield.MODERN))
-            this.blit(poseStack, this.leftPos + 76, this.height / 2 - 22, 178, 74, 18, 18);
+            InventoryScreen.blit(poseStack, this.leftPos + 76, this.height / 2 - 22, 178, 74, 18, 18);
     }
 
     /* Injections */
 
-    @Inject(method = "renderLabels", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "renderLabels",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onRenderLabels(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo callback)
     {
         if (ModConfig.Candy.oldInventory())
@@ -96,10 +100,12 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     }
 
     /**
-     * Changes the x, y positions of slots.
-     * Controlled by various inventory tweak.
+     * Changes the x, y positions of slots. Controlled by various inventory tweak.
      */
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(
+        method = "<init>",
+        at = @At("TAIL")
+    )
     private void NT$onConstruction(Player player, CallbackInfo callback)
     {
         TweakType.InventoryShield shield = ModConfig.Candy.getInventoryShield();
@@ -136,54 +142,62 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     }
 
     /**
-     * Changes the x, y, and texture of the recipe button.
-     * Controlled by the inventory recipe button tweak.
+     * Changes the x, y, and texture of the recipe button. Controlled by the inventory recipe button tweak.
      */
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(
+        method = "init",
+        at = @At("TAIL")
+    )
     private void NT$onInit(CallbackInfo callback)
     {
         GuiUtil.createRecipeButton((AbstractContainerScreenAccessor) this, ModConfig.Candy.getInventoryBook());
     }
 
     /**
-     * Overrides the rendered background by using the mod's inventory gui.
-     * Controlled by the old inventory tweak.
+     * Overrides the rendered background by using the mod's inventory gui. Controlled by the old inventory tweak.
      */
 
-    @Inject(method = "renderBg", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "renderBg",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onStartBackgroundRender(PoseStack poseStack, float partialTick, int mouseX, int mouseY, CallbackInfo callback)
     {
         if (!ModConfig.Candy.oldInventory() || this.minecraft == null || this.minecraft.player == null)
             return;
 
         this.NT$setShader();
-        this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        InventoryScreen.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         this.NT$renderOffhandSlot(poseStack);
 
-        InventoryScreen.renderEntityInInventory
-        (
-            this.leftPos + 51,
-            this.topPos + 75,
-            30,
-            (float) (this.leftPos + 51) - this.xMouse,
-            (float) (this.topPos + 75 - 50) - this.yMouse,
-            this.minecraft.player
-        );
+        int x = this.leftPos + 51;
+        int y = this.topPos + 75;
+        float mx = (float) (this.leftPos + 51) - this.xMouse;
+        float my = (float) (this.topPos + 75 - 50) - this.yMouse;
+
+        InventoryScreen.renderEntityInInventoryFollowsMouse(poseStack, x, y, 30, mx, my, this.minecraft.player);
 
         callback.cancel();
     }
 
-    @Inject(method = "renderBg", at = @At("TAIL"))
+    @Inject(
+        method = "renderBg",
+        at = @At("TAIL")
+    )
     private void NT$onFinishBackgroundRender(PoseStack poseStack, float partialTick, int mouseX, int mouseY, CallbackInfo callback)
     {
         this.NT$renderOffhandSlot(poseStack);
     }
 
     /**
-     * Fixes the issue of having slots outside the rendered GUI area.
-     * Not controlled by any tweaks.
+     * Fixes the issue of having slots outside the rendered GUI area. Not controlled by any tweaks.
      */
-    @Inject(method = "hasClickedOutside", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "hasClickedOutside",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onHasClickedOutSide(double mouseX, double mouseY, int guiLeft, int guiTop, int mouseButton, CallbackInfoReturnable<Boolean> callback)
     {
         int x = guiLeft + (this.recipeBookComponent.isVisible() ? this.imageWidth : -25);

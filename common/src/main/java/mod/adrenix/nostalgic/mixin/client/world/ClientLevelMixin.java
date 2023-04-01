@@ -40,59 +40,93 @@ public abstract class ClientLevelMixin
     /* Shadows */
 
     @Shadow @Final private Minecraft minecraft;
-    @Shadow public abstract void playLocalSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay);
+
+    @Shadow
+    public abstract void playLocalSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay);
 
     /**
-     * Brings back the old nether shading.
-     * Controlled by the old lighting tweak.
+     * Brings back the old nether shading. Controlled by the old lighting tweak.
      */
-    @Redirect
-    (
+    @Redirect(
         method = "getShade",
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/DimensionSpecialEffects;constantAmbientLight()Z"
         )
     )
     private boolean NT$onGetNetherShade(DimensionSpecialEffects instance)
     {
-        if (ModConfig.Candy.oldNetherLighting() && Minecraft.getInstance().level != null && Minecraft.getInstance().level.dimension() == Level.NETHER)
+        boolean isOldNether = ModConfig.Candy.oldNetherLighting() &&
+            Minecraft.getInstance().level != null &&
+            Minecraft.getInstance().level.dimension() == Level.NETHER;
+
+        if (isOldNether)
             return false;
 
         return instance.constantAmbientLight();
     }
 
     /**
-     * Adjusts the darkness of the sky color at night to match the old star colors.
-     * Controlled by the old stars tweak.
+     * Adjusts the darkness of the sky color at night to match the old star colors. Controlled by the old stars tweak.
      */
-    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
+    @ModifyArg(
+        method = "getSkyColor",
+        index = 1,
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/util/Mth;clamp(FFF)F"
+        )
+    )
     private float NT$onClampSkyColor(float vanilla)
     {
-        return switch(ModConfig.Candy.getStars()) { case ALPHA, BETA -> 0.005F; default -> vanilla; };
+        return switch (ModConfig.Candy.getStars())
+        {
+            case ALPHA, BETA -> 0.005F;
+            default -> vanilla;
+        };
     }
 
     /**
-     * Tracks and changes the current sky color, so it can be properly updated by cave/void fog.
-     * Updates controlled by the void fog tweak.
+     * Tracks and changes the current sky color, so it can be properly updated by cave/void fog. Updates controlled by
+     * the void fog tweak.
      */
 
-    @ModifyArg(method = "getSkyColor", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    @ModifyArg(
+        method = "getSkyColor",
+        index = 0,
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"
+        )
+    )
     private double NT$onSetSkyColorRed(double red)
     {
         FogUtil.Void.setSkyRed((float) red);
         return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyRed() : red;
     }
 
-    @ModifyArg(method = "getSkyColor", index = 1, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    @ModifyArg(
+        method = "getSkyColor",
+        index = 1,
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"
+        )
+    )
     private double NT$onSetSkyColorGreen(double green)
     {
         FogUtil.Void.setSkyGreen((float) green);
         return FogUtil.Void.isRendering() ? FogUtil.Void.getSkyGreen() : green;
     }
 
-    @ModifyArg(method = "getSkyColor", index = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"))
+    @ModifyArg(
+        method = "getSkyColor",
+        index = 2,
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/phys/Vec3;<init>(DDD)V"
+        )
+    )
     private double NT$onSetSkyColorBlue(double blue)
     {
         FogUtil.Void.setSkyBlue((float) blue);
@@ -100,10 +134,13 @@ public abstract class ClientLevelMixin
     }
 
     /**
-     * Attempts to block the spawning of falling particles.
-     * Controlled by the disable falling particles tweak.
+     * Attempts to block the spawning of falling particles. Controlled by the disable falling particles tweak.
      */
-    @Inject(method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onAddParticle(ParticleOptions options, boolean alwaysRender, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfo callback)
     {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -113,25 +150,21 @@ public abstract class ClientLevelMixin
         if (!isDisabled || isSprinting || player == null)
             return;
 
-        boolean isParticleAtPlayer =
-            MathUtil.tolerance(player.getX(), x, 0.01F) &&
+        boolean isParticleAtPlayer = MathUtil.tolerance(player.getX(), x, 0.01F) &&
             MathUtil.tolerance(player.getY(), y, 0.01F) &&
-            MathUtil.tolerance(player.getZ(), z, 0.01F)
-        ;
+            MathUtil.tolerance(player.getZ(), z, 0.01F);
 
         if (isParticleAtPlayer)
             callback.cancel();
     }
 
     /**
-     * Adds void fog particles to the client level if conditions are met.
-     * Controlled by various void fog particle tweaks.
+     * Adds void fog particles to the client level if conditions are met. Controlled by various void fog particle
+     * tweaks.
      */
-    @Inject
-    (
+    @Inject(
         method = "doAnimateTick",
-        at = @At
-        (
+        at = @At(
             shift = At.Shift.BEFORE,
             value = "INVOKE",
             target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBiome(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Holder;"
@@ -143,7 +176,10 @@ public abstract class ClientLevelMixin
         ClientLevel level = Minecraft.getInstance().level;
 
         boolean isFogDisabled = ModConfig.Candy.disableVoidFog() || !FogUtil.Void.isBelowHorizon();
-        boolean isCreativeDisabled = !ModConfig.Candy.creativeVoidParticles() && entity instanceof Player player && player.isCreative();
+        boolean isCreativeDisabled = !ModConfig.Candy.creativeVoidParticles() &&
+            entity instanceof Player player &&
+            player.isCreative();
+
         boolean isDisabled = isFogDisabled || isCreativeDisabled;
 
         if (isDisabled || entity == null || level == null)
@@ -163,53 +199,55 @@ public abstract class ClientLevelMixin
             BlockPos randomPos = randX.subtract(randY).offset(playerPos);
             BlockState state = level.getBlockState(randomPos);
 
-            if (state.isAir() && level.getFluidState(randomPos).isEmpty() && randomPos.getY() - level.getMinBuildHeight() <= particleStart)
+            boolean isValidEmptySpace = state.isAir() &&
+                level.getFluidState(randomPos).isEmpty() &&
+                randomPos.getY() - level.getMinBuildHeight() <= particleStart;
+
+            if (isValidEmptySpace)
             {
                 if (randomSource.nextInt(8) <= particleStart)
                 {
-                    boolean nearBedrock = BlockClientUtil.isNearBedrock(randomPos, level);
+                    double px = randomPos.getX() + randomSource.nextFloat();
+                    double py = randomPos.getY() + randomSource.nextFloat();
+                    double pz = randomPos.getZ() + randomSource.nextFloat();
 
-                    level.addParticle
-                    (
-                        nearBedrock ? ParticleTypes.ASH : ParticleTypes.MYCELIUM,
-                        randomPos.getX() + randomSource.nextFloat(),
-                        randomPos.getY() + randomSource.nextFloat(),
-                        randomPos.getZ() + randomSource.nextFloat(),
-                        0,
-                        nearBedrock ? randomSource.nextFloat() : 0,
-                        0
-                    );
+                    boolean nearBedrock = BlockClientUtil.isNearBedrock(randomPos, level);
+                    double ySpeed = nearBedrock ? randomSource.nextFloat() : 0.0D;
+
+                    ParticleOptions particle = nearBedrock ? ParticleTypes.ASH : ParticleTypes.MYCELIUM;
+
+                    level.addParticle(particle, px, py, pz, 0.0D, ySpeed, 0.0D);
                 }
             }
         }
     }
 
     /**
-     * Disables growth sounds when using bone meal.
-     * Controlled by the disable growth sound tweak.
+     * Disables growth sounds when using bone meal. Controlled by the disable growth sound tweak.
      */
-    @Inject(method = "playSound", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "playSound",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onPlaySimpleSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean delayed, long seed, CallbackInfo callback)
     {
         boolean isGrowthOff = ModConfig.Sound.disableGrowth() && sound == SoundEvents.BONE_MEAL_USE;
-        boolean isSwimOff = ModConfig.Sound.disableGenericSwim() && sound == SoundEvents.GENERIC_SWIM || sound == SoundEvents.PLAYER_SWIM;
+        boolean isSwimOff = ModConfig.Sound.disableGenericSwim() && sound == SoundEvents.GENERIC_SWIM ||
+            sound == SoundEvents.PLAYER_SWIM;
 
         if (isGrowthOff || isSwimOff)
             callback.cancel();
     }
 
     /**
-     * Disables sounds when attacking.
-     * Controlled by the sound attack tweak.
-     *
-     * Disables chest sounds on opening.
-     * Controlled by various old chest tweaks.
-     *
-     * Disables unique mob stepping sounds in multiplayer.
-     * Controlled by the old mob steps tweak.
+     * Disables sounds when attacking. Controlled by the sound attack tweak.
+     * <p>
+     * Disables chest sounds on opening. Controlled by various old chest tweaks.
+     * <p>
+     * Disables unique mob stepping sounds in multiplayer. Controlled by the old mob steps tweak.
      */
-    @Inject
-    (
+    @Inject(
         method = "playSeededSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
         at = @At("HEAD"),
         cancellable = true
@@ -225,8 +263,7 @@ public abstract class ClientLevelMixin
             sound == SoundEvents.PLAYER_ATTACK_NODAMAGE ||
             sound == SoundEvents.PLAYER_ATTACK_STRONG ||
             sound == SoundEvents.PLAYER_ATTACK_SWEEP ||
-            sound == SoundEvents.PLAYER_ATTACK_WEAK
-        ;
+            sound == SoundEvents.PLAYER_ATTACK_WEAK;
 
         if (ModConfig.Sound.oldAttack() && isAttack)
         {
@@ -239,8 +276,7 @@ public abstract class ClientLevelMixin
         boolean isSquid = sound == SoundEvents.SQUID_AMBIENT ||
             sound == SoundEvents.SQUID_DEATH ||
             sound == SoundEvents.SQUID_HURT ||
-            sound == SoundEvents.SQUID_SQUIRT
-        ;
+            sound == SoundEvents.SQUID_SQUIRT;
 
         if (ModConfig.Sound.disableSquid() && isSquid)
         {
@@ -298,7 +334,7 @@ public abstract class ClientLevelMixin
 
         /* Chest Sounds */
 
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = new BlockPos((int) x, (int) y, (int) z);
         ClientLevel level = this.minecraft.level;
         boolean isWoodenChest = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
         boolean isEnderChest = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
@@ -339,9 +375,10 @@ public abstract class ClientLevelMixin
             if (sound == SoundEvents.CHEST_CLOSE || sound == SoundEvents.ENDER_CHEST_CLOSE)
                 chestSound = SoundEvents.WOODEN_DOOR_CLOSE;
 
-            this.playLocalSound(x, y, z, chestSound, SoundSource.BLOCKS, 1.0F, randomSource.nextFloat() * 0.1f + 0.9f, false);
-            callback.cancel();
+            this.playLocalSound(x, y, z, chestSound, SoundSource.BLOCKS, 1.0F, randomSource.nextFloat() * 0.1f +
+                0.9f, false);
 
+            callback.cancel();
             return;
         }
 
@@ -376,7 +413,8 @@ public abstract class ClientLevelMixin
             identifiers.
          */
 
-        boolean isEntityStep = sound.getLocation().getPath().contains("entity.") && sound.getLocation().getPath().contains(".step");
+        boolean isEntityStep = sound.getLocation().getPath().contains("entity.") &&
+            sound.getLocation().getPath().contains(".step");
 
         if (ModConfig.Sound.oldStep() && !Minecraft.getInstance().hasSingleplayerServer() && isEntityStep)
         {
@@ -421,7 +459,8 @@ public abstract class ClientLevelMixin
 
                 BlockState inside = level.getBlockState(pos);
                 SoundType soundType = inside.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? inside.getSoundType() : standing.getSoundType();
-                this.playLocalSound(x, y, z, soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch(), false);
+                this.playLocalSound(x, y, z, soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() *
+                    0.15F, soundType.getPitch(), false);
 
                 callback.cancel();
             }

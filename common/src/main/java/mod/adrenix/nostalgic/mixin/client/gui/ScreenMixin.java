@@ -22,8 +22,11 @@ public abstract class ScreenMixin extends GuiComponent implements WidgetManager
 {
     /* Shadows */
 
-    @Shadow protected abstract void removeWidget(GuiEventListener listener);
-    @Shadow protected abstract GuiEventListener addRenderableWidget(GuiEventListener widget);
+    @Shadow
+    protected abstract void removeWidget(GuiEventListener listener);
+
+    @Shadow
+    protected abstract GuiEventListener addRenderableWidget(GuiEventListener widget);
 
     /* Widget Manager Implementation */
 
@@ -42,11 +45,10 @@ public abstract class ScreenMixin extends GuiComponent implements WidgetManager
     /* Injections */
 
     /**
-     * Disables tooltips from appearing when hovering over items within an inventory.
-     * Controlled by the old no item tooltip tweak.
+     * Disables tooltips from appearing when hovering over items within an inventory. Controlled by the old no item
+     * tooltip tweak.
      */
-    @Inject
-    (
+    @Inject(
         cancellable = true,
         at = @At("HEAD"),
         method = "renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemStack;II)V"
@@ -58,36 +60,33 @@ public abstract class ScreenMixin extends GuiComponent implements WidgetManager
     }
 
     /**
-     * Changes the fill gradient background color.
-     * Controlled by various GUI background tweaks.
+     * Changes the fill gradient background color. Controlled by various GUI background tweaks.
      */
-    @Redirect
-    (
-        method = "renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;I)V",
-        at = @At
-        (
+    @Redirect(
+        method = "renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;)V",
+        at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/screens/Screen;fillGradient(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
         )
     )
-    private void NT$onRenderBackground(Screen instance, PoseStack poseStack, int x, int y, int w, int h, int colorFrom, int colorTo)
+    private void NT$onRenderBackground(PoseStack poseStack, int x, int y, int w, int h, int colorFrom, int colorTo)
     {
         if (ModConfig.Candy.customGuiBackground())
         {
             int top = ColorUtil.toHexInt(ModConfig.Candy.customTopGradient());
             int bottom = ColorUtil.toHexInt(ModConfig.Candy.customBottomGradient());
 
-            this.fillGradient(poseStack, x, y, w, h, top, bottom);
+            Screen.fillGradient(poseStack, x, y, w, h, top, bottom);
         }
         else if (!ModConfig.Candy.oldGuiBackground().equals(TweakType.GuiBackground.SOLID_BLACK))
         {
             switch (ModConfig.Candy.oldGuiBackground())
             {
-                case SOLID_BLUE -> this.fillGradient(poseStack, x, y, w, h, 0xA0303060, 0xA0303060);
-                case GRADIENT_BLUE -> this.fillGradient(poseStack, x, y, w, h, 0x60050500, 0xA0303060);
+                case SOLID_BLUE -> Screen.fillGradient(poseStack, x, y, w, h, 0xA0303060, 0xA0303060);
+                case GRADIENT_BLUE -> Screen.fillGradient(poseStack, x, y, w, h, 0x60050500, 0xA0303060);
             }
         }
         else
-            this.fillGradient(poseStack, x, y, w, h, colorFrom, colorTo);
+            Screen.fillGradient(poseStack, x, y, w, h, colorFrom, colorTo);
     }
 }

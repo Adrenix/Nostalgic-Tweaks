@@ -11,13 +11,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemStackMixin
 {
     /**
-     * Controls which parts of the multiline-tooltip should be shown.
-     * Controlled by various tooltip tweaks.
+     * Controls which parts of the multiline-tooltip should be shown. Controlled by various tooltip tweaks.
      */
-    @Inject(method = "shouldShowInTooltip", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "shouldShowInTooltip",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private static void NT$onShouldShowInTooltip(int hideFlags, ItemStack.TooltipPart part, CallbackInfoReturnable<Boolean> callback)
     {
         boolean isVanillaShown = (hideFlags & part.getMask()) == 0;
+
         if (!isVanillaShown || !ModConfig.isModEnabled())
             return;
 
@@ -26,7 +30,7 @@ public abstract class ItemStackMixin
             case DYE -> ModConfig.Candy.addDyeTip();
             case ENCHANTMENTS -> ModConfig.Candy.addEnchantmentTip();
             case MODIFIERS -> ModConfig.Candy.addModifiersTip();
-            case ADDITIONAL, CAN_DESTROY, CAN_PLACE, UNBREAKABLE -> true;
+            case ADDITIONAL, CAN_DESTROY, CAN_PLACE, UNBREAKABLE, UPGRADES -> true;
         };
 
         callback.setReturnValue(isShown);

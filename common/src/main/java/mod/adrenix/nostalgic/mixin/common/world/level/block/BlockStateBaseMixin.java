@@ -14,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,29 +31,40 @@ public abstract class BlockStateBaseMixin
 {
     /* Shadows */
 
-    @Shadow @Final private BlockBehaviour.OffsetType offsetType;
-    @Shadow public abstract Block getBlock();
+    @Shadow
+    public abstract Block getBlock();
+
+    @Shadow
+    public abstract boolean hasOffsetFunction();
 
     /* Injections */
 
     /**
      * Client:
-     *
+     * <p>
      * The following injections only impact the rendering aspects of chests. Therefore, there is no need to restrict
      * these injections to server-side only. The purpose of these injections is to improve performance when chests are
      * shaped like blocks.
-     *
+     * <p>
      * Controlled by various old chest tweaks.
      */
 
-    @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "canOcclude",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onCanOcclude(CallbackInfoReturnable<Boolean> callback)
     {
         if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
             callback.setReturnValue(false);
     }
 
-    @Inject(method = "getFaceOcclusionShape", at = @At("HEAD") , cancellable = true)
+    @Inject(
+        method = "getFaceOcclusionShape",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onGetFaceOcclusionShape(BlockGetter level, BlockPos pos, Direction direction, CallbackInfoReturnable<VoxelShape> callback)
     {
         if (NostalgicTweaks.isClient() && BlockCommonUtil.isOldChest(this.getBlock()))
@@ -63,16 +73,20 @@ public abstract class BlockStateBaseMixin
 
     /**
      * Client:
-     *
-     * Disables the random offset positions for blocks such as flowers and tall-grass.
-     * This will only be applied client side since this is a preference rendering option.
-     *
+     * <p>
+     * Disables the random offset positions for blocks such as flowers and tall-grass. This will only be applied client
+     * side since this is a preference rendering option.
+     * <p>
      * Controlled by disable all or flower offset tweaks.
      */
-    @Inject(method = "getOffset", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "getOffset",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onGetOffset(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Vec3> callback)
     {
-        if (NostalgicTweaks.isServer() || this.offsetType == BlockBehaviour.OffsetType.NONE)
+        if (NostalgicTweaks.isServer() || !this.hasOffsetFunction())
             return;
 
         Block block = this.getBlock();
@@ -86,29 +100,37 @@ public abstract class BlockStateBaseMixin
 
     /**
      * Multiplayer:
-     *
+     * <p>
      * Setting the shape to a full block prevents light from coming through chests. Because chests are being changed to
-     * a full-block voxel shape, this should be restricted by a server-only tweak to prevent vanilla multiplayer issues.
-     *
+     * a full-block voxel shape, this should be restricted by a server-only tweak to prevent vanilla multiplayer
+     * issues.
+     * <p>
      * Controlled by the old chest voxel tweak and various old chest tweaks.
      */
 
-    @Inject(method = "isSolidRender", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "isSolidRender",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onIsSolidRender(CallbackInfoReturnable<Boolean> callback)
     {
-        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock()))
+        boolean isChest = ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock());
+
+        if (NostalgicTweaks.isClient() && isChest)
             callback.setReturnValue(true);
     }
 
-    @Inject
-    (
+    @Inject(
         cancellable = true,
         method = "getShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
         at = @At("HEAD")
     )
     private void NT$onGetShape(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callback)
     {
-        if (NostalgicTweaks.isClient() && ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock()))
+        boolean isChest = ModConfig.Candy.oldChestVoxel() && BlockCommonUtil.isOldChest(this.getBlock());
+
+        if (NostalgicTweaks.isClient() && isChest)
             callback.setReturnValue(Shapes.block());
     }
 }

@@ -56,18 +56,28 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
     @Shadow @Final private Font font;
     @Shadow @Final private Minecraft minecraft;
-    @Shadow protected abstract void drawChart(PoseStack poseStack, FrameTimer frameTimer, int startX, int width, boolean drawForFps);
-    @Shadow protected abstract int getSampleColor(int height, int heightMin, int heightMid, int heightMax);
-    @Shadow protected abstract String getPropertyValueString(Map.Entry<Property<?>, Comparable<?>> entry);
-    @Shadow private static String printBiome(Holder<Biome> biomeHolder) { return null; }
     @Shadow private HitResult block;
     @Shadow private HitResult liquid;
+
+    @Shadow
+    protected abstract void drawChart(PoseStack poseStack, FrameTimer frameTimer, int startX, int width, boolean drawForFps);
+
+    @Shadow
+    protected abstract int getSampleColor(int height, int heightMin, int heightMid, int heightMax);
+
+    @Shadow
+    protected abstract String getPropertyValueString(Map.Entry<Property<?>, Comparable<?>> entry);
+
+    @Shadow
+    private static String printBiome(Holder<Biome> biomeHolder)
+    {
+        return null;
+    }
 
     /* Unique Helpers */
 
     /**
-     * Draws a background color behind a debug line.
-     * Controlled by the show debug background tweak.
+     * Draws a background color behind a debug line. Controlled by the show debug background tweak.
      */
     @Unique
     private void NT$drawLineBackground(PoseStack poseStack, String info, int index, boolean isLeft)
@@ -89,8 +99,7 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     }
 
     /**
-     * Draws debug information to the screen.
-     * Controlled by the show debug text shadow tweak.
+     * Draws debug information to the screen. Controlled by the show debug text shadow tweak.
      */
     @Unique
     private void NT$drawInformation(PoseStack poseStack, String text, float x, float y, int color)
@@ -104,20 +113,32 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     /* Injections */
 
     /**
-     * Changes the text rendering to have a shadow when displaying game information.
-     * Controlled by the show debug text shadow tweak.
+     * Changes the text rendering to have a shadow when displaying game information. Controlled by the show debug text
+     * shadow tweak.
      */
-    @Redirect(method = "drawGameInformation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"))
+    @Redirect(
+        method = "drawGameInformation",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"
+        )
+    )
     private int NT$onDrawGameInformation(Font font, PoseStack poseStack, String text, float x, float y, int color)
     {
         return ModConfig.Candy.showDebugTextShadow() ? font.drawShadow(poseStack, text, x, y, color) : font.draw(poseStack, text, x, y, color);
     }
 
     /**
-     * Changes the color of the modern debug background when displaying game information.
-     * Controlled by the show debug background tweak and debug background color tweak.
+     * Changes the color of the modern debug background when displaying game information. Controlled by the show debug
+     * background tweak and debug background color tweak.
      */
-    @Redirect(method = "drawGameInformation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"))
+    @Redirect(
+        method = "drawGameInformation",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"
+        )
+    )
     private void NT$onDrawGameInformationColor(PoseStack poseStack, int minX, int minY, int maxX, int maxY, int color)
     {
         if (ModConfig.Candy.showDebugBackground())
@@ -125,20 +146,32 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     }
 
     /**
-     * Changes the text rendering to have a shadow when displaying system information.
-     * Controlled by the show debug text shadow tweak.
+     * Changes the text rendering to have a shadow when displaying system information. Controlled by the show debug text
+     * shadow tweak.
      */
-    @Redirect(method = "drawSystemInformation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"))
+    @Redirect(
+        method = "drawSystemInformation",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"
+        )
+    )
     private int NT$onDrawSystemInformation(Font font, PoseStack poseStack, String text, float x, float y, int color)
     {
         return ModConfig.Candy.showDebugTextShadow() ? font.drawShadow(poseStack, text, x, y, color) : font.draw(poseStack, text, x, y, color);
     }
 
     /**
-     * Changes the color of the modern debug background when displaying system information.
-     * Controlled by the show debug background tweak.
+     * Changes the color of the modern debug background when displaying system information. Controlled by the show debug
+     * background tweak.
      */
-    @Redirect(method = "drawSystemInformation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"))
+    @Redirect(
+        method = "drawSystemInformation",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"
+        )
+    )
     private void NT$onDrawSystemInformationColor(PoseStack poseStack, int minX, int minY, int maxX, int maxY, int color)
     {
         if (ModConfig.Candy.showDebugBackground())
@@ -146,9 +179,10 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
     }
 
     /**
-     * Changes the rendering of the debugging screen based on the given state of the tweak.
-     * Controlled by the old debug screen tweak.
+     * Changes the rendering of the debugging screen based on the given state of the tweak. Controlled by the old debug
+     * screen tweak.
      */
+    // @formatter:off
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void NT$onRender(PoseStack poseStack, CallbackInfo callback)
     {
@@ -321,13 +355,15 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
         callback.cancel();
     }
+    // @formatter:on
 
     /**
      * Changes the visuals of the FPS chart. This change to the FPS chart will only occur when the old debug screen is
      * enabled.
-     *
+     * <p>
      * Controlled by the old debug screen and draw for FPS flag.
      */
+    // @formatter:off
     @Inject(method = "drawChart", at = @At("HEAD"), cancellable = true)
     private void NT$onDrawChart(PoseStack poseStack, FrameTimer frameTimer, int startX, int width, boolean drawForFps, CallbackInfo callback)
     {
@@ -373,7 +409,6 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
 
         Matrix4f transform = Transformation.identity().getMatrix();
@@ -401,7 +436,6 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         }
 
         BufferUploader.drawWithShader(builder.end());
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
 
         if (isModern)
@@ -445,4 +479,5 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
 
         callback.cancel();
     }
+    // @formatter:on
 }

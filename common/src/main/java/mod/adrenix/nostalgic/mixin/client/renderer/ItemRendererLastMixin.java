@@ -1,42 +1,37 @@
 package mod.adrenix.nostalgic.mixin.client.renderer;
 
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.List;
 
 /**
- * To help with mod compatibility, the mixins defined in this class will be applied last.
- * Mixin injections here will occur after all other mods have finished their required modifications.
+ * To help with mod compatibility, the mixins defined in this class will be applied last. Mixin injections here will
+ * occur after all other mods have finished their required modifications.
  */
 
-@Mixin(value = ItemRenderer.class, priority = MixinPriority.APPLY_LAST)
+@Mixin(
+    value = ItemRenderer.class,
+    priority = MixinPriority.APPLY_LAST
+)
 public abstract class ItemRendererLastMixin
 {
-    /* Shadows */
-
-    @Shadow public abstract void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model);
-
-    /* Injections */
-
     /**
-     * Used to change the normal matrix on the pose stack depending on the quad we're rendering.
-     * Controlled by flat rendering state in the mod utility helper class.
+     * Used to change the normal matrix on the pose stack depending on the quad we're rendering. Controlled by flat
+     * rendering state in the mod utility helper class.
      */
-    @ModifyVariable(method = "renderQuadList", at = @At("LOAD"))
+    @ModifyVariable(
+        method = "renderQuadList",
+        at = @At("LOAD")
+    )
     private BakedQuad NT$onRenderQuad(BakedQuad quad, PoseStack poseStack)
     {
         if (ItemClientUtil.isLightingFlat())
@@ -46,12 +41,17 @@ public abstract class ItemRendererLastMixin
     }
 
     /**
-     * Used to change the quads list so that only the front face of the model renders.
-     * Controlled by the old 2D rendering tweak.
+     * Used to change the quads list so that only the front face of the model renders. Controlled by the old 2D
+     * rendering tweak.
      */
-    @ModifyVariable(method = "renderQuadList", at = @At("LOAD"), argsOnly = true)
+    @ModifyVariable(
+        method = "renderQuadList",
+        at = @At("LOAD"),
+        argsOnly = true
+    )
     private List<BakedQuad> NT$onRenderQuadList(List<BakedQuad> quads)
     {
-        return ModConfig.Candy.oldFlatRendering() && !ModTracker.OPTIFINE.isInstalled() ? ItemClientUtil.getSprites(quads) : quads;
+        return ModConfig.Candy.oldFlatRendering() &&
+            !ModTracker.OPTIFINE.isInstalled() ? ItemClientUtil.getSprites(quads) : quads;
     }
 }

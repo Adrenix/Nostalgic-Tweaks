@@ -27,14 +27,11 @@ public abstract class ItemEntityRendererMixin
     @Shadow @Final private ItemRenderer itemRenderer;
 
     /**
-     * Forces the item entity's rotation to always face the player.
-     * Controlled by the old floating item tweak.
+     * Forces the item entity's rotation to always face the player. Controlled by the old floating item tweak.
      */
-    @Redirect
-    (
+    @Redirect(
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V"
         )
@@ -46,7 +43,10 @@ public abstract class ItemEntityRendererMixin
             BakedModel model = this.itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
 
             if (ItemClientUtil.isModelFlat(model))
-                poseStack.mulPose(Axis.YP.rotationDegrees(180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot()));
+            {
+                float degrees = 180F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot();
+                poseStack.mulPose(Axis.YP.rotationDegrees(degrees));
+            }
             else
                 poseStack.mulPose(Axis.YP.rotation(itemEntity.getSpin(partialTicks)));
         }
@@ -55,17 +55,14 @@ public abstract class ItemEntityRendererMixin
     }
 
     /**
-     * Renders floating item entities as 2D.
-     * Controlled by the old floating items tweak.
+     * Renders floating item entities as 2D. Controlled by the old floating items tweak.
      */
-    @Inject
-    (
+    @Inject(
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At
-        (
+        at = @At(
             shift = At.Shift.BEFORE,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
+            target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
         )
     )
     private void NT$onRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)
@@ -73,6 +70,7 @@ public abstract class ItemEntityRendererMixin
         if (ModConfig.Candy.oldFloatingItems())
         {
             BakedModel model = itemRenderer.getModel(itemEntity.getItem(), null, null, 0);
+
             if (ItemClientUtil.isModelFlat(model))
             {
                 ItemClientUtil.flatten(poseStack);
@@ -82,17 +80,15 @@ public abstract class ItemEntityRendererMixin
     }
 
     /**
-     * Enables diffused lighting after it has been disabled before rendering the item entity.
-     * Not controlled by any tweak.
+     * Enables diffused lighting after it has been disabled before rendering the item entity. Not controlled by any
+     * tweak.
      */
-    @Inject
-    (
+    @Inject(
         method = "render(Lnet/minecraft/world/entity/item/ItemEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At
-        (
+        at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
+            target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"
         )
     )
     private void NT$onFinishRender(ItemEntity itemEntity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo callback)

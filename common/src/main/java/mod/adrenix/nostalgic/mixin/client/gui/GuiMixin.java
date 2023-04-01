@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.api.ClientEventFactory;
 import mod.adrenix.nostalgic.api.event.HudEvent;
@@ -25,11 +26,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /**
- * All the mixins applied to this class are done at the absolute last possible time.
- * Giving the priority flag the max integer value ensures our changes are applied last.
+ * All the mixins applied to this class are done at the absolute last possible time. Giving the priority flag the max
+ * integer value ensures our changes are applied last.
  */
 
-@Mixin(value = Gui.class, priority = Integer.MAX_VALUE)
+@Mixin(
+    value = Gui.class,
+    priority = Integer.MAX_VALUE
+)
 public abstract class GuiMixin extends GuiComponent
 {
     /* Trackers */
@@ -41,8 +45,12 @@ public abstract class GuiMixin extends GuiComponent
 
     /* Shadows */
 
-    @Shadow protected abstract LivingEntity getPlayerVehicleWithHealth();
-    @Shadow protected abstract Player getCameraPlayer();
+    @Shadow
+    protected abstract LivingEntity getPlayerVehicleWithHealth();
+
+    @Shadow
+    protected abstract Player getCameraPlayer();
+
     @Shadow private int screenWidth;
     @Shadow private int screenHeight;
 
@@ -50,6 +58,7 @@ public abstract class GuiMixin extends GuiComponent
 
     /**
      * If both the disabled hunger bar and disable experience bar tweaks are off, then the vanilla HUD can take over.
+     *
      * @return Whether the mod is no longer making changes to the HUD.
      */
     @Unique
@@ -61,10 +70,14 @@ public abstract class GuiMixin extends GuiComponent
     /* Injections */
 
     /**
-     * Disables the rendering of the selected item name above the hotbar.
-     * Controlled by the old selected item name tweak.
+     * Disables the rendering of the selected item name above the hotbar. Controlled by the old selected item name
+     * tweak.
      */
-    @Inject(method = "renderSelectedItemName", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+        method = "renderSelectedItemName",
+        at = @At(value = "HEAD"),
+        cancellable = true
+    )
     private void NT$onRenderSelectedItemName(PoseStack poseStack, CallbackInfo callback)
     {
         if (ModConfig.Candy.oldNoSelectedItemName())
@@ -72,15 +85,13 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Removes the chat formatting of the selected item above the hotbar.
-     * Controlled by the old plain selected item name tweak.
+     * Removes the chat formatting of the selected item above the hotbar. Controlled by the old plain selected item name
+     * tweak.
      */
-    @Inject
-    (
+    @Inject(
         method = "renderSelectedItemName",
         locals = LocalCapture.CAPTURE_FAILSOFT,
-        at = @At
-        (
+        at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/Gui;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"
@@ -93,10 +104,16 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Prevents the axis crosshair from overriding the default crosshair.
-     * Controlled by the old debug screen tweak.
+     * Prevents the axis crosshair from overriding the default crosshair. Controlled by the old debug screen tweak.
      */
-    @Redirect(method = "renderCrosshair", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;renderDebug:Z", opcode = Opcodes.GETFIELD))
+    @Redirect(
+        method = "renderCrosshair",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/client/Options;renderDebug:Z",
+            opcode = Opcodes.GETFIELD
+        )
+    )
     private boolean NT$onRenderDebugCrosshair(Options instance)
     {
         if (ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN))
@@ -106,15 +123,12 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Disables the rendering of the "ready to attack" indicator status.
-     * Controlled by the disabled cooldown tweak.
+     * Disables the rendering of the "ready to attack" indicator status. Controlled by the disabled cooldown tweak.
      */
-    @Inject
-    (
+    @Inject(
         cancellable = true,
         method = "renderCrosshair",
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/player/LocalPlayer;getAttackStrengthScale(F)F"
         )
@@ -134,7 +148,7 @@ public abstract class GuiMixin extends GuiComponent
         first since the left/right vertical offsets need updated based on whether the food icons are rendered. Next, the
         hearts rendered since there can be additional row of hearts above the first row. The armor and air bubble icons
         are rendered last since their vertical positions are dependent on where the heart and food icons are. All icon
-        vertical offsets are shifted based on whether the experience bar is rendered.
+        vertical offsets are shifted based on whether the experience bar is visible.
 
         Some mods, such as the Apple Skin mod, will receive support due to the simplicity of implementing support. Other
         mods may want to use the Nostalgic HUD API to get the starting x/y positions for rows of icons if they want to
@@ -145,7 +159,15 @@ public abstract class GuiMixin extends GuiComponent
      * Gets the starting y-position of the hotbar. Since our mixin is applied last, this receives the value modified by
      * any other mods first.
      */
-    @ModifyArg(method = "renderHotbar", index = 2, at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"))
+    @ModifyArg(
+        method = "renderHotbar",
+        index = 2,
+        at = @At(
+            value = "INVOKE",
+            ordinal = 0,
+            target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
+        )
+    )
     private int NT$onRenderHotbar(int y)
     {
         int height = this.screenHeight - y + 10;
@@ -159,10 +181,13 @@ public abstract class GuiMixin extends GuiComponent
     /**
      * Resets the heart icon index tracker when the HUD heart icons are rendered. Also updates the left-height offset
      * tracker before the hearts are rendered.
-     *
+     * <p>
      * Not controlled by any tweaks.
      */
-    @Inject(method = "renderHearts", at = @At("HEAD"))
+    @Inject(
+        method = "renderHearts",
+        at = @At("HEAD")
+    )
     private void NT$onRenderHearts(PoseStack poseStack, Player player, int x, int y, int height, int regen, float healthMax, int health, int healthLast, int absorb, boolean highlight, CallbackInfo callback)
     {
         this.NT$heartIndex = -1;
@@ -178,14 +203,11 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Updates the heart icon index tracker when a heart container is rendered.
-     * Not controlled by any tweaks.
+     * Updates the heart icon index tracker when a heart container is rendered. Not controlled by any tweaks.
      */
-    @Inject
-    (
+    @Inject(
         method = "renderHearts",
-        at = @At
-        (
+        at = @At(
             ordinal = 0,
             shift = At.Shift.BEFORE,
             value = "INVOKE",
@@ -198,11 +220,16 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Moves the position of the player's heart bar.
-     * Controlled by various gameplay tweaks.
+     * Moves the position of the player's heart bar. Controlled by various gameplay tweaks.
      */
-    @Redirect(method = "renderHeart", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"))
-    private void NT$onRenderHeart(Gui instance, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    @Redirect(
+        method = "renderHeart",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
+        )
+    )
+    private void NT$onRenderHeart(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         if (this.NT$heartIndex >= 10)
         {
@@ -213,7 +240,7 @@ public abstract class GuiMixin extends GuiComponent
         if (this.NT$isHudVanilla())
         {
             ClientEventFactory.RENDER_HEART.create(x, y, this.NT$heartIndex, this.NT$heartRow, poseStack).emit();
-            instance.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
+            Gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
 
             GuiUtil.heartY = y;
             return;
@@ -227,74 +254,102 @@ public abstract class GuiMixin extends GuiComponent
         GuiUtil.heartY = event.getY();
 
         if (!event.isCanceled())
-            instance.blit(poseStack, event.getX(), event.getY(), uOffset, vOffset, uWidth, vHeight);
+            Gui.blit(poseStack, event.getX(), event.getY(), uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
-     * Prevents the rendering of vanilla armor icons when not riding a vehicle.
-     * Not controlled by any tweaks.
+     * Prevents the rendering of vanilla armor icons when not riding a vehicle. Not controlled by any tweaks.
      */
-    @Redirect
-    (
+    @Redirect(
         method = "renderPlayerHealth",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
-        slice = @Slice
-        (
-            from = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V")
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
+        ),
+        slice = @Slice(
+            from = @At(
+                value = "INVOKE",
+                ordinal = 0,
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V"
+            ),
+            to = @At(
+                value = "INVOKE",
+                ordinal = 0,
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"
+            )
         )
     )
-    private void NT$onBlitArmor(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    private void NT$onBlitArmor(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         if (this.NT$isHudVanilla())
-            gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
+            Gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
-     * Prevents the rendering of vanilla food icons when not riding a vehicle.
-     * Not controlled by any tweaks.
+     * Prevents the rendering of vanilla food icons when not riding a vehicle. Not controlled by any tweaks.
      */
-    @Redirect
-    (
+    @Redirect(
         method = "renderPlayerHealth",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
-        slice = @Slice
-        (
-            from = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V")
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
+        ),
+        slice = @Slice(
+            from = @At(
+                value = "INVOKE",
+                ordinal = 1,
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"
+            ),
+            to = @At(
+                value = "INVOKE",
+                ordinal = 2,
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"
+            )
         )
     )
-    private void NT$onBlitFood(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    private void NT$onBlitFood(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         if (this.NT$isHudVanilla())
-            gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
+            Gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
-     * Prevents the rendering of vanilla air bubble icons when not riding a vehicle.
-     * Not controlled by any tweaks.
+     * Prevents the rendering of vanilla air bubble icons when not riding a vehicle. Not controlled by any tweaks.
      */
-    @Redirect
-    (
+    @Redirect(
         method = "renderPlayerHealth",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
-        slice = @Slice
-        (
-            from = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"),
-            to = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V")
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"
+        ),
+        slice = @Slice(
+            from = @At(
+                value = "INVOKE",
+                ordinal = 2,
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"
+            ),
+            to = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"
+            )
         )
     )
-    private void NT$onBlitAir(Gui gui, PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    private void NT$onBlitAir(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         if (this.NT$isHudVanilla())
-            gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
+            Gui.blit(poseStack, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
-     * Renders the food texture icon.
-     * Controlled by various HUD tweaks.
+     * Renders the food texture icon. Controlled by various HUD tweaks.
      */
-    @Inject(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getArmorValue()I"))
+    @Inject(
+        method = "renderPlayerHealth",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/player/Player;getArmorValue()I"
+        )
+    )
     private void NT$onRenderFood(PoseStack poseStack, CallbackInfo callback)
     {
         if (ModConfig.Gameplay.disableHungerBar() || this.NT$isHudVanilla())
@@ -306,14 +361,11 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Renders the armor texture icon.
-     * Controlled by various HUD tweaks.
+     * Renders the armor texture icon. Controlled by various HUD tweaks.
      */
-    @Inject
-    (
+    @Inject(
         method = "renderPlayerHealth",
-        at = @At
-        (
+        at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/Gui;renderHearts(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V"
@@ -324,16 +376,7 @@ public abstract class GuiMixin extends GuiComponent
         if (this.NT$isHudVanilla())
             return;
 
-        GuiUtil.renderArmor
-        (
-            (Gui) (Object) this,
-            poseStack,
-            this.getCameraPlayer(),
-            this.screenWidth,
-            this.screenHeight,
-            this.NT$leftHeight,
-            this.NT$rightHeight
-        );
+        GuiUtil.renderArmor((Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
 
         if (ModConfig.Gameplay.disableHungerBar())
             this.NT$rightHeight += 10;
@@ -343,6 +386,7 @@ public abstract class GuiMixin extends GuiComponent
 
     /**
      * Boolean supplier that is used by the common GUI utility to check if the player is losing air.
+     *
      * @param player A player instance.
      * @return Whether the player is losing air.
      */
@@ -352,26 +396,22 @@ public abstract class GuiMixin extends GuiComponent
     }
 
     /**
-     * Renders the air bubble texture icon.
-     * Controlled by various HUD tweaks.
+     * Renders the air bubble texture icon. Controlled by various HUD tweaks.
      */
-    @Inject(method = "renderPlayerHealth", at = @At(value = "INVOKE", ordinal = 2, target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"))
+    @Inject(
+        method = "renderPlayerHealth",
+        at = @At(
+            value = "INVOKE",
+            ordinal = 2,
+            target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V"
+        )
+    )
     private void NT$onRenderAir(PoseStack poseStack, CallbackInfo callback)
     {
         if (this.NT$isHudVanilla())
             return;
 
-        GuiUtil.renderAir
-        (
-            GuiMixin::isPlayerLosingAir,
-            (Gui) (Object) this,
-            poseStack,
-            this.getCameraPlayer(),
-            this.screenWidth,
-            this.screenHeight,
-            this.NT$leftHeight,
-            this.NT$rightHeight
-        );
+        GuiUtil.renderAir(GuiMixin::isPlayerLosingAir, (Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
 
         if (isPlayerLosingAir(this.getCameraPlayer()))
         {
