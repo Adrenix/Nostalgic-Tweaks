@@ -79,7 +79,6 @@ public abstract class ProgressRenderer
             progress = xOffset;
 
         RenderSystem.disableDepthTest();
-        RenderSystem.disableTexture();
         RenderSystem.disableBlend();
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -99,7 +98,6 @@ public abstract class ProgressRenderer
         tesselator.end();
 
         RenderSystem.enableBlend();
-        RenderSystem.enableTexture();
         RenderSystem.enableDepthTest();
     }
 }

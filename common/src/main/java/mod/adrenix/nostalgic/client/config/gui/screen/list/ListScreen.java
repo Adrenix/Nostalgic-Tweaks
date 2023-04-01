@@ -794,7 +794,7 @@ public abstract class ListScreen extends ConfigScreen
         }
 
         if (Overlay.isOpened())
-            this.getSearchBox().setFocus(false);
+            this.getSearchBox().setFocused(false);
 
         Overlay.resize();
     }
@@ -856,7 +856,7 @@ public abstract class ListScreen extends ConfigScreen
                 this.refreshSearchResults();
             }
 
-            this.getSearchBox().setFocus(true);
+            this.getSearchBox().setFocused(true);
 
             return true;
         }
@@ -872,7 +872,7 @@ public abstract class ListScreen extends ConfigScreen
         if (this.getSearchBox().isFocused() && this.getSearchBox().isVisible())
         {
             if (isEsc)
-                this.getSearchBox().setFocus(false);
+                this.getSearchBox().setFocused(false);
 
             return true;
         }
@@ -954,7 +954,7 @@ public abstract class ListScreen extends ConfigScreen
         if (this.minecraft.level != null)
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
         else
-            this.renderDirtBackground(0);
+            this.renderDirtBackground(poseStack);
 
         this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
         this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
@@ -1005,7 +1005,7 @@ public abstract class ListScreen extends ConfigScreen
         else
         {
             // Ensure the search box is not focused
-            this.widgetProvider.searchBox.setFocus(false);
+            this.widgetProvider.searchBox.setFocused(false);
 
             // Translate on the z-axis for tooltips
             poseStack.pushPose();
@@ -1252,7 +1252,7 @@ public abstract class ListScreen extends ConfigScreen
                 if (ListScreen.this.minecraft.player != null)
                 {
                     this.searchBox.setValue("");
-                    this.searchBox.setFocus(false);
+                    this.searchBox.setFocused(false);
 
                     ItemStack itemStack = ListScreen.this.minecraft.player.getMainHandItem();
 
@@ -1274,7 +1274,7 @@ public abstract class ListScreen extends ConfigScreen
             return new StateButton(StateWidget.CLEAR, search.getX() + search.getWidth() + 3, search.getY() - 1, (button) ->
             {
                 search.setValue("");
-                search.setFocus(true);
+                search.setFocused(true);
                 ListScreen.this.refreshSearchResults();
             });
         }

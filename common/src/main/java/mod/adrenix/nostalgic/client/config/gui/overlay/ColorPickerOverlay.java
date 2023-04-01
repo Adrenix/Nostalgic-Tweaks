@@ -202,7 +202,6 @@ public class ColorPickerOverlay extends Overlay
         blit(poseStack, closeX, closeY, this.isOverClose ? U_CLOSE_ON : U_CLOSE_OFF, this.isOverClose ? V_CLOSE_ON : V_CLOSE_OFF, CLOSE_WIDTH, CLOSE_HEIGHT);
         blit(poseStack, hintX, hintY, isOverHint ? U_HINT_ON : U_HINT_OFF, isOverHint ? V_HINT_ON : V_HINT_OFF, HINT_SQUARE, HINT_SQUARE);
 
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         int leftX = startX + 14;
@@ -229,7 +228,6 @@ public class ColorPickerOverlay extends Overlay
             widget.render(sliders, mouseX, mouseY, partialTick);
 
         // Render borders around color sliders
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         leftX = startX + 38;
@@ -265,7 +263,6 @@ public class ColorPickerOverlay extends Overlay
         }
 
         poseStack.popPose();
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 }

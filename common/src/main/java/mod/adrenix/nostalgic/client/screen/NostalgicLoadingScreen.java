@@ -81,7 +81,7 @@ public class NostalgicLoadingScreen extends Screen
         if (this.minecraft == null)
             return;
 
-        this.renderDirtBackground(0);
+        this.renderDirtBackground(poseStack);
 
         ProgressRenderer.drawTitleText(poseStack, this, this.title);
         ProgressRenderer.drawSubtitleText(poseStack, this, this.subtitle);

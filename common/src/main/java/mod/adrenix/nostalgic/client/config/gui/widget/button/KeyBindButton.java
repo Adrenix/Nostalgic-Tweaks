@@ -139,7 +139,7 @@ public class KeyBindButton extends ControlButton
      * @param partialTick The change in game frame time.
      */
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         this.setMessage(this.mapping.getTranslatedKeyMessage());
 
@@ -158,7 +158,7 @@ public class KeyBindButton extends ControlButton
         else if (KeyUtil.isMappingConflict(this.mapping))
             this.setMessage(this.mapping.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.RED));
 
-        super.renderButton(poseStack, mouseX, mouseY, partialTick);
+        super.renderWidget(poseStack, mouseX, mouseY, partialTick);
         this.renderTags(poseStack, mouseX, mouseY);
     }
 }

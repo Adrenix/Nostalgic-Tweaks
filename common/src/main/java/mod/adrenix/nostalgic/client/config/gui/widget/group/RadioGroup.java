@@ -135,6 +135,9 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 
     /* Radio */
@@ -246,6 +249,9 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
         /* Required Widget Overrides */
 
         @Override
-        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
+        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
     }
 }

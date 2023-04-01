@@ -156,7 +156,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
             return;
         }
 
-        this.renderDirtBackground(0);
+        this.renderDirtBackground(poseStack);
 
         if (this.renderProgressBar)
             ProgressRenderer.renderProgressWithInt(this.progress);

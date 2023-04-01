@@ -327,7 +327,6 @@ public class CategoryListOverlay extends GenericOverlay
                 RenderSystem.disableDepthTest();
                 RenderSystem.enableBlend();
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-                RenderSystem.disableTexture();
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
                 Tesselator tesselator = Tesselator.getInstance();

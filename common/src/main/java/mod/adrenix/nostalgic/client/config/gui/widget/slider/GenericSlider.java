@@ -239,12 +239,11 @@ public class GenericSlider extends AbstractSliderButton
     /**
      * Handler method for rendering the background of this widget.
      * @param poseStack The current pose stack.
-     * @param minecraft The current game instance.
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
      */
     @Override
-    protected void renderBg(PoseStack poseStack, Minecraft minecraft, int mouseX, int mouseY)
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         // Render Slider
 

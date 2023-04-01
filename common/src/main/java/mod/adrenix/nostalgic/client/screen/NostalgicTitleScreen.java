@@ -169,7 +169,7 @@ public class NostalgicTitleScreen extends TitleScreen
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         if (ModConfig.Candy.oldTitleBackground())
-            this.renderDirtBackground(0);
+            this.renderDirtBackground(poseStack);
         else
         {
             this.panorama.render(partialTick, 1.0F);
@@ -467,7 +467,7 @@ public class NostalgicTitleScreen extends TitleScreen
     private void onResources(Button ignored)
     {
         if (this.minecraft != null)
-            this.minecraft.setScreen(new PackSelectionScreen(this, this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), Component.translatable("resourcePack.title")));
+            this.minecraft.setScreen(new PackSelectionScreen(this.minecraft.getResourcePackRepository(), this::updatePackList, this.minecraft.getResourcePackDirectory(), Component.translatable("resourcePack.title")));
     }
 
     /* Button Layouts */

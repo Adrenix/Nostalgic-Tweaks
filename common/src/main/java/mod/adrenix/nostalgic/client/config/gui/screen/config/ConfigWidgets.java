@@ -636,7 +636,7 @@ public class ConfigWidgets
     public void focusSearch()
     {
         this.getSearchInput().setVisible(true);
-        this.getSearchInput().setFocus(true);
+        this.getSearchInput().setFocused(true);
         this.getSearchInput().setEditable(true);
     }
 

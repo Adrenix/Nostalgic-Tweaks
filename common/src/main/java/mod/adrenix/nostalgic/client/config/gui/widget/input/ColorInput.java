@@ -179,7 +179,6 @@ public class ColorInput extends AbstractWidget
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         // Bordering is used so users can see alpha transparency
@@ -190,7 +189,6 @@ public class ColorInput extends AbstractWidget
         RenderUtil.fill(buffer, matrix, leftX + 1, rightX - 1, topY + 1, bottomY - 1, color);
         tesselator.end();
 
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
 
         if (ClassUtil.isNotInstanceOf(Minecraft.getInstance().screen, ConfigScreen.class))
@@ -211,5 +209,8 @@ public class ColorInput extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 }

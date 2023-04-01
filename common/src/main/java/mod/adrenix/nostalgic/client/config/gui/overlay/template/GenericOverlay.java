@@ -226,7 +226,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
      */
     public void renderCloseButton(PoseStack poseStack, int mouseX, int mouseY)
     {
-        RenderSystem.enableTexture();
         RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int closeX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth();
@@ -243,8 +242,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
             Overlay.CLOSE_WIDTH,
             Overlay.CLOSE_HEIGHT
         );
-
-        RenderSystem.disableTexture();
     }
 
     /**
@@ -255,7 +252,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
      */
     public void renderHintButton(PoseStack poseStack, int mouseX, int mouseY)
     {
-        RenderSystem.enableTexture();
         RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int hintX = (int) this.x + W_TOP_LEFT_CORNER + this.getDrawWidth() - 10;
@@ -272,8 +268,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
             HINT_SQUARE,
             HINT_SQUARE
         );
-
-        RenderSystem.disableTexture();
     }
 
     /**
@@ -282,7 +276,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
      */
     public void renderBorder(PoseStack poseStack)
     {
-        RenderSystem.enableTexture();
         RenderSystem.setShaderTexture(0, TextureLocation.CATEGORY_LIST);
 
         int startX = (int) this.x;
@@ -316,8 +309,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
 
         // Draw bottom right
         this.blit(poseStack, startX + W_BOTTOM_LEFT_CORNER + drawWidth, startY + H_TOP_RIGHT_CORNER + drawHeight, U_BOTTOM_RIGHT_CORNER, V_BOTTOM_RIGHT_CORNER, W_BOTTOM_RIGHT_CORNER, H_BOTTOM_RIGHT_CORNER);
-
-        RenderSystem.disableTexture();
     }
 
     /**
@@ -334,7 +325,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         float leftX = (float) this.x + 6;

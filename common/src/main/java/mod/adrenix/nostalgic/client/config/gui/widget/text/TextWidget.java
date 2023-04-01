@@ -93,5 +93,8 @@ public class TextWidget extends AbstractWidget
     /* Required Overrides */
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 }

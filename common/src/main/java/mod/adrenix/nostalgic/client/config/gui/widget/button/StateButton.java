@@ -162,9 +162,9 @@ public class StateButton extends OverlapButton
      * @param partialTick The change in game frame time.
      */
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTick);
+        super.renderWidget(poseStack, mouseX, mouseY, partialTick);
 
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
 

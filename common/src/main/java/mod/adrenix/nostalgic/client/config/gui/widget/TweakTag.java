@@ -366,5 +366,8 @@ public class TweakTag extends AbstractWidget
     /* Required Widget Overrides */
 
     @Override
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

@@ -473,9 +473,9 @@ public class ConfigScreen extends Screen
         if (KeyUtil.isEsc(keyCode) && this.shouldCloseOnEsc() && mappingInput == null)
         {
             if (this.getWidgets().getSearchInput().isFocused())
-                this.getWidgets().getSearchInput().setFocus(false);
+                this.getWidgets().getSearchInput().setFocused(false);
             else if (editBox != null && editBox.isFocused())
-                editBox.setFocus(false);
+                editBox.setFocused(false);
             else
                 this.onCancel();
 
@@ -819,7 +819,7 @@ public class ConfigScreen extends Screen
         if (this.minecraft.level != null)
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
         else
-            this.renderDirtBackground(0);
+            this.renderDirtBackground(poseStack);
 
         this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
         this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);

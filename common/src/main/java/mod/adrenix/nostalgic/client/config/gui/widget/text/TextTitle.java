@@ -177,7 +177,7 @@ public class TextTitle<V> extends AbstractWidget
             entryTitle = Component.literal(entryTitle.getString() + ChatFormatting.RED + " (" + saved + ")");
         }
 
-        listScreen.getItemRenderer().renderGuiItem(itemStack, startX, startY);
+        listScreen.getItemRenderer().renderGuiItem(poseStack, itemStack, startX, startY);
         Screen.drawString(poseStack, font, entryTitle, startX + 21, this.getY() + 6, 0xFFFFFF);
 
         boolean isHovering = MathUtil.isWithinBox(mouseX, mouseY, startX, this.getY() + 4, font.width(entryTitle) + 21, 14);
@@ -191,5 +191,8 @@ public class TextTitle<V> extends AbstractWidget
     /* Required Overrides */
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 }

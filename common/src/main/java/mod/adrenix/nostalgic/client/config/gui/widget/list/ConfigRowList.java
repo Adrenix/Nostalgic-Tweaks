@@ -205,10 +205,10 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         boolean isClicked = super.mouseClicked(mouseX, mouseY, button);
 
         if (this.screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH && isClicked)
-            this.screen.getWidgets().getSearchInput().setFocus(false);
+            this.screen.getWidgets().getSearchInput().setFocused(false);
 
         if (this.screen instanceof ListScreen listScreen && isClicked)
-            listScreen.getSearchBox().setFocus(false);
+            listScreen.getSearchBox().setFocused(false);
 
         return isClicked;
     }
@@ -586,7 +586,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-            RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
             float z = 0.0F;
@@ -605,7 +604,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             buffer.vertex(matrix, (float) 0, (float) (top - 1), z).color(r, g, b, alpha).endVertex();
             tesselator.end();
 
-            RenderSystem.enableTexture();
             RenderSystem.disableBlend();
         }
 
@@ -649,7 +647,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-            RenderSystem.disableTexture();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
             int rgba = ColorUtil.toHexInt(color.getValue());
@@ -735,7 +732,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
             tesselator.end();
 
-            RenderSystem.enableTexture();
             RenderSystem.disableBlend();
         }
 

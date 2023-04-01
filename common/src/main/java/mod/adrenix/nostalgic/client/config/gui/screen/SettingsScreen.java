@@ -297,7 +297,7 @@ public class SettingsScreen extends Screen
         if (this.minecraft.level != null)
             this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
         else
-            this.renderDirtBackground(0);
+            this.renderDirtBackground(poseStack);
 
         this.renderLogo(poseStack);
 

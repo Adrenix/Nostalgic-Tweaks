@@ -162,7 +162,7 @@ public class ItemButton extends Button
 
         RenderSystem.applyModelViewMatrix();
 
-        this.screen.getItemRenderer().renderGuiItem(this.itemStack, startX, startY);
+        this.screen.getItemRenderer().renderGuiItem(poseStack, this.itemStack, startX, startY);
 
         viewStack.popPose();
         RenderSystem.applyModelViewMatrix();

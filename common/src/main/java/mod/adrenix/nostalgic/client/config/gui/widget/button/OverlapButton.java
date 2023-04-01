@@ -151,7 +151,7 @@ public class OverlapButton extends Button
      * @param partialTick The change in game frame time.
      */
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         for (Renderable child : this.widgets)
         {
@@ -162,7 +162,7 @@ public class OverlapButton extends Button
             }
         }
 
-        super.renderButton(poseStack, mouseX, mouseY, partialTick);
+        super.renderWidget(poseStack, mouseX, mouseY, partialTick);
     }
 
     /**
