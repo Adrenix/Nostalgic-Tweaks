@@ -637,7 +637,6 @@ public abstract class ModConfig
         public static boolean oldVerticalBobbing() { return getBoolTweak(AnimationTweak.BOB_VERTICAL, ANIMATION.oldVerticalBobbing); }
         public static boolean oldCollideBobbing() { return getBoolTweak(AnimationTweak.COLLIDE_BOB, ANIMATION.oldCollideBobbing); }
         public static boolean oldCreativeCrouch() { return getSidedBoolTweak(AnimationTweak.CREATIVE_CROUCH, ANIMATION.oldCreativeCrouch, SERVER_ANIMATION.oldCreativeCrouch); }
-        public static boolean oldDirectionTilt() { return getSidedBoolTweak(AnimationTweak.DIRECTIONAL_DAMAGE, ANIMATION.oldDirectionalDamage, SERVER_ANIMATION.oldDirectionalDamage); }
         public static boolean oldRandomTilt() { return getBoolTweak(AnimationTweak.RANDOM_DAMAGE, ANIMATION.oldRandomDamage); }
         public static boolean oldSneaking() { return getBoolTweak(AnimationTweak.SNEAK_SMOOTH, ANIMATION.oldSneaking); }
 

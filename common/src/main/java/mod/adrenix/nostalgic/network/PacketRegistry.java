@@ -17,7 +17,6 @@ public abstract class PacketRegistry
     {
         PacketC2SChangeTweak.register();
         PacketS2CTweakUpdate.register();
-        PacketS2CHurtDirection.register();
         PacketS2CHandshake.register();
     }
 }
