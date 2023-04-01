@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -31,17 +30,20 @@ import java.util.List;
 public abstract class ItemClientUtil
 {
     /**
-     * Used to enhance the old reequipping logic by preventing visual glitches when pulling items out of the player's hand.
+     * Used to enhance the old reequipping logic by preventing visual glitches when pulling items out of the player's
+     * hand.
+     *
      * @param originalItemStack The original item stack.
      * @param rendererItemStack The renderer's item stack.
-     * @param playerItemStack The player's item stack.
-     * @param player The current player.
+     * @param playerItemStack   The player's item stack.
+     * @param player            The current player.
      * @return What should be considered the last item stack.
      */
     public static ItemStack getLastItem(ItemStack originalItemStack, ItemStack rendererItemStack, ItemStack playerItemStack, SlotTracker player)
     {
         // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
-        boolean isUnequipped = rendererItemStack.toString().equals("0 air") && playerItemStack.toString().equals("1 air");
+        boolean isUnequipped = rendererItemStack.toString().equals("0 air") &&
+            playerItemStack.toString().equals("1 air");
 
         if (!ModConfig.Animation.oldItemReequip() || !isUnequipped)
             return originalItemStack;
@@ -55,26 +57,28 @@ public abstract class ItemClientUtil
     private static boolean isRenderingFlat = false;
 
     /**
-     * Used to cache the current level pose stack position matrix for re-enabling diffused lighting after flat rendering.
+     * Used to cache the current level pose stack position matrix for re-enabling diffused lighting after flat
+     * rendering.
      */
-    @CheckForNull
-    public static PoseStack.Pose levelPoseStack;
+    @CheckForNull public static PoseStack.Pose levelPoseStack;
 
     /**
-     * Used to cache the current buffer source during the entity render cycle.
-     * This is needed so we can end the batch early to apply flat lighting to vertices.
+     * Used to cache the current buffer source during the entity render cycle. This is needed so we can end the batch
+     * early to apply flat lighting to vertices.
      */
     public static MultiBufferSource.BufferSource levelBufferSource;
 
     /**
      * Used to check if a model should be rendered in 2D.
+     *
      * @param model The model to check.
      * @return Whether the given model uses block light.
      */
-    public static boolean isModelFlat(BakedModel model) { return !model.usesBlockLight(); }
+    public static boolean isModelFlat(BakedModel model) {return !model.usesBlockLight();}
 
     /**
      * Shortcut for checking if a model is flat based on the given item stack.
+     *
      * @param itemStack The item stack to get model data from.
      * @return Whether the item stack can render as flat.
      */
@@ -85,15 +89,17 @@ public abstract class ItemClientUtil
 
     /**
      * Flattens an item to be as close to 2D as possible via scaling.
+     *
      * @param poseStack The current pose stack.
      */
-    public static void flatten(PoseStack poseStack) { poseStack.scale(1.0F, 1.0F, 0.001F); }
+    public static void flatten(PoseStack poseStack) {poseStack.scale(1.0F, 1.0F, 0.001F);}
 
     /**
      * Getter for checking if diffused lighting is disabled.
+     *
      * @return Whether the item renderer should be rendering flat items.
      */
-    public static boolean isLightingFlat() { return isRenderingFlat; }
+    public static boolean isLightingFlat() {return isRenderingFlat;}
 
     /**
      * Turns off diffused lighting.
@@ -129,6 +135,7 @@ public abstract class ItemClientUtil
 
     /**
      * Used to change the normal based on which quad side we're rendering.
+     *
      * @param pose The current matrix in the pose stack.
      * @param quad The quad to make changes to.
      */
@@ -142,6 +149,7 @@ public abstract class ItemClientUtil
 
     /**
      * Returns a singleton list of the front facing quad, or all quads if not rendering in 2D.
+     *
      * @param quads A list of model quads.
      * @return A new list of quads or same list if not rendering in 2D.
      */
@@ -163,6 +171,7 @@ public abstract class ItemClientUtil
 
     /**
      * Checks if an item stack can be colored.
+     *
      * @return Whether the given item stack should have its color modified.
      */
     public static boolean isValidColorItem()
@@ -172,8 +181,9 @@ public abstract class ItemClientUtil
 
     /**
      * Shifts an item's color.
+     *
      * @param SHIFT_RGB The current color.
-     * @param SHIFT The color modifier.
+     * @param SHIFT     The color modifier.
      */
     private static void shiftItemColor(final float[] SHIFT_RGB, final float SHIFT)
     {
@@ -184,6 +194,7 @@ public abstract class ItemClientUtil
 
     /**
      * Shifts leather item colors.
+     *
      * @param SHIFT_RGB The current leather color.
      */
     private static void shiftLeatherItemColor(final float[] SHIFT_RGB)
@@ -199,16 +210,17 @@ public abstract class ItemClientUtil
 
     /**
      * Gets a modified color for old 2D item colors.
+     *
      * @param itemColor The current item color.
-     * @param stack The item stack reference.
+     * @param stack     The item stack reference.
      * @param tintIndex The tint index.
      * @return An RGB integer for coloring.
      */
     public static int getOldColor(ItemColor itemColor, ItemStack stack, int tintIndex)
     {
         final int COLOR = itemColor.getColor(stack, tintIndex);
-        final int[] ITEM_RGB = new int[] { (COLOR & 0xFF0000) >> 16, (COLOR & 0xFF00) >> 8, COLOR & 0xFF };
-        final float[] SHIFT_RGB = new float[] { ITEM_RGB[0], ITEM_RGB[1], ITEM_RGB[2] };
+        final int[] ITEM_RGB = new int[]{(COLOR & 0xFF0000) >> 16, (COLOR & 0xFF00) >> 8, COLOR & 0xFF};
+        final float[] SHIFT_RGB = new float[]{ITEM_RGB[0], ITEM_RGB[1], ITEM_RGB[2]};
 
         if (stack.getItem() instanceof SpawnEggItem)
             shiftItemColor(SHIFT_RGB, 0.35F);
@@ -223,13 +235,15 @@ public abstract class ItemClientUtil
     }
 
     /**
-     * Similar to {@link ItemRenderer#renderGuiItem(ItemStack, int, int)} except that this method changes render scaling.
+     * Similar to {@link ItemRenderer#renderGuiItem(PoseStack, ItemStack, int, int)} except that this method changes
+     * render scaling.
+     *
      * @param itemStack The item stack to render.
-     * @param x Where the rendering starts on the x-axis.
-     * @param y Where the rendering starts on the y-axis.
-     * @param scale The custom scaling for rendering.
-     * @param dx The change in x-axis translation.
-     * @param dy The change in y-axis translation.
+     * @param x         Where the rendering starts on the x-axis.
+     * @param y         Where the rendering starts on the y-axis.
+     * @param scale     The custom scaling for rendering.
+     * @param dx        The change in x-axis translation.
+     * @param dy        The change in y-axis translation.
      */
     public static void renderGuiItem(ItemStack itemStack, int x, int y, float scale, float dx, float dy)
     {
@@ -243,7 +257,7 @@ public abstract class ItemClientUtil
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         viewStack.pushPose();
-        viewStack.translate(x, y, 100.0F + itemRenderer.blitOffset);
+        viewStack.translate(x, y, 100.0F);
         viewStack.translate(8.0F + dx, 8.0F + dy, 0.0F);
         viewStack.scale(1.0F, -1.0F, 1.0F);
         viewStack.scale(16.0f, 16.0f, 16.0f);
@@ -259,7 +273,7 @@ public abstract class ItemClientUtil
         if (isLightingFlat)
             Lighting.setupForFlatItems();
 
-        itemRenderer.render(itemStack, ItemTransforms.TransformType.GUI, false, poseStack, buffer, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
+        itemRenderer.render(itemStack, ItemDisplayContext.GUI, false, poseStack, buffer, 0xF000F0, OverlayTexture.NO_OVERLAY, bakedModel);
 
         buffer.endBatch();
         RenderSystem.enableDepthTest();
@@ -273,6 +287,7 @@ public abstract class ItemClientUtil
 
     /**
      * Shortcut for rendering a GUI item with a custom scale and translation in the y-axis.
+     *
      * @see ItemClientUtil#renderGuiItem(ItemStack, int, int, float, float)
      */
     public static void renderGuiItem(ItemStack itemStack, int x, int y, float scale, float dy)

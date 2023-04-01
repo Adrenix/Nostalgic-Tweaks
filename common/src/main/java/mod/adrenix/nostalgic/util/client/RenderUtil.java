@@ -3,8 +3,6 @@ package mod.adrenix.nostalgic.util.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
@@ -78,7 +76,6 @@ public abstract class RenderUtil
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-        RenderSystem.disableTexture();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -88,7 +85,6 @@ public abstract class RenderUtil
         builder.vertex(matrix, leftX, topY, z).color(argb).endVertex();
         tesselator.end();
 
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 
@@ -108,11 +104,9 @@ public abstract class RenderUtil
         RenderSystem.setShaderTexture(0, resource);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
-        Screen screen = Minecraft.getInstance().screen;
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         Matrix4f matrix = poseStack.last().pose();
 
-        int offset = screen != null ? screen.getBlitOffset() : 0;
         float x2 = x + uWidth;
         float y2 = y + vHeight;
         float minU = uOffset / 256.0F;
@@ -121,10 +115,10 @@ public abstract class RenderUtil
         float maxV = (vOffset + vHeight) / 256.0F;
 
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        builder.vertex(matrix, x, y2, offset).uv(minU, maxV).endVertex();
-        builder.vertex(matrix, x2, y2, offset).uv(maxU, maxV).endVertex();
-        builder.vertex(matrix, x2, y, offset).uv(maxU, minV).endVertex();
-        builder.vertex(matrix, x, y, offset).uv(minU, minV).endVertex();
+        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).endVertex();
+        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).endVertex();
+        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).endVertex();
         BufferUploader.drawWithShader(builder.end());
     }
 }

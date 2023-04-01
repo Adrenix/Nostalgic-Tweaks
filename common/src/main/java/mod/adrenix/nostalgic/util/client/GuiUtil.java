@@ -294,7 +294,6 @@ public abstract class GuiUtil
     /**
      * Renders an inverse half-armor texture.
      * @param poseStack The current pose stack.
-     * @param offset The z-offset.
      * @param x The x-position.
      * @param y The y-position.
      * @param uOffset The u-coordinate (horizontal) on the texture sheet.
@@ -302,16 +301,16 @@ public abstract class GuiUtil
      * @param uWidth The horizontal width of the texture.
      * @param vHeight The vertical height of the texture.
      */
-    public static void renderInverseArmor(PoseStack poseStack, float offset, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    public static void renderInverseArmor(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         // Flip the vertex’s u texture coordinates so the half armor texture rendering goes from right to left
         Matrix4f matrix = poseStack.last().pose();
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(matrix, x, y + vHeight, offset).uv((uOffset + uWidth) / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
-        bufferBuilder.vertex(matrix, x + uWidth, y + vHeight, offset).uv(uOffset / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
-        bufferBuilder.vertex(matrix, x + uWidth, y, offset).uv(uOffset / 256.0F, vOffset / 256.0F).endVertex();
-        bufferBuilder.vertex(matrix, x, y, offset).uv((uOffset + uWidth) / 256.0F, vOffset / 256.0F).endVertex();
+        bufferBuilder.vertex(matrix, x, y + vHeight, 0.0F).uv((uOffset + uWidth) / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
+        bufferBuilder.vertex(matrix, x + uWidth, y + vHeight, 0.0F).uv(uOffset / 256.0F, (vOffset + vHeight) / 256.0F).endVertex();
+        bufferBuilder.vertex(matrix, x + uWidth, y, 0.0F).uv(uOffset / 256.0F, vOffset / 256.0F).endVertex();
+        bufferBuilder.vertex(matrix, x, y, 0.0F).uv((uOffset + uWidth) / 256.0F, vOffset / 256.0F).endVertex();
         BufferUploader.drawWithShader(bufferBuilder.end());
     }
 
@@ -356,19 +355,19 @@ public abstract class GuiUtil
             {
                 // Half armor
                 if (isHungerDisabled && !isXChanged)
-                    GuiUtil.renderInverseArmor(poseStack, gui.getBlitOffset(), x, y, 25, 9, 9, 9);
+                    GuiUtil.renderInverseArmor(poseStack, x, y, 25, 9, 9, 9);
                 else
-                    gui.blit(poseStack, x, y, 25, 9, 9, 9);
+                    Gui.blit(poseStack, x, y, 25, 9, 9, 9);
             }
             else if (i < level)
             {
                 // Full armor
-                gui.blit(poseStack, x, y, 34, 9, 9, 9);
+                Gui.blit(poseStack, x, y, 34, 9, 9, 9);
             }
             else
             {
                 // No armor
-                gui.blit(poseStack, x, y, 16, 9, 9, 9);
+                Gui.blit(poseStack, x, y, 16, 9, 9, 9);
             }
 
             left += 8;
@@ -424,12 +423,12 @@ public abstract class GuiUtil
             x = event.getX();
             y = event.getY();
 
-            gui.blit(poseStack, x, y, 16 + background * 9, 27, 9, 9);
+            Gui.blit(poseStack, x, y, 16 + background * 9, 27, 9, 9);
 
             if (iconX < level)
-                gui.blit(poseStack, x, y, icon + 36, 27, 9, 9);
+                Gui.blit(poseStack, x, y, icon + 36, 27, 9, 9);
             else if (iconX == level)
-                gui.blit(poseStack, x, y, icon + 45, 27, 9, 9);
+                Gui.blit(poseStack, x, y, icon + 45, 27, 9, 9);
         }
     }
 
@@ -487,7 +486,7 @@ public abstract class GuiUtil
                 x = event.getX();
                 y = event.getY();
 
-                gui.blit(poseStack, x, y, (i < full ? 16 : 25), 18, 9, 9);
+                Gui.blit(poseStack, x, y, (i < full ? 16 : 25), 18, 9, 9);
             }
         }
     }
