@@ -26,10 +26,14 @@ public abstract class GameRendererMixin
     @Unique private boolean NT$isDirectionSet = false;
 
     /**
-     * Brings back the vertical bobbing. Camera pitching data is injected into the player class.
-     * Controlled by vertical bobbing tweak.
+     * Brings back the vertical bobbing. Camera pitching data is injected into the player class. Controlled by vertical
+     * bobbing tweak.
      */
-    @Inject(method = "bobView", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+        method = "bobView",
+        at = @At(value = "HEAD"),
+        cancellable = true
+    )
     private void NT$onBobView(PoseStack poseStack, float partialTicks, CallbackInfo callback)
     {
         if (ModConfig.Animation.oldVerticalBobbing() && this.minecraft.getCameraEntity() instanceof Player player)
@@ -41,33 +45,35 @@ public abstract class GameRendererMixin
             float bob = Mth.lerp(partialTicks, player.oBob, player.bob);
             float pitch = Mth.lerp(partialTicks, injector.NT$getPrevCameraPitch(), injector.NT$getCameraPitch());
 
+            // @formatter:off
             poseStack.translate(Mth.sin(walkDist * (float) Math.PI) * bob * 0.5F, -Math.abs(Mth.cos(walkDist * (float) Math.PI) * bob), 0.0F);
             poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.sin(walkDist * (float) Math.PI) * bob * 3.0F));
             poseStack.mulPose(Axis.XP.rotationDegrees(Math.abs(Mth.cos(walkDist * (float) Math.PI - 0.2F) * bob) * 5.0F));
             poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
+            // @formatter:on
 
             callback.cancel();
         }
     }
 
     /**
-     * Changes the hurt direction based on the last hurt by mob.
-     * Controlled by the old damage tilt tweak.
+     * Changes the hurt direction based on the last hurt by mob. Controlled by the old damage tilt tweak.
      */
-    @Inject(method = "bobHurt", at = @At("HEAD"))
+    @Inject(
+        method = "bobHurt",
+        at = @At("HEAD")
+    )
     private void NT$onBobHurt(PoseStack poseStack, float partialTicks, CallbackInfo callback)
     {
         boolean isRandom = ModConfig.Animation.oldRandomTilt();
         boolean isVanilla = isRandom && !NostalgicTweaks.isNetworkVerified();
-        boolean isOverride = isRandom && !ModConfig.Animation.oldDirectionTilt();
-        boolean isTilted = isVanilla || isOverride;
 
-        if (isTilted && this.minecraft.getCameraEntity() instanceof Player player)
+        if (isVanilla && this.minecraft.getCameraEntity() instanceof Player player)
         {
             if ((float) player.hurtTime - partialTicks > 0 && !this.NT$isDirectionSet)
             {
                 this.NT$isDirectionSet = true;
-                player.hurtDir = (int) (Math.random() * 2.0) * 180;
+                player.animateHurt((int) (Math.random() * 2.0) * 180);
             }
             else if ((float) player.hurtTime - partialTicks <= 0)
                 this.NT$isDirectionSet = false;

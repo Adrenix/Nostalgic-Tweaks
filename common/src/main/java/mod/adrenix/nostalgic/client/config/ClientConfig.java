@@ -2418,13 +2418,6 @@ public class ClientConfig implements ConfigData
         static { AnimationTweak.CREATIVE_CROUCH.setKey("oldCreativeCrouch"); }
 
         @TweakGui.New
-        @TweakData.Server
-        @TweakData.EntryStatus
-        @TweakGui.Category(container = TweakCategory.PLAYER_ANIMATION)
-        public boolean oldDirectionalDamage = DefaultConfig.Animation.OLD_DIRECTIONAL_DAMAGE;
-        static { AnimationTweak.DIRECTIONAL_DAMAGE.setKey("oldDirectionalDamage"); }
-
-        @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
         @TweakGui.Category(container = TweakCategory.PLAYER_ANIMATION)

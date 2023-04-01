@@ -35,7 +35,6 @@ public enum AnimationTweak implements Tweak
     BACKWARD_WALK,
     COLLIDE_BOB,
     RANDOM_DAMAGE,
-    DIRECTIONAL_DAMAGE,
     BOB_VERTICAL,
     CREATIVE_CROUCH,
     SNEAK_SMOOTH;

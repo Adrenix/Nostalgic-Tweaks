@@ -2,10 +2,7 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.widen.SheepAccessor;
-import mod.adrenix.nostalgic.network.packet.PacketS2CHurtDirection;
-import mod.adrenix.nostalgic.util.common.PacketUtil;
 import mod.adrenix.nostalgic.util.server.ItemServerUtil;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,14 +21,14 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * All mixins within this class are injected into both client and server.
- * Do not class load any vanilla client code here.
+ * All mixins within this class are injected into both client and server. Do not class load any vanilla client code
+ * here.
+ *
  * @see mod.adrenix.nostalgic.mixin.client.world.entity.LivingEntityMixin
  * @see mod.adrenix.nostalgic.mixin.server.LivingEntityMixin
  */
@@ -41,44 +38,39 @@ public abstract class LivingEntityMixin extends Entity
 {
     /* Dummy Constructor */
 
-    private LivingEntityMixin(EntityType<?> entity, Level level) { super(entity, level); }
-
-    /* Shadows */
-
-    @Shadow public float hurtDir;
+    private LivingEntityMixin(EntityType<?> entity, Level level)
+    {
+        super(entity, level);
+    }
 
     /* Injections */
 
     /**
-     * Sends a last hurt source packet to the client so the damage tilt animation can be applied.
-     * Controlled by the old damage tilt tweak.
+     * Prevents living entities from playing the food consumption sound. Controlled by the old hunger tweak.
      */
-    @Inject(method = "hurt", at = @At("TAIL"))
-    private void NT$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback)
-    {
-        LivingEntity living = (LivingEntity) (Object) this;
-
-        if (ModConfig.Animation.oldDirectionTilt() && living instanceof ServerPlayer player)
-            PacketUtil.sendToPlayer(player, new PacketS2CHurtDirection(this.hurtDir));
-    }
-
-    /**
-     * Prevents living entities from playing the food consumption sound.
-     * Controlled by the old hunger tweak.
-     */
-    @Redirect(method = "eat", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
-    private void NT$onEat(Level instance, Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch)
+    @Redirect(
+        method = "eat",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"
+        )
+    )
+    private void NT$onEat(Level level, Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch)
     {
         if (ModConfig.Gameplay.instantEat())
             return;
-        instance.playSound(player, x, y, z, sound, category, volume, pitch);
+
+        level.playSound(player, x, y, z, sound, category, volume, pitch);
     }
 
     /**
-     * Prevents the spawning of food consumption particles and eating sounds.
-     * Controlled by the old hunger tweak.
+     * Prevents the spawning of food consumption particles and eating sounds. Controlled by the old hunger tweak.
      */
-    @Inject(method = "triggerItemUseEffects", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "triggerItemUseEffects",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onAddEatEffect(ItemStack itemStack, int count, CallbackInfo callback)
     {
         if (ModConfig.Gameplay.instantEat() && itemStack.getUseAnimation() == UseAnim.EAT)
@@ -86,13 +78,16 @@ public abstract class LivingEntityMixin extends Entity
     }
 
     /**
-     * Brings back the old backwards walking animation.
-     * Controlled by the old backwards walk tweak.
+     * Brings back the old backwards walking animation. Controlled by the old backwards walk tweak.
      */
-    @ModifyConstant
-    (
+    @ModifyConstant(
         method = "tick",
-        slice = @Slice(to = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;attackAnim:F")),
+        slice = @Slice(
+            to = @At(
+                value = "FIELD",
+                target = "Lnet/minecraft/world/entity/LivingEntity;attackAnim:F"
+            )
+        ),
         constant = @Constant(floatValue = 180.0F)
     )
     private float NT$onBackwardsRotation(float vanilla)
@@ -101,10 +96,13 @@ public abstract class LivingEntityMixin extends Entity
     }
 
     /**
-     * Immediately refills the player's air supply when they go above water.
-     * Controlled by the instant air tweak.
+     * Immediately refills the player's air supply when they go above water. Controlled by the instant air tweak.
      */
-    @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "increaseAirSupply",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onIncreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> callback)
     {
         if (ModConfig.Gameplay.instantAir())
@@ -112,15 +110,13 @@ public abstract class LivingEntityMixin extends Entity
     }
 
     /**
-     * Makes zombie flesh not as overpowered by swapping the hunger effect with poison.
-     * Controlled by the old hunger tweak.
+     * Makes zombie flesh not as overpowered by swapping the hunger effect with poison. Controlled by the old hunger
+     * tweak.
      */
-    @Inject
-    (
+    @Inject(
         cancellable = true,
         method = "addEatEffect",
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/world/food/FoodProperties;getEffects()Ljava/util/List;"
         )
@@ -143,27 +139,36 @@ public abstract class LivingEntityMixin extends Entity
     }
 
     /**
-     * Ensures that any food loot dropped doesn't get overridden by the old food stacking tweaking.
-     * Not controlled by any tweak.
+     * Ensures that any food loot dropped doesn't get overridden by the old food stacking tweaking. Not controlled by
+     * any tweak.
      */
 
-    @Inject(method = "dropFromLootTable", at = @At("HEAD"))
+    @Inject(
+        method = "dropFromLootTable",
+        at = @At("HEAD")
+    )
     private void NT$onStartDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
         ItemServerUtil.isDroppingLoot = true;
     }
 
-    @Inject(method = "dropFromLootTable", at = @At("TAIL"))
+    @Inject(
+        method = "dropFromLootTable",
+        at = @At("TAIL")
+    )
     private void NT$onEndDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
         ItemServerUtil.isDroppingLoot = false;
     }
 
     /**
-     * Changes the loot dropped by certain entities.
-     * Controlled by various loot override tweaks.
+     * Changes the loot dropped by certain entities. Controlled by various loot override tweaks.
      */
-    @Inject(method = "dropFromLootTable", at = @At("HEAD"), cancellable = true)
+    @Inject(
+        method = "dropFromLootTable",
+        at = @At("HEAD"),
+        cancellable = true
+    )
     private void NT$onDropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo callback)
     {
         Entity entity = damageSource.getEntity();
@@ -180,20 +185,16 @@ public abstract class LivingEntityMixin extends Entity
         boolean isSheep = ModConfig.Gameplay.oldSheepDrops() && type == EntityType.SHEEP;
         boolean isStray = ModConfig.Gameplay.oldStrayDrops() && type == EntityType.STRAY;
         boolean isPig = ModConfig.Gameplay.oldPigDrops() && type == EntityType.PIG;
-
         boolean isCow = (ModConfig.Gameplay.oldCowDrops() && type == EntityType.COW) ||
-            (ModConfig.Gameplay.oldMooshroomDrops() && type == EntityType.MOOSHROOM)
-        ;
+            (ModConfig.Gameplay.oldMooshroomDrops() && type == EntityType.MOOSHROOM);
 
         boolean isSpider = (ModConfig.Gameplay.oldSpiderDrops() && type == EntityType.SPIDER) ||
-            (ModConfig.Gameplay.oldCaveSpiderDrops() && type == EntityType.CAVE_SPIDER)
-        ;
+            (ModConfig.Gameplay.oldCaveSpiderDrops() && type == EntityType.CAVE_SPIDER);
 
         boolean isZombie = (ModConfig.Gameplay.oldZombieDrops() && type == EntityType.ZOMBIE) ||
             (ModConfig.Gameplay.oldZombieVillagerDrops() && type == EntityType.ZOMBIE_VILLAGER) ||
             (ModConfig.Gameplay.oldDrownedDrops() && type == EntityType.DROWNED) ||
-            (ModConfig.Gameplay.oldHuskDrops() && type == EntityType.HUSK)
-        ;
+            (ModConfig.Gameplay.oldHuskDrops() && type == EntityType.HUSK);
 
         if (isZombiePigmen)
             ItemServerUtil.splitLoot(callback, this, new ItemStack(Items.COOKED_PORKCHOP, zeroToTwo));
