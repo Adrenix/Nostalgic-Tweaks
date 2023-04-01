@@ -1,6 +1,6 @@
-# Nostalgic Tweaks - 1.19.3 (v2) Development Branch
+# Nostalgic Tweaks - 1.19.4 (v2) Development Branch
 ### Forge & Fabric
-This is the 1.19.3 (v2) development branch for N.T.
+This is the 1.19.4 (v2) development branch for N.T.
 
 ### Current In-Development Version
 v2.0.0
@@ -10,7 +10,7 @@ N/a
 
 ### Related Development Branches
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
-- [1.19.2](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.2)
+- [1.19.3](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.3)
 - [1.19.2 Multiplayer](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.2-multiplayer)
 
 ## Nostalgic Tweaks API For Developers (Fabric)
@@ -37,7 +37,7 @@ modCompileOnly("maven.modrinth:nostalgic-tweaks:<version>") {
 
 Where `<version>` is replaced by an appropriate version number found on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks/versions).
 Ensure you are using a **version number** and not a *version display name*. A version number is formatted as
-`mc-version+mod-loader+mod-version`. An example version number would be `1.19.3+fabric+2.0.0`.
+`mc-version+mod-loader+mod-version`. An example version number would be `1.19.4+fabric+2.0.0`.
 
 Once you are compiling against the Nostalgic Tweaks API, you can use the `"nostalgic_tweaks"` [entrypoint](https://fabricmc.net/wiki/documentation:entrypoint)
 to register your event handlers. Below is an example on how to create such a handler.
@@ -105,7 +105,7 @@ compileOnly "maven.modrinth:nostalgic-tweaks:<version>"
 
 Where `<version>` is replaced by an appropriate version number found on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks/versions).
 Ensure you are using a **version number** and not a *version display name*. A version number is formatted as
-`mc-version+mod-loader+mod-version`. An example version number would be `1.19.3+forge+2.0.0`.
+`mc-version+mod-loader+mod-version`. An example version number would be `1.19.4+forge+2.0.0`.
 
 Once you are compiling against the Nostalgic Tweaks API, you can create an event handler and only register it when a
 user has `Nostalgic Tweaks` installed. Below is an example on how to create such an implementation.
