@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
 import net.minecraft.client.Minecraft;
@@ -65,10 +64,7 @@ public abstract class GameRendererMixin
     )
     private void NT$onBobHurt(PoseStack poseStack, float partialTicks, CallbackInfo callback)
     {
-        boolean isRandom = ModConfig.Animation.oldRandomTilt();
-        boolean isVanilla = isRandom && !NostalgicTweaks.isNetworkVerified();
-
-        if (isVanilla && this.minecraft.getCameraEntity() instanceof Player player)
+        if (ModConfig.Animation.oldRandomTilt() && this.minecraft.getCameraEntity() instanceof Player player)
         {
             if ((float) player.hurtTime - partialTicks > 0 && !this.NT$isDirectionSet)
             {
