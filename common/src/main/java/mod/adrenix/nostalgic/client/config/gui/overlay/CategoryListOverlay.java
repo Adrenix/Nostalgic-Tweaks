@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.GenericOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
@@ -17,7 +18,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
@@ -292,7 +292,7 @@ public class CategoryListOverlay extends GenericOverlay
      * This class defines the rows that will be included in a text row list instance.
      * Only text button widgets are used in rows.
      */
-    private static class TextRow extends ContainerObjectSelectionList.Entry<TextRow>
+    private static class TextRow extends AbstractEntry<TextRow>
     {
         /* Fields */
 

@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  * @param <R> A class type that will be used for rows.
  */
 
-public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Entry<R>> extends ContainerObjectSelectionList<R>
+public abstract class AbstractRowList<R extends AbstractEntry<R>> extends ContainerObjectSelectionList<R>
 {
     /* Fields */
 
@@ -544,7 +544,7 @@ public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Ent
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 
         if (this.isTransparentList && this.minecraft.level == null)
-            this.fillGradient(poseStack, this.x0, this.y0, this.x1, this.y1, 0x68000000, 0x68000000);
+            Screen.fillGradient(poseStack, this.x0, this.y0, this.x1, this.y1, 0x68000000, 0x68000000);
 
         this.renderList(poseStack, startY, mouseX, mouseY, partialTick);
 

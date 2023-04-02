@@ -384,7 +384,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      *
      * Rendering of all the rows listed above is also defined by this class.
      */
-    public static class Row extends ContainerObjectSelectionList.Entry<Row>
+    public static class Row extends AbstractEntry<Row>
     {
         /* Nullable Fields */
 
