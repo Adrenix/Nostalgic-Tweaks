@@ -74,7 +74,7 @@ public abstract class BlockClientUtil
      */
     public static boolean isTorchModel(BlockState state)
     {
-        return BlockCommonUtil.isBlockEqualTo(state, Blocks.TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_WALL_TORCH);
+        return BlockCommonUtil.isBlockEqualTo(state, Blocks.TORCH, Blocks.REDSTONE_TORCH, Blocks.SOUL_TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_WALL_TORCH);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class BlockClientUtil
         boolean isWallTorch = ModConfig.Candy.oldTorchModel() && state.is(Blocks.WALL_TORCH);
         boolean isSoulWallTorch = ModConfig.Candy.oldSoulTorchModel() && state.is(Blocks.SOUL_WALL_TORCH);
         boolean isRedstoneWallTorch = ModConfig.Candy.oldRedstoneTorchModel() && state.is(Blocks.REDSTONE_WALL_TORCH);
-        boolean isOldBrightness = ModConfig.Candy.oldTorchBrightness() && (state.is(Blocks.WALL_TORCH) || state.is(Blocks.TORCH));
+        boolean isOldBrightness = ModConfig.Candy.oldTorchBrightness();
         boolean isTorchSheared = isWallTorch || isSoulWallTorch || isRedstoneWallTorch;
 
         int blockLight = level.getBrightness(LightLayer.BLOCK, position);
