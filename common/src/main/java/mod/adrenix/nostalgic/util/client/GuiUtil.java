@@ -236,7 +236,7 @@ public abstract class GuiUtil
 
         CornerManager manager = new CornerManager();
 
-        boolean isCreative = player.isCreative();
+        boolean isCreative = player.isCreative() || player.isSpectator();
         boolean isLevelCreative = isCreative && ModConfig.Gameplay.displayAlternativeLevelCreative();
         boolean isProgressCreative = isCreative && ModConfig.Gameplay.displayAlternativeProgressCreative();
 
