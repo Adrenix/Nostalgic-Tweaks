@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.common.config.tweak.Tweak;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -245,15 +245,7 @@ public class GenericSlider extends AbstractSliderButton
     @Override
     public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        // Render Slider
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-
-        int dy = !this.active ? 0 : (this.isHoveredOrFocused() ? 2 : 1) * 20;
-
-        this.blit(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)), this.getY(), 0, 46 + dy, 4, 20);
-        this.blit(poseStack, this.getX() + (int) (this.value * (double) (this.width - 8)) + 4, this.getY(), 196, 46 + dy, 4, 20);
+        super.renderWidget(poseStack, mouseX, mouseY, partialTick);
 
         // Render Hearts
 
@@ -270,7 +262,7 @@ public class GenericSlider extends AbstractSliderButton
 
             for (int i = 0; i < 10; i++)
             {
-                this.blit(poseStack, dx, y, 16, 0, 9, 9);
+                GuiComponent.blit(poseStack, dx, y, 16, 0, 9, 9);
                 dx += 9;
             }
 
@@ -280,11 +272,11 @@ public class GenericSlider extends AbstractSliderButton
             {
                 if (MathUtil.isOdd(i))
                 {
-                    this.blit(poseStack, dx, y, 52, 0, 9, 9);
+                    GuiComponent.blit(poseStack, dx, y, 52, 0, 9, 9);
                     dx += 9;
                 }
                 else
-                    this.blit(poseStack, dx, y, 61, 0, 9, 9);
+                    GuiComponent.blit(poseStack, dx, y, 61, 0, 9, 9);
             }
         }
     }
