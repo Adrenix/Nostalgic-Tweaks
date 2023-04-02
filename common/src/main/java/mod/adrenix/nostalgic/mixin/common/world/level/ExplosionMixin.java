@@ -129,7 +129,7 @@ public abstract class ExplosionMixin
                     for (float i = border; i > 0.0F; i -= 0.225F)
                     {
                         if (Math.random() > 0.96)
-                            blocks.add(new BlockPos((int) posX, (int) posY, (int) posZ));
+                            blocks.add(BlockPos.containing(posX, posY, posZ));
 
                         posX += dx * (double) 0.3F;
                         posY += dy * (double) 0.3F;
