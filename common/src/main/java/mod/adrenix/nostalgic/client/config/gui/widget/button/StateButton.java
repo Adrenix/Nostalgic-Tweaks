@@ -175,8 +175,8 @@ public class StateButton extends OverlapButton
         switch (this.widget)
         {
             case NUKE -> ItemClientUtil.renderGuiItem(new ItemStack(Items.TNT), blockX, blockY, 0.85F, -0.5F);
-            case BUBBLE -> this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, 123, this.width, this.height);
-            case FUZZY, FILTER -> this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, 143, this.width, this.height);
+            case BUBBLE -> Screen.blit(poseStack, this.getX(), this.getY(), uOffset, 123, this.width, this.height);
+            case FUZZY, FILTER -> Screen.blit(poseStack, this.getX(), this.getY(), uOffset, 143, this.width, this.height);
         }
 
         this.renderToolTip(poseStack, mouseX, mouseY);

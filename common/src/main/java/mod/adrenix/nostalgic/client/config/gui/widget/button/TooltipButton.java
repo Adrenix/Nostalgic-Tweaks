@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class TooltipButton extends Button
         int uWidth = 12;
         int vHeight = 14;
 
-        screen.blit(poseStack, startX, startY, 0, 0, uWidth, vHeight);
+        Screen.blit(poseStack, startX, startY, 0, 0, uWidth, vHeight);
 
         boolean isOverBubble = MathUtil.isWithinBox(mouseX, mouseY, startX, startY, uWidth, vHeight);
         boolean isWithinList = ConfigWidgets.isInsideRowList(mouseY);

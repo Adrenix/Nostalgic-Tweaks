@@ -294,7 +294,7 @@ public class ContainerButton extends Button
         this.width = 20 + minecraft.font.width(this.title);
         this.active = !Overlay.isOpened();
 
-        screen.blit(poseStack, blitX, blitY, uOffset, vOffset, uWidth, vHeight);
+        Screen.blit(poseStack, blitX, blitY, uOffset, vOffset, uWidth, vHeight);
         Screen.drawString(poseStack, minecraft.font, this.title, this.getX() + 20, this.getY() + 5, isMouseOver ? 0xFFD800 : color);
     }
 }

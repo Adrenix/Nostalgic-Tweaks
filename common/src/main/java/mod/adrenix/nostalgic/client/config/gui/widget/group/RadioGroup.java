@@ -238,7 +238,7 @@ public class RadioGroup<E extends Enum<E>> extends AbstractWidget
             else if (this.isSelected())
                 vOffset = 63;
 
-            screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
+            Screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
 
             Component defaultText = Component.literal(this.isDefault() ? String.format(" (%s)", Component.translatable(LangUtil.Gui.DEFAULT).getString()) : "");
             Component optionText = Component.literal(this.label.apply(this.value).getString() + defaultText.getString());

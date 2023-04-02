@@ -18,6 +18,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -153,17 +154,17 @@ public class StatusButton extends Button
         StatusButton.update();
 
         if (isStatusProblem && !flipState)
-            screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
+            Screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
         else if (isTweakDynamic && !flipState)
-            screen.blit(poseStack, xStart, yStart, 21, 21, uWidth, vHeight);
+            Screen.blit(poseStack, xStart, yStart, 21, 21, uWidth, vHeight);
         else
         {
             switch (status)
             {
-                case LOADED -> screen.blit(poseStack, xStart, yStart, 14, 0, uWidth, vHeight);
-                case WAIT -> screen.blit(poseStack, xStart, yStart, 14, 21, uWidth, vHeight);
-                case WARN -> screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
-                case FAIL -> screen.blit(poseStack, xStart, yStart, 27, 0, uWidth, vHeight);
+                case LOADED -> Screen.blit(poseStack, xStart, yStart, 14, 0, uWidth, vHeight);
+                case WAIT -> Screen.blit(poseStack, xStart, yStart, 14, 21, uWidth, vHeight);
+                case WARN -> Screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);
+                case FAIL -> Screen.blit(poseStack, xStart, yStart, 27, 0, uWidth, vHeight);
             }
         }
 

@@ -166,7 +166,7 @@ public class ToggleCheckbox extends Checkbox
         else if (this.selected())
             vOffset = 83;
 
-        this.screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
+        Screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
         ToggleCheckbox.drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
 
         if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)

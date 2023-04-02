@@ -121,7 +121,6 @@ public class TweakTag extends AbstractWidget
 
     /**
      * Draws a tag to the screen.
-     * @param screen The current screen.
      * @param poseStack The current pose stack.
      * @param x The x-position of where the tag should be drawn.
      * @param y The y-position of where the tag should be drawn.
@@ -129,15 +128,14 @@ public class TweakTag extends AbstractWidget
      * @param vOffset The vertical texture coordinate offset.
      * @param render Whether the tag should be rendered.
      */
-    private static void draw(Screen screen, PoseStack poseStack, int x, int y, int uOffset, int vOffset, boolean render)
+    private static void draw(PoseStack poseStack, int x, int y, int uOffset, int vOffset, boolean render)
     {
         if (render)
-            screen.blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+            Screen.blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
     }
 
     /**
      * Renders a complete tag to the screen.
-     * @param screen The current screen.
      * @param poseStack The current pose stack.
      * @param tag The tag to render.
      * @param startX The x-position of where the tag should be drawn.
@@ -146,7 +144,7 @@ public class TweakTag extends AbstractWidget
      * @param render Whether the tag should be rendered.
      * @return An x-position of where the next tag should start rendering. This includes the defined tag margin.
      */
-    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
+    public static int renderTag(PoseStack poseStack, Component tag, int startX, int startY, int uOffset, boolean render)
     {
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
         Font font = Minecraft.getInstance().font;
@@ -154,12 +152,12 @@ public class TweakTag extends AbstractWidget
         int tagWidth = font.width(tag);
         int endX = getTagWidth(tag, startX);
 
-        TweakTag.draw(screen, poseStack, startX, startY, uOffset, V_GLOBAL_OFFSET, render);
+        TweakTag.draw(poseStack, startX, startY, uOffset, V_GLOBAL_OFFSET, render);
 
         for (int i = 0; i < tagWidth + TAG_MARGIN; i++)
-            TweakTag.draw(screen, poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
+            TweakTag.draw(poseStack, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
 
-        TweakTag.draw(screen, poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
+        TweakTag.draw(poseStack, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
 
         if (render)
             font.draw(poseStack, tag, startX + 4, startY + 2, 0xFFFFFF);
@@ -168,10 +166,9 @@ public class TweakTag extends AbstractWidget
     }
 
     /**
-     * An override method of {@link TweakTag#renderTag(Screen, PoseStack, Component, int, int, int, boolean)} that does
+     * An override method of {@link TweakTag#renderTag(PoseStack, Component, int, int, int, boolean)} that does
      * not require a rendering state.
      *
-     * @param screen The current screen.
      * @param poseStack The current pose stack.
      * @param tag The tag to render.
      * @param startX The x-position of where the tag should be drawn.
@@ -179,9 +176,9 @@ public class TweakTag extends AbstractWidget
      * @param uOffset The horizontal texture coordinate offset.
      * @return An x-position of where the next tag should start rendering. This includes the defined tag margin.
      */
-    public static int renderTag(Screen screen, PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
+    public static int renderTag(PoseStack poseStack, Component tag, int startX, int startY, int uOffset)
     {
-        return renderTag(screen, poseStack, tag, startX, startY, uOffset, true);
+        return renderTag(poseStack, tag, startX, startY, uOffset, true);
     }
 
     /**
@@ -277,7 +274,7 @@ public class TweakTag extends AbstractWidget
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, newTitle, newTooltip, lastX, startY, mouseX, mouseY);
 
-            lastX = renderTag(screen, poseStack, newTitle, lastX, startY, U_NEW_OFFSET, this.render);
+            lastX = renderTag(poseStack, newTitle, lastX, startY, U_NEW_OFFSET, this.render);
         }
 
         if (clientTag != null && isSidedRenderable)
@@ -285,7 +282,7 @@ public class TweakTag extends AbstractWidget
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, clientTitle, clientTooltip, lastX, startY, mouseX, mouseY);
 
-            lastX = renderTag(screen, poseStack, clientTitle, lastX, startY, U_CLIENT_OFFSET, this.render);
+            lastX = renderTag(poseStack, clientTitle, lastX, startY, U_CLIENT_OFFSET, this.render);
         }
 
         if (serverTag != null && isSidedRenderable)
@@ -293,7 +290,7 @@ public class TweakTag extends AbstractWidget
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, serverTitle, serverTooltip, lastX, startY, mouseX, mouseY);
 
-            lastX = renderTag(screen, poseStack, serverTitle, lastX, startY, U_SERVER_OFFSET, this.render);
+            lastX = renderTag(poseStack, serverTitle, lastX, startY, U_SERVER_OFFSET, this.render);
         }
 
         if (dynamicTag != null && isSidedRenderable)
@@ -301,39 +298,39 @@ public class TweakTag extends AbstractWidget
             if (isTooltipRenderable)
                 renderTooltip(screen, poseStack, dynamicTitle, dynamicTooltip, lastX, startY, mouseX, mouseY);
 
-            lastX = renderTag(screen, poseStack, dynamicTitle, lastX, startY, U_DYNAMIC_OFFSET, this.render);
+            lastX = renderTag(poseStack, dynamicTitle, lastX, startY, U_DYNAMIC_OFFSET, this.render);
         }
 
         if (reloadTag != null)
         {
             renderTooltip(screen, poseStack, reloadTitle, reloadTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, reloadTitle, lastX, startY, U_RELOAD_OFFSET, this.render);
+            lastX = renderTag(poseStack, reloadTitle, lastX, startY, U_RELOAD_OFFSET, this.render);
         }
 
         if (restartTag != null)
         {
             renderTooltip(screen, poseStack, restartTitle, restartTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, restartTitle, lastX, startY, U_RESTART_OFFSET, this.render);
+            lastX = renderTag(poseStack, restartTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         if (alertTag != null && alertTag.condition().active())
         {
             Component tooltip = Component.translatable(alertTag.langKey());
             renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
+            lastX = renderTag(poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }
 
         if (conflictTag != null && this.tweak.isConflict())
         {
             Component tooltip = Component.translatable(this.tweak.getConflictKey());
             renderTooltip(screen, poseStack, alertTitle, tooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
+            lastX = renderTag(poseStack, alertTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }
 
         if (warningTag != null)
         {
             renderTooltip(screen, poseStack, warningTitle, warningTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, warningTitle, lastX, startY, U_WARNING_OFFSET, this.render);
+            lastX = renderTag(poseStack, warningTitle, lastX, startY, U_WARNING_OFFSET, this.render);
         }
 
         if (sodiumTag != null && ModTracker.SODIUM.isInstalled())
@@ -342,7 +339,7 @@ public class TweakTag extends AbstractWidget
                 sodiumTooltip = Component.translatable(LangUtil.Gui.TAG_SODIUM_TOOLTIP);
 
             renderTooltip(screen, poseStack, sodiumTitle, sodiumTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, sodiumTitle, lastX, startY, U_RESTART_OFFSET, this.render);
+            lastX = renderTag(poseStack, sodiumTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         if (optifineTag != null && ModTracker.OPTIFINE.isInstalled())
@@ -351,7 +348,7 @@ public class TweakTag extends AbstractWidget
                 optifineTooltip = Component.translatable(LangUtil.Gui.TAG_OPTIFINE_TOOLTIP);
 
             renderTooltip(screen, poseStack, optifineTitle, optifineTooltip, lastX, startY, mouseX, mouseY);
-            lastX = renderTag(screen, poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
+            lastX = renderTag(poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
         int previousWidth = this.width;

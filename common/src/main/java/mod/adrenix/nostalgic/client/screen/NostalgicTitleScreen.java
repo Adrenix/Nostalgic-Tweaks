@@ -24,6 +24,7 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.LanguageSelectScreen;
 import net.minecraft.client.gui.screens.OptionsScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
@@ -205,37 +206,37 @@ public class NostalgicTitleScreen extends TitleScreen
             {
                 if (this.isEasterEgged)
                 {
-                    this.blit(poseStack, width, height, 0, 0, 99, 44);
-                    this.blit(poseStack, width + 99, height, 129, 0, 27, 44);
-                    this.blit(poseStack, width + 99 + 26, height, 126, 0, 3, 44);
-                    this.blit(poseStack, width + 99 + 26 + 3, height, 99, 0, 26, 44);
-                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                    Screen.blit(poseStack, width, height, 0, 0, 99, 44);
+                    Screen.blit(poseStack, width + 99, height, 129, 0, 27, 44);
+                    Screen.blit(poseStack, width + 99 + 26, height, 126, 0, 3, 44);
+                    Screen.blit(poseStack, width + 99 + 26 + 3, height, 99, 0, 26, 44);
+                    Screen.blit(poseStack, width + 155, height, 0, 45, 155, 44);
                 }
                 else
                 {
-                    this.blit(poseStack, width, height, 0, 0, 155, 44);
-                    this.blit(poseStack, width + 155, height, 0, 45, 155, 44);
+                    Screen.blit(poseStack, width, height, 0, 0, 155, 44);
+                    Screen.blit(poseStack, width + 155, height, 0, 45, 155, 44);
                 }
             }
             else
             {
                 if (this.isEasterEgged)
                 {
-                    this.blitOutlineBlack(width, height, (x, y) ->
+                    Screen.blitOutlineBlack(width, height, (x, y) ->
                     {
-                        this.blit(poseStack, x, y, 0, 0, 99, 44);
-                        this.blit(poseStack, x + 99, y, 129, 0, 27, 44);
-                        this.blit(poseStack, x + 99 + 26, y, 126, 0, 3, 44);
-                        this.blit(poseStack, x + 99 + 26 + 3, y, 99, 0, 26, 44);
-                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                        Screen.blit(poseStack, x, y, 0, 0, 99, 44);
+                        Screen.blit(poseStack, x + 99, y, 129, 0, 27, 44);
+                        Screen.blit(poseStack, x + 99 + 26, y, 126, 0, 3, 44);
+                        Screen.blit(poseStack, x + 99 + 26 + 3, y, 99, 0, 26, 44);
+                        Screen.blit(poseStack, x + 155, y, 0, 45, 155, 44);
                     });
                 }
                 else
                 {
-                    this.blitOutlineBlack(width, height, (x, y) ->
+                    Screen.blitOutlineBlack(width, height, (x, y) ->
                     {
-                        this.blit(poseStack, x, y, 0, 0, 155, 44);
-                        this.blit(poseStack, x + 155, y, 0, 45, 155, 44);
+                        Screen.blit(poseStack, x, y, 0, 0, 155, 44);
+                        Screen.blit(poseStack, x + 155, y, 0, 45, 155, 44);
                     });
                 }
             }

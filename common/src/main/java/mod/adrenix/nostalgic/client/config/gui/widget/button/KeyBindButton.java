@@ -125,10 +125,10 @@ public class KeyBindButton extends ControlButton
 
         TweakTag.renderTooltip(screen, poseStack, syncTag, syncTooltip, lastX, startY, mouseX, mouseY);
 
-        lastX = TweakTag.renderTag(screen, poseStack, syncTag, lastX, startY, TweakTag.U_KEY_OFFSET);
+        lastX = TweakTag.renderTag(poseStack, syncTag, lastX, startY, TweakTag.U_KEY_OFFSET);
 
         TweakTag.renderTooltip(screen, poseStack, autoTag, autoTooltip, lastX, startY, mouseX, mouseY);
-        TweakTag.renderTag(screen, poseStack, autoTag, lastX, startY, TweakTag.U_SYNC_OFFSET);
+        TweakTag.renderTag(poseStack, autoTag, lastX, startY, TweakTag.U_SYNC_OFFSET);
     }
 
     /**
