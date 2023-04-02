@@ -296,6 +296,7 @@
   "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_orb": "Experience Orbs",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_block": "Experience Blocks",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.fire": "Fire",
+  "gui.nostalgic_tweaks.config.gameplay.subcategory.cart": "Cart",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.block": "Block",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.player": "Player",
   "gui.nostalgic_tweaks.config.gameplay.subcategory.farming": "Farming",
@@ -969,6 +970,8 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableEnchantTable.@Tooltip": "Disable enchantment table block interactions.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableEnchantTable.@Related": "Experience, XP",
 
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.cartBoosting": "Cart Boosting",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.cartBoosting.@Tooltip": "Bring back the old cart boosting mechanics. To perform this old mechanic, place§e two parallel rail tracks§r so that minecarts can§6 touch each other§r. When the minecarts§a connect§r, this old mechanic will cause the minecarts to start moving together and boosting each other at a§b high rate of speed§r.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableBedBounce": "Disable Bed Bounce",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableBedBounce.@Tooltip": "Disable entities bouncing on beds and disable fall damage reduction when landing on beds.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableSprint": "Disable Sprinting",

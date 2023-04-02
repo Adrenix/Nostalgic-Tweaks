@@ -338,6 +338,7 @@ public abstract class DefaultConfig
         public static final boolean LEFT_CLICK_LEVER = false;
         public static final boolean LEFT_CLICK_BUTTON = false;
         public static final boolean TILLED_GRASS_SEEDS = true;
+        public static final boolean CART_BOOSTING = false;
 
         // Hunger System
         public static final String HUNGER_FOOD_TEXT = "Food: %v";
@@ -485,7 +486,6 @@ public abstract class DefaultConfig
         public static final boolean OLD_COLLIDE_BOBBING = true;
         public static final boolean OLD_VERTICAL_BOBBING = true;
         public static final boolean OLD_CREATIVE_CROUCH = true;
-        public static final boolean OLD_DIRECTIONAL_DAMAGE = true;
         public static final boolean OLD_RANDOM_DAMAGE = true;
         public static final boolean OLD_SNEAKING = true;
     }
