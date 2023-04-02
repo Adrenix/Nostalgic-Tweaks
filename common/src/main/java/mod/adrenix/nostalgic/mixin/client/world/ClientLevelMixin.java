@@ -25,7 +25,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,8 +37,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ClientLevelMixin
 {
     /* Shadows */
-
-    @Shadow @Final private Minecraft minecraft;
 
     @Shadow
     public abstract void playLocalSound(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay);
@@ -334,25 +331,23 @@ public abstract class ClientLevelMixin
 
         /* Chest Sounds */
 
-        BlockPos pos = new BlockPos((int) x, (int) y, (int) z);
-        ClientLevel level = this.minecraft.level;
-        boolean isWoodenChest = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
-        boolean isEnderChest = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
-        boolean isChestSound = false;
-
-        if (level == null)
-            return;
-
+        ClientLevel level = (ClientLevel) (Object) this;
+        BlockPos pos = BlockPos.containing(x, y, z);
         BlockState state = level.getBlockState(pos);
 
-        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodenChest)
-            isChestSound = true;
-        else if (ModConfig.Sound.disableChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
-            isChestSound = true;
-        else if (ModConfig.Sound.disableChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
-            isChestSound = true;
+        boolean isWoodenChest = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
+        boolean isEnderChest = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
+        boolean isChestDisabled = false;
 
-        if (isChestSound)
+
+        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodenChest)
+            isChestDisabled = true;
+        else if (ModConfig.Sound.disableChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+            isChestDisabled = true;
+        else if (ModConfig.Sound.disableChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+            isChestDisabled = true;
+
+        if (isChestDisabled)
         {
             callback.cancel();
             return;
@@ -367,10 +362,10 @@ public abstract class ClientLevelMixin
         else if (ModConfig.Sound.oldChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
             isOldChest = true;
 
-        if (isOldChest && Minecraft.getInstance().level != null)
+        if (isOldChest)
         {
             SoundEvent chestSound = SoundEvents.WOODEN_DOOR_OPEN;
-            RandomSource randomSource = Minecraft.getInstance().level.random;
+            RandomSource randomSource = level.random;
 
             if (sound == SoundEvents.CHEST_CLOSE || sound == SoundEvents.ENDER_CHEST_CLOSE)
                 chestSound = SoundEvents.WOODEN_DOOR_CLOSE;
@@ -459,6 +454,7 @@ public abstract class ClientLevelMixin
 
                 BlockState inside = level.getBlockState(pos);
                 SoundType soundType = inside.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? inside.getSoundType() : standing.getSoundType();
+
                 this.playLocalSound(x, y, z, soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() *
                     0.15F, soundType.getPitch(), false);
 
