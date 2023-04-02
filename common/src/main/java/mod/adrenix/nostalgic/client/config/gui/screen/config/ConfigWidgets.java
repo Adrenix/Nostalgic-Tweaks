@@ -193,41 +193,6 @@ public class ConfigWidgets
             button.setX(prevX);
             prevX = button.getX() + button.getWidth() - 1;
         }
-
-        /*
-           Some buttons in the config tab bar will experience gap issues due to centering inconsistencies with even/odd
-           spacing. The following logic fixes this issue using the first two buttons as a guide based on their starting
-           x-positions. Each button after the first two will follow the same pattern.
-         */
-
-        boolean isOddChecked = general.getX() % 2 != 0;
-
-        for (int i = 0; i < this.categories.length; i++)
-        {
-            Button first = ArrayUtil.get(this.categories, i);
-            Button second = ArrayUtil.get(this.categories, i + 1);
-            boolean adjust = false;
-
-            if (first == null || second == null)
-                break;
-
-            if (isOddChecked ? (first.getX() % 2 != 0 && second.getX() % 2 != 0) : (first.getX() % 2 == 0 && second.getX() % 2 == 0))
-            {
-                adjust = true;
-                isOddChecked = !isOddChecked;
-            }
-
-            if (adjust)
-            {
-                second.setX(second.getX() - 1);
-
-                if (ArrayUtil.get(this.categories, i + 2) != null)
-                {
-                    for (int j = i + 2; j < this.categories.length; j++)
-                        this.categories[j].setX(this.categories[j].getX() - 1);
-                }
-            }
-        }
     }
 
     /* Widget Providers */
