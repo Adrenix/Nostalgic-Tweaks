@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Options;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.MutableComponent;
@@ -54,7 +54,9 @@ public abstract class GuiMixin extends GuiComponent
     @Shadow private int screenWidth;
     @Shadow private int screenHeight;
 
-    /* Unique Helpers */
+    /* Uniques */
+
+    @Unique private boolean NT$renderDebug = false;
 
     /**
      * If both the disabled hunger bar and disable experience bar tweaks are off, then the vanilla HUD can take over.
@@ -106,20 +108,41 @@ public abstract class GuiMixin extends GuiComponent
     /**
      * Prevents the axis crosshair from overriding the default crosshair. Controlled by the old debug screen tweak.
      */
-    @Redirect(
+    @Inject(
         method = "renderCrosshair",
         at = @At(
             value = "FIELD",
             target = "Lnet/minecraft/client/Options;renderDebug:Z",
-            opcode = Opcodes.GETFIELD
+            opcode = Opcodes.GETFIELD,
+            shift = At.Shift.BEFORE
         )
     )
-    private boolean NT$onRenderDebugCrosshair(Options instance)
+    private void NT$onPreRenderDebugCrosshair(PoseStack poseStack, CallbackInfo callback)
     {
-        if (ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN))
-            return instance.renderDebug;
+        if (!ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN))
+        {
+            this.NT$renderDebug = Minecraft.getInstance().options.renderDebug;
+            Minecraft.getInstance().options.renderDebug = false;
+        }
+    }
 
-        return false;
+    /**
+     * Turns the render debug flag back to its original state after disabling it. Controlled by the old debug screen
+     * tweak.
+     */
+    @Inject(
+        method = "renderCrosshair",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/client/Options;renderDebug:Z",
+            opcode = Opcodes.GETFIELD,
+            shift = At.Shift.AFTER
+        )
+    )
+    private void NT$onPostRenderDebugCrosshair(PoseStack poseStack, CallbackInfo callback)
+    {
+        if (!ModConfig.Candy.getDebugScreen().equals(TweakVersion.Generic.MODERN))
+            Minecraft.getInstance().options.renderDebug = this.NT$renderDebug;
     }
 
     /**
