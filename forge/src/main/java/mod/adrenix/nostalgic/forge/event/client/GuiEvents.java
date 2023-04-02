@@ -114,7 +114,7 @@ public abstract class GuiEvents
         minecraft.getProfiler().push("food");
         RenderSystem.enableBlend();
 
-        GuiUtil.renderFood(gui, poseStack, player, width, height, gui.rightHeight);
+        GuiUtil.renderFood(poseStack, player, width, height, gui.rightHeight);
 
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
@@ -137,7 +137,7 @@ public abstract class GuiEvents
         minecraft.getProfiler().push("armor");
         RenderSystem.enableBlend();
 
-        GuiUtil.renderArmor(gui, poseStack, minecraft.player, width, height, gui.leftHeight, gui.rightHeight);
+        GuiUtil.renderArmor(poseStack, minecraft.player, width, height, gui.leftHeight, gui.rightHeight);
 
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
@@ -171,7 +171,7 @@ public abstract class GuiEvents
         minecraft.getProfiler().push("air");
         RenderSystem.enableBlend();
 
-        GuiUtil.renderAir(GuiEvents::isPlayerLosingAir, gui, poseStack, player, width, height, gui.leftHeight, gui.rightHeight);
+        GuiUtil.renderAir(GuiEvents::isPlayerLosingAir, poseStack, player, width, height, gui.leftHeight, gui.rightHeight);
 
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();

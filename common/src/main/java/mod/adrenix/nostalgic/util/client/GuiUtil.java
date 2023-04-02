@@ -316,7 +316,6 @@ public abstract class GuiUtil
 
     /**
      * Renders the armor icon texture on the HUD depending on the state of various tweaks.
-     * @param gui A GUI instance.
      * @param poseStack The current pose stack.
      * @param player A player instance.
      * @param width The current screen width.
@@ -324,7 +323,7 @@ public abstract class GuiUtil
      * @param leftHeight The left side GUI offset.
      * @param rightHeight The right side GUI offset.
      */
-    public static void renderArmor(Gui gui, PoseStack poseStack, Player player, int width, int height, int leftHeight, int rightHeight)
+    public static void renderArmor(PoseStack poseStack, Player player, int width, int height, int leftHeight, int rightHeight)
     {
         boolean isHungerDisabled = ModConfig.Gameplay.disableHungerBar();
 
@@ -376,15 +375,15 @@ public abstract class GuiUtil
 
     /**
      * Renders the food icon texture on the HUD depending on the state of various tweaks.
-     * @param gui A GUI instance.
      * @param poseStack The current pose stack.
      * @param player A player instance.
      * @param width The current screen width.
      * @param height The current screen height.
      * @param rightHeight The right side GUI offset.
      */
-    public static void renderFood(Gui gui, PoseStack poseStack, Player player, int width, int height, int rightHeight)
+    public static void renderFood(PoseStack poseStack, Player player, int width, int height, int rightHeight)
     {
+        Gui gui = Minecraft.getInstance().gui;
         RandomSource random = RandomSource.create();
 
         int left = width / 2 + 91;
@@ -435,7 +434,6 @@ public abstract class GuiUtil
     /**
      * Renders the air bubble icon texture on the HUD depending on the state of various tweaks.
      * @param isPlayerLosingAir A function that accepts a player instance and returns whether the player is losing air.
-     * @param gui A GUI instance.
      * @param poseStack The current pose stack.
      * @param player A player instance.
      * @param width The current screen width.
@@ -443,17 +441,7 @@ public abstract class GuiUtil
      * @param leftHeight The left side GUI offset.
      * @param rightHeight The right side GUI offset.
      */
-    public static void renderAir
-    (
-        Function<Player, Boolean> isPlayerLosingAir,
-        Gui gui,
-        PoseStack poseStack,
-        Player player,
-        int width,
-        int height,
-        int leftHeight,
-        int rightHeight
-    )
+    public static void renderAir(Function<Player, Boolean> isPlayerLosingAir, PoseStack poseStack, Player player, int width, int height, int leftHeight, int rightHeight)
     {
         boolean isHungerDisabled = ModConfig.Gameplay.disableHungerBar();
 

@@ -190,6 +190,8 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onRenderHearts(PoseStack poseStack, Player player, int x, int y, int height, int regen, float healthMax, int health, int healthLast, int absorb, boolean highlight, CallbackInfo callback)
     {
+        RenderSystem.disableBlend();
+
         this.NT$heartIndex = -1;
         this.NT$heartRow = 0;
 
@@ -355,7 +357,7 @@ public abstract class GuiMixin extends GuiComponent
         if (ModConfig.Gameplay.disableHungerBar() || this.NT$isHudVanilla())
             return;
 
-        GuiUtil.renderFood((Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$rightHeight);
+        GuiUtil.renderFood(poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$rightHeight);
 
         this.NT$rightHeight += 10;
     }
@@ -376,7 +378,7 @@ public abstract class GuiMixin extends GuiComponent
         if (this.NT$isHudVanilla())
             return;
 
-        GuiUtil.renderArmor((Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
+        GuiUtil.renderArmor(poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
 
         if (ModConfig.Gameplay.disableHungerBar())
             this.NT$rightHeight += 10;
@@ -411,7 +413,7 @@ public abstract class GuiMixin extends GuiComponent
         if (this.NT$isHudVanilla())
             return;
 
-        GuiUtil.renderAir(GuiMixin::isPlayerLosingAir, (Gui) (Object) this, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
+        GuiUtil.renderAir(GuiMixin::isPlayerLosingAir, poseStack, this.getCameraPlayer(), this.screenWidth, this.screenHeight, this.NT$leftHeight, this.NT$rightHeight);
 
         if (isPlayerLosingAir(this.getCameraPlayer()))
         {
