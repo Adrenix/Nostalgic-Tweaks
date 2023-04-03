@@ -442,15 +442,15 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
         {
             GuiComponent.fill(poseStack, startX + 1, height - 30 + 1, startX + 14, height - 30 + 10, -1873784752);
             this.font.draw(poseStack, "60 FPS", (float) (startX + 2), (float) (height - 30 + 2), 0xE0E0E0);
-            this.hLine(poseStack, startX, startX + endX - 1, height - 30, -1);
+            GuiComponent.hLine(poseStack, startX, startX + endX - 1, height - 30, -1);
 
             GuiComponent.fill(poseStack, startX + 1, height - 60 + 1, startX + 14, height - 60 + 10, -1873784752);
             this.font.draw(poseStack, "30 FPS", (float) (startX + 2), (float) (height - 60 + 2), 0xE0E0E0);
 
-            this.hLine(poseStack, startX, startX + endX - 1, height - 60, -1);
-            this.hLine(poseStack, startX, startX + endX - 1, height - 1, -1);
-            this.vLine(poseStack, startX, height - 60, height, -1);
-            this.vLine(poseStack, startX + endX - 1, height - 60, height, -1);
+            GuiComponent.hLine(poseStack, startX, startX + endX - 1, height - 60, -1);
+            GuiComponent.hLine(poseStack, startX, startX + endX - 1, height - 1, -1);
+            GuiComponent.vLine(poseStack, startX, height - 60, height, -1);
+            GuiComponent.vLine(poseStack, startX + endX - 1, height - 60, height, -1);
         }
 
         int limit = this.minecraft.options.framerateLimit().get();
@@ -459,9 +459,9 @@ public abstract class DebugScreenOverlayMixin extends GuiComponent
             int fpsLine = height - 1 - (int) (1800.0 / (double) limit);
 
             if (isOld)
-                this.hLine(poseStack, startX, startX + endX - 1, fpsLine, -65536);
+                GuiComponent.hLine(poseStack, startX, startX + endX - 1, fpsLine, -65536);
             else
-                this.hLine(poseStack, startX + 1, startX + endX - 2, fpsLine, -65536);
+                GuiComponent.hLine(poseStack, startX + 1, startX + endX - 2, fpsLine, -65536);
         }
 
         if (isModern)
