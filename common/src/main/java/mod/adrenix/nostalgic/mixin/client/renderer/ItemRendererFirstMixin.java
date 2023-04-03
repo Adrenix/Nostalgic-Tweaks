@@ -90,7 +90,10 @@ public abstract class ItemRendererFirstMixin
     )
     private void NT$onRenderGuiItemDecorations(PoseStack poseStack, Font font, ItemStack itemStack, int x, int y, String text, CallbackInfo callback)
     {
-        if (ModConfig.Candy.oldDurabilityColors() && itemStack.isDamaged())
+        if (itemStack.isEmpty())
+            return;
+
+        if (ModConfig.Candy.oldDurabilityColors() && itemStack.isBarVisible())
         {
             RenderSystem.disableDepthTest();
 
