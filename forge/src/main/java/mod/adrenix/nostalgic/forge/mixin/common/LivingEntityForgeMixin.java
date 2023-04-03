@@ -30,24 +30,37 @@ public abstract class LivingEntityForgeMixin extends Entity
 
     /**
      * Multiplayer:
-     *
-     * Allows players to continually climb if there is a single gap between two ladders.
-     * Controlled by the old ladder gap tweak.
+     * <p>
+     * Allows players to continually climb if there is a single gap between two ladders. Controlled by the old ladder
+     * gap tweak.
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    @Redirect(method = "onClimbable", at = @At(value = "INVOKE", target = "Ljava/util/Optional;isPresent()Z"))
-    private boolean NT$onClimbable(Optional<BlockPos> ladderPos)
+    @Redirect(
+        method = "onClimbable",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/Optional;isPresent()Z"
+        )
+    )
+    private boolean NT$onClimbable(Optional<BlockPos> ladder)
     {
-        return BlockServerUtil.isClimbable(this.level, this.getFeetBlockState(), this.blockPosition());
+        return BlockServerUtil.isClimbable(this.level, this.getFeetBlockState(), this.blockPosition()) ||
+            ladder.isPresent();
     }
 
     /**
      * Multiplayer:
-     *
-     * Separates items from a clumped item entity into multiple item entities when a mob is killed.
-     * Controlled by the item merging tweak.
+     * <p>
+     * Separates items from a clumped item entity into multiple item entities when a mob is killed. Controlled by the
+     * item merging tweak.
      */
-    @ModifyArg(method = "dropFromLootTable", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"))
+    @ModifyArg(
+        method = "dropFromLootTable",
+        at = @At(
+            value = "INVOKE",
+            target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"
+        )
+    )
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
     {
         return ItemServerUtil.splitConsumer(consumer);
