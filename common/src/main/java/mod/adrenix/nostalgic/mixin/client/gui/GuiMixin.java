@@ -159,7 +159,10 @@ public abstract class GuiMixin extends GuiComponent
     private void NT$onRenderAttackIndicator(PoseStack poseStack, CallbackInfo callback)
     {
         if (ModConfig.Gameplay.disableCooldown())
+        {
+            RenderSystem.defaultBlendFunc();
             callback.cancel();
+        }
     }
 
     /*
@@ -213,8 +216,6 @@ public abstract class GuiMixin extends GuiComponent
     )
     private void NT$onRenderHearts(PoseStack poseStack, Player player, int x, int y, int height, int regen, float healthMax, int health, int healthLast, int absorb, boolean highlight, CallbackInfo callback)
     {
-        RenderSystem.disableBlend();
-
         this.NT$heartIndex = -1;
         this.NT$heartRow = 0;
 
