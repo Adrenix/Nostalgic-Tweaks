@@ -74,7 +74,7 @@ public abstract class ItemClientUtil
      * @param model The model to check.
      * @return Whether the given model uses block light.
      */
-    public static boolean isModelFlat(BakedModel model) {return !model.usesBlockLight();}
+    public static boolean isModelFlat(BakedModel model) { return !model.usesBlockLight(); }
 
     /**
      * Shortcut for checking if a model is flat based on the given item stack.
@@ -92,14 +92,14 @@ public abstract class ItemClientUtil
      *
      * @param poseStack The current pose stack.
      */
-    public static void flatten(PoseStack poseStack) {poseStack.scale(1.0F, 1.0F, 0.001F);}
+    public static void flatten(PoseStack poseStack) { poseStack.scale(1.0F, 1.0F, 0.001F); }
 
     /**
      * Getter for checking if diffused lighting is disabled.
      *
      * @return Whether the item renderer should be rendering flat items.
      */
-    public static boolean isLightingFlat() {return isRenderingFlat;}
+    public static boolean isLightingFlat() { return isRenderingFlat; }
 
     /**
      * Turns off diffused lighting.
@@ -219,8 +219,8 @@ public abstract class ItemClientUtil
     public static int getOldColor(ItemColor itemColor, ItemStack stack, int tintIndex)
     {
         final int COLOR = itemColor.getColor(stack, tintIndex);
-        final int[] ITEM_RGB = new int[]{(COLOR & 0xFF0000) >> 16, (COLOR & 0xFF00) >> 8, COLOR & 0xFF};
-        final float[] SHIFT_RGB = new float[]{ITEM_RGB[0], ITEM_RGB[1], ITEM_RGB[2]};
+        final int[] ITEM_RGB = new int[] { (COLOR & 0xFF0000) >> 16, (COLOR & 0xFF00) >> 8, COLOR & 0xFF };
+        final float[] SHIFT_RGB = new float[] { ITEM_RGB[0], ITEM_RGB[1], ITEM_RGB[2] };
 
         if (stack.getItem() instanceof SpawnEggItem)
             shiftItemColor(SHIFT_RGB, 0.35F);
@@ -248,9 +248,9 @@ public abstract class ItemClientUtil
     public static void renderGuiItem(ItemStack itemStack, int x, int y, float scale, float dx, float dy)
     {
         Minecraft.getInstance().getTextureManager().getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(false, false);
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         PoseStack viewStack = RenderSystem.getModelViewStack();

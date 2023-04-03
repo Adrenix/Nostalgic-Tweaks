@@ -15,13 +15,14 @@ public abstract class RenderUtil
 {
     /**
      * Creates a filled rectangle at the given positions with the given color.
+     *
      * @param builder The current buffer builder.
-     * @param matrix The 4D matrix.
-     * @param leftX Left starting position of the rectangle.
-     * @param rightX Right starting position of the rectangle.
-     * @param topY Top starting position of the rectangle.
+     * @param matrix  The 4D matrix.
+     * @param leftX   Left starting position of the rectangle.
+     * @param rightX  Right starting position of the rectangle.
+     * @param topY    Top starting position of the rectangle.
      * @param bottomY Bottom starting position of the rectangle.
-     * @param argb The ARGB color of the rectangle.
+     * @param argb    The ARGB color of the rectangle.
      */
     public static void fill(BufferBuilder builder, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int argb)
     {
@@ -33,15 +34,15 @@ public abstract class RenderUtil
     }
 
     /**
-     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}.
-     * This method does not require a 4D matrix.
+     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}. This
+     * method does not require a 4D matrix.
      *
      * @param builder A buffer builder instance.
-     * @param leftX Left starting position of the rectangle.
-     * @param rightX Right starting position of the rectangle.
-     * @param topY Top starting position of the rectangle.
+     * @param leftX   Left starting position of the rectangle.
+     * @param rightX  Right starting position of the rectangle.
+     * @param topY    Top starting position of the rectangle.
      * @param bottomY Bottom starting position of the rectangle.
-     * @param argb The ARGB color of the rectangle.
+     * @param argb    The ARGB color of the rectangle.
      */
     public static void fill(BufferBuilder builder, float leftX, float rightX, float topY, float bottomY, int argb)
     {
@@ -54,15 +55,15 @@ public abstract class RenderUtil
     }
 
     /**
-     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}.
-     * This method does not require a buffer builder or a 4D matrix, but instead uses the current pose stack.
+     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}. This
+     * method does not require a buffer builder or a 4D matrix, but instead uses the current pose stack.
      *
      * @param poseStack The current pose stack.
-     * @param leftX Left starting position of the rectangle.
-     * @param rightX Right starting position of the rectangle.
-     * @param topY Top starting position of the rectangle.
-     * @param bottomY Bottom starting position of the rectangle.
-     * @param argb The ARGB color of the rectangle.
+     * @param leftX     Left starting position of the rectangle.
+     * @param rightX    Right starting position of the rectangle.
+     * @param topY      Top starting position of the rectangle.
+     * @param bottomY   Bottom starting position of the rectangle.
+     * @param argb      The ARGB color of the rectangle.
      */
     public static void fill(PoseStack poseStack, float leftX, float rightX, float topY, float bottomY, int argb)
     {
@@ -72,9 +73,8 @@ public abstract class RenderUtil
         BufferBuilder builder = tesselator.getBuilder();
         Matrix4f matrix = poseStack.last().pose();
 
-        RenderSystem.depthFunc(515);
-        RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
+        RenderSystem.depthFunc(515);
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -90,14 +90,15 @@ public abstract class RenderUtil
 
     /**
      * Render a texture from a texture sheet (256x256).
-     * @param resource A resource location that points to the texture sheet.
+     *
+     * @param resource  A resource location that points to the texture sheet.
      * @param poseStack The current pose stack.
-     * @param x The x-position on the screen to place the texture.
-     * @param y The y-position on the screen to place the texture.
-     * @param uOffset The x-position of the texture on the texture sheet.
-     * @param vOffset The y-position of the texture on the texture sheet.
-     * @param uWidth The width of the texture on the texture sheet.
-     * @param vHeight The height of the texture on the texture sheet.
+     * @param x         The x-position on the screen to place the texture.
+     * @param y         The y-position on the screen to place the texture.
+     * @param uOffset   The x-position of the texture on the texture sheet.
+     * @param vOffset   The y-position of the texture on the texture sheet.
+     * @param uWidth    The width of the texture on the texture sheet.
+     * @param vHeight   The height of the texture on the texture sheet.
      */
     public static void blit256(ResourceLocation resource, PoseStack poseStack, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
