@@ -1,0 +1,7 @@
+{
+  "parent": "nostalgic_tweaks:block/trapped_chest",
+  "textures": {
+    "north": "nostalgic_tweaks:block/trapped_chest_front_left",
+    "south": "nostalgic_tweaks:block/trapped_chest_back_left"
+  }
+}

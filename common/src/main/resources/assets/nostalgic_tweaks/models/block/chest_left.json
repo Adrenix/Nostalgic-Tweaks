@@ -1,0 +1,7 @@
+{
+  "parent": "nostalgic_tweaks:block/chest",
+  "textures": {
+    "north": "nostalgic_tweaks:block/chest_front_left",
+    "south": "nostalgic_tweaks:block/chest_back_left"
+  }
+}
