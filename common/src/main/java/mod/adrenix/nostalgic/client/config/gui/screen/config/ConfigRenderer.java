@@ -1,10 +1,12 @@
 package mod.adrenix.nostalgic.client.config.gui.screen.config;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakCategory;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
+import mod.adrenix.nostalgic.client.config.gui.overlay.ServerSideModeOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
@@ -27,6 +29,7 @@ import mod.adrenix.nostalgic.common.config.tweak.DisabledTweak;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
+import mod.adrenix.nostalgic.util.client.NetUtil;
 import mod.adrenix.nostalgic.util.common.ArrayUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import mod.adrenix.nostalgic.util.common.PathUtil;
@@ -857,6 +860,11 @@ public record ConfigRenderer(ConfigScreen parent)
         TweakClientCache<Boolean> isModEnabled = TweakClientCache.get(TweakGroup.ROOT, ClientConfig.ROOT_KEY);
 
         list.addRow(new ConfigRowTweak.BooleanRow(TweakGroup.ROOT, isModEnabled.getKey(), isModEnabled.getValue()).generate());
+
+        /* SSO Information */
+
+        if (NostalgicTweaks.getConnection().isPresent() && NetUtil.isPlayerOp() && !NetUtil.isSingleplayer())
+            list.addRow(new ConfigRowBuild.SingleCenteredRow(new ControlButton(Component.translatable(LangUtil.Gui.SSO_BUTTON), (button) -> new ServerSideModeOverlay())).generate());
 
         /* Config Manager */
 

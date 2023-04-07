@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.fabric.event.server;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.fabric.NostalgicCommonFabric;
+import mod.adrenix.nostalgic.server.config.ServerConfigCache;
 import mod.adrenix.nostalgic.util.common.ComponentUtil;
 import mod.adrenix.nostalgic.util.common.LinkLocation;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -15,8 +16,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
 
 /**
- * Fabric server related connection events.
- * Registration is handled by {@link mod.adrenix.nostalgic.fabric.event.ServerEvents}.
+ * Fabric server related connection events. Registration is handled by
+ * {@link mod.adrenix.nostalgic.fabric.event.ServerEvents}.
  */
 
 public abstract class ConnectionEvents
@@ -31,34 +32,25 @@ public abstract class ConnectionEvents
     }
 
     /**
-     * Sends a packet to the client asking for a network protocol version.
-     * If the request was understood, then the protocol version will be verified in a separate method.
+     * Sends a packet to the client asking for a network protocol version. If the request was understood, then the
+     * protocol version will be verified in a separate method.
      */
-    private static void request
-    (
-        ServerLoginPacketListenerImpl handler,
-        MinecraftServer server,
-        PacketSender sender,
-        ServerLoginNetworking.LoginSynchronizer synchronizer
-    )
+    private static void request(ServerLoginPacketListenerImpl handler, MinecraftServer server, PacketSender sender, ServerLoginNetworking.LoginSynchronizer synchronizer)
     {
         sender.sendPacket(NostalgicCommonFabric.VERIFY_PROTOCOL, PacketByteBufs.empty());
     }
 
     /**
-     * Ensures that the connecting player has the mod installed with the correct protocol version.
-     * This is needed since players connecting to this server without the correct protocol will have a bad experience.
+     * Ensures that the connecting player has the mod installed with the correct protocol version. This is needed since
+     * players connecting to this server without the correct protocol may have a bad experience. Server administrators
+     * have the option to enable an experimental server-side-only (SSO) mode. This will allow players to connect to the
+     * server without Nostalgic Tweaks installed.
      */
-    private static void verify
-    (
-        MinecraftServer server,
-        ServerLoginPacketListenerImpl handler,
-        boolean understood,
-        FriendlyByteBuf buffer,
-        ServerLoginNetworking.LoginSynchronizer synchronizer,
-        PacketSender sender
-    )
+    private static void verify(MinecraftServer server, ServerLoginPacketListenerImpl handler, boolean understood, FriendlyByteBuf buffer, ServerLoginNetworking.LoginSynchronizer synchronizer, PacketSender sender)
     {
+        if (ServerConfigCache.getRoot().serverSideOnlyMode)
+            return;
+
         final MutableComponent SERVER_VERSION = ComponentUtil.color(NostalgicTweaks.getFullVersion(), 0xFAEEAA);
         final MutableComponent MOD_NAME = ComponentUtil.color(NostalgicTweaks.MOD_NAME, 0xFFFF00);
         final MutableComponent MOD_LINK = ComponentUtil.color(LinkLocation.DOWNLOAD, 0x11BDED);
@@ -70,37 +62,18 @@ public abstract class ConnectionEvents
 
             if (!CLIENT_PROTOCOL.equals(SERVER_PROTOCOL))
             {
-                final MutableComponent REASON = Component.translatable
-                (
-                    """
-                    Your %s protocol (%s) did not match the server protocol (%s).
-                    Network protocols must match; however, mod versions don't need to match.
-                    
-                    This server is running %s (%s).
-                    %s
-                    """,
-                    MOD_NAME,
-                    ComponentUtil.color(CLIENT_PROTOCOL, 0xF87C73),
-                    ComponentUtil.color(SERVER_PROTOCOL, 0xF8BE73),
-                    MOD_NAME,
-                    SERVER_VERSION,
-                    MOD_LINK
-                );
+                final String MESSAGE = """
+                        Your %s protocol (%s) did not match the server protocol (%s).
+                        Network protocols must match; however, mod versions don't need to match.
+                                            
+                        This server is running %s (%s).
+                        %s
+                    """;
 
-                handler.disconnect(REASON);
+                handler.disconnect(Component.translatable(MESSAGE, MOD_NAME, ComponentUtil.color(CLIENT_PROTOCOL, 0xF87C73), ComponentUtil.color(SERVER_PROTOCOL, 0xF8BE73), MOD_NAME, SERVER_VERSION, MOD_LINK));
             }
         }
         else
-        {
-            final MutableComponent REASON = Component.translatable
-            (
-                "You need %s (%s) to join this server.\n%s",
-                MOD_NAME,
-                SERVER_VERSION,
-                MOD_LINK
-            );
-
-            handler.disconnect(REASON);
-        }
+            handler.disconnect(Component.translatable("You need %s (%s) to join this server.\n%s", MOD_NAME, SERVER_VERSION, MOD_LINK));
     }
 }
