@@ -94,7 +94,7 @@ public abstract class WorldClientUtil
     {
         float temp = getBiomeTemperature() / 2.0F;
         float saturation = 0.26F;
-        int renderDistance = Minecraft.getInstance().options.renderDistance().get();
+        int renderDistance = Minecraft.getInstance().options.getEffectiveRenderDistance();
 
         if (renderDistance <= 8)
         {
@@ -273,7 +273,7 @@ public abstract class WorldClientUtil
     {
         Minecraft minecraft = Minecraft.getInstance();
 
-        int renderDistance = minecraft.options.renderDistance().get();
+        int renderDistance = minecraft.options.getEffectiveRenderDistance();
         int syncedLight = getSyncedLight(minecraft.level, minecraft.gameRenderer.getMainCamera().getBlockPosition());
 
         float brightness = getOldBrightness(syncedLight);
@@ -311,7 +311,7 @@ public abstract class WorldClientUtil
 
         if (ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.CLASSIC)
         {
-            int renderDistance = minecraft.options.renderDistance().get();
+            int renderDistance = minecraft.options.getEffectiveRenderDistance();
 
             if (renderDistance <= 3)
             {

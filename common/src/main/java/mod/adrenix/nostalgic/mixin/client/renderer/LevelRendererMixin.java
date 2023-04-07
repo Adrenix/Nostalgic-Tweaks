@@ -238,7 +238,7 @@ public abstract class LevelRendererMixin
         FogUtil.Void.setCelestialTransparency();
 
         boolean isAlphaFog = ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.ALPHA_R164;
-        boolean isShort = this.minecraft.options.renderDistance().get() <= 4;
+        boolean isShort = this.minecraft.options.getEffectiveRenderDistance() <= 4;
 
         if (ModConfig.Candy.oldClassicLight() || (isAlphaFog && isShort))
             RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
@@ -315,7 +315,7 @@ public abstract class LevelRendererMixin
 
         RenderSystem.setShaderColor(color, color, color, transparency);
 
-        if (ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.ALPHA_R164 && this.minecraft.options.renderDistance().get() <= 4)
+        if (ModConfig.Candy.getWorldFog() == TweakVersion.WorldFog.ALPHA_R164 && this.minecraft.options.getEffectiveRenderDistance() <= 4)
             RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
     }
 
