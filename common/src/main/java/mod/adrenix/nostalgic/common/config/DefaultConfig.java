@@ -338,6 +338,7 @@ public abstract class DefaultConfig
         public static final boolean LEFT_CLICK_LEVER = false;
         public static final boolean LEFT_CLICK_BUTTON = false;
         public static final boolean TILLED_GRASS_SEEDS = true;
+        public static final boolean CART_BOOSTING = false;
 
         // Hunger System
         public static final String HUNGER_FOOD_TEXT = "Food: %v";

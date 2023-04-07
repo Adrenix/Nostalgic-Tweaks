@@ -121,6 +121,7 @@ public class ServerConfig implements ConfigData
         public boolean disableBedBounce = DefaultConfig.Gameplay.DISABLE_BED_BOUNCE;
         public boolean disableSprint = DefaultConfig.Gameplay.DISABLE_SPRINT;
         public boolean disableSwim = DefaultConfig.Gameplay.DISABLE_SWIM;
+        public boolean cartBoosting = DefaultConfig.Gameplay.CART_BOOSTING;
 
         // Hunger System
         public boolean disableHunger = DefaultConfig.Gameplay.DISABLE_HUNGER;

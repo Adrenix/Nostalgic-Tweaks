@@ -18,6 +18,7 @@
 
   "mixins": [
     "world.FoodDataMixin",
+    "world.entity.AbstractMinecartMixin",
     "world.entity.ItemEntityMixin",
     "world.entity.LivingEntityMixin",
     "world.entity.MobCategoryMixin",

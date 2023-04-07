@@ -325,6 +325,7 @@ public abstract class LangUtil
         public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_ORB = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_orb";
         public static final String GAMEPLAY_SUBCATEGORY_EXPERIENCE_BLOCK = "gui.nostalgic_tweaks.config.gameplay.subcategory.experience_block";
         public static final String GAMEPLAY_SUBCATEGORY_FIRE = "gui.nostalgic_tweaks.config.gameplay.subcategory.fire";
+        public static final String GAMEPLAY_SUBCATEGORY_CART = "gui.nostalgic_tweaks.config.gameplay.subcategory.cart";
         public static final String GAMEPLAY_SUBCATEGORY_BLOCK = "gui.nostalgic_tweaks.config.gameplay.subcategory.block";
         public static final String GAMEPLAY_SUBCATEGORY_PLAYER = "gui.nostalgic_tweaks.config.gameplay.subcategory.player";
         public static final String GAMEPLAY_SUBCATEGORY_FARMING = "gui.nostalgic_tweaks.config.gameplay.subcategory.farming";
