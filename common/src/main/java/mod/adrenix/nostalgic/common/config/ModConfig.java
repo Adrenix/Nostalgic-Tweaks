@@ -82,7 +82,7 @@ public abstract class ModConfig
      */
     private static boolean isTweakExempt(Tweak tweak)
     {
-        return CONFIG.isModEnabled && (tweak.equals(CandyTweak.CREATIVE_HOTBAR) || tweak.equals(CandyTweak.SQUARE_BORDER));
+        return CONFIG.isModEnabled && (tweak.equals(CandyTweak.CREATIVE_HOTBAR) || tweak.equals(CandyTweak.SQUARE_BORDER) || tweak.equals(GameplayTweak.CART_BOOSTING));
     }
 
     /**
