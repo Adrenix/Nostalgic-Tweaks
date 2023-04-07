@@ -30,6 +30,10 @@ public class ServerConfig implements ConfigData
 
     @Override public void validatePostLoad() throws ValidationException { ValidateConfig.scan(this); }
 
+    /* SSO Mode */
+
+    public boolean serverSideOnlyMode = false;
+
     /* Constants */
 
     @TweakData.Ignore private static final int HEALTH_MIN = DefaultConfig.Gameplay.HEALTH_MIN;

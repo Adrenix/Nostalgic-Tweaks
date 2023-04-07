@@ -65,6 +65,11 @@ public abstract class LangUtil
         public static final String BUTTON_YES = "gui.nostalgic_tweaks.button.yes";
         public static final String BUTTON_NO = "gui.nostalgic_tweaks.button.no";
 
+        public static final String SSO_BUTTON = "gui.nostalgic_tweaks.config.sso.button";
+        public static final String SSO_OVERLAY_TITLE = "gui.nostalgic_tweaks.config.sso.overlay.title";
+        public static final String SSO_OVERLAY_HEADER = "gui.nostalgic_tweaks.config.sso.overlay.header";
+        public static final String SSO_OVERLAY_MESSAGE = "gui.nostalgic_tweaks.config.sso.overlay.message";
+
         public static final String BACKGROUND_SOLID_BLACK = "gui.nostalgic_tweaks.background.solid_black";
         public static final String BACKGROUND_SOLID_BLUE = "gui.nostalgic_tweaks.background.solid_blue";
         public static final String BACKGROUND_GRADIENT_BLUE = "gui.nostalgic_tweaks.background.gradient_blue";
