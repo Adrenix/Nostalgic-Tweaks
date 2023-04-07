@@ -335,16 +335,15 @@ public abstract class ClientLevelMixin
         BlockPos pos = BlockPos.containing(x, y, z);
         BlockState state = level.getBlockState(pos);
 
-        boolean isWoodenChest = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
-        boolean isEnderChest = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
+        boolean isWoodChestSound = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
+        boolean isEnderChestSound = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
         boolean isChestDisabled = false;
 
-
-        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodenChest)
+        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodChestSound)
             isChestDisabled = true;
-        else if (ModConfig.Sound.disableChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+        else if (ModConfig.Sound.disableEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChestSound)
             isChestDisabled = true;
-        else if (ModConfig.Sound.disableChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+        else if (ModConfig.Sound.disableTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodChestSound)
             isChestDisabled = true;
 
         if (isChestDisabled)
@@ -355,11 +354,11 @@ public abstract class ClientLevelMixin
 
         boolean isOldChest = false;
 
-        if (ModConfig.Sound.oldChest() && state.is(Blocks.CHEST) && isWoodenChest)
+        if (ModConfig.Sound.oldChest() && state.is(Blocks.CHEST) && isWoodChestSound)
             isOldChest = true;
-        else if (ModConfig.Sound.oldChest() && state.is(Blocks.ENDER_CHEST) && isEnderChest)
+        else if (ModConfig.Sound.oldChest() && state.is(Blocks.ENDER_CHEST) && isEnderChestSound)
             isOldChest = true;
-        else if (ModConfig.Sound.oldChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodenChest)
+        else if (ModConfig.Sound.oldChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodChestSound)
             isOldChest = true;
 
         if (isOldChest)

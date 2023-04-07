@@ -104,6 +104,20 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_CHEST_SOUND)
+        public boolean disableEnderChest = DefaultConfig.Sound.DISABLE_ENDER_CHEST;
+        static { SoundTweak.DISABLE_ENDER_CHEST.setKey("disableEnderChest"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
+        @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_CHEST_SOUND)
+        public boolean disableTrappedChest = DefaultConfig.Sound.DISABLE_TRAPPED_CHEST;
+        static { SoundTweak.DISABLE_TRAPPED_CHEST.setKey("disableTrappedChest"); }
+
+        @TweakGui.New
+        @TweakData.Client
+        @TweakData.EntryStatus
         @TweakGui.Subcategory(container = TweakSubcategory.BLOCK_LAVAL_SOUND)
         public boolean disableLavaAmbience = DefaultConfig.Sound.DISABLE_LAVA_AMBIENCE;
         static { SoundTweak.DISABLE_LAVA_AMBIENCE.setKey("disableLavaAmbience"); }
