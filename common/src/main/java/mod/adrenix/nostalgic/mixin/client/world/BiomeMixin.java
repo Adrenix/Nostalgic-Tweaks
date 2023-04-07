@@ -46,7 +46,7 @@ public abstract class BiomeMixin
     {
         if (isOverworld())
         {
-            if (Minecraft.getInstance().options.renderDistance <= 4)
+            if (Minecraft.getInstance().options.getEffectiveRenderDistance() <= 4)
             {
                 callback.setReturnValue(ColorUtil.toIntFromRGBA(RenderSystem.getShaderFogColor()));
                 return;

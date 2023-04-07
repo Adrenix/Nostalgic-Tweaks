@@ -74,7 +74,7 @@ public abstract class FogUtil
             return;
 
         int farPlaneDistance;
-        int renderDistance = Minecraft.getInstance().options.renderDistance;
+        int renderDistance = Minecraft.getInstance().options.getEffectiveRenderDistance();
 
         if (worldFog == TweakVersion.WorldFog.CLASSIC)
         {
@@ -129,7 +129,7 @@ public abstract class FogUtil
             return;
 
         int farPlaneDistance;
-        int renderDistance = Minecraft.getInstance().options.renderDistance;
+        int renderDistance = Minecraft.getInstance().options.getEffectiveRenderDistance();
 
         if (worldFog == TweakVersion.WorldFog.CLASSIC)
         {
@@ -180,7 +180,7 @@ public abstract class FogUtil
             }
             else
             {
-                int renderDistance = Minecraft.getInstance().options.renderDistance;
+                int renderDistance = Minecraft.getInstance().options.getEffectiveRenderDistance();
                 int farPlaneDistance = renderDistance * 16;
 
                 if (fogMode == FogRenderer.FogMode.FOG_TERRAIN)
