@@ -262,6 +262,8 @@ public abstract class ModConfig
         public static boolean disableLavaPop() { return getBoolTweak(SoundTweak.DISABLE_LAVA_POP, SOUND.disableLavaPop); }
         public static boolean disableGrowth() { return getBoolTweak(SoundTweak.DISABLE_GROWTH, SOUND.disableGrowth); }
         public static boolean disableChest() { return getBoolTweak(SoundTweak.DISABLE_CHEST, SOUND.disableChest); }
+        public static boolean disableEnderChest() { return getBoolTweak(SoundTweak.DISABLE_ENDER_CHEST, SOUND.disableEnderChest); }
+        public static boolean disableTrappedChest() { return getBoolTweak(SoundTweak.DISABLE_TRAPPED_CHEST, SOUND.disableTrappedChest); }
         public static boolean disableSquid() { return getBoolTweak(SoundTweak.DISABLE_SQUID, SOUND.disableSquid); }
         public static boolean disableDoor() { return getBoolTweak(SoundTweak.DISABLE_DOOR, SOUND.disableDoorPlace); }
         public static boolean disableBed() { return getBoolTweak(SoundTweak.DISABLE_BED, SOUND.disableBedPlace); }
