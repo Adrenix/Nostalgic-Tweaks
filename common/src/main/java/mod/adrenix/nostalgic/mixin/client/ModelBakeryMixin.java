@@ -36,7 +36,7 @@ public abstract class ModelBakeryMixin
         String path = blockStateLocation.getPath();
 
         if (!namespace.equals(minecraft))
-            return minecraft;
+            return namespace;
 
         namespace = switch (path)
         {
