@@ -29,6 +29,8 @@ public abstract class DefaultConfig
         public static final boolean OLD_BED = true;
         public static final boolean OLD_CHEST = true;
         public static final boolean DISABLE_CHEST = true;
+        public static final boolean DISABLE_ENDER_CHEST = true;
+        public static final boolean DISABLE_TRAPPED_CHEST = true;
         public static final boolean DISABLE_GROWTH = true;
         public static final boolean DISABLE_FURNACE = true;
         public static final boolean DISABLE_DOOR_PLACE = true;
