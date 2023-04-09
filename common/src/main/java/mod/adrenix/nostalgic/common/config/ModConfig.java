@@ -524,6 +524,11 @@ public abstract class ModConfig
         public static boolean oldSquidMilk() { return getSidedBoolTweak(GameplayTweak.SQUID_MILK, GAMEPLAY.oldSquidMilking, SERVER_GAMEPLAY.oldSquidMilking); }
 
         // Mob System
+        public static int getMonsterSpawnCap()
+        {
+            return isTweakOn(GameplayTweak.MONSTER_CAP) ? getSidedTweak(GameplayTweak.MONSTER_CAP, GAMEPLAY.monsterSpawnCap, SERVER_GAMEPLAY.monsterSpawnCap) : MobCategory.MONSTER.getMaxInstancesPerChunk();
+        }
+
         public static int getAnimalSpawnCap()
         {
             return isTweakOn(GameplayTweak.ANIMAL_CAP) ? getSidedTweak(GameplayTweak.ANIMAL_CAP, GAMEPLAY.animalSpawnCap, SERVER_GAMEPLAY.animalSpawnCap) : MobCategory.CREATURE.getMaxInstancesPerChunk();
