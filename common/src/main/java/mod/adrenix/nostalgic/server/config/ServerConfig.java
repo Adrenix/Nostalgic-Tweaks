@@ -72,6 +72,9 @@ public class ServerConfig implements ConfigData
         @TweakData.BoundedSlider(min = 0, max = 100, reset = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP)
         public int animalSpawnCap = DefaultConfig.Gameplay.ANIMAL_SPAWN_CAP;
 
+        @TweakData.BoundedSlider(min = 0, max = 100, reset = DefaultConfig.Gameplay.MONSTER_SPAWN_CAP)
+        public int monsterSpawnCap = DefaultConfig.Gameplay.MONSTER_SPAWN_CAP;
+
         public boolean disableAnimalPanic = DefaultConfig.Gameplay.DISABLE_ANIMAL_PANIC;
         public boolean disableSheepEatGrass = DefaultConfig.Gameplay.DISABLE_SHEEP_EAT_GRASS;
         public boolean oldAnimalSpawning = DefaultConfig.Gameplay.OLD_ANIMAL_SPAWNING;

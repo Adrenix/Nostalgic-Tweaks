@@ -14,6 +14,7 @@ public enum GameplayTweak implements Tweak
 
     // Mob System
 
+    MONSTER_CAP,
     ANIMAL_CAP,
     ANIMAL_PANIC,
     ANIMAL_SPAWNING,

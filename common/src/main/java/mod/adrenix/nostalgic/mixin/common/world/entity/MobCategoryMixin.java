@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.common.world.entity;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import net.minecraft.world.entity.MobCategory;
 import org.spongepowered.asm.mixin.Final;
@@ -27,6 +28,8 @@ public abstract class MobCategoryMixin
     {
         if (ModConfig.Gameplay.oldAnimalSpawning() && this.name.equals(MobCategory.CREATURE.getName()))
             callback.setReturnValue(ModConfig.Gameplay.getAnimalSpawnCap());
+        else if (NostalgicTweaks.isNetworkVerified() && this.name.equals(MobCategory.MONSTER.getName()))
+            callback.setReturnValue(ModConfig.Gameplay.getMonsterSpawnCap());
     }
 
     /**
