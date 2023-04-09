@@ -3,10 +3,17 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 import com.mojang.blaze3d.platform.NativeImage;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.client.RunUtil;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import org.spongepowered.asm.mixin.*;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.awt.*;
@@ -14,9 +21,9 @@ import java.awt.image.BufferedImage;
 
 /**
  * Original missing texture logic contributed by forkiesassds on GitHub.
- *
- * Parts of the merged pull request has been modified. Notably; fixing typos, renaming variables, and creating
- * functional programming methods to prevent the need of restarting the game when the tweak changes.
+ * <p>
+ * Parts of the merged pull request has been modified. Notably, renaming variables and creating functional programming
+ * methods to prevent the need of restarting the game when the tweak changes.
  */
 
 @Mixin(MissingTextureAtlasSprite.class)
@@ -24,18 +31,61 @@ public abstract class MissingTextureAtlasSpriteMixin
 {
     /* Injections */
 
+    @Shadow @Nullable private static DynamicTexture missingTexture;
+
     /**
-     * Instructions for changing the missing texture image.
-     * Dependent on the current old missing texture tweak.
+     * Instructions for changing the missing texture image. Dependent on the current old missing texture tweak.
      */
-    @Inject(method = "generateMissingImage", at = @At("HEAD"), cancellable = true)
-    private static void NT$onGenerateMissingImage(int x, int y, CallbackInfoReturnable<NativeImage> callback)
+    @Inject(
+        method = "generateMissingImage",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private static void NT$onGenerateMissingImage(int width, int height, CallbackInfoReturnable<NativeImage> callback)
     {
         if (ModConfig.Candy.oldMissingTexture() != TweakVersion.MissingTexture.MODERN)
             callback.setReturnValue(MissingTextureAtlasSpriteMixin.getImage());
     }
 
+    /**
+     * Changes the sprite dimensions for the missing texture image. This is important since not changing sprite
+     * dimensions will cause visual issues for modified textures. Controlled by the old missing texture tweak.
+     */
+    @ModifyConstant(
+        method = "create",
+        constant = @Constant(intValue = 16)
+    )
+    private static int NT$onCreate(int vanilla)
+    {
+        if (ModConfig.Candy.oldMissingTexture() == TweakVersion.MissingTexture.MODERN)
+            return vanilla;
+
+        return MissingTextureAtlasSpriteMixin.getTextureSize();
+    }
+
+    /**
+     * Adds a config runnable that changes the missing texture image after the config is saved. Not controlled by any
+     * tweak.
+     */
+    @Inject(
+        method = "<clinit>",
+        at = @At("TAIL")
+    )
+    private static void NT$onStaticInit(CallbackInfo callback)
+    {
+        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::update);
+    }
+
     /* Mixin Utility */
+
+    /**
+     * Resets the missing texture so that the game regenerates the missing texture image after a change to the old
+     * missing texture tweak is made.
+     */
+    private static void update()
+    {
+        missingTexture = null;
+    }
 
     /**
      * @return A texture size that is dependent on the old missing texture tweak.
@@ -43,12 +93,14 @@ public abstract class MissingTextureAtlasSpriteMixin
     private static int getTextureSize()
     {
         TweakVersion.MissingTexture missingTexture = ModConfig.Candy.oldMissingTexture();
-        boolean is64 = missingTexture == TweakVersion.MissingTexture.BETA || missingTexture == TweakVersion.MissingTexture.R15;
+        boolean is64 = missingTexture == TweakVersion.MissingTexture.BETA ||
+                       missingTexture == TweakVersion.MissingTexture.R15;
         return is64 ? 64 : 16;
     }
 
     /**
      * Generates a missing texture image based on the old missing texture tweak.
+     *
      * @return A new native image instance.
      */
     @SuppressWarnings("SuspiciousNameCombination")
@@ -112,8 +164,6 @@ public abstract class MissingTextureAtlasSpriteMixin
                 }
             }
         }
-
-        nativeImage.untrack();
 
         return nativeImage;
     }
