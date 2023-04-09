@@ -1693,6 +1693,15 @@ public class ClientConfig implements ConfigData
          * Mob System
          */
 
+        @TweakGui.New
+        @TweakData.Server
+        @TweakData.EntryStatus
+        @TweakData.BoundedSlider(min = 0, max = 100, reset = DefaultConfig.Gameplay.MONSTER_SPAWN_CAP)
+        @TweakGui.Category(container = TweakCategory.MOB_GAMEPLAY)
+        @TweakGui.Slider(type = TweakGui.SliderType.GENERIC, langKey = LangUtil.Gui.SLIDER_CAP)
+        public int monsterSpawnCap = DefaultConfig.Gameplay.MONSTER_SPAWN_CAP;
+        static { GameplayTweak.MONSTER_CAP.setKey("monsterSpawnCap"); }
+
         // Artificial Intelligence
 
         @TweakGui.New
