@@ -6,7 +6,7 @@ This is the 1.19.2 multiplayer development branch for N.T.
 v2.0.0
 
 ### Current Released Version
-v2.0.0-Beta-8.2
+v2.0.0-Beta-8.3
 
 ### Related Development Branches
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
