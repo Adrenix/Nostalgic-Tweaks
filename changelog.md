@@ -1,5 +1,6 @@
 # Nostalgic Tweaks (Forge & Fabric) 1.19.4-v2.0.0-Beta-8.3
 - Added old minecart physics tweak
+- Added monster spawn cap modifier tweak
 - Added separated disable chest sound tweaks for the ender chest and trapped chest
 - Added experimental server-side-only (SSO) mode for dedicated server installations
 - Removed old damage hurt direction tweak since it now exists in vanilla Minecraft 1.19.4
@@ -9,3 +10,4 @@
 - Fixed old torch brightness not being applied to all torches
 - Fixed Enhanced Block Entities mod conflict
 - Fixed world aesthetic rendering issues when playing on servers
+- Fixed old missing texture tweak not rendering correctly
