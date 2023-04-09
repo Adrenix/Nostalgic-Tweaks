@@ -21,7 +21,7 @@ logoFile = "nt_forge_logo.png"
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[43.2.0,)"
 ordering = "NONE"
 side = "BOTH"
 
