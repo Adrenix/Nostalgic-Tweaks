@@ -1,4 +1,5 @@
 # Nostalgic Tweaks (Forge & Fabric) 1.19.2-v2.0.0-Beta-8.3
+- Updated minimum Forge version requirement to `43.2.0` or above
 - Added old minecart physics tweak
 - Added separated disable chest sound tweaks for the ender chest and trapped chest
 - Added experimental server-side-only (SSO) mode for dedicated server installations
