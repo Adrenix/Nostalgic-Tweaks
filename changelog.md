@@ -1,3 +1,14 @@
+# Nostalgic Tweaks (Forge & Fabric) 1.18.2-v2.0.0-Beta-8.3
+- Added old minecart physics tweak
+- Added separated disable chest sound tweaks for the ender chest and trapped chest
+- Added experimental server-side-only (SSO) mode for dedicated server installations
+- Fixed crash caused by the custom hud mod
+- Fixed alternate HUD text appearing in spectator mode
+- Fixed not being able to climb trapdoors with old ladder gap bug enabled on Forge
+- Fixed old torch brightness not being applied to all torches
+- Fixed Enhanced Block Entities mod conflict
+- Fixed world aesthetic rendering issues when playing on servers
+
 # Nostalgic Tweaks (Forge & Fabric) 1.18.2-v2.0.0-Beta-8.2
 The first release of a 2.0.0 beta to CurseForge/Modrinth. This beta is deemed mostly stable; however, there may still be
 bugs that have not been found and/or fixed.
