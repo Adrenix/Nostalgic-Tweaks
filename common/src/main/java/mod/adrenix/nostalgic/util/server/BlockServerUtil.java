@@ -15,8 +15,24 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class BlockServerUtil
 {
     /**
+     * Used to check if a climbable block is within two blocks of the given block position.
+     *
+     * @param level The level to get block states from.
+     * @param pos   The block position to check from.
+     * @return Whether there is a climbable block within two blocks.
+     */
+    public static boolean isClimbableWithinTwoBlocks(Level level, BlockPos pos)
+    {
+        boolean isBelowClimbable = level.getBlockState(pos.below()).is(BlockTags.CLIMBABLE);
+        boolean isBelowNextClimbable = level.getBlockState(pos.below().below()).is(BlockTags.CLIMBABLE);
+
+        return isBelowClimbable || isBelowNextClimbable;
+    }
+
+    /**
      * This is used by the old ladder gaps tweak and checks if a block should be considered climbable by the server. If
-     * there is a single gap between two ladders, then the gap in-between should be considered climbable.
+     * there is a single gap between two ladders, then the gap in-between should be considered climbable. Trap doors
+     * will be climbable if there is a ladder within two blocks below an opened trap door.
      *
      * @param level The level to get block states from.
      * @param state The block state to check if a climbable tag is present.
@@ -31,7 +47,10 @@ public abstract class BlockServerUtil
             return isClimbable;
 
         if (state.getBlock() instanceof TrapDoorBlock && state.getValue(TrapDoorBlock.OPEN))
-            return true;
+        {
+            if (BlockServerUtil.isClimbableWithinTwoBlocks(level, pos))
+                return true;
+        }
 
         BlockPos posAbove = pos.above();
         BlockState stateAbove = level.getBlockState(posAbove);
@@ -39,7 +58,10 @@ public abstract class BlockServerUtil
         boolean isAboveClimbable = stateAbove.is(BlockTags.CLIMBABLE);
 
         if (stateAbove.getBlock() instanceof TrapDoorBlock && stateAbove.getValue(TrapDoorBlock.OPEN))
-            return true;
+        {
+            if (BlockServerUtil.isClimbableWithinTwoBlocks(level, posAbove))
+                return true;
+        }
 
         return isClimbable || isAboveClimbable;
     }
