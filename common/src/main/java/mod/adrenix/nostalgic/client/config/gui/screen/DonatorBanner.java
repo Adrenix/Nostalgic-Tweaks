@@ -51,23 +51,35 @@ public class DonatorBanner
 
     /**
      * Used to shift setting screen elements down or up depending on if the banner is opened.
+     *
      * @return The offset from the top of the screen.
      */
-    public static int getHeight() { return DonatorBanner.height; }
+    public static int getHeight()
+    {
+        return DonatorBanner.height;
+    }
 
     /**
      * Used to determine if elements on the settings screen should be shifted down or up.
+     *
      * @return Whether the support banner is opened or closed.
      */
-    public static boolean isOpen() { return DonatorBanner.opened; }
+    public static boolean isOpen()
+    {
+        return DonatorBanner.opened;
+    }
 
     /**
      * Toggles the opened state of support banners.
      */
-    public static void toggle() { DonatorBanner.opened = !DonatorBanner.opened; }
+    public static void toggle()
+    {
+        DonatorBanner.opened = !DonatorBanner.opened;
+    }
 
     /**
      * Since the settings screen can be jumped over during initialization, caching the screen width will not work.
+     *
      * @return Gets the current screen width.
      */
     private static int getWidth()
@@ -81,6 +93,7 @@ public class DonatorBanner
     /* Fields */
 
     private final Font font = Minecraft.getInstance().font;
+    private final TimeWatcher timer = new TimeWatcher(25L);
     private int messageX = 0;
     private int messageWidth = 0;
     private boolean isRunning = false;
@@ -88,8 +101,7 @@ public class DonatorBanner
     /* Constructor */
 
     /**
-     * Create a new donator banner overlay instance.
-     * This will be used at the main settings screen.
+     * Create a new donator banner overlay instance. This will be used at the main settings screen.
      */
     public DonatorBanner()
     {
@@ -168,6 +180,7 @@ public class DonatorBanner
 
     /**
      * Get an x-position centered on the current screen.
+     *
      * @param message A component message.
      * @return A centered x-position.
      */
@@ -178,10 +191,10 @@ public class DonatorBanner
 
     /**
      * Render the support message block.
+     *
      * @param graphics The current GuiGraphics object.
-     * @param partialTick The change in game frame time.
      */
-    public void render(GuiGraphics graphics, float partialTick)
+    public void render(GuiGraphics graphics)
     {
         int headerY = 3;
         int messageY = headerY + this.font.lineHeight + 4;
@@ -196,7 +209,7 @@ public class DonatorBanner
             DonatorBanner.height = endY + 2;
 
         RenderUtil.fill(graphics, 0.0F, (float) getWidth(), 0.0F, endY, 0x7F000000);
-        graphics.drawString(font, THANKS_MESSAGE, (int) this.getCenterX(THANKS_MESSAGE), headerY, 0xFFFF00, true);
+        graphics.drawString(this.font, THANKS_MESSAGE, (int) this.getCenterX(THANKS_MESSAGE), headerY, 0xFFFF00, true);
 
         if (DonatorBanner.cache == null && DonatorBanner.opened)
         {
@@ -204,7 +217,7 @@ public class DonatorBanner
             ChatFormatting color = DonatorBanner.CACHE_TIMER.isMaxReached() ? ChatFormatting.RED : ChatFormatting.GOLD;
             int centerX = (int) this.getCenterX(message);
 
-            graphics.drawString(font, message.withStyle(color), centerX, messageY, 0xFFFFFF, true);
+            graphics.drawString(this.font, message.withStyle(color), centerX, messageY, 0xFFFFFF, true);
             this.connect();
 
             return;
@@ -231,7 +244,9 @@ public class DonatorBanner
             this.build();
         }
 
-        this.messageX -= (1.2F + (1.0F / 3.0F)) * partialTick;
+        if (this.timer.isReady())
+            this.messageX -= 1;
+
         int currentX = this.messageX;
 
         for (MutableComponent supporter : DonatorBanner.SUPPORTERS)
@@ -248,7 +263,7 @@ public class DonatorBanner
             }
 
             RenderUtil.blit256(TextureLocation.WIDGETS, graphics, currentX - 12.5F + offset, messageY, 0, 32, 9, 9);
-            graphics.drawString(font, supporter, currentX, messageY, 0xFFFFFF, true);
+            graphics.drawString(this.font, supporter, currentX, messageY, 0xFFFFFF, true);
 
             currentX += width;
         }

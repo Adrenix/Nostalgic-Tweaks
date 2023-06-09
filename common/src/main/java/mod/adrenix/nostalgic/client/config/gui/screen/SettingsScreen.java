@@ -37,9 +37,9 @@ import java.util.ArrayList;
 
 /**
  * The settings screen is the "home page" for the mod's configuration graphical user interface.
- *
- * Most of the user's time will be spent in the {@link ConfigScreen} since that is where tweaks and menu settings can
- * be changed.
+ * <p>
+ * Most of the user's time will be spent in the {@link ConfigScreen} since that is where tweaks and menu settings can be
+ * changed.
  */
 
 public class SettingsScreen extends Screen
@@ -64,8 +64,9 @@ public class SettingsScreen extends Screen
 
     /**
      * This constructor requires a parent screen, a component title, and whether the screen should redirect.
-     * @param parent A parent screen, if there was one.
-     * @param title The screen's display title.
+     *
+     * @param parent       A parent screen, if there was one.
+     * @param title        The screen's display title.
      * @param isRedirected Whether this screen should be immediately redirected.
      */
     public SettingsScreen(Screen parent, Component title, boolean isRedirected)
@@ -88,7 +89,8 @@ public class SettingsScreen extends Screen
 
     /**
      * This constructor requires only a parent screen and whether the screen should redirect.
-     * @param parent A parent screen, if there was one.
+     *
+     * @param parent       A parent screen, if there was one.
      * @param isRedirected Whether this screen should be immediately redirected.
      */
     public SettingsScreen(Screen parent, boolean isRedirected)
@@ -100,8 +102,9 @@ public class SettingsScreen extends Screen
 
     /**
      * Add a new button to the setting screen.
-     * @param title The title of the button.
-     * @param onPress A runnable that is invoked when the button is pressed.
+     *
+     * @param title   The title of the button.
+     * @param onPress Runnable that is invoked when the button is pressed.
      */
     private void addButton(Component title, Button.OnPress onPress)
     {
@@ -109,8 +112,8 @@ public class SettingsScreen extends Screen
     }
 
     /**
-     * Repositions, resizes, and aligns buttons based on whether the title text is too large for a small button.
-     * There is no logic for handling when the game window is too small.
+     * Repositions, resizes, and aligns buttons based on whether the title text is too large for a small button. There
+     * is no logic for handling when the game window is too small.
      */
     private void setupButtons()
     {
@@ -164,8 +167,8 @@ public class SettingsScreen extends Screen
     /* Screen Initialization & Screen Closing */
 
     /**
-     * Initializes the home settings screen by defining the screen's widgets and redirecting the screen if that option
-     * is enabled by the user.
+     * Initializes the home settings screen by defining the screen's widgets and redirecting the screen if the user
+     * enables that option.
      */
     @Override
     protected void init()
@@ -174,17 +177,12 @@ public class SettingsScreen extends Screen
         this.buttons.clear();
 
         // General Settings
-        this.addButton
-        (
-            Component.translatable(LangUtil.Config.CONFIG_TITLE), (button) ->
-                this.minecraft.setScreen(new ConfigScreen(this))
-        );
+        this.addButton(Component.translatable(LangUtil.Config.CONFIG_TITLE), (button) -> this.minecraft.setScreen(new ConfigScreen(this)));
 
         // Config Presets (WIP)
         Button preset = Button.builder(Component.translatable(LangUtil.Gui.SETTINGS_PRESETS), RunUtil::nothing)
             .size(SMALL_WIDTH, BUTTON_HEIGHT)
-            .build()
-        ;
+            .build();
 
         preset.active = false;
 
@@ -224,8 +222,9 @@ public class SettingsScreen extends Screen
 
     /**
      * Handles a screen key pressing event.
-     * @param keyCode A key code.
-     * @param scanCode A key scancode.
+     *
+     * @param keyCode   A key code.
+     * @param scanCode  A key scancode.
      * @param modifiers Any held key modifiers.
      * @return Whether this method handled the event.
      */
@@ -240,6 +239,7 @@ public class SettingsScreen extends Screen
 
     /**
      * Handles a mouse click event.
+     *
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.
      * @param button The mouse button that was clicked.
@@ -266,17 +266,20 @@ public class SettingsScreen extends Screen
     }
 
     /**
-     * Handler for when the screen closes.
-     * All configuration values are saved to disk when this screen closes.
+     * Handler for when the screen closes. All configuration values are saved to disk when this screen closes.
      */
     @Override
-    public void onClose() { this.minecraft.setScreen(parent); }
+    public void onClose()
+    {
+        this.minecraft.setScreen(parent);
+    }
 
     /**
      * Handler for when the screen resizes.
+     *
      * @param minecraft The Minecraft instance.
-     * @param width The new screen width.
-     * @param height The new screen height.
+     * @param width     The new screen width.
+     * @param height    The new screen height.
      */
     @Override
     public void resize(Minecraft minecraft, int width, int height)
@@ -290,9 +293,10 @@ public class SettingsScreen extends Screen
 
     /**
      * Renders the home settings screen.
-     * @param graphics The current GuiGraphics object.
-     * @param mouseX The current x-position of the mouse.
-     * @param mouseY The current y-position of the mouse.
+     *
+     * @param graphics    The current GuiGraphics object.
+     * @param mouseX      The current x-position of the mouse.
+     * @param mouseY      The current y-position of the mouse.
      * @param partialTick The change in game frame time.
      */
     @Override
@@ -309,7 +313,7 @@ public class SettingsScreen extends Screen
             this.renderDebug(graphics);
         else
         {
-            this.banner.render(graphics, partialTick);
+            this.banner.render(graphics);
 
             if (DonatorBanner.isOpen())
             {
@@ -329,16 +333,16 @@ public class SettingsScreen extends Screen
 
     /**
      * Renders the toggle "button" text that controls support banner opening.
+     *
      * @param graphics The current GuiGraphics object.
-     * @param mouseX The current x-position of the mouse.
-     * @param mouseY The current y-position of the mouse.
+     * @param mouseX   The current x-position of the mouse.
+     * @param mouseY   The current y-position of the mouse.
      */
     private void renderSupportToggle(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        MutableComponent button = DonatorBanner.isOpen() ?
-            Component.literal("\u274c").withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.RED) :
-            Component.literal("\u2764").withStyle(ChatFormatting.RED)
-        ;
+        MutableComponent button = DonatorBanner.isOpen() ? Component.literal("\u274c")
+            .withStyle(ChatFormatting.BOLD)
+            .withStyle(ChatFormatting.RED) : Component.literal("\u2764").withStyle(ChatFormatting.RED);
 
         boolean isOpen = DonatorBanner.isOpen();
         int textHeight = this.font.lineHeight;
@@ -357,6 +361,7 @@ public class SettingsScreen extends Screen
 
     /**
      * Changes the color of a string based on the given value.
+     *
      * @param value An Object value.
      * @return The default string or a colored string.
      */
@@ -370,6 +375,7 @@ public class SettingsScreen extends Screen
 
     /**
      * Renders debug information when the user has the feature enabled.
+     *
      * @param graphics The current GuiGraphics object.
      */
     private void renderDebug(GuiGraphics graphics)
@@ -393,7 +399,8 @@ public class SettingsScreen extends Screen
         GuiUtil.drawText(graphics, String.format("Server Protocol: §b%s", connection.getProtocol()), TweakType.Corner.BOTTOM_RIGHT, manager);
         GuiUtil.drawText(graphics, String.format("Server Version: §e%s", connection.getVersion()), TweakType.Corner.BOTTOM_RIGHT, manager);
         GuiUtil.drawText(graphics, String.format("Server Loader: §d%s", connection.getLoader()), TweakType.Corner.BOTTOM_RIGHT, manager);
-        GuiUtil.drawText(graphics, String.format("Server: %s", getColored(NostalgicTweaks.getConnection().isPresent())), TweakType.Corner.BOTTOM_RIGHT, manager);
+        GuiUtil.drawText(graphics, String.format("Server: %s", getColored(NostalgicTweaks.getConnection()
+            .isPresent())), TweakType.Corner.BOTTOM_RIGHT, manager);
 
         GuiUtil.drawText(graphics, String.format("Flywheel: %s", getColored(ModTracker.FLYWHEEL.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
         GuiUtil.drawText(graphics, String.format("Optifine: %s", getColored(ModTracker.OPTIFINE.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
@@ -404,6 +411,7 @@ public class SettingsScreen extends Screen
 
     /**
      * Renders the mod's logo to the home settings screen.
+     *
      * @param graphics The current GuiGraphics object.
      */
     private void renderLogo(GuiGraphics graphics)
