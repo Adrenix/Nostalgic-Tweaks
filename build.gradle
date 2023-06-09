@@ -28,17 +28,6 @@ subprojects {
         // The following line declares the yarn mappings you may select this one as well.
         // mappings "net.fabricmc:yarn:1.19.2+build.3:v2"
     }
-
-    if (project.path != ':common') {
-        loom {
-            mods {
-                main { // to match the default mod generated for Forge
-                    sourceSet project.sourceSets.main
-                    sourceSet project(':common').sourceSets.main
-                }
-            }
-        }
-    }
 }
 
 allprojects {
@@ -49,10 +38,6 @@ allprojects {
     archivesBaseName = rootProject.archives_base_name
     version = rootProject.mod_version
     group = rootProject.maven_group
-
-    architectury {
-        compileOnly()
-    }
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
