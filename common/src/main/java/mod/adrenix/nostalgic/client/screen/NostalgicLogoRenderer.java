@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -86,12 +85,10 @@ public class NostalgicLogoRenderer
         RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
 
         PoseStack model = RenderSystem.getModelViewStack();
-        float mScale = NostalgicTweaks.isFabric() ? 1.59F : 1.32F;
-        float yOffset = NostalgicTweaks.isFabric() ? 1.0F : 0.78F;
         float zOffset = model.last().pose().m32();
 
-        model.translate(-0.05F, yOffset, (-1.0F * zOffset) - 10.0F);
-        model.scale(mScale, mScale, mScale);
+        model.translate(-0.05F, 0.78F, (-1.0F * zOffset) - 10.0F);
+        model.scale(1.32F, 1.32F, 1.32F);
 
         BakedModel stone = this.minecraft.getItemRenderer().getItemModelShaper().getItemModel(Blocks.STONE.asItem());
 
