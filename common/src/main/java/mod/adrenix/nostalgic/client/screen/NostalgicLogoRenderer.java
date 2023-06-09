@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -27,8 +28,7 @@ public class NostalgicLogoRenderer
 {
     /* Fields */
 
-    private static final String[] MINECRAFT =
-    {
+    private static final String[] MINECRAFT = {
         " *   * * *   * *** *** *** *** *** ***",
         " ** ** * **  * *   *   * * * * *    * ",
         " * * * * * * * **  *   **  *** **   * ",
@@ -37,8 +37,7 @@ public class NostalgicLogoRenderer
     };
 
     /**
-     * This two-dimensional array holds falling block data.
-     * The array is set up in [x][y] format.
+     * This two-dimensional array holds falling block data. The array is set up in [x][y] format.
      */
     private LogoEffectRandomizer[][] logoEffects;
 
@@ -61,6 +60,7 @@ public class NostalgicLogoRenderer
 
     /**
      * Instructions for rendering the classic logo and the introduction falling animation.
+     *
      * @param partialTick The change in game frame time.
      */
     public void render(float partialTick)
@@ -80,15 +80,18 @@ public class NostalgicLogoRenderer
 
         Window window = this.minecraft.getWindow();
         int scaleHeight = (int) (120 * window.getGuiScale());
-        Matrix4f projectionMatrixCopy = new Matrix4f(RenderSystem.getProjectionMatrix());
-        VertexSorting vertexSortingCopy = RenderSystem.getVertexSorting();
 
+        RenderSystem.backupProjectionMatrix();
         RenderSystem.setProjectionMatrix(new Matrix4f().perspective(70.341F, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F), VertexSorting.DISTANCE_TO_ORIGIN);
         RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
 
         PoseStack model = RenderSystem.getModelViewStack();
-        model.translate(-0.05F, 1.0F, 1987.0F);
-        model.scale(1.59F, 1.59F, 1.59F);
+        float mScale = NostalgicTweaks.isFabric() ? 1.59F : 1.32F;
+        float yOffset = NostalgicTweaks.isFabric() ? 1.0F : 0.78F;
+        float zOffset = model.last().pose().m32();
+
+        model.translate(-0.05F, yOffset, (-1.0F * zOffset) - 10.0F);
+        model.scale(mScale, mScale, mScale);
 
         BakedModel stone = this.minecraft.getItemRenderer().getItemModelShaper().getItemModel(Blocks.STONE.asItem());
 
@@ -134,7 +137,7 @@ public class NostalgicLogoRenderer
             }
             else
             {
-                RenderSystem.setShader(GameRenderer::getRendertypeSolidShader);
+                RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
                 RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
             }
 
@@ -165,23 +168,26 @@ public class NostalgicLogoRenderer
                 }
             }
 
+            Tesselator.getInstance().end();
             model.popPose();
         }
 
         RenderSystem.disableBlend();
-        RenderSystem.setProjectionMatrix(projectionMatrixCopy, vertexSortingCopy);
+        RenderSystem.restoreProjectionMatrix();
         RenderSystem.viewport(0, 0, window.getWidth(), window.getHeight());
+
         model.setIdentity();
-        model.translate(0, 0, -2000);
+        model.translate(0.0F, 0.0F, zOffset);
         RenderSystem.applyModelViewMatrix();
         RenderSystem.enableCull();
     }
 
     /**
      * Get a packed RGBA integer.
-     * @param red R
+     *
+     * @param red   R
      * @param green G
-     * @param blue B
+     * @param blue  B
      * @param alpha A
      * @return Packed RGBA integer.
      */
@@ -192,8 +198,9 @@ public class NostalgicLogoRenderer
 
     /**
      * Get a grayscale packed RGBA integer from a brightness and alpha value.
+     *
      * @param brightness Brightness
-     * @param alpha Transparency
+     * @param alpha      Transparency
      * @return A packed grayscale RGBA integer.
      */
     private int getColorFromBrightness(float brightness, float alpha)
@@ -203,19 +210,20 @@ public class NostalgicLogoRenderer
 
     /**
      * Quad rendering instructions that allow for transparency.
-     * @param modelPose Model position matrix.
-     * @param builder Buffer builder instance.
-     * @param quad A baked quad.
+     *
+     * @param modelPose  Model position matrix.
+     * @param builder    Buffer builder instance.
+     * @param quad       A baked quad.
      * @param brightness The brightness of the quad.
-     * @param alpha The transparency of the quad.
+     * @param alpha      The transparency of the quad.
      */
     private void renderQuad(PoseStack.Pose modelPose, BufferBuilder builder, BakedQuad quad, float brightness, float alpha)
     {
         int combinedLight = this.getColorFromBrightness(brightness, alpha);
         int[] vertices = quad.getVertices();
-        Vec3i vec = quad.getDirection().getNormal();
+        Vec3i vecNorm = quad.getDirection().getNormal();
         Matrix4f matrix = modelPose.pose();
-        Vector3f vec3f = modelPose.normal().transform(new Vector3f(vec.getX(), vec.getY(), vec.getZ()));
+        Vector3f norm = modelPose.normal().transform(new Vector3f(vecNorm.getX(), vecNorm.getY(), vecNorm.getZ()));
 
         try (MemoryStack memoryStack = MemoryStack.stackPush())
         {
@@ -230,24 +238,26 @@ public class NostalgicLogoRenderer
                 float y = byteBuffer.getFloat(4);
                 float z = byteBuffer.getFloat(8);
 
-                Vector4f vec4f = matrix.transform(new Vector4f(x, y, z, 1.0F));
-                builder.vertex(vec4f.x(), vec4f.y(), vec4f.z(), 1.0F, 1.0F, 1.0F, alpha, byteBuffer.getFloat(16), byteBuffer.getFloat(20), OverlayTexture.NO_OVERLAY, combinedLight, vec3f.x(), vec3f.y(), vec3f.z());
+                Vector4f pos = matrix.transform(new Vector4f(x, y, z, 1.0F));
+                builder.vertex(pos.x(), pos.y(), pos.z(), 1.0F, 1.0F, 1.0F, alpha, byteBuffer.getFloat(16), byteBuffer.getFloat(20), OverlayTexture.NO_OVERLAY, combinedLight, norm.x(), norm.y(), norm.z());
             }
         }
     }
 
     /**
      * Render a block to the classic title screen.
+     *
      * @param modelView Model view matrix.
-     * @param stone A stone block model.
-     * @param pass The rendering pass index.
-     * @param alpha A transparency value.
+     * @param stone     A stone block model.
+     * @param pass      The rendering pass index.
+     * @param alpha     A transparency value.
      */
     private void renderBlock(PoseStack modelView, BakedModel stone, int pass, float alpha)
     {
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+
+        if (!builder.building())
+            builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 
         for (Direction direction : Direction.values())
         {
@@ -270,15 +280,13 @@ public class NostalgicLogoRenderer
                     builder.putBulkData(modelView.last(), quad, brightness, brightness, brightness, color, OverlayTexture.NO_OVERLAY);
             }
         }
-
-        tesselator.end();
     }
 
     /* Logo Effect Randomizer */
 
     /**
-     * This class tracks individual blocks for the falling animation.
-     * Updates of position values are handled by the screen renderer.
+     * This class tracks individual blocks for the falling animation. The screen renderer handles updates of position
+     * values.
      */
 
     private static class LogoEffectRandomizer
@@ -292,6 +300,7 @@ public class NostalgicLogoRenderer
 
         /**
          * Create a new logo effect randomizer instance.
+         *
          * @param x The starting x-position.
          * @param y The starting y-position.
          */
@@ -302,6 +311,7 @@ public class NostalgicLogoRenderer
 
         /**
          * Update the position of this randomizer instance.
+         *
          * @param partialTick The change in game frame time.
          */
         public void update(float partialTick)
