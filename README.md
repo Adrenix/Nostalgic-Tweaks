@@ -1,5 +1,6 @@
 # Development Branches
-- [1.19.4 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.4) **Current**
+- [1.20 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20) **Current**
+- [1.19.4 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.4) **TBD**
 - ~~[1.19.3 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.3)~~ **Discontinued**
 - [1.19.2 Multiplayer (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.2-multiplayer) **LTS**
 - [1.19 Multiplayer (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19-multiplayer) **TBD**
