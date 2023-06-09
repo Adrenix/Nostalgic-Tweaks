@@ -724,8 +724,6 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles.@Tooltip": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.unoptimizedExplosionParticles.@Related": "TNT, Smoke, Big, Physics",
 
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixChunkBorderLag": "Fix Chunk Border Lag",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.fixChunkBorderLag.@Tooltip": "Fixes lag spikes that occur when crossing chunk borders.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness": "Disable Vanilla Brightness",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableBrightness.@Tooltip": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting§7 old light rendering§r.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.disableLightFlicker": "Disable Light Flickering",

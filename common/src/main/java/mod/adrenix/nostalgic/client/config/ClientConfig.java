@@ -988,14 +988,6 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
-        @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
-        public boolean fixChunkBorderLag = DefaultConfig.Candy.FIX_CHUNK_BORDER_LAG;
-        static { CandyTweak.FIX_CHUNK_BORDER_LAG.setKey("fixChunkBorderLag"); }
-
-        @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 2)
         @TweakGui.Subcategory(container = TweakSubcategory.LIGHTING_WORLD_CANDY)
         @TweakGui.Alert(condition = TweakGui.Condition.BRIGHTNESS_CONFLICT, langKey = LangUtil.Gui.ALERT_BRIGHTNESS)

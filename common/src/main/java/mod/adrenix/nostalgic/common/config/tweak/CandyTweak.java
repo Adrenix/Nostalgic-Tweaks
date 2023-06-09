@@ -138,7 +138,6 @@ public enum CandyTweak implements Tweak
     WATER_LIGHTING,
     CLASSIC_LIGHTING,
     DISABLE_BRIGHTNESS,
-    FIX_CHUNK_BORDER_LAG,
 
     // Particle Candy
     SWEEP,

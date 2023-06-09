@@ -388,7 +388,6 @@ public abstract class ModConfig
         // Lighting Candy
         public static boolean disableLightFlicker() { return getBoolTweak(CandyTweak.LIGHT_FLICKER, CANDY.disableLightFlicker); }
         public static boolean disableBrightness() { return getBoolTweak(CandyTweak.DISABLE_BRIGHTNESS, CANDY.disableBrightness); }
-        public static boolean fixChunkBorderLag() { return getBoolTweak(CandyTweak.FIX_CHUNK_BORDER_LAG, CANDY.fixChunkBorderLag); }
         public static boolean oldLightRendering() { return getBoolTweak(CandyTweak.LIGHT_RENDERING, CANDY.oldLightRendering); }
         public static boolean oldSmoothLighting() { return getBoolTweak(CandyTweak.SMOOTH_LIGHTING, CANDY.oldSmoothLighting); }
         public static boolean oldNetherLighting() { return getBoolTweak(CandyTweak.NETHER_LIGHTING, CANDY.oldNetherLighting); }

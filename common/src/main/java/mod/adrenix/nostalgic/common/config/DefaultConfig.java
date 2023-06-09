@@ -151,7 +151,6 @@ public abstract class DefaultConfig
         public static final boolean OVERRIDE_TITLE_SCREEN = true;
         public static final boolean OLD_TITLE_BACKGROUND = true;
         public static final boolean OLD_ALPHA_LOGO = true;
-        public static final boolean OLD_LOGO_OUTLINE = true;
         public static final boolean UNCAP_TITLE_FPS = true;
 
         // Interface - Tooltip Candy
@@ -197,7 +196,6 @@ public abstract class DefaultConfig
         public static final boolean OLD_WATER_LIGHTING = true;
         public static final boolean DISABLE_BRIGHTNESS = true;
         public static final boolean DISABLE_LIGHT_FLICKER = true;
-        public static final boolean FIX_CHUNK_BORDER_LAG = true;
         public static final boolean OLD_CLASSIC_LIGHTING = false;
 
         // Particle Candy
