@@ -1,0 +1,23 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.forge.mixin",
+  "plugin": "mod.adrenix.nostalgic.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "client": [
+    "client.BlockRenderDispatcherForgeMixin",
+    "client.ForgeGuiMixin",
+    "client.HumanoidArmorLayerForgeMixin",
+    "client.ItemColorsForgeMixin",
+    "client.ItemInHandRendererForgeMixin",
+    "client.ProgressScreenForgeMixin",
+    "client.OptifineFogRendererMixin"
+  ],
+  "mixins": [
+    "common.BoneMealItemForgeMixin",
+    "common.FoodDataForgeMixin",
+    "common.HoeItemForgeMixin",
+    "common.ItemEntityForgeMixin",
+    "common.LivingEntityForgeMixin"
+  ]
+}
