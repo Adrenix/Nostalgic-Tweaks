@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.mixin.widen.EntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
@@ -21,36 +22,27 @@ public abstract class EntityMixin
 {
     /* Shadow */
 
-    @Shadow public Level level;
+    @Shadow private Level level;
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
 
     /**
      * Multiplayer:
      *
      * Prevents any unique mob stepping sounds from playing.
-     * Controlled by the old step sounds tweak.
+     * Controlled by the old stepping sounds tweak.
      */
-    @Redirect
-    (
-        method = "move",
-        at = @At
-        (
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Entity;playStepSound(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"
-        )
-    )
-    private void NT$onMoveSound(Entity instance, BlockPos pos, BlockState state)
+    @Redirect(method = "walkingStepSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;playStepSound(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"))
+    private void NT$onWalkingStepSound(Entity entity, BlockPos pos, BlockState state)
     {
         if (ModConfig.Sound.oldStep())
         {
-            boolean isMinecraftEntity = instance.getType().getDescriptionId().contains("minecraft");
-            boolean isEntityIgnored = instance instanceof Spider || instance instanceof Silverfish;
+            boolean isMinecraftEntity = entity.getType().getDescriptionId().contains("minecraft");
+            boolean isEntityIgnored = entity instanceof Spider || entity instanceof Silverfish || entity instanceof Bee;
             boolean isModdedIgnored = ModConfig.Sound.ignoreModdedStep() && !isMinecraftEntity;
 
             if (isEntityIgnored || isModdedIgnored)
                 return;
 
-            //TODO: Does this even work at all?
             if (state.getFluidState().isEmpty())
             {
                 BlockState blockStateAbove = this.level.getBlockState(pos.above());
@@ -59,6 +51,6 @@ public abstract class EntityMixin
             }
         }
         else
-            ((EntityAccessor) instance).NT$stepSound(pos, state);
+            ((EntityAccessor) entity).NT$stepSound(pos, state);
     }
 }
