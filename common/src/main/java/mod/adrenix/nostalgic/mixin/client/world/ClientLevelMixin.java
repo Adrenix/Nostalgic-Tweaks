@@ -216,6 +216,10 @@ public abstract class ClientLevelMixin
     )
     private void NT$onPlayPositionedSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, CallbackInfo callback)
     {
+        // This shouldn't be null, but returning here prevents crash reports that point to this mod to being at fault
+        if (sound == null)
+            return;
+
         /* Attack Sounds */
 
         boolean isAttack = sound == SoundEvents.PLAYER_ATTACK_KNOCKBACK ||
