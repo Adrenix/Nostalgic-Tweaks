@@ -29,7 +29,6 @@
     "gui.InventoryShieldSlotMixin",
     "gui.LoadingOverlayMixin",
     "gui.ScreenMixin",
-    "gui.TooltipRenderUtilMixin",
     "gui.WorldListEntryMixin",
     "model.AbstractZombieModelMixin",
     "model.AnimationUtilsMixin",

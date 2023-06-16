@@ -10,8 +10,9 @@
     "client.HumanoidArmorLayerForgeMixin",
     "client.ItemColorsForgeMixin",
     "client.ItemInHandRendererForgeMixin",
+    "client.OptifineFogRendererMixin",
     "client.ProgressScreenForgeMixin",
-    "client.OptifineFogRendererMixin"
+    "client.TooltipRenderUtilForgeMixin"
   ],
   "mixins": [
     "common.BoneMealItemForgeMixin",
