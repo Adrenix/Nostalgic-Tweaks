@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.client.gui;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.client.screen.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -29,7 +30,7 @@ public abstract class WorldListEntryMixin
     )
     private Screen NT$onQueueLoadScreen(Screen genericScreen)
     {
-        if (!ModConfig.Candy.oldLoadingScreens())
+        if (NostalgicTweaks.isForge() || !ModConfig.Candy.oldLoadingScreens())
             return genericScreen;
 
         NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
