@@ -54,6 +54,12 @@ public abstract class LevelRendererMixin
     @Shadow @Nullable private ViewArea viewArea;
     @Shadow @Nullable private ClientLevel level;
 
+    @Shadow
+    private static BufferBuilder.RenderedBuffer buildSkyDisc(BufferBuilder builder, float y)
+    {
+        return null;
+    }
+
     /* Unique Injected Fields */
 
     @Unique
@@ -71,8 +77,8 @@ public abstract class LevelRendererMixin
             case BETA, MODERN -> -48.0F;
         };
 
-        this.blueBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC); //TODO: figure out if stuff explodes
-        BufferBuilder.RenderedBuffer renderedBuffer = WorldClientUtil.buildSkyDisc(builder, height);
+        this.blueBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
+        BufferBuilder.RenderedBuffer renderedBuffer = LevelRendererMixin.buildSkyDisc(builder, height);
         this.blueBuffer.bind();
         this.blueBuffer.upload(renderedBuffer);
         VertexBuffer.unbind();

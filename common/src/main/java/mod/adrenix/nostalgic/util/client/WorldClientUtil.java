@@ -1,9 +1,6 @@
 package mod.adrenix.nostalgic.util.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.ModTracker;
@@ -120,25 +117,6 @@ public abstract class WorldClientUtil
     public static float getSunriseRotation(float vanilla)
     {
         return ModConfig.Candy.oldSunriseAtNorth() ? 0.0F : vanilla;
-    }
-
-    /**
-     * Builds a sky disc for the far plane.
-     * @param builder The current buffer builder.
-     * @param y The y-level of the sky disc.
-     * @return The finished rendered buffer.
-     */
-    public static BufferBuilder.RenderedBuffer buildSkyDisc(BufferBuilder builder, float y)
-    {
-        float x = Math.signum(y) * 512.0F;
-        RenderSystem.setShader(GameRenderer::getPositionShader);
-        builder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION);
-        builder.vertex(0.0, y, 0.0).endVertex();
-
-        for (int i = -180; i <= 180; i += 45)
-            builder.vertex(x * Mth.cos((float) i * ((float) Math.PI / 180)), y, 512.0F * Mth.sin((float) i * ((float) Math.PI / 180))).endVertex();
-
-        return builder.end();
     }
 
     /**
