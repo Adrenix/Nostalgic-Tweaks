@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityForgeMixin extends Entity
 {
-    /* Dummy Constructor */
+    /* Fake Constructor */
 
     private LivingEntityForgeMixin(EntityType<?> entity, Level level)
     {
@@ -44,8 +44,7 @@ public abstract class LivingEntityForgeMixin extends Entity
     )
     private boolean NT$onClimbable(Optional<BlockPos> ladder)
     {
-        return BlockServerUtil.isClimbable(this.level(), this.getFeetBlockState(), this.blockPosition()) ||
-            ladder.isPresent();
+        return BlockServerUtil.isClimbable(this.level(), this.getFeetBlockState(), this.blockPosition()) || ladder.isPresent();
     }
 
     /**
@@ -58,7 +57,7 @@ public abstract class LivingEntityForgeMixin extends Entity
         method = "dropFromLootTable",
         at = @At(
             value = "INVOKE",
-            target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;forEach(Ljava/util/function/Consumer;)V"
+            target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;JLjava/util/function/Consumer;)V"
         )
     )
     private Consumer<ItemStack> NT$onDropFromLootTable(Consumer<ItemStack> consumer)
