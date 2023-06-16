@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.client.screen;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.common.config.ModConfig;
@@ -13,7 +12,6 @@ import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -28,7 +26,6 @@ import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.util.RandomSource;
 import org.lwjgl.glfw.GLFW;
@@ -376,31 +373,8 @@ public class NostalgicTitleScreen extends TitleScreen
         if (this.minecraft == null)
             return;
 
-        Options options = this.minecraft.options;
-        ImmutableList<String> before = ImmutableList.copyOf(options.resourcePacks);
-
-        options.resourcePacks.clear();
-        options.incompatibleResourcePacks.clear();
-
-        for (Pack pack : repository.getSelectedPacks())
-        {
-            if (pack.isFixedPosition())
-                continue;
-
-            options.resourcePacks.add(pack.getId());
-
-            if (pack.getCompatibility().isCompatible())
-                continue;
-
-            options.incompatibleResourcePacks.add(pack.getId());
-        }
-
-        options.save();
-
-        ImmutableList<String> after = ImmutableList.copyOf(options.resourcePacks);
-
-        if (!after.equals(before))
-            this.minecraft.reloadResourcePacks();
+        this.minecraft.options.updateResourcePacks(repository);
+        this.minecraft.setScreen(this);
     }
 
     /**
