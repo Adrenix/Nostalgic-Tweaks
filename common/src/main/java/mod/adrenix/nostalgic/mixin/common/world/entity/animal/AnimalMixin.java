@@ -62,7 +62,7 @@ public abstract class AnimalMixin extends Mob
     {
         if (ModConfig.Gameplay.oldAnimalSpawning())
         {
-            int skyLight = WorldCommonUtil.getDayLight((LevelAccessor) level);
+            int skyLight = WorldCommonUtil.getDynamicSkylight((LevelAccessor) level);
             int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
 
             callback.setReturnValue(skyLight > 8 || blockLight > 8);

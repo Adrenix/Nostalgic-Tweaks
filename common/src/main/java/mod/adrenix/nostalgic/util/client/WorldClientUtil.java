@@ -542,7 +542,7 @@ public abstract class WorldClientUtil
         int weatherDiff = getWeatherInfluence(level);
         int minLight = currentSkyLight >= levelMaxLight ? 4 : 0;
         int maxLight = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
-        int skyLight = WorldCommonUtil.getDayLight(level) - weatherDiff;
+        int skyLight = WorldCommonUtil.getDynamicSkylight(level) - weatherDiff;
         int skyDiff = 15 - currentSkyLight;
 
         boolean isBlockLightChanged = lastBlockLight == -1 || lastBlockLight != skyLight;
