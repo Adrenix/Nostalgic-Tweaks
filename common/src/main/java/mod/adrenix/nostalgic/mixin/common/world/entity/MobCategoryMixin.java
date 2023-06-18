@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.common.world.entity;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
+import mod.adrenix.nostalgic.common.config.tweak.GameplayTweak;
 import net.minecraft.world.entity.MobCategory;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,15 +21,18 @@ public abstract class MobCategoryMixin
     /* Injections */
 
     /**
-     * Changes the amount of creature instances that can spawn per chunk.
+     * Changes the number of creature instances that can spawn per chunk.
      * Controlled by the old animal spawning tweak.
      */
     @Inject(method = "getMaxInstancesPerChunk", at = @At("HEAD"), cancellable = true)
     private void NT$onGetMaxInstancesPerChunk(CallbackInfoReturnable<Integer> callback)
     {
-        if (ModConfig.Gameplay.oldAnimalSpawning() && this.name.equals(MobCategory.CREATURE.getName()))
+        boolean isCreatureChanged = ModConfig.Gameplay.oldAnimalSpawning() && ModConfig.isTweakOn(GameplayTweak.ANIMAL_CAP);
+        boolean isMonsterChanged = NostalgicTweaks.isNetworkVerified() && ModConfig.isTweakOn(GameplayTweak.MONSTER_CAP);
+
+        if (isCreatureChanged && this.name.equals(MobCategory.CREATURE.getName()))
             callback.setReturnValue(ModConfig.Gameplay.getAnimalSpawnCap());
-        else if (NostalgicTweaks.isNetworkVerified() && this.name.equals(MobCategory.MONSTER.getName()))
+        else if (isMonsterChanged && this.name.equals(MobCategory.MONSTER.getName()))
             callback.setReturnValue(ModConfig.Gameplay.getMonsterSpawnCap());
     }
 
