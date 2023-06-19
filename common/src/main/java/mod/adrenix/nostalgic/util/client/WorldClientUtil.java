@@ -398,7 +398,7 @@ public abstract class WorldClientUtil
     /**
      * Needed so the renderer knows when chunks should be updated.
      */
-    private static int lastBlockLight = -1;
+    private static int lastSkyLight = -1;
 
     /**
      * Flag that tracks the state of chunk relighting.
@@ -411,7 +411,7 @@ public abstract class WorldClientUtil
      */
     public static void resetLightingCache()
     {
-        lastBlockLight = -1;
+        lastSkyLight = -1;
         enqueueRelightChecks = false;
     }
 
@@ -567,15 +567,15 @@ public abstract class WorldClientUtil
         int skyLight = WorldCommonUtil.getDynamicSkylight(level) - weatherDiff;
         int skyDiff = 15 - currentSkyLight;
 
-        boolean isBlockLightChanged = lastBlockLight == -1 || lastBlockLight != skyLight;
-        boolean isExtraRelight = !isBlockLightChanged && !enqueueRelightChecks && RELIGHT_TIMER.isReady();
+        boolean isSkyLightChanged = lastSkyLight == -1 || lastSkyLight != Math.max(0, skyLight);
+        boolean isExtraRelight = !isSkyLightChanged && !enqueueRelightChecks && RELIGHT_TIMER.isReady();
 
-        if (isBlockLightChanged || isExtraRelight)
+        if (isSkyLightChanged || isExtraRelight)
         {
             if (!isExtraRelight)
                 RELIGHT_TIMER.reset();
 
-            lastBlockLight = skyLight;
+            lastSkyLight = Math.max(0, skyLight);
             enqueueRelightChecks = true;
         }
 
