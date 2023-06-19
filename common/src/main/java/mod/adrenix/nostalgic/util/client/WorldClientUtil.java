@@ -560,12 +560,18 @@ public abstract class WorldClientUtil
         if (level == null || currentSkyLight <= 0)
             return Math.max(currentSkyLight, currentBlockLight);
 
+        int dynamicLight = WorldCommonUtil.getDynamicSkylight(level);
+
+        if (!level.dimensionType().hasSkyLight() || level.dimensionType().hasCeiling())
+            dynamicLight = 0;
+
         int levelMaxLight = level.getMaxLightLevel();
         int weatherDiff = getWeatherInfluence(level);
-        int minLight = currentSkyLight >= levelMaxLight ? 4 : 0;
+        int minSkyLight = Math.max(0, (level.dimensionType().hasFixedTime() ? dynamicLight : levelMaxLight) - 11);
+        int minLight = currentSkyLight >= levelMaxLight ? minSkyLight : 0;
         int maxLight = Math.max(currentBlockLight, ModConfig.Candy.getMaxBlockLight());
-        int skyLight = WorldCommonUtil.getDynamicSkylight(level) - weatherDiff;
-        int skyDiff = 15 - currentSkyLight;
+        int skyLight = dynamicLight - weatherDiff;
+        int skyDiff = levelMaxLight - currentSkyLight;
 
         boolean isSkyLightChanged = lastSkyLight == -1 || lastSkyLight != Math.max(0, skyLight);
         boolean isExtraRelight = !isSkyLightChanged && !enqueueRelightChecks && RELIGHT_TIMER.isReady();
@@ -579,7 +585,7 @@ public abstract class WorldClientUtil
             enqueueRelightChecks = true;
         }
 
-        if (currentSkyLight != levelMaxLight && skyLight <= 4)
+        if (currentSkyLight != levelMaxLight && skyLight <= minSkyLight)
             skyLight += weatherDiff;
 
         return Mth.clamp(Math.max(skyLight - skyDiff, currentBlockLight), minLight, maxLight);
