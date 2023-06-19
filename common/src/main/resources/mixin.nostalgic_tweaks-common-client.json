@@ -20,7 +20,6 @@
     "gui.InventoryShieldSlotMixin",
     "gui.LoadingOverlayMixin",
     "gui.ScreenMixin",
-    "gui.TooltipRenderUtilMixin",
     "gui.WorldListEntryMixin",
     "renderer.BlockEntityRenderDispatcherMixin",
     "renderer.DimensionSpecialEffectsMixin",

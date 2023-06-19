@@ -10,6 +10,7 @@
     "GuiFabricMixin",
     "HumanoidArmorLayerFabricMixin",
     "ItemColorsFabricMixin",
-    "TerrainRenderContextMixin"
+    "TerrainRenderContextMixin",
+    "TooltipRenderUtilFabricMixin"
   ]
 }
