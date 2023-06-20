@@ -275,7 +275,7 @@ public abstract class FogUtil
 
             if (entity instanceof LivingEntity living)
             {
-                if (living.hasEffect(MobEffects.WATER_BREATHING))
+                if (living.hasEffect(MobEffects.WATER_BREATHING) || living.hasEffect(MobEffects.CONDUIT_POWER))
                     density = 0.8F;
                 else
                     density = 0.15F + (float) EnchantmentHelper.getRespiration(living) * 0.1F;
