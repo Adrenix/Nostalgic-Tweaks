@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(AbstractButton.class)
 public abstract class AbstractButtonMixin extends AbstractWidget
 {
-    /* Dummy */
+    /* Fake Constructor */
 
     private AbstractButtonMixin(int x, int y, int width, int height, Component component)
     {
@@ -20,7 +20,7 @@ public abstract class AbstractButtonMixin extends AbstractWidget
 
     /**
      * Renders old school style buttons by rendering yellow text on hover and slightly gray text off hover. Controlled
-     * by the old button hover tweak.
+     * by the old button, hover tweak.
      */
     @ModifyVariable(
         method = "renderString",
@@ -35,7 +35,7 @@ public abstract class AbstractButtonMixin extends AbstractWidget
         if (!this.isActive())
             return 0xA0A0A0;
 
-        if (this.isHovered() && this.isActive())
+        if (this.isHoveredOrFocused() && this.isActive())
             return 0xFFFFA0;
 
         return 0xE0E0E0;
