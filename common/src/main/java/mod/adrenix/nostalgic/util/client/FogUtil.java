@@ -41,7 +41,7 @@ public abstract class FogUtil
      */
     public static boolean isOverworld(Camera camera)
     {
-        return camera.getEntity().getLevel().dimension() == Level.OVERWORLD;
+        return camera.getEntity().level.dimension() == Level.OVERWORLD && !isMobEffectActive;
     }
 
     /**
@@ -49,7 +49,10 @@ public abstract class FogUtil
      * @param camera The game's camera.
      * @return Whether the camera entity is in the nether dimension.
      */
-    public static boolean isNether(Camera camera) { return camera.getEntity().getLevel().dimension() == Level.NETHER; }
+    public static boolean isNether(Camera camera)
+    {
+        return camera.getEntity().level.dimension() == Level.NETHER && !isMobEffectActive;
+    }
 
     /**
      * Checks if the camera is in some type of fluid.
@@ -221,9 +224,6 @@ public abstract class FogUtil
      */
     public static void setupFog(Camera camera, FogRenderer.FogMode fogMode)
     {
-        if (isMobEffectActive)
-            isMobEffectActive = false;
-
         if (!isFogModified(camera))
             renderFog(fogMode);
 
@@ -242,13 +242,8 @@ public abstract class FogUtil
      */
     public static void setupNetherFog(Camera camera, FogRenderer.FogMode fogMode)
     {
-        if (!ModConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
+        if (isMobEffectActive || !ModConfig.Candy.oldNetherFog() || isFluidFog(camera) || isEntityBlind(camera) || !isNether(camera))
             return;
-        else if (isMobEffectActive)
-        {
-            isMobEffectActive = false;
-            return;
-        }
 
         renderFog(fogMode);
         RenderSystem.setShaderFogStart(0.0F);
@@ -784,7 +779,7 @@ public abstract class FogUtil
                 MathUtil.moveTowardsGrayscale(CURRENT_VOID_RGB, TARGET_RGB, SPEED);
             }
 
-            RenderSystem.clearColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2], 1.0F);
+            RenderSystem.clearColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2], 0.0F);
             RenderSystem.setShaderFogColor(CURRENT_FOG_RGB[0], CURRENT_FOG_RGB[1], CURRENT_FOG_RGB[2]);
         }
 
