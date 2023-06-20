@@ -13,10 +13,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.material.FogType;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,6 +38,13 @@ public abstract class FogRendererMixin
     @Shadow private static float fogGreen;
     @Shadow private static float fogBlue;
 
+    @Shadow
+    @Nullable
+    private static FogRenderer.MobEffectFogFunction getPriorityFogFunction(Entity entity, float partialTick)
+    {
+        return null;
+    }
+
     /* Helpers */
 
     /**
@@ -47,6 +56,8 @@ public abstract class FogRendererMixin
         fogRed = rgba[0];
         fogGreen = rgba[1];
         fogBlue = rgba[2];
+
+        RenderSystem.clearColor(fogRed, fogGreen, fogBlue, 0.0F);
     }
 
     /* Injections */
@@ -58,7 +69,7 @@ public abstract class FogRendererMixin
     @Inject(method = "setupColor", at = @At("RETURN"))
     private static void NT$onWaterFogColor(Camera camera, float partialTicks, ClientLevel level, int renderDistanceChunks, float bossColorModifier, CallbackInfo callback)
     {
-        if (ModConfig.Candy.oldWaterFogColor() && camera.getFluidInCamera() == FogType.WATER)
+        if (ModConfig.Candy.oldWaterFogColor() && camera.getFluidInCamera() == FogType.WATER && !FogUtil.isMobEffectActive)
         {
             float respiration = (float) EnchantmentHelper.getRespiration((LivingEntity) camera.getEntity()) * 0.2F;
             int brightness = WorldCommonUtil.getBrightness(level, LightLayer.SKY, camera.getBlockPosition());
@@ -114,10 +125,15 @@ public abstract class FogRendererMixin
      * Keeps track as to when the mob effect fog is active. If it is active, then we should not render any old fog.
      * Not controlled by any tweaks since this is a state tracker.
      */
-    @Inject(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer$MobEffectFogFunction;setupFog(Lnet/minecraft/client/renderer/FogRenderer$FogData;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/effect/MobEffectInstance;FF)V"))
+    @Inject(method = "setupFog", at = @At("HEAD"))
     private static void NT$onMobEffectFog(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean nearFog, float partialTick, CallbackInfo callback)
     {
-        FogUtil.isMobEffectActive = true;
+        FogRenderer.MobEffectFogFunction fogFunction = getPriorityFogFunction(camera.getEntity(), partialTick);
+
+        if (fogFunction != null && camera.getEntity() instanceof LivingEntity entity)
+            FogUtil.isMobEffectActive = entity.getEffect(fogFunction.getMobEffect()) != null;
+        else
+            FogUtil.isMobEffectActive = false;
     }
 
     /**

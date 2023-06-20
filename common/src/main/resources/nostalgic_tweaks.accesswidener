@@ -1,6 +1,8 @@
 accessWidener v2 named
 
 accessible class net/minecraft/client/renderer/LevelRenderer$RenderChunkInfo
+accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction
+accessible class net/minecraft/client/renderer/FogRenderer$FogData
 
 mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
 accessible field net/minecraft/client/gui/components/AbstractSliderButton SLIDER_LOCATION Lnet/minecraft/resources/ResourceLocation;
