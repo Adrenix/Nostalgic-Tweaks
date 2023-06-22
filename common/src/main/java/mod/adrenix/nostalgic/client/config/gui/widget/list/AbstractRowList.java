@@ -416,10 +416,7 @@ public abstract class AbstractRowList<R extends AbstractEntry<R>> extends Contai
             for (GuiEventListener listener : row.children())
             {
                 if (listener instanceof EditBox box)
-                {
-                    if (!box.mouseClicked(mouseX, mouseY, button))
-                        box.setFocused(false);
-                }
+                    box.setFocused(box.mouseClicked(mouseX, mouseY, button));
             }
         }
 
