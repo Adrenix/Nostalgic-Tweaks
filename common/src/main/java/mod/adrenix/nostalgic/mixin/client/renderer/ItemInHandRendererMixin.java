@@ -215,8 +215,8 @@ public abstract class ItemInHandRendererMixin
             injector.NT$setReequip(true);
         }
 
-        // Needed to fix weird bug that occurs when pulling an item out from the main hand while in an inventory.
-        boolean isUnequipped = this.mainHandItem.toString().equals("0 air") && main.toString().equals("1 air");
+        // Needed to fix a weird bug that occurs when pulling an item out from the main hand while in an inventory.
+        boolean isUnequipped = this.mainHandItem.toString().equals("0 air") && main.toString().equals("0 air");
         boolean isItemChanged = !this.mainHandItem.is(main.getItem());
         boolean isSlotUpdated = slot == injector.NT$getLastSlot() && isItemChanged && !injector.NT$getReequip();
         boolean isHandChanged = isUnequipped && !injector.NT$getLastItem().isEmpty() && !injector.NT$getReequip();

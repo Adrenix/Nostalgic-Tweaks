@@ -40,9 +40,9 @@ public abstract class ItemClientUtil
      */
     public static ItemStack getLastItem(ItemStack originalItemStack, ItemStack rendererItemStack, ItemStack playerItemStack, SlotTracker player)
     {
-        // Item from main hand turns to air as soon as the player pulls it out. When this happens, the following strings appear in each property respectively.
+        // Item from the main hand turns to air as soon as the player pulls it out.
         boolean isUnequipped = rendererItemStack.toString().equals("0 air") &&
-            playerItemStack.toString().equals("1 air");
+            playerItemStack.toString().equals("0 air");
 
         if (!ModConfig.Animation.oldItemReequip() || !isUnequipped)
             return originalItemStack;
@@ -89,7 +89,7 @@ public abstract class ItemClientUtil
     /**
      * Flattens an item to be as close to 2D as possible via scaling.
      *
-     * @param graphics The current GuiGraphics object.
+     * @param poseStack The current pose stack.
      */
     public static void flatten(PoseStack poseStack) { poseStack.scale(1.0F, 1.0F, 0.001F); }
 
@@ -234,8 +234,7 @@ public abstract class ItemClientUtil
     }
 
     /**
-     * Similar to {@link ItemRenderer#renderGuiItem(PoseStack, ItemStack, int, int)} except that this method changes
-     * render scaling.
+     * Similar to ItemRenderer#renderGuiItem except that this method changes render scaling.
      *
      * @param itemStack The item stack to render.
      * @param x         Where the rendering starts on the x-axis.
