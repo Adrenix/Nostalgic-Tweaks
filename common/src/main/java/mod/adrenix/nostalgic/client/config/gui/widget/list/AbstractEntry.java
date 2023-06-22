@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.list;
 
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 
 import java.util.Optional;
@@ -27,6 +28,12 @@ public abstract class AbstractEntry<E extends ContainerObjectSelectionList.Entry
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
         boolean clicked = super.mouseClicked(mouseX, mouseY, button);
+
+        if (this.getFocused() != null && this.getFocused() instanceof EditBox box)
+        {
+            if (box.mouseClicked(mouseX, mouseY, button))
+                return clicked;
+        }
 
         this.setFocused(null);
 
