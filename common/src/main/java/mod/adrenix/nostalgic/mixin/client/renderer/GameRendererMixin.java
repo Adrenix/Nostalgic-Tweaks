@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
+import mod.adrenix.nostalgic.mixin.widen.PlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
@@ -19,10 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin
 {
-    /* Shadows & Uniques */
+    /* Shadow */
 
     @Shadow @Final Minecraft minecraft;
+
+    /* Unique */
+
     @Unique private boolean NT$isDirectionSet = false;
+
+    /* Injections */
 
     /**
      * Brings back the vertical bobbing. Camera pitching data is injected into the player class. Controlled by vertical
@@ -66,6 +72,9 @@ public abstract class GameRendererMixin
     {
         if (ModConfig.Animation.oldRandomTilt() && this.minecraft.getCameraEntity() instanceof Player player)
         {
+            if (player.getHurtDir() != 0.0F)
+                return;
+
             if ((float) player.hurtTime - partialTicks > 0 && !this.NT$isDirectionSet)
             {
                 this.NT$isDirectionSet = true;
@@ -74,5 +83,22 @@ public abstract class GameRendererMixin
             else if ((float) player.hurtTime - partialTicks <= 0)
                 this.NT$isDirectionSet = false;
         }
+    }
+
+    /**
+     * Resets the player's hurt direction after it has been used. This is needed so that the random damage tilt tweak
+     * does not pollute the hurt direction animation or vice-versa.
+     */
+    @Inject(
+        method = "bobHurt",
+        at = @At(
+            value = "RETURN",
+            ordinal = 0
+        )
+    )
+    private void NT$onGetHurtDir(PoseStack poseStack, float partialTicks, CallbackInfo callback)
+    {
+        if (ModConfig.Animation.oldRandomTilt() && this.minecraft.getCameraEntity() instanceof Player player)
+            ((PlayerAccessor) player).NT$setHurtDir(0.0F);
     }
 }
