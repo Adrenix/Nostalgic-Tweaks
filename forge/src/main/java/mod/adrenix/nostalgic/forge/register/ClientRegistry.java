@@ -34,8 +34,7 @@ public abstract class ClientRegistry
     public static void init(FMLClientSetupEvent event)
     {
         // Register config screen
-        ModLoadingContext.get().registerExtensionPoint
-        (
+        ModLoadingContext.get().registerExtensionPoint(
             ConfigScreenHandler.ConfigScreenFactory.class, () ->
                 new ConfigScreenHandler.ConfigScreenFactory(((minecraft, screen) -> new SettingsScreen(screen, false)))
         );
@@ -44,8 +43,7 @@ public abstract class ClientRegistry
         GuiUtil.modScreen = ModListScreen::new;
 
         // Mod tracking
-        ModTracker.APPLE_SKIN.load(ModList.get()::isLoaded);
-        ModTracker.FLYWHEEL.load(ModList.get()::isLoaded);
+        ModTracker.init(ModList.get()::isLoaded);
 
         // Initialize the client
         NostalgicTweaks.initClient();
