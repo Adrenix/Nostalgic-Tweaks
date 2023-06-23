@@ -138,6 +138,8 @@ public abstract class DefaultConfig
         public static final String CUSTOM_TOP_GRADIENT = "#00000000";
         public static final String CUSTOM_BOTTOM_GRADIENT = "#00000000";
         public static final boolean CUSTOM_GUI_BACKGROUND = false;
+        public static final boolean REMOVE_FOCUS_ON_ESCAPE = true;
+        public static final boolean REMOVE_FOCUS_ON_CLICK = true;
 
         // Interface - Title Screen
         public static final TweakVersion.TitleLayout TITLE_BUTTON_LAYOUT = TweakVersion.TitleLayout.MODERN;

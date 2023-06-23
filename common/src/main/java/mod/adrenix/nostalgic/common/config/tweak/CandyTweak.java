@@ -93,6 +93,8 @@ public enum CandyTweak implements Tweak
     CUSTOM_GUI_BACKGROUND,
     CUSTOM_TOP_GRADIENT,
     CUSTOM_BOTTOM_GRADIENT,
+    REMOVE_FOCUS_ON_ESCAPE,
+    REMOVE_FOCUS_ON_CLICK,
 
     // Interface Candy - Tooltips
     TOOLTIP_BOXES,
