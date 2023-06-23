@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.api.ClientEventFactory;
 import mod.adrenix.nostalgic.api.event.HudEvent;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.GuiUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -40,8 +41,13 @@ public abstract class GuiMixin extends GuiComponent
 
     @Unique private int NT$leftHeight = 39;
     @Unique private int NT$rightHeight = 39;
+    @Unique private int NT$hotbarHeight = this.screenHeight - 22;
+    @Unique private int NT$offsetCache = 0;
     @Unique private int NT$heartIndex = -1;
     @Unique private int NT$heartRow = 0;
+    @Unique private boolean NT$isCacheInit = false;
+    @Unique private boolean NT$renderDebug = false;
+    @Unique private boolean NT$isHungerDisabled = false;
 
     /* Shadows */
 
@@ -51,12 +57,10 @@ public abstract class GuiMixin extends GuiComponent
     @Shadow
     protected abstract Player getCameraPlayer();
 
+    @Shadow private int tickCount;
     @Shadow private int screenWidth;
     @Shadow private int screenHeight;
-
-    /* Uniques */
-
-    @Unique private boolean NT$renderDebug = false;
+    @Shadow private long healthBlinkTime;
 
     /**
      * If both the disabled hunger bar and disable experience bar tweaks are off, then the vanilla HUD can take over.
@@ -67,6 +71,38 @@ public abstract class GuiMixin extends GuiComponent
     private boolean NT$isHudVanilla()
     {
         return this.getPlayerVehicleWithHealth() != null || HudEvent.isVanilla();
+    }
+
+    /**
+     * Sets the left/right height offset sides of HUD elements relative to where the hotbar is being rendered. This also
+     * updates the HUD if Exordium is installed.
+     */
+    @Unique
+    private void NT$setHeightOffsets()
+    {
+        boolean isHungerDisabled = ModConfig.Gameplay.disableHungerBar();
+        int height = this.screenHeight - this.NT$hotbarHeight + 10;
+        int xpShift = ModConfig.Gameplay.disableExperienceBar() ? 0 : 7;
+        int offset = height + xpShift;
+
+        if (!this.NT$isCacheInit)
+        {
+            this.NT$isCacheInit = true;
+            this.NT$offsetCache = offset;
+            this.NT$isHungerDisabled = isHungerDisabled;
+        }
+
+        if (this.NT$offsetCache != offset || this.NT$isHungerDisabled != isHungerDisabled)
+        {
+            this.NT$offsetCache = offset;
+            this.NT$isHungerDisabled = isHungerDisabled;
+
+            if (ModTracker.EXORDIUM.isInstalled())
+                this.healthBlinkTime = this.tickCount + 20;
+        }
+
+        this.NT$leftHeight = offset;
+        this.NT$rightHeight = offset;
     }
 
     /* Injections */
@@ -169,11 +205,11 @@ public abstract class GuiMixin extends GuiComponent
         Hud Rendering
 
         Since Fabric does not have a HUD overlay event system, a different approach must be taken when rendering the
-        changes for the in-game HUD. The blit rendering for armor, food, and air bubbles are cancelled when the player
+        changes for the in-game HUD. The blit rendering for armor, food, and air bubbles are canceled when the player
         is not riding a vehicle. This is needed so the order of rendering can be changed. The food icons are rendered
         first since the left/right vertical offsets need updated based on whether the food icons are rendered. Next, the
-        hearts rendered since there can be additional row of hearts above the first row. The armor and air bubble icons
-        are rendered last since their vertical positions are dependent on where the heart and food icons are. All icon
+        hearts are rendered since there can be additional rows of hearts above the first row. The armor and air bubble
+        icons render last since their vertical positions are dependent on where the heart and food icons are. All icon
         vertical offsets are shifted based on whether the experience bar is visible.
 
         Some mods, such as the Apple Skin mod, will receive support due to the simplicity of implementing support. Other
@@ -196,12 +232,23 @@ public abstract class GuiMixin extends GuiComponent
     )
     private int NT$onRenderHotbar(int y)
     {
-        int height = this.screenHeight - y + 10;
-        int offset = ModConfig.Gameplay.disableExperienceBar() ? 0 : 7;
-        this.NT$leftHeight = height + offset;
-        this.NT$rightHeight = height + offset;
+        this.NT$hotbarHeight = y;
+        this.NT$setHeightOffsets();
 
         return y;
+    }
+
+    /**
+     * Resets the left/right height offsets using the cached height values when GUI rendering is finished. This is done
+     * to support the Exordium mod.
+     */
+    @Inject(
+        method = "render",
+        at = @At("RETURN")
+    )
+    private void NT$onFinishRender(PoseStack poseStack, float partialTick, CallbackInfo callback)
+    {
+        this.NT$setHeightOffsets();
     }
 
     /**
