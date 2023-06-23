@@ -363,6 +363,8 @@ public abstract class ModConfig
         public static boolean oldAnvilScreen() { return getBoolTweak(CandyTweak.ANVIL_SCREEN, CANDY.oldAnvilScreen); }
         public static boolean debugEntityId() { return getSidedBoolTweak(CandyTweak.DEBUG_ENTITY_ID, CANDY.debugEntityId, SERVER_CANDY.debugEntityId); }
         public static boolean oldInventory() { return getBoolTweak(CandyTweak.OLD_INVENTORY, CANDY.oldInventory); }
+        public static boolean removeFocusOnEscape() { return getBoolTweak(CandyTweak.REMOVE_FOCUS_ON_ESCAPE, CANDY.removeFocusOnEscape); }
+        public static boolean removeFocusOnClick() { return getBoolTweak(CandyTweak.REMOVE_FOCUS_ON_CLICK, CANDY.removeFocusOnClick); }
 
         // Interface - Tooltip Candy
         public static boolean addDyeTip() { return getBoolTweak(CandyTweak.DYE_TIP, CANDY.showDyeTip); }

@@ -5,20 +5,23 @@ import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakType;
 import mod.adrenix.nostalgic.mixin.duck.WidgetManager;
 import mod.adrenix.nostalgic.util.common.ColorUtil;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Screen.class)
-public abstract class ScreenMixin extends GuiComponent implements WidgetManager
+public abstract class ScreenMixin extends AbstractContainerEventHandler implements WidgetManager
 {
     /* Shadows */
 
@@ -88,5 +91,30 @@ public abstract class ScreenMixin extends GuiComponent implements WidgetManager
         }
         else
             Screen.fillGradient(poseStack, x, y, w, h, colorFrom, colorTo);
+    }
+
+    /**
+     * Removes focus on the currently focused widget when the escape key is pressed. Controlled by the remove focus on
+     * escape tweak.
+     */
+    @Inject(
+        method = "keyPressed",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void NT$onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> callback)
+    {
+        ComponentPath path = this.getCurrentFocusPath();
+
+        if (ModConfig.Candy.removeFocusOnEscape() && keyCode == GLFW.GLFW_KEY_ESCAPE && path != null)
+        {
+            GuiEventListener focused = this.getFocused();
+            path.applyFocus(false);
+
+            if (focused != null && focused.isFocused())
+                return;
+
+            callback.setReturnValue(true);
+        }
     }
 }
