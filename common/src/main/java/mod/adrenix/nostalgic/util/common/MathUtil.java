@@ -35,6 +35,15 @@ public abstract class MathUtil
     public static boolean isInRange(int value, int start, int end) { return value >= start && value <= end; }
 
     /**
+     * Checks if the given value is greater than or equal the given start or less than or equal to the given end.
+     * @param value The float to check.
+     * @param start The starting float.
+     * @param end The ending float.
+     * @return Whether the given value was within range of the given start/end.
+     */
+    public static boolean isInRange(float value, float start, float end) { return value >= start && value <= end; }
+
+    /**
      * Determine if two integers are within a given <code>tolerance</code>.
      * @param a First integer.
      * @param b Second integer.
