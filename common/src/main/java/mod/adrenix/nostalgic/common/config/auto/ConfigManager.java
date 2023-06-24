@@ -206,6 +206,10 @@ public class ConfigManager<T extends ConfigData> implements ConfigHolder<T>
             }
             
             this.config = deserialized;
+
+            if (this.config == null)
+                this.config = serializer.createDefault();
+
             this.config.validatePostLoad();
 
             return true;
