@@ -12,19 +12,22 @@ public abstract class AbstractWidgetMixin
 {
     /* Shadows */
 
-    @Shadow protected boolean isHovered;
-    @Shadow public abstract boolean isActive();
+    @Shadow
+    public abstract boolean isActive();
+
+    @Shadow
+    public abstract boolean isHoveredOrFocused();
+
+    /* Injections */
 
     /**
-     * Renders old school style buttons by rendering yellow text on hover and slightly gray text off hover.
-     * Controlled by the old button hover tweak.
+     * Renders old school style buttons by rendering yellow text on hover and slightly gray text off hover. Controlled
+     * by the old on button hover tweak.
      */
-    @ModifyArg
-    (
+    @ModifyArg(
         method = "renderButton",
         index = 5,
-        at = @At
-        (
+        at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/components/AbstractWidget;drawCenteredString(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"
         )
@@ -33,8 +36,13 @@ public abstract class AbstractWidgetMixin
     {
         if (!ModConfig.Candy.oldButtonHover())
             return current;
-        if (this.isHovered && this.isActive())
+
+        if (!this.isActive())
+            return 0xA0A0A0;
+
+        if (this.isHoveredOrFocused() && this.isActive())
             return 0xFFFFA0;
+
         return 0xE0E0E0;
     }
 }
