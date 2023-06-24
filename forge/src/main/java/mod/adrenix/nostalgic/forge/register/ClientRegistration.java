@@ -50,8 +50,7 @@ public abstract class ClientRegistration
         GuiUtil.modScreen = ModListScreen::new;
 
         // Mod tracking
-        ModTracker.APPLE_SKIN.load(ModList.get()::isLoaded);
-        ModTracker.FLYWHEEL.load(ModList.get()::isLoaded);
+        ModTracker.init(ModList.get()::isLoaded);
 
         // Register key mappings
         ClientRegistry.registerKeyBinding(ClientKeyMapping.CONFIG_KEY);
