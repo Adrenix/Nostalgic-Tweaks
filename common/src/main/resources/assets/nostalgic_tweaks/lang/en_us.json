@@ -572,8 +572,6 @@
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.customBottomGradient.@Tooltip": "Change the gradient color of the bottom part of the gui background.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeFocusOnEscape": "Remove Focus on First Esc",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeFocusOnEscape.@Tooltip": "Remove the focus of a focused widget when the Esc key is pressed instead of exiting the screen.",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeFocusOnClick": "Remove Focus on Mouse Click",
-  "text.autoconfig.nostalgic_tweaks.option.eyeCandy.removeFocusOnClick.@Tooltip": "Prevents a widget from being focused when it is clicked on by the mouse. This also removes the focus of a focused widget when the mouse clicks somewhere else on the screen.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.debugEntityId": "Debug Entity Id",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.debugEntityId.@Tooltip": "Show entity identification numbers when the§e F3§r debug screen is active.\n\nThis tweak will§c not§r work on servers.",
   "text.autoconfig.nostalgic_tweaks.option.eyeCandy.oldDebug": "Old Debug Screen",

@@ -7,7 +7,6 @@
   "client": [
     "gui.AbstractContainerScreenMixin",
     "gui.AbstractFurnaceScreenMixin",
-    "gui.AbstractWidgetMixin",
     "gui.AbstractButtonMixin",
     "gui.AnvilScreenMixin",
     "gui.BackupConfirmScreenMixin",
