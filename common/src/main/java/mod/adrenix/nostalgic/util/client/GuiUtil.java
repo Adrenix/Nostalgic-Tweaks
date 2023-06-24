@@ -112,7 +112,11 @@ public abstract class GuiUtil
         {
             switch (book)
             {
-                case DISABLED -> recipeButton.setPosition(-9999, -9999);
+                case DISABLED ->
+                {
+                    recipeButton.active = false;
+                    recipeButton.visible = false;
+                }
                 case LARGE ->
                 {
                     injector.NT$removeWidget(recipeButton);
