@@ -2,6 +2,8 @@ accessWidener v2 named
 
 extendable class com/mojang/math/Matrix4f
 accessible class net/minecraft/client/renderer/LevelRenderer$RenderChunkInfo
+accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction
+accessible class net/minecraft/client/renderer/FogRenderer$FogData
 
 mutable field net/minecraft/client/gui/components/AbstractSelectionList itemHeight I
 mutable field net/minecraft/world/inventory/Slot x I

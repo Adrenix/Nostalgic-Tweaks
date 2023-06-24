@@ -149,18 +149,18 @@ public abstract class LightTextureMixin
                     fromSkyLight += skyAdjust;
                 }
 
-                if (darknessEffect > 0.0F)
+                if (darknessEffect > 0.0F && x != 15)
                 {
                     fromBlockLight -= darknessEffect;
                     fromSkyLight -= darknessEffect;
 
-                    fromBlockLight = Mth.clamp(fromBlockLight, 0.0F, 1.0F);
-                    fromSkyLight = Mth.clamp(fromSkyLight, 0.0F, 1.0F);
+                    fromBlockLight = Mth.clamp(fromBlockLight, 0.025F, 1.0F);
+                    fromSkyLight = Mth.clamp(fromSkyLight, 0.025F, 1.0F);
                 }
 
                 double gamma = isGammaDisabled ? 0.0D : gammaSetting;
-                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
-                float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 0.0F, 255.0F);
+                float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.0F), 6.375F, 255.0F);
+                float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 6.375F, 255.0F);
                 float light = fromBlockLight > fromSkyLight ? blockLight : skyLight;
 
                 this.lightPixels.setPixelRGBA(x, y, 255 << 24 | (int) light << 16 | (int) light << 8 | (int) light);
