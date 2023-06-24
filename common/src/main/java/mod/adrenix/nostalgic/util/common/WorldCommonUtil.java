@@ -41,36 +41,36 @@ public abstract class WorldCommonUtil
     }
 
     /**
-     * Returns a new skylight value based on the time of day.
+     * Returns a new skylight value based on the sun angle.
      * @param level A level instance.
-     * @return A skylight value based on the time of day.
+     * @return A skylight value based on the sun angle.
      */
-    public static int getDayLight(LevelAccessor level)
+    public static int getDynamicSkylight(LevelAccessor level)
     {
-        int timeOfDay = (int) (level.dayTime() % 24000L);
+        float sunAngle = level.getTimeOfDay(1.0F) * ((float) Math.PI * 2.0F);
         int skyLight = 15;
 
-        if (MathUtil.isInRange(timeOfDay, 13670, 22330))
+        if (MathUtil.isInRange(sunAngle, 1.8235918F, 4.459594F))
             skyLight = 4;
-        else if (MathUtil.isInRange(timeOfDay, 22331, 22491) || MathUtil.isInRange(timeOfDay, 13509, 13669))
+        else if (MathUtil.isInRange(sunAngle, 4.459884F, 4.5061855F) || MathUtil.isInRange(sunAngle, 1.7769997F, 1.8233016F))
             skyLight = 5;
-        else if (MathUtil.isInRange(timeOfDay, 22492, 22652) || MathUtil.isInRange(timeOfDay, 13348, 13508))
+        else if (MathUtil.isInRange(sunAngle, 4.5064745F, 4.55252F) || MathUtil.isInRange(sunAngle, 1.7306658F, 1.7767112F))
             skyLight = 6;
-        else if (MathUtil.isInRange(timeOfDay, 22653, 22812) || MathUtil.isInRange(timeOfDay, 13188, 13347))
+        else if (MathUtil.isInRange(sunAngle, 4.552807F, 4.5983024F) || MathUtil.isInRange(sunAngle, 1.684883F, 1.7303787F))
             skyLight = 7;
-        else if (MathUtil.isInRange(timeOfDay, 22813, 22973) || MathUtil.isInRange(timeOfDay, 13027, 13187))
+        else if (MathUtil.isInRange(sunAngle, 4.598588F, 4.6440983F) || MathUtil.isInRange(sunAngle, 1.6390872F, 1.6845976F))
             skyLight = 8;
-        else if (MathUtil.isInRange(timeOfDay, 22974, 23134) || MathUtil.isInRange(timeOfDay, 12867, 13026))
+        else if (MathUtil.isInRange(sunAngle, 4.6443815F, 4.689612F) || MathUtil.isInRange(sunAngle, 1.5938551F, 1.6388037F))
             skyLight = 9;
-        else if (MathUtil.isInRange(timeOfDay, 23135, 23296) || MathUtil.isInRange(timeOfDay, 12705, 12866))
+        else if (MathUtil.isInRange(sunAngle, 4.6898937F, 4.735117F) || MathUtil.isInRange(sunAngle, 1.548349F, 1.5935733F))
             skyLight = 10;
-        else if (MathUtil.isInRange(timeOfDay, 23297, 23459) || MathUtil.isInRange(timeOfDay, 12542, 12704))
+        else if (MathUtil.isInRange(sunAngle, 4.7353964F, 4.7805977F) || MathUtil.isInRange(sunAngle, 1.5028657F, 1.548069F))
             skyLight = 11;
-        else if (MathUtil.isInRange(timeOfDay, 23460, 23623) || MathUtil.isInRange(timeOfDay, 12377, 12541))
+        else if (MathUtil.isInRange(sunAngle, 4.780876F, 4.826043F) || MathUtil.isInRange(sunAngle, 1.4571424F, 1.5025874F))
             skyLight = 12;
-        else if (MathUtil.isInRange(timeOfDay, 23624, 23790) || MathUtil.isInRange(timeOfDay, 12210, 12376))
+        else if (MathUtil.isInRange(sunAngle, 4.826319F, 4.8719864F) || MathUtil.isInRange(sunAngle, 1.4111987F, 1.4568661F))
             skyLight = 13;
-        else if (MathUtil.isInRange(timeOfDay, 23791, 23960) || MathUtil.isInRange(timeOfDay, 12041, 12209))
+        else if (MathUtil.isInRange(sunAngle, 4.8722606F, 4.9184027F) || MathUtil.isInRange(sunAngle, 1.3650552F, 1.4109247F))
             skyLight = 14;
 
         return skyLight;
