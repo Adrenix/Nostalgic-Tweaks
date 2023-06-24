@@ -681,14 +681,6 @@ public class ClientConfig implements ConfigData
         public boolean removeFocusOnEscape = DefaultConfig.Candy.REMOVE_FOCUS_ON_ESCAPE;
         static { CandyTweak.REMOVE_FOCUS_ON_ESCAPE.setKey("removeFocusOnEscape"); }
 
-        @TweakGui.New
-        @TweakData.Client
-        @TweakData.EntryStatus
-        @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 6)
-        @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_GUI_CANDY)
-        public boolean removeFocusOnClick = DefaultConfig.Candy.REMOVE_FOCUS_ON_CLICK;
-        static { CandyTweak.REMOVE_FOCUS_ON_CLICK.setKey("removeFocusOnClick"); }
-
         // Interface - Loading Screen
 
         @TweakData.Client

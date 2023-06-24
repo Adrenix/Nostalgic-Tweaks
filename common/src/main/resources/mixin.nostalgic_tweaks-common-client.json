@@ -16,7 +16,6 @@
     "gui.AbstractButtonMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.AbstractFurnaceScreenMixin",
-    "gui.AbstractWidgetMixin",
     "gui.AnvilScreenMixin",
     "gui.BackupConfirmScreenMixin",
     "gui.ChatComponentMixin",
