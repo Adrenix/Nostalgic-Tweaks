@@ -95,8 +95,8 @@ public abstract class DefaultConfig
         public static final boolean DISABLE_SIGNATURE_BOXES = false;
 
         // Interface - Crafting & Furnace Screen
-        public static final TweakType.RecipeBook CRAFTING_BOOK = TweakType.RecipeBook.DISABLED;
-        public static final TweakType.RecipeBook FURNACE_BOOK = TweakType.RecipeBook.DISABLED;
+        public static final TweakType.RecipeBook CRAFTING_BOOK = TweakType.RecipeBook.SMALL;
+        public static final TweakType.RecipeBook FURNACE_BOOK = TweakType.RecipeBook.SMALL;
         public static final boolean OLD_CRAFTING_SCREEN = true;
         public static final boolean OLD_FURNACE_SCREEN = true;
 
@@ -125,8 +125,8 @@ public abstract class DefaultConfig
         public static final boolean REMOVE_EXTRA_PAUSE_BUTTONS = false;
 
         // Interface - Inventory Screen
-        public static final TweakType.RecipeBook INVENTORY_BOOK = TweakType.RecipeBook.DISABLED;
-        public static final TweakType.InventoryShield INVENTORY_SHIELD = TweakType.InventoryShield.INVISIBLE;
+        public static final TweakType.RecipeBook INVENTORY_BOOK = TweakType.RecipeBook.SMALL;
+        public static final TweakType.InventoryShield INVENTORY_SHIELD = TweakType.InventoryShield.BOTTOM_LEFT;
         public static final boolean OLD_INVENTORY = true;
         public static final boolean DISABLE_EMPTY_ARMOR_TEXTURE = false;
         public static final boolean DISABLE_EMPTY_SHIELD_TEXTURE = false;
@@ -159,8 +159,8 @@ public abstract class DefaultConfig
         public static final boolean OLD_TOOLTIP_BOXES = true;
         public static final boolean OLD_NO_ITEM_TOOLTIPS = false;
         public static final boolean SHOW_ENCHANTMENTS_TIP = true;
-        public static final boolean SHOW_MODIFIERS_TIP = false;
-        public static final boolean SHOW_DYE_TIP = false;
+        public static final boolean SHOW_MODIFIERS_TIP = true;
+        public static final boolean SHOW_DYE_TIP = true;
 
         // Interface - Window Title
         public static final String WINDOW_TITLE_TEXT = "Minecraft %v";
@@ -278,21 +278,21 @@ public abstract class DefaultConfig
         // Mob System
         public static final int ANIMAL_SPAWN_CAP = 25;
         public static final int MONSTER_SPAWN_CAP = 90;
-        public static final boolean DISABLE_SHEEP_EAT_GRASS = true;
+        public static final boolean DISABLE_SHEEP_EAT_GRASS = false;
         public static final boolean DISABLE_ANIMAL_PANIC = true;
         public static final boolean OLD_ANIMAL_SPAWNING = false;
-        public static final boolean OLD_SHEEP_PUNCHING = true;
+        public static final boolean OLD_SHEEP_PUNCHING = false;
         public static final boolean ONE_WOOL_PUNCH = false;
 
         // Mob System - Drops
-        public static final boolean OLD_ZOMBIE_DROPS = true;
-        public static final boolean OLD_SPIDER_DROPS = true;
-        public static final boolean OLD_ZOMBIE_PIGMEN_DROPS = true;
-        public static final boolean OLD_SKELETON_DROPS = true;
-        public static final boolean OLD_CHICKEN_DROPS = true;
-        public static final boolean OLD_SHEEP_DROPS = true;
-        public static final boolean OLD_COW_DROPS = true;
-        public static final boolean OLD_PIG_DROPS = true;
+        public static final boolean OLD_ZOMBIE_DROPS = false;
+        public static final boolean OLD_SPIDER_DROPS = false;
+        public static final boolean OLD_ZOMBIE_PIGMEN_DROPS = false;
+        public static final boolean OLD_SKELETON_DROPS = false;
+        public static final boolean OLD_CHICKEN_DROPS = false;
+        public static final boolean OLD_SHEEP_DROPS = false;
+        public static final boolean OLD_COW_DROPS = false;
+        public static final boolean OLD_PIG_DROPS = false;
 
         public static final boolean OLD_STYLE_ZOMBIE_VILLAGER_DROPS = false;
         public static final boolean OLD_STYLE_CAVE_SPIDER_DROPS = false;
@@ -304,8 +304,8 @@ public abstract class DefaultConfig
 
         // Combat System
         public static final int ARROW_SPEED = 70;
-        public static final boolean INSTANT_BOW = true;
-        public static final boolean INVINCIBLE_BOW = true;
+        public static final boolean INSTANT_BOW = false;
+        public static final boolean INVINCIBLE_BOW = false;
         public static final boolean DISABLE_COOLDOWN = true;
         public static final boolean DISABLE_MISS_TIMER = true;
         public static final boolean DISABLE_CRITICAL_HIT = true;
@@ -323,8 +323,8 @@ public abstract class DefaultConfig
         public static final boolean SHOW_XP_LEVEL_TEXT_CREATIVE = false;
         public static final boolean USE_DYNAMIC_PROGRESS_COLOR = true;
 
-        public static final boolean DISABLE_EXPERIENCE_BAR = true;
-        public static final boolean DISABLE_ORB_SPAWN = true;
+        public static final boolean DISABLE_EXPERIENCE_BAR = false;
+        public static final boolean DISABLE_ORB_SPAWN = false;
         public static final boolean DISABLE_ORB_RENDERING = false;
         public static final boolean DISABLE_ANVIL = false;
         public static final boolean DISABLE_ENCHANT_TABLE = false;
@@ -334,13 +334,13 @@ public abstract class DefaultConfig
         public static final boolean INFINITE_BURN = false;
         public static final boolean INSTANT_AIR = true;
         public static final boolean INSTANT_BONE_MEAL = true;
-        public static final boolean DISABLE_SWIM = true;
-        public static final boolean DISABLE_SPRINT = true;
-        public static final boolean DISABLE_BED_BOUNCE = true;
+        public static final boolean DISABLE_SWIM = false;
+        public static final boolean DISABLE_SPRINT = false;
+        public static final boolean DISABLE_BED_BOUNCE = false;
         public static final boolean LEFT_CLICK_DOOR = true;
         public static final boolean LEFT_CLICK_LEVER = false;
         public static final boolean LEFT_CLICK_BUTTON = false;
-        public static final boolean TILLED_GRASS_SEEDS = true;
+        public static final boolean TILLED_GRASS_SEEDS = false;
         public static final boolean CART_BOOSTING = false;
 
         // Hunger System
@@ -353,9 +353,9 @@ public abstract class DefaultConfig
         public static final boolean USE_DYNAMIC_FOOD_COLOR = true;
         public static final boolean USE_DYNAMIC_SATURATION_COLOR = true;
 
-        public static final boolean DISABLE_HUNGER_BAR = true;
-        public static final boolean DISABLE_HUNGER = true;
-        public static final boolean INSTANT_EAT = true;
+        public static final boolean DISABLE_HUNGER_BAR = false;
+        public static final boolean DISABLE_HUNGER = false;
+        public static final boolean INSTANT_EAT = false;
         public static final boolean OLD_FOOD_STACKING = false;
 
         /* Custom Maps */
