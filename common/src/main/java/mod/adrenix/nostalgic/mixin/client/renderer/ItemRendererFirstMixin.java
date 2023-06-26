@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.ItemClientUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.Color;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -26,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.awt.*;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererFirstMixin
@@ -110,8 +109,8 @@ public abstract class ItemRendererFirstMixin
             int startY = y + 13;
 
             GuiComponent.fill(poseStack, startX, startY, startX + 13, startY + 2, 0xFF000000);
-            GuiComponent.fill(poseStack, startX, startY, startX + 12, startY + 1, damageBackgroundColor.getRGB());
-            GuiComponent.fill(poseStack, startX, startY, startX + width, startY + 1, damageForegroundColor.getRGB());
+            GuiComponent.fill(poseStack, startX, startY, startX + 12, startY + 1, damageBackgroundColor.get());
+            GuiComponent.fill(poseStack, startX, startY, startX + width, startY + 1, damageForegroundColor.get());
 
             RenderSystem.enableDepthTest();
         }
