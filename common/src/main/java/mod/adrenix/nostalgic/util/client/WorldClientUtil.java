@@ -18,8 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import org.joml.Matrix4f;
 
-import java.awt.*;
-
 /**
  * This utility class uses client only Minecraft code. For safety, the server should not interface with this utility.
  * For a server safe mixin utility use {@link mod.adrenix.nostalgic.util.server.WorldServerUtil}.
@@ -80,7 +78,7 @@ public abstract class WorldClientUtil
     {
         float temp = getBiomeTemperature() / 2.0F;
 
-        return Color.getHSBColor(0.653F - temp * 0.05F, 0.415F + temp * 0.1F, 1.0F).getRGB();
+        return Color.getHSBColor(0.653F - temp * 0.05F, 0.415F + temp * 0.1F, 1.0F).get();
     }
 
     /**
@@ -104,7 +102,7 @@ public abstract class WorldClientUtil
             };
         }
 
-        return Color.getHSBColor(0.648F - temp * 0.05F, saturation + temp * 0.1F, 1.0F).getRGBComponents(new float[4]);
+        return Color.getHSBColor(0.648F - temp * 0.05F, saturation + temp * 0.1F, 1.0F).getComponents();
     }
 
     /* Sky Helpers */

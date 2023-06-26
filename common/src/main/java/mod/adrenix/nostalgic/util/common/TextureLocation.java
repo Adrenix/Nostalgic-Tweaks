@@ -16,5 +16,8 @@ public abstract class TextureLocation
     public static final ResourceLocation MOJANG_RELEASE_ORANGE = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_orange.png");
     public static final ResourceLocation MOJANG_RELEASE_BLACK = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/gui/mojang_release_black.png");
     public static final ResourceLocation NOSTALGIC_TWEAKS = new ResourceLocation(NostalgicTweaks.MOD_ID + ":textures/nostalgic_tweaks.png");
-    public static final ResourceLocation MINECRAFT_LOGO = new ResourceLocation("textures/gui/title/minecraft.png");
+
+    public static final String MISSING_BETA = String.format("assets/%s/textures/missing/beta.png", NostalgicTweaks.MOD_ID);
+    public static final String MISSING_1_5 = String.format("assets/%s/textures/missing/1_5.png", NostalgicTweaks.MOD_ID);
+    public static final String MISSING_1_6_1_12 = String.format("assets/%s/textures/missing/1_6-1_12.png", NostalgicTweaks.MOD_ID);
 }
