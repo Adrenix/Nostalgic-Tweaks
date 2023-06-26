@@ -128,7 +128,7 @@ public record ModLogger(String prefix)
         {
             Object arg = args[i];
 
-            if (arg instanceof Error exception)
+            if (arg instanceof Throwable exception)
             {
                 StringWriter writer = new StringWriter();
                 PrintWriter printer = new PrintWriter(writer);
