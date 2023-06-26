@@ -105,7 +105,10 @@ public abstract class BackupConfig
      */
     public static <T extends ConfigData> Path save(ConfigSerializer<T> serializer) throws IOException
     {
-        int limit = ClientConfigCache.getGui().numberOfBackups;
+        int limit = DefaultConfig.Gui.NUMBER_OF_BACKUPS;
+
+        if (ClientConfigCache.getRoot() != null)
+            limit = ClientConfigCache.getGui().numberOfBackups;
 
         if (limit != -1)
         {
