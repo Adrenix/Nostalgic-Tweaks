@@ -2,8 +2,6 @@ package mod.adrenix.nostalgic.mixin.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.common.config.ModConfig;
-import mod.adrenix.nostalgic.common.config.tweak.TweakType;
-import mod.adrenix.nostalgic.util.common.ColorUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
@@ -11,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiGraphics.class)
@@ -66,36 +63,5 @@ public abstract class GuiGraphicsMixin
     {
         if (ModConfig.Candy.oldNoItemTooltips())
             callback.cancel();
-    }
-
-    /**
-     * Changes the fill gradient background color. Controlled by various GUI background tweaks.
-     */
-    @Redirect(
-        method = "fillGradient(IIIIII)V",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIIII)V"
-        )
-    )
-    private void NT$onRenderBackground(GuiGraphics graphics, int x, int y, int w, int h, int unknown, int colorFrom, int colorTo)
-    {
-        if (ModConfig.Candy.customGuiBackground())
-        {
-            int top = ColorUtil.toHexInt(ModConfig.Candy.customTopGradient());
-            int bottom = ColorUtil.toHexInt(ModConfig.Candy.customBottomGradient());
-
-            graphics.fillGradient(x, y, w, h, top, bottom);
-        }
-        else if (!ModConfig.Candy.oldGuiBackground().equals(TweakType.GuiBackground.SOLID_BLACK))
-        {
-            switch (ModConfig.Candy.oldGuiBackground())
-            {
-                case SOLID_BLUE -> graphics.fillGradient(x, y, w, h, unknown, 0xA0303060, 0xA0303060);
-                case GRADIENT_BLUE -> graphics.fillGradient(x, y, w, h, unknown, 0x60050500, 0xA0303060);
-            }
-        }
-        else
-            graphics.fillGradient(x, y, w, h, unknown, colorFrom, colorTo);
     }
 }
