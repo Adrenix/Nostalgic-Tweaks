@@ -2,9 +2,12 @@ package mod.adrenix.nostalgic.mixin.client.renderer;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.NativeImage;
+import dev.architectury.platform.Platform;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.tweak.TweakVersion;
 import mod.adrenix.nostalgic.util.client.RunUtil;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.metadata.animation.AnimationFrame;
@@ -16,14 +19,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 
 /**
- * Original missing texture logic contributed by forkiesassds on GitHub.
- *
- * Parts of the merged pull request has been modified. Notably; fixing typos, renaming variables, and creating
- * functional programming methods to prevent the need of restarting the game when the tweak changes.
+ * Old missing texture tweak was originally contributed by forkiesassds on GitHub.
+ * <br><br>
+ * The original merged pull request has been completely changed. All references to {@code java.awt} classes have been
+ * removed since the vanilla game does not use anything from that package due to compatibility issues.
  */
 
 @SuppressWarnings("deprecation")
@@ -44,100 +48,59 @@ public abstract class MissingTextureAtlasSpriteMixin
     /* Mixin Utility */
 
     /**
-     * @return A texture size that is dependent on the old missing texture tweak.
+     * Loads a missing texture image based on the old missing texture tweak.
+     *
+     * @return An optional native image.
      */
-    private static int getTextureSize()
+    private static Optional<NativeImage> NT$getImage() throws Exception
     {
-        TweakVersion.MissingTexture missingTexture = ModConfig.Candy.oldMissingTexture();
-        boolean is64 = missingTexture == TweakVersion.MissingTexture.BETA || missingTexture == TweakVersion.MissingTexture.R15;
-        return is64 ? 64 : 16;
+        String path = switch (ModConfig.Candy.oldMissingTexture())
+        {
+            case BETA -> TextureLocation.MISSING_BETA;
+            case R15 -> TextureLocation.MISSING_1_5;
+            case R16_R112 -> TextureLocation.MISSING_1_6_1_12;
+            default -> "";
+        };
+
+        Optional<Path> resource = Platform.getMod(NostalgicTweaks.MOD_ID).findResource(path);
+
+        if (resource.isPresent())
+            return Optional.of(NativeImage.read(Files.newInputStream(resource.get())));
+
+        return Optional.empty();
     }
 
     /**
-     * Generates a missing texture image based on the old missing texture tweak.
-     * @return A new native image instance.
+     * Instructions for changing the missing texture image. Controlled by the old missing texture tweak.
      */
-    @SuppressWarnings("SuspiciousNameCombination")
-    private static NativeImage getImage()
+    private static void NT$update()
     {
-        int textureSize = MissingTextureAtlasSpriteMixin.getTextureSize();
-        NativeImage nativeImage = new NativeImage(textureSize, textureSize, false);
-        TweakVersion.MissingTexture missingTexture = ModConfig.Candy.oldMissingTexture();
+        Optional<NativeImage> image = Optional.empty();
 
-        if (missingTexture == TweakVersion.MissingTexture.BETA || missingTexture == TweakVersion.MissingTexture.R15)
-        {
-            BufferedImage missingTex = new BufferedImage(64, 64, 2);
-            Graphics graphics = missingTex.getGraphics();
-
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, 64, 64);
-            graphics.setColor(Color.BLACK);
-
-            if (missingTexture == TweakVersion.MissingTexture.BETA)
-                graphics.drawString("missingtex", 1, 10);
-            else
-            {
-                int curX = 10;
-                int curY = 0;
-
-                while (curX < 64)
-                {
-                    String stringToDraw = curY++ % 2 == 0 ? "missing" : "texture";
-                    graphics.drawString(stringToDraw, 1, curX);
-                    curX += graphics.getFont().getSize();
-
-                    if (curY % 2 == 0)
-                        curX += 5;
-                }
-            }
-
-            graphics.dispose();
-
-            for (int xPos = 0; xPos < 64; xPos++)
-            {
-                for (int yPos = 0; yPos < 64; yPos++)
-                    nativeImage.setPixelRGBA(xPos, yPos, missingTex.getRGB(xPos, yPos));
-            }
-        }
-        else
-        {
-            int col1 = -16777216;
-            int col2 = -524040;
-
-            for (int xPos = 0; xPos < 16; xPos++)
-            {
-                for (int yPos = 0; yPos < 16; yPos++)
-                {
-                    if (xPos < 8 ^ yPos < 8)
-                    {
-                        nativeImage.setPixelRGBA(yPos, xPos, col1);
-                        continue;
-                    }
-
-                    nativeImage.setPixelRGBA(yPos, xPos, col2);
-                }
-            }
-        }
-
-        nativeImage.untrack();
-
-        return nativeImage;
-    }
-
-    /**
-     * Instructions for changing the missing texture image.
-     * Dependent on the current old missing texture tweak.
-     */
-    private static void update()
-    {
         if (ModConfig.Candy.oldMissingTexture() != TweakVersion.MissingTexture.MODERN)
         {
-            int textureSize = MissingTextureAtlasSpriteMixin.getTextureSize();
+            try
+            {
+                image = NT$getImage();
+            }
+            catch (Exception exception)
+            {
+                NostalgicTweaks.LOGGER.error("Could not generate missing texture\n%s", exception);
+            }
+        }
+
+        if (image.isPresent() && ModConfig.Candy.oldMissingTexture() != TweakVersion.MissingTexture.MODERN)
+        {
+            int textureSize = switch (ModConfig.Candy.oldMissingTexture())
+            {
+                case BETA, R15 -> 64;
+                default -> 16;
+            };
 
             ImmutableList<AnimationFrame> frames = ImmutableList.of(new AnimationFrame(0, -1));
             AnimationMetadataSection section = new AnimationMetadataSection(frames, textureSize, textureSize, 1, false);
 
-            MISSING_IMAGE_DATA = new LazyLoadedValue<>(MissingTextureAtlasSpriteMixin::getImage);
+            MISSING_IMAGE_DATA = new LazyLoadedValue<>(image::get);
             INFO = new TextureAtlasSprite.Info(MISSING_TEXTURE_LOCATION, textureSize, textureSize, section);
         }
         else
@@ -150,16 +113,18 @@ public abstract class MissingTextureAtlasSpriteMixin
     /* Injections */
 
     /**
-     * Changes the missing texture image.
-     * Controlled by the old missing texture tweak.
+     * Changes the missing texture image. Controlled by the old missing texture tweak.
      */
-    @Inject(method = "<clinit>", at = @At("TAIL"))
+    @Inject(
+        method = "<clinit>",
+        at = @At("TAIL")
+    )
     private static void NT$onStaticInit(CallbackInfo callback)
     {
         NT$MODERN_MISSING_IMAGE_DATA = MISSING_IMAGE_DATA;
         NT$MODERN_INFO = INFO;
 
-        MissingTextureAtlasSpriteMixin.update();
-        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::update);
+        MissingTextureAtlasSpriteMixin.NT$update();
+        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::NT$update);
     }
 }
