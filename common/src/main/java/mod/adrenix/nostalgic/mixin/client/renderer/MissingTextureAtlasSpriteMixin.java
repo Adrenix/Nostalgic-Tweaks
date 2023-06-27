@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -55,11 +55,11 @@ public abstract class MissingTextureAtlasSpriteMixin
 
             try
             {
-                image = MissingTextureAtlasSpriteMixin.getImage();
+                image = NT$getImage();
             }
-            catch (IOException exception)
+            catch (Exception exception)
             {
-                NostalgicTweaks.LOGGER.error("Could not generate missing texture", exception);
+                NostalgicTweaks.LOGGER.error("Could not generate missing texture\n%s", exception);
             }
 
             image.ifPresent(callback::setReturnValue);
@@ -96,7 +96,7 @@ public abstract class MissingTextureAtlasSpriteMixin
     )
     private static void NT$onStaticInit(CallbackInfo callback)
     {
-        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::update);
+        RunUtil.onSave.add(MissingTextureAtlasSpriteMixin::NT$update);
     }
 
     /* Mixin Utility */
@@ -105,7 +105,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      * Resets the missing texture so that the game regenerates the missing texture image after a change to the old
      * missing texture tweak is made.
      */
-    private static void update()
+    private static void NT$update()
     {
         missingTexture = null;
     }
@@ -115,7 +115,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      *
      * @return An optional native image.
      */
-    private static Optional<NativeImage> getImage() throws IOException
+    private static Optional<NativeImage> NT$getImage() throws Exception
     {
         String path = switch (ModConfig.Candy.oldMissingTexture())
         {
@@ -128,7 +128,7 @@ public abstract class MissingTextureAtlasSpriteMixin
         Optional<Path> resource = Platform.getMod(NostalgicTweaks.MOD_ID).findResource(path);
 
         if (resource.isPresent())
-            return Optional.of(NativeImage.read(resource.get().toUri().toURL().openStream()));
+            return Optional.of(NativeImage.read(Files.newInputStream(resource.get())));
 
         return Optional.empty();
     }
