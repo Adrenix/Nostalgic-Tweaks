@@ -3,8 +3,10 @@ package mod.adrenix.nostalgic.fabric;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.fabric.event.CommonEvents;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -28,6 +30,10 @@ public class NostalgicCommonFabric implements ModInitializer
     {
         // Mod tracking
         ModTracker.init(FabricLoader.getInstance()::isModLoaded);
+
+        // Resource tracking
+        ModContainer mod = FabricLoader.getInstance().getModContainer(NostalgicTweaks.MOD_ID).orElseThrow();
+        TextureLocation.findResource = (path) -> mod.findPath(String.join("/", path));
 
         // Register common
         CommonEvents.register();
