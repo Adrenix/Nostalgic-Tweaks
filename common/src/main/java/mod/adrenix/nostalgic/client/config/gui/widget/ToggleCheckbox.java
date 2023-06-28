@@ -82,7 +82,7 @@ public class ToggleCheckbox extends Checkbox
     /**
      * Create a new toggle checkbox with a custom state supplier and on press logic.
      *
-     * The starting x-position is aligned to the config row list starting x-position and the starting y-position is set
+     * The starting x-position is aligned to the config row list starting x-position, and the starting y-position is set
      * to zero so that it may be redefined later by a row list renderer.
      *
      * @param label The label of the checkbox.
@@ -155,7 +155,7 @@ public class ToggleCheckbox extends Checkbox
         int uWidth = 20;
         int vHeight = 20;
 
-        if (this.isMouseOver(mouseX, mouseY))
+        if (this.isMouseOver(mouseX, mouseY) || this.isHoveredOrFocused())
         {
             uOffset = 20;
             vOffset = this.selected() ? 83 : vOffset;
@@ -166,12 +166,17 @@ public class ToggleCheckbox extends Checkbox
         graphics.blit(TextureLocation.WIDGETS, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
         graphics.drawString(font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
 
-        if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
+        if (this.tooltip != null && (this.isMouseOver(mouseX, mouseY) || this.isHoveredOrFocused()))
         {
             if (this.screen instanceof ListScreen listScreen)
                 listScreen.renderOverlayTooltips.add(this::renderToolTip);
             else
-                this.renderToolTip(graphics, mouseX, mouseY);
+            {
+                if (this.isMouseOver(mouseX, mouseY))
+                    this.renderToolTip(graphics, mouseX, mouseY);
+                else
+                    this.renderToolTip(graphics, this.getX(), this.getY());
+            }
         }
     }
 }

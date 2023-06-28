@@ -1,10 +1,9 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
@@ -18,17 +17,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * There are multiple tags that can be displayed next to a tweak's display name in a configuration row.
  * A row can have a variety of different tags and will always be visible on the screen.
  */
 
-public class TweakTag extends AbstractWidget
+public class TweakTag extends ElementWidget
 {
     /* Horizontal Coordinate Offsets */
 
@@ -65,7 +62,7 @@ public class TweakTag extends AbstractWidget
      */
     public TweakTag(TweakClientCache<?> tweak, AbstractWidget controller, boolean isTooltip)
     {
-        super(0, 0, 0, 0, Component.empty());
+        super(0, 0, 0, 0);
 
         this.tweak = tweak;
         this.controller = controller;
@@ -122,17 +119,16 @@ public class TweakTag extends AbstractWidget
     /**
      * Draws a tag to the screen.
      * @param graphics The current GuiGraphics object.
-     * @param location The ResourceLocation to the resource to render.
      * @param x The x-position of where the tag should be drawn.
      * @param y The y-position of where the tag should be drawn.
      * @param uOffset The horizontal texture coordinate offset.
      * @param vOffset The vertical texture coordinate offset.
      * @param render Whether the tag should be rendered.
      */
-    private static void draw(GuiGraphics graphics, ResourceLocation location, int x, int y, int uOffset, int vOffset, boolean render)
+    private static void draw(GuiGraphics graphics, int x, int y, int uOffset, int vOffset, boolean render)
     {
         if (render)
-            graphics.blit(location, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+            graphics.blit(TextureLocation.WIDGETS, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
     }
 
     /**
@@ -152,12 +148,12 @@ public class TweakTag extends AbstractWidget
         int tagWidth = font.width(tag);
         int endX = getTagWidth(tag, startX);
 
-        TweakTag.draw(graphics, TextureLocation.WIDGETS, startX, startY, uOffset, V_GLOBAL_OFFSET, render);
+        draw(graphics, startX, startY, uOffset, V_GLOBAL_OFFSET, render);
 
         for (int i = 0; i < tagWidth + TAG_MARGIN; i++)
-            TweakTag.draw(graphics, TextureLocation.WIDGETS, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
+            draw(graphics, startX + U_GLOBAL_WIDTH + i, startY, uOffset + 1, 0, render);
 
-        TweakTag.draw(graphics, TextureLocation.WIDGETS, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
+        draw(graphics, endX, startY, uOffset, V_GLOBAL_OFFSET, render);
 
         if (render)
             graphics.drawString(font, tag, startX + 4, startY + 2, 0xFFFFFF);
@@ -222,7 +218,7 @@ public class TweakTag extends AbstractWidget
         if (screen == null)
             return;
 
-        StatusButton.update();
+        StatusElement.update();
 
         TweakGui.New newTag = this.tweak.getMetadata(TweakGui.New.class);
         TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);
@@ -239,7 +235,7 @@ public class TweakTag extends AbstractWidget
         Component optifineTitle = Component.literal("Optifine");
         Component sodiumTitle = Component.literal("Sodium");
 
-        ChatFormatting flashColor = StatusButton.isFlashOff() ? ChatFormatting.GRAY : ChatFormatting.RED;
+        ChatFormatting flashColor = StatusElement.isFlashOff() ? ChatFormatting.GRAY : ChatFormatting.RED;
 
         Component title = Component.literal(this.title);
         Component newTitle = Component.translatable(LangUtil.Gui.TAG_NEW);
@@ -351,20 +347,12 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(graphics, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        int previousWidth = this.width;
+        int previousWidth = this.getWidth();
 
         this.setX(startX);
         this.setWidth(lastX - startX);
 
-        if (previousWidth != this.width)
+        if (previousWidth != this.getWidth())
             this.widthChanged = true;
     }
-
-    /* Required Widget Overrides */
-
-    @Override
-    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

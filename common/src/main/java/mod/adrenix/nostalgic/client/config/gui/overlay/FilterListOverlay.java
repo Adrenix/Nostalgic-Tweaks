@@ -127,9 +127,9 @@ public class FilterListOverlay extends ListScreenOverlay<FilterListOverlay.Widge
             this.itemFilter = this.createItemFilter();
             this.blockFilter = this.createBlockFilter();
 
-            FilterListOverlay.this.widgets.add(this.toolFilter);
-            FilterListOverlay.this.widgets.add(this.itemFilter);
-            FilterListOverlay.this.widgets.add(this.blockFilter);
+            FilterListOverlay.this.children.add(this.toolFilter);
+            FilterListOverlay.this.children.add(this.itemFilter);
+            FilterListOverlay.this.children.add(this.blockFilter);
 
             this.children = Set.of(toolFilter, itemFilter, blockFilter);
         }

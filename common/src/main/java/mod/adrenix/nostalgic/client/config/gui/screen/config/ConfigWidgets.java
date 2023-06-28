@@ -68,7 +68,7 @@ public class ConfigWidgets
 
     /* Widget Instances */
 
-    public final Set<Renderable> children = new HashSet<>();
+    public final LinkedHashSet<Renderable> children = new LinkedHashSet<>();
     public boolean focusInput = false;
     private String lastSearch = "";
     private Button[] categories;

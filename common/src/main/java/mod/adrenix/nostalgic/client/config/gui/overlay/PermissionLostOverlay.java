@@ -89,10 +89,10 @@ public class PermissionLostOverlay extends ListScreenOverlay<PermissionLostOverl
             this.exitWithoutSaving = this.createWithoutSaving();
             this.exitSaveLocally = this.createSaveLocally();
 
-            PermissionLostOverlay.this.widgets.add(this.headerText);
-            PermissionLostOverlay.this.widgets.add(this.messageText);
-            PermissionLostOverlay.this.widgets.add(this.exitWithoutSaving);
-            PermissionLostOverlay.this.widgets.add(this.exitSaveLocally);
+            PermissionLostOverlay.this.children.add(this.headerText);
+            PermissionLostOverlay.this.children.add(this.messageText);
+            PermissionLostOverlay.this.children.add(this.exitWithoutSaving);
+            PermissionLostOverlay.this.children.add(this.exitSaveLocally);
 
             this.children = Set.of(headerText, messageText, exitWithoutSaving, exitSaveLocally);
         }

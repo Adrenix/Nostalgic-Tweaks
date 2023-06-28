@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
@@ -27,7 +27,6 @@ import mod.adrenix.nostalgic.util.common.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
@@ -36,6 +35,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class ConfigScreen extends Screen
 
     /**
      * This enumeration provides the tabs listed near the top of this screen.
-     * Special tabs such as ALL and SEARCH are handled manually by different classes.
+     * Different classes handle special tabs such as ALL and SEARCH manually.
      */
     public enum ConfigTab
     {
@@ -228,6 +228,7 @@ public class ConfigScreen extends Screen
      * @return The widget instance.
      * @param <T> The type of widget.
      */
+    @NotNull
     public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget)
     {
         return super.addRenderableWidget(widget);
@@ -241,12 +242,11 @@ public class ConfigScreen extends Screen
     {
         this.getWidgets().getConfigRowList().children().clear();
         this.getWidgets().getConfigRowList().resetScrollbar();
-        this.getWidgets().getConfigRowList().resetLastSelection();
     }
 
     /**
      * Changes the screen's configuration tab. This method must be used when the configuration tab needs to be changed.
-     * State management and row list management is also handled by this method when the configuration tab is changed.
+     * This method also handles State management and row list management when the configuration tab is changed.
      * @param configTab The new configuration tab.
      */
     public void setConfigTab(ConfigTab configTab)
@@ -285,7 +285,7 @@ public class ConfigScreen extends Screen
      * Handler method for when a character is typed.
      * @param codePoint The character code.
      * @param modifiers Modifiers.
-     * @return Whether the character that was typed was handled by this method.
+     * @return Whether this method handled the character that was typed.
      */
     @Override
     public boolean charTyped(char codePoint, int modifiers)
@@ -304,10 +304,10 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
+            for (Renderable renderable : focused.children)
             {
-                if (widget instanceof EditBox)
-                    widget.charTyped(codePoint, modifiers);
+                if (renderable instanceof EditBox box)
+                    box.charTyped(codePoint, modifiers);
             }
         }
 
@@ -325,7 +325,7 @@ public class ConfigScreen extends Screen
     public boolean mouseScrolled(double mouseX, double mouseY, double delta)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseScrolled(mouseX, mouseY, delta);
+            return Overlay.sendMouseScroll(mouseX, mouseY, delta);
 
         return super.mouseScrolled(mouseX, mouseY, delta);
     }
@@ -341,7 +341,7 @@ public class ConfigScreen extends Screen
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseClicked(mouseX, mouseY, button);
+            return Overlay.sendMouseClick(mouseX, mouseY, button);
 
         if (this.getWidgets().getSearchInput().isFocused())
             this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
@@ -356,9 +356,9 @@ public class ConfigScreen extends Screen
 
             for (ConfigRowList.Row row : this.getWidgets().getConfigRowList().children())
             {
-                for (AbstractWidget widget : row.children)
+                for (Renderable renderable : row.children)
                 {
-                    if (widget instanceof SearchCrumbs crumb)
+                    if (renderable instanceof SearchCrumbs crumb)
                     {
                         boolean isClicked = crumb.mouseClicked(mouseX, mouseY, button);
 
@@ -388,7 +388,7 @@ public class ConfigScreen extends Screen
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+            return Overlay.soundMouseDrag(mouseX, mouseY, button, dragX, dragY);
 
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
@@ -420,9 +420,11 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
-                if (widget instanceof EditBox && ((EditBox) widget).canConsumeInput())
-                    return (EditBox) widget;
+            for (Renderable renderable : focused.children)
+            {
+                if (renderable instanceof EditBox && ((EditBox) renderable).canConsumeInput())
+                    return (EditBox) renderable;
+            }
         }
 
         return null;
@@ -437,9 +439,11 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
-                if (widget instanceof KeyBindButton && ((KeyBindButton) widget).isModifying())
-                    return (KeyBindButton) widget;
+            for (Renderable renderable : focused.children)
+            {
+                if (renderable instanceof KeyBindButton && ((KeyBindButton) renderable).isModifying())
+                    return (KeyBindButton) renderable;
+            }
         }
 
         return null;
@@ -461,7 +465,11 @@ public class ConfigScreen extends Screen
 
         // Overlays
         if (Overlay.isOpened())
-            return Overlay.keyPressed(keyCode, scanCode, modifiers);
+            return Overlay.sendKeyPress(keyCode, scanCode, modifiers);
+
+        // Tabbing
+        if (keyCode == GLFW.GLFW_KEY_TAB)
+            return super.keyPressed(keyCode, scanCode, modifiers);
 
         // Config Row List
         if (this.getWidgets().getConfigRowList().keyPressed(keyCode, scanCode, modifiers))
@@ -476,8 +484,8 @@ public class ConfigScreen extends Screen
         {
             if (this.getWidgets().getSearchInput().isFocused())
                 this.getWidgets().getSearchInput().setFocused(false);
-            else if (editBox != null && editBox.isFocused())
-                editBox.setFocused(false);
+            else if (super.keyPressed(keyCode, scanCode, modifiers))
+                return true;
             else
                 this.onCancel();
 
@@ -660,9 +668,9 @@ public class ConfigScreen extends Screen
 
         for (ConfigRowList.Row row : list.children())
         {
-            for (AbstractWidget widget : row.children)
+            for (Renderable renderable : row.children)
             {
-                if (widget instanceof ContainerButton container)
+                if (renderable instanceof ContainerButton container)
                 {
                     if (container.getId() == tweakContainer)
                     {
@@ -769,8 +777,8 @@ public class ConfigScreen extends Screen
     }
 
     /**
-     * Saves the client cache and runs any applicable runnables that need to run after the save button is pressed by the
-     * user.
+     * Saves the client cache and runs any applicable runnables that need to run after the
+     * user presses the save button.
      */
     private void save()
     {
@@ -826,7 +834,7 @@ public class ConfigScreen extends Screen
         graphics.fillGradient(0, 0, this.width, this.height, -1072689136, -804253680);
         graphics.fillGradient(0, 0, this.width, this.height, 1744830464, 1744830464);
 
-        // Render config row list
+        // Render the config row list
 
         list.render(graphics, mouseX, mouseY, partialTick);
 

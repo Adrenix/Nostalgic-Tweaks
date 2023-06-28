@@ -9,10 +9,10 @@ import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory
 import mod.adrenix.nostalgic.client.config.gui.overlay.ServerSideModeOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
-import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.ToggleCheckbox;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerId;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.RadioGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;

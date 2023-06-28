@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
@@ -9,10 +9,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * This widget renders clickable text that will jump from the search tab to a tab where the category, subcategory,
  * embed, or tweak resides.
  */
-public class SearchCrumbs extends AbstractWidget
+public class SearchCrumbs extends ElementWidget implements GuiEventListener
 {
     /**
      * This enumeration instructs the click handler on how to get a new spot.
@@ -60,7 +61,7 @@ public class SearchCrumbs extends AbstractWidget
      */
     public SearchCrumbs(TweakClientCache<?> tweak)
     {
-        super(ConfigRowList.TEXT_START, 0, 0, 0, Component.empty());
+        super(ConfigRowList.TEXT_START, 0, 0, 0);
 
         this.startX = ConfigRowList.TEXT_START;
 
@@ -251,11 +252,23 @@ public class SearchCrumbs extends AbstractWidget
         }
     }
 
-    /* Required Widget Overrides */
+    /* Required Overrides */
 
     @Override
-    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {}
+    @NotNull
+    public ScreenRectangle getRectangle()
+    {
+        return super.getRectangle();
+    }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
+    public boolean isFocused()
+    {
+        return false;
+    }
+
+    @Override
+    public void setFocused(boolean focused)
+    {
+    }
 }

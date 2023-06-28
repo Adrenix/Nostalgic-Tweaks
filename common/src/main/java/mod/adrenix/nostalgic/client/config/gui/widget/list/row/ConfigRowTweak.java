@@ -1,8 +1,10 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.list.row;
 
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
-import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.TweakTag;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.StatusElement;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.TooltipElement;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.ColorInput;
 import mod.adrenix.nostalgic.client.config.gui.widget.input.StringInput;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
@@ -10,6 +12,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.slider.ConfigSlider;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,16 +66,16 @@ public abstract class ConfigRowTweak
          */
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
             TweakGui.NoTooltip noTooltip = this.tweak.getMetadata(TweakGui.NoTooltip.class);
 
             widgets.add(controller);
             widgets.add(new ResetButton(this.tweak, controller));
-            widgets.add(new StatusButton(this.tweak, controller));
+            widgets.add(new StatusElement(this.tweak, controller));
             widgets.add(new TweakTag(this.tweak, controller, noTooltip == null));
 
             if (noTooltip == null)
-                widgets.add(new TooltipButton(this.tweak, controller));
+                widgets.add(new TooltipElement(this.tweak, controller));
 
             if (controller instanceof ColorInput color)
                 widgets.add(color.getWidget());
@@ -103,9 +106,6 @@ public abstract class ConfigRowTweak
          * @param value The value associated with a tweak.
          */
         public InvalidRow(TweakGroup group, String key, Object value) { super(group, key, value); }
-
-        @Override
-        public ConfigRowList.Row generate() { return new ConfigRowList.Row(new ArrayList<>(), this.tweak); }
     }
 
     /**

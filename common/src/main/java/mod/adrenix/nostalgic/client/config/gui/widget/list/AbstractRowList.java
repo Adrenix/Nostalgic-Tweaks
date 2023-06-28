@@ -9,22 +9,16 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.mixin.widen.AbstractSelectionListAccessor;
-import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractSelectionList;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ContainerObjectSelectionList;
-import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
@@ -35,7 +29,7 @@ import java.util.function.Supplier;
  * @param <R> A class type that will be used for rows.
  */
 
-public abstract class AbstractRowList<R extends AbstractEntry<R>> extends ContainerObjectSelectionList<R>
+public abstract class AbstractRowList<R extends ContainerObjectSelectionList.Entry<R>> extends ContainerObjectSelectionList<R>
 {
     /* Fields */
 
@@ -108,58 +102,6 @@ public abstract class AbstractRowList<R extends AbstractEntry<R>> extends Contai
      */
     public void resetScrollbar() { this.setScrollAmount(0.0D); }
 
-    /*
-       Tab Key Utility
-
-       The following fields and methods are used for tab key support. When the tab key is pressed, the row list should
-       update which row/widget should be highlighted. A filtering bi-function can be used to skip widgets that should
-       not be considered for highlighting. Holding the shift key while pressing a tab key will go backwards.
-     */
-
-    /* Tab Fields */
-
-    /**
-     * Keeps track of the last widget that was selected within this row list.
-     */
-    private AbstractWidget tabLastSelectedWidget = null;
-
-    /* Tab Methods */
-
-    /**
-     * A getter method that returns the last widget that was selected by tabbing.
-     * @return The last abstract widget instance that was selected.
-     */
-    public AbstractWidget getLastSelection() { return this.tabLastSelectedWidget; }
-
-    /**
-     * Set the last widget that was selected by tabbing.
-     * @param widget An abstract widget instance.
-     */
-    public void setLastSelection(AbstractWidget widget) { this.tabLastSelectedWidget = widget; }
-
-    /**
-     * Reset the last widget selection that was selected by tabbing. This will set the
-     * {@link AbstractRowList#tabLastSelectedWidget} field as <code>null</code>.
-     */
-    public void resetLastSelection() { this.tabLastSelectedWidget = null; }
-
-    /**
-     * Removes any focus that is set on a selected widget.
-     * @return Whether a widget was unfocused.
-     */
-    public boolean unsetFocus()
-    {
-        if (this.tabLastSelectedWidget != null)
-        {
-            ((AbstractWidgetAccessor) this.tabLastSelectedWidget).NT$setFocus(false);
-            this.tabLastSelectedWidget = null;
-
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * Checks whether the focused widget handled a key pressing event.
      * @param keyCode A key code.
@@ -204,166 +146,6 @@ public abstract class AbstractRowList<R extends AbstractEntry<R>> extends Contai
             isPressed.set(press.get());
 
         return isPressed.get();
-    }
-
-    /**
-     * Get the next eligible widget for tab focusing.
-     * @param filterWidget A bi-function that accepts a row and an abstract widget instance and returns whether that
-     *                     given widget is eligible for focusing.
-     * @return Whether a widget was successfully focused.
-     */
-    public boolean setFocus(@Nullable BiFunction<R, AbstractWidget, Boolean> filterWidget)
-    {
-        R scrollSelection = null;
-        R tabFirstRow = null;
-        R tabLastRow = null;
-        R tabPreviousRow = null;
-        R tabNextRow = null;
-
-        AbstractWidget tabFirstWidget = null;
-        AbstractWidget tabLastWidget = null;
-        AbstractWidget tabPreviousWidget = null;
-        AbstractWidget tabNextWidget = null;
-
-        // Find the first eligible selectable widget
-        for (R row : this.children())
-        {
-            for (GuiEventListener listener : row.children())
-            {
-                if (listener instanceof AbstractWidget widget)
-                {
-                    if (filterWidget != null && filterWidget.apply(row, widget))
-                        continue;
-
-                    tabFirstRow = row;
-                    tabFirstWidget = widget;
-
-                    break;
-                }
-            }
-
-            if (tabFirstWidget != null)
-                break;
-        }
-
-        // Find the first last eligible selectable widget
-        for (int i = this.children().size() - 1; i >= 0; i--)
-        {
-            R row = this.children().get(i);
-
-            for (int j = row.children().size() - 1; j >= 0; j--)
-            {
-                GuiEventListener listener = row.children().get(j);
-
-                if (listener instanceof AbstractWidget widget)
-                {
-                    if (filterWidget != null && filterWidget.apply(row, widget))
-                        continue;
-
-                    tabLastRow = row;
-                    tabLastWidget = widget;
-
-                    break;
-                }
-            }
-
-            if (tabLastWidget != null)
-                break;
-        }
-
-        // Get surrounding widgets of the current selection, so we can jump depending on shift key state
-        if (this.tabLastSelectedWidget != null)
-        {
-            boolean getNextWidget = false;
-
-            for (R row : this.children())
-            {
-                for (GuiEventListener listener : row.children())
-                {
-                    if (listener instanceof AbstractWidget widget)
-                    {
-                        if (getNextWidget)
-                        {
-                            if (filterWidget != null && filterWidget.apply(row, widget))
-                                continue;
-
-                            tabNextRow = row;
-                            tabNextWidget = widget;
-
-                            break;
-                        }
-                        else if (!widget.equals(this.tabLastSelectedWidget))
-                        {
-                            boolean isFiltered = filterWidget != null && filterWidget.apply(row, widget);
-
-                            if (!isFiltered)
-                            {
-                                tabPreviousRow = row;
-                                tabPreviousWidget = widget;
-                            }
-                        }
-
-                        if (widget.equals(this.tabLastSelectedWidget))
-                            getNextWidget = true;
-                    }
-                }
-
-                if (tabNextWidget != null)
-                    break;
-            }
-        }
-
-        // Go to next/previous first/last based on shift state and last selection
-        if (this.tabLastSelectedWidget == null)
-        {
-            if (Screen.hasShiftDown() && tabLastWidget != null)
-            {
-                scrollSelection = tabLastRow;
-                ((AbstractWidgetAccessor) tabLastWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabLastWidget;
-            }
-            else if (tabFirstWidget != null)
-            {
-                scrollSelection = tabFirstRow;
-                ((AbstractWidgetAccessor) tabFirstWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabFirstWidget;
-            }
-        }
-        else
-        {
-            ((AbstractWidgetAccessor) this.tabLastSelectedWidget).NT$setFocus(false);
-
-            if (Screen.hasShiftDown() && tabPreviousWidget != null)
-            {
-                scrollSelection = tabPreviousRow;
-                ((AbstractWidgetAccessor) tabPreviousWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabPreviousWidget;
-            }
-            else if (Screen.hasShiftDown() && tabLastWidget != null)
-            {
-                scrollSelection = tabLastRow;
-                ((AbstractWidgetAccessor) tabLastWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabLastWidget;
-            }
-            else if (tabNextWidget != null)
-            {
-                scrollSelection = tabNextRow;
-                ((AbstractWidgetAccessor) tabNextWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabNextWidget;
-            }
-            else if (tabFirstWidget != null)
-            {
-                scrollSelection = tabFirstRow;
-                ((AbstractWidgetAccessor) tabFirstWidget).NT$setFocus(true);
-                this.tabLastSelectedWidget = tabFirstWidget;
-            }
-        }
-
-        // Focus scrollbar on selected row
-        if (scrollSelection != null)
-            this.setScrollOn(scrollSelection);
-
-        return true;
     }
 
     /*
@@ -460,11 +242,11 @@ public abstract class AbstractRowList<R extends AbstractEntry<R>> extends Contai
 
                 if (entry instanceof ConfigRowList.Row)
                 {
-                    for (AbstractWidget widget : ((ConfigRowList.Row) entry).children)
+                    for (Renderable renderable : ((ConfigRowList.Row) entry).children)
                     {
-                        if (widget instanceof TextGroup.TextRow)
+                        if (renderable instanceof TextGroup.TextRow)
                         {
-                            if (((TextGroup.TextRow) widget).isFirst())
+                            if (((TextGroup.TextRow) renderable).isFirst())
                                 isTextWidget = true;
                         }
                     }

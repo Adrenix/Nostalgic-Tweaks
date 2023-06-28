@@ -13,10 +13,11 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.PermissionLock;
-import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
-import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.SearchCrumbs;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.TooltipElement;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.TweakTag;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
+import mod.adrenix.nostalgic.client.config.gui.widget.button.*;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowTweak;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
@@ -25,7 +26,6 @@ import mod.adrenix.nostalgic.common.config.list.ListMap;
 import mod.adrenix.nostalgic.common.config.reflect.CommonReflect;
 import mod.adrenix.nostalgic.common.config.reflect.TweakGroup;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
-import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.client.NetUtil;
@@ -38,14 +38,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.CheckReturnValue;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
@@ -163,32 +166,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
     /**
      * Set the current tab focus on a specific widget. Nothing will happen if the widget is null.
-     * @param widget The widget to focus on.
+     * @param listener The widget to focus on.
      */
-    public void setFocusOn(AbstractWidget widget)
+    public void setFocusOn(GuiEventListener listener)
     {
-        if (widget == null)
+        if (listener == null)
             return;
 
-        this.resetFocus();
-        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
-        this.setLastSelection(widget);
-    }
-
-    /**
-     * Remove any focus that may be present on row widgets.
-     * This is automatically handled when using the {@link ConfigRowList#setFocusOn(AbstractWidget)} method.
-     */
-    public void resetFocus()
-    {
-        for (Row row : this.children())
-        {
-            for (AbstractWidget widget : row.children)
-                ((AbstractWidgetAccessor) widget).NT$setFocus(false);
-        }
-
-        this.setLastSelection(null);
-        setSelection = false;
+        this.screen.setFocused(listener);
     }
 
     /* Overrides & Utility */
@@ -212,43 +197,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             listScreen.getSearchBox().setFocused(false);
 
         return isClicked;
-    }
-
-    /**
-     * Utility method that determines if a widget is selectable with the tab key.
-     * @param row A configuration row.
-     * @param widget A widget within a row.
-     * @return Whether the given widget is an invalid tab target.
-     */
-    private boolean isInvalidWidget(Row row, AbstractWidget widget)
-    {
-        boolean isGroup = widget instanceof ContainerButton;
-        boolean isReset = widget.equals(row.reset);
-        boolean isDelete = widget.equals(row.delete);
-        boolean isRemove = widget.equals(row.remove);
-        boolean isController = widget.equals(row.controller);
-        boolean isInactive = (isGroup || isReset || isDelete || isRemove || isController) && !widget.isActive();
-
-        return isInactive || (!isGroup && !isReset && !isDelete && !isRemove && !isController);
-    }
-
-    /**
-     * Key press handling.
-     * @param keyCode A key code.
-     * @param scanCode A scan code.
-     * @param modifiers Modifiers.
-     * @return Whether the key press was handled.
-     */
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-    {
-        if (KeyUtil.isEsc(keyCode) && this.unsetFocus())
-            return true;
-
-        if (KeyUtil.isTab(keyCode) && this.setFocus(this::isInvalidWidget))
-            return true;
-
-        return this.getFocusKeyPress(keyCode, scanCode, modifiers);
     }
 
     /**
@@ -276,7 +224,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      * @param <E> A type that is associated with a provided enumeration value.
      * @return A configuration row instance that handles the given value.
      */
-    @CheckReturnValue
     public <E extends Enum<E>> Row rowFromTweak(TweakGroup group, String key, Object value)
     {
         if (TweakClientCache.get(group, key).isNotAutomated())
@@ -322,7 +269,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      * @param tweak The tweak to get metadata from.
      * @return A configuration row instance that handles the given tweak.
      */
-    @CheckReturnValue
     public Row rowFromTweak(TweakClientCache<?> tweak)
     {
         return this.rowFromTweak(tweak.getGroup(), tweak.getKey(), tweak.getValue());
@@ -385,7 +331,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
      *
      * Rendering of all the rows listed above is also defined by this class.
      */
-    public static class Row extends AbstractEntry<Row>
+    public static class Row extends ContainerObjectSelectionList.Entry<Row>
     {
         /* Nullable Fields */
 
@@ -405,7 +351,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         private float fade = 0F;
         private int indent = TEXT_START;
 
-        public final List<AbstractWidget> children;
+        public final List<Renderable> children;
 
         /* Constructors */
 
@@ -419,14 +365,14 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param tweak The tweak that this row is associated with. This can be left as null if this row does not manage
          *              a tweak from the client cache.
          */
-        public Row(List<AbstractWidget> list, @Nullable AbstractWidget controller, @Nullable TweakClientCache<?> tweak)
+        public Row(List<Renderable> list, @Nullable AbstractWidget controller, @Nullable TweakClientCache<?> tweak)
         {
             this.children = list;
             this.controller = controller;
             this.tweak = tweak;
 
             // Assign reset button to row if applicable
-            for (AbstractWidget widget : list)
+            for (Renderable widget : list)
             {
                 if (widget instanceof ResetButton button)
                     this.reset = button;
@@ -448,7 +394,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          * @param tweak The tweak that this row is associated with. This can be left as null if this row does not manage
          *              a tweak from the client cache.
          */
-        public Row(List<AbstractWidget> list, @Nullable TweakClientCache<?> tweak) { this(list, null, tweak); }
+        public Row(List<Renderable> list, @Nullable TweakClientCache<?> tweak) { this(list, null, tweak); }
 
         /* Setters & Getters */
 
@@ -515,7 +461,6 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         /**
          * @return Get the container button for this row.
          */
-        @CheckReturnValue
         public ContainerButton getGroup() { return this.group; }
 
         /* Overrides & Rendering */
@@ -525,7 +470,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
          */
         private boolean isBindingRow()
         {
-            for (AbstractWidget widget : this.children)
+            for (Renderable widget : this.children)
                 if (widget instanceof KeyBindButton)
                     return true;
 
@@ -552,7 +497,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             if (this.tweak.isDynamic() && NostalgicTweaks.isNetworkVerified() && !NetUtil.isPlayerOp())
                 return true;
 
-            for (AbstractWidget widget : this.children)
+            for (Renderable widget : this.children)
             {
                 if (widget instanceof PermissionLock && Minecraft.getInstance().player != null)
                     return !NetUtil.isPlayerOp(Minecraft.getInstance().player);
@@ -631,7 +576,7 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             boolean isRowEmpty = this.children.size() == 0;
             boolean isTextRow = false;
 
-            for (AbstractWidget widget : this.children)
+            for (Renderable widget : this.children)
             {
                 if (widget instanceof TextGroup.TextRow)
                 {
@@ -739,12 +684,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
         /**
          * Checks if a widget within a row is exceeding the width of the current screen.
          * @param screen A screen to get width data from.
-         * @param widget The widget to check.
+         * @param element The widget to check.
          * @return Whether a widget is completely visible.
          */
-        private static boolean isRowClipped(Screen screen, AbstractWidget widget)
+        private static boolean isRowClipped(Screen screen, LayoutElement element)
         {
-            return widget.getX() + widget.getWidth() >= screen.width - TEXT_FROM_END;
+            return element.getX() + element.getWidth() >= screen.width - TEXT_FROM_END;
         }
 
         /**
@@ -786,13 +731,17 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             // Abstract list screen rendering
             if (Minecraft.getInstance().screen instanceof ListScreen)
             {
-                for (AbstractWidget widget : this.children)
+                for (Renderable renderable : this.children)
                 {
-                    if (Overlay.isOpened())
-                        widget.active = false;
+                    if (renderable instanceof LayoutElement element)
+                    {
+                        if (Overlay.isOpened() && element instanceof AbstractWidget widget)
+                            widget.active = false;
 
-                    widget.setY(top);
-                    widget.render(graphics, mouseX, mouseY, partialTick);
+                        element.setY(top);
+                    }
+
+                    renderable.render(graphics, mouseX, mouseY, partialTick);
                 }
 
                 // Clear rendering tracker
@@ -811,44 +760,56 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             boolean isFocused = false;
             int startX = this.indent;
 
-            for (AbstractWidget widget : this.children)
+            for (Renderable renderable : this.children)
             {
-                if (widget.getX() == TEXT_START && this.indent != TEXT_START)
-                    widget.setX(this.indent);
+                if (renderable instanceof LayoutElement element)
+                {
+                    if (element.getX() == TEXT_START && this.indent != TEXT_START)
+                        element.setX(this.indent);
 
-                if (widget.isFocused())
-                    isFocused = true;
+                    if (element instanceof GuiEventListener listener)
+                    {
+                        if (listener.isFocused())
+                            isFocused = true;
+                    }
+                }
             }
 
             // Ensure reset buttons don't overlap scrollbar (different languages will change the width of this button)
             int diffX = 0;
 
-            for (AbstractWidget widget : this.children)
+            for (Renderable renderable : this.children)
             {
-                if (widget instanceof ResetButton && isRowClipped(screen, widget))
+                if (renderable instanceof LayoutElement element)
                 {
-                    int prevX = widget.getX();
+                    if (element instanceof ResetButton && isRowClipped(screen, element))
+                    {
+                        int prevX = element.getX();
 
-                    while (isRowClipped(screen, widget))
-                        widget.setX(widget.getX() - 1);
+                        while (isRowClipped(screen, element))
+                            element.setX(element.getX() - 1);
 
-                    diffX = prevX - widget.getX();
+                        diffX = prevX - element.getX();
 
-                    break;
+                        break;
+                    }
                 }
             }
 
-            for (AbstractWidget widget : this.children)
-                widget.setX(widget.getX() - diffX);
+            for (Renderable renderable : this.children)
+            {
+                if (renderable instanceof LayoutElement element)
+                    element.setX(element.getX() - diffX);
+            }
 
             // Ensure translation does not overlap controllers
             TweakTag tagger = null;
 
             if (this.controller != null)
             {
-                for (AbstractWidget widget : this.children)
+                for (Renderable renderable : this.children)
                 {
-                    if (widget instanceof TweakTag tag)
+                    if (renderable instanceof TweakTag tag)
                     {
                         tagger = tag;
 
@@ -879,9 +840,9 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             }
 
             // Update tooltip bubble if text has ellipsis
-            for (AbstractWidget widget : this.children)
+            for (Renderable renderable : this.children)
             {
-                if (widget instanceof TooltipButton button && tagger != null)
+                if (renderable instanceof TooltipElement button && tagger != null)
                 {
                     button.setTitle(tagger.getTitle());
                     break;
@@ -889,24 +850,8 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
             }
 
             // Render rows
-            for (AbstractWidget widget : this.children)
+            for (Renderable renderable : this.children)
             {
-                // Update widget focus if a change was sent via the category list overlay
-                if (Overlay.getVisible() instanceof CategoryListOverlay overlay && overlay.getSelected() == this)
-                {
-                    ConfigRowList list = screen.getWidgets().getConfigRowList();
-
-                    if (list.setSelection)
-                    {
-                        if (list.getLastSelection() != null)
-                            ((AbstractWidgetAccessor) list.getLastSelection()).NT$setFocus(false);
-
-                        list.setSelection = false;
-                        list.setLastSelection(widget);
-                        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
-                    }
-                }
-
                 // Apply row title color formatting
                 Component title = Component.empty();
 
@@ -918,12 +863,12 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     if (isFocused)
                         title = title.copy().withStyle(ChatFormatting.GOLD);
                 }
-                else if (widget instanceof KeyBindButton)
+                else if (renderable instanceof KeyBindButton)
                 {
-                    Component translation = Component.translatable(((KeyBindButton) widget).getMapping().getName());
-                    title = KeyUtil.isMappingConflict(((KeyBindButton) widget).getMapping()) ? translation.copy().withStyle(ChatFormatting.RED) : translation.copy().withStyle(ChatFormatting.RESET);
+                    Component translation = Component.translatable(((KeyBindButton) renderable).getMapping().getName());
+                    title = KeyUtil.isMappingConflict(((KeyBindButton) renderable).getMapping()) ? translation.copy().withStyle(ChatFormatting.RED) : translation.copy().withStyle(ChatFormatting.RESET);
                 }
-                else if (widget instanceof ContainerButton containerButton && Overlay.getVisible() instanceof CategoryListOverlay overlay)
+                else if (renderable instanceof ContainerButton containerButton && Overlay.getVisible() instanceof CategoryListOverlay overlay)
                     containerButton.setHighlight(overlay.getSelected() == this);
 
                 // Render row title
@@ -942,44 +887,50 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
                     ConfigRowList.overTweakId = null;
 
                 // Realign widgets
-                widget.setY(top);
-                int cacheX = widget.getX();
-                int cacheY = widget.getY();
-
-                if (widget instanceof EditBox)
+                if (renderable instanceof LayoutElement element)
                 {
-                    widget.setX(widget.getX() - 1);
-                    widget.setY(widget.getY() + 1);
-                }
+                    element.setY(top);
+                    int cacheX = element.getX();
+                    int cacheY = element.getY();
 
-                // Realign text rows if searching
-                if (screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
-                {
-                    if (widget instanceof SearchCrumbs crumb)
+                    if (element instanceof EditBox)
                     {
-                        widget.setX(crumb.startX);
-                        widget.setY(widget.getY() + 2);
+                        element.setX(element.getX() - 1);
+                        element.setY(element.getY() + 1);
                     }
-                    else
-                        widget.setY(widget.getY() + 11);
 
-                    cacheY = widget.getY() + (widget instanceof EditBox ? -1 : 0);
-                }
+                    // Realign text rows if searching
+                    if (screen.getConfigTab() == ConfigScreen.ConfigTab.SEARCH)
+                    {
+                        if (element instanceof SearchCrumbs crumb)
+                        {
+                            element.setX(crumb.startX);
+                            element.setY(element.getY() + 2);
+                        }
+                        else
+                            element.setY(element.getY() + 11);
 
-                // Activate and render widget
-                widget.active = !Overlay.isOpened();
+                        cacheY = element.getY() + (element instanceof EditBox ? -1 : 0);
+                    }
 
-                // Apply row locking for multiplayer
-                if (widget instanceof PermissionLock && isRowLocked)
-                    widget.active = false;
+                    // Activate and render widget
+                    if (element instanceof AbstractWidget widget)
+                    {
+                        widget.active = !Overlay.isOpened();
 
-                widget.render(graphics, mouseX, mouseY, partialTick);
+                        // Apply row locking for multiplayer
+                        if (widget instanceof PermissionLock && isRowLocked)
+                            widget.active = false;
+                    }
 
-                // Reset widget positions with caches
-                if (widget instanceof EditBox)
-                {
-                    widget.setX(cacheX);
-                    widget.setY(cacheY);
+                    renderable.render(graphics, mouseX, mouseY, partialTick);
+
+                    // Reset widget positions with caches
+                    if (element instanceof EditBox)
+                    {
+                        element.setX(cacheX);
+                        element.setY(cacheY);
+                    }
                 }
 
                 // If ellipsis, then give tooltip of full tweak name
@@ -1037,7 +988,34 @@ public class ConfigRowList extends AbstractRowList<ConfigRowList.Row>
 
         /* Required Overrides */
 
-        @Override public List<? extends GuiEventListener> children() { return this.children; }
-        @Override public List<? extends NarratableEntry> narratables() { return this.children; }
+        @Override
+        @NotNull
+        public List<? extends GuiEventListener> children()
+        {
+            List<GuiEventListener> listeners = new ArrayList<>();
+
+            for (Renderable renderable : this.children)
+            {
+                if (renderable instanceof GuiEventListener listener)
+                    listeners.add(listener);
+            }
+
+            return listeners;
+        }
+
+        @Override
+        @NotNull
+        public List<? extends NarratableEntry> narratables()
+        {
+            List<NarratableEntry> entries = new ArrayList<>();
+
+            for (Renderable renderable : this.children)
+            {
+                if (renderable instanceof NarratableEntry entry)
+                    entries.add(entry);
+            }
+
+            return entries;
+        }
     }
 }

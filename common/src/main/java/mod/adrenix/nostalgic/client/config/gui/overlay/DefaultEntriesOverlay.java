@@ -69,10 +69,10 @@ public class DefaultEntriesOverlay extends ListScreenOverlay<DefaultEntriesOverl
             this.enableAll = this.createEnableAll();
             this.disableAll = this.createDisableAll();
 
-            DefaultEntriesOverlay.this.widgets.add(this.headerText);
-            DefaultEntriesOverlay.this.widgets.add(this.messageText);
-            DefaultEntriesOverlay.this.widgets.add(this.enableAll);
-            DefaultEntriesOverlay.this.widgets.add(this.disableAll);
+            DefaultEntriesOverlay.this.children.add(this.headerText);
+            DefaultEntriesOverlay.this.children.add(this.messageText);
+            DefaultEntriesOverlay.this.children.add(this.enableAll);
+            DefaultEntriesOverlay.this.children.add(this.disableAll);
 
             this.children = Set.of(headerText, messageText, enableAll, disableAll);
         }

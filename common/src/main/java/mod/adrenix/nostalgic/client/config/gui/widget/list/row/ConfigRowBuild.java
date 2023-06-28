@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public abstract class ConfigRowBuild
          */
         public ConfigRowList.Row generate()
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
             KeyBindButton controller = new KeyBindButton(this.mapping);
 
             widgets.add(controller);
@@ -57,7 +58,7 @@ public abstract class ConfigRowBuild
             Screen screen = Minecraft.getInstance().screen;
             assert screen != null;
 
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
             this.controller.setWidth(200);
             this.controller.setX((screen.width / 2) - (this.controller.getWidth() / 2));
             this.controller.setY(0);
@@ -81,7 +82,7 @@ public abstract class ConfigRowBuild
          */
         public ConfigRowList.Row generate()
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
             this.controller.setX(indent);
             this.controller.setY(0);
 
@@ -95,7 +96,7 @@ public abstract class ConfigRowBuild
      * Manually create a configuration row with a predefined list of widgets.
      * @param widgets The widgets that belong to this row.
      */
-    public record ManualRow(List<AbstractWidget> widgets)
+    public record ManualRow(List<Renderable> widgets)
     {
         /**
          * Create a new config row list row instance with the widgets provided.

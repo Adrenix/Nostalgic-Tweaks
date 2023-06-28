@@ -142,7 +142,7 @@ public class ItemButton extends Button
         // Item button rendering
 
         PoseStack viewStack = RenderSystem.getModelViewStack();
-        boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY);
+        boolean isMouseOver = this.isHoveredOrFocused() && ConfigWidgets.isInsideRowList(mouseY);
 
         int startX = this.getX() + 2;
         int startY = this.getY() + 1;

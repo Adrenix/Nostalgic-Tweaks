@@ -849,6 +849,9 @@ public abstract class ListScreen extends ConfigScreen
             return true;
         }
 
+        if (keyCode == GLFW.GLFW_KEY_TAB)
+            return super.keyPressed(keyCode, scanCode, modifiers);
+
         if (KeyUtil.isSearching(keyCode))
         {
             if (this.getSearchBox().isFocused())
@@ -877,9 +880,6 @@ public abstract class ListScreen extends ConfigScreen
 
             return true;
         }
-
-        if (isEsc && this.getConfigRowList().unsetFocus())
-            return true;
 
         if (isEsc && this.shouldCloseOnEsc())
         {

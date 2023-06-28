@@ -10,11 +10,8 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.GenericOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
-import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
@@ -24,12 +21,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.CheckReturnValue;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
@@ -37,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class display a list of all categories, subcategories, and tweaks.
+ * This class displays a list of all categories, subcategories, and tweaks.
  * Assists the configuration screen so users can quickly jump to a specific row.
  */
 
@@ -178,9 +176,6 @@ public class CategoryListOverlay extends GenericOverlay
             if (isTabbed)
                 highlight = 0x3AC0FF;
 
-            if (isSelected && overlay.list.getLastSelection() == null)
-                overlay.list.setLastSelection(this);
-
             graphics.drawString(this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.getX(), this.getY(), highlight);
         }
     }
@@ -284,8 +279,9 @@ public class CategoryListOverlay extends GenericOverlay
                     if (position < overlay.list.children().size())
                     {
                         AbstractWidget widget = overlay.list.children().get(position).children.get(0);
-                        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
-                        overlay.list.setLastSelection(widget);
+
+                        overlay.setInitialFocus(widget);
+                        overlay.setFocused(widget);
                     }
                 }
             }
@@ -298,7 +294,7 @@ public class CategoryListOverlay extends GenericOverlay
      * This class defines the rows that will be included in a text row list instance.
      * Only text button widgets are used in rows.
      */
-    private static class TextRow extends AbstractEntry<TextRow>
+    private static class TextRow extends ContainerObjectSelectionList.Entry<TextRow>
     {
         /* Fields */
 
@@ -357,9 +353,11 @@ public class CategoryListOverlay extends GenericOverlay
         /* Required Overrides */
 
         @Override
+        @NotNull
         public List<? extends GuiEventListener> children() { return this.children; }
 
         @Override
+        @NotNull
         public List<? extends NarratableEntry> narratables() { return this.children; }
     }
 
@@ -369,7 +367,6 @@ public class CategoryListOverlay extends GenericOverlay
      * There is no setter method for this field. This is handled by widget handlers automatically.
      * @return A selected config row, null otherwise.
      */
-    @CheckReturnValue
     public ConfigRowList.Row getSelected() { return this.selected; }
 
     /**
@@ -384,9 +381,6 @@ public class CategoryListOverlay extends GenericOverlay
         if (screen == null || (this.list != null && !this.list.children().isEmpty()))
             return;
 
-        if (this.list != null)
-            this.list.resetLastSelection();
-
         int width = this.getListWidth();
         int height = this.getOverlayHeight();
         int startY = this.getOverlayStartY();
@@ -396,6 +390,10 @@ public class CategoryListOverlay extends GenericOverlay
 
         this.list = new TextRowList(screen, width, height, startY, endY, screen.getFont().lineHeight + 2);
         this.list.setLeftPos(this.getOverlayStartX());
+
+        this.clearFocus();
+        this.children.clear();
+        this.children.add(this.list);
 
         for (ConfigRowList.Row row : this.configRowList.children())
         {
@@ -426,17 +424,6 @@ public class CategoryListOverlay extends GenericOverlay
     }
 
     /**
-     * A filter method that checks if a text button widget is just a prefix star.
-     * @param row A text row instance.
-     * @param widget A widget instance.
-     * @return Whether the provided widget is invalid for selection.
-     */
-    private boolean isInvalidWidget(TextRow row, AbstractWidget widget)
-    {
-        return widget instanceof TextButton text && text.title.getString().equals(TWEAK_STAR);
-    }
-
-    /**
      * A handler method for when a key is pressed while an overlay window is open.
      * @param keyCode The pressed key code.
      * @param scanCode A scan code.
@@ -446,12 +433,6 @@ public class CategoryListOverlay extends GenericOverlay
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (KeyUtil.isEsc(keyCode) && this.list.unsetFocus())
-            return true;
-
-        if (KeyUtil.isTab(keyCode) && this.list.setFocus(this::isInvalidWidget))
-            return true;
-
         if (this.list.getFocusKeyPress(keyCode, scanCode, modifiers))
             return true;
 
@@ -558,7 +539,7 @@ public class CategoryListOverlay extends GenericOverlay
     }
 
     /**
-     * Rendering instructions for post overlay window rendering.
+     * Rendering instructions for post-overlay window rendering.
      * @param graphics The current GuiGraphics object.
      * @param mouseX The current x-position of the mouse.
      * @param mouseY The current y-position of the mouse.

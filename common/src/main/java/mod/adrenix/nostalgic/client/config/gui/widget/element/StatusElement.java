@@ -1,5 +1,6 @@
-package mod.adrenix.nostalgic.client.config.gui.widget.button;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
@@ -10,13 +11,11 @@ import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,10 +23,10 @@ import java.util.List;
 
 /**
  * This is the flashing (!) exclamation mark symbol that sits next to control widgets in configuration rows.
- * The flashing mechanism is publicly static shared between other widgets so visible flashes is in sync.
+ * The flashing mechanism is publicly static shared between other widgets, so visible flashes are in sync.
  */
 
-public class StatusButton extends Button
+public class StatusElement extends ElementWidget
 {
     /* Static Fields & Methods */
 
@@ -62,9 +61,9 @@ public class StatusButton extends Button
 
     /* Constructor */
 
-    public StatusButton(TweakClientCache<?> tweak, AbstractWidget anchor)
+    public StatusElement(TweakClientCache<?> tweak, AbstractWidget anchor)
     {
-        super(0, 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
+        super(0, 0, 0, 0);
 
         this.tweak = tweak;
         this.anchor = anchor;
@@ -148,7 +147,8 @@ public class StatusButton extends Button
         int xStart = this.anchor.getX() - ConfigRowList.ROW_WIDGET_GAP - uWidth;
         int yStart = this.anchor.getY();
 
-        StatusButton.update();
+        RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
+        StatusElement.update();
 
         if (isStatusProblem && !flipState)
             graphics.blit(TextureLocation.WIDGETS, xStart, yStart, 21, 0, uWidth, vHeight);

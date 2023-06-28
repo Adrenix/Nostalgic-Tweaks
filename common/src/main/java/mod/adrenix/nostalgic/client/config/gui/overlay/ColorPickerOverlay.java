@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.util.client.RenderUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -122,11 +122,11 @@ public class ColorPickerOverlay extends Overlay
         int h = 20;
         int dy = 24;
 
-        this.widgets.clear();
-        this.widgets.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
-        this.widgets.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
-        this.widgets.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
-        this.widgets.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
+        this.children.clear();
+        this.children.add(new ColorSlider(this::setRed, this::getRed, ColorSlider.Type.R, x, y, w, h));
+        this.children.add(new ColorSlider(this::setGreen, this::getGreen, ColorSlider.Type.G, x, y + dy, w, h));
+        this.children.add(new ColorSlider(this::setBlue, this::getBlue, ColorSlider.Type.B, x, y + dy * 2, w, h));
+        this.children.add(new ColorSlider(this::setAlpha, this::getAlpha, ColorSlider.Type.A, x, y + dy * 3, w, h));
     }
 
     /**
@@ -225,8 +225,8 @@ public class ColorPickerOverlay extends Overlay
         PoseStack sliders = new PoseStack();
         sliders.last().pose().translate(new Vector3f(0.0F, 0.0F, 1.0F));
 
-        for (AbstractWidget widget : this.widgets)
-            widget.render(graphics, mouseX, mouseY, partialTick);
+        for (Renderable renderable : this.children)
+            renderable.render(graphics, mouseX, mouseY, partialTick);
 
         // Render borders around color sliders
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
