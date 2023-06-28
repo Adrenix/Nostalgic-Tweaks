@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.config.gui.widget.button;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -6,11 +6,9 @@ import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -21,7 +19,7 @@ import java.util.List;
  * renders a helpful tooltip displaying more information about the tweak being configured.
  */
 
-public class TooltipButton extends Button
+public class TooltipElement extends ElementWidget
 {
     /* Fields */
 
@@ -36,9 +34,9 @@ public class TooltipButton extends Button
      * @param tweak A tweak client cache instance.
      * @param controller A neighboring widget controller.
      */
-    public TooltipButton(TweakClientCache<?> tweak, AbstractWidget controller)
+    public TooltipElement(TweakClientCache<?> tweak, AbstractWidget controller)
     {
-        super(0, 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
+        super(0, 0, 0, 0);
 
         this.tweak = tweak;
         this.controller = controller;

@@ -7,7 +7,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextTitle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public abstract class ConfigRowKey
          */
         public ConfigRowList.Row generate()
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
 
             RemoveButton remove = new RemoveButton(RemoveType.SAVED, this.resourceKey, this::isRemoved, this::onRemove, this::onUndo);
             TextTitle<?> title = new TextTitle<>(RemoveType.SAVED, this.resourceKey, this::isRemoved);
@@ -130,7 +130,7 @@ public abstract class ConfigRowKey
          */
         public ConfigRowList.Row generate()
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
 
             RemoveButton remove = new RemoveButton(RemoveType.DEFAULT, this.resourceKey, this::isRemoved, this::onDisable, this::onEnable);
             TextTitle<?> title = new TextTitle<>(RemoveType.DEFAULT, this.resourceKey, this::isRemoved);

@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.text.TextTitle;
 import mod.adrenix.nostalgic.common.config.list.ListMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,7 @@ public abstract class ConfigRowEntry
          */
         protected ConfigRowList.Row create(AbstractWidget controller)
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
 
             ResetButton reset = new ResetButton(controller, this::isChanged, this::onReset);
             DeleteButton delete = new DeleteButton(reset, this::isDeleted, this::onDelete, this::onUndo);

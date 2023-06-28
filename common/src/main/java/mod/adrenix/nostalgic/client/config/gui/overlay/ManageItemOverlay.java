@@ -97,10 +97,10 @@ public class ManageItemOverlay extends ListScreenOverlay<ManageItemOverlay.Widge
             this.editButton = this.createEditButton();
             this.removeButton = this.createRemoveButton();
 
-            ManageItemOverlay.this.widgets.add(this.itemButton);
-            ManageItemOverlay.this.widgets.add(this.addButton);
-            ManageItemOverlay.this.widgets.add(this.editButton);
-            ManageItemOverlay.this.widgets.add(this.removeButton);
+            ManageItemOverlay.this.children.add(this.itemButton);
+            ManageItemOverlay.this.children.add(this.addButton);
+            ManageItemOverlay.this.children.add(this.editButton);
+            ManageItemOverlay.this.children.add(this.removeButton);
 
             this.children = Set.of(itemButton, addButton, editButton, removeButton);
         }

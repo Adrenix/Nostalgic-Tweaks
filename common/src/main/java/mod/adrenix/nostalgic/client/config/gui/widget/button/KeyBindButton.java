@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.button;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.client.config.gui.widget.TweakTag;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.TweakTag;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.LangUtil;
 import net.minecraft.ChatFormatting;

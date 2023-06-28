@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListSetScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.RemoveType;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.ElementWidget;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.list.ListId;
 import mod.adrenix.nostalgic.util.common.*;
@@ -31,7 +32,7 @@ import java.util.function.Supplier;
  * instructions are needed depending on whether the title is associated with a map entry, or a set entry.
  */
 
-public class TextTitle<V> extends AbstractWidget
+public class TextTitle<V> extends ElementWidget
 {
     /* Fields */
 
@@ -51,7 +52,7 @@ public class TextTitle<V> extends AbstractWidget
 
     public TextTitle(ListMapScreen<V> listMapScreen, @NotNull Map.Entry<String, V> entry, String resourceKey)
     {
-        super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
+        super(START_X, START_Y, WIDTH, HEIGHT);
 
         this.entry = entry;
         this.resourceKey = resourceKey;
@@ -66,7 +67,7 @@ public class TextTitle<V> extends AbstractWidget
      */
     public TextTitle(@NotNull RemoveType removeType, String resourceKey, @NotNull Supplier<Boolean> isRemoved)
     {
-        super(START_X, START_Y, WIDTH, HEIGHT, Component.empty());
+        super(START_X, START_Y, WIDTH, HEIGHT);
 
         this.entry = null;
         this.currentValue = null;
@@ -105,18 +106,6 @@ public class TextTitle<V> extends AbstractWidget
 
         return String.format(" %s(%s: %s%s%s)", gray, prefix, color, TextUtil.toTitleCase(value.toString()), gray);
     }
-
-    /**
-     * Handler method for when the mouse clicks on an entry title widget.
-     * Always returns false to prevent a clicking sound from playing when this widget is left-clicked.
-     *
-     * @param mouseX The x-position of the mouse.
-     * @param mouseY The y-position of the mouse.
-     * @param button The mouse button that was clicked.
-     * @return Whether this method handled the mouse click event.
-     */
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) { return false; }
 
     /**
      * Handler method for rendering an entry title widget.
@@ -187,12 +176,4 @@ public class TextTitle<V> extends AbstractWidget
         if (isHovering && isInBounds && isNotDefault)
             listScreen.renderLast.add(() -> listScreen.renderComponentTooltip(poseStack, tooltip, mouseX, mouseY));
     }
-
-    /* Required Overrides */
-
-    @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 }

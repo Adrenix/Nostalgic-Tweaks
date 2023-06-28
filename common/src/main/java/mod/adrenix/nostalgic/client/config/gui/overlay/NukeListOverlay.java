@@ -69,10 +69,10 @@ public class NukeListOverlay extends ListScreenOverlay<NukeListOverlay.WidgetPro
             this.confirmYes = this.createConfirmYes();
             this.confirmNo = this.createConfirmNo();
 
-            NukeListOverlay.this.widgets.add(this.headerText);
-            NukeListOverlay.this.widgets.add(this.messageText);
-            NukeListOverlay.this.widgets.add(this.confirmYes);
-            NukeListOverlay.this.widgets.add(this.confirmNo);
+            NukeListOverlay.this.children.add(this.headerText);
+            NukeListOverlay.this.children.add(this.messageText);
+            NukeListOverlay.this.children.add(this.confirmYes);
+            NukeListOverlay.this.children.add(this.confirmNo);
 
             this.children = Set.of(headerText, messageText, confirmYes, confirmNo);
         }

@@ -158,7 +158,7 @@ public class ToggleCheckbox extends Checkbox
         int uWidth = 20;
         int vHeight = 20;
 
-        if (this.isMouseOver(mouseX, mouseY))
+        if (this.isMouseOver(mouseX, mouseY) || this.isHoveredOrFocused())
         {
             uOffset = 20;
             vOffset = this.selected() ? 83 : vOffset;
@@ -169,12 +169,17 @@ public class ToggleCheckbox extends Checkbox
         Screen.blit(poseStack, this.getX(), this.getY(), uOffset, vOffset, uWidth, vHeight);
         ToggleCheckbox.drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 0xFFFFFF);
 
-        if (this.isMouseOver(mouseX, mouseY) && this.tooltip != null)
+        if (this.tooltip != null && (this.isMouseOver(mouseX, mouseY) || this.isHoveredOrFocused()))
         {
             if (this.screen instanceof ListScreen listScreen)
                 listScreen.renderOverlayTooltips.add(this::renderToolTip);
             else
-                this.renderToolTip(poseStack, mouseX, mouseY);
+            {
+                if (this.isMouseOver(mouseX, mouseY))
+                    this.renderToolTip(poseStack, mouseX, mouseY);
+                else
+                    this.renderToolTip(poseStack, this.getX(), this.getY());
+            }
         }
     }
 }

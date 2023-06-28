@@ -1,11 +1,10 @@
 package mod.adrenix.nostalgic.client.config.gui.widget.text;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.ElementWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.MultiLineLabel;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -13,7 +12,7 @@ import net.minecraft.network.chat.Component;
  * to a screen.
  */
 
-public class TextWidget extends AbstractWidget
+public class TextWidget extends ElementWidget
 {
     /* Fields */
 
@@ -33,7 +32,7 @@ public class TextWidget extends AbstractWidget
      */
     public TextWidget(Component text, TextAlign align, int startX, int startY, int maxWidth)
     {
-        super(startX, startY, 0, 0, Component.empty());
+        super(startX, startY, 0, 0);
 
         // Fixes a color continuation on the next line issue when using a multi line label
         Component fixed = Component.literal(text.getString().replaceAll("§r", "§f"));
@@ -41,12 +40,10 @@ public class TextWidget extends AbstractWidget
 
         this.label = MultiLineLabel.create(font, fixed, maxWidth);
         this.lineHeight = font.lineHeight + 4;
-
-        this.active = false;
         this.align = align;
 
-        this.width = maxWidth;
-        this.height = this.label.getLineCount() * this.lineHeight;
+        this.setWidth(maxWidth);
+        this.setHeight(this.label.getLineCount() * this.lineHeight);
     }
 
     /* Getters */
@@ -57,21 +54,9 @@ public class TextWidget extends AbstractWidget
      *
      * @return The bottom y-position of this widget.
      */
-    public int getBottomY() { return this.getY() + this.height; }
+    public int getBottomY() { return this.getY() + this.getHeight(); }
 
     /* Methods */
-
-    /**
-     * Handler method for when the mouse clicks on a text widget.
-     * Always returns false to prevent a clicking sound from playing when this widget is left-clicked.
-     *
-     * @param mouseX The x-position of the mouse.
-     * @param mouseY The y-position of the mouse.
-     * @param button The mouse button that was clicked.
-     * @return Whether this method handled the mouse click event.
-     */
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) { return false; }
 
     /**
      * Handler method for rendering a text widget.
@@ -86,15 +71,7 @@ public class TextWidget extends AbstractWidget
         switch (this.align)
         {
             case LEFT -> this.label.renderLeftAligned(poseStack, this.getX(), this.getY(), this.lineHeight, 0xFFFFFF);
-            case CENTER -> this.label.renderCentered(poseStack, this.getX() + (this.width / 2), this.getY());
+            case CENTER -> this.label.renderCentered(poseStack, this.getX() + (this.getWidth() / 2), this.getY());
         }
     }
-
-    /* Required Overrides */
-
-    @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
 }

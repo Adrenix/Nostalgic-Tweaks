@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.client.config.gui.screen.MenuOption;
 import mod.adrenix.nostalgic.client.config.gui.screen.list.ListMapScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ControlButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerId;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.RadioGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.group.TextGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;

@@ -3,8 +3,13 @@ package mod.adrenix.nostalgic.client.config.gui.overlay;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.util.common.MathUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.ComponentPath;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.navigation.FocusNavigationEvent;
+import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -15,13 +20,14 @@ import org.lwjgl.glfw.GLFW;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Overlays are not screens nor widgets, instead they render on top of screens and use widgets within the overlay.
  * All overlay instances will be instances of GUI components and will implement overlay event methods.
  */
 
-public abstract class Overlay extends GuiComponent implements OverlayEvents
+public abstract class Overlay extends AbstractContainerEventHandler implements OverlayEvents
 {
     /* Static Fields */
 
@@ -105,6 +111,56 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     }
 
     /**
+     * @return Creates a tab navigation event.
+     */
+    private FocusNavigationEvent.TabNavigation createTabEvent()
+    {
+        return new FocusNavigationEvent.TabNavigation(!Screen.hasShiftDown());
+    }
+
+    /**
+     * @param direction A screen direction enumeration value.
+     * @return Creates an arrow navigation event.
+     */
+    private FocusNavigationEvent.ArrowNavigation createArrowEvent(ScreenDirection direction)
+    {
+        return new FocusNavigationEvent.ArrowNavigation(direction);
+    }
+
+    /**
+     * Removes focus of focused widget.
+     */
+    protected void clearFocus()
+    {
+        ComponentPath path = this.getCurrentFocusPath();
+
+        if (path != null)
+            path.applyFocus(false);
+    }
+
+    /**
+     * Changes widget focus using the given path.
+     * @param path A component path instance.
+     */
+    protected void changeFocus(ComponentPath path)
+    {
+        this.clearFocus();
+        path.applyFocus(true);
+    }
+
+    /**
+     * Set initial widget focus.
+     * @param listener A gui event listener instance.
+     */
+    protected void setInitialFocus(GuiEventListener listener)
+    {
+        ComponentPath path = ComponentPath.path(this, listener.nextFocusPath(new FocusNavigationEvent.InitialFocus()));
+
+        if (path != null)
+            this.changeFocus(path);
+    }
+
+    /**
      * Sends a key press event to the current overlay session.
      * This method also handles escape requests.
      * @param keyCode The pressed key code.
@@ -112,15 +168,53 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * @param modifiers Any held modifiers.
      * @return Whether the active overlay session handled the event.
      */
-    public static boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public static boolean sendKeyPress(int keyCode, int scanCode, int modifiers)
     {
         if (Overlay.visible != null && !Overlay.visible.locked && keyCode == GLFW.GLFW_KEY_ESCAPE)
         {
+            if (Overlay.visible.getCurrentFocusPath() != null)
+            {
+                if (Overlay.visible.getFocused() != null)
+                    Overlay.visible.getFocused().setFocused(false);
+
+                Overlay.visible.clearFocus();
+
+                return true;
+            }
+
             Overlay.visible.onClose();
             return true;
         }
 
-        return Overlay.visible != null && Overlay.visible.onKeyPressed(keyCode, scanCode, modifiers);
+        boolean isPressed = Overlay.visible != null && Overlay.visible.onKeyPressed(keyCode, scanCode, modifiers);
+
+        if (isPressed)
+            return true;
+
+        FocusNavigationEvent event = switch (keyCode)
+        {
+            case GLFW.GLFW_KEY_UP -> Overlay.visible.createArrowEvent(ScreenDirection.UP);
+            case GLFW.GLFW_KEY_DOWN -> Overlay.visible.createArrowEvent(ScreenDirection.DOWN);
+            case GLFW.GLFW_KEY_LEFT -> Overlay.visible.createArrowEvent(ScreenDirection.LEFT);
+            case GLFW.GLFW_KEY_RIGHT -> Overlay.visible.createArrowEvent(ScreenDirection.RIGHT);
+            case GLFW.GLFW_KEY_TAB -> Overlay.visible.createTabEvent();
+            default -> null;
+        };
+
+        if (event != null)
+        {
+            ComponentPath path = Overlay.visible.nextFocusPath(event);
+
+            if (path == null && event instanceof FocusNavigationEvent.TabNavigation)
+            {
+                Overlay.visible.clearFocus();
+                path = Overlay.visible.nextFocusPath(event);
+            }
+            if (path != null)
+                Overlay.visible.changeFocus(path);
+        }
+
+        return false;
     }
 
     /**
@@ -130,7 +224,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * @param button The clicked mouse button.
      * @return Whether the active overlay session handled the event.
      */
-    public static boolean mouseClicked(double mouseX, double mouseY, int button)
+    public static boolean sendMouseClick(double mouseX, double mouseY, int button)
     {
         return Overlay.visible != null && Overlay.visible.onClick(mouseX, mouseY, button);
     }
@@ -144,7 +238,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * @param dragY The new dragged y-position of the mouse.
      * @return Whether the active overlay session handled the event.
      */
-    public static boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
+    public static boolean soundMouseDrag(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
         return Overlay.visible != null && Overlay.visible.onDrag(mouseX, mouseY, button, dragX, dragY);
     }
@@ -156,7 +250,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
      * @param delta The change in scroll direction.
      * @return Whether the active overlay session handled the event.
      */
-    public static boolean mouseScrolled(double mouseX, double mouseY, double delta)
+    public static boolean sendMouseScroll(double mouseX, double mouseY, double delta)
     {
         return Overlay.visible != null && Overlay.visible.onMouseScrolled(mouseX, mouseY, delta);
     }
@@ -229,9 +323,9 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     /* Overlay Fields */
 
     /**
-     * A list of widgets to be rendered and handled.
+     * A list of children to be rendered and handled.
      */
-    protected final ArrayList<AbstractWidget> widgets = new ArrayList<>();
+    protected final ArrayList<Renderable> children = new ArrayList<>();
 
     /**
      * The current active screen when this overlay is created.
@@ -323,6 +417,15 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
                 case LOCKED -> this.locked = true;
             }
         }
+
+        for (Renderable renderable : this.children)
+        {
+            if (renderable instanceof GuiEventListener listener)
+            {
+                this.setInitialFocus(listener);
+                break;
+            }
+        }
     }
 
     /**
@@ -358,7 +461,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public void onClose()
     {
-        this.widgets.clear();
+        this.children.clear();
         this.isOverlayOpen = false;
 
         Overlay.visible = null;
@@ -387,10 +490,16 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         if (!this.isOverlayOpen)
             return false;
 
-        this.widgets.forEach((widget) ->
+        this.children.forEach((child) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
-                widget.mouseScrolled(mouseX, mouseY, delta);
+            if (child instanceof LayoutElement element)
+            {
+                if (MathUtil.isWithinBox(mouseX, mouseY, element.getX(), element.getY(), element.getWidth(), element.getHeight()))
+                {
+                    if (child instanceof GuiEventListener listener)
+                        listener.mouseScrolled(mouseX, mouseY, delta);
+                }
+            }
         });
 
         return true;
@@ -417,10 +526,16 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         if (!this.isOverlayOpen)
             return false;
 
-        this.widgets.forEach((widget) ->
+        this.children.forEach((child) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
-                widget.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+            if (child instanceof LayoutElement element)
+            {
+                if (MathUtil.isWithinBox(mouseX, mouseY, element.getX(), element.getY(), element.getWidth(), element.getHeight()))
+                {
+                    if (child instanceof GuiEventListener listener)
+                        listener.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+                }
+            }
         });
 
         if (button == LEFT_CLICK && this.isMouseOverTitle(mouseX, mouseY))
@@ -428,6 +543,7 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
             this.x += dragX;
             this.y += dragY;
             this.generateWidgets();
+            this.setDragging(true);
 
             return true;
         }
@@ -461,11 +577,12 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
             return false;
 
         // If a click action clears the widget list, then the for loop must stop
-        for (AbstractWidget widget : this.widgets)
+        for (Renderable renderable : this.children)
         {
-            widget.mouseClicked(mouseX, mouseY, button);
+            if (renderable instanceof GuiEventListener listener)
+                listener.mouseClicked(mouseX, mouseY, button);
 
-            if (this.widgets.size() == 0)
+            if (this.children.size() == 0)
                 break;
         }
 
@@ -499,7 +616,10 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
         if (!this.isOverlayOpen)
             return false;
 
-        this.widgets.forEach((widget) -> widget.keyPressed(keyCode, scanCode, modifiers));
+        this.children.forEach(child -> {
+            if (child instanceof GuiEventListener listener)
+                listener.keyPressed(keyCode, scanCode, modifiers);
+        });
 
         return false;
     }
@@ -518,6 +638,9 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
     @Override
     public void onMouseReleased(double mouseX, double mouseY, int button)
     {
+        // Reset the dragging field
+        this.setDragging(false);
+
         // Don't send the mouse release event to overlays if the window just opened
         if (this.isJustOpened)
         {
@@ -549,10 +672,32 @@ public abstract class Overlay extends GuiComponent implements OverlayEvents
             this.generateWidgets();
 
         // Send mouse release to widgets the mouse is over
-        this.widgets.forEach((widget) ->
+        this.children.forEach((child) ->
         {
-            if (MathUtil.isWithinBox(mouseX, mouseY, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()))
-                widget.mouseReleased(mouseX, mouseY, button);
+            if (child instanceof LayoutElement element)
+            {
+                if (MathUtil.isWithinBox(mouseX, mouseY, element.getX(), element.getY(), element.getWidth(), element.getHeight()))
+                {
+                    if (child instanceof GuiEventListener listener)
+                        listener.mouseReleased(mouseX, mouseY, button);
+                }
+            }
         });
+    }
+
+    /* Overrides */
+
+    @Override
+    public List<? extends GuiEventListener> children()
+    {
+        List<GuiEventListener> listeners = new ArrayList<>();
+
+        for (Renderable renderable : this.children)
+        {
+            if (renderable instanceof GuiEventListener listener)
+                listeners.add(listener);
+        }
+
+        return listeners;
     }
 }

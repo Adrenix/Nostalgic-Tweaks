@@ -1,11 +1,10 @@
-package mod.adrenix.nostalgic.client.config.gui.widget;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.client.config.annotation.TweakGui;
 import mod.adrenix.nostalgic.client.config.annotation.TweakReload;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigWidgets;
-import mod.adrenix.nostalgic.client.config.gui.widget.button.StatusButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.common.config.annotation.TweakData;
 import mod.adrenix.nostalgic.common.config.tweak.GuiTweak;
@@ -19,7 +18,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -28,7 +26,7 @@ import net.minecraft.network.chat.Component;
  * A row can have a variety of different tags and will always be visible on the screen.
  */
 
-public class TweakTag extends AbstractWidget
+public class TweakTag extends ElementWidget
 {
     /* Horizontal Coordinate Offsets */
 
@@ -65,7 +63,7 @@ public class TweakTag extends AbstractWidget
      */
     public TweakTag(TweakClientCache<?> tweak, AbstractWidget controller, boolean isTooltip)
     {
-        super(0, 0, 0, 0, Component.empty());
+        super(0, 0, 0, 0);
 
         this.tweak = tweak;
         this.controller = controller;
@@ -131,7 +129,7 @@ public class TweakTag extends AbstractWidget
     private static void draw(PoseStack poseStack, int x, int y, int uOffset, int vOffset, boolean render)
     {
         if (render)
-            Screen.blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
+            blit(poseStack, x, y, uOffset, vOffset, U_GLOBAL_WIDTH, V_GLOBAL_HEIGHT);
     }
 
     /**
@@ -222,7 +220,7 @@ public class TweakTag extends AbstractWidget
         if (screen == null)
             return;
 
-        StatusButton.update();
+        StatusElement.update();
 
         TweakGui.New newTag = this.tweak.getMetadata(TweakGui.New.class);
         TweakData.Client clientTag = this.tweak.getMetadata(TweakData.Client.class);
@@ -239,7 +237,7 @@ public class TweakTag extends AbstractWidget
         Component optifineTitle = Component.literal("Optifine");
         Component sodiumTitle = Component.literal("Sodium");
 
-        ChatFormatting flashColor = StatusButton.isFlashOff() ? ChatFormatting.GRAY : ChatFormatting.RED;
+        ChatFormatting flashColor = StatusElement.isFlashOff() ? ChatFormatting.GRAY : ChatFormatting.RED;
 
         Component title = Component.literal(this.title);
         Component newTitle = Component.translatable(LangUtil.Gui.TAG_NEW);
@@ -351,20 +349,12 @@ public class TweakTag extends AbstractWidget
             lastX = renderTag(poseStack, optifineTitle, lastX, startY, U_RESTART_OFFSET, this.render);
         }
 
-        int previousWidth = this.width;
+        int previousWidth = this.getWidth();
 
         this.setX(startX);
         this.setWidth(lastX - startX);
 
-        if (previousWidth != this.width)
+        if (previousWidth != this.getWidth())
             this.widthChanged = true;
     }
-
-    /* Required Widget Overrides */
-
-    @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
 }

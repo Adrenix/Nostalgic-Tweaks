@@ -7,17 +7,15 @@ import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.client.config.gui.overlay.template.GenericOverlay;
 import mod.adrenix.nostalgic.client.config.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
-import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractEntry;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.AbstractRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import mod.adrenix.nostalgic.mixin.widen.AbstractWidgetAccessor;
-import mod.adrenix.nostalgic.util.client.KeyUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import mod.adrenix.nostalgic.util.client.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
@@ -172,9 +170,6 @@ public class CategoryListOverlay extends GenericOverlay
             if (isTabbed)
                 highlight = 0x3AC0FF;
 
-            if (isSelected && overlay.list.getLastSelection() == null)
-                overlay.list.setLastSelection(this);
-
             drawString(poseStack, this.screen.getFont(), isSelected ? this.title.copy().withStyle(ChatFormatting.GOLD) : this.title, this.getX(), this.getY(), highlight);
         }
     }
@@ -278,8 +273,9 @@ public class CategoryListOverlay extends GenericOverlay
                     if (position < overlay.list.children().size())
                     {
                         AbstractWidget widget = overlay.list.children().get(position).children.get(0);
-                        ((AbstractWidgetAccessor) widget).NT$setFocus(true);
-                        overlay.list.setLastSelection(widget);
+
+                        overlay.setInitialFocus(widget);
+                        overlay.setFocused(widget);
                     }
                 }
             }
@@ -292,7 +288,7 @@ public class CategoryListOverlay extends GenericOverlay
      * This class defines the rows that will be included in a text row list instance.
      * Only text button widgets are used in rows.
      */
-    private static class TextRow extends AbstractEntry<TextRow>
+    private static class TextRow extends ContainerObjectSelectionList.Entry<TextRow>
     {
         /* Fields */
 
@@ -378,9 +374,6 @@ public class CategoryListOverlay extends GenericOverlay
         if (screen == null || (this.list != null && !this.list.children().isEmpty()))
             return;
 
-        if (this.list != null)
-            this.list.resetLastSelection();
-
         int width = this.getListWidth();
         int height = this.getOverlayHeight();
         int startY = this.getOverlayStartY();
@@ -390,6 +383,10 @@ public class CategoryListOverlay extends GenericOverlay
 
         this.list = new TextRowList(screen, width, height, startY, endY, screen.getFont().lineHeight + 2);
         this.list.setLeftPos(this.getOverlayStartX());
+
+        this.clearFocus();
+        this.children.clear();
+        this.children.add(this.list);
 
         for (ConfigRowList.Row row : this.configRowList.children())
         {
@@ -420,17 +417,6 @@ public class CategoryListOverlay extends GenericOverlay
     }
 
     /**
-     * A filter method that checks if a text button widget is just a prefix star.
-     * @param row A text row instance.
-     * @param widget A widget instance.
-     * @return Whether the provided widget is invalid for selection.
-     */
-    private boolean isInvalidWidget(TextRow row, AbstractWidget widget)
-    {
-        return widget instanceof TextButton text && text.title.getString().equals(TWEAK_STAR);
-    }
-
-    /**
      * A handler method for when a key is pressed while an overlay window is open.
      * @param keyCode The pressed key code.
      * @param scanCode A scan code.
@@ -440,12 +426,6 @@ public class CategoryListOverlay extends GenericOverlay
     @Override
     public boolean onKeyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (KeyUtil.isEsc(keyCode) && this.list.unsetFocus())
-            return true;
-
-        if (KeyUtil.isTab(keyCode) && this.list.setFocus(this::isInvalidWidget))
-            return true;
-
         if (this.list.getFocusKeyPress(keyCode, scanCode, modifiers))
             return true;
 

@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakSubcategory;
 import mod.adrenix.nostalgic.client.config.gui.overlay.CategoryListOverlay;
 import mod.adrenix.nostalgic.client.config.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.client.config.gui.widget.SearchCrumbs;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.SearchCrumbs;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.KeyBindButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.OverlapButton;
@@ -239,7 +239,6 @@ public class ConfigScreen extends Screen
     {
         this.getWidgets().getConfigRowList().children().clear();
         this.getWidgets().getConfigRowList().resetScrollbar();
-        this.getWidgets().getConfigRowList().resetLastSelection();
     }
 
     /**
@@ -302,10 +301,10 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
+            for (Renderable renderable : focused.children)
             {
-                if (widget instanceof EditBox)
-                    widget.charTyped(codePoint, modifiers);
+                if (renderable instanceof EditBox box)
+                    box.charTyped(codePoint, modifiers);
             }
         }
 
@@ -323,7 +322,7 @@ public class ConfigScreen extends Screen
     public boolean mouseScrolled(double mouseX, double mouseY, double delta)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseScrolled(mouseX, mouseY, delta);
+            return Overlay.sendMouseScroll(mouseX, mouseY, delta);
 
         return super.mouseScrolled(mouseX, mouseY, delta);
     }
@@ -339,7 +338,7 @@ public class ConfigScreen extends Screen
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseClicked(mouseX, mouseY, button);
+            return Overlay.sendMouseClick(mouseX, mouseY, button);
 
         if (this.getWidgets().getSearchInput().isFocused())
             this.getWidgets().getSearchInput().mouseClicked(mouseX, mouseY, button);
@@ -354,9 +353,9 @@ public class ConfigScreen extends Screen
 
             for (ConfigRowList.Row row : this.getWidgets().getConfigRowList().children())
             {
-                for (AbstractWidget widget : row.children)
+                for (Renderable renderable : row.children)
                 {
-                    if (widget instanceof SearchCrumbs crumb)
+                    if (renderable instanceof SearchCrumbs crumb)
                     {
                         boolean isClicked = crumb.mouseClicked(mouseX, mouseY, button);
 
@@ -386,7 +385,7 @@ public class ConfigScreen extends Screen
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
         if (Overlay.isOpened())
-            return Overlay.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+            return Overlay.soundMouseDrag(mouseX, mouseY, button, dragX, dragY);
 
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
@@ -418,9 +417,11 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
-                if (widget instanceof EditBox && ((EditBox) widget).canConsumeInput())
-                    return (EditBox) widget;
+            for (Renderable renderable : focused.children)
+            {
+                if (renderable instanceof EditBox && ((EditBox) renderable).canConsumeInput())
+                    return (EditBox) renderable;
+            }
         }
 
         return null;
@@ -435,9 +436,11 @@ public class ConfigScreen extends Screen
 
         if (focused != null)
         {
-            for (AbstractWidget widget : focused.children)
-                if (widget instanceof KeyBindButton && ((KeyBindButton) widget).isModifying())
-                    return (KeyBindButton) widget;
+            for (Renderable renderable : focused.children)
+            {
+                if (renderable instanceof KeyBindButton && ((KeyBindButton) renderable).isModifying())
+                    return (KeyBindButton) renderable;
+            }
         }
 
         return null;
@@ -459,7 +462,11 @@ public class ConfigScreen extends Screen
 
         // Overlays
         if (Overlay.isOpened())
-            return Overlay.keyPressed(keyCode, scanCode, modifiers);
+            return Overlay.sendKeyPress(keyCode, scanCode, modifiers);
+
+        // Tabbing
+        if (keyCode == GLFW.GLFW_KEY_TAB)
+            return super.keyPressed(keyCode, scanCode, modifiers);
 
         // Config Row List
         if (this.getWidgets().getConfigRowList().keyPressed(keyCode, scanCode, modifiers))
@@ -474,8 +481,8 @@ public class ConfigScreen extends Screen
         {
             if (this.getWidgets().getSearchInput().isFocused())
                 this.getWidgets().getSearchInput().setFocused(false);
-            else if (editBox != null && editBox.isFocused())
-                editBox.setFocused(false);
+            else if (super.keyPressed(keyCode, scanCode, modifiers))
+                return true;
             else
                 this.onCancel();
 
@@ -658,9 +665,9 @@ public class ConfigScreen extends Screen
 
         for (ConfigRowList.Row row : list.children())
         {
-            for (AbstractWidget widget : row.children)
+            for (Renderable renderable : row.children)
             {
-                if (widget instanceof ContainerButton container)
+                if (renderable instanceof ContainerButton container)
                 {
                     if (container.getId() == tweakContainer)
                     {
@@ -817,12 +824,12 @@ public class ConfigScreen extends Screen
         // Background Rendering
 
         if (this.minecraft.level != null)
-            this.fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
+            fillGradient(poseStack, 0, 0, this.width, this.height, 839913488, 16777216);
         else
             this.renderDirtBackground(poseStack);
 
-        this.fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
-        this.fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
+        fillGradient(poseStack, 0, 0, this.width, this.height, -1072689136, -804253680);
+        fillGradient(poseStack, 0, 0, this.width, this.height, 1744830464, 1744830464);
 
         // Render config row list
 
@@ -884,7 +891,7 @@ public class ConfigScreen extends Screen
         // Magnifying Glass Icon
 
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
-        this.blit(poseStack, this.getWidgets().getSearch().getX() + 5, this.getWidgets().getSearch().getY() + 4, 0, 15, 12, 12);
+        blit(poseStack, this.getWidgets().getSearch().getX() + 5, this.getWidgets().getSearch().getY() + 4, 0, 15, 12, 12);
 
         // Finish Screen Rendering
 

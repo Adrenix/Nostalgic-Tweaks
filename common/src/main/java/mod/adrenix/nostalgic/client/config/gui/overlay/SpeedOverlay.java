@@ -64,9 +64,9 @@ public class SpeedOverlay extends ListScreenOverlay<SpeedOverlay.WidgetProvider>
             this.modernSpeedText = this.createModernSpeedText();
             this.photosensitiveText = this.createPhotosensitiveText();
 
-            SpeedOverlay.this.widgets.add(this.oldSpeedText);
-            SpeedOverlay.this.widgets.add(this.modernSpeedText);
-            SpeedOverlay.this.widgets.add(this.photosensitiveText);
+            SpeedOverlay.this.children.add(this.oldSpeedText);
+            SpeedOverlay.this.children.add(this.modernSpeedText);
+            SpeedOverlay.this.children.add(this.photosensitiveText);
 
             this.children = Set.of(oldSpeedText, modernSpeedText, photosensitiveText);
         }

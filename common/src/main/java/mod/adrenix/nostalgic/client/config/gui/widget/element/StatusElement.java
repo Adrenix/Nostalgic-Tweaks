@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.config.gui.widget.button;
+package mod.adrenix.nostalgic.client.config.gui.widget.element;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,12 +12,10 @@ import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
 import mod.adrenix.nostalgic.common.config.reflect.TweakStatus;
 import mod.adrenix.nostalgic.server.config.reflect.TweakServerCache;
 import mod.adrenix.nostalgic.util.client.NetUtil;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +27,7 @@ import java.util.List;
  * The flashing mechanism is publicly static shared between other widgets so visible flashes is in sync.
  */
 
-public class StatusButton extends Button
+public class StatusElement extends ElementWidget
 {
     /* Static Fields & Methods */
 
@@ -64,9 +62,9 @@ public class StatusButton extends Button
 
     /* Constructor */
 
-    public StatusButton(TweakClientCache<?> tweak, AbstractWidget anchor)
+    public StatusElement(TweakClientCache<?> tweak, AbstractWidget anchor)
     {
-        super(0, 0, 0, 0, Component.empty(), RunUtil::nothing, DEFAULT_NARRATION);
+        super(0, 0, 0, 0);
 
         this.tweak = tweak;
         this.anchor = anchor;
@@ -151,7 +149,7 @@ public class StatusButton extends Button
         int yStart = this.anchor.getY();
 
         RenderSystem.setShaderTexture(0, TextureLocation.WIDGETS);
-        StatusButton.update();
+        StatusElement.update();
 
         if (isStatusProblem && !flipState)
             Screen.blit(poseStack, xStart, yStart, 21, 0, uWidth, vHeight);

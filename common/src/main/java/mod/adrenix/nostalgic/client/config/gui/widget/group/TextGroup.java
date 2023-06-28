@@ -2,13 +2,12 @@ package mod.adrenix.nostalgic.client.config.gui.widget.group;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.client.config.gui.widget.element.ElementWidget;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.MultiLineLabel;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -18,10 +17,8 @@ import java.util.ArrayList;
  * sentence has been determined it will be rendered off the screen, making the sentence impossible to read.
  */
 
-public class TextGroup extends AbstractWidget
+public class TextGroup extends ElementWidget
 {
-    /* Aligning Options */
-
     /* Widget Fields */
 
     private MultiLineLabel label;
@@ -50,7 +47,7 @@ public class TextGroup extends AbstractWidget
      */
     public TextGroup(Component text, TextAlign align)
     {
-        super(ConfigRowList.TEXT_START, 0, getListWidth(), 12, Component.empty());
+        super(ConfigRowList.TEXT_START, 0, getListWidth(), 12);
 
         this.list = ConfigRowList.getInstance();
         this.text = text;
@@ -88,30 +85,18 @@ public class TextGroup extends AbstractWidget
         // Fixes a color continuation on next line issue when using a multi line label
         String fix = this.text.getString().replaceAll("§r", "§f");
 
-        this.width = this.getTextWidth();
-        this.label = MultiLineLabel.create(Minecraft.getInstance().font, Component.literal(fix), this.width);
+        this.setWidth(this.getTextWidth());
+        this.label = MultiLineLabel.create(Minecraft.getInstance().font, Component.literal(fix), this.getWidth());
 
         int rowsNeeded = (int) Math.ceil((double) (label.getLineCount()) / 2);
 
         for (int i = 0; i < rowsNeeded; i++)
             this.rows.add(new ConfigRowList.Row(ImmutableList.of(new TextRow(i == 0)), null));
 
-        this.height = this.rows.size() * 22;
+        this.setHeight(this.rows.size() * 22);
 
         return this.rows;
     }
-
-    /**
-     * Handler method for when the mouse clicks on a text group widget.
-     * Always returns false to prevent a clicking sound from playing when this widget is left-clicked.
-     *
-     * @param mouseX The x-position of the mouse.
-     * @param mouseY The y-position of the mouse.
-     * @param button The mouse button that was clicked.
-     * @return Whether this method handled the mouse click event.
-     */
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) { return false; }
 
     /**
      * Handler method for rendering a text group widget.
@@ -139,20 +124,12 @@ public class TextGroup extends AbstractWidget
             this.generate().forEach((row) -> this.list.children().add(row));
     }
 
-    /* Required Widget Overrides */
-
-    @Override
-    public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) { }
-
     /**
      * This class defines the properties of a text row widget that will be used in a config row list row.
      * Special rendering instructions are required for text row widgets.
      */
 
-    public class TextRow extends AbstractWidget
+    public class TextRow extends ElementWidget
     {
         /* Fields */
 
@@ -170,13 +147,12 @@ public class TextGroup extends AbstractWidget
          */
         public TextRow(boolean first)
         {
-            super(ConfigRowList.TEXT_START, 0, TextGroup.this.width, ConfigRowList.BUTTON_HEIGHT, Component.empty());
+            super(ConfigRowList.TEXT_START, 0, TextGroup.this.getWidth(), ConfigRowList.BUTTON_HEIGHT);
 
             this.first = first;
-            this.active = false;
 
             if (this.first)
-                this.height = TextRow.this.getHeight();
+                this.setHeight(TextRow.this.getHeight());
         }
 
         /* Methods */
@@ -186,18 +162,6 @@ public class TextGroup extends AbstractWidget
          * @return The state of the {@link TextRow#first} field flag.
          */
         public boolean isFirst() { return this.first; }
-
-        /**
-         * Handler method for when the mouse clicks on a text row widget.
-         * Always returns false to prevent a clicking sound from playing when this widget is left-clicked.
-         *
-         * @param mouseX The x-position of the mouse.
-         * @param mouseY The y-position of the mouse.
-         * @param button The mouse button that was clicked.
-         * @return Whether this method handled the mouse click event.
-         */
-        @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) { return false; }
 
         /**
          * Handler method for rendering a text row widget.
@@ -221,13 +185,5 @@ public class TextGroup extends AbstractWidget
                 case CENTER -> label.renderCentered(poseStack, TextGroup.this.list.getRowWidth() / 2, this.getY() - 1);
             }
         }
-
-        /* Required Widget Overrides */
-
-        @Override
-        public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {}
-
-        @Override
-        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
     }
 }

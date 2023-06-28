@@ -85,7 +85,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
         // Update overlay width based on title and widgets
         this.width = Math.max(this.width, Minecraft.getInstance().font.width(this.title) + 44);
 
-        for (Renderable child : this.widgets)
+        for (Renderable child : this.children)
         {
             if (child instanceof AbstractWidget widget)
                 this.width = Math.max(this.width, widget.getWidth() + 2);
@@ -100,7 +100,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
         // Update overlay height based on widgets
         int combinedHeight = 0;
 
-        for (Renderable child : this.widgets)
+        for (Renderable child : this.children)
         {
             if (child instanceof AbstractWidget widget)
                 combinedHeight += widget.getHeight();
@@ -122,7 +122,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
     @Override
     public void generateWidgets()
     {
-        this.widgets.clear();
+        this.children.clear();
         this.widgetProvider.generate();
     }
 

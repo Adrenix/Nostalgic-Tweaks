@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.config.gui.widget.list.row;
 import mod.adrenix.nostalgic.client.config.annotation.container.TweakEmbed;
 import mod.adrenix.nostalgic.client.config.gui.widget.button.ContainerButton;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.ConfigRowList;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -117,10 +117,10 @@ public abstract class ConfigRowGroup
             // If the parent group contains only subcategories then we don't want pipe bars in the last subcategory
             for (ConfigRowList.Row categories : this.list.children())
             {
-                for (AbstractWidget widget : categories.children)
+                for (Renderable renderable : categories.children)
                 {
                     // Check if parent group
-                    if (widget instanceof ContainerButton group && this.controller.equals(group))
+                    if (renderable instanceof ContainerButton group && this.controller.equals(group))
                     {
                         // Ensure children only consist of subcategories
                         ContainerButton subcategory = null;
@@ -128,9 +128,9 @@ public abstract class ConfigRowGroup
 
                         for (ConfigRowList.Row subcategories : this.cache)
                         {
-                            for (AbstractWidget subWidget : subcategories.children)
+                            for (Renderable subRenderable : subcategories.children)
                             {
-                                if (subWidget instanceof ContainerButton subGroup)
+                                if (subRenderable instanceof ContainerButton subGroup)
                                     subcategory = subGroup;
                                 else
                                 {
@@ -174,9 +174,9 @@ public abstract class ConfigRowGroup
                 if (header != -1)
                     break;
 
-                for (AbstractWidget widget : this.list.children().get(i).children)
+                for (Renderable renderable : this.list.children().get(i).children)
                 {
-                    if (widget instanceof ContainerButton && widget.equals(this.controller))
+                    if (renderable instanceof ContainerButton && renderable.equals(this.controller))
                     {
                         header = i;
                         break;
@@ -238,9 +238,9 @@ public abstract class ConfigRowGroup
                     if (child.equals(cache))
                     {
                         // Collapse any subcategories within the category
-                        for (AbstractWidget widget : child.children)
+                        for (Renderable renderable : child.children)
                         {
-                            if (widget instanceof ContainerButton group)
+                            if (renderable instanceof ContainerButton group)
                                 group.collapse();
                         }
 
@@ -259,7 +259,7 @@ public abstract class ConfigRowGroup
          */
         public ConfigRowList.Row generate()
         {
-            List<AbstractWidget> widgets = new ArrayList<>();
+            List<Renderable> widgets = new ArrayList<>();
             this.controller = new ContainerButton(this, this.id, this.title, this.containerType);
 
             widgets.add(this.controller);
