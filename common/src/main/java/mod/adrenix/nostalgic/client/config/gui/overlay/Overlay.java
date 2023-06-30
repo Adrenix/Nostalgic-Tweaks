@@ -266,7 +266,14 @@ public abstract class Overlay extends AbstractContainerEventHandler implements O
     public static void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
         if (Overlay.visible != null)
+        {
+            graphics.pose().pushPose();
+            graphics.pose().translate(0.0D, 0.0D, Z_OFFSET);
+
             Overlay.visible.onRender(graphics, mouseX, mouseY, partialTick);
+
+            graphics.pose().popPose();
+        }
     }
 
     /*
@@ -296,7 +303,7 @@ public abstract class Overlay extends AbstractContainerEventHandler implements O
      */
     protected void drawString(GuiGraphics graphics, Component component, int x, int y, int color)
     {
-        PoseStack poseStack = new PoseStack();
+        PoseStack poseStack = graphics.pose();
 
         poseStack.pushPose();
         poseStack.last().pose().translate(new Vector3f(0.0F, 0.0F, Z_OFFSET + 1.0F));

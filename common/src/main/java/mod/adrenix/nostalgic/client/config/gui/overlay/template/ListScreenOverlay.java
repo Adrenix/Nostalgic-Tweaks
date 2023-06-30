@@ -5,8 +5,8 @@ import mod.adrenix.nostalgic.client.config.gui.screen.list.ListScreen;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -87,7 +87,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
 
         for (Renderable child : this.children)
         {
-            if (child instanceof AbstractWidget widget)
+            if (child instanceof LayoutElement widget)
                 this.width = Math.max(this.width, widget.getWidth() + 2);
         }
 
@@ -102,7 +102,7 @@ public abstract class ListScreenOverlay <W extends AbstractWidgetProvider> exten
 
         for (Renderable child : this.children)
         {
-            if (child instanceof AbstractWidget widget)
+            if (child instanceof LayoutElement widget)
                 combinedHeight += widget.getHeight();
         }
 

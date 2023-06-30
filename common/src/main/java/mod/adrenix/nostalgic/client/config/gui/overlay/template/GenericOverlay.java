@@ -126,14 +126,13 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
 
         if (isOverIcon)
         {
-            PoseStack poseStack = graphics.pose();
-            poseStack.pushPose();
-            poseStack.translate(0.0D, 0.0D, 450.0D);
+            graphics.pose().pushPose();
+            graphics.pose().translate(0.0D, 0.0D, 450.0D);
 
             List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.OVERLAY_DRAG_TIP), 36);
             graphics.renderComponentTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
 
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
     }
 
@@ -152,14 +151,13 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
 
         if (isOverHint && this.hint)
         {
-            PoseStack poseStack = graphics.pose();
-            poseStack.pushPose();
-            poseStack.translate(0.0D, 0.0D, 450.0D);
+            graphics.pose().pushPose();
+            graphics.pose().translate(0.0D, 0.0D, 450.0D);
 
             List<Component> tooltip = TextUtil.Wrap.tooltip(Component.translatable(LangUtil.Gui.OVERLAY_LIST_HINT), 36);
             graphics.renderComponentTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
 
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
     }
 
@@ -192,11 +190,6 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
         // Perform any pre-rendering instructions
         this.onPreRender(graphics, mouseX, mouseY, partialTick);
 
-        // Shift pose stack z-translation
-        PoseStack poseStack = graphics.pose();
-        poseStack.pushPose();
-        poseStack.translate(0.0D, 0.0D, Z_OFFSET);
-
         // Render overlay background
         this.renderBackground(graphics);
 
@@ -204,18 +197,19 @@ public abstract class GenericOverlay extends Overlay implements GenericRendering
         this.onMainRender(graphics, mouseX, mouseY, partialTick);
 
         // Render overlay textured border
+        graphics.pose().pushPose();
+        graphics.pose().translate(0.0D, 0.0D, 1.0D);
+
         this.renderBorder(graphics);
 
         // Render the close button
         this.renderCloseButton(graphics, mouseX, mouseY);
 
-        // Finish rendering z-offset
-        poseStack.popPose();
-
         // Text needs to be rendered last since it will interfere with alpha rendering
         int color = this.isMouseOverTitle(mouseX, mouseY) && !this.isOverClose ? 0xFFF65B : 0xFFFFFF;
 
         graphics.drawString(Minecraft.getInstance().font, this.title, (int) this.x + 19, (int) this.y + 5, color);
+        graphics.pose().popPose();
 
         // Render icon tooltip hint
         this.renderTooltipIcon(graphics, mouseX, mouseY);

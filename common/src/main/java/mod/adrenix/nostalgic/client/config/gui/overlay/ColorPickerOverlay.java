@@ -222,11 +222,15 @@ public class ColorPickerOverlay extends Overlay
         tesselator.end();
 
         // Render widgets
-        PoseStack sliders = new PoseStack();
+        PoseStack sliders = graphics.pose();
+
+        sliders.pushPose();
         sliders.last().pose().translate(new Vector3f(0.0F, 0.0F, 1.0F));
 
         for (Renderable renderable : this.children)
             renderable.render(graphics, mouseX, mouseY, partialTick);
+
+        sliders.popPose();
 
         // Render borders around color sliders
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
