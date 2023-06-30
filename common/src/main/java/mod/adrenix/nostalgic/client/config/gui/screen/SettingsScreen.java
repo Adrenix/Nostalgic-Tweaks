@@ -396,6 +396,9 @@ public class SettingsScreen extends Screen
 
         if (NostalgicTweaks.isFabric())
             GuiUtil.drawText(poseStack, String.format("Sodium: %s", getColored(ModTracker.SODIUM.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
+
+        if (NostalgicTweaks.isForge())
+            GuiUtil.drawText(poseStack, String.format("Rubidium: %s", getColored(ModTracker.RUBIDIUM.isInstalled())), TweakType.Corner.TOP_RIGHT, manager);
     }
 
     /**
