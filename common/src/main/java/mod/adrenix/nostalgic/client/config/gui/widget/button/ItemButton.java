@@ -142,7 +142,7 @@ public class ItemButton extends Button
         // Item button rendering
 
         PoseStack viewStack = RenderSystem.getModelViewStack();
-        boolean isMouseOver = this.isHoveredOrFocused() && ConfigWidgets.isInsideRowList(mouseY);
+        boolean isMouseOver = this.isMouseOver(mouseX, mouseY) && ConfigWidgets.isInsideRowList(mouseY);
 
         int startX = this.getX() + 2;
         int startY = this.getY() + 1;
@@ -156,7 +156,7 @@ public class ItemButton extends Button
         if (this.isForOverlay)
             viewStack.translate(0.0F, 0.0F, 100.0F);
 
-        if (isMouseOver && !this.isForOverlay)
+        if ((isMouseOver || this.isFocused()) && !this.isForOverlay)
         {
             viewStack.translate(0.0F, -0.6F, 0.0F);
             RenderUtil.fill(graphics, this.getX(), this.getX() + this.width, this.getY(), this.getY() + this.height, color);

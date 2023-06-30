@@ -17,6 +17,7 @@ import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowBuild;
 import mod.adrenix.nostalgic.client.config.gui.widget.list.row.ConfigRowGroup;
 import mod.adrenix.nostalgic.client.config.gui.widget.text.TextAlign;
 import mod.adrenix.nostalgic.client.config.reflect.TweakClientCache;
+import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.common.config.auto.AutoConfig;
 import mod.adrenix.nostalgic.common.config.list.AbstractList;
 import mod.adrenix.nostalgic.common.config.list.ListFilter;
@@ -34,11 +35,13 @@ import mod.adrenix.nostalgic.util.common.PacketUtil;
 import mod.adrenix.nostalgic.util.common.function.TriConsumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.searchtree.SearchRegistry;
@@ -841,13 +844,8 @@ public abstract class ListScreen extends ConfigScreen
         if (Overlay.getVisible() instanceof PermissionLostOverlay)
             return false;
 
-        if (Overlay.getVisible() != null)
-        {
-            if (isEsc)
-                Overlay.close();
-
-            return true;
-        }
+        if (Overlay.isOpened())
+            return Overlay.sendKeyPress(keyCode, scanCode, modifiers);
 
         if (keyCode == GLFW.GLFW_KEY_TAB)
             return super.keyPressed(keyCode, scanCode, modifiers);
@@ -883,6 +881,27 @@ public abstract class ListScreen extends ConfigScreen
 
         if (isEsc && this.shouldCloseOnEsc())
         {
+            ComponentPath path = this.getCurrentFocusPath();
+
+            if (ModConfig.Candy.removeFocusOnEscape() && path != null)
+            {
+                GuiEventListener listener = this.getFocused();
+
+                if (listener != null && listener.isFocused())
+                {
+                    if (listener instanceof AbstractWidget widget && (!widget.active || !widget.visible))
+                    {
+                        this.exitList();
+                        return true;
+                    }
+
+                    path.applyFocus(false);
+                    return true;
+                }
+
+                path.applyFocus(false);
+            }
+
             this.exitList();
             return true;
         }
