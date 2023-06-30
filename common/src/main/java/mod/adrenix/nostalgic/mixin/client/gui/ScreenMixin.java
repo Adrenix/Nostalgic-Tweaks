@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.mixin.duck.WidgetManager;
 import mod.adrenix.nostalgic.util.common.ColorUtil;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -61,11 +62,17 @@ public abstract class ScreenMixin extends AbstractContainerEventHandler implemen
         if (ModConfig.Candy.removeFocusOnEscape() && keyCode == GLFW.GLFW_KEY_ESCAPE && path != null)
         {
             GuiEventListener focused = this.getFocused();
-            path.applyFocus(false);
 
             if (focused != null && focused.isFocused())
-                return;
+            {
+                if (focused instanceof AbstractWidget widget && (!widget.active || !widget.visible))
+                    return;
 
+                path.applyFocus(false);
+                return;
+            }
+
+            path.applyFocus(false);
             callback.setReturnValue(true);
         }
     }
