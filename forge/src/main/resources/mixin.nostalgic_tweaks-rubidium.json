@@ -1,0 +1,14 @@
+{
+  "minVersion": "0.8",
+  "package": "mod.adrenix.nostalgic.forge.mixin.rubidium",
+  "plugin": "mod.adrenix.nostalgic.forge.mixin.MixinRubidiumPlugin",
+  "compatibilityLevel": "JAVA_16",
+  "priority": 1001,
+  "client": [
+    "BlockRendererMixin",
+    "FluidRendererMixin",
+    "ItemColorsRubidiumMixin",
+    "RubidiumWorldRendererMixin",
+    "WorldSliceMixin"
+  ]
+}

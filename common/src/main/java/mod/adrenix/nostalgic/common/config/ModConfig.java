@@ -295,7 +295,7 @@ public abstract class ModConfig
         // Block Candy - Torches
         private static boolean getModelState(Tweak tweak, boolean client)
         {
-            return !ModTracker.SODIUM.isInstalled() && getBoolTweak(tweak, client);
+            return !ModTracker.SODIUM.isInstalled() && !ModTracker.RUBIDIUM.isInstalled() && getBoolTweak(tweak, client);
         }
 
         public static boolean oldTorchBrightness() { return getBoolTweak(CandyTweak.TORCH_BRIGHTNESS, CANDY.oldTorchBrightness); }

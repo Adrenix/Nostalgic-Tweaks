@@ -8,6 +8,7 @@ loom {
             "mixin.nostalgic_tweaks-common.json",
             "mixin.nostalgic_tweaks-common-client.json",
             "mixin.nostalgic_tweaks-common-widen.json",
+            "mixin.nostalgic_tweaks-rubidium.json",
             "mixin.nostalgic_tweaks-flywheel.json",
             "mixin.nostalgic_tweaks-forge.json"
         ]
@@ -30,6 +31,7 @@ loom {
             "mixin.nostalgic_tweaks-common.json",
             "mixin.nostalgic_tweaks-common-client.json",
             "mixin.nostalgic_tweaks-common-widen.json",
+            "mixin.nostalgic_tweaks-rubidium.json",
             "mixin.nostalgic_tweaks-flywheel.json",
             "mixin.nostalgic_tweaks-forge.json"
         ]
@@ -58,6 +60,9 @@ dependencies {
 
     // Flywheel Support
     modCompileOnly "com.jozufozu.flywheel:flywheel-forge-1.18.2:${rootProject.flywheel_forge_version}"
+
+    // Rubidium Support
+    modCompileOnly "maven.modrinth:rubidium:${rootProject.forge_rubidium_version}"
 
     // Fuzzy Searching
     common "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
