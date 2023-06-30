@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.client;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.api.ClientEventFactory;
 import mod.adrenix.nostalgic.api.event.HudEvent;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
@@ -307,6 +309,8 @@ public abstract class GuiUtil
     public static void renderInverseArmor(GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         // Flip the vertex’s u texture coordinates so the half armor texture rendering goes from right to left
+        RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         Matrix4f matrix = graphics.pose().last().pose();
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
