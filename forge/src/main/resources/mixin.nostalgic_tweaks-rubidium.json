@@ -8,6 +8,7 @@
     "BlockRendererMixin",
     "FluidRendererMixin",
     "ItemColorsRubidiumMixin",
+    "RubidiumGameOptionPagesMixin",
     "RubidiumWorldRendererMixin",
     "WorldSliceMixin"
   ]

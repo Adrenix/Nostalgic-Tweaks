@@ -8,6 +8,7 @@
     "BlockRendererMixin",
     "FluidRendererMixin",
     "ItemColorsSodiumMixin",
+    "SodiumGameOptionPagesMixin",
     "SodiumWorldRendererMixin",
     "WorldSliceMixin"
   ]
