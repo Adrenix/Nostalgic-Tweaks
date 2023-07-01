@@ -7,6 +7,7 @@ import me.jellysquid.mods.sodium.client.model.quad.blender.ColorSampler;
 import me.jellysquid.mods.sodium.client.render.pipeline.FluidRenderer;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -29,32 +30,33 @@ public abstract class FluidRendererMixin
     /* Injections */
 
     /**
-     * Enforces that the liquid rendering does not use ambient occlusion. This simulates old water rendering.
-     * Controlled by the old water lighting tweak.
+     * Enforces that the liquid rendering does not use ambient occlusion. This simulates old water rendering. Controlled
+     * by old water lighting.
      */
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;useAmbientOcclusion()Z"))
+    @Redirect(
+        method = "render",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/Minecraft;useAmbientOcclusion()Z"
+        )
+    )
     private boolean NT$onUseAmbientOcclusion()
     {
-        return !ModConfig.Candy.oldWaterLighting();
+        if (ModConfig.Candy.oldWaterLighting())
+            return false;
+
+        return Minecraft.useAmbientOcclusion();
     }
 
     /**
-     * Recalculates the lightmap on water block quads to simulate old water rendering.
-     * Controlled by the old water lighting tweak.
+     * Recalculates the lightmap on water block quads to simulate old water rendering. Controlled by old water
+     * lighting.
      */
-    @Inject(method = "calculateQuadColors", at = @At("RETURN"))
-    private void NT$onCalculateQuadColors
-    (
-        ModelQuadView quad,
-        BlockAndTintGetter level,
-        BlockPos blockPos,
-        LightPipeline lighter,
-        Direction direction,
-        float brightness,
-        ColorSampler<FluidState> colorSampler,
-        FluidState fluidState,
-        CallbackInfo callback
+    @Inject(
+        method = "calculateQuadColors",
+        at = @At("RETURN")
     )
+    private void NT$onCalculateQuadColors(ModelQuadView quad, BlockAndTintGetter level, BlockPos blockPos, LightPipeline lighter, Direction direction, float brightness, ColorSampler<FluidState> colorSampler, FluidState fluidState, CallbackInfo callback)
     {
         if (!ModConfig.Candy.oldWaterLighting())
             return;
