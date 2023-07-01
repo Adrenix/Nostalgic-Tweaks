@@ -49,10 +49,21 @@ public class NostalgicTweaks
     public static final ModLogger LOGGER = new ModLogger(MOD_NAME);
 
     /**
-     * Uses Architectury to get the mod's current version. Getting the mod's version is mod loader platform dependant.
-     * A memoized supplier is used here since the version will never change during runtime.
+     * Uses Architectury to get the mod's current version. Getting the mod's version depends on the mod loader. A
+     * memoized supplier is used here since the version will never change during runtime. If Forge can't start the game
+     * due to an error while loading mods, then the try/catch block prevents the crash report from blaming this mod.
      */
-    public static final Supplier<String> VERSION = Suppliers.memoize(Platform.getMod(MOD_ID)::getVersion);
+    public static final Supplier<String> VERSION = Suppliers.memoize(() -> {
+        try
+        {
+            return Platform.getMod(MOD_ID).getVersion();
+        }
+        catch (Throwable error)
+        {
+            LOGGER.error("Could not load mod version\n%s", error);
+            return "0.0.0";
+        }
+    });
 
     /**
      * This will give a version number where all additional information attached to a version string is removed.
