@@ -18,6 +18,9 @@ credits = "${mod_credits}"
 displayURL = "${mod_curse}"
 logoFile = "nt_forge_logo.png"
 
+[mods."sodium:options"]
+"mixin.features.gui"=false
+
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
