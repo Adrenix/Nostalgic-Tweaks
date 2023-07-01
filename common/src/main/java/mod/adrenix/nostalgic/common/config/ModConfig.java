@@ -328,7 +328,7 @@ public abstract class ModConfig
         public static boolean oldChatBox() { return getBoolTweak(CandyTweak.CHAT_BOX, CANDY.oldChatBox); }
 
         // Interface - Window Title
-        public static String getWindowTitle() { return CANDY.windowTitleText; }
+        public static String getWindowTitle() { return CANDY.windowTitleText.replaceAll("%v", MINECRAFT_VERSION); }
         public static boolean enableWindowTitle() { return getBoolTweak(CandyTweak.ENABLE_WINDOW_TITLE, CANDY.enableWindowTitle); }
         public static boolean matchVersionOverlay() { return getBoolTweak(CandyTweak.MATCH_VERSION_OVERLAY, CANDY.matchVersionOverlay); }
 
