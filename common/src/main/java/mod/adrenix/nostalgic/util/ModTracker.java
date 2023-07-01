@@ -12,6 +12,7 @@ public enum ModTracker
 {
     APPLE_SKIN("appleskin"),
     SODIUM("sodium"),
+    RUBIDIUM("rubidium"),
     EXORDIUM("exordium"),
     OPTIFINE("optifine"),
     FLYWHEEL("flywheel");
@@ -71,6 +72,9 @@ public enum ModTracker
     {
         if (this.equals(ModTracker.OPTIFINE))
             return OPTIFINE_SUPPLIER.get();
+
+        if (this.equals(ModTracker.SODIUM) && ModTracker.RUBIDIUM.isInstalled())
+            return true;
 
         return this.installed;
     }

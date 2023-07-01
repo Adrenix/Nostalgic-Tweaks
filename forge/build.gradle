@@ -18,6 +18,7 @@ loom {
             "mixin.nostalgic_tweaks-common.json",
             "mixin.nostalgic_tweaks-common-client.json",
             "mixin.nostalgic_tweaks-common-widen.json",
+            "mixin.nostalgic_tweaks-rubidium.json",
             "mixin.nostalgic_tweaks-forge.json"
         ]
     }
@@ -42,6 +43,9 @@ dependencies {
 
     // Apple Skin Support
     modCompileOnly "maven.modrinth:appleskin:${rootProject.forge_appleskin_version}"
+
+    // Rubidium Support
+    modCompileOnly "maven.modrinth:rubidium:${rootProject.forge_rubidium_version}"
 
     // Fuzzy Searching
     common "me.xdrop:fuzzywuzzy:${rootProject.fuzzy_search_version}"
