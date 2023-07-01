@@ -7,6 +7,7 @@ import me.jellysquid.mods.sodium.client.model.quad.blender.ColorSampler;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.FluidRenderer;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -41,7 +42,10 @@ public abstract class FluidRendererMixin
     )
     private boolean NT$onUseAmbientOcclusion()
     {
-        return !ModConfig.Candy.oldWaterLighting();
+        if (ModConfig.Candy.oldWaterLighting())
+            return false;
+
+        return Minecraft.useAmbientOcclusion();
     }
 
     /**
