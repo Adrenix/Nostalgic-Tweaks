@@ -73,7 +73,8 @@
       }
     },
     "sodium:options": {
-      "mixin.features.gui": false
+      "mixin.features.gui": false,
+      "mixin.features.clouds": false
     }
   }
 }
