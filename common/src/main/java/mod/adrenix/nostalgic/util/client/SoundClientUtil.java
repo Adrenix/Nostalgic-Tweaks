@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.util.client;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.MathUtil;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundCommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -31,9 +31,9 @@ public abstract class SoundClientUtil
      * @param playSound   A consumer function that will play the given sound.
      * @return Whether the sound at the position was handled.
      */
-    public static boolean isSoundAtPositionHandled(ClientLevel level, double x, double y, double z, Holder<SoundEvent> soundHolder, SoundUtil.PlaySound playSound)
+    public static boolean isSoundAtPositionHandled(ClientLevel level, double x, double y, double z, Holder<SoundEvent> soundHolder, SoundCommonUtil.PlaySound playSound)
     {
-        if (SoundUtil.isSoundAtPositionHandled(level, x, y, z, soundHolder, playSound))
+        if (SoundCommonUtil.isSoundAtPositionHandled(level, x, y, z, soundHolder, playSound))
             return true;
 
         if (soundHolder == null)

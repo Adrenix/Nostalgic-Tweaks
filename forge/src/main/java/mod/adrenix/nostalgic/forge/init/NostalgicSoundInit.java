@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.forge.init;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundCommonUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
@@ -25,12 +25,12 @@ public abstract class NostalgicSoundInit
 
     public static final RegistryObject<SoundEvent> BLANK = SOUNDS.register
     (
-        SoundUtil.Key.BLANK, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.BLANK))
+        SoundCommonUtil.Key.BLANK, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundCommonUtil.Key.BLANK))
     );
 
     public static final RegistryObject<SoundEvent> PLAYER_HURT = SOUNDS.register
     (
-        SoundUtil.Key.PLAYER_HURT, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundUtil.Key.PLAYER_HURT))
+        SoundCommonUtil.Key.PLAYER_HURT, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(NostalgicTweaks.MOD_ID, SoundCommonUtil.Key.PLAYER_HURT))
     );
 
     /* Initialization */
@@ -41,7 +41,7 @@ public abstract class NostalgicSoundInit
      */
     public static void init()
     {
-        SoundUtil.Event.BLANK = BLANK;
-        SoundUtil.Event.PLAYER_HURT = PLAYER_HURT;
+        SoundCommonUtil.Event.BLANK = BLANK;
+        SoundCommonUtil.Event.PLAYER_HURT = PLAYER_HURT;
     }
 }

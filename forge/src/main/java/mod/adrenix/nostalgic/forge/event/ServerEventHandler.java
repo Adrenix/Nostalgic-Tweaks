@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.forge.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundCommonUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.PlayLevelSoundEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +26,7 @@ public abstract class ServerEventHandler
             double y = event.getPosition().y;
             double z = event.getPosition().z;
 
-            if (SoundUtil.isSoundAtPositionHandled(event.getLevel(), x, y, z, event.getSound(), event.getLevel()::playLocalSound))
+            if (SoundCommonUtil.isSoundAtPositionHandled(event.getLevel(), x, y, z, event.getSound(), event.getLevel()::playLocalSound))
                 event.setCanceled(true);
         }
     }

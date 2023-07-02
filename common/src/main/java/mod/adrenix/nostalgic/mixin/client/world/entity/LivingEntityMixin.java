@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.client.config.SwingConfig;
 import mod.adrenix.nostalgic.mixin.duck.CameraPitching;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.AnimationUtil;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundCommonUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -152,7 +152,7 @@ public abstract class LivingEntityMixin extends Entity implements CameraPitching
     private void NT$onGetFallDamageSound(int height, CallbackInfoReturnable<SoundEvent> callback)
     {
         if (ModConfig.Sound.oldFall())
-            callback.setReturnValue(SoundUtil.Event.BLANK.get());
+            callback.setReturnValue(SoundCommonUtil.Event.BLANK.get());
     }
 
     /**

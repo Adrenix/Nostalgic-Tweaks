@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * code does not to be duplicated.
  */
 
-public abstract class SoundUtil
+public abstract class SoundCommonUtil
 {
     /**
      * The keys of specific sounds.
