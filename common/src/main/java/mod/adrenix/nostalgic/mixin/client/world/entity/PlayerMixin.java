@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.client.world.entity;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
-import mod.adrenix.nostalgic.util.common.SoundUtil;
+import mod.adrenix.nostalgic.util.common.SoundCommonUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,7 +54,7 @@ public abstract class PlayerMixin extends LivingEntity implements SlotTracker
     private void NT$onGetHurtSound(DamageSource damageSource, CallbackInfoReturnable<SoundEvent> callback)
     {
         if (ModConfig.Sound.oldDamage())
-            callback.setReturnValue(SoundUtil.Event.PLAYER_HURT.get());
+            callback.setReturnValue(SoundCommonUtil.Event.PLAYER_HURT.get());
     }
 
     /**
@@ -119,6 +119,6 @@ public abstract class PlayerMixin extends LivingEntity implements SlotTracker
     @ModifyArg(method = "giveExperienceLevels", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private SoundEvent NT$gainLevelSoundProxy(SoundEvent vanilla)
     {
-        return ModConfig.Sound.disableXpLevel() ? SoundUtil.Event.BLANK.get() : vanilla;
+        return ModConfig.Sound.disableXpLevel() ? SoundCommonUtil.Event.BLANK.get() : vanilla;
     }
 }
