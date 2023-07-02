@@ -464,7 +464,6 @@ public class ClientConfig implements ConfigData
         @TweakGui.New
         @TweakData.Client
         @TweakData.EntryStatus
-        @TweakGui.Alert(condition = TweakGui.Condition.WINDOW_TITLE_DISABLED, langKey = LangUtil.Gui.ALERT_WINDOW_TITLE_DISABLED)
         @TweakGui.Placement(pos = TweakGui.Position.TOP, order = 1)
         @TweakGui.Subcategory(container = TweakSubcategory.INTERFACE_DEBUG_CANDY)
         public TweakVersion.Generic oldDebug = DefaultConfig.Candy.OLD_DEBUG;
