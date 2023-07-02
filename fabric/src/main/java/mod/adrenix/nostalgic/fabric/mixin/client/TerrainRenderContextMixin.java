@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.fabric.mixin.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.util.client.BlockClientUtil;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderInfo;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractBlockRenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -20,28 +20,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(TerrainRenderContext.class)
-public abstract class TerrainRenderContextMixin
+public abstract class TerrainRenderContextMixin extends AbstractBlockRenderContext
 {
     /* Shadows */
 
     @Shadow @Final private ChunkRenderInfo chunkInfo;
-    @Shadow @Final private BlockRenderInfo blockInfo;
 
     /* Injections */
 
     /**
-     * Changes the rendering of vanilla torches.
-     * Controlled by various old torch tweaks.
+     * Changes the rendering of vanilla torches. Controlled by various old torch tweaks.
      */
-    @Inject
-    (
-        method = "tessellateBlock",
+    @Inject(
         cancellable = true,
-        at = @At
-        (
+        method = "tessellateBlock",
+        at = @At(
             shift = At.Shift.BEFORE,
             value = "INVOKE",
-            target = "Lnet/fabricmc/fabric/api/renderer/v1/model/FabricBakedModel;emitBlockQuads(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Ljava/util/function/Supplier;Lnet/fabricmc/fabric/api/renderer/v1/render/RenderContext;)V"
+            target = "Lnet/minecraft/client/resources/model/BakedModel;emitBlockQuads(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Ljava/util/function/Supplier;Lnet/fabricmc/fabric/api/renderer/v1/render/RenderContext;)V"
         )
     )
     private void NT$onTessellateBlock(BlockState blockState, BlockPos blockPos, BakedModel model, PoseStack poseStack, CallbackInfo callback)
