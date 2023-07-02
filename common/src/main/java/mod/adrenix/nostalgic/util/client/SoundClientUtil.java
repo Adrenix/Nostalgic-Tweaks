@@ -2,35 +2,23 @@ package mod.adrenix.nostalgic.util.client;
 
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.common.MathUtil;
+import mod.adrenix.nostalgic.util.common.SoundUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class SoundClientUtil
 {
-    /**
-     * Consumer interface for playing a local sound.
-     */
-    public interface PlaySound
-    {
-        void accept(double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch, boolean distanceDelay);
-    }
-
     /**
      * Disables various sounds or plays various sounds depending on various tweak states. If this method returns a state
      * of {@code true}, then the sound callback/event should be canceled.
@@ -43,129 +31,13 @@ public abstract class SoundClientUtil
      * @param playSound   A consumer function that will play the given sound.
      * @return Whether the sound at the position was handled.
      */
-    public static boolean isSoundAtPositionHandled(ClientLevel level, double x, double y, double z, Holder<SoundEvent> soundHolder, PlaySound playSound)
+    public static boolean isSoundAtPositionHandled(ClientLevel level, double x, double y, double z, Holder<SoundEvent> soundHolder, SoundUtil.PlaySound playSound)
     {
+        if (SoundUtil.isSoundAtPositionHandled(level, x, y, z, soundHolder, playSound))
+            return true;
+
         if (soundHolder == null)
             return false;
-
-        SoundEvent sound = soundHolder.value();
-
-        /* Attack Sounds */
-
-        // @formatter:off
-        boolean isAttack = sound == SoundEvents.PLAYER_ATTACK_KNOCKBACK ||
-            sound == SoundEvents.PLAYER_ATTACK_CRIT ||
-            sound == SoundEvents.PLAYER_ATTACK_NODAMAGE ||
-            sound == SoundEvents.PLAYER_ATTACK_STRONG ||
-            sound == SoundEvents.PLAYER_ATTACK_SWEEP ||
-            sound == SoundEvents.PLAYER_ATTACK_WEAK;
-
-        if (ModConfig.Sound.oldAttack() && isAttack)
-            return true;
-
-        /* Squid Sounds */
-
-        boolean isSquid = sound == SoundEvents.SQUID_AMBIENT ||
-            sound == SoundEvents.SQUID_DEATH ||
-            sound == SoundEvents.SQUID_HURT ||
-            sound == SoundEvents.SQUID_SQUIRT;
-
-        if (ModConfig.Sound.disableSquid() && isSquid)
-            return true;
-
-        boolean isGlowSquid = sound == SoundEvents.GLOW_SQUID_DEATH ||
-            sound == SoundEvents.GLOW_SQUID_HURT ||
-            sound == SoundEvents.GLOW_SQUID_SQUIRT;
-
-        if (ModConfig.Sound.disableGlowSquidOther() && isGlowSquid)
-            return true;
-
-        if (ModConfig.Sound.disableGlowSquidAmbience() && sound == SoundEvents.GLOW_SQUID_AMBIENT)
-            return true;
-
-        /* Fish Sounds */
-
-        if (ModConfig.Sound.disableFishSwim() && sound == SoundEvents.FISH_SWIM)
-            return true;
-
-        boolean isFishHurt = sound == SoundEvents.COD_HURT ||
-            sound == SoundEvents.PUFFER_FISH_HURT ||
-            sound == SoundEvents.SALMON_HURT ||
-            sound == SoundEvents.TADPOLE_HURT ||
-            sound == SoundEvents.TROPICAL_FISH_HURT;
-
-        if (ModConfig.Sound.disableFishHurt() && isFishHurt)
-            return true;
-
-        boolean isFishDeath = sound == SoundEvents.COD_DEATH ||
-            sound == SoundEvents.PUFFER_FISH_DEATH ||
-            sound == SoundEvents.SALMON_DEATH ||
-            sound == SoundEvents.TADPOLE_DEATH ||
-            sound == SoundEvents.TROPICAL_FISH_DEATH;
-
-        if (ModConfig.Sound.disableFishDeath() && isFishDeath)
-            return true;
-
-        // @formatter:on
-        /* Chest Sounds */
-
-        BlockPos pos = BlockPos.containing(x, y, z);
-        BlockState state = level.getBlockState(pos);
-
-        boolean isWoodChestSound = sound == SoundEvents.CHEST_OPEN || sound == SoundEvents.CHEST_CLOSE;
-        boolean isEnderChestSound = sound == SoundEvents.ENDER_CHEST_OPEN || sound == SoundEvents.ENDER_CHEST_CLOSE;
-        boolean isChestDisabled = false;
-
-        if (ModConfig.Sound.disableChest() && state.is(Blocks.CHEST) && isWoodChestSound)
-            isChestDisabled = true;
-        else if (ModConfig.Sound.disableEnderChest() && state.is(Blocks.ENDER_CHEST) && isEnderChestSound)
-            isChestDisabled = true;
-        else if (ModConfig.Sound.disableTrappedChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodChestSound)
-            isChestDisabled = true;
-
-        if (isChestDisabled)
-            return true;
-
-        boolean isOldChest = false;
-
-        if (ModConfig.Sound.oldChest() && state.is(Blocks.CHEST) && isWoodChestSound)
-            isOldChest = true;
-        else if (ModConfig.Sound.oldChest() && state.is(Blocks.ENDER_CHEST) && isEnderChestSound)
-            isOldChest = true;
-        else if (ModConfig.Sound.oldChest() && state.is(Blocks.TRAPPED_CHEST) && isWoodChestSound)
-            isOldChest = true;
-
-        if (isOldChest)
-        {
-            SoundEvent chestSound = SoundEvents.WOODEN_DOOR_OPEN;
-            RandomSource randomSource = level.random;
-            float random = randomSource.nextFloat() * 0.1F + 0.9F;
-
-            if (sound == SoundEvents.CHEST_CLOSE || sound == SoundEvents.ENDER_CHEST_CLOSE)
-                chestSound = SoundEvents.WOODEN_DOOR_CLOSE;
-
-            playSound.accept(x, y, z, chestSound, SoundSource.BLOCKS, 1.0F, random, false);
-
-            return true;
-        }
-
-        /*
-            Bed & Door Placement Sounds:
-
-            Disables the placement sound if the block at the given position is a bed or door.
-            Controlled by the old door sound tweak and the old bed sound tweak.
-         */
-
-        boolean isBlockedSound = false;
-        boolean isPlacingSound = sound == SoundEvents.WOOD_PLACE || sound == SoundEvents.METAL_PLACE;
-
-        if (ModConfig.Sound.disableDoor() && isPlacingSound && state.getBlock() instanceof DoorBlock)
-            isBlockedSound = true;
-        else if (ModConfig.Sound.disableBed() && state.getBlock() instanceof BedBlock)
-            isBlockedSound = true;
-
-        if (isBlockedSound)
-            return true;
 
         /*
             Entity Walking Sounds:
@@ -176,6 +48,9 @@ public abstract class SoundClientUtil
             inconsistent if there is significant latency or if there is a path without the 'entity.' and '.step'
             identifiers.
          */
+
+        SoundEvent sound = soundHolder.value();
+        BlockPos blockPos = BlockPos.containing(x, y, z);
 
         boolean isEntityStep = sound.getLocation().getPath().contains("entity.") && sound.getLocation()
             .getPath()
@@ -212,14 +87,14 @@ public abstract class SoundClientUtil
                 return true;
             else if (!isModdedIgnored)
             {
-                BlockState standing = level.getBlockState(pos.below());
+                BlockState standing = level.getBlockState(blockPos.below());
 
                 if (!standing.getFluidState().isEmpty())
                     return false;
                 else if (standing.is(Blocks.AIR))
                     return true;
 
-                BlockState inside = level.getBlockState(pos);
+                BlockState inside = level.getBlockState(blockPos);
                 SoundType soundType = inside.is(BlockTags.INSIDE_STEP_SOUND_BLOCKS) ? inside.getSoundType() : standing.getSoundType();
 
                 playSound.accept(x, y, z, soundType.getStepSound(), entity.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch(), false);
