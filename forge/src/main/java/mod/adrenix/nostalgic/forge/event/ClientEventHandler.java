@@ -5,20 +5,28 @@ import mod.adrenix.nostalgic.client.config.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.event.ClientEventHelper;
 import mod.adrenix.nostalgic.forge.event.client.CandyEvents;
 import mod.adrenix.nostalgic.forge.event.client.GuiEvents;
+import mod.adrenix.nostalgic.forge.event.client.SoundEvents;
 import mod.adrenix.nostalgic.util.client.KeyUtil;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.event.PlayLevelSoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Handler class that subscribes mod events to Forge's event bus.
- * This class is focused on client events.
+ * Handler class that subscribes mod events to Forge's event bus. This class is focused on client events.
  */
 
-@Mod.EventBusSubscriber(modid = NostalgicTweaks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(
+    modid = NostalgicTweaks.MOD_ID,
+    bus = Mod.EventBusSubscriber.Bus.FORGE,
+    value = Dist.CLIENT
+)
 public abstract class ClientEventHandler
 {
     /* Key Input Events */
@@ -37,42 +45,63 @@ public abstract class ClientEventHandler
 
     /**
      * Changes the network verification state of the mod.
-     *
+     * <p>
      * Network verification is authenticated when the client receives a
      * {@link mod.adrenix.nostalgic.network.packet.PacketS2CHandshake PacketS2CHandshake} packet from a modded server.
-     * If a server is not N.T supported, then network verification is false, and we shouldn't be sending packets to
-     * the server.
+     * If a server is not N.T supported, then network verification is false, and we shouldn't be sending packets to the
+     * server.
      */
     @SubscribeEvent
-    public static void onLogOut(ClientPlayerNetworkEvent.LoggingOut event) { ClientEventHelper.disconnect(); }
+    public static void onLogOut(ClientPlayerNetworkEvent.LoggingOut event)
+    {
+        ClientEventHelper.disconnect();
+    }
+
+    /* Sound Events */
+
+    /**
+     * Disables and plays various sounds based on tweak states.
+     */
+    @SubscribeEvent
+    public static void onPlayLevelSoundAtPosition(PlayLevelSoundEvent.AtPosition event)
+    {
+        SoundEvents.changeSoundAtPosition(event);
+    }
 
     /* Candy Events */
 
     /**
-     * Redirects various vanilla screens so that the mod's classic title screen or classic world loading screens can
-     * be rendered.
-     *
+     * Redirects various vanilla screens so that the mod's classic title screen or classic world loading screens can be
+     * rendered.
+     * <p>
      * Controlled by various old screen tweaks.
      */
     @SubscribeEvent
-    public static void onSetScreen(ScreenEvent.Opening event) { CandyEvents.classicTitleScreens(event); }
+    public static void onSetScreen(ScreenEvent.Opening event)
+    {
+        CandyEvents.classicTitleScreens(event);
+    }
 
     /**
-     * Handles the rendering of old fog.
-     * Controlled by the old overworld/nether fog tweaks.
+     * Handles the rendering of old fog. Controlled by the old overworld/nether fog tweaks.
      */
     @SubscribeEvent
-    public static void onRenderFog(ViewportEvent.RenderFog event) { CandyEvents.renderOldFog(event); }
+    public static void onRenderFog(ViewportEvent.RenderFog event)
+    {
+        CandyEvents.renderOldFog(event);
+    }
 
     /* Gui Events */
 
     /**
-     * Renders the current game version to the top left of the HUD along with alternative text HUD tweaks.
-     * Controlled by the old version overlay toggle and various alternative HUD tweaks.
-     *
-     * Also overrides the overlays for armor, food, and air level bar.
-     * Controlled by various HUD tweaks.
+     * Renders the current game version to the top left of the HUD along with alternative text HUD tweaks. Controlled by
+     * the old version overlay toggle and various alternative HUD tweaks.
+     * <p>
+     * Also overrides the overlays for armor, food, and air level bar. Controlled by various HUD tweaks.
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPreRenderOverlay(RenderGuiOverlayEvent.Pre event) { GuiEvents.overlayOverride(event); }
+    public static void onPreRenderOverlay(RenderGuiOverlayEvent.Pre event)
+    {
+        GuiEvents.overlayOverride(event);
+    }
 }
