@@ -3,15 +3,15 @@
 - Added support for the Exordium mod
 - Added support for the Rubidium mod
 - Added old/fast clouds quality option when Sodium/Rubidium is installed
-- Fixed debug screen tweaks being overridden by Sodium/Rubidium
-- Fixed HUD armor texture rendering issues when ImmediatelyFast is installed
-- Fixed mod config interface not using the vanilla keyboard shortcuts
-- Fixed custom window title tweak not replacing %v with the current Minecraft version
 - Added tweak that can remove widget focus when the Esc key is pressed
 > This tweak can be found in Eye Candy > Interface Candy > Screen Candy
 - Changed skylight calculation algorithm in the old light rendering engine to work with mods like the Aether and the Twilight Forest
 - Fixed not being able to leave the resource pack screen if it was entered by using the title screen
 - Fixed sound tweaks not working when connected to a Forge server
+- Fixed debug screen tweaks being overridden by Sodium/Rubidium
+- Fixed HUD armor texture rendering issues when ImmediatelyFast is installed
+- Fixed mod config interface not using the vanilla keyboard shortcuts
+- Fixed custom window title tweak not replacing %v with the current Minecraft version
 - Fixed crash when entering a world with the mod in a disabled state
 - Fixed darkness effect not working with old fog/lighting
 - Fixed conduit power effect not working with old water fog
