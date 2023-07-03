@@ -11,6 +11,7 @@
 > This tweak can be found in Eye Candy > Interface Candy > Screen Candy
 - Changed skylight calculation algorithm in the old light rendering engine to work with mods like the Aether and the Twilight Forest
 - Fixed not being able to leave the resource pack screen if it was entered by using the title screen
+- Fixed sound tweaks not working when connected to a Forge server
 - Fixed crash when entering a world with the mod in a disabled state
 - Fixed darkness effect not working with old fog/lighting
 - Fixed conduit power effect not working with old water fog
