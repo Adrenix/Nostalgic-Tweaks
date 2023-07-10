@@ -2,7 +2,9 @@ package mod.adrenix.nostalgic.fabric;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.fabric.event.CommonEvents;
+import mod.adrenix.nostalgic.util.ModTracker;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -24,6 +26,9 @@ public class NostalgicCommonFabric implements ModInitializer
     @Override
     public void onInitialize()
     {
+        // Mod tracking
+        ModTracker.init(FabricLoader.getInstance()::isModLoaded);
+
         // Register common
         CommonEvents.register();
     }
