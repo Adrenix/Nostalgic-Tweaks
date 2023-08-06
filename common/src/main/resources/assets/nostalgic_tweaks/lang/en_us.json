@@ -1043,7 +1043,7 @@
   "text.autoconfig.nostalgic_tweaks.option.gameplay.altHungerSaturationText.@Tooltip": "Change the alternative saturation text. Use §b%v§r to insert the current hunger saturation. Use §b%§r followed by a Minecraft color code to get formatting. For example, §b%4§r will make §4red§r.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.altHungerSaturationText.@Related": "HUD",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableHunger": "Disable Hunger",
-  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableHunger.@Tooltip": "All consumed food will refill hearts instead of hunger. Foods that give effects will§c no longer do so§r.\n\nTo change the §health§r restored by foods, edit the §7custom food health§r list.",
+  "text.autoconfig.nostalgic_tweaks.option.gameplay.disableHunger.@Tooltip": "All consumed food will refill hearts instead of hunger. Foods that give effects will§c no longer do so§r.\n\nTo change the amount of health restored by foods, edit the §7custom food health§r list.",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.disableHunger.@Related": "Food, Consume, Heart",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.customFoodHealth": "Custom Food Health",
   "text.autoconfig.nostalgic_tweaks.option.gameplay.customFoodHealth.@Tooltip": "Add, edit, and/or remove custom health values for food items.",
