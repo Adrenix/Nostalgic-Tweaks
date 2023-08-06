@@ -27,8 +27,8 @@ public abstract class ItemColorsSodiumMixin
      * If sodium is installed, this alternative injection will provide a modified color provider.
      * Controlled by the old 2d item colors tweak and whether sodium is installed.
      */
-    @Dynamic("Method getColorProvider is added by Sodium. See: net.caffeinemc.sodium.mixin.core.model.MixinItemColors")
-    @Inject(remap = false, method = "getColorProvider", at = @At("HEAD"), cancellable = true)
+    @Dynamic("Method sodium$getColorProvider is added by Sodium. See: me.jellysquid.mods.sodium.mixin.core.model.colors.ItemColorsMixin.java")
+    @Inject(remap = false, method = "sodium$getColorProvider", at = @At("HEAD"), cancellable = true)
     private void NT$onGetColorProvider(ItemStack itemStack, CallbackInfoReturnable<ItemColor> callback)
     {
         ItemColor itemColor = this.itemColors.byId(BuiltInRegistries.ITEM.getId(itemStack.getItem()));

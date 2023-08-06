@@ -30,11 +30,11 @@ public abstract class ItemColorsRubidiumMixin
      * If Rubidium is installed, this alternative injection will provide a modified color provider. Controlled by old 2d
      * item colors and whether Rubidium is installed.
      */
-    @Dynamic("Method getColorProvider is added by Rubidium. See: me.jellysquid.mods.sodium.mixin.core.model.MixinItemColors.java")
+    @Dynamic("Method sodium$getColorProvider is added by Rubidium. See: me.jellysquid.mods.sodium.mixin.core.model.colors.ItemColorsMixin.java")
     @Inject(
         remap = false,
         cancellable = true,
-        method = "getColorProvider",
+        method = "sodium$getColorProvider",
         at = @At("HEAD")
     )
     private void NT$onGetColorProvider(ItemStack itemStack, CallbackInfoReturnable<ItemColor> callback)

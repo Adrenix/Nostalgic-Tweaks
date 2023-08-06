@@ -1,16 +1,16 @@
 package mod.adrenix.nostalgic.forge.mixin.rubidium;
 
+import me.jellysquid.mods.sodium.client.model.color.ColorProvider;
 import me.jellysquid.mods.sodium.client.model.light.LightPipeline;
 import me.jellysquid.mods.sodium.client.model.light.data.QuadLightData;
 import me.jellysquid.mods.sodium.client.model.quad.ModelQuadView;
-import me.jellysquid.mods.sodium.client.model.quad.blender.ColorSampler;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.FluidRenderer;
+import me.jellysquid.mods.sodium.client.world.WorldSlice;
 import mod.adrenix.nostalgic.common.config.ModConfig;
 import mod.adrenix.nostalgic.util.client.WorldClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,12 +57,12 @@ public abstract class FluidRendererMixin
         method = "updateQuad",
         at = @At("RETURN")
     )
-    private void NT$onCalculateQuadColors(ModelQuadView quad, BlockAndTintGetter level, BlockPos blockPos, LightPipeline lighter, Direction direction, float brightness, ColorSampler<FluidState> colorSampler, FluidState fluidState, CallbackInfo callback)
+    private void NT$onCalculateQuadColors(ModelQuadView quad, WorldSlice world, BlockPos pos, LightPipeline lighter, Direction dir, float brightness, ColorProvider<FluidState> color, FluidState fluidState, CallbackInfo callback)
     {
         if (!ModConfig.Candy.oldWaterLighting())
             return;
 
-        int light = WorldClientUtil.getWaterLight(level, blockPos);
+        int light = WorldClientUtil.getWaterLight(world, pos);
 
         for (int i = 0; i < 4; i++)
             this.quadLightData.lm[i] = light;
