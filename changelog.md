@@ -1,3 +1,6 @@
+# Nostalgic Tweaks (Forge & Fabric) 1.20 & 1.20.1 v2.0.0 Beta-8.4.1
+- Updated mod to support Sodium 0.5 on 1.20.1
+
 # Nostalgic Tweaks (Forge & Fabric) 1.20 & 1.20.1 v2.0.0 Beta-8.4
 - Updated mod to 1.20/1.20.1
 > Initial 1.20 port-forward from 1.19.4 courtesy of forkiesassds
