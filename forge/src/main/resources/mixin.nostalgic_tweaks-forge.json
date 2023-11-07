@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "package": "mod.adrenix.nostalgic.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [],
+  "mixins": []
+}
