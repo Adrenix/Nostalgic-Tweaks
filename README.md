@@ -1,27 +1,20 @@
 # Development Branches
-- [1.20 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20) **Current**
-- [1.19.4 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.4) **TBD**
-- ~~[1.19.3 (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.3)~~ **Discontinued**
-- [1.19.2 Multiplayer (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.2-multiplayer) **LTS**
-- [1.19 Multiplayer (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19-multiplayer) **TBD**
-- ~~[1.19 (v1.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19)~~ **Discontinued**
-- [1.18.2 Multiplayer (v2.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.2-multiplayer) **LTS**
-- ~~[1.18.2 (v1.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.2)~~ **Discontinued**
-- ~~[1.18 - 1.18.1 (v1.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.1)~~ **Discontinued**
+- [1.20.2 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.2) **Current**
+- ~~[1.20 (Beta 8.4.1)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20)~~ **Discontinued**
+- ~~[1.19.4 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.4)~~ **Discontinued**
+- ~~[1.19.3 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.3)~~ **Discontinued**
+- ~~[1.19.2 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.2-multiplayer)~~ **Discontinued**
+- ~~[1.19 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19-multiplayer)~~ **Discontinued**
+- ~~[1.18.2 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.18.2-multiplayer)~~ **Discontinued**
 
 #### Changelogs
 See the changelog in a branch for recent changes.
 
 # Nostalgic Tweaks Mod (Forge & Fabric)
-[
-![CurseForge Downloads](http://cf.way2muchnoise.eu/nostalgic-tweaks.svg)
-![CurseForge Versions](http://cf.way2muchnoise.eu/versions/nostalgic-tweaks.svg)
-](https://www.curseforge.com/minecraft/mc-mods/nostalgic-tweaks)
-[
-![Discord](https://img.shields.io/discord/452988045252100107?label=Discord)
-](https://discordapp.com/invite/jWdfVh3)
-
-This mod is also available on [Modrinth](https://modrinth.com/mod/nostalgic-tweaks)!
+[<img alt="CurseForge Download" src="https://img.shields.io/curseforge/dt/592465?logo=curseforge&label=CurseForge&color=e04e14">](https://www.curseforge.com/minecraft/mc-mods/nostalgic-tweaks)
+[<img alt="Modrinth Download" src="https://img.shields.io/modrinth/dt/l1rj36Ob?logo=modrinth&label=Modrinth&color=17b85a">](https://modrinth.com/mod/nostalgic-tweaks)
+[<img alt="Discord" src="https://img.shields.io/discord/452988045252100107?logo=discord&label=Discord&color=5865f2">](https://discord.gg/jWdfVh3)
+[<img alt="Donate on Ko-fi" src="https://img.shields.io/badge/Donate-Ko--fi-fb6161?logo=kofi">](https://ko-fi.com/adrenix)
 
 Inspired by Exalm's Old Days mod, Nostalgic Tweaks brings back a plethora of Minecraft Alpha, Beta, and Post Release lost or changed gameplay elements. This mod is intended for nostalgic enthusiasts who want to relive the glory days of Minecraft Java edition by tweaking the mod to their nostalgic preference.
 
