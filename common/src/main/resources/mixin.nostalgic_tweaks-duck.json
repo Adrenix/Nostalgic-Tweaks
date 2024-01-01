@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "package": "mod.adrenix.nostalgic.mixin.duck.impl",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [
+    "LivingEntityImpl",
+    "PlayerImpl"
+  ]
+}
