@@ -1,3 +1,6 @@
+# Discontinued
+This branch never had an official release before 1.20.3/4 came out. Therefore, development focus has shifted to 1.20.4 onwards.
+
 # Nostalgic Tweaks - 1.20.2 Development Branch
 ### Forge & Fabric
 This is the 1.20.2 development branch for N.T.
