@@ -1,0 +1,161 @@
+package mod.adrenix.nostalgic.util.common.data;
+
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+/**
+ * A cache holder is useful in situations where there is a need to hold a value that may change at a later point in
+ * time. This utility will cache a value using the given supplier. A check can be performed in this utility to see if
+ * the cache is invalid, if so, then a new cache value will be created using the given supplier.
+ *
+ * @param <T> The class type of the value held.
+ */
+public class CacheHolder<T>
+{
+    /* Fields */
+
+    private final Supplier<T> supplier;
+    private boolean expired;
+    private T cache;
+
+    /* Constructor */
+
+    /**
+     * Reference {@code see also}.
+     *
+     * @param supplier A {@link Supplier} that provides a value to cache.
+     * @see CacheHolder#create(Supplier)
+     */
+    private CacheHolder(Supplier<T> supplier)
+    {
+        this.supplier = supplier;
+        this.cache = supplier.get();
+    }
+
+    /* Static */
+
+    /**
+     * Create a new {@link CacheHolder} instance using the given supplier.
+     *
+     * @param supplier A {@link Supplier} that provides a value to cache.
+     * @param <V>      The class type of the value.
+     * @return A new {@link CacheHolder} instance.
+     */
+    @PublicAPI
+    public static <V> CacheHolder<V> create(Supplier<V> supplier)
+    {
+        return new CacheHolder<>(supplier);
+    }
+
+    /**
+     * Create a new {@link CacheHolder} instance from a nullable value.
+     *
+     * @param nullable A nullable value to check.
+     * @param function A {@link Function} that accepts the non-null nullable and provides a value to cache.
+     * @param orElse   If the nullable is null, then cache this value.
+     * @param <T>      The class type of the nullable.
+     * @param <V>      The class type of the value.
+     * @return A new {@link CacheHolder} instance.
+     */
+    @PublicAPI
+    public static <T, V> CacheHolder<V> nullable(@Nullable T nullable, Function<T, V> function, V orElse)
+    {
+        if (nullable == null)
+            return new CacheHolder<>(() -> orElse);
+
+        return new CacheHolder<>(() -> function.apply(nullable));
+    }
+
+    /**
+     * Create a new {@link CacheHolder} instance using a nullable holder.
+     *
+     * @param holder   A {@link NullableHolder} to get a value to apply to the given function.
+     * @param function A {@link Function} that accepts the non-null value and provides a value to cache.
+     * @param orElse   If the holder has a null value, then this value will be cached.
+     * @param <T>      The class type stored in the holder.
+     * @param <V>      The class type of the cached value.
+     * @return A new {@link CacheHolder} instance.
+     */
+    @PublicAPI
+    public static <T, V> CacheHolder<V> nullable(NullableHolder<T> holder, Function<T, V> function, V orElse)
+    {
+        return new CacheHolder<>(() -> {
+            if (holder.isPresent())
+                return function.apply(holder.get());
+
+            return orElse;
+        });
+    }
+
+    /**
+     * Check if any of the holders have expired. If optimization is desired, then order the given varargs with caches
+     * that are likely to expire first.
+     *
+     * @param holders A varargs of {@link CacheHolder}.
+     * @return Whether any of the holders have changed.
+     */
+    @PublicAPI
+    public static boolean isAnyExpired(CacheHolder<?>... holders)
+    {
+        for (CacheHolder<?> holder : holders)
+        {
+            if (holder.isExpired())
+                return true;
+        }
+
+        return false;
+    }
+
+    /* Methods */
+
+    /**
+     * @return A result from the cached supplier.
+     */
+    public T next()
+    {
+        return this.supplier.get();
+    }
+
+    /**
+     * @return The current cached result.
+     */
+    public T last()
+    {
+        return this.cache;
+    }
+
+    /**
+     * Update the cache for this holder using the result from the supplier.
+     */
+    public void update()
+    {
+        this.cache = this.supplier.get();
+        this.expired = false;
+    }
+
+    /**
+     * Update the cache for this holder and return the result.
+     *
+     * @return The updated cache value.
+     */
+    public T getAndUpdate()
+    {
+        this.update();
+
+        return this.cache;
+    }
+
+    /**
+     * @return Whether the current cache does not match a result provided by the supplier.
+     */
+    public boolean isExpired()
+    {
+        if (!this.expired)
+            this.expired = !this.cache.equals(this.supplier.get());
+
+        return this.expired;
+    }
+}
