@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.fabric.register;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.event.ArchClientEvents;
 import net.fabricmc.api.ClientModInitializer;
 
 public class ClientInitializer implements ClientModInitializer
@@ -11,6 +12,7 @@ public class ClientInitializer implements ClientModInitializer
         // Initialize mod
         NostalgicTweaks.initClient();
 
-        // TODO: Register Architectury events
+        // Register Architectury events
+        ArchClientEvents.register();
     }
 }

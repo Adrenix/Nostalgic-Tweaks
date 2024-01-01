@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.network.packet.tweak;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.tweak.TweakValidator;
@@ -100,7 +101,7 @@ public interface TweakPacket extends ModPacket
 
         // Notify the client of sent changes
         if (NostalgicTweaks.isNetworkVerified())
-            ; // TODO: ToastNotification.changeOnClient();
+            ToastNotification.changeOnClient();
     }
 
     /**
