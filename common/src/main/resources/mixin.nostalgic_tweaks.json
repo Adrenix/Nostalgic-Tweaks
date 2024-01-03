@@ -5,7 +5,7 @@
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
-    "candy.fix_ambient_occlusion.BlockBehaviourMixin",
+    "candy.ambient_occlusion_blocks.BlockBehaviourMixin",
     "candy.uncap_title_fps.MinecraftMixin"
   ]
 }

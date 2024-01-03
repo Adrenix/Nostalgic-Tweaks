@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.fix_ambient_occlusion;
+package mod.adrenix.nostalgic.mixin.tweak.candy.ambient_occlusion_blocks;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
