@@ -625,6 +625,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public void setScrollAmount(double amount)
     {
+        this.updateRowsWithoutSync();
         this.scrollbar.setScrollAmount(amount);
     }
 
@@ -637,6 +638,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public void setSmoothScrollAmount(double amount)
     {
+        this.updateRowsWithoutSync();
         this.scrollbar.setSmoothScrollAmount(amount);
     }
 
@@ -675,8 +677,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         if (row.isInvisible())
             return;
 
-        this.setPositionForRows();
-        DynamicWidget.syncWithoutCache(this.internal);
+        this.updateRowsWithoutSync();
 
         double amount;
 
@@ -1095,6 +1096,15 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         RenderUtil.pauseBatching();
         RenderUtil.fill(graphics, row.getX(), row.getEndX(), row.getY(), row.getEndY(), fill.get());
         RenderUtil.resumeBatching();
+    }
+
+    /**
+     * Updates and the positions of rows without applying synced cache.
+     */
+    private void updateRowsWithoutSync()
+    {
+        this.setPositionForRows();
+        DynamicWidget.syncWithoutCache(this.internal);
     }
 
     /**
