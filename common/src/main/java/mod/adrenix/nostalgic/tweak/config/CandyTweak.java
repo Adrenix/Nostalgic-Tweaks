@@ -28,7 +28,7 @@ public interface CandyTweak
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
 
     /**
-     * Generates the default fixed ambient occlusion blocks.
+     * Generates the default ambient occlusion blocks.
      */
     private static ItemSet defaultAmbientOcclusion()
     {
