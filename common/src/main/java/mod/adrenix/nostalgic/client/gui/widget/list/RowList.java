@@ -8,8 +8,8 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
 import mod.adrenix.nostalgic.client.gui.widget.scrollbar.Scrollbar;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
@@ -744,20 +744,8 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         if (this.scrollbar.isDragging())
             return true;
 
-        if (this.isMouseOver(mouseX, mouseY))
-        {
-            boolean isWidgetClicked = this.isEventListened(widget -> {
-                boolean isClicked = widget.mouseClicked(mouseX, mouseY, button);
-
-                if (isClicked)
-                    widget.setClickFocus();
-
-                return isClicked;
-            });
-
-            if (isWidgetClicked)
-                return true;
-        }
+        boolean isWidgetClicked = false;
+        this.focusedRow = null;
 
         this.visibleRows.stream()
             .map(AbstractRow::getFocusedWidget)
@@ -766,9 +754,19 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             .findFirst()
             .ifPresent(widget -> widget.setFocused(false));
 
-        this.focusedRow = null;
+        if (this.isMouseOver(mouseX, mouseY))
+        {
+            isWidgetClicked = this.isEventListened(widget -> {
+                boolean isClicked = widget.mouseClicked(mouseX, mouseY, button);
 
-        return false;
+                if (isClicked)
+                    widget.setClickFocus();
+
+                return isClicked;
+            });
+        }
+
+        return isWidgetClicked;
     }
 
     /**
