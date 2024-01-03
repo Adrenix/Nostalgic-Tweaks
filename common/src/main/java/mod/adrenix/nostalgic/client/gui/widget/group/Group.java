@@ -134,7 +134,7 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
     @PublicAPI
     public Component getTitle()
     {
-        return TextUtil.ellipsis(GuiUtil.font()::width, this.builder.groupTitle.get(), this.width - (this.isBordered() ? 16 : 0));
+        return TextUtil.ellipsis(GuiUtil.font()::width, this.builder.groupTitle.get(), this.width - (this.isBordered() ? 32 : 0));
     }
 
     /**
