@@ -5,9 +5,14 @@ import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.DeletableS
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.InvalidTypeOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.ListingWidgets;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.add.StringOverlay;
+import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
+import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
+import mod.adrenix.nostalgic.client.gui.widget.list.AbstractRow;
+import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.listing.StringSet;
 import mod.adrenix.nostalgic.util.common.data.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -80,6 +85,19 @@ public class StringSetOverlay implements DeletableSetOverlay<String, StringSet>
         collection.forEach(pair -> localized.put(pair, pair.left()));
 
         return localized;
+    }
+
+    @Override
+    public @Nullable AbstractRow<?, ?> getRow(String key, String value)
+    {
+        Row row = this.createRow(key, value);
+
+        IconWidget icon = this.createIcon(row, key, value);
+        ButtonWidget delete = this.createDelete(row, value, this.createUndo(row, value));
+
+        this.createTitle(row, key, value, icon, delete);
+
+        return row;
     }
 
     /**

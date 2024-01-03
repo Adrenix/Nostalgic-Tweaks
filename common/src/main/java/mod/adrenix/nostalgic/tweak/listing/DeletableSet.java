@@ -130,7 +130,6 @@ public interface DeletableSet<E, L extends Listing<E, L>> extends ListingSet<E, 
     default void undo(E element)
     {
         this.add(element);
-
     }
 
     /**

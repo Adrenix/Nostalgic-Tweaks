@@ -175,6 +175,9 @@
   "gui.nostalgic_tweaks.tooltip.review_changes": "When clicked, this overlay will§c close§r and the searchbar will be set to search for§7 #save§r.",
 
   "gui.nostalgic_tweaks.listing.add": "Add to List",
+  "gui.nostalgic_tweaks.listing.wildcard_title": "Wildcard",
+  "gui.nostalgic_tweaks.listing.wildcard_message": "Make §e%s§r a wildcard. For example, an§a Oak Fence§r wildcard will allow§6 any§r fence to be eligible for this list. However, a§7 stone block§r will make§c every§r block eligible for this list.",
+  "gui.nostalgic_tweaks.listing.wildcard_alert": "This item is a wildcard. Items that are similar to this are eligible for this list.",
   "gui.nostalgic_tweaks.listing.already_added": "§e%s§r is already in the list.",
   "gui.nostalgic_tweaks.listing.nothing_found": "Nothing was found using the given search query.",
   "gui.nostalgic_tweaks.listing.nothing_saved": "Nothing is saved in this list.",
@@ -610,8 +613,8 @@
   "gui.nostalgic_tweaks.config.sound.ignoreModdedStep.info": "§cIgnore§r bringing back old footstep sounds for entities§a added§r by§6 mods§r.",
   "gui.nostalgic_tweaks.config.sound.ignoreModdedStep.search": "Footstep, Walk",
 
-  "gui.nostalgic_tweaks.config.eyeCandy.fixAmbientOcclusion": "Fix Ambient Occlusion",
-  "gui.nostalgic_tweaks.config.eyeCandy.fixAmbientOcclusion.info": "Fixes ambient occlusion for broken vanilla blocks such as composters and powdered snow.",
+  "gui.nostalgic_tweaks.config.eyeCandy.ambientOcclusionBlocks": "Ambient Occlusion Blocks",
+  "gui.nostalgic_tweaks.config.eyeCandy.ambientOcclusionBlocks.info": "Applies ambient occlusion to the given blocks. Ambient occlusion is the shadow that appears between the edge of two or more blocks.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture": "Old Missing Texture",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture.info": "Bring back the old missing textures ranging from Beta 1.4 until 1.12.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture.enum.modern": "The missing texture will have a §7black§r/§5pink§r color scheme where a §7black§r square starts in the top left corner.",

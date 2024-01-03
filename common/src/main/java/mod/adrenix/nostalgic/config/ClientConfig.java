@@ -151,7 +151,7 @@ public class ClientConfig implements ConfigMeta
     {
         // Block
 
-        public boolean fixAmbientOcclusion = CandyTweak.FIX_AMBIENT_OCCLUSION.fromJson("fixAmbientOcclusion");
+        public ItemSet ambientOcclusionBlocks = CandyTweak.AMBIENT_OCCLUSION_BLOCKS.fromJson("ambientOcclusionBlocks");
         public boolean disableAllOffset = CandyTweak.DISABLE_ALL_OFFSET.fromJson("disableAllOffset");
         public boolean disableFlowerOffset = CandyTweak.DISABLE_FLOWER_OFFSET.fromJson("disableFlowerOffset");
         public MissingTexture oldMissingTexture = CandyTweak.OLD_MISSING_TEXTURE.fromJson("oldMissingTexture");

@@ -363,11 +363,14 @@ public interface Lang
     }
 
     /**
-     * Lang keys that are used by lists within the graphical user interface.
+     * Lang keys that lists use within the graphical user interface.
      */
     interface Listing
     {
         Translation ADD = from("add");
+        Translation WILDCARD_TITLE = from("wildcard_title");
+        Translation WILDCARD_MESSAGE = from("wildcard_message");
+        Translation WILDCARD_ALERT = from("wildcard_alert");
         Translation INVALID_ITEM = from("invalid_item");
         Translation INVALID_TYPE = from("invalid_type");
         Translation INVALID_MESSAGE = from("invalid_message");

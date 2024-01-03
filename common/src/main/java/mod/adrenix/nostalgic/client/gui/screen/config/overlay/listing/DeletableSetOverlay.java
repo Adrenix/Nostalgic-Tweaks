@@ -6,7 +6,6 @@ import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.listing.DeletableSet;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
-import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -34,50 +33,79 @@ public interface DeletableSetOverlay<V, L extends DeletableSet<V, L>> extends Li
         this.getSet().applySafely(object, this.getSet()::add);
     }
 
-    @Override
-    default Row getRow(String key, V value)
+    /**
+     * Create a new row using the given arguments.
+     *
+     * @param key   A resource key.
+     * @param value The same resource key that represents the value of the listing.
+     * @return A new {@link Row} instance.
+     */
+    default Row createRow(String key, V value)
     {
-        TextureIcon texture = this.getRowIcon(key);
-        Row row = Row.create(this.getWidgets().rowList).build();
-        L set = this.getSet();
+        Row row = Row.create(this.getWidgets().rowList).heightOverflowMargin(2).build();
 
-        row.getBuilder().highlightColor(this.getWidgets().getColor(row, key, () -> set.isDeleted(value)));
+        row.getBuilder().highlightColor(this.getWidgets().getColor(row, key, () -> this.getSet().isDeleted(value)));
         row.getBuilder().postRenderer(this.getWidgets()::renderOutline);
 
-        IconWidget icon = IconWidget.create(texture)
-            .pos(1, 3)
-            .disableIf(() -> set.isDeleted(value))
+        return row;
+    }
+
+    /**
+     * @return The {@link IconWidget} that represents the row.
+     */
+    default IconWidget createIcon(Row row, String key, V value)
+    {
+        return IconWidget.create(this.getRowIcon(key))
+            .pos(1, 4)
+            .disableIf(() -> this.getSet().isDeleted(value))
             .darkenOnDisable(0.8F)
             .build(row::addWidget);
+    }
 
-        TextWidget.create(() -> this.getRowTitle(key))
+    /**
+     * @return The {@link TextWidget} that represents the row's title.
+     */
+    default TextWidget createTitle(Row row, String key, V value, IconWidget icon, ButtonWidget delete)
+    {
+        final int red = Color.fromFormatting(ChatFormatting.RED).get();
+        final int white = Color.WHITE.get();
+
+        return TextWidget.create(() -> this.getRowTitle(key))
             .posY(() -> icon.getY() + 4)
-            .color(() -> set.isDeleted(value) ? Color.fromFormatting(ChatFormatting.RED).get() : Color.WHITE.get())
-            .italicsWhen(() -> set.isDeleted(value))
+            .color(() -> this.getSet().isDeleted(value) ? red : white)
+            .italicsWhen(() -> this.getSet().isDeleted(value))
             .rightOf(icon, 4)
-            .useTextWidth()
-            .centerAligned()
+            .extendWidthTo(delete, 2)
             .build(row::addWidget);
+    }
 
-        ButtonWidget undo = ButtonWidget.create(Lang.Button.UNDO)
-            .posY(1)
+    /**
+     * @return The {@link ButtonWidget} that undoes a deletion action.
+     */
+    default ButtonWidget createUndo(Row row, V value)
+    {
+        return ButtonWidget.create(Lang.Button.UNDO)
+            .posY(2)
             .icon(Icons.UNDO)
             .hoverIcon(Icons.UNDO_HOVER)
-            .fromWidgetEndX(row, 1)
-            .onPress(() -> set.add(value))
-            .disableIf(() -> set.contains(value))
+            .fromWidgetEndX(row, 2)
+            .onPress(() -> this.getSet().add(value))
+            .disableIf(() -> this.getSet().contains(value))
             .useTextWidth()
             .build(row::addWidget);
+    }
 
-        ButtonWidget.create(Lang.Button.DELETE)
-            .pos(1, 1)
-            .leftOf(undo, 1)
+    /**
+     * @return The {@link ButtonWidget} that deletes the row entry.
+     */
+    default ButtonWidget createDelete(Row row, V value, ButtonWidget leftOf)
+    {
+        return ButtonWidget.create(Lang.Button.DELETE)
+            .leftOf(leftOf, 1)
             .icon(Icons.TRASH_CAN)
-            .onPress(() -> set.delete(value))
-            .disableIf(() -> set.isDeleted(value))
+            .onPress(() -> this.getSet().delete(value))
+            .disableIf(() -> this.getSet().isDeleted(value))
             .useTextWidth()
             .build(row::addWidget);
-
-        return row;
     }
 }

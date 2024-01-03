@@ -7,12 +7,29 @@ import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.Set;
 
 public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableMap<V, ItemMap<V>>
 {
     /* Fields */
 
-    private final LinkedHashMap<String, V> items = new LinkedHashMap<>();
+    private final LinkedHashMap<String, V> items = new LinkedHashMap<>()
+    {
+        @Override
+        public V remove(Object key)
+        {
+            super.remove(key.toString() + "*");
+            return super.remove(key);
+        }
+
+        @Override
+        public boolean remove(Object key, Object value)
+        {
+            super.remove(key.toString() + "*", value);
+            return super.remove(key, value);
+        }
+    };
+
     private final transient LinkedHashMap<String, V> deleted = new LinkedHashMap<>();
     private final transient V defaultValue;
 
@@ -77,6 +94,12 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     }
 
     @Override
+    public Set<String> getResourceKeys()
+    {
+        return this.items.keySet();
+    }
+
+    @Override
     public V getDefaultValue()
     {
         return this.defaultValue;
@@ -86,6 +109,18 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     public ItemMap<V> create()
     {
         return new ItemMap<>(this.defaultValue).startWith(this.items).rules(this.rules.toArray(new ItemRule[0]));
+    }
+
+    @Override
+    public void addWildcard(String resourceKey)
+    {
+        this.items.put(this.getWildcard(resourceKey), this.items.getOrDefault(resourceKey, this.defaultValue));
+    }
+
+    @Override
+    public void removeWildcard(String resourceKey)
+    {
+        this.items.remove(this.getWildcard(resourceKey));
     }
 
     @Override

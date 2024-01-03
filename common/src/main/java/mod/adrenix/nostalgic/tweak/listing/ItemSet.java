@@ -10,8 +10,16 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
 {
     /* Fields */
 
-    private final LinkedHashSet<String> items = new LinkedHashSet<>();
     private final transient LinkedHashSet<String> deleted = new LinkedHashSet<>();
+    private final LinkedHashSet<String> items = new LinkedHashSet<>()
+    {
+        @Override
+        public boolean remove(Object o)
+        {
+            super.remove(o.toString() + "*");
+            return super.remove(o);
+        }
+    };
 
     /* Constructors */
 
@@ -51,6 +59,12 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
         return this.items;
     }
 
+    @Override
+    public LinkedHashSet<String> getResourceKeys()
+    {
+        return this.items;
+    }
+
     /**
      * @return The {@link LinkedHashSet} of deleted elements within this {@link ItemSet}.
      */
@@ -64,6 +78,18 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
     public ItemSet create()
     {
         return new ItemSet(this.rules.toArray(new ItemRule[0])).startWith(this.items);
+    }
+
+    @Override
+    public void addWildcard(String resourceKey)
+    {
+        this.items.add(this.getWildcard(resourceKey));
+    }
+
+    @Override
+    public void removeWildcard(String resourceKey)
+    {
+        this.items.remove(this.getWildcard(resourceKey));
     }
 
     @Override

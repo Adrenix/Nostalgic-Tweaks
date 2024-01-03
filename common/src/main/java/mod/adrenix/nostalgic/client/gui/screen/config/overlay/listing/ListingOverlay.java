@@ -13,6 +13,7 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -104,7 +105,7 @@ public interface ListingOverlay<V, L extends Listing<V, L>>
      * @param value A value that corresponds to the key, or the key itself if the listing is a set.
      * @return A new {@link RowMaker} instance.
      */
-    AbstractRow<?, ?> getRow(String key, V value);
+    @Nullable AbstractRow<?, ?> getRow(String key, V value);
 
     /**
      * Open the listing overlay.
@@ -222,20 +223,6 @@ public interface ListingOverlay<V, L extends Listing<V, L>>
     }
 
     /**
-     * Add a row to the database for searching.
-     *
-     * @param listKey A listing key string to get a row name from {@link #getLocalizedKey(String)}.
-     * @param row     A {@link AbstractRow} instance.
-     * @return The given {@link AbstractRow} instance.
-     */
-    default AbstractRow<?, ?> addToDatabase(String listKey, AbstractRow<?, ?> row)
-    {
-        this.getWidgets().database.put(this.getLocalizedKey(listKey), row);
-
-        return row;
-    }
-
-    /**
      * Creates and localizes the default rows for when a listing needs to build rows.
      */
     default void createListRows()
@@ -262,19 +249,12 @@ public interface ListingOverlay<V, L extends Listing<V, L>>
     {
         String key = entry.getKey().left();
         V value = entry.getKey().right();
+        AbstractRow<?, ?> row = this.getRow(key, value);
 
-        this.getWidgets().rowList.addBottomRow(this.createRow(key, value));
-    }
-
-    /**
-     * Create a new row from the given listing key and add it to the row search database.
-     *
-     * @param key   A listing key.
-     * @param value A value that is associated with the key.
-     * @return A new {@link AbstractRow} instance.
-     */
-    private AbstractRow<?, ?> createRow(String key, V value)
-    {
-        return this.addToDatabase(key, this.getRow(key, value));
+        if (row != null)
+        {
+            this.getWidgets().database.put(this.getLocalizedKey(key), row);
+            this.getWidgets().rowList.addBottomRow(row);
+        }
     }
 }

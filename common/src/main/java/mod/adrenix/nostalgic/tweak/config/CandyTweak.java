@@ -14,16 +14,35 @@ import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+
+import java.util.LinkedHashSet;
 
 // @formatter:off
 public interface CandyTweak
 {
     // Block
 
-    TweakFlag FIX_AMBIENT_OCCLUSION = TweakFlag.client(true, CandyGroup.BLOCK).reloadChunks().build();
     TweakFlag DISABLE_FLOWER_OFFSET = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
+
+    /**
+     * Generates the default fixed ambient occlusion blocks.
+     */
+    private static ItemSet defaultAmbientOcclusion()
+    {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
+
+        set.add(ItemCommonUtil.getResourceKey(Blocks.SOUL_SAND));
+        set.add(ItemCommonUtil.getResourceKey(Blocks.POWDER_SNOW));
+        set.add(ItemCommonUtil.getResourceKey(Blocks.COMPOSTER));
+        set.add(ItemCommonUtil.getResourceKey(Blocks.PISTON));
+
+        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
+    }
+
+    TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(defaultAmbientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
 
     // Hitbox Outlines
 

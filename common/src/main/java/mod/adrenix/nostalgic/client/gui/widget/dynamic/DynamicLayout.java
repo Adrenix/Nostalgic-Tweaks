@@ -280,7 +280,7 @@ interface DynamicLayout
                     return false;
 
                 return CacheHolder.isAnyExpired(cache.y, this.margin) || this.all.stream()
-                    .anyMatch(dynamic -> CacheHolder.isAnyExpired(dynamic.cache.y, dynamic.cache.height));
+                    .anyMatch(dynamic -> CacheHolder.isAnyExpired(dynamic.cache.y, dynamic.cache.height, dynamic.cache.visible));
             }
         }
 
