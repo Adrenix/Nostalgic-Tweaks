@@ -5,8 +5,8 @@ import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.tooltip.TooltipManager;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import net.minecraft.client.Minecraft;
@@ -222,6 +222,11 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
             {
                 this.widgets.stream().filter(DynamicWidget::isFocused).forEach(DynamicWidget::setUnfocused);
                 widget.setClickFocus();
+
+                this.setFocused(widget);
+
+                if (button == 0)
+                    this.setDragging(true);
 
                 isWidgetClicked = true;
                 break;
