@@ -9,8 +9,8 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 public enum ManageSection
 {
+    MENU_OPTIONS(Icons.MECHANICAL_TOOLS, Lang.Button.MENU_OPTIONS, new GroupMenuOptions()),
     IMPORT_AND_EXPORT(Icons.SAVE_FLOPPY, Lang.Button.IMPORT_AND_EXPORT, new GroupImportExport()),
     CREATE_BACKUP(Icons.ADD, Lang.Button.CREATE_BACKUP, new GroupCreateBackup()),
     VIEW_BACKUPS(Icons.BOOK_OPEN, Lang.Button.VIEW_BACKUPS, new GroupViewBackups()),
@@ -58,16 +59,13 @@ public enum ManageSection
     }
 
     /**
-     * If no section is active, then {@link ManageSection#IMPORT_AND_EXPORT} is activated and returned.
+     * If no section is active, then {@link ManageSection#MENU_OPTIONS} is activated and returned.
      *
      * @return The current section being view in the config manager overlay.
      */
     public static ManageSection getActive()
     {
-        return ManageSection.stream()
-            .filter(ManageSection::isActive)
-            .findFirst()
-            .orElse(ManageSection.IMPORT_AND_EXPORT);
+        return ManageSection.stream().filter(ManageSection::isActive).findFirst().orElse(ManageSection.MENU_OPTIONS);
     }
 
     /**

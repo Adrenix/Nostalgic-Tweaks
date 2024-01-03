@@ -356,8 +356,8 @@ public class ConfigWidgets implements WidgetManager
 
         if (query.isEmpty())
         {
-            if (this.configScreen.getCache().isPushed())
-                this.configScreen.getCache().pop();
+            if (ConfigScreen.SCREEN_CACHE.isPushed())
+                ConfigScreen.SCREEN_CACHE.pop(this.configScreen);
             else
                 this.populateFromProvider();
 

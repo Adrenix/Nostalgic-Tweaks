@@ -261,6 +261,7 @@ public interface Lang
         Translation MANAGE = from("manage");
         Translation DOWNLOAD = from("download");
         Translation RECONNECT = from("reconnect");
+        Translation MENU_OPTIONS = from("menu_options");
         Translation IMPORT_AND_EXPORT = from("import_and_export");
         Translation SERVER_OPERATIONS = from("server_operations");
         Translation TOGGLE_ALL_TWEAKS = from("toggle_all_tweaks");
@@ -574,6 +575,11 @@ public interface Lang
         Translation TITLE = from("title");
         Translation HOT_SWAP = from("hot_swap");
         Translation HOT_SWAP_INFO = from("hot_swap.info");
+        Translation TOGGLE_VIEW_SCREEN = from("menu_options.view_screen");
+        Translation TOGGLE_VIEW_INFO = from("menu_options.view_info");
+        Translation PERSISTENT_SCREEN = from("menu_options.persistent_screen");
+        Translation PERSISTENT_INFO = from("menu_options.persistent_info");
+        Translation PERSISTENCE = from("menu_options.persistence");
         Translation IMPORT_ADVISORY_TITLE = from("import_advisory.title");
         Translation IMPORT_ADVISORY_MESSAGE = from("import_advisory.message");
         Translation IMPORT_EXPORT_HEADER = from("import_export.header");

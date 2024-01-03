@@ -5,15 +5,14 @@ import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.GroupRow;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.RowProvider;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
-import mod.adrenix.nostalgic.client.gui.widget.list.AbstractRow;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.container.Category;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.RunUtil;
-import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
@@ -26,18 +25,22 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
 {
+    /* Static */
+
+    static final ScreenCache SCREEN_CACHE = new ScreenCache();
+
     /* Fields */
 
     private ConfigWidgets configWidgets;
     private Container category;
     private final FlagTimer timer;
-    private final Cache cache;
+    private boolean visible = true;
+    private boolean initialized = false;
 
     /* Constructor */
 
@@ -47,7 +50,6 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
 
         this.category = Category.MOD;
         this.timer = FlagTimer.create(1L, TimeUnit.SECONDS).build();
-        this.cache = new Cache();
 
         if (this.minecraft.level != null)
             TweakPool.setAllFail();
@@ -62,8 +64,24 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     {
         super.init();
 
-        if (this.cache.rowProvider.equals(RowProvider.DEFAULT))
-            this.configWidgets.getTabs().stream().findFirst().ifPresent(this::setFocused);
+        if (!this.initialized)
+        {
+            if (ModTweak.PERSISTENT_CONFIG_SCREEN.get())
+                SCREEN_CACHE.pop(this);
+            else
+                SCREEN_CACHE.reset();
+        }
+
+        this.initialized = true;
+
+        if (SCREEN_CACHE.rowProvider.equals(RowProvider.DEFAULT))
+        {
+            this.configWidgets.getTabs()
+                .stream()
+                .filter(tab -> tab.getCategory().equals(SCREEN_CACHE.category))
+                .findFirst()
+                .ifPresent(this::setFocused);
+        }
     }
 
     @Override
@@ -82,14 +100,6 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     public void setWidgetManager(ConfigWidgets configWidgets)
     {
         this.configWidgets = configWidgets;
-    }
-
-    /**
-     * @return The current cache instance for this screen.
-     */
-    public Cache getCache()
-    {
-        return this.cache;
     }
 
     /**
@@ -182,9 +192,9 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     @Override
     public void resize(Minecraft minecraft, int width, int height)
     {
-        this.cache.push();
+        SCREEN_CACHE.push(this);
         super.resize(minecraft, width, height);
-        this.cache.pop();
+        SCREEN_CACHE.pop(this);
     }
 
     /**
@@ -204,6 +214,9 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
 
         if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_S)
             this.saveConfig();
+
+        if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_L)
+            this.visible = !this.visible;
 
         if (KeyboardUtil.isGoingLeft(keyCode))
             this.configWidgets.selectTabLeft();
@@ -240,12 +253,13 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        if (this.minecraft.level != null)
+        if (this.minecraft.level != null && this.visible)
             graphics.fillGradient(0, 0, this.width, this.height, 0x32101010, 0x01000000);
         else
             Panorama.render(graphics, partialTick);
 
-        super.render(graphics, mouseX, mouseY, partialTick);
+        if (this.visible)
+            super.render(graphics, mouseX, mouseY, partialTick);
     }
 
     /**
@@ -286,6 +300,16 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
      * {@inheritDoc}
      */
     @Override
+    public void onClose()
+    {
+        SCREEN_CACHE.push(this);
+        super.onClose();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void onFinish()
     {
         if (!this.isSavable())
@@ -307,12 +331,12 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
                 else
                 {
                     ConfigScreen.this.minecraft.setScreen(ConfigScreen.this);
-                    ConfigScreen.this.cache.pop();
+                    SCREEN_CACHE.pop(ConfigScreen.this);
                 }
             }
         }
 
-        this.cache.push();
+        SCREEN_CACHE.push(this);
 
         Component title = Lang.Affirm.QUIT_TITLE.get();
         Component body = Lang.Affirm.QUIT_BODY.get();
@@ -321,103 +345,5 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
         ConfirmScreen confirmScreen = new ConfirmScreen(new CancelConsumer(), title, body, discard, cancel);
 
         this.minecraft.setScreen(confirmScreen);
-    }
-
-    /* Cache */
-
-    public class Cache
-    {
-        private final HashSet<Container> containers = new HashSet<>();
-        private RowProvider rowProvider = RowProvider.get();
-        private boolean pushed = false;
-        private double scrollAmount = 0.0D;
-        private String search = "";
-
-        private Cache()
-        {
-        }
-
-        /**
-         * @return Whether the cache has already been pushed into memory.
-         */
-        public boolean isPushed()
-        {
-            return this.pushed;
-        }
-
-        /**
-         * @return The config widgets instance from the parent config screen.
-         */
-        private ConfigWidgets getWidgets()
-        {
-            return ConfigScreen.this.getWidgetManager();
-        }
-
-        /**
-         * Caches important widget values so that those values can be restored at a later point in time.
-         */
-        public void push()
-        {
-            this.pushed = true;
-
-            this.containers.clear();
-            this.getWidgets().getRowList().getRows().forEach(this::saveOpenedGroups);
-
-            this.search = this.getWidgets().getQuery();
-            this.scrollAmount = this.getWidgets().getRowList().getScrollAmount();
-            this.rowProvider = RowProvider.get();
-        }
-
-        /**
-         * Restores important widget values cached from an earlier point in time.
-         */
-        public void pop()
-        {
-            this.pushed = false;
-            this.rowProvider.useAndThen(() -> this.getWidgets().populateFromProvider());
-
-            if (!this.search.isEmpty())
-                this.getWidgets().setQuery(this.search);
-
-            this.openSavedGroups();
-            this.getWidgets().getRowList().setSmoothScrollAmount(this.scrollAmount);
-        }
-
-        /**
-         * Checks if the given row is a group row, and if so, adds the group row's container to the opened containers
-         * cache if the group row is expanded.
-         *
-         * @param row A row list row instance to check.
-         */
-        private void saveOpenedGroups(AbstractRow<?, ?> row)
-        {
-            ClassUtil.cast(row, GroupRow.class)
-                .stream()
-                .filter(GroupRow::isExpanded)
-                .map(GroupRow::getContainer)
-                .forEach(this.containers::add);
-        }
-
-        /**
-         * Opens all previously expanded group rows that had their containers cached.
-         */
-        private void openSavedGroups()
-        {
-            if (this.containers.isEmpty())
-                return;
-
-            int openedSize = this.containers.size();
-            HashSet<AbstractRow<?, ?>> rows = new HashSet<>(this.getWidgets().getRowList().getRows());
-
-            CollectionUtil.fromCast(rows, GroupRow.class)
-                .filter(group -> this.containers.contains(group.getContainer()))
-                .forEachOrdered(group -> {
-                    this.containers.remove(group.getContainer());
-                    group.expand();
-                });
-
-            if (openedSize != this.containers.size())
-                this.openSavedGroups();
-        }
     }
 }

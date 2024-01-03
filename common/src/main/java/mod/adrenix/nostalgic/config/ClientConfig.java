@@ -49,6 +49,7 @@ public class ClientConfig implements ConfigMeta
         public StringSet favoriteTweaks = ModTweak.FAVORITE_TWEAKS.fromJson("favoriteTweaks");
         public boolean openedConfigScreen = ModTweak.OPENED_CONFIG_SCREEN.fromJson("openedConfigScreen");
         public boolean openedSupporterScreen = ModTweak.OPENED_SUPPORTER_SCREEN.fromJson("openedSupporterScreen");
+        public boolean persistentConfigScreen = ModTweak.PERSISTENT_CONFIG_SCREEN.fromJson("persistentConfigScreen");
 
         // Menu Hotkeys
 
