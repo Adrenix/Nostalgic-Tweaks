@@ -16,6 +16,7 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
 
     private final TweakListing.Builder<?, V, T> builder;
     private final CacheHolder<T> cacheHolder;
+    private final T emptyList;
     private final T diskList;
     private final T defaultList;
     private final T receivedList;
@@ -30,7 +31,10 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
         this.defaultList = builder.defaultList;
         this.receivedList = builder.defaultList.create();
         this.diskList = builder.defaultList.create();
+        this.emptyList = builder.defaultList.create();
         this.cacheHolder = CacheHolder.with(this.defaultList.create(), this.defaultList.create(), this::getCacheMode);
+
+        this.emptyList.clear();
     }
 
     /* Methods */
@@ -170,7 +174,7 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
         if (this.isIgnored())
             return this.fromDisk();
 
-        return this.getDefault();
+        return this.emptyList;
     }
 
     @Override
