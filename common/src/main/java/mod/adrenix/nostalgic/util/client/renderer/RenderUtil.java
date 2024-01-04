@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -48,6 +49,7 @@ public abstract class RenderUtil
     private static int batchIndex = 0;
     private static TextureLayer layer = TextureLayer.DEFAULT;
     private static TextureLocation texture;
+    private static RenderType renderType;
 
     private static final ArrayDeque<Runnable> DEFERRED_QUEUE = new ArrayDeque<>();
     private static final ArrayDeque<Scissor> SCISSOR_QUEUE = new ArrayDeque<>();
@@ -321,6 +323,17 @@ public abstract class RenderUtil
     }
 
     /**
+     * Set the render type to use when the batch is drawn, or to use immediately.
+     *
+     * @param type A {@link RenderType} instance.
+     */
+    @PublicAPI
+    public static void setRenderType(RenderType type)
+    {
+        renderType = type;
+    }
+
+    /**
      * Get the tesselator builder being used by this utility. This does not start the buffer for any draw calls. That
      * must be handled separately.
      *
@@ -360,7 +373,7 @@ public abstract class RenderUtil
     public static void endFill(BufferBuilder builder)
     {
         if (builder.building())
-            BufferUploader.drawWithShader(builder.end());
+            draw(builder);
 
         RenderSystem.disableBlend();
     }
@@ -394,7 +407,7 @@ public abstract class RenderUtil
     @PublicAPI
     public static void endLine(BufferBuilder builder)
     {
-        BufferUploader.drawWithShader(builder.end());
+        draw(builder);
 
         RenderSystem.lineWidth(1.0F);
         RenderSystem.disableBlend();
@@ -467,7 +480,8 @@ public abstract class RenderUtil
     @PublicAPI
     public static void endTexture(BufferBuilder builder)
     {
-        BufferUploader.drawWithShader(builder.end());
+        draw(builder);
+
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
 
@@ -524,6 +538,27 @@ public abstract class RenderUtil
     }
 
     /**
+     * Draw to the screen with the set render type if it is available.
+     *
+     * @param builder The {@link BufferBuilder} to end and draw with.
+     */
+    private static void draw(BufferBuilder builder)
+    {
+        if (renderType == null)
+            BufferUploader.drawWithShader(builder.end());
+        else
+        {
+            BufferBuilder.RenderedBuffer rendered = builder.end();
+            renderType.setupRenderState();
+            BufferUploader.drawWithShader(rendered);
+            renderType.clearRenderState();
+
+            if (!isBatching)
+                renderType = null;
+        }
+    }
+
+    /**
      * Ends batched fill queue.
      */
     private static void endBatchingFills(BufferBuilder builder)
@@ -539,7 +574,8 @@ public abstract class RenderUtil
         while (!FILL_VERTICES.isEmpty())
             FILL_VERTICES.pollLast().accept(builder);
 
-        BufferUploader.drawWithShader(builder.end());
+        draw(builder);
+
         RenderSystem.disableBlend();
     }
 
@@ -571,7 +607,7 @@ public abstract class RenderUtil
                 // @formatter:on
             });
 
-            BufferUploader.drawWithShader(builder.end());
+            draw(builder);
         });
 
         RenderSystem.lineWidth(1.0F);
@@ -604,7 +640,7 @@ public abstract class RenderUtil
                 else
                     queue.forEach(buffer -> blit256(buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba));
 
-                BufferUploader.drawWithShader(builder.end());
+                draw(builder);
             });
 
             layer.brightMap.forEach((location, queue) -> {
@@ -618,7 +654,7 @@ public abstract class RenderUtil
 
                         RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
                         blitTexture(sheet, builder, buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
-                        BufferUploader.drawWithShader(builder.end());
+                        draw(builder);
                     });
                 }
                 else
@@ -629,7 +665,7 @@ public abstract class RenderUtil
 
                         RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
                         blit256(buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
-                        BufferUploader.drawWithShader(builder.end());
+                        draw(builder);
                     });
                 }
             });
@@ -721,6 +757,7 @@ public abstract class RenderUtil
 
         fillZOffset = 0;
         isBatching = false;
+        renderType = null;
 
         if (DEFERRED_QUEUE.isEmpty())
             return;
@@ -1161,7 +1198,8 @@ public abstract class RenderUtil
             builder.vertex(matrix, x, y, 0.0F).color(argb).endVertex();
         }
 
-        BufferUploader.drawWithShader(builder.end());
+        draw(builder);
+
         RenderSystem.disableBlend();
     }
 

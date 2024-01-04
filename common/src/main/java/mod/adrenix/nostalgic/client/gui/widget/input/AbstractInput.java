@@ -6,9 +6,9 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.IconManager;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
+import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
-import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
@@ -887,7 +887,10 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 int y1 = startY + 1 + GuiUtil.textHeight();
                 Color cursorColor = this.getBuilder().cursorVerticalColor;
 
-                RenderUtil.deferredRenderer(() -> graphics.fill(RenderType.guiOverlay(), x0, y0, x1, y1, cursorColor.get()));
+                RenderUtil.deferredRenderer(() -> {
+                    RenderUtil.setRenderType(RenderType.guiOverlay());
+                    RenderUtil.fill(graphics, x0, x1, y0, y1, cursorColor.get());
+                });
             }
             else
             {
@@ -944,7 +947,10 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int x1 = maxX;
         int y1 = maxY;
 
-        RenderUtil.deferredRenderer(() -> graphics.fill(RenderType.guiTextHighlight(), x0, y0, x1, y1, 0xFF0000FF));
+        RenderUtil.deferredRenderer(() -> {
+            RenderUtil.setRenderType(RenderType.guiTextHighlight());
+            RenderUtil.fill(graphics, x0, x1, y0, y1, 0xFF0000FF);
+        });
     }
 
     /**
