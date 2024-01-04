@@ -10,6 +10,22 @@ import java.util.Set;
 
 public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing<V, L>
 {
+    /* Static */
+
+    public static final String WILDCARD = "*";
+
+    /**
+     * Get a set of resource keys to add to a listing for a wildcard entry.
+     *
+     * @param block A {@link Block} to get resource key data from.
+     * @return A {@link Set} containing the block resource key and a wildcard key.
+     */
+    public static Set<String> getWildcardKeys(Block block)
+    {
+        String resourceKey = ItemCommonUtil.getResourceKey(block);
+        return Set.of(resourceKey, resourceKey + WILDCARD);
+    }
+
     /* Fields */
 
     protected final transient HashSet<ItemRule> rules = new HashSet<>();
@@ -73,7 +89,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     protected String getWildcard(String resourceKey)
     {
-        return resourceKey + "*";
+        return resourceKey + WILDCARD;
     }
 
     /**
@@ -84,7 +100,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean isWildcard(String resourceKey)
     {
-        return resourceKey.endsWith("*");
+        return resourceKey.endsWith(WILDCARD);
     }
 
     /**
@@ -97,7 +113,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean containsWildcard(String resourceKey)
     {
-        return this.getResourceKeys().contains(resourceKey + "*");
+        return this.getResourceKeys().contains(resourceKey + WILDCARD);
     }
 
     /**
@@ -113,7 +129,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             if (!this.isWildcard(key))
                 continue;
 
-            Block wildcard = ItemCommonUtil.getBlock(key.replace("*", ""));
+            Block wildcard = ItemCommonUtil.getBlock(key.replace(WILDCARD, ""));
 
             if (ClassUtil.isInstanceOf(block, wildcard.getClass()))
                 return true;
@@ -135,7 +151,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             if (!this.isWildcard(key))
                 continue;
 
-            Item wildcard = ItemCommonUtil.getItem(key.replace("*", ""));
+            Item wildcard = ItemCommonUtil.getItem(key.replace(WILDCARD, ""));
 
             if (ClassUtil.isInstanceOf(item, wildcard.getClass()))
                 return true;
