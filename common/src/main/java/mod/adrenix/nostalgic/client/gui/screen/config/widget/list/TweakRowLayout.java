@@ -139,7 +139,6 @@ public class TweakRowLayout
         this.favorite = ButtonWidget.create()
             .onPress(() -> FavoriteTweak.toggle(this.tweak))
             .icon(() -> FavoriteTweak.isPresent(this.tweak) ? Icons.STAR_ON : Icons.STAR_OFF)
-            .hoverIcon(Icons.STAR_ON)
             .tooltip(Lang.Button.FAVORITE, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.supply(() -> FavoriteTweak.isAbsent(this.tweak), Lang.TweakRow.STAR, Lang.TweakRow.STAR_OFF), 40)
             .leftOf(this.status, 1)
