@@ -51,8 +51,8 @@ public abstract class ClientKeyMapping
      */
     public static void register()
     {
-        KeyMappingRegistry.register(ClientKeyMapping.CONFIG_KEY);
-        KeyMappingRegistry.register(ClientKeyMapping.FOG_KEY);
+        KeyMappingRegistry.register(CONFIG_KEY);
+        KeyMappingRegistry.register(FOG_KEY);
 
         ClientScreenInputEvent.KEY_PRESSED_POST.register((minecraft, screen, keyCode, scanCode, modifiers) -> {
             Optional<KeyMapping> mapping = KeyboardUtil.find(Lang.Binding.OPEN_CONFIG);
@@ -64,10 +64,10 @@ public abstract class ClientKeyMapping
         });
 
         ClientTickEvent.CLIENT_POST.register(minecraft -> {
-            while (ClientKeyMapping.CONFIG_KEY.consumeClick())
+            while (CONFIG_KEY.consumeClick())
                 ClientEventHelper.gotoSettingsIfPossible(minecraft);
 
-            while (ClientKeyMapping.FOG_KEY.consumeClick())
+            while (FOG_KEY.consumeClick())
                 ClientEventHelper.cycleRenderDistance(minecraft);
         });
     }
