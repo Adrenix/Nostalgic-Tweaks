@@ -339,6 +339,21 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         });
     }
 
+    /**
+     * Remove the focus of any focused widget within the row list.
+     */
+    @PublicAPI
+    public void clearFocus()
+    {
+        this.focusedRow = null;
+        this.visibleRows.stream()
+            .map(AbstractRow::getFocusedWidget)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .ifPresent(focused -> focused.setFocused(false));
+    }
+
     /* Methods */
 
     /**
@@ -746,14 +761,6 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             return true;
 
         boolean isWidgetClicked = false;
-        this.focusedRow = null;
-
-        this.visibleRows.stream()
-            .map(AbstractRow::getFocusedWidget)
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .findFirst()
-            .ifPresent(widget -> widget.setFocused(false));
 
         if (this.isMouseOver(mouseX, mouseY))
         {
@@ -761,13 +768,21 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
                 boolean isClicked = widget.mouseClicked(mouseX, mouseY, button);
 
                 if (isClicked)
+                {
+                    this.clearFocus();
                     widget.setClickFocus();
+                }
 
                 return isClicked;
             });
         }
 
-        return isWidgetClicked;
+        if (isWidgetClicked)
+            return true;
+
+        this.clearFocus();
+
+        return false;
     }
 
     /**
