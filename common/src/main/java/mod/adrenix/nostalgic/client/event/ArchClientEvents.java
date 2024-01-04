@@ -6,13 +6,15 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.ReloadListenerRegistry;
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
+import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeSplash;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.animate.AnimationImpl;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.minecraft.server.packs.PackType;
 
 /**
@@ -45,7 +47,9 @@ public abstract class ArchClientEvents
         ClientGuiEvent.RENDER_POST.register((screen, graphics, mouseX, mouseY, delta) -> {
             Tooltip.render(screen, graphics);
             ModToast.update(screen);
-            GuiUtil.renderDebug(graphics);
+
+            if (screen instanceof EnhancedScreen<?, ?> || screen instanceof Overlay)
+                GuiUtil.renderDebug(graphics);
         });
 
         // Handles mod instructions that need run every tick
