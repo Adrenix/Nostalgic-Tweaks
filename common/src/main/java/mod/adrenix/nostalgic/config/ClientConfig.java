@@ -153,8 +153,8 @@ public class ClientConfig implements ConfigMeta
         // Block
 
         public ItemSet ambientOcclusionBlocks = CandyTweak.AMBIENT_OCCLUSION_BLOCKS.fromJson("ambientOcclusionBlocks");
+        public ItemSet disableBlockOffsets = CandyTweak.DISABLE_BLOCK_OFFSETS.fromJson("disableBlockOffsets");
         public boolean disableAllOffset = CandyTweak.DISABLE_ALL_OFFSET.fromJson("disableAllOffset");
-        public boolean disableFlowerOffset = CandyTweak.DISABLE_FLOWER_OFFSET.fromJson("disableFlowerOffset");
         public MissingTexture oldMissingTexture = CandyTweak.OLD_MISSING_TEXTURE.fromJson("oldMissingTexture");
 
         // Hitbox Outlines

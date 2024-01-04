@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.tweak.container.group.CandyGroup;
 import mod.adrenix.nostalgic.tweak.enums.*;
 import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
+import mod.adrenix.nostalgic.tweak.listing.ItemListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
 import mod.adrenix.nostalgic.util.ModTracker;
@@ -23,8 +24,6 @@ public interface CandyTweak
 {
     // Block
 
-    TweakFlag DISABLE_FLOWER_OFFSET = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
-    TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
 
     /**
@@ -34,15 +33,28 @@ public interface CandyTweak
     {
         LinkedHashSet<String> set = new LinkedHashSet<>();
 
-        set.add(ItemCommonUtil.getResourceKey(Blocks.SOUL_SAND));
         set.add(ItemCommonUtil.getResourceKey(Blocks.POWDER_SNOW));
         set.add(ItemCommonUtil.getResourceKey(Blocks.COMPOSTER));
-        set.add(ItemCommonUtil.getResourceKey(Blocks.PISTON));
+
+        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
+    }
+
+    /**
+     * Generates the default disabled block offsets.
+     */
+    private static ItemSet defaultDisabledOffsets()
+    {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
+
+        set.addAll(ItemListing.getWildcardKeys(Blocks.POPPY));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.ROSE_BUSH));
 
         return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
     }
 
     TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(defaultAmbientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(defaultDisabledOffsets(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+    TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
 
     // Hitbox Outlines
 

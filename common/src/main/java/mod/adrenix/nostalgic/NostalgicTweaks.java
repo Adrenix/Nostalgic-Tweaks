@@ -258,6 +258,16 @@ public class NostalgicTweaks
 
     /* - Initialization */
 
+    private static boolean initialized = false;
+
+    /**
+     * @return Check whether a mixin is getting mod data too early.
+     */
+    public static boolean isMixinEarly()
+    {
+        return !initialized;
+    }
+
     /**
      * Instructions for when the mod is initialized by a logical server.
      */
@@ -265,6 +275,8 @@ public class NostalgicTweaks
     {
         PacketRegistry.register();
         ConfigCache.initServer();
+
+        initialized = true;
 
         LOGGER.warn("Nostalgic Tweaks server support is still in-development");
         LOGGER.warn("Please report any problems you encounter");
@@ -278,6 +290,8 @@ public class NostalgicTweaks
     {
         PacketRegistry.register();
         ConfigCache.initClient();
+
+        initialized = true;
 
         LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
 

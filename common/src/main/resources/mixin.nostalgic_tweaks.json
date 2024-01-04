@@ -6,6 +6,7 @@
   "priority": 1001,
   "client": [
     "candy.ambient_occlusion_blocks.BlockBehaviourMixin",
+    "candy.disabled_block_offsets.BlockStateBaseMixin",
     "candy.uncap_title_fps.MinecraftMixin"
   ]
 }
