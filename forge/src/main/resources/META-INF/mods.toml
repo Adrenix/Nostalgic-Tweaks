@@ -19,6 +19,15 @@ displayURL = "${mod_curse}"
 logoFile = "nt_forge_logo.png"
 displayTest = "NONE"
 
+[[mixins]]
+config = "mixin.nostalgic_tweaks.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-duck.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-forge.json"
+
 [[dependencies.nostalgic_tweaks]]
 modId = "neoforge"
 type = "required"
