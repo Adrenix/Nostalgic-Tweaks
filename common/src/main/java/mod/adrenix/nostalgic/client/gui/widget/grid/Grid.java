@@ -240,7 +240,9 @@ public class Grid extends DynamicWidget<GridBuilder, Grid>
             });
         }
 
+        DynamicWidget.syncWithoutCache(this.cells.stream().map(Cell::getWidget).toList());
         DynamicWidget.syncWithoutCache(this.cells);
+
         this.setHeight(this.cells.stream().mapToInt(Cell::getEndY).max().orElse(this.getEndY()) - this.getY());
 
         this.cellsPerRow = cellsPerRow;
