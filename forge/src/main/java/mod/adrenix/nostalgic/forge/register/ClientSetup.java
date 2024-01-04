@@ -16,7 +16,7 @@ import net.neoforged.neoforge.client.gui.ModListScreen;
 
 @Mod.EventBusSubscriber(
     modid = NostalgicTweaks.MOD_ID,
-    bus = Mod.EventBusSubscriber.Bus.FORGE,
+    bus = Mod.EventBusSubscriber.Bus.MOD,
     value = Dist.CLIENT
 )
 public abstract class ClientSetup
