@@ -71,7 +71,7 @@ class ScreenCache
 
         this.openSavedGroups(screen);
 
-        screen.getWidgetManager().getRowList().setSmoothScrollAmount(this.scrollAmount);
+        screen.getWidgetManager().getRowList().setScrollAmount(this.scrollAmount);
     }
 
     /**
