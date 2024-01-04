@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.ambient_occlusion_blocks;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +23,7 @@ public abstract class BlockBehaviourMixin
     )
     private boolean NT$isCollisionShapeFullBlock(boolean isCollisionShapeFullBlock, BlockState state)
     {
-        if (!CandyTweak.AMBIENT_OCCLUSION_BLOCKS.get().containsBlock(state.getBlock()) || !ModTweak.ENABLED.get())
+        if (!CandyTweak.AMBIENT_OCCLUSION_BLOCKS.get().containsBlock(state.getBlock()))
             return isCollisionShapeFullBlock;
 
         return true;
