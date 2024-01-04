@@ -332,9 +332,6 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
             double maxScrollAmount = this.getMaxScrollAmount();
             double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 20.0D, 40.0D);
 
-            if (this.getBuilder().animation.isFinished())
-                this.lastScrollTo = scrollAmount;
-
             if (scrollAmount >= maxScrollAmount || this.lastScrollDelta != deltaY)
             {
                 this.getBuilder().animation.reset();
@@ -352,9 +349,6 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
 
             this.lastScrollDelta = deltaY;
 
-            if (this.getBuilder().animation.isFinished())
-                this.getBuilder().animation.reset();
-
             this.getBuilder().animation.play();
         }
         else
@@ -362,7 +356,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
             double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 4.0D, 16.0D);
 
             this.setScrollAmount(this.scrollAmount - deltaY * averageScrollAmount);
-            this.scrollTo = scrollAmount;
+            this.scrollTo = this.scrollAmount;
         }
 
         return true;
@@ -378,6 +372,11 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
 
         if (this.getBuilder().animation.isNotFinished())
             this.setScrollAmount(Mth.lerp(this.getBuilder().animation.getValue(), this.lastScrollTo, this.scrollTo));
+        else
+        {
+            this.getBuilder().animation.reset();
+            this.lastScrollTo = this.scrollAmount;
+        }
 
         boolean isMaxReached = this.getScrollAmount() >= this.getMaxScrollAmount() && this.scrollTo >= this.getMaxScrollAmount();
 
