@@ -89,7 +89,6 @@ public class StatusOverlay
             .forceRelativeY()
             .alignRowHeights()
             .extendWidthToScreenEnd(0)
-            .extendHeightToScreenEnd(0)
             .build(this.overlay::addWidget);
 
         this.helpGrid = Grid.create(this.overlay, () -> this.overlay.getWidth() > 400 ? 3 : 2)
@@ -98,7 +97,6 @@ public class StatusOverlay
             .forceRelativeY()
             .alignRowHeights()
             .extendWidthToScreenEnd(0)
-            .extendHeightToScreenEnd(0)
             .build(this.overlay::addWidget);
 
         this.clientGroup = Group.create(this.overlay)
