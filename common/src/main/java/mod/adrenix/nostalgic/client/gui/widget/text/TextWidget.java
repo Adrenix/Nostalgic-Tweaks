@@ -1,10 +1,10 @@
 package mod.adrenix.nostalgic.client.gui.widget.text;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.client.gui.DrawText;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
+import mod.adrenix.nostalgic.util.client.gui.DrawText;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -165,7 +165,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
             this.setWidth(maxWidth);
         }
 
-        this.setAndUpdate(MultiLineText.create(format, this.width));
+        this.setAndUpdate(MultiLineText.create(format, this.width - this.getIconWidth()));
     }
 
     /**
@@ -186,6 +186,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
      */
     private int getIconWidth()
     {
+        if (this.iconManager.isEmpty())
+            return 0;
+
         return this.iconManager.getWidth() + this.getBuilder().iconMargin;
     }
 
@@ -260,12 +263,18 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     /**
      * Center a multi-text line based on width. The result will not be relative to the x-coordinate of this widget.
      *
-     * @param line A {@link MultiLineText.Line} instance.
+     * @param line  A {@link MultiLineText.Line} instance.
+     * @param index The index of the line within the lines list.
      * @return A centered float using this widget's width and the line's width.
      */
-    private float getCenteredLine(MultiLineText.Line line)
+    private float getCenteredLine(MultiLineText.Line line, int index)
     {
-        return (this.getWidth() / 2.0F) - line.getWidth() / 2.0F;
+        int lineWidth = line.getWidth();
+
+        if (index == 0 && this.iconManager.isPresent())
+            lineWidth -= this.getIconWidth();
+
+        return (this.getWidth() / 2.0F) - lineWidth / 2.0F;
     }
 
     /**
@@ -430,13 +439,18 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
             graphics.pose().pushPose();
             graphics.pose().translate(this.getX(), centerY, 0.0F);
 
-            this.iconManager.get().pos(Math.abs((this.getWidth() / 2) - this.getIconWidth()), 0);
-            this.iconManager.render(graphics, mouseX, mouseY, partialTick);
-
             CollectionUtil.forLoop(this.text.getLines(), (line, index) -> DrawText.begin(graphics, line.getText())
-                .pos(this.getCenteredLine(line), index * this.getBuilder().lineHeight)
+                .pos(this.getCenteredLine(line, index), index * this.getBuilder().lineHeight)
                 .color(this.getTextColor(isHighlightPass))
                 .draw());
+
+            if (!this.text.getLines().isEmpty())
+            {
+                int posX = (int) this.getCenteredLine(this.text.getLines().get(0), 0) - this.getIconWidth();
+
+                this.iconManager.pos(posX, 0);
+                this.iconManager.render(graphics, mouseX, mouseY, partialTick);
+            }
 
             graphics.pose().popPose();
         }
