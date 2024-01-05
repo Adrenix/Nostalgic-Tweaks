@@ -17,7 +17,6 @@ import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
-import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -1022,7 +1021,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             return;
 
         int endY = row.getEndY();
-        int offset = this.getBuilder().separatorPadding + (MathUtil.isOdd(this.height) ? 1 : 0);
+        int offset = this.getBuilder().separatorPadding;
         int height = this.getBuilder().separatorHeight + offset;
         Color color = this.getBuilder().separatorColor;
 
