@@ -10,8 +10,8 @@ import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.Gradient;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.network.chat.Component;
 
 import java.util.LinkedHashSet;
@@ -57,6 +57,7 @@ public class MessageOverlay
     private int padding = 2;
     private int maxSize = 200;
     private double resizePercentage = 0.35D;
+    private boolean centerAlign = true;
 
     /* Constructor */
 
@@ -122,6 +123,17 @@ public class MessageOverlay
     }
 
     /**
+     * Do not center the text. This will align the text to the left side of the overlay window.
+     */
+    @PublicAPI
+    public MessageOverlay alignLeft()
+    {
+        this.centerAlign = false;
+
+        return this;
+    }
+
+    /**
      * Add a button that will be above the 'okay' button. The button factory's positioning and width data will be
      * overridden by the final overlay is built.
      *
@@ -147,6 +159,7 @@ public class MessageOverlay
             case SUCCESS -> Icons.SMALL_CHECK;
             case SEARCH -> Icons.SMALL_SEARCH;
             case ERROR -> Icons.SMALL_RED_X;
+            case HELP -> Icons.SMALL_INFO;
             case WARNING -> Icons.SMALL_WARNING;
             case RED_WARNING -> Icons.SMALL_RED_WARNING;
         };
@@ -155,6 +168,7 @@ public class MessageOverlay
         {
             case SUCCESS -> Gradient.vertical(new Color(0x325632, 220), new Color(0x212D21, 220));
             case SEARCH -> Gradient.vertical(new Color(0x337087, 220), new Color(0x132A33, 220));
+            case HELP -> Gradient.vertical(new Color(0x2A4772, 220), new Color(0x1C304C, 220));
             case ERROR -> Gradient.vertical(new Color(0x632B2B, 220), new Color(0x281111, 220));
             case WARNING -> Gradient.vertical(new Color(0x77500D, 220), new Color(0x2D1F05, 220));
             case RED_WARNING -> Gradient.vertical(new Color(0x632B2A, 220), new Color(0x281111, 220));
@@ -167,22 +181,21 @@ public class MessageOverlay
             .padding(this.padding)
             .build();
 
-        TextWidget message = TextWidget.create(this.message)
-            .pos(this.padding, this.padding)
-            .extendWidthToScreenEnd(this.padding)
-            .centerAligned()
-            .build(overlay::addWidget);
+        TextWidget message = TextWidget.create(this.message).extendWidthToScreenEnd(0).build(overlay::addWidget);
+
+        if (this.centerAlign)
+            message.getBuilder().centerAligned();
 
         ButtonWidget last = null;
 
         for (ButtonBuilder factory : this.buttons)
-            last = factory.below(message, this.padding).extendWidthToScreenEnd(this.padding).build(overlay::addWidget);
+            last = factory.below(message, this.padding).extendWidthToScreenEnd(0).build(overlay::addWidget);
 
         ButtonWidget.create(Lang.Button.OKAY)
-            .onPress(overlay::close)
-            .below(last != null ? last : message, this.padding)
-            .extendWidthToScreenEnd(this.padding)
             .icon(Icons.GREEN_CHECK)
+            .below(last != null ? last : message, this.padding)
+            .extendWidthToScreenEnd(0)
+            .onPress(overlay::close)
             .build(overlay::addWidget);
 
         return overlay;

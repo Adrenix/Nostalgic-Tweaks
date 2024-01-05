@@ -16,6 +16,7 @@ public enum MessageType
     SUCCESS,
     SEARCH,
     ERROR,
+    HELP,
     WARNING,
     RED_WARNING
 }

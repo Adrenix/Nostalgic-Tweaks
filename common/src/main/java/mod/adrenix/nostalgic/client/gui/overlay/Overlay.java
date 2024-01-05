@@ -927,7 +927,7 @@ public class Overlay extends Screen
         if (this.builder.infoMessage == null)
             return;
 
-        MessageOverlay.create(MessageType.SEARCH, Lang.Button.HELP.get(), this.builder.infoMessage)
+        MessageOverlay.create(MessageType.HELP, Lang.Button.HELP.get(), this.builder.infoMessage)
             .setResizePercentage(0.65D)
             .build()
             .open();
@@ -1696,10 +1696,10 @@ public class Overlay extends Screen
         int height = this.getInsideWidgetHeight();
 
         if (this.width != width)
-            this.setWidth(width + (this.hasBorder ? 16 : 0) + this.scrollbarSize);
+            this.setWidth(width + this.padding + (this.hasBorder ? 16 : 0) + this.scrollbarSize);
 
         if (this.height != height)
-            this.setHeight(height + (this.hasBorder ? 23 : 0) + this.scrollbarSize);
+            this.setHeight(height + this.padding + (this.hasBorder ? 23 : 0) + this.scrollbarSize);
 
         if (this.width != width || this.height != height)
         {
@@ -1718,11 +1718,11 @@ public class Overlay extends Screen
     {
         this.updateWidgets();
 
-        int width = this.getInsideWidgetWidth();
+        int width = this.getInsideWidgetWidth() + this.padding;
 
         if (width < this.width)
         {
-            this.setWidth(width + (this.hasBorder ? 16 : 0) + this.scrollbarSize);
+            this.setWidth(width - this.padding + (this.hasBorder ? 16 : 0) + this.scrollbarSize);
             this.offScreenCheck();
             this.center();
         }
@@ -1738,11 +1738,11 @@ public class Overlay extends Screen
     {
         this.updateWidgets();
 
-        int height = this.getInsideWidgetHeight();
+        int height = this.getInsideWidgetHeight() + this.padding;
 
         if (height < this.height)
         {
-            this.setHeight(height + (this.hasBorder ? 23 : 0) + this.scrollbarSize);
+            this.setHeight(height - this.padding + (this.hasBorder ? 23 : 0) + this.scrollbarSize);
             this.offScreenCheck();
             this.center();
         }
