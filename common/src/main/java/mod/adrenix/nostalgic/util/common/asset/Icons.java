@@ -122,5 +122,8 @@ public interface Icons
     TextureIcon SMALL_CHECK = TextureIcon.create().uv(50, 0).square(9).build();
     TextureIcon SMALL_TOOLS = TextureIcon.create().uv(40, 0).square(9).build();
     TextureIcon SMALL_TRAFFIC_LIGHT = TextureIcon.create().uv(40, 10).square(9).build();
+    TextureIcon SMALL_INFO = TextureIcon.create().uv(60, 10).square(9).build();
+    TextureIcon SMALL_INFO_HOVER = TextureIcon.create().uv(60, 0).square(9).build();
+    TextureIcon SMALL_INFO_OFF = TextureIcon.create().uv(60, 20).square(9).build();
     TextureIcon STEVE = TextureIcon.create().uv(248, 0).square(8).build();
 }

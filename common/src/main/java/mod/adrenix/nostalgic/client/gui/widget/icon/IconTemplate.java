@@ -12,7 +12,7 @@ public abstract class IconTemplate
     /**
      * This icon widget template is used for displaying a small "x" close icon that can act as a button.
      *
-     * @return An {@link IconFactory} instance so that additional properties can be defined before instantiating.
+     * @return An {@link IconFactory} instance so that additional properties can be defined before building.
      */
     @PublicAPI
     public static IconFactory close()
@@ -26,7 +26,7 @@ public abstract class IconTemplate
     /**
      * This icon widget template is used for displaying a small "!" info icon that can act as a button.
      *
-     * @return An {@link IconFactory} instance so that additional properties can be defined before instantiating.
+     * @return An {@link IconFactory} instance so that additional properties can be defined before building.
      */
     @PublicAPI
     public static IconFactory info()
@@ -38,9 +38,23 @@ public abstract class IconTemplate
     }
 
     /**
+     * This icon widget template is used for displaying a small circular "i" icon that can act as a button.
+     *
+     * @return An {@link IconFactory} instance so that additional properties can be defined before building.
+     */
+    @PublicAPI
+    public static IconFactory help()
+    {
+        return IconWidget.create(Icons.SMALL_INFO)
+            .hoverIcon(Icons.SMALL_INFO_HOVER)
+            .disabledIcon(Icons.SMALL_INFO_OFF)
+            .pressIcon(Icons.SMALL_INFO_OFF);
+    }
+
+    /**
      * This icon widget template is used for context menu buttons "..."
      *
-     * @return An {@link IconFactory} instance so that additional properties can be defined before instantiating.
+     * @return An {@link IconFactory} instance so that additional properties can be defined before building.
      */
     @PublicAPI
     public static IconFactory menu()
