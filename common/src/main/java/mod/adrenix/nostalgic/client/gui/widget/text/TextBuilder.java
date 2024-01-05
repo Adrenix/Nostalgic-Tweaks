@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.client.gui.widget.text;
 
 import mod.adrenix.nostalgic.client.gui.widget.blank.BlankWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -146,8 +146,36 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     }
 
     /**
-     * Render a separator bar. The color will stay in sync with the given {@link Color} instance. The default height for
-     * the separator will be {@code 2.0F}.
+     * Render a separator bar. If the text is centered, then two bars will be visible with one being on the left side
+     * and the other being on the right side of the text. Otherwise, the bar will be on the right side of the text.
+     *
+     * @param color  The {@link Color} of the separator.
+     * @param height The height of the separator bar.
+     */
+    @PublicAPI
+    public TextBuilder separator(Color color, int height)
+    {
+        return this.separator(color, () -> height);
+    }
+
+    /**
+     * Render a separator bar. If the text is centered, then two bars will be visible with one being on the left side
+     * and the other being on the right side of the text. Otherwise, the bar will be on the right side of the text.
+     *
+     * @param color  An ARGB integer color.
+     * @param height The height of the separator bar.
+     * @see #separator(Color, IntSupplier)
+     */
+    @PublicAPI
+    public TextBuilder separator(int color, int height)
+    {
+        return this.separator(new Color(color), height);
+    }
+
+    /**
+     * Render a separator bar. If the text is centered, then two bars will be visible with one being on the left side
+     * and the other being on the right side of the text. Otherwise, the bar will be on the right side of the text. The
+     * separator will have a default height of two.
      *
      * @param color A {@link Color} instance.
      */
@@ -158,20 +186,22 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     }
 
     /**
-     * Render a separator bar.
+     * Render a separator bar. If the text is centered, then two bars will be visible with one being on the left side
+     * and the other being on the right side of the text. Otherwise, the bar will be on the right side of the text. The
+     * separator will use the current font color.
      *
-     * @param color  An ARGB integer color.
      * @param height The height of the separator bar.
-     * @see #separator(Color, IntSupplier)
      */
     @PublicAPI
-    public TextBuilder separator(int color, int height)
+    public TextBuilder separator(int height)
     {
-        return this.separator(new Color(color), () -> height);
+        return this.separator(this.fontColor, height);
     }
 
     /**
-     * Render a separator bar that uses the text color and has a height of {@code 2}.
+     * Render a separator bar. If the text is centered, then two bars will be visible with one being on the left side
+     * and the other being on the right side of the text. Otherwise, the bar will be on the right side of the text. The
+     * separator will have a default height of two and will use the current font color.
      */
     @PublicAPI
     public TextBuilder separator()
