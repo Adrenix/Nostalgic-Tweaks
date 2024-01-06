@@ -1283,15 +1283,14 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / (float) texture.getWidth();
         float minV = vOffset / (float) texture.getHeight();
         float maxV = (vOffset + vHeight) / (float) texture.getHeight();
-        float zOffset = MatrixUtil.getZ(matrix);
 
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, zOffset).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, zOffset).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, zOffset).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, zOffset).uv(minU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
@@ -1415,14 +1414,13 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / (float) textureWidth;
         float minV = vOffset / (float) textureHeight;
         float maxV = (vOffset + vHeight) / (float) textureHeight;
-        float zOffset = MatrixUtil.getZ(matrix);
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, zOffset).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, zOffset).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, zOffset).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, zOffset).uv(minU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
@@ -1436,15 +1434,14 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / 256.0F;
         float minV = vOffset / 256.0F;
         float maxV = (vOffset + vHeight) / 256.0F;
-        float zOffset = MatrixUtil.getZ(matrix);
 
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, zOffset).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, zOffset).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, zOffset).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, zOffset).uv(minU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
