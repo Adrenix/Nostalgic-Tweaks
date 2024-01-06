@@ -188,10 +188,10 @@ public interface Lang
     {
         Translation WELCOME_TITLE = from("welcome_title");
         Translation WELCOME_MESSAGE = from("welcome_message");
-        Translation TWEAK_S2C_TITLE = from("tweak_s2c_title");
-        Translation TWEAK_S2C_MESSAGE = from("tweak_s2c_message");
-        Translation TWEAK_C2S_TITLE = from("tweak_c2s_title");
-        Translation TWEAK_C2S_MESSAGE = from("tweak_c2s_message");
+        Translation CLIENTBOUND_TWEAK_TITLE = from("clientbound_tweak_title");
+        Translation CLIENTBOUND_TWEAK_MESSAGE = from("clientbound_tweak_message");
+        Translation SERVERBOUND_TWEAK_TITLE = from("serverbound_tweak_title");
+        Translation SERVERBOUND_TWEAK_MESSAGE = from("serverbound_tweak_message");
         Translation HANDSHAKE_TITLE = from("handshake_title");
         Translation HANDSHAKE_MESSAGE = from("handshake_message");
 

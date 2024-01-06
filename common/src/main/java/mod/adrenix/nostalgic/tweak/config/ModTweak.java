@@ -63,14 +63,14 @@ public interface ModTweak
     TweakFlag SHOW_HANDSHAKE_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
 
     /**
-     * Controls whether the client to server sent changes toast will be displayed.
+     * Controls whether the serverbound tweak update toast will be displayed.
      */
-    TweakFlag SHOW_CLIENT_TO_SERVER_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
+    TweakFlag SHOW_SERVERBOUND_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
 
     /**
-     * Controls whether the server made changes to client toast will be displayed.
+     * Controls whether the clientbound tweak update toast will be displayed.
      */
-    TweakFlag SHOW_SERVER_TO_CLIENT_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
+    TweakFlag SHOW_CLIENTBOUND_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
 
     /**
      * Controls whether the scrollbars should perform a smooth animation while scrolling.

@@ -34,8 +34,8 @@ public class ModToast implements Toast
 
     private final static ModToast WELCOME = new ModToast(ToastId.WELCOME);
     private final static ModToast HANDSHAKE = new ModToast(ToastId.HANDSHAKE);
-    private final static ModToast TWEAK_C2S = new ModToast(ToastId.TWEAK_C2S);
-    private final static ModToast TWEAK_S2C = new ModToast(ToastId.TWEAK_S2C);
+    private final static ModToast TWEAK_C2S = new ModToast(ToastId.SERVERBOUND_TWEAK);
+    private final static ModToast TWEAK_S2C = new ModToast(ToastId.CLIENTBOUND_TWEAK);
 
     /**
      * Get a nostalgic toast singleton reference based on the given toast identifier.
@@ -49,8 +49,8 @@ public class ModToast implements Toast
         {
             case WELCOME -> WELCOME;
             case HANDSHAKE -> HANDSHAKE;
-            case TWEAK_C2S -> TWEAK_C2S;
-            case TWEAK_S2C -> TWEAK_S2C;
+            case SERVERBOUND_TWEAK -> TWEAK_C2S;
+            case CLIENTBOUND_TWEAK -> TWEAK_S2C;
         };
     }
 
@@ -101,8 +101,8 @@ public class ModToast implements Toast
         {
             case WELCOME -> Lang.Toast.WELCOME_TITLE.get();
             case HANDSHAKE -> Lang.Toast.HANDSHAKE_TITLE.get();
-            case TWEAK_C2S -> Lang.Toast.TWEAK_C2S_TITLE.get();
-            case TWEAK_S2C -> Lang.Toast.TWEAK_S2C_TITLE.get();
+            case SERVERBOUND_TWEAK -> Lang.Toast.SERVERBOUND_TWEAK_TITLE.get();
+            case CLIENTBOUND_TWEAK -> Lang.Toast.CLIENTBOUND_TWEAK_TITLE.get();
         };
 
         Component message = getMessage(NostalgicTweaks.getConnection().orElseGet(ModConnection::disconnected));
@@ -130,8 +130,8 @@ public class ModToast implements Toast
         {
             case WELCOME -> Lang.Toast.WELCOME_MESSAGE.get(client);
             case HANDSHAKE -> Lang.Toast.HANDSHAKE_MESSAGE.get(server, loader);
-            case TWEAK_C2S -> Lang.Toast.TWEAK_C2S_MESSAGE.get();
-            case TWEAK_S2C -> Lang.Toast.TWEAK_S2C_MESSAGE.get();
+            case SERVERBOUND_TWEAK -> Lang.Toast.SERVERBOUND_TWEAK_MESSAGE.get();
+            case CLIENTBOUND_TWEAK -> Lang.Toast.CLIENTBOUND_TWEAK_MESSAGE.get();
         };
     }
 

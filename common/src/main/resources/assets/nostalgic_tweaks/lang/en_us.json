@@ -52,10 +52,10 @@
 
   "gui.nostalgic_tweaks.toast.welcome_title": "Congratulations!",
   "gui.nostalgic_tweaks.toast.welcome_message": "You have§a successfully§f installed§e Nostalgic Tweaks§f (§6v%s§f). Press the§b O§f (for Old) key to§b configure§f.",
-  "gui.nostalgic_tweaks.toast.tweak_s2c_title": "Tweaks Updated",
-  "gui.nostalgic_tweaks.toast.tweak_s2c_message": "Server operator changed tweaks.",
-  "gui.nostalgic_tweaks.toast.tweak_c2s_title": "Tweaks Changed",
-  "gui.nostalgic_tweaks.toast.tweak_c2s_message": "Sent changes to server.",
+  "gui.nostalgic_tweaks.toast.clientbound_tweak_title": "Received Update",
+  "gui.nostalgic_tweaks.toast.clientbound_tweak_message": "The server changed some tweaks. As a result, your player's game state was updated.",
+  "gui.nostalgic_tweaks.toast.serverbound_tweak_title": "Sent Changes",
+  "gui.nostalgic_tweaks.toast.serverbound_tweak_message": "Successfully sent server-side changes to the server. If the game state changed, then all connected players have been notified.",
   "gui.nostalgic_tweaks.toast.handshake_title": "Connected",
   "gui.nostalgic_tweaks.toast.handshake_message": "You have logged into a server running§e Nostalgic Tweaks§f (§6v%s§f) on §d%s§f.",
 

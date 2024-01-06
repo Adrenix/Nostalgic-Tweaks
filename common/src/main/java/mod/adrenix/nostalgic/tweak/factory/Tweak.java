@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.tweak.factory;
 
 import com.google.common.base.Suppliers;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.CacheHolder;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
 import mod.adrenix.nostalgic.config.cache.ConfigReflect;
@@ -249,7 +250,10 @@ public abstract class Tweak<T> implements TweakMeta<T>
         if (NostalgicTweaks.isNetworkVerified() && this.isMultiplayerLike())
         {
             if (NetUtil.isPlayerOp() && NetUtil.isMultiplayer())
+            {
+                ToastNotification.changeOnServer();
                 this.sendToServer();
+            }
             else
                 this.setReceived(this.fromServer());
         }

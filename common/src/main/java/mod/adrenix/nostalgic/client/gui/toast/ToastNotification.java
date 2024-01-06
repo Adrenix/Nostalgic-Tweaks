@@ -12,7 +12,7 @@ public abstract class ToastNotification
      * This timer keeps track of when the last pop-up occurred on screen. To prevent spam, pop-up toasts can only appear
      * every 5 seconds.
      */
-    private static final SimpleTimer TIMER = SimpleTimer.create(5L, TimeUnit.SECONDS).build();
+    private static final SimpleTimer TIMER = SimpleTimer.create(5L, TimeUnit.SECONDS).immediate().build();
 
     /**
      * Pops up toasts on the client if the time since the last pop-up is greater than 5 seconds.
@@ -34,7 +34,7 @@ public abstract class ToastNotification
         if (!NetUtil.isMultiplayer())
             return;
 
-        ToastNotification.add(ToastId.TWEAK_S2C, 8500L);
+        ToastNotification.add(ToastId.CLIENTBOUND_TWEAK, 8500L);
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class ToastNotification
         if (!NetUtil.isMultiplayer())
             return;
 
-        ToastNotification.add(ToastId.TWEAK_C2S, 8500L);
+        ToastNotification.add(ToastId.SERVERBOUND_TWEAK, 8500L);
     }
 
     /**
