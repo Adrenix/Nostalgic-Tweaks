@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.toast;
 
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
-
-import java.util.function.Supplier;
+import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 
 /**
  * Each toast will have its own identifier defined here.
@@ -11,16 +10,18 @@ public enum ToastId
 {
     WELCOME(ModTweak.SHOW_WELCOME_TOAST::get),
     HANDSHAKE(ModTweak.SHOW_HANDSHAKE_TOAST::get),
+    LAN_CHANGE(ModTweak.SHOW_LAN_CHANGE_TOAST::get),
+    LAN_REJECTION(BooleanSupplier.ALWAYS),
     SERVERBOUND_TWEAK(ModTweak.SHOW_SERVERBOUND_TOAST::get),
     CLIENTBOUND_TWEAK(ModTweak.SHOW_CLIENTBOUND_TOAST::get);
 
     /* Fields */
 
-    private final Supplier<Boolean> isActive;
+    private final BooleanSupplier isActive;
 
     /* Constructor */
 
-    ToastId(Supplier<Boolean> supplier)
+    ToastId(BooleanSupplier supplier)
     {
         this.isActive = supplier;
     }
@@ -32,6 +33,6 @@ public enum ToastId
      */
     public boolean isActive()
     {
-        return this.isActive.get();
+        return this.isActive.getAsBoolean();
     }
 }

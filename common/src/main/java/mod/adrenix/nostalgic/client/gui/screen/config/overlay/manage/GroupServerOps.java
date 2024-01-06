@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.controller.Boo
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.group.Group;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
+import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
@@ -31,13 +32,42 @@ public class GroupServerOps extends ManageGroup
 
         TextWidget.create(Lang.Manage.OPERATIONS_WIP_MESSAGE).width(header::getInsideWidth).build(header::addWidget);
 
+        /* Restricted LAN */
+
+        Group lan = Group.create(manager.overlay)
+            .icon(Icons.CLIENT)
+            .title(Lang.Manage.OPERATIONS_LAN)
+            .border(Color.MAYA_BLUE)
+            .below(header, manager.padding)
+            .rightOf(manager.separator, manager.padding)
+            .extendWidthToScreenEnd(0)
+            .build(this::register);
+
+        TextWidget lanInformation = TextWidget.create(Lang.Manage.OPERATIONS_LAN_MESSAGE)
+            .width(lan::getInsideWidth)
+            .build(lan::addWidget);
+
+        ButtonWidget setRestriction = new BooleanController(ModTweak.RESTRICTED_LAN).getBuilder()
+            .centerInWidgetX(lan, manager.padding + 20)
+            .below(lanInformation, manager.padding * 2)
+            .build(lan::addWidget);
+
+        ButtonWidget.create()
+            .icon(Icons.SAVE_FLOPPY)
+            .tooltip(Lang.Button.SAVE, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Tooltip.SAVE_LAN, 35)
+            .rightOf(setRestriction, manager.padding)
+            .enableIf(ModTweak.RESTRICTED_LAN::isLocalSavable)
+            .onPress(CollectionUtil.runAll(ModTweak.RESTRICTED_LAN::applyCacheAndSend, ConfigCache::save))
+            .build(lan::addWidget);
+
         /* SSO Mode */
 
         Group sso = Group.create(manager.overlay)
             .icon(Icons.SERVER)
             .title(Lang.Manage.OPERATIONS_SSO)
             .border(Color.SHADOW_BLUE)
-            .below(header, manager.padding)
+            .below(lan, manager.padding)
             .rightOf(manager.separator, manager.padding)
             .extendWidthToScreenEnd(0)
             .build(this::register);

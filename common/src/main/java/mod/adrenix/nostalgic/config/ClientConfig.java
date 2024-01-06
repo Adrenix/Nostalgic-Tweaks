@@ -36,6 +36,7 @@ public class ClientConfig implements ConfigMeta
     /* Root */
 
     public boolean modEnabled = ModTweak.ENABLED.fromJson("modEnabled");
+    public boolean restrictedLan = ModTweak.RESTRICTED_LAN.fromJson("restrictedLan");
     public boolean serverSideOnly = ModTweak.SERVER_SIDE_ONLY.fromJson("serverSideOnly");
     public boolean serverLogging = ModTweak.SERVER_LOGGING.fromJson("serverLogging");
     public boolean serverDebugMode = ModTweak.SERVER_DEBUG.fromJson("serverDebugMode");
@@ -65,8 +66,9 @@ public class ClientConfig implements ConfigMeta
 
         public boolean showWelcomeToast = ModTweak.SHOW_WELCOME_TOAST.fromJson("showWelcomeToast");
         public boolean showHandshakeToast = ModTweak.SHOW_HANDSHAKE_TOAST.fromJson("showHandshakeToast");
-        public boolean showClientToServerToast = ModTweak.SHOW_CLIENT_TO_SERVER_TOAST.fromJson("showClientToServerToast");
-        public boolean showServerToClientToast = ModTweak.SHOW_SERVER_TO_CLIENT_TOAST.fromJson("showServerToClientToast");
+        public boolean showLanChangeToast = ModTweak.SHOW_LAN_CHANGE_TOAST.fromJson("showLanChangeToast");
+        public boolean showServerboundToast = ModTweak.SHOW_SERVERBOUND_TOAST.fromJson("showServerboundToast");
+        public boolean showClientboundToast = ModTweak.SHOW_CLIENTBOUND_TOAST.fromJson("showClientboundToast");
 
         // Menu Visuals
 

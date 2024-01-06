@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.function.Function;
@@ -76,7 +77,12 @@ public interface ModPacket
      */
     default String getPlayerName(NetworkManager.PacketContext context)
     {
-        return context.getPlayer().getDisplayName().getString();
+        Component name = context.getPlayer().getDisplayName();
+
+        if (name == null)
+            return "null";
+
+        return name.getString();
     }
 
     /**
@@ -93,7 +99,7 @@ public interface ModPacket
             return true;
 
         ServerPlayer player = (ServerPlayer) context.getPlayer();
-        String playerName = player.getDisplayName().getString();
+        String playerName = this.getPlayerName(context);
 
         if (PacketUtil.isPlayerOp(player))
             return false;

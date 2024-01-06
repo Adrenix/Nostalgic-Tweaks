@@ -6,11 +6,14 @@ import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.tweak.TweakValidator;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakMeta;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
+import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
+import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import mod.adrenix.nostalgic.util.server.ServerTimer;
 
 import java.util.Optional;
@@ -62,38 +65,42 @@ public interface TweakPacket extends ModPacket
         // Found tweak
         Tweak<Object> tweak = TweakMeta.wildcard(found.get());
 
-        // Check if value changed
-        boolean hasChanged = tweak.hasChanged(receivedValue);
-
         // Debug information
-        String output = "Received tweak update from server: [tweak={jsonId:%s, new:%s, old:%s}]";
+        String output = "Received tweak update from %s: [tweak={jsonId:%s, new:%s, old:%s}]";
         String jsonId = LogColor.apply(LogColor.LIGHT_PURPLE, poolId);
         String newValue = LogColor.apply(LogColor.BLUE, receivedValue.toString());
         String oldValue = LogColor.apply(LogColor.BLUE, tweak.fromServer().toString());
 
-        NostalgicTweaks.LOGGER.debug(output, jsonId, newValue, oldValue);
+        // Update the client config if this is a LAN session
+        if (NetUtil.isLocalHost())
+        {
+            // Log changes
+            NostalgicTweaks.LOGGER.debug(output, "LAN player", jsonId, newValue, oldValue);
+
+            // Check applications
+            boolean diskAppliedSafely = tweak.applySafely(receivedValue, tweak::setDisk);
+            boolean localAppliedSafely = tweak.applySafely(receivedValue, tweak::setLocal);
+
+            if (!diskAppliedSafely || !localAppliedSafely)
+            {
+                String message = "Unable to change [tweak={jsonId:%s}] from (%s) to (%s) - nothing was saved";
+                NostalgicTweaks.LOGGER.warn(message, jsonId, oldValue, newValue);
+
+                return;
+            }
+
+            ClientTimer.getInstance().runAfter(1L, TimeUnit.SECONDS, ConfigCache::save);
+        }
+        else
+            NostalgicTweaks.LOGGER.debug(output, "server", jsonId, newValue, oldValue);
 
         // Update the client tweak value with data sent from the server
         boolean appliedSafely = tweak.applySafely(receivedValue, tweak::setReceived);
 
-        // Update the client config if this is a LAN session
-        if (NetUtil.isLocalHost())
-        {
-            boolean hostAppliedSafely = tweak.applySafely(receivedValue, tweak::setDisk);
-
-            if (!hostAppliedSafely)
-            {
-                String message = "Unable to change [tweak={jsonId:%s}] from (%s) to (%s) - nothing was saved";
-                NostalgicTweaks.LOGGER.warn(message, jsonId, oldValue, newValue);
-            }
-            else if (hasChanged)
-                ConfigCache.save();
-        }
-
         // Abort notification if unable to apply safely
         if (!appliedSafely)
         {
-            String message = "Server sent data that could not be applied [tweak={jsonId:%s}] from (%s) to (%s)";
+            String message = "Received data that could not be applied [tweak={jsonId:%s}] from (%s) to (%s)";
             NostalgicTweaks.LOGGER.warn(message, jsonId, oldValue, newValue);
 
             return;
@@ -101,7 +108,12 @@ public interface TweakPacket extends ModPacket
 
         // Notify the client of sent changes
         if (NostalgicTweaks.isNetworkVerified())
-            ToastNotification.changeOnClient();
+        {
+            if (NetUtil.isLocalHost())
+                ToastNotification.changeOnLan();
+            else
+                ToastNotification.changeOnClient();
+        }
     }
 
     /**
@@ -152,12 +164,24 @@ public interface TweakPacket extends ModPacket
         boolean hasChanged = tweak.hasChanged(receivedValue);
 
         // Log any changes
-        String update = "Received tweak update from operator (%s): [tweak={jsonId:%s, new:%s, old:%s}]";
+        String update = "Received tweak update request from (%s): [tweak={jsonId:%s, new:%s, old:%s}]";
         String jsonId = LogColor.apply(LogColor.LIGHT_PURPLE, poolId);
         String newValue = LogColor.apply(LogColor.BLUE, receivedValue.toString());
         String oldValue = LogColor.apply(LogColor.BLUE, tweak.fromDisk().toString());
 
         this.log(update, this.getPlayerName(context), jsonId, newValue, oldValue);
+
+        // Check if LAN change is allowed
+        if (NostalgicTweaks.isClient() && NetUtil.isLocalHost() && ModTweak.RESTRICTED_LAN.get())
+        {
+            String rejected = "LAN player (%s) tried changing tweak(s) but was rejected";
+            NostalgicTweaks.LOGGER.debug(rejected, this.getPlayerName(context));
+
+            PacketUtil.sendToPlayer(this.getServerPlayer(context), new ClientboundRejection());
+            tweak.sendToPlayer(this.getServerPlayer(context));
+
+            return;
+        }
 
         // Update server tweak value with data sent from an operator
         boolean appliedSafely = tweak.applySafely(receivedValue, tweak::setDisk);
@@ -174,7 +198,7 @@ public interface TweakPacket extends ModPacket
         // Validate the tweak before saving and sending
         TweakValidator.inspect(tweak);
 
-        // Even though the server handles this packet, we don't want LAN sessions to save a server config
+        // An integrated server can handle this packet, so we don't want LAN sessions to save a server config
         if (NostalgicTweaks.isServer() && hasChanged)
             ServerTimer.getInstance().runAfter(1L, TimeUnit.SECONDS, ConfigCache::save);
 

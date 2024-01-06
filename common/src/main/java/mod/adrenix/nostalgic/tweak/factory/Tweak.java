@@ -6,7 +6,6 @@ import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.CacheHolder;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
 import mod.adrenix.nostalgic.config.cache.ConfigReflect;
-import mod.adrenix.nostalgic.network.packet.tweak.ClientboundStatusUpdate;
 import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.TweakEnv;
 import mod.adrenix.nostalgic.tweak.TweakIssue;
@@ -16,9 +15,7 @@ import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
-import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collections;
 import java.util.Set;
@@ -229,12 +226,6 @@ public abstract class Tweak<T> implements TweakMeta<T>
         };
     }
 
-    @Override
-    public void sendStatus(ServerPlayer player)
-    {
-        PacketUtil.sendToPlayer(player, new ClientboundStatusUpdate(this));
-    }
-
     /**
      * Send this tweak's network value to the server, if possible. If sending to the server was not possible, and the
      * player is connected to a server with the mod installed, then the network cache will be restored to what was
@@ -279,6 +270,9 @@ public abstract class Tweak<T> implements TweakMeta<T>
     @Override
     public void applyCurrentCache()
     {
+        if (NostalgicTweaks.isServer())
+            throw new RuntimeException("Server tried to access client-only tweak method");
+
         this.updateReloadFlags();
 
         switch (this.cacheMode)
@@ -286,14 +280,23 @@ public abstract class Tweak<T> implements TweakMeta<T>
             case LOCAL -> this.setDisk(this.fromLocal());
             case NETWORK -> this.sendIfPossible();
         }
+
+        if (NetUtil.isLocalHost())
+            this.sendToAll();
     }
 
     @Override
     public void applyCacheAndSend()
     {
+        if (NostalgicTweaks.isServer())
+            throw new RuntimeException("Server tried to access client-only tweak method");
+
         this.updateReloadFlags();
         this.setDisk(this.fromLocal());
         this.sendIfPossible();
+
+        if (NetUtil.isLocalHost())
+            this.sendToAll();
     }
 
     @Override

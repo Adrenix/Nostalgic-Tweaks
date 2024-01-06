@@ -48,14 +48,14 @@ public abstract class PacketUtil
      *
      * @param packet   The packet to send to all players.
      * @param <Packet> A packet class.
-     * @throws AssertionError Will be thrown if there is no dedicated server instance.
+     * @throws NullPointerException Will be thrown if there is no dedicated server instance.
      */
-    public static <Packet> void sendToAll(Packet packet) throws AssertionError
+    public static <Packet> void sendToAll(Packet packet) throws NullPointerException
     {
         MinecraftServer server = NostalgicTweaks.getServer();
 
         if (server == null)
-            throw new AssertionError(String.format("Tried to send (%s) but there was no server instance available", packet.getClass()));
+            throw new NullPointerException(String.format("Tried to send (%s) but there was no server instance available", packet.getClass()));
 
         sendToAll(server.getPlayerList().getPlayers(), packet);
     }

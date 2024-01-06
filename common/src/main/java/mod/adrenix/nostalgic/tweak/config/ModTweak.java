@@ -18,6 +18,11 @@ public interface ModTweak
     TweakFlag ENABLED = TweakFlag.client(true, Category.ROOT).load().top().reloadChunks().reloadResources().build();
 
     /**
+     * A special mod state flag that controls whether connected LAN players can modify a host's client settings.
+     */
+    TweakFlag RESTRICTED_LAN = TweakFlag.client(true, Category.ROOT).load().ignore().build();
+
+    /**
      * A special mod state flag that controls whether the server requires players having the mod installed.
      */
     TweakFlag SERVER_SIDE_ONLY = TweakFlag.server(false, Category.ROOT).load().ignore().build();
@@ -61,6 +66,11 @@ public interface ModTweak
      * Controls whether the handshake toast will be displayed.
      */
     TweakFlag SHOW_HANDSHAKE_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
+
+    /**
+     * Controls whether the tweak changes on LAN toast will be displayed.
+     */
+    TweakFlag SHOW_LAN_CHANGE_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
 
     /**
      * Controls whether the serverbound tweak update toast will be displayed.

@@ -15,8 +15,8 @@ import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.Holder;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 
 import java.util.function.Consumer;
@@ -137,7 +137,7 @@ public class DebugOverlay
         debug.accept(String.format("Server Protocol: §b%s", connection.getProtocol()));
         debug.accept(String.format("Server Version: §e%s", connection.getVersion()));
         debug.accept(String.format("Server Loader: §d%s", connection.getLoader()));
-        debug.accept(this.getColored("Server: %s", NostalgicTweaks.getConnection().isPresent()));
+        debug.accept(this.getColored("Connected: %s", NostalgicTweaks.getConnection().isPresent()));
 
         separate.accept("Mod Tracker");
 

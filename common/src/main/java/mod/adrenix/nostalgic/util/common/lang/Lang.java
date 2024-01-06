@@ -188,6 +188,10 @@ public interface Lang
     {
         Translation WELCOME_TITLE = from("welcome_title");
         Translation WELCOME_MESSAGE = from("welcome_message");
+        Translation LAN_CHANGE_TITLE = from("lan_change_title");
+        Translation LAN_CHANGE_MESSAGE = from("lan_change_message");
+        Translation LAN_REJECTED_TITLE = from("lan_rejected_title");
+        Translation LAN_REJECTED_MESSAGE = from("lan_rejected_message");
         Translation CLIENTBOUND_TWEAK_TITLE = from("clientbound_tweak_title");
         Translation CLIENTBOUND_TWEAK_MESSAGE = from("clientbound_tweak_message");
         Translation SERVERBOUND_TWEAK_TITLE = from("serverbound_tweak_title");
@@ -340,6 +344,7 @@ public interface Lang
         Translation UNDO = from("undo");
         Translation SAVE = from("save");
         Translation ADD = from("add");
+        Translation SAVE_LAN = from("save_lan");
         Translation SAVE_SSO = from("save_sso");
         Translation SAVE_MAX_BACKUP = from("save_max_backup");
         Translation SAVE_TWEAK_LOCAL = from("save_tweak_local");
@@ -598,6 +603,8 @@ public interface Lang
         Translation VIEW_BACKUPS_EMPTY = from("view_backups.empty");
         Translation OPERATIONS_WIP = from("operations.wip");
         Translation OPERATIONS_WIP_MESSAGE = from("operations.wip.message");
+        Translation OPERATIONS_LAN = from("operations.lan");
+        Translation OPERATIONS_LAN_MESSAGE = from("operations.lan.message");
         Translation OPERATIONS_SSO = from("operations.sso");
         Translation OPERATIONS_SSO_MESSAGE = from("operations.sso.message");
         Translation OPERATIONS_LOGGING = from("operations.logging");

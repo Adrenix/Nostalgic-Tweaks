@@ -144,7 +144,7 @@ public interface TweakMeta<T>
 
     /**
      * Functional shortcut for toggling the cache mode. So if the mode is to {@code LOCAL}, then it will change to
-     * {@code NETWORK} and vice-versa.
+     * {@code NETWORK} and vice versa.
      */
     default void toggleCacheMode()
     {
@@ -296,6 +296,8 @@ public interface TweakMeta<T>
      * the player is an operator.
      * <br><br>
      * This does <b color=red>not</b> save changes to disk. To save to disk, use {@link ConfigCache#save()}.
+     *
+     * @throws RuntimeException If the server tried to invoke this method.
      */
     void applyCurrentCache();
 
@@ -305,6 +307,8 @@ public interface TweakMeta<T>
      * The server does not use this, only the client will invoke this method.
      * <br><br>
      * This does <b color=red>not</b> save changes to disk. To save to disk, use {@link ConfigCache#save()}.
+     *
+     * @throws RuntimeException If the server tried to invoke this method.
      */
     void applyCacheAndSend();
 
@@ -356,14 +360,6 @@ public interface TweakMeta<T>
     {
         Optional.ofNullable(this.getClientboundPacket()).ifPresent(packet -> PacketUtil.sendToPlayer(player, packet));
     }
-
-    /**
-     * Sends a tweak status update packet to a connected player on the server. Clients will update their network status
-     * cache with the value received by the packet.
-     *
-     * @param player A {@link ServerPlayer} instance.
-     */
-    void sendStatus(ServerPlayer player);
 
     /**
      * Sync local cache values with what is saved on disk and sync multiplayer cache values with the value sent by a

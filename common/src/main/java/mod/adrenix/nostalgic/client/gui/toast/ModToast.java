@@ -34,8 +34,10 @@ public class ModToast implements Toast
 
     private final static ModToast WELCOME = new ModToast(ToastId.WELCOME);
     private final static ModToast HANDSHAKE = new ModToast(ToastId.HANDSHAKE);
-    private final static ModToast TWEAK_C2S = new ModToast(ToastId.SERVERBOUND_TWEAK);
-    private final static ModToast TWEAK_S2C = new ModToast(ToastId.CLIENTBOUND_TWEAK);
+    private final static ModToast LAN_CHANGE = new ModToast(ToastId.LAN_CHANGE);
+    private final static ModToast LAN_REJECTION = new ModToast(ToastId.LAN_REJECTION);
+    private final static ModToast SERVERBOUND = new ModToast(ToastId.SERVERBOUND_TWEAK);
+    private final static ModToast CLIENTBOUND = new ModToast(ToastId.CLIENTBOUND_TWEAK);
 
     /**
      * Get a nostalgic toast singleton reference based on the given toast identifier.
@@ -49,8 +51,10 @@ public class ModToast implements Toast
         {
             case WELCOME -> WELCOME;
             case HANDSHAKE -> HANDSHAKE;
-            case SERVERBOUND_TWEAK -> TWEAK_C2S;
-            case CLIENTBOUND_TWEAK -> TWEAK_S2C;
+            case LAN_CHANGE -> LAN_CHANGE;
+            case LAN_REJECTION -> LAN_REJECTION;
+            case SERVERBOUND_TWEAK -> SERVERBOUND;
+            case CLIENTBOUND_TWEAK -> CLIENTBOUND;
         };
     }
 
@@ -101,6 +105,8 @@ public class ModToast implements Toast
         {
             case WELCOME -> Lang.Toast.WELCOME_TITLE.get();
             case HANDSHAKE -> Lang.Toast.HANDSHAKE_TITLE.get();
+            case LAN_CHANGE -> Lang.Toast.LAN_CHANGE_TITLE.get();
+            case LAN_REJECTION -> Lang.Toast.LAN_REJECTED_TITLE.get();
             case SERVERBOUND_TWEAK -> Lang.Toast.SERVERBOUND_TWEAK_TITLE.get();
             case CLIENTBOUND_TWEAK -> Lang.Toast.CLIENTBOUND_TWEAK_TITLE.get();
         };
@@ -130,6 +136,8 @@ public class ModToast implements Toast
         {
             case WELCOME -> Lang.Toast.WELCOME_MESSAGE.get(client);
             case HANDSHAKE -> Lang.Toast.HANDSHAKE_MESSAGE.get(server, loader);
+            case LAN_CHANGE -> Lang.Toast.LAN_CHANGE_MESSAGE.get();
+            case LAN_REJECTION -> Lang.Toast.LAN_REJECTED_MESSAGE.get();
             case SERVERBOUND_TWEAK -> Lang.Toast.SERVERBOUND_TWEAK_MESSAGE.get();
             case CLIENTBOUND_TWEAK -> Lang.Toast.CLIENTBOUND_TWEAK_MESSAGE.get();
         };

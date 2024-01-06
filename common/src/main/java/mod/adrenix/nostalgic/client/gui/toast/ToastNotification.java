@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public abstract class ToastNotification
@@ -22,8 +23,30 @@ public abstract class ToastNotification
      */
     public static void add(ToastId id, long time)
     {
-        if (TIMER.hasElapsed())
+        boolean isRejection = ToastId.LAN_REJECTION.equals(id) && ModToast.getInstance(id).isClosed();
+
+        if (TIMER.hasElapsed() || isRejection)
+        {
+            Arrays.stream(ToastId.values()).forEach(toast -> ModToast.getInstance(toast).close());
             ModToast.getInstance(id).setTimer(time).open();
+        }
+    }
+
+    /**
+     * Notifies the LAN host that a player sent a tweak update to the host client.
+     */
+    public static void changeOnLan()
+    {
+
+        ToastNotification.add(ToastId.LAN_CHANGE, 8500L);
+    }
+
+    /**
+     * Notifies the LAN player that the LAN host blocked their changes.
+     */
+    public static void hostRejectedChanges()
+    {
+        ToastNotification.add(ToastId.LAN_REJECTION, 12000L);
     }
 
     /**
