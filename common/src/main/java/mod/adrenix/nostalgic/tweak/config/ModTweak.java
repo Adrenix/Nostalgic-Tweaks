@@ -136,7 +136,7 @@ public interface ModTweak
      * Control flag that determines if the config screen remembers its state when closed. When enabled, the config
      * screen will go back to where it was before it was closed.
      */
-    TweakFlag PERSISTENT_CONFIG_SCREEN = TweakFlag.client(false, Category.MOD).ignore().load().build();
+    TweakFlag PERSISTENT_CONFIG_SCREEN = TweakFlag.client(true, Category.MOD).ignore().load().build();
 
     /**
      * Control flag that determines if the user has successfully interacted with the tutorial toast. If so, then the
