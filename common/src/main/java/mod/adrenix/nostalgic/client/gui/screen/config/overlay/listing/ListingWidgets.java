@@ -1,11 +1,13 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing;
 
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
+import mod.adrenix.nostalgic.client.gui.widget.blank.BlankWidget;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.input.GenericInput;
 import mod.adrenix.nostalgic.client.gui.widget.list.AbstractRow;
 import mod.adrenix.nostalgic.client.gui.widget.list.RowList;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
+import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.listing.Listing;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
@@ -16,7 +18,6 @@ import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
-import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -33,27 +34,65 @@ public class ListingWidgets<V, L extends Listing<V, L>>
     private final Overlay overlay;
     public final RowList rowList;
     public final ButtonWidget add;
+    public final ButtonWidget manage;
     public final ButtonWidget undo;
     public final GenericInput search;
     public final ButtonWidget finish;
     public final SeparatorWidget separator;
     public final IntegerHolder tabOrder;
     public final LinkedHashSet<ButtonWidget> shrinkable;
-    final ListingOverlay<V, L> listing;
+    final ListingOverlay<V, L> listingOverlay;
     final LinkedHashSet<AbstractRow<?, ?>> sorted;
     final GenericDatabase<AbstractRow<?, ?>> database;
     @Nullable AbstractRow<?, ?> highlighted;
 
     /* Constructor */
 
-    public ListingWidgets(ListingOverlay<V, L> listing)
+    public ListingWidgets(ListingOverlay<V, L> listingOverlay)
     {
-        this.listing = listing;
-        this.overlay = listing.getOverlay();
+        this.listingOverlay = listingOverlay;
+        this.overlay = listingOverlay.getOverlay();
         this.sorted = new LinkedHashSet<>();
         this.shrinkable = new LinkedHashSet<>();
         this.database = new GenericDatabase<>();
         this.tabOrder = IntegerHolder.create(0);
+
+        /* Warning Header */
+
+        BlankWidget anchor = BlankWidget.create()
+            .size(0)
+            .pos(this.overlay::getInsideX, this.overlay::getInsideY)
+            .build(this.overlay::addWidget);
+
+        TextWidget disabled = TextWidget.create(Lang.Listing.DISABLED_WARNING)
+            .posY(1)
+            .widthOfScreen(0.8F)
+            .centerInScreenX()
+            .centerAligned()
+            .icon(Icons.WARNING)
+            .visibleIf(this::isListingDisabled)
+            .build(this.overlay::addWidget);
+
+        SeparatorWidget.create(Color.SILVER_CHALICE)
+            .height(1)
+            .below(disabled, 1)
+            .extendWidthToScreenEnd(0)
+            .visibleIf(this::isListingDisabled)
+            .build(this.overlay::addWidget);
+
+        BlankWidget.create().renderer((widget, graphics, mouseX, mouseY, partialTick) -> {
+            if (this.isListingDisabled())
+            {
+                int x0 = this.overlay.getInsideX();
+                int y0 = this.overlay.getInsideY();
+                int x1 = this.overlay.getInsideEndX();
+                int y1 = disabled.getEndY() + 1;
+
+                RenderUtil.fill(graphics, x0, x1, y0, y1, Color.ALERT_RED.fromAlpha(0.3F));
+            }
+        }).build(this.overlay::addWidget);
+
+        /* Common Widgets */
 
         this.add = ButtonWidget.create(Lang.Button.ADD)
             .posX(1)
@@ -65,7 +104,7 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .tooltip(Lang.Button.ADD, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.ADD, 35)
             .tabOrderGroup(this.tabOrder.getAndIncrement())
-            .onPress(listing::onAdd)
+            .onPress(listingOverlay::onAdd)
             .build(List.of(this.overlay::addWidget, this.shrinkable::add));
 
         this.separator = SeparatorWidget.create(Color.SILVER_CHALICE)
@@ -75,9 +114,9 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .build(this.overlay::addWidget);
 
         this.rowList = RowList.create()
+            .belowAll(() -> this.isListingDisabled() ? 2 : 0, anchor, disabled)
             .highlight(0.15D, Animation.linear(150L, TimeUnit.MILLISECONDS))
             .emptyMessage(this::getEmptyMessage)
-            .useScissorRectangle(this::getListScissoringBounds)
             .extendHeightTo(this.separator, 0)
             .extendWidthToScreenEnd(0)
             .heightOverflowMargin(1)
@@ -88,8 +127,8 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .build(this.overlay::addWidget);
 
         this.undo = ButtonWidget.create(Lang.Button.UNDO)
-            .onPress(listing::onUndo)
-            .enableIf(listing.getTweak()::isCacheUndoable)
+            .onPress(listingOverlay::onUndo)
+            .enableIf(listingOverlay.getTweak()::isCacheUndoable)
             .rightOf(this.add, 1)
             .skipFocusOnClick()
             .useTextWidth()
@@ -109,6 +148,17 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .padding(5)
             .build();
 
+        this.manage = ButtonWidget.create(Lang.Button.MANAGE)
+            .onPress(() -> new ManageListOverlay(listingOverlay).open())
+            .leftOf(this.finish, 1)
+            .skipFocusOnClick()
+            .useTextWidth()
+            .padding(5)
+            .icon(Icons.MECHANICAL_TOOLS)
+            .tooltip(Lang.Button.MANAGE, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Tooltip.MANAGE_LISTING, 35)
+            .build(this.overlay::addWidget);
+
         this.search = GenericInput.create()
             .onInput(this::find)
             .icon(Icons.SEARCH)
@@ -117,15 +167,15 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .background(Color.OLIVE_BLACK, Color.OLIVE_BLACK)
             .maxLength(100)
             .searchShortcut()
-            .extendWidthTo(this.finish, 1)
+            .extendWidthTo(this.manage, 1)
             .rightOf(this.undo, 1)
             .afterSync(this::resizeSearch)
             .build();
 
-        listing.createExtraWidgets(this);
-        listing.setTabOrder(this);
+        listingOverlay.createExtraWidgets(this);
+        listingOverlay.setTabOrder(this);
 
-        this.overlay.addWidgets(this.undo, this.finish, this.search);
+        this.overlay.addWidgets(this.undo, this.finish, this.manage, this.search);
         this.shrinkable.add(this.undo);
     }
 
@@ -142,6 +192,14 @@ public class ListingWidgets<V, L extends Listing<V, L>>
         this.shrinkable.forEach(ButtonWidget::shrink);
 
         search.getBuilder().sync();
+    }
+
+    /**
+     * @return Whether the listing is disabled.
+     */
+    private boolean isListingDisabled()
+    {
+        return this.listingOverlay.getListing().isDisabled();
     }
 
     /**
@@ -180,10 +238,10 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             if (row == this.highlighted)
                 return Color.GREEN_APPLE;
 
-            boolean isAdded = switch (this.listing.getTweak().getCacheMode())
+            boolean isAdded = switch (this.listingOverlay.getTweak().getCacheMode())
             {
-                case LOCAL -> !this.listing.getTweak().fromDisk().containsKey(key);
-                case NETWORK -> !this.listing.getTweak().fromServer().containsKey(key);
+                case LOCAL -> !this.listingOverlay.getTweak().fromDisk().containsKey(key);
+                case NETWORK -> !this.listingOverlay.getTweak().fromServer().containsKey(key);
             };
 
             return isAdded ? Color.MUGHAL_GREEN : Color.TRANSPARENT;
@@ -221,19 +279,6 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             return Lang.Listing.NOTHING_SAVED.get();
         else
             return Lang.Listing.NOTHING_FOUND.get();
-    }
-
-    /**
-     * @return The scissoring rectangle for the row list.
-     */
-    private Rectangle getListScissoringBounds()
-    {
-        int startX = this.overlay.getInsideX();
-        int startY = this.overlay.getInsideY();
-        int endX = this.overlay.getInsideEndX();
-        int endY = this.separator.getY();
-
-        return new Rectangle(startX, startY, endX, endY);
     }
 
     /**

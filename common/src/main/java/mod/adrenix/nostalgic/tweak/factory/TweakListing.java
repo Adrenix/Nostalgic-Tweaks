@@ -40,6 +40,15 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
     /* Methods */
 
     @Override
+    public T get()
+    {
+        if (this.diskList.isDisabled())
+            return this.emptyList;
+
+        return super.get();
+    }
+
+    @Override
     public T fromDisk()
     {
         return this.diskList;

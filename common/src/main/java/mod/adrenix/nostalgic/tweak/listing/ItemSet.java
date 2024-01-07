@@ -96,6 +96,9 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
     public void copy(ItemSet list)
     {
         this.addAll(list.items);
+        this.addAll(list.deleted);
+        
+        this.disabled = list.disabled;
     }
 
     @Override
@@ -108,7 +111,7 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
     @Override
     public boolean matches(ItemSet listing)
     {
-        return this.items.equals(listing.items);
+        return this.items.equals(listing.items) && this.disabled == listing.disabled;
     }
 
     @Override
@@ -133,7 +136,7 @@ public class ItemSet extends ItemListing<String, ItemSet> implements DeletableSe
     @Override
     public String debugString()
     {
-        return String.format("ItemSet{size:%s}", this.items.size());
+        return String.format("ItemSet{size:%s, disabled:%s}", this.items.size(), this.disabled);
     }
 
     @Override

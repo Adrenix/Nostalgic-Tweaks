@@ -1,25 +1,24 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.impl;
 
+import mod.adrenix.nostalgic.client.gui.overlay.types.state.SwitchGroup;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.DeletableSetOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.ItemListingOverlay;
-import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.ManageItemOverlay;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
+import mod.adrenix.nostalgic.client.gui.widget.icon.IconTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.list.AbstractRow;
 import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
-import mod.adrenix.nostalgic.util.common.asset.Icons;
-import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemSetOverlay extends ItemListingOverlay<String, ItemSet> implements DeletableSetOverlay<String, ItemSet>
 {
     /* Fields */
 
-    private final ItemSet set;
+    private final TweakListing<String, ItemSet> tweak;
 
     /* Constructor */
 
@@ -27,7 +26,7 @@ public class ItemSetOverlay extends ItemListingOverlay<String, ItemSet> implemen
     {
         super(tweak);
 
-        this.set = tweak.fromCache();
+        this.tweak = tweak;
         this.createListRows();
     }
 
@@ -36,43 +35,42 @@ public class ItemSetOverlay extends ItemListingOverlay<String, ItemSet> implemen
     @Override
     public ItemSet getSet()
     {
-        return this.set;
+        return this.tweak.fromCache();
     }
 
     @Override
     public @Nullable AbstractRow<?, ?> getRow(String key, String value)
     {
-        if (this.set.isWildcard(key))
+        if (this.getSet().isWildcard(key))
             return null;
 
         Row row = this.createRow(key, value);
+        IntegerHolder tabOrder = IntegerHolder.create(0);
 
-        IconWidget icon = this.createIcon(row, key, value);
-        ButtonWidget undo = this.createUndo(row, value);
-
-        ButtonWidget manage = ButtonWidget.create(Lang.Button.MANAGE)
-            .leftOf(undo, 2)
-            .icon(Icons.MECHANICAL_TOOLS)
-            .onPress(() -> new ManageItemOverlay(this.set, key).open())
-            .disableIf(() -> this.set.isDeleted(value))
-            .useTextWidth()
+        IconWidget icon = this.getIconFactory(key, value).build(row::addWidget);
+        ButtonWidget undo = this.getUndoBuilder(value).fromWidgetEndX(row, 2).build(row::addWidget);
+        ButtonWidget delete = this.getDeleteBuilder(value).leftOf(undo, 1).build(row::addWidget);
+        TextWidget title = this.getTitleBuilder(key, value, icon, () -> this.isWildcardChanged(key))
+            .extendWidthTo(delete, 2)
             .build(row::addWidget);
 
-        ButtonWidget delete = this.createDelete(row, value, manage);
-        TextWidget title = this.createTitle(row, key, value, icon, delete);
+        SwitchGroup.Widgets wildcard = this.getWildcardWidgets(row, key);
 
-        IconWidget warning = IconWidget.create(Icons.WARNING)
-            .belowAll(2, title, delete)
-            .alignFlushTo(title)
-            .size(GuiUtil.textHeight() - 1)
-            .visibleIf(() -> this.set.containsWildcard(key))
+        wildcard.toggle().getBuilder().disableIf(delete::isInactive).belowAll(2, title, delete).alignFlushTo(title);
+        wildcard.header().getBuilder().useTextWidth();
+        wildcard.description().getBuilder().extendWidthToEnd(row, 2);
+        wildcard.subscribeTo(row);
+
+        IconWidget help = IconTemplate.help()
+            .onPress(this.wildcardHelp::open)
+            .alignVerticalTo(wildcard.toggle(), -1)
+            .rightOf(wildcard.header(), 4)
             .build(row::addWidget);
 
-        TextWidget.create(Lang.Listing.WILDCARD_ALERT)
-            .rightOf(warning, 4)
-            .extendWidthToEnd(row, 2)
-            .visibleIf(() -> this.set.containsWildcard(key))
-            .build(row::addWidget);
+        delete.setTabOrderGroup(tabOrder.getAndIncrement());
+        undo.setTabOrderGroup(tabOrder.getAndIncrement());
+        wildcard.toggle().setTabOrderGroup(tabOrder.getAndIncrement());
+        help.setTabOrderGroup(tabOrder.getAndIncrement());
 
         return row;
     }

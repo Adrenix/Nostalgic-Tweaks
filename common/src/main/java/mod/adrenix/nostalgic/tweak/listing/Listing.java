@@ -35,6 +35,18 @@ public interface Listing<V, L extends Listing<V, L>>
     }
 
     /**
+     * Change the disabled state of a listing.
+     *
+     * @param state The new disabled boolean flag.
+     */
+    void setDisabled(boolean state);
+
+    /**
+     * @return Whether the listing is in a disabled state.
+     */
+    boolean isDisabled();
+
+    /**
      * Check if the given {@link Listing} matches up with this {@link Listing}.
      *
      * @param listing The {@link Listing} to check.

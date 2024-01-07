@@ -12,6 +12,7 @@ public class StringSet implements DeletableSet<String, StringSet>
 
     private final LinkedHashSet<String> list = new LinkedHashSet<>();
     private final transient LinkedHashSet<String> deleted = new LinkedHashSet<>();
+    private boolean disabled;
 
     /* Constructors */
 
@@ -61,6 +62,7 @@ public class StringSet implements DeletableSet<String, StringSet>
     public void copy(StringSet list)
     {
         this.addAll(list.list);
+        this.disabled = list.disabled;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class StringSet implements DeletableSet<String, StringSet>
     @Override
     public boolean matches(StringSet listing)
     {
-        return this.list.equals(listing.list);
+        return this.list.equals(listing.list) && this.disabled == listing.disabled;
     }
 
     @Override
@@ -90,6 +92,18 @@ public class StringSet implements DeletableSet<String, StringSet>
     }
 
     @Override
+    public void setDisabled(boolean state)
+    {
+        this.disabled = state;
+    }
+
+    @Override
+    public boolean isDisabled()
+    {
+        return this.disabled;
+    }
+
+    @Override
     public Class<String> genericType()
     {
         return String.class;
@@ -98,7 +112,7 @@ public class StringSet implements DeletableSet<String, StringSet>
     @Override
     public String debugString()
     {
-        return String.format("StringSet{size:%s}", this.list.size());
+        return String.format("StringSet{size:%s, disabled:%s}", this.list.size(), this.disabled);
     }
 
     @Override

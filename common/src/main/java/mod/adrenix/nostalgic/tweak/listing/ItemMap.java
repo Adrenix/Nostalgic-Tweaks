@@ -127,6 +127,9 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     public void copy(ItemMap<V> list)
     {
         this.putAll(list.items);
+        this.putAll(list.deleted);
+        
+        this.disabled = list.disabled;
     }
 
     @Override
@@ -139,7 +142,7 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     @Override
     public boolean matches(ItemMap<V> listing)
     {
-        return this.items.equals(listing.items);
+        return this.items.equals(listing.items) && this.disabled == listing.disabled;
     }
 
     @Override
@@ -185,8 +188,9 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     {
         String type = this.genericType().getSimpleName();
         int mapSize = this.items.size();
+        boolean disabled = this.disabled;
 
-        return String.format("ItemMap<%s>{mapSize:%s}", type, mapSize);
+        return String.format("ItemMap<%s>{mapSize:%s, disabled:%s}", type, mapSize, disabled);
     }
 
     @Override

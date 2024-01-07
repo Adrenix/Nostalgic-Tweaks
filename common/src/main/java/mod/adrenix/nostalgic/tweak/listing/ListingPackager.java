@@ -21,17 +21,20 @@ public class ListingPackager<T extends TweakListing<?, ?>>
     /* Fields */
 
     @Nullable private final T tweak;
+    private final boolean disabled;
 
     /* Constructors */
 
     /**
      * Create a new {@link ListingPackager} instance with a known {@link TweakListing}.
      *
-     * @param tweak A {@link TweakListing} instance.
+     * @param tweak    A {@link TweakListing} instance.
+     * @param disabled Whether the listing is disabled.
      */
-    public ListingPackager(@Nullable T tweak)
+    public ListingPackager(@Nullable T tweak, boolean disabled)
     {
         this.tweak = tweak;
+        this.disabled = disabled;
     }
 
     /**
@@ -40,26 +43,34 @@ public class ListingPackager<T extends TweakListing<?, ?>>
      *
      * @param poolId    A tweak pool identifier.
      * @param classType The class type of the expected tweak.
+     * @param disabled  Whether the listing is disabled.
      */
     @SuppressWarnings("unchecked") // Tweak class type is checked before setting
-    public ListingPackager(String poolId, Class<? super T> classType)
+    public ListingPackager(String poolId, Class<? super T> classType, boolean disabled)
     {
         Tweak<?> found = TweakPool.find(poolId).orElse(null);
 
         if (found != null)
         {
             if (classType.isAssignableFrom(found.getClass()))
+            {
                 this.tweak = (T) found;
+                this.disabled = disabled;
+            }
             else
             {
                 NostalgicTweaks.LOGGER.warn("Unable to cast packager [tweak={jsonId:%s, classType:%s}]", poolId, classType);
+
                 this.tweak = null;
+                this.disabled = true;
             }
         }
         else
         {
             NostalgicTweaks.LOGGER.warn("Unable to find listing using [tweak={jsonId:%s}]", poolId);
+
             this.tweak = null;
+            this.disabled = true;
         }
     }
 
@@ -93,6 +104,7 @@ public class ListingPackager<T extends TweakListing<?, ?>>
         {
             listing.clear();
             listing.acceptSafely(set);
+            listing.setDisabled(this.disabled);
 
             return listing;
         }
@@ -117,6 +129,7 @@ public class ListingPackager<T extends TweakListing<?, ?>>
         {
             listing.clear();
             listing.acceptSafely(map);
+            listing.setDisabled(this.disabled);
 
             return listing;
         }

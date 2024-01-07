@@ -1,10 +1,13 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing;
 
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.SliderTweak;
+import mod.adrenix.nostalgic.client.gui.widget.button.ButtonBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
+import mod.adrenix.nostalgic.client.gui.widget.icon.IconFactory;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.list.Row;
+import mod.adrenix.nostalgic.client.gui.widget.text.TextBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakMap;
 import mod.adrenix.nostalgic.tweak.listing.DeletableMap;
@@ -62,21 +65,20 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
     }
 
     /**
-     * @return The {@link IconWidget} that represents the row.
+     * @return The {@link IconFactory} that represents the row.
      */
-    default IconWidget createIcon(Row row, String key, TextureIcon icon)
+    default IconFactory getIconFactory(String key, TextureIcon icon)
     {
         return IconWidget.create(icon)
             .pos(1, ItemClientUtil.isModelFlat(icon.getItem().orElse(Items.BARRIER)) ? 1 : 2)
             .disableIf(() -> this.getMap().isDeleted(key))
-            .darkenOnDisable(0.8F)
-            .build(row::addWidget);
+            .darkenOnDisable(0.8F);
     }
 
     /**
-     * @return The {@link TextWidget} that represents the row's title.
+     * @return The {@link TextBuilder} that represents the row's title.
      */
-    default TextWidget createTitle(Row row, String key, Holder<V> cache, IconWidget icon)
+    default TextBuilder getTitleBuilder(String key, IconWidget icon, Holder<V> cache)
     {
         final int red = Color.fromFormatting(ChatFormatting.RED).get();
         final int white = Color.WHITE.get();
@@ -87,55 +89,54 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
             .italicsWhen(() -> this.isUndoable(key, cache))
             .rightOf(icon, 4)
             .centerAligned()
-            .useTextWidth()
-            .build(row::addWidget);
+            .useTextWidth();
     }
 
     /**
-     * @return The {@link ButtonWidget} that deletes the row entry.
+     * @return The {@link TextBuilder} that represents the row's title with additional italics instructions.
      */
-    default ButtonWidget createDelete(Row row, String key, DynamicWidget<?, ?>... belowAll)
+    default TextBuilder getTitleBuilder(String key, IconWidget icon, Holder<V> cache, BooleanSupplier italicsWhen)
+    {
+        return this.getTitleBuilder(key, icon, cache)
+            .italicsWhen(() -> italicsWhen.getAsBoolean() || this.isUndoable(key, cache));
+    }
+
+    /**
+     * @return The {@link ButtonBuilder} that deletes the row entry.
+     */
+    default ButtonBuilder getDeleteBuilder(String key)
     {
         return ButtonWidget.create(Lang.Button.DELETE)
-            .belowAll(4, belowAll)
-            .posX(1)
             .icon(Icons.TRASH_CAN)
             .onPress(() -> this.getMap().delete(key, this.getMap().getOrDeleted(key)))
             .disableIf(() -> this.getMap().isDeleted(key))
-            .useTextWidth()
-            .build(row::addWidget);
+            .useTextWidth();
     }
 
     /**
-     * @return The {@link ButtonWidget} that undoes changes made to the row entry.
+     * @return The {@link ButtonBuilder} that undoes changes made to the row entry.
      */
-    default ButtonWidget createUndo(Row row, String key, Holder<V> cache, ButtonWidget rightOf)
+    default ButtonBuilder getUndoBuilder(String key, Holder<V> cache)
     {
         return ButtonWidget.create(Lang.Button.UNDO)
-            .rightOf(rightOf, 1)
             .icon(Icons.UNDO)
             .hoverIcon(Icons.UNDO_HOVER)
-            .fromWidgetEndX(row, 1)
             .onPress(() -> this.undo(key, cache))
             .enableIf(() -> this.isUndoable(key, cache))
-            .useTextWidth()
-            .build(row::addWidget);
+            .useTextWidth();
     }
 
     /**
-     * @return The {@link ButtonWidget} that resets the row's entry value.
+     * @return The {@link ButtonBuilder} that resets the row's entry value.
      */
-    default ButtonWidget createReset(Row row, String key, V resetValue, ButtonWidget rightOf)
+    default ButtonBuilder getResetBuilder(String key, V resetValue)
     {
         return ButtonWidget.create(Lang.Button.RESET)
-            .rightOf(rightOf, 1)
             .icon(Icons.REDO)
             .hoverIcon(Icons.REDO_HOVER)
-            .fromWidgetEndX(row, 1)
             .onPress(() -> this.getMap().put(key, resetValue))
             .disableIf(() -> this.isResettable(key, resetValue))
-            .useTextWidth()
-            .build(row::addWidget);
+            .useTextWidth();
     }
 
     /**

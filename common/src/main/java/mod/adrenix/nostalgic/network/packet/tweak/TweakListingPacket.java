@@ -1,9 +1,12 @@
 package mod.adrenix.nostalgic.network.packet.tweak;
 
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
+import mod.adrenix.nostalgic.tweak.listing.Listing;
 import mod.adrenix.nostalgic.tweak.listing.ListingPackager;
 import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 abstract class TweakListingPacket<T extends TweakListing<?, ?>> implements TweakPacket
 {
@@ -11,6 +14,7 @@ abstract class TweakListingPacket<T extends TweakListing<?, ?>> implements Tweak
 
     protected final ListingPackager<T> packager;
     protected final String poolId;
+    protected final boolean disabled;
 
     /* Constructors */
 
@@ -19,10 +23,11 @@ abstract class TweakListingPacket<T extends TweakListing<?, ?>> implements Tweak
      *
      * @param tweak A {@link TweakListing} instance.
      */
-    TweakListingPacket(T tweak)
+    TweakListingPacket(T tweak, Function<T, ? extends Listing<?, ?>> reader)
     {
         this.poolId = tweak.getJsonPathId();
-        this.packager = new ListingPackager<>(tweak);
+        this.disabled = reader.apply(tweak).isDisabled();
+        this.packager = new ListingPackager<>(tweak, this.disabled);
     }
 
     /**
@@ -34,10 +39,18 @@ abstract class TweakListingPacket<T extends TweakListing<?, ?>> implements Tweak
     TweakListingPacket(FriendlyByteBuf buffer, Class<? super T> classType)
     {
         this.poolId = buffer.readUtf();
-        this.packager = new ListingPackager<>(this.poolId, classType);
+        this.disabled = buffer.readBoolean();
+        this.packager = new ListingPackager<>(this.poolId, classType, this.disabled);
     }
 
     /* Methods */
+
+    @Override
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeUtf(this.poolId);
+        buffer.writeBoolean(this.disabled);
+    }
 
     /**
      * @return A {@link TweakListing} instance that will be retrieved from the {@link ListingPackager} instance used by

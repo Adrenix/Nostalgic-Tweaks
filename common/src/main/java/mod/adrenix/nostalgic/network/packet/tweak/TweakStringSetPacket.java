@@ -25,7 +25,7 @@ abstract class TweakStringSetPacket extends TweakListingPacket<TweakStringSet>
      */
     TweakStringSetPacket(TweakStringSet tweak, Function<TweakStringSet, ListingSet<String, ?>> reader)
     {
-        super(tweak);
+        super(tweak, reader);
 
         this.set = reader.apply(tweak).getSet();
     }
@@ -47,7 +47,8 @@ abstract class TweakStringSetPacket extends TweakListingPacket<TweakStringSet>
     @Override
     public void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeUtf(this.poolId);
+        super.encode(buffer);
+
         buffer.writeCollection(this.set, FriendlyByteBuf::writeUtf);
     }
 }

@@ -29,8 +29,27 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
     /* Fields */
 
     protected final transient HashSet<ItemRule> rules = new HashSet<>();
+    protected boolean disabled = false;
 
     /* Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDisabled(boolean state)
+    {
+        this.disabled = state;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isDisabled()
+    {
+        return this.disabled;
+    }
 
     /**
      * If no rules were defined for the item listing, then the listing will allow all item types.

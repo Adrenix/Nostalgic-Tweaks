@@ -92,10 +92,11 @@ public class StringSetOverlay implements DeletableSetOverlay<String, StringSet>
     {
         Row row = this.createRow(key, value);
 
-        IconWidget icon = this.createIcon(row, key, value);
-        ButtonWidget delete = this.createDelete(row, value, this.createUndo(row, value));
+        IconWidget icon = this.getIconFactory(key, value).build(row::addWidget);
+        ButtonWidget undo = this.getUndoBuilder(value).fromWidgetEndX(row, 2).build(row::addWidget);
+        ButtonWidget delete = this.getDeleteBuilder(value).leftOf(undo, 1).build(row::addWidget);
 
-        this.createTitle(row, key, value, icon, delete);
+        this.getTitleBuilder(key, value, icon).extendWidthTo(delete, 2).build(row::addWidget);
 
         return row;
     }

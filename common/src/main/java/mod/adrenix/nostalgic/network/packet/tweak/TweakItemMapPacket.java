@@ -24,7 +24,7 @@ abstract class TweakItemMapPacket extends TweakListingPacket<TweakItemMap<?>>
      */
     TweakItemMapPacket(TweakItemMap<?> tweak, Function<TweakItemMap<?>, ListingMap<?, ?>> reader)
     {
-        super(tweak);
+        super(tweak, reader);
 
         this.map = reader.apply(tweak).getMap();
     }
@@ -46,7 +46,8 @@ abstract class TweakItemMapPacket extends TweakListingPacket<TweakItemMap<?>>
     @Override
     public void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeUtf(this.poolId);
+        super.encode(buffer);
+
         buffer.writeMap(this.map, FriendlyByteBuf::writeUtf, this.packager::writeValue);
     }
 }

@@ -126,6 +126,7 @@ public interface ListingOverlay<V, L extends Listing<V, L>>
         widgets.add.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
         widgets.undo.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
         widgets.search.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
+        widgets.manage.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
         widgets.finish.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
         widgets.rowList.setTabOrderGroup(widgets.tabOrder.getAndIncrement());
     }

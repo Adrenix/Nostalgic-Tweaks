@@ -330,6 +330,7 @@ public interface Lang
         Translation QUICK = from("quick");
         Translation MANAGE = from("manage");
         Translation FILTER = from("filter");
+        Translation MANAGE_LISTING = from("manage_listing");
         Translation HOME_DEBUG = from("home_debug");
         Translation HOME_SUPPORTERS = from("home_supporters");
         Translation FILTER_DISABLED = from("filter_disabled");
@@ -374,9 +375,12 @@ public interface Lang
     interface Listing
     {
         Translation ADD = from("add");
+        Translation DISABLED_TITLE = from("disabled_title");
+        Translation DISABLED_MESSAGE = from("disabled_message");
+        Translation DISABLED_WARNING = from("disabled_warning");
         Translation WILDCARD_TITLE = from("wildcard_title");
         Translation WILDCARD_MESSAGE = from("wildcard_message");
-        Translation WILDCARD_ALERT = from("wildcard_alert");
+        Translation WILDCARD_HELP = from("wildcard_help");
         Translation INVALID_ITEM = from("invalid_item");
         Translation INVALID_TYPE = from("invalid_type");
         Translation INVALID_MESSAGE = from("invalid_message");
