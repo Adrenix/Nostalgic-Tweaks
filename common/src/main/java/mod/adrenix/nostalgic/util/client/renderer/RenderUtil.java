@@ -51,6 +51,7 @@ public abstract class RenderUtil
     private static TextureLocation texture;
     private static RenderType renderType;
 
+    private static final Tesselator MOD_TESSELATOR = new Tesselator(1536);
     private static final ArrayDeque<Runnable> DEFERRED_QUEUE = new ArrayDeque<>();
     private static final ArrayDeque<Scissor> SCISSOR_QUEUE = new ArrayDeque<>();
     private static final ArrayDeque<LineBuffer> LINE_QUEUE = new ArrayDeque<>();
@@ -58,8 +59,8 @@ public abstract class RenderUtil
     private static final ArrayDeque<ItemBuffer> ITEM_MODEL_QUEUE = new ArrayDeque<>();
     private static final ArrayDeque<ItemBuffer> BLOCK_MODEL_QUEUE = new ArrayDeque<>();
     private static final ArrayDeque<Consumer<BufferBuilder>> FILL_VERTICES = new ArrayDeque<>();
-    private static final MultiBufferSource.BufferSource FONT_BATCH = MultiBufferSource.immediate(new Tesselator().getBuilder());
-    private static final MultiBufferSource.BufferSource FONT_IMMEDIATE = MultiBufferSource.immediate(new Tesselator().getBuilder());
+    private static final MultiBufferSource.BufferSource FONT_BATCH = MultiBufferSource.immediate(new BufferBuilder(1536));
+    private static final MultiBufferSource.BufferSource FONT_IMMEDIATE = MultiBufferSource.immediate(new BufferBuilder(1536));
 
     /**
      * Offset the z-position of the matrix that renders fill calls. Useful if it is known that all fills are background
@@ -342,7 +343,7 @@ public abstract class RenderUtil
     @PublicAPI
     public static BufferBuilder getTesselatorBuilder()
     {
-        return RenderSystem.renderThreadTesselator().getBuilder();
+        return MOD_TESSELATOR.getBuilder();
     }
 
     /**
