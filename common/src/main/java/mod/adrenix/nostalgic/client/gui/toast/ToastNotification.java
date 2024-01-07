@@ -37,7 +37,6 @@ public abstract class ToastNotification
      */
     public static void changeOnLan()
     {
-
         ToastNotification.add(ToastId.LAN_CHANGE, 8500L);
     }
 
