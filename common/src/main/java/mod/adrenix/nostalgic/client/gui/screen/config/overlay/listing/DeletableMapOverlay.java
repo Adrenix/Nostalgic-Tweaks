@@ -186,7 +186,7 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
             return true;
 
         V fromCache = this.getTweak().fromCache().getOrDeleted(key);
-        V fromSaved = this.getTweak().fromDisk().getOrDeleted(key);
+        V fromSaved = this.getTweak().fromMode().getOrDeleted(key);
 
         boolean isCacheDiff = fromCache != null && !fromCache.equals(cached.get());
         boolean isSaveDiff = fromSaved != null && !fromSaved.equals(cached.get());
@@ -207,13 +207,13 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
         else
         {
             V fromCache = this.getTweak().fromCache().getOrDeleted(key);
-            V fromSaved = this.getTweak().fromDisk().getOrDeleted(key);
+            V fromSaved = this.getTweak().fromMode().getOrDeleted(key);
 
             if (fromCache != null && !fromCache.equals(cached.get()))
                 this.getMap().put(key, cached.get());
             else if (fromSaved != null && !fromSaved.equals(cached.get()))
             {
-                V saved = this.getTweak().fromDisk().getMap().get(key);
+                V saved = this.getTweak().fromMode().getMap().get(key);
 
                 cached.set(saved);
                 this.getMap().put(key, saved);

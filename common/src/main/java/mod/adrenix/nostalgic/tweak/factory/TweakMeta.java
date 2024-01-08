@@ -54,6 +54,13 @@ public interface TweakMeta<T>
     T fromDisk();
 
     /**
+     * Get the value received from a server with Nostalgic Tweaks installed.
+     *
+     * @return A value sent from a server with the mod installed.
+     */
+    T fromServer();
+
+    /**
      * Get the temporary cache value stored in this tweak based on the current cache mode.
      *
      * @return A config cache value based on the logical side chosen within the tweak's menu row.
@@ -64,11 +71,15 @@ public interface TweakMeta<T>
     }
 
     /**
-     * Get the value received from a server with Nostalgic Tweaks installed.
+     * Get a saved value based on the current cache mode. If in local mode, the disk value is returned. If in network
+     * mode, the network value is returned.
      *
-     * @return A value sent from a server with the mod installed.
+     * @return A saved value based on the logical side chose within the tweak's menu row.
      */
-    T fromServer();
+    default T fromMode()
+    {
+        return this.isLocalMode() ? this.fromDisk() : this.fromServer();
+    }
 
     /**
      * Get the cache value stored locally.
