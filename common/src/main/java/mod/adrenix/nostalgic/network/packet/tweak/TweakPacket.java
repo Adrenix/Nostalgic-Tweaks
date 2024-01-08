@@ -147,8 +147,8 @@ public interface TweakPacket extends ModPacket
      */
     default void changeOnServer(NetworkManager.PacketContext context, String poolId, Object receivedValue)
     {
-        // Check that the sender is an operator
-        if (this.isNotFromOperator(context) || receivedValue == null)
+        // Don't trust data sent by a player
+        if (receivedValue == null)
             return;
 
         // Retrieve server tweak data
@@ -159,6 +159,13 @@ public interface TweakPacket extends ModPacket
 
         // Found tweak
         Tweak<Object> tweak = TweakMeta.wildcard(found.get());
+
+        // Check that the sender is an operator
+        if (this.isNotFromOperator(context))
+        {
+            tweak.sendToPlayer(this.getServerPlayer(context));
+            return;
+        }
 
         // Check if value changed
         boolean hasChanged = tweak.hasChanged(receivedValue);
