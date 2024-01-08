@@ -167,10 +167,10 @@ public class TweakValidator
     private void validate(Tweak<?> tweak)
     {
         if (tweak.fromDisk() instanceof Collection && ClassUtil.isNotInstanceOf(tweak, ListingSet.class))
-            this.exception(tweak, "Collection tweaks must use TweakListing.class");
+            this.exception(tweak, String.format("Collection tweaks must use %s.class", ListingSet.class.getSimpleName()));
 
         if (tweak.fromDisk() instanceof Map && ClassUtil.isNotInstanceOf(tweak, ListingMap.class))
-            this.exception(tweak, "Map tweaks must use an instance of ListingMap.class");
+            this.exception(tweak, String.format("Map tweaks must use an instance of %s.class", ListingMap.class.getSimpleName()));
 
         if (tweak.validate(this))
             return;
