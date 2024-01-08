@@ -271,6 +271,24 @@ public class Grid extends DynamicWidget<GridBuilder, Grid>
     }
 
     /**
+     * Realign the grid's cells and subscribed widgets.
+     */
+    protected void realign()
+    {
+        DynamicWidget.syncWithoutCache(this.cells.stream().map(Cell::getWidget).toList());
+        DynamicWidget.sync(this.cells);
+
+        if (this.isRealignNeeded)
+        {
+            this.isRealignNeeded = false;
+            this.alignCells();
+
+            DynamicWidget.syncWithoutCache(this.cells.stream().map(Cell::getWidget).toList());
+            DynamicWidget.sync(this.cells);
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -281,16 +299,7 @@ public class Grid extends DynamicWidget<GridBuilder, Grid>
         if (this.isInvisible())
             return;
 
-        DynamicWidget.sync(this.cells);
-
-        if (this.isRealignNeeded)
-        {
-            this.isRealignNeeded = false;
-            this.alignCells();
-
-            DynamicWidget.sync(this.cells);
-        }
-
+        this.realign();
         this.renderDebug(graphics);
     }
 }

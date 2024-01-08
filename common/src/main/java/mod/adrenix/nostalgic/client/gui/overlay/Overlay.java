@@ -1532,15 +1532,15 @@ public class Overlay extends Screen
         if (isVerticalChanged || isHorizontalChanged)
             this.syncBeforeRender();
 
-        DynamicWidget.applyCache(this.widgets.external);
-        DynamicWidget.applyCache(this.widgets.relatives);
-
         RenderUtil.pushZoneScissor(this.scissor.getRectangle(this));
         DynamicWidget.renderWithoutSync(this.widgets.scissored, graphics, mouseX, mouseY, partialTick);
         RenderUtil.popScissor();
 
         DynamicWidget.renderWithoutSync(this.widgets.projected, graphics, mouseX, mouseY, partialTick);
         DynamicWidget.render(this.widgets.internal, graphics, mouseX, mouseY, partialTick);
+
+        DynamicWidget.applyCache(this.widgets.external);
+        DynamicWidget.applyCache(this.widgets.relatives);
 
         if (this.areScrollbarsVisible())
         {

@@ -14,6 +14,9 @@ public class GridSync implements DynamicFunction<GridBuilder, Grid>
     public void apply(Grid grid, GridBuilder builder)
     {
         grid.alignCells();
+
+        if (grid.isRealignNeeded)
+            grid.realign();
     }
 
     @Override
