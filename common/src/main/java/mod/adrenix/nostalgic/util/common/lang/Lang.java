@@ -286,6 +286,7 @@ public interface Lang
         Translation DELETE_ALL = from("delete_all");
         Translation ENABLE_ALL = from("enable_all");
         Translation EDIT_LIST = from("edit_list");
+        Translation VIEW_LIST = from("view_list");
         Translation FAVORITE = from("favorite");
         Translation OVERRIDE = from("override");
         Translation NETWORK = from("network");

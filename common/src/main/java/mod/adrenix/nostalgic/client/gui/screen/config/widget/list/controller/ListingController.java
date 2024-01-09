@@ -25,9 +25,9 @@ public class ListingController
      */
     public <V, L extends Listing<V, L>> ListingController(Controller controller, TweakListing<V, L> tweak, Function<TweakListing<V, L>, ListingOverlay<V, L>> overlay)
     {
-        this.widget = ButtonWidget.create(Lang.Button.EDIT_LIST)
+        this.widget = ButtonWidget.create()
+            .title(() -> tweak.isNetworkLocked() ? Lang.Button.VIEW_LIST.get() : Lang.Button.EDIT_LIST.get())
             .onPress(() -> overlay.apply(tweak).open())
-            .disableIf(tweak::isNetworkLocked)
             .leftOf(controller.getLeftOf(), 1)
             .width(Controller.BUTTON_WIDTH)
             .build();

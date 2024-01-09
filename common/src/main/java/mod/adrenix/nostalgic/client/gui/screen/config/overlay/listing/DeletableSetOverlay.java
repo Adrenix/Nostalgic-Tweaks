@@ -99,7 +99,7 @@ public interface DeletableSetOverlay<V, L extends DeletableSet<V, L>> extends Li
             .icon(Icons.UNDO)
             .hoverIcon(Icons.UNDO_HOVER)
             .onPress(() -> this.getSet().add(value))
-            .disableIf(() -> this.getSet().contains(value))
+            .disableIf(() -> this.getSet().contains(value) || this.isLocked())
             .useTextWidth();
     }
 
@@ -111,7 +111,7 @@ public interface DeletableSetOverlay<V, L extends DeletableSet<V, L>> extends Li
         return ButtonWidget.create(Lang.Button.DELETE)
             .icon(Icons.TRASH_CAN)
             .onPress(() -> this.getSet().delete(value))
-            .disableIf(() -> this.getSet().isDeleted(value))
+            .disableIf(() -> this.getSet().isDeleted(value) || this.isLocked())
             .useTextWidth();
     }
 }

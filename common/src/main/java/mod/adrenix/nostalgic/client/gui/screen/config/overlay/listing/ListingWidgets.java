@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.tweak.listing.Listing;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.client.search.GenericDatabase;
+import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -104,6 +105,7 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .tooltip(Lang.Button.ADD, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.ADD, 35)
             .tabOrderGroup(this.tabOrder.getAndIncrement())
+            .disableIf(listingOverlay::isLocked)
             .onPress(listingOverlay::onAdd)
             .build(List.of(this.overlay::addWidget, this.shrinkable::add));
 
@@ -127,8 +129,8 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .build(this.overlay::addWidget);
 
         this.undo = ButtonWidget.create(Lang.Button.UNDO)
+            .enableIf(CollectionUtil.areAllTrue(listingOverlay.getTweak()::isCacheUndoable, listingOverlay::isUnlocked))
             .onPress(listingOverlay::onUndo)
-            .enableIf(listingOverlay.getTweak()::isCacheUndoable)
             .rightOf(this.add, 1)
             .skipFocusOnClick()
             .useTextWidth()
@@ -157,6 +159,7 @@ public class ListingWidgets<V, L extends Listing<V, L>>
             .icon(Icons.MECHANICAL_TOOLS)
             .tooltip(Lang.Button.MANAGE, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.MANAGE_LISTING, 35)
+            .disableIf(listingOverlay::isLocked)
             .build(this.overlay::addWidget);
 
         this.search = GenericInput.create()

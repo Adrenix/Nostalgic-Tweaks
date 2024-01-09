@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemListing;
+import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
@@ -205,8 +206,14 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
     {
         if (Minecraft.getInstance().player != null)
         {
+            BooleanSupplier isMainHandItemInvalid = () -> {
+                ItemStack item = Minecraft.getInstance().player.getMainHandItem();
+
+                return ItemFilter.isFiltered(item, this.itemListing);
+            };
+
             this.quick = ButtonWidget.create(Lang.Button.QUICK)
-                .disableIf(() -> ItemFilter.isFiltered(Minecraft.getInstance().player.getMainHandItem(), this.itemListing))
+                .disableIf(CollectionUtil.areAnyTrue(isMainHandItemInvalid, this::isLocked))
                 .onPress(this::onQuickAdd)
                 .rightOf(widgets.add, 1)
                 .icon(Icons.LIGHTNING)

@@ -83,7 +83,7 @@ public class ItemMapOverlay<V> extends ItemListingOverlay<V, ItemMap<V>> impleme
         DynamicWidget<?, ?> controller = this.getController(key, row, controls);
 
         if (controller.getBuilder() instanceof ActiveBuilder<?, ?> builder)
-            builder.disableIf(() -> this.getMap().isDeleted(key));
+            builder.disableIf(() -> this.getMap().isDeleted(key) || this.isLocked());
 
         delete.setTabOrderGroup(tabOrder.getAndIncrement());
         help.setTabOrderGroup(tabOrder.getAndIncrement());

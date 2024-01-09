@@ -58,6 +58,22 @@ public interface ListingOverlay<V, L extends Listing<V, L>>
     }
 
     /**
+     * @return Whether the tweak is locked out because the list is in network mode and the player is not an operator.
+     */
+    default boolean isLocked()
+    {
+        return this.getTweak().isNetworkLocked();
+    }
+
+    /**
+     * @return Whether the tweak is unlocked because the list is local or the player is an operator in network mode.
+     */
+    default boolean isUnlocked()
+    {
+        return !this.isLocked();
+    }
+
+    /**
      * This method is responsible for adding new rows to the overlay's row list based on a map or set list. Another
      * overlay will appear with selectable items.
      */

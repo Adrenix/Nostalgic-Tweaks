@@ -109,7 +109,7 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
         return ButtonWidget.create(Lang.Button.DELETE)
             .icon(Icons.TRASH_CAN)
             .onPress(() -> this.getMap().delete(key, this.getMap().getOrDeleted(key)))
-            .disableIf(() -> this.getMap().isDeleted(key))
+            .disableIf(() -> this.getMap().isDeleted(key) || this.isLocked())
             .useTextWidth();
     }
 
@@ -122,7 +122,7 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
             .icon(Icons.UNDO)
             .hoverIcon(Icons.UNDO_HOVER)
             .onPress(() -> this.undo(key, cache))
-            .enableIf(() -> this.isUndoable(key, cache))
+            .enableIf(() -> this.isUndoable(key, cache) && this.isUnlocked())
             .useTextWidth();
     }
 
@@ -135,7 +135,7 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
             .icon(Icons.REDO)
             .hoverIcon(Icons.REDO_HOVER)
             .onPress(() -> this.getMap().put(key, resetValue))
-            .disableIf(() -> this.isResettable(key, resetValue))
+            .disableIf(() -> this.isResettable(key, resetValue) || this.isLocked())
             .useTextWidth();
     }
 
