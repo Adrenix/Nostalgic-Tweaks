@@ -24,7 +24,6 @@ public class ScrollbarBuilder extends DynamicBuilder<ScrollbarBuilder, Scrollbar
 
     int size = 6;
     int minSize = 16;
-    boolean smooth = false;
 
     Animation animation = Animation.linear(1L, TimeUnit.SECONDS);
     Color scrollColor = new Color(85, 85, 85);
@@ -122,20 +121,9 @@ public class ScrollbarBuilder extends DynamicBuilder<ScrollbarBuilder, Scrollbar
     }
 
     /**
-     * When invoked, informs the scrollbar renderer that any movement should be animated using the animator defined in
-     * {@link #animation(Animation)}.
-     */
-    @PublicAPI
-    public ScrollbarBuilder smooth()
-    {
-        this.smooth = true;
-
-        return this;
-    }
-
-    /**
-     * Define an {@link Animation} to be used by this scrollbar. When invoked, the {@link #smooth()} property will be
-     * changed to {@code true} so that this animator is used by the scrollbar renderer.
+     * Define an {@link Animation} to be used by this scrollbar when {@link Scrollbar#setSmoothScrollAmount(double)} is
+     * invoked. The default animation is linear movement for 1 second. This will not impact smooth scrolling while using
+     * the scroll wheel.
      *
      * @param animator An {@link Animation} instance.
      */
@@ -143,7 +131,6 @@ public class ScrollbarBuilder extends DynamicBuilder<ScrollbarBuilder, Scrollbar
     public ScrollbarBuilder animation(Animation animator)
     {
         this.animation = animator;
-        this.smooth = true;
 
         return this;
     }

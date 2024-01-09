@@ -50,7 +50,6 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     private double scrollAmount = 0.0D;
     private double scrollTo = 0.0D;
     private double lastScrollTo = 0.0D;
-    private double lastScrollDelta = 0.0D;
     private boolean dragging = false;
     private final ScrollbarContent content;
 
@@ -113,7 +112,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     @PublicAPI
     public boolean isSmoothScrolling()
     {
-        return this.getBuilder().smooth && ModTweak.SMOOTH_SCROLL.fromCache() && !Screen.hasControlDown();
+        return ModTweak.SMOOTH_SCROLL.fromCache() && !Screen.hasControlDown();
     }
 
     /**
@@ -126,6 +125,23 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     public void setScrollAmount(double amount)
     {
         this.scrollAmount = Mth.clamp(amount, 0.0D, this.getMaxScrollAmount());
+        this.scrollTo = this.scrollAmount;
+
+        this.getBuilder().onScroll.accept(this);
+    }
+
+    /**
+     * Set the animation scroll amount. This amount will be clamped.
+     *
+     * @param amount A new scroll amount.
+     */
+    private void setAnimationScrollAmount(double amount)
+    {
+        this.scrollAmount = Mth.clamp(amount, 0.0D, this.getMaxScrollAmount());
+
+        if (MathUtil.tolerance(this.scrollAmount, this.scrollTo, 0.9D))
+            this.scrollAmount = this.scrollTo;
+
         this.getBuilder().onScroll.accept(this);
     }
 
@@ -326,35 +342,12 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
         else if (this.isHorizontal() && !Screen.hasShiftDown())
             return false;
 
+        double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 4.0D, 12.0D);
+
         if (this.isSmoothScrolling())
-        {
-            double scrollAmount = this.getScrollAmount();
-            double maxScrollAmount = this.getMaxScrollAmount();
-            double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 20.0D, 40.0D);
-
-            if (scrollAmount >= maxScrollAmount || this.lastScrollDelta != deltaY)
-            {
-                this.getBuilder().animation.reset();
-
-                this.lastScrollTo = scrollAmount;
-                this.scrollTo = Mth.clamp(scrollAmount - deltaY * averageScrollAmount / 2.0D, 0.0D, maxScrollAmount);
-            }
-            else
-            {
-                double startOffset = 1.0D - this.getBuilder().animation.getValue();
-                double deltaScroll = deltaY * averageScrollAmount / 1.2D;
-
-                this.scrollTo = Mth.clamp(this.scrollTo - (startOffset * deltaScroll), 0.0D, maxScrollAmount);
-            }
-
-            this.lastScrollDelta = deltaY;
-
-            this.getBuilder().animation.play();
-        }
+            this.scrollTo = Mth.clamp(this.scrollTo - deltaY * averageScrollAmount, 0.0D, this.getMaxScrollAmount());
         else
         {
-            double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 4.0D, 16.0D);
-
             this.setScrollAmount(this.scrollAmount - deltaY * averageScrollAmount);
             this.scrollTo = this.scrollAmount;
         }
@@ -365,17 +358,18 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     /**
      * Move the animation if applicable.
      */
-    private void animate()
+    private void animate(float partialTick)
     {
         if (this.dragging)
             return;
 
         if (this.getBuilder().animation.isNotFinished())
-            this.setScrollAmount(Mth.lerp(this.getBuilder().animation.getValue(), this.lastScrollTo, this.scrollTo));
-        else
+            this.setAnimationScrollAmount(Mth.lerp(this.getBuilder().animation.getValue(), this.lastScrollTo, this.scrollTo));
+
+        if (this.getBuilder().animation.isFinished())
         {
             this.getBuilder().animation.reset();
-            this.lastScrollTo = this.scrollAmount;
+            this.setAnimationScrollAmount(Mth.lerp(partialTick, this.scrollAmount, this.scrollTo));
         }
 
         boolean isMaxReached = this.getScrollAmount() >= this.getMaxScrollAmount() && this.scrollTo >= this.getMaxScrollAmount();
@@ -401,7 +395,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
             return;
 
         this.clamp();
-        this.animate();
+        this.animate(partialTick);
 
         graphics.pose().pushPose();
         graphics.pose().translate(this.x, this.y, 0.0D);
