@@ -28,6 +28,12 @@ public class TextureLocation extends ResourceLocation
     public static final TextureLocation CONTROLLER_256 = new TextureLocation(ModAsset.twemoji("controller_256.png"), 256);
     public static final TextureLocation NOSTALGIC_TWEAKS = new TextureLocation("nostalgic_tweaks.png", 1920, 182);
 
+    /* Missing Textures */
+
+    public static final String MISSING_BETA = String.format("assets/%s/textures/missing/beta.png", NostalgicTweaks.MOD_ID);
+    public static final String MISSING_1_5 = String.format("assets/%s/textures/missing/1_5.png", NostalgicTweaks.MOD_ID);
+    public static final String MISSING_1_6_1_12 = String.format("assets/%s/textures/missing/1_6-1_12.png", NostalgicTweaks.MOD_ID);
+
     /* Fields */
 
     private final int width;
