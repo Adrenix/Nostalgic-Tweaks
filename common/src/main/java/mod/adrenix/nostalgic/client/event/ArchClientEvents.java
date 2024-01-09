@@ -2,8 +2,10 @@ package mod.adrenix.nostalgic.client.event;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientGuiEvent;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.ReloadListenerRegistry;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
@@ -57,6 +59,12 @@ public abstract class ArchClientEvents
             ClientTimer.getInstance().onTick();
             AnimationImpl.onTick();
             Panorama.onTick();
+        });
+
+        // Handles mod instructions that need to run after a player leaves the world
+        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> {
+            NostalgicTweaks.setNetworkVerification(false);
+            NostalgicTweaks.setConnection(null);
         });
     }
 }
