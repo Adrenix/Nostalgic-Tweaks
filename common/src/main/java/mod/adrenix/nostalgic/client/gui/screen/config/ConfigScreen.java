@@ -62,17 +62,17 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     @Override
     protected void init()
     {
+        if (this.initialized && !SCREEN_CACHE.isPushed())
+            SCREEN_CACHE.push(this);
+
         super.init();
 
-        if (!this.initialized)
-        {
-            if (ModTweak.PERSISTENT_CONFIG_SCREEN.get())
-                SCREEN_CACHE.pop(this);
-            else
-                SCREEN_CACHE.reset();
-        }
-
         this.initialized = true;
+
+        if (ModTweak.PERSISTENT_CONFIG_SCREEN.get())
+            SCREEN_CACHE.pop(this);
+        else
+            SCREEN_CACHE.reset();
 
         if (SCREEN_CACHE.rowProvider.equals(RowProvider.DEFAULT))
         {

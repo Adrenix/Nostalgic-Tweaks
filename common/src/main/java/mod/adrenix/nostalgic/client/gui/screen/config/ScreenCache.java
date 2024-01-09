@@ -61,6 +61,9 @@ class ScreenCache
      */
     public void pop(ConfigScreen screen)
     {
+        if (!this.pushed)
+            return;
+
         this.pushed = false;
 
         screen.setCategory(this.category);
