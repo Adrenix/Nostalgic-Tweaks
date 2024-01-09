@@ -81,7 +81,7 @@ public class TweakRowLayout
             .tooltip(Lang.Button.RESET, 40, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.TweakRow.RESET, 40)
             .disabledInfoTooltip(Lang.TweakRow.RESET_OFF, 45)
-            .disableIf(CollectionUtil.areAnyTrue(this.tweak::isCacheDefault, this.controller.predicate(DynamicWidget::isInactive)))
+            .disableIf(CollectionUtil.areAnyTrue(this.tweak::isCacheDefault, this.tweak::isNetworkLocked))
             .fromWidgetEndX(this.row, this.padding)
             .onPress(this.tweak::setCacheToDefault)
             .build(this.row::addWidget);
@@ -91,7 +91,7 @@ public class TweakRowLayout
             .icon(Icons.UNDO)
             .hoverIcon(Icons.UNDO_HOVER)
             .tooltip(Lang.Button.UNDO, 500L, TimeUnit.MILLISECONDS)
-            .disableIf(this.tweak::isCacheNotUndoable)
+            .disableIf(CollectionUtil.areAnyTrue(this.tweak::isCacheNotUndoable, this.tweak::isNetworkLocked))
             .onPress(this.tweak::undoCache)
             .build(this.row::addWidget);
 
@@ -101,7 +101,7 @@ public class TweakRowLayout
             .tooltip(Lang.Button.SAVE, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.supply(this.tweak::isLocalMode, Lang.Tooltip.SAVE_TWEAK_LOCAL, Lang.Tooltip.SAVE_TWEAK_NETWORK), 35)
             .onPress(CollectionUtil.runAll(this.tweak::applyCurrentCache, ConfigCache::save, RunUtil::onSave))
-            .enableIf(this.tweak::isCurrentCacheSavable)
+            .enableIf(CollectionUtil.areAllTrue(this.tweak::isCurrentCacheSavable, this.tweak::isNetworkUnlocked))
             .build(this.row::addWidget);
 
         // This field needs updated if the first widget to the right of tweak controller changes

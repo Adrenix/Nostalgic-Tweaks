@@ -363,8 +363,8 @@ public abstract class Tweak<T> implements TweakMeta<T>
     }
 
     /**
-     * Checks if a multiplayer-like tweak can be changed by the client's configuration menu. This prevents issues when
-     * trying to change tweaks that shouldn't be changed because the player lacks operator permissions on a server
+     * Checks if a multiplayer-like tweak cannot be changed by the client's configuration menu. This prevents issues
+     * when trying to change tweaks that shouldn't be changed because the player lacks operator permissions on a server
      * running Nostalgic Tweaks. Even if the client bypasses this, the server will reject a tweak change request if the
      * server player doesn't have operator permissions.
      *
@@ -379,6 +379,17 @@ public abstract class Tweak<T> implements TweakMeta<T>
             return false;
 
         return !NetUtil.isPlayerOp();
+    }
+
+    /**
+     * The inverse method of {@link #isNetworkLocked()}.
+     *
+     * @return Whether a multiplayer-like tweak can be changed by the client's configuration menu.
+     * @see #isNetworkUnlocked()
+     */
+    public boolean isNetworkUnlocked()
+    {
+        return !this.isNetworkLocked();
     }
 
     /**
