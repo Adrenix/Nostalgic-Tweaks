@@ -159,7 +159,7 @@ public class HomeWidgets implements WidgetManager
 
         /* Copyright */
 
-        TextWidget.create("Made by Adrenix\nMMPL - 2.0.3-Modified © 2023")
+        TextWidget.create("Made by Adrenix\nMMPL - 2.0.3-Modified © 2024")
             .onPress(LinkUtil.onPress(LinkLocation.LICENSE))
             .color(Color.fromFormatting(ChatFormatting.GRAY))
             .useTextWidth()
