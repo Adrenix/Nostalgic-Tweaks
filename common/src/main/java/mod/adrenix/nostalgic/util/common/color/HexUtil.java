@@ -29,7 +29,7 @@ public abstract class HexUtil
 
     /**
      * Checks if the given string is a valid hexadecimal. This checker will remove any # found in the string. The
-     * hexadecimal can be of length 6 or 8, if any other length is found, then result will be <code>false</code>.
+     * hexadecimal can be of length 6 or 8, if any other length is found, then result will be {@code false}.
      *
      * @param check The hexadecimal string to check.
      * @return Whether the given string is a valid hexadecimal.
@@ -83,8 +83,8 @@ public abstract class HexUtil
     }
 
     /**
-     * Converts a hexadecimal string (e.g., #8B8B8BFF {@code #RRGGBBAA}) into an array of floats (e.g., [0.853F, 0.9F,
-     * 0.154098F]). Any invalid input strings will have a default array of [1.0F, 1.0F, 1.0F, 1.0F].
+     * Converts a hexadecimal string (e.g., #8B8B8BFF {@code #RRGGBBAA}) into an array of floats (e.g., [1.83F, 1.83F,
+     * 1.83F, 1.0F]). Any invalid input strings will have a default array of [1.0F, 1.0F, 1.0F, 1.0F].
      *
      * @param convert The hexadecimal string to convert.
      * @return An array of four floats from 0.0F to 1.0F.

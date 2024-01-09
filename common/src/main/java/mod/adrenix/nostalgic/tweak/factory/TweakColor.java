@@ -17,7 +17,8 @@ public class TweakColor extends TweakValue<String>
      * <p><br>
      * The {@code defaultHex} <i>must</i> be of the format {@code #A-F_0-9}. A tweak will be considered {@code opaque}
      * if the {@code defaultHex} only has six characters (excluding the #). If the tweak supports alpha-transparency,
-     * then the {@code defaultHex} must be eight characters (excluding the #).
+     * then the {@code defaultHex} must be eight characters (excluding the #). Hex strings do not follow the game's ARGB
+     * format. Instead, use {@code #RRGGBBAA} when defining a default hex color string.
      *
      * @param defaultHex The tweak's default hex color.
      * @param container  The tweak's {@link Container}, either a {@code category} or {@code group}.
