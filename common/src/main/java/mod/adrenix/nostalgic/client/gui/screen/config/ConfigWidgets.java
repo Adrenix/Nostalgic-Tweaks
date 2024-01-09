@@ -407,7 +407,7 @@ public class ConfigWidgets implements WidgetManager
      */
     private void updateSearchResults()
     {
-        if (this.lastQuery.isEmpty())
+        if (this.lastQuery.isEmpty() || this.lastQuery.equals(this.getQuery()))
             return;
 
         this.lastQuery = "";
