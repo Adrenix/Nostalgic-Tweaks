@@ -43,7 +43,7 @@ public abstract class MissingTextureAtlasSpriteMixin
         method = "generateMissingImage",
         at = @At("RETURN")
     )
-    private static NativeImage NT$onGenerateMissingTexture(NativeImage vanilla)
+    private static NativeImage NT$setOldMissingTexture(NativeImage vanilla)
     {
         if (CandyTweak.OLD_MISSING_TEXTURE.get() == MissingTexture.MODERN)
             return vanilla;
@@ -52,7 +52,7 @@ public abstract class MissingTextureAtlasSpriteMixin
 
         try
         {
-            image = NT$getImage();
+            image = NT$getMissingTexture();
         }
         catch (Exception exception)
         {
@@ -73,7 +73,7 @@ public abstract class MissingTextureAtlasSpriteMixin
             args = "intValue=16"
         )
     )
-    private static int NT$onCreate(int vanilla)
+    private static int NT$onSetMissingTextureSize(int vanilla)
     {
         return switch (CandyTweak.OLD_MISSING_TEXTURE.get())
         {
@@ -89,9 +89,9 @@ public abstract class MissingTextureAtlasSpriteMixin
         method = "<clinit>",
         at = @At("TAIL")
     )
-    private static void NT$onStaticInit(CallbackInfo callback)
+    private static void NT$setMissingTextureSaveRunnable(CallbackInfo callback)
     {
-        RunUtil.ON_SAVE_RUNNABLES.add(MissingTextureAtlasSpriteMixin::NT$update);
+        RunUtil.ON_SAVE_RUNNABLES.add(MissingTextureAtlasSpriteMixin::NT$setMissingTextureToNull);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      * missing texture tweak is made.
      */
     @Unique
-    private static void NT$update()
+    private static void NT$setMissingTextureToNull()
     {
         missingTexture = null;
     }
@@ -111,7 +111,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      * @throws IOException If the old missing texture location can't be read.
      */
     @Unique
-    private static Optional<NativeImage> NT$getImage() throws IOException
+    private static Optional<NativeImage> NT$getMissingTexture() throws IOException
     {
         String path = switch (CandyTweak.OLD_MISSING_TEXTURE.get())
         {

@@ -21,7 +21,7 @@ public abstract class MinecraftMixin
         method = "getFramerateLimit",
         at = @At("RETURN")
     )
-    private int NT$onGetFramerateLimit(int framerate)
+    private int NT$setUncapFramerateLimit(int framerate)
     {
         return CandyTweak.UNCAP_TITLE_FPS.get() ? this.getWindow().getFramerateLimit() : framerate;
     }

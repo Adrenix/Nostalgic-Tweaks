@@ -21,7 +21,7 @@ public abstract class BlockBehaviourMixin
             target = "Lnet/minecraft/world/level/block/state/BlockState;isCollisionShapeFullBlock(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"
         )
     )
-    private boolean NT$isCollisionShapeFullBlock(boolean isCollisionShapeFullBlock, BlockState state)
+    private boolean NT$setCustomAmbientOcclusion(boolean isCollisionShapeFullBlock, BlockState state)
     {
         if (!CandyTweak.AMBIENT_OCCLUSION_BLOCKS.get().containsBlock(state.getBlock()))
             return isCollisionShapeFullBlock;

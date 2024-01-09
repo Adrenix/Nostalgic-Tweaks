@@ -32,7 +32,7 @@ public abstract class BlockStateBaseMixin
         method = "getOffset",
         at = @At("RETURN")
     )
-    private Vec3 NT$onGetOffset(Vec3 offset)
+    private Vec3 NT$onDisableBlockOffsets(Vec3 offset)
     {
         if (NostalgicTweaks.isMixinEarly() || NostalgicTweaks.isServer() || !this.hasOffsetFunction())
             return offset;
