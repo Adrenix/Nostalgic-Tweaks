@@ -146,11 +146,11 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
      */
     protected boolean isWildcardChanged(String key)
     {
-        L disk = this.tweak.fromDisk();
+        L mode = this.tweak.fromMode();
         L cache = this.tweak.fromCache();
 
-        boolean isRemoved = disk.containsWildcard(key) && !cache.containsWildcard(key);
-        boolean isAdded = cache.containsWildcard(key) && !disk.containsWildcard(key);
+        boolean isRemoved = mode.containsWildcard(key) && !cache.containsWildcard(key);
+        boolean isAdded = cache.containsWildcard(key) && !mode.containsWildcard(key);
 
         return isAdded || isRemoved;
     }
