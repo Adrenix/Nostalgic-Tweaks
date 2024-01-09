@@ -641,6 +641,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture.enum.r16_r112": "The missing texture will have a §7black§r/§5pink§r color scheme where a §5pink§r square starts in the top left corner.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOutlines": "Custom Full Block Outlines",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOutlines.info": "Choose which blocks will render a full block hitbox outline. This is an§e aesthetic§r tweak and does§c not§r change the hitbox itself.",
+  "gui.nostalgic_tweaks.config.eyeCandy.customOutlineColor": "Custom Outline Color",
+  "gui.nostalgic_tweaks.config.eyeCandy.customOutlineColor.info": "Create a custom hitbox outline color.",
   "gui.nostalgic_tweaks.config.eyeCandy.ambientOcclusionBlocks": "Ambient Occlusion Blocks",
   "gui.nostalgic_tweaks.config.eyeCandy.ambientOcclusionBlocks.info": "Applies ambient occlusion to the blocks in this list. Ambient occlusion is the shadow that appears between the edge of two or more blocks.",
   "gui.nostalgic_tweaks.config.eyeCandy.disableBlockOffsets": "Disable Block Offsets",

@@ -78,6 +78,7 @@ public interface CandyTweak
     }
 
     TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(defaultBlockOutlines(), CandyGroup.BLOCK_OUTLINE).icon(Icons.BLOCK_OUTLINE).newForUpdate().build();
+    TweakColor CUSTOM_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_OUTLINE).newForUpdate().whenDisabled("#00000066").build();
 
     // Chests
 
