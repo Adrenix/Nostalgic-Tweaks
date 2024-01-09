@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
+import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import net.minecraft.world.item.Items;
@@ -39,6 +40,8 @@ public interface CandyTweak
         return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
     }
 
+    TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(defaultAmbientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+
     /**
      * Generates the default disabled block offsets.
      */
@@ -52,17 +55,29 @@ public interface CandyTweak
         return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
     }
 
-    TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(defaultAmbientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
-    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(defaultDisabledOffsets(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(defaultDisabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
 
-    // Hitbox Outlines
+    /**
+     * Generates the default full-block outlines.
+     */
+    private static ItemSet defaultBlockOutlines()
+    {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
 
-    TweakFlag OLD_STAIR_OUTLINE = TweakFlag.client(true, CandyGroup.BLOCK_OUTLINE).newForUpdate().build();
-    TweakFlag OLD_FENCE_OUTLINE = TweakFlag.client(true, CandyGroup.BLOCK_OUTLINE).newForUpdate().build();
-    TweakFlag OLD_SLAB_OUTLINE = TweakFlag.client(false, CandyGroup.BLOCK_OUTLINE).newForUpdate().build();
-    TweakFlag OLD_WALL_OUTLINE = TweakFlag.client(true, CandyGroup.BLOCK_OUTLINE).newForUpdate().build();
-    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(new ItemSet(ItemRule.ONLY_BLOCKS), CandyGroup.BLOCK_OUTLINE).icon(Icons.BLOCK_OUTLINE).newForUpdate().build();
+        set.addAll(ItemListing.getWildcardKeys(Blocks.COBBLESTONE_STAIRS));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.COBBLESTONE_WALL));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.OAK_FENCE));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.CHEST));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.ENDER_CHEST));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.CAULDRON));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.HOPPER));
+        set.addAll(ItemListing.getWildcardKeys(Blocks.ANVIL));
+
+        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
+    }
+
+    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(defaultBlockOutlines(), CandyGroup.BLOCK_OUTLINE).icon(Icons.BLOCK_OUTLINE).newForUpdate().build();
 
     // Chests
 

@@ -154,18 +154,11 @@ public class ClientConfig implements ConfigMeta
     {
         // Block
 
+        public ItemSet oldBlockOutlines = CandyTweak.OLD_BLOCK_OUTLINES.fromJson("oldBlockOutlines");
         public ItemSet ambientOcclusionBlocks = CandyTweak.AMBIENT_OCCLUSION_BLOCKS.fromJson("ambientOcclusionBlocks");
         public ItemSet disableBlockOffsets = CandyTweak.DISABLE_BLOCK_OFFSETS.fromJson("disableBlockOffsets");
         public boolean disableAllOffset = CandyTweak.DISABLE_ALL_OFFSET.fromJson("disableAllOffset");
         public MissingTexture oldMissingTexture = CandyTweak.OLD_MISSING_TEXTURE.fromJson("oldMissingTexture");
-
-        // Hitbox Outlines
-
-        public boolean oldStairOutline = CandyTweak.OLD_STAIR_OUTLINE.fromJson("oldStairOutline");
-        public boolean oldFenceOutline = CandyTweak.OLD_FENCE_OUTLINE.fromJson("oldFenceOutline");
-        public boolean oldSlabOutline = CandyTweak.OLD_SLAB_OUTLINE.fromJson("oldSlabOutline");
-        public boolean oldWallOutline = CandyTweak.OLD_WALL_OUTLINE.fromJson("oldWallOutline");
-        public ItemSet oldBlockOutlines = CandyTweak.OLD_BLOCK_OUTLINES.fromJson("oldBlockOutlines");
 
         // Chests
 
