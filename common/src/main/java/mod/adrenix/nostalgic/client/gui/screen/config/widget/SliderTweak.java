@@ -62,7 +62,8 @@ public class SliderTweak
             .title(this::getTitle)
             .suffix(this::getSuffix)
             .formatter(this::getFormatter)
-            .interval(this.slider.getInterval());
+            .interval(this.slider.getInterval())
+            .roundTo(this.slider.getRoundTo());
     }
 
     /**

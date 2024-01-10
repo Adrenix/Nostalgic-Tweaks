@@ -91,6 +91,14 @@ public class TweakSlider
     }
 
     /**
+     * @return Get the round to place value for this slider.
+     */
+    public int getRoundTo()
+    {
+        return this.builder.roundTo;
+    }
+
+    /**
      * @return Get the value output formatter function for this slider.
      */
     public Function<Number, String> getFormatter()
@@ -179,6 +187,13 @@ public class TweakSlider
          * @param interval The interval number.
          */
         Builder interval(Number interval);
+
+        /**
+         * Set a round to place value for this slider. The default is {@code 2}, which is the hundredth place.
+         *
+         * @param place The place to round to. For example, {@code 1} represents the tenths' place.
+         */
+        Builder roundTo(int place);
 
         /**
          * Define a custom string value for this slider.
@@ -290,6 +305,7 @@ public class TweakSlider
         private Number min;
         private Number max;
         private Number interval;
+        private int roundTo;
 
         private Function<Number, String> formatter = TweakSlider::defaultFormatting;
         private SliderType type = SliderType.GENERIC;
@@ -302,6 +318,7 @@ public class TweakSlider
             this.min = min;
             this.max = max;
             this.interval = interval;
+            this.roundTo = 2;
         }
 
         @Override
@@ -317,6 +334,13 @@ public class TweakSlider
         public Builder interval(Number interval)
         {
             this.interval = interval;
+            return this;
+        }
+
+        @Override
+        public Builder roundTo(int place)
+        {
+            this.roundTo = place;
             return this;
         }
 

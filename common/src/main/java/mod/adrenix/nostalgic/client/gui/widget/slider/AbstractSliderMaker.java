@@ -26,6 +26,7 @@ public abstract class AbstractSliderMaker<Builder extends AbstractSliderMaker<Bu
     @Nullable protected SliderRenderer<Builder, Slider> effectsRenderer = null;
     @Nullable protected SliderRenderer<Builder, Slider> handleRenderer = null;
     @Nullable protected Supplier<Number> interval = null;
+    protected int roundTo = 2;
     protected boolean scrollRequiresFocus = true;
     protected boolean clickSoundOnRelease = true;
     protected Supplier<Component> title = Component::empty;
@@ -230,6 +231,19 @@ public abstract class AbstractSliderMaker<Builder extends AbstractSliderMaker<Bu
     public Builder interval(Number number)
     {
         return interval(() -> number);
+    }
+
+    /**
+     * Set a round to place value for this slider. The default is {@code 2}, which is the hundredth place.
+     *
+     * @param place The place to round to. For example, {@code 1} represents the tenths' place.
+     */
+    @PublicAPI
+    public Builder roundTo(int place)
+    {
+        this.roundTo = place;
+
+        return this.self();
     }
 
     /**

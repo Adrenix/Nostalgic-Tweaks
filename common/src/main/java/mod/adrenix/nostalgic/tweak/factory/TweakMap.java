@@ -108,6 +108,17 @@ public abstract class TweakMap<V, L extends ListingMap<V, L>> extends TweakListi
         }
 
         @Override
+        public B roundTo(int place)
+        {
+            if (this.slider == null)
+                throw new RuntimeException(NON_NUMBER_MAP);
+
+            this.slider.roundTo(place);
+
+            return this.self();
+        }
+
+        @Override
         public B formatter(Function<Number, String> formatter)
         {
             if (this.slider == null)

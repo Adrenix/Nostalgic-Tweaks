@@ -17,6 +17,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.lwjgl.glfw.GLFW;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder, Slider>, Slider extends AbstractSlider<Builder, Slider>>
     extends DynamicWidget<Builder, Slider>
 {
@@ -135,7 +138,10 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     protected void applyValue()
     {
         Number numberValue = this.builder.maxValue;
-        double sliderValue = this.getMin() + Math.abs(this.getMax() - this.getMin()) * this.value;
+
+        double sliderValue = BigDecimal.valueOf(this.getMin() + Math.abs(this.getMax() - this.getMin()) * this.value)
+            .setScale(this.builder.roundTo, RoundingMode.HALF_UP)
+            .doubleValue();
 
         if (numberValue instanceof Byte)
             this.builder.valueConsumer.accept((byte) Math.round(sliderValue));

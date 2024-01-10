@@ -158,6 +158,13 @@ public class TweakNumber<T extends Number> extends TweakValue<T>
         }
 
         @Override
+        public Builder<U> roundTo(int place)
+        {
+            this.slider.roundTo(place);
+            return this;
+        }
+
+        @Override
         public Builder<U> formatter(Function<Number, String> formatter)
         {
             this.slider.formatter(formatter);
