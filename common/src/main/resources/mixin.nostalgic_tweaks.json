@@ -7,6 +7,7 @@
   "client": [
     "candy.ambient_occlusion_blocks.BlockBehaviourMixin",
     "candy.custom_outline_color.LevelRendererMixin",
+    "candy.custom_outline_thickness.LevelRendererMixin",
     "candy.disabled_block_offsets.BlockStateBaseMixin",
     "candy.old_block_outlines.LevelRendererMixin",
     "candy.old_missing_texture.MissingTextureAtlasSpriteMixin",

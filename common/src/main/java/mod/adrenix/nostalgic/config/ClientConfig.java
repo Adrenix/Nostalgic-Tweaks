@@ -163,6 +163,7 @@ public class ClientConfig implements ConfigMeta
 
         public ItemSet oldBlockOutlines = CandyTweak.OLD_BLOCK_OUTLINES.fromJson("oldBlockOutlines");
         public String customOutlineColor = CandyTweak.CUSTOM_OUTLINE_COLOR.fromJson("customOutlineColor");
+        public float customOutlineThickness = CandyTweak.CUSTOM_OUTLINE_THICKNESS.fromJson("customOutlineThickness");
 
         // Chests
 

@@ -247,6 +247,7 @@ public interface Lang
         Translation DENSITY = from("density");
         Translation ENCROACH = from("encroach");
         Translation INTENSITY = from("intensity");
+        Translation THICKNESS = from("thickness");
         Translation BLOCK_LIGHT = from("block_light");
         Translation Y_LEVEL = from("y_level");
 
