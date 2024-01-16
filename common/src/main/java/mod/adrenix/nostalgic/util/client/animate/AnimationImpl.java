@@ -33,6 +33,8 @@ public class AnimationImpl implements Animation
 
     private double currentValue;
     private double lastValue;
+    private double minValue;
+    private double maxValue;
 
     private double tickProgress;
     private double durationInTicks;
@@ -65,6 +67,8 @@ public class AnimationImpl implements Animation
         this.tickProgress = 0.0D;
         this.currentValue = 0.0D;
         this.lastValue = 0.0D;
+        this.minValue = Double.MIN_VALUE;
+        this.maxValue = Double.MAX_VALUE;
         this.reverse = false;
         this.finished = true;
 
@@ -97,8 +101,22 @@ public class AnimationImpl implements Animation
 
         copy.animator = this.animator;
         copy.durationInTicks = this.durationInTicks;
+        copy.minValue = this.minValue;
+        copy.maxValue = this.maxValue;
 
         return copy;
+    }
+
+    @Override
+    public void setMinValue(double minValue)
+    {
+        this.minValue = minValue;
+    }
+
+    @Override
+    public void setMaxValue(double maxValue)
+    {
+        this.maxValue = maxValue;
     }
 
     @Override
@@ -107,14 +125,28 @@ public class AnimationImpl implements Animation
         return Mth.lerp(Minecraft.getInstance().getFrameTime(), this.lastValue, this.currentValue);
     }
 
+    private boolean isReverseFinished()
+    {
+        boolean areValuesEqual = this.lastValue == this.currentValue;
+        boolean isTickFinished = this.reverse && this.tickProgress <= 0 && areValuesEqual;
+        boolean isMinReached = this.reverse && this.currentValue <= this.minValue && areValuesEqual;
+
+        return isTickFinished || isMinReached;
+    }
+
+    private boolean isForwardFinished()
+    {
+        boolean areValuesEqual = this.lastValue == this.currentValue;
+        boolean isTickFinished = !this.reverse && this.tickProgress >= this.durationInTicks && areValuesEqual;
+        boolean isMaxReached = !this.reverse && this.currentValue >= this.maxValue && areValuesEqual;
+
+        return isTickFinished || isMaxReached;
+    }
+
     @Override
     public void tick()
     {
-        boolean areValuesEqual = this.lastValue == this.currentValue;
-        boolean isReverseFinished = this.reverse && this.tickProgress <= 0 && areValuesEqual;
-        boolean isForwardFinished = !this.reverse && this.tickProgress >= this.durationInTicks && areValuesEqual;
-
-        if (this.durationInTicks <= 0 || isReverseFinished || isForwardFinished)
+        if (this.durationInTicks <= 0 || this.isReverseFinished() || this.isForwardFinished())
         {
             this.stop();
             return;
@@ -136,8 +168,9 @@ public class AnimationImpl implements Animation
         }
 
         this.tickProgress = Mth.clamp(this.tickProgress, 0.0D, this.durationInTicks);
+
         this.lastValue = this.currentValue;
-        this.currentValue = this.animator.apply(this.tickProgress / this.durationInTicks);
+        this.currentValue = Mth.clamp(this.animator.apply(this.tickProgress / this.durationInTicks), this.minValue, this.maxValue);
     }
 
     @Override
@@ -145,7 +178,13 @@ public class AnimationImpl implements Animation
     {
         this.lastValue = 0.0D;
         this.tickProgress = (int) Math.round(this.durationInTicks * Mth.clamp(progress, 0.0F, 1.0F));
-        this.currentValue = this.animator.apply(this.tickProgress / this.durationInTicks);
+        this.currentValue = Mth.clamp(this.animator.apply(this.tickProgress / this.durationInTicks), this.minValue, this.maxValue);
+    }
+
+    @Override
+    public double getTickProgress()
+    {
+        return this.tickProgress;
     }
 
     @Override
@@ -161,7 +200,7 @@ public class AnimationImpl implements Animation
     public void stop()
     {
         if (this.reverse)
-            this.reset();
+            this.reverse = false;
 
         this.finished = true;
     }

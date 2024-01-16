@@ -160,6 +160,22 @@ public interface Animation
     Animation copy();
 
     /**
+     * Set the minimum value allowed for this animator. The default is {@code Double.MIN_VALUE}.
+     *
+     * @param minValue A new minimum value.
+     */
+    @PublicAPI
+    void setMinValue(double minValue);
+
+    /**
+     * Set the maximum value allowed for this animator. The default is {@code Double.MAX_VALUE}.
+     *
+     * @param maxValue A new maximum value.
+     */
+    @PublicAPI
+    void setMaxValue(double maxValue);
+
+    /**
      * Use this method to retrieve a value that can be used for animating a specific value. Linear interpolation is
      * applied to this value using the progress between two ticks (also known as the game's "frame time").
      *
@@ -189,6 +205,12 @@ public interface Animation
      */
     @PublicAPI
     void setTickProgress(float progress);
+
+    /**
+     * @return The current normalized tick progress of the animation.
+     */
+    @PublicAPI
+    double getTickProgress();
 
     /**
      * Resets all animator fields back to their original state.
