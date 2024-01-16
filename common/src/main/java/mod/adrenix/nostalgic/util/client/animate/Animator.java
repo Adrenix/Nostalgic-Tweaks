@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-public class AnimationImpl implements Animation
+public class Animator implements Animation
 {
     /* Tick Loop */
 
@@ -50,18 +50,18 @@ public class AnimationImpl implements Animation
      * Create a new animator instance. It is recommended to use the pre-built animators, such as
      * {@link Animation#easeInOutQuart(long, TimeUnit)}.
      *
-     * <br><br>
+     * <p><br>
      * If you have a special animation formula, then you can define your own animator using
      * {@link Animation#animateWith(Function)}.
      *
-     * <br><br>
+     * <p><br>
      * <b color=red>Important:</b> Formulas receive a normalized value [0.0D, 1.0D] which is calculated by the number
      * of ticks the animation has moved out of the maximum number of ticks the animation can move.
      *
      * @see Animation#animateWith(Function)
      * @see Animation#setDuration(long, TimeUnit)
      */
-    public AnimationImpl()
+    public Animator()
     {
         this.animator = value -> 1.0D;
         this.tickProgress = 0.0D;
@@ -84,7 +84,7 @@ public class AnimationImpl implements Animation
      * @param duration The amount of time this animation runs for.
      * @param timeUnit A {@link TimeUnit} enumeration value.
      */
-    public AnimationImpl(Function<Double, Double> animator, long duration, TimeUnit timeUnit)
+    public Animator(Function<Double, Double> animator, long duration, TimeUnit timeUnit)
     {
         this();
 
@@ -97,7 +97,7 @@ public class AnimationImpl implements Animation
     @Override
     public Animation copy()
     {
-        AnimationImpl copy = new AnimationImpl();
+        Animator copy = new Animator();
 
         copy.animator = this.animator;
         copy.durationInTicks = this.durationInTicks;

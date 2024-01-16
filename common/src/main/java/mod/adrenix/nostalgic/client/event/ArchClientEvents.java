@@ -15,7 +15,7 @@ import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
-import mod.adrenix.nostalgic.util.client.animate.AnimationImpl;
+import mod.adrenix.nostalgic.util.client.animate.Animator;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.minecraft.server.packs.PackType;
 
@@ -57,7 +57,7 @@ public abstract class ArchClientEvents
         // Handles mod instructions that need run every tick
         ClientTickEvent.CLIENT_PRE.register(minecraft -> {
             ClientTimer.getInstance().onTick();
-            AnimationImpl.onTick();
+            Animator.onTick();
             Panorama.onTick();
         });
 

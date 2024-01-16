@@ -21,7 +21,7 @@ public interface Animation
     @PublicAPI
     static Animation linear(long duration, TimeUnit timeUnit)
     {
-        return new AnimationImpl(v -> Mth.clamp(v, 0.0D, 1.0D), duration, timeUnit);
+        return new Animator(v -> Mth.clamp(v, 0.0D, 1.0D), duration, timeUnit);
     }
 
     /**
@@ -47,7 +47,7 @@ public interface Animation
     @PublicAPI
     static Animation easeOutExpo(long duration, TimeUnit timeUnit)
     {
-        return new AnimationImpl(v -> v == 1 ? 1 : 1 - Math.pow(2, -10 * v), duration, timeUnit);
+        return new Animator(v -> v == 1 ? 1 : 1 - Math.pow(2, -10 * v), duration, timeUnit);
     }
 
     /**
@@ -71,7 +71,7 @@ public interface Animation
     @PublicAPI
     static Animation easeInOutExpo(long duration, TimeUnit timeUnit)
     {
-        return new AnimationImpl(v -> v == 0 ? 0 : v == 1 ? 1 : v < 0.5 ? Math.pow(2, 20 * v - 10) / 2 : (2 - Math.pow(2, -20 * v + 10)) / 2, duration, timeUnit);
+        return new Animator(v -> v == 0 ? 0 : v == 1 ? 1 : v < 0.5 ? Math.pow(2, 20 * v - 10) / 2 : (2 - Math.pow(2, -20 * v + 10)) / 2, duration, timeUnit);
     }
 
     /**
@@ -95,7 +95,7 @@ public interface Animation
     @PublicAPI
     static Animation easeInOutQuart(long duration, TimeUnit timeUnit)
     {
-        return new AnimationImpl(v -> v < 0.5 ? 8 * v * v * v * v : 1 - Math.pow(-2 * v + 2, 4) / 2, duration, timeUnit);
+        return new Animator(v -> v < 0.5 ? 8 * v * v * v * v : 1 - Math.pow(-2 * v + 2, 4) / 2, duration, timeUnit);
     }
 
     /**
@@ -120,7 +120,7 @@ public interface Animation
     @PublicAPI
     static Animation easeInOutCircular(long duration, TimeUnit timeUnit)
     {
-        return new AnimationImpl(v -> v < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * v, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * v + 2, 2)) + 1) / 2, duration, timeUnit);
+        return new Animator(v -> v < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * v, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * v + 2, 2)) + 1) / 2, duration, timeUnit);
     }
 
     /**
@@ -144,7 +144,7 @@ public interface Animation
     @PublicAPI
     static Optional<Animation> find(Object identifier)
     {
-        return AnimationImpl.INSTANCES.stream()
+        return Animator.INSTANCES.stream()
             .filter(animation -> animation.getIdentifier().equals(identifier))
             .findFirst();
     }
