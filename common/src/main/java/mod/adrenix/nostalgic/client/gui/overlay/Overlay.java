@@ -16,11 +16,11 @@ import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.scrollbar.Scrollbar;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
-import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiOffset;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -132,7 +132,7 @@ public class Overlay extends Screen
             .build(List.of(this.widgets.all::add, this.widgets.internal::add, this.widgets.relatives::add));
 
         this.verticalScrollbar = Scrollbar.vertical(this::getContentHeight, this::getAverageWidgetHeight)
-            .animation(Animation.easeInOutCircular(1L, TimeUnit.SECONDS))
+            .animation(Animate.easeInOutCircular(1L, TimeUnit.SECONDS))
             .size(this.scrollbarSize)
             .pos(this::getScrollbarStartX, this::getInsideY)
             .height(this::getScrollbarHeight)
@@ -140,7 +140,7 @@ public class Overlay extends Screen
             .build(List.of(this.widgets.all::add, this.widgets.internal::add, this.widgets.scrollbars::add));
 
         this.horizontalScrollbar = Scrollbar.horizontal(this::getContentWidth, this::getAverageWidgetWidth)
-            .animation(Animation.easeInOutCircular(1L, TimeUnit.SECONDS))
+            .animation(Animate.easeInOutCircular(1L, TimeUnit.SECONDS))
             .size(this.scrollbarSize)
             .pos(this::getInsideX, this::getScrollbarStartY)
             .width(this::getScrollbarWidth)

@@ -9,10 +9,10 @@ import mod.adrenix.nostalgic.client.gui.widget.list.RowList;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.listing.Listing;
-import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.client.search.GenericDatabase;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -117,7 +117,7 @@ public class ListingWidgets<V, L extends Listing<V, L>>
 
         this.rowList = RowList.create()
             .belowAll(() -> this.isListingDisabled() ? 2 : 0, anchor, disabled)
-            .highlight(0.15D, Animation.linear(150L, TimeUnit.MILLISECONDS))
+            .highlight(0.15D, Animate.linear(150L, TimeUnit.MILLISECONDS))
             .emptyMessage(this::getEmptyMessage)
             .extendHeightTo(this.separator, 0)
             .extendWidthToScreenEnd(0)

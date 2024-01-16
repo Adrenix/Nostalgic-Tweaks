@@ -10,13 +10,14 @@ import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.client.gui.widget.list.RowList;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
+import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
-import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.link.LinkUtil;
 import mod.adrenix.nostalgic.util.client.renderer.InternetTexture;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -171,7 +172,7 @@ class SupporterRow
      */
     private void setTextAdrenix()
     {
-        Animation animation = Animation.linear(2L, TimeUnit.SECONDS);
+        Animation animation = Animate.linear(2L, TimeUnit.SECONDS);
 
         IntSupplier color = () -> {
             animation.playOrRewind();
@@ -217,7 +218,7 @@ class SupporterRow
      */
     private void setTextPoeticRainbow()
     {
-        Animation animation = Animation.linear(2L, TimeUnit.SECONDS);
+        Animation animation = Animate.linear(2L, TimeUnit.SECONDS);
 
         CollectionUtil.forLoop(Arrays.stream(this.name.split("")), (letter, index) -> {
             final float offset = index / (float) this.name.length();
@@ -254,7 +255,7 @@ class SupporterRow
      */
     private void setTextCaptain3()
     {
-        Animation animation = Animation.linear(2L, TimeUnit.SECONDS);
+        Animation animation = Animate.linear(2L, TimeUnit.SECONDS);
 
         CollectionUtil.forLoop(Arrays.stream(this.name.split("")), (letter, index) -> {
             final float offset = index / (float) this.name.length();
@@ -311,7 +312,7 @@ class SupporterRow
 
         for (int i = 0; i < 6; i++)
         {
-            Animation animation = Animation.easeInOutCircular(MathUtil.randomInt(minRand, maxRand), TimeUnit.SECONDS);
+            Animation animation = Animate.easeInOutCircular(MathUtil.randomInt(minRand, maxRand), TimeUnit.SECONDS);
             FloatSupplier random = () -> MathUtil.randomInt(0, 100) / 100.0F;
 
             Holder<Float> randX = Holder.create(random.getAsFloat());
@@ -365,7 +366,7 @@ class SupporterRow
      */
     private void setBackgroundSalC1()
     {
-        Animation animation = Animation.linear(2L, TimeUnit.SECONDS);
+        Animation animation = Animate.linear(2L, TimeUnit.SECONDS);
 
         for (int i = 0; i < 24; i++)
         {

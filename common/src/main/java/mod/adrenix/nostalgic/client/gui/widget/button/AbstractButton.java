@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.CacheHolder;
@@ -58,7 +59,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
         super(builder);
 
         this.timer = SimpleTimer.create(1500L, TimeUnit.MILLISECONDS).waitFirst().build();
-        this.animator = Animation.linear();
+        this.animator = Animate.linear();
         this.cacheTitle = CacheHolder.create(this::getTitle);
         this.iconManager = new IconManager<>(this.self());
         this.shrunk = builder.shrunk;

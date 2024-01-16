@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -78,7 +79,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         this.rows = new UniqueArrayList<>();
 
         this.scrollbar = Scrollbar.vertical(this::getContentHeight, this::getAverageRowHeight)
-            .animation(Animation.easeInOutCircular(1L, TimeUnit.SECONDS))
+            .animation(Animate.easeInOutCircular(1L, TimeUnit.SECONDS))
             .onVisibleChange(this::setPositionForRows)
             .pos(this::getScrollbarStartX, this::getY)
             .height(this::getHeight)

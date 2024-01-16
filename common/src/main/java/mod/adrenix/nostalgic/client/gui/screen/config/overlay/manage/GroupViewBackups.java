@@ -20,11 +20,11 @@ import mod.adrenix.nostalgic.config.factory.ConfigBuilder;
 import mod.adrenix.nostalgic.config.factory.ConfigHandler;
 import mod.adrenix.nostalgic.network.packet.backup.*;
 import mod.adrenix.nostalgic.util.client.RunUtil;
-import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.Gradient;
@@ -120,7 +120,7 @@ public class GroupViewBackups extends ManageGroup
             .extendWidthToScreenEnd(0)
             .rightOf(manager.separator, manager.padding)
             .emptyMessage(Lang.Manage.VIEW_BACKUPS_EMPTY)
-            .highlight(0.15D, Animation.linear(150L, TimeUnit.MILLISECONDS))
+            .highlight(0.15D, Animate.linear(150L, TimeUnit.MILLISECONDS))
             .invisibleIf(CollectionUtil.areAnyTrue(this::isViewingServer, this::isGroupInvisible))
             .backgroundRenderer(this::renderBackground)
             .heightOverflowMargin(this.padding)
@@ -134,7 +134,7 @@ public class GroupViewBackups extends ManageGroup
             .extendWidthToScreenEnd(0)
             .rightOf(manager.separator, manager.padding)
             .emptyMessage(Lang.Manage.VIEW_BACKUPS_EMPTY)
-            .highlight(0.15D, Animation.linear(150L, TimeUnit.MILLISECONDS))
+            .highlight(0.15D, Animate.linear(150L, TimeUnit.MILLISECONDS))
             .invisibleIf(CollectionUtil.areAnyTrue(this::isViewingClient, this::isGroupInvisible))
             .backgroundRenderer(this::renderBackground)
             .heightOverflowMargin(this.padding)

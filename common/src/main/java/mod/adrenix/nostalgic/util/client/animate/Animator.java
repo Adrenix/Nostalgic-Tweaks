@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.client.animate;
 
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
@@ -48,7 +49,7 @@ public class Animator implements Animation
 
     /**
      * Create a new animator instance. It is recommended to use the pre-built animators, such as
-     * {@link Animation#easeInOutQuart(long, TimeUnit)}.
+     * {@link Animate#easeInOutQuart(long, TimeUnit)}.
      *
      * <p><br>
      * If you have a special animation formula, then you can define your own animator using

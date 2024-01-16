@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,7 @@ public abstract class ConfigRow<Builder extends AbstractRowMaker<Builder, Row>, 
     {
         super(builder);
 
-        this.highlighter = Animation.linear(150L, TimeUnit.MILLISECONDS);
+        this.highlighter = Animate.linear(150L, TimeUnit.MILLISECONDS);
 
         this.getBuilder()
             .heightOverflowMargin(1)

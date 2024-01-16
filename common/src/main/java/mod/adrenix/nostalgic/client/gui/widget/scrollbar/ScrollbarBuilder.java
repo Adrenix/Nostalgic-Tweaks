@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.LayoutBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.VisibleBuilder;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
@@ -25,7 +26,7 @@ public class ScrollbarBuilder extends DynamicBuilder<ScrollbarBuilder, Scrollbar
     int size = 6;
     int minSize = 16;
 
-    Animation animation = Animation.linear(1L, TimeUnit.SECONDS);
+    Animation animation = Animate.linear(1L, TimeUnit.SECONDS);
     Color scrollColor = new Color(85, 85, 85);
     Color borderColor = new Color(192, 192, 192);
     Color backgroundColor = new Color(49, 49, 49);

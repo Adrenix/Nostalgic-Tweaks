@@ -3,8 +3,9 @@ package mod.adrenix.nostalgic.client.gui.screen.home;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
@@ -30,7 +31,7 @@ public enum Panorama
 
     /* Static */
 
-    private static final Animation FADE_IN_ANIMATION = Animation.linear(4L, TimeUnit.SECONDS);
+    private static final Animation FADE_IN_ANIMATION = Animate.linear(4L, TimeUnit.SECONDS);
     private static final SimpleTimer SWITCH_TIMER = SimpleTimer.create(15L, TimeUnit.SECONDS).immediate().build();
     private static final CycleIndex CYCLE_INDEX = new CycleIndex(Panorama.values());
 
