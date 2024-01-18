@@ -7,8 +7,8 @@ import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 
@@ -43,11 +43,11 @@ public abstract class ButtonTemplate
                 graphics.pose().pushPose();
                 graphics.pose().translate(iconX, iconY, 1.0D);
 
-                RenderUtil.fill(graphics, 1.0F, 2.0F, 10.0F, 11.0F, fill);
-                RenderUtil.fill(graphics, 2.0F, 4.0F, 8.0F, 10.0F, fill);
-                RenderUtil.fill(graphics, 3.0F, 6.0F, 7.0F, 8.0F, fill);
-                RenderUtil.fill(graphics, 4.0F, 5.0F, 8.0F, 9.0F, fill);
-                RenderUtil.fill(graphics, 4.0F, 7.0F, 6.0F, 7.0F, fill);
+                RenderUtil.fill(graphics, 1.0F, 10.0F, 2.0F, 11.0F, fill);
+                RenderUtil.fill(graphics, 2.0F, 8.0F, 4.0F, 10.0F, fill);
+                RenderUtil.fill(graphics, 3.0F, 7.0F, 6.0F, 8.0F, fill);
+                RenderUtil.fill(graphics, 4.0F, 8.0F, 5.0F, 9.0F, fill);
+                RenderUtil.fill(graphics, 4.0F, 6.0F, 7.0F, 7.0F, fill);
 
                 graphics.pose().popPose();
                 RenderUtil.endBatching();

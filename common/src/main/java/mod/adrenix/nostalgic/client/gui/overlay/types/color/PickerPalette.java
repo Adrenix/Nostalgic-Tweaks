@@ -215,11 +215,11 @@ class PickerPalette
                         Color secondary = MathUtil.isOdd(row) ? Color.WHITE : Color.GRAY;
 
                         for (int i = 1; i <= width; i++)
-                            RenderUtil.fill(graphics, i, i + 1, row, row + 1, MathUtil.isEven(i) ? primary : secondary);
+                            RenderUtil.fill(graphics, i, row, i + 1, row + 1, MathUtil.isEven(i) ? primary : secondary);
                     }
                 }
 
-                RenderUtil.fill(graphics, 1.0F, size - 1, 1.0F, size - 1, color.get());
+                RenderUtil.fill(graphics, 1.0F, 1.0F, size - 1, size - 1, color.get());
                 RenderUtil.endBatching();
 
                 graphics.pose().popPose();

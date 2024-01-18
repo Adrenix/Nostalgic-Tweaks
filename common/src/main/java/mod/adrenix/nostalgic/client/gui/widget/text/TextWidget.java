@@ -401,7 +401,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
         RenderUtil.beginBatching();
 
         if (this.getBuilder().backgroundColor != null)
-            RenderUtil.fill(graphics, this.getX(), this.getEndX(), this.getY(), this.getEndY(), this.getBuilder().backgroundColor);
+            RenderUtil.fill(graphics, this.getX(), this.getY(), this.getEndX(), this.getEndY(), this.getBuilder().backgroundColor);
 
         this.renderText(graphics, mouseX, mouseY, partialTick, false);
 
@@ -485,16 +485,16 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
                 graphics.pose().pushPose();
                 graphics.pose().translate(this.getX(), centerY, 0.0F);
 
-                RenderUtil.fill(graphics, 0, barWidth - padding, 0, barHeight, color);
+                RenderUtil.fill(graphics, 0, 0, barWidth - padding, barHeight, color);
 
                 graphics.pose().translate(barWidth + textWidth + padding, 0.0F, 0.0F);
 
-                RenderUtil.fill(graphics, 0, barWidth - padding, 0, barHeight, color);
+                RenderUtil.fill(graphics, 0, 0, barWidth - padding, barHeight, color);
 
                 graphics.pose().popPose();
             }
             else
-                RenderUtil.fill(graphics, this.getX() + textWidth + padding, this.getEndX(), centerY, centerY + barHeight, color);
+                RenderUtil.fill(graphics, this.getX() + textWidth + padding, centerY, this.getEndX(), centerY + barHeight, color);
         }
 
         if (CollectionUtil.isNotEmpty(this.formatting))

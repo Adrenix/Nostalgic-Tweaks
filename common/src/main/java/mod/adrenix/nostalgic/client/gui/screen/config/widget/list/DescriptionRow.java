@@ -72,6 +72,6 @@ public class DescriptionRow extends ConfigRow<DescriptionRowMaker, DescriptionRo
         float startY = row.getY() - this.getRowList().getRowMargin();
         float endY = row.getEndY();
 
-        RenderUtil.fill(graphics, startX - 1, startX, startY, endY, color);
+        RenderUtil.fill(graphics, startX - 1, startY, startX, endY, color);
     }
 }

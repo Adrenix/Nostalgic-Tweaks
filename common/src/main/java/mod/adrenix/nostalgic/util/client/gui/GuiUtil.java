@@ -327,7 +327,7 @@ public abstract class GuiUtil
         graphics.pose().translate(0.0F, 0.0F, 240.0F);
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, 0.0F, width, 0.0F, ((textHeight() / 2.0F) + 1) * 3, 0xA5000000);
+        RenderUtil.fill(graphics, 0.0F, 0.0F, width, ((textHeight() / 2.0F) + 1) * 3, 0xA5000000);
 
         graphics.pose().scale(0.5F, 0.5F, 0.5F);
         graphics.pose().translate(1.0F, 2.0F, 0.0F);

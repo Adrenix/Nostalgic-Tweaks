@@ -1456,7 +1456,7 @@ public class Overlay extends Screen
         RenderUtil.beginBatching();
 
         if (this.builder.hasShadow)
-            RenderUtil.fill(graphics, 0.0F, winWidth, 0.0F, winHeight, this.builder.shadowColor);
+            RenderUtil.fill(graphics, 0.0F, 0.0F, winWidth, winHeight, this.builder.shadowColor);
 
         int startX = this.getInsideX();
         int startY = this.getInsideY();
@@ -1464,9 +1464,9 @@ public class Overlay extends Screen
         int endY = this.getInsideEndY();
 
         if (this.builder.backgroundGradient == null)
-            RenderUtil.fill(graphics, startX, endX, startY, endY, this.builder.backgroundColor);
+            RenderUtil.fill(graphics, startX, startY, endX, endY, this.builder.backgroundColor);
         else
-            RenderUtil.gradient(this.builder.backgroundGradient, graphics, startX, endX, startY, endY);
+            RenderUtil.gradient(this.builder.backgroundGradient, graphics, startX, startY, endX, endY);
 
         if (this.borderless() && !this.builder.outlineColor.isEmpty())
         {
@@ -1549,7 +1549,7 @@ public class Overlay extends Screen
             int eX = this.getInsideEndX();
             int eY = this.getInsideEndY();
 
-            RenderUtil.fill(graphics, sX, eX, sY, eY, Color.SONIC_SILVER);
+            RenderUtil.fill(graphics, sX, sY, eX, eY, Color.SONIC_SILVER);
         }
     }
 

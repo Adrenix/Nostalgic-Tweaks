@@ -889,7 +889,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
                 RenderUtil.deferredRenderer(() -> {
                     RenderUtil.setRenderType(RenderType.guiOverlay());
-                    RenderUtil.fill(graphics, x0, x1, y0, y1, cursorColor.get());
+                    RenderUtil.fill(graphics, x0, y0, x1, y1, cursorColor.get());
                 });
             }
             else
@@ -949,7 +949,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
         RenderUtil.deferredRenderer(() -> {
             RenderUtil.setRenderType(RenderType.guiTextHighlight());
-            RenderUtil.fill(graphics, x0, x1, y0, y1, 0xFF0000FF);
+            RenderUtil.fill(graphics, x0, y0, x1, y1, 0xFF0000FF);
         });
     }
 
@@ -968,11 +968,11 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int x1 = this.getEndX();
         int y1 = this.getEndY();
 
-        RenderUtil.vLine(graphics, y0, y1, x0, border);
-        RenderUtil.vLine(graphics, y0, y1, x1 - 1, border);
-        RenderUtil.hLine(graphics, x0 + 1, x1 - 1, y0, border);
-        RenderUtil.hLine(graphics, x0 + 1, x1 - 1, y1 - 1, border);
-        RenderUtil.fill(graphics, x0 + 1, x1 - 1, y0 + 1, y1 - 1, background);
+        RenderUtil.vLine(graphics, x0, y0, y1, border);
+        RenderUtil.vLine(graphics, x1 - 1, y0, y1, border);
+        RenderUtil.hLine(graphics, x0 + 1, y0, x1 - 1, border);
+        RenderUtil.hLine(graphics, x0 + 1, y1 - 1, x1 - 1, border);
+        RenderUtil.fill(graphics, x0 + 1, y0 + 1, x1 - 1, y1 - 1, background);
     }
 
     /**

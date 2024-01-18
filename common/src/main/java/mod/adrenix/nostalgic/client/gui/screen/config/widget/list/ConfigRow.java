@@ -76,8 +76,8 @@ public abstract class ConfigRow<Builder extends AbstractRowMaker<Builder, Row>, 
         boolean debug = NostalgicTweaks.isDebugging();
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, startX, endX, startY, endY, debug ? 0x5A00FF00 : color);
-        RenderUtil.fill(graphics, startX, startX - 1, startY + 1, extendY, debug ? 0x5AFF00FF : color);
+        RenderUtil.fill(graphics, startX, startY, endX, endY, debug ? 0x5A00FF00 : color);
+        RenderUtil.fill(graphics, startX, startY + 1, startX - 1, extendY, debug ? 0x5AFF00FF : color);
 
         // Prevents rendering the grandparent line and the bottom portion of the sideways "T" if this is the last row of a tree
         if (CollectionUtil.last(this.parent.getChildren()).stream().anyMatch(this::equals))
@@ -103,10 +103,10 @@ public abstract class ConfigRow<Builder extends AbstractRowMaker<Builder, Row>, 
             float topY = groupRow.getEndY();
             float bottomY = Math.max(lastParentY - this.getRowList().getRowMargin(), lastChildY);
 
-            RenderUtil.fill(graphics, startX - 1, startX, topY, bottomY, debug ? 0x5AFF0000 : color);
+            RenderUtil.fill(graphics, startX - 1, topY, startX, bottomY, debug ? 0x5AFF0000 : color);
         }
 
-        RenderUtil.fill(graphics, startX - 1, startX, startY + 1, row.getEndY(), debug ? 0x5A0000FF : color);
+        RenderUtil.fill(graphics, startX - 1, startY + 1, startX, row.getEndY(), debug ? 0x5A0000FF : color);
         RenderUtil.endBatching();
     }
 }

@@ -199,10 +199,10 @@ public class HomeWidgets implements WidgetManager
         if (button.isHoveredOrFocused())
         {
             bar.set(0xFFFF00);
-            RenderUtil.fill(builder, graphics, button.getX(), button.getEndX(), button.getY(), button.getEndY(), fill.get());
+            RenderUtil.fill(builder, graphics, button.getX(), button.getY(), button.getEndX(), button.getEndY(), fill.get());
         }
 
-        RenderUtil.fill(builder, graphics, button.getX(), button.getX() + 2, button.getY(), button.getEndY(), bar.get());
+        RenderUtil.fill(builder, graphics, button.getX(), button.getY(), button.getX() + 2, button.getEndY(), bar.get());
         RenderUtil.endFill(builder);
     }
 }

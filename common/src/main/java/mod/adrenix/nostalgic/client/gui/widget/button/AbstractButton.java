@@ -499,7 +499,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
         RenderUtil.deferredRenderer(() -> {
             float endX = (float) Mth.lerp(timer.getOrThrow().getProgress(), this.getX(), this.getEndX() - 1.0F);
 
-            RenderUtil.fill(graphics, this.getX(), endX, this.getY(), this.getEndY(), Color.WHITE.fromAlpha(0.2F));
+            RenderUtil.fill(graphics, this.getX(), this.getY(), endX, this.getEndY(), Color.WHITE.fromAlpha(0.2F));
         });
     }
 

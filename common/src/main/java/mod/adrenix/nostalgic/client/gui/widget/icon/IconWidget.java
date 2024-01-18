@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.client.gui.widget.icon;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.IconManager;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
@@ -363,10 +363,10 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
             graphics.pose().translate(0.0D, 0.0D, 1.0D);
 
             RenderUtil.beginBatching();
-            RenderUtil.fill(graphics, startX, startX + 1, startY, startY + 1, 0xFFFF0000);
-            RenderUtil.fill(graphics, endX - 1, endX, startY, startY + 1, 0xFF00FF00);
-            RenderUtil.fill(graphics, startX, startX + 1, endY - 1, endY, 0xFF00FFFF);
-            RenderUtil.fill(graphics, endX - 1, endX, endY - 1, endY, 0xFFFF00FF);
+            RenderUtil.fill(graphics, startX, startY, startX + 1, startY + 1, 0xFFFF0000);
+            RenderUtil.fill(graphics, endX - 1, startY, endX, startY + 1, 0xFF00FF00);
+            RenderUtil.fill(graphics, startX, endY - 1, startX + 1, endY, 0xFF00FFFF);
+            RenderUtil.fill(graphics, endX - 1, endY - 1, endX, endY, 0xFFFF00FF);
             RenderUtil.endBatching();
 
             graphics.pose().popPose();

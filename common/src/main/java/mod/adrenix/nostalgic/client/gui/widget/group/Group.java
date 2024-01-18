@@ -276,9 +276,9 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
         float yOffset = this.isTitled() ? (GuiUtil.textHeight() / 2.0F) - 2.0F : 0.0F;
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, 0.0F, 2.0F, yOffset + 2.0F, this.height, color);
-        RenderUtil.fill(graphics, 2.0F, this.width - 2.0F, this.height - 2.0F, this.height, color);
-        RenderUtil.fill(graphics, this.width - 2.0F, this.width, yOffset + 2.0F, this.height, color);
+        RenderUtil.fill(graphics, 0.0F, yOffset + 2.0F, 2.0F, this.height, color);
+        RenderUtil.fill(graphics, 2.0F, this.height - 2.0F, this.width - 2.0F, this.height, color);
+        RenderUtil.fill(graphics, this.width - 2.0F, yOffset + 2.0F, this.width, this.height, color);
 
         if (this.builder.groupTitle != null)
         {
@@ -297,12 +297,12 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
                 afterText += iconOffset;
             }
 
-            RenderUtil.fill(graphics, 0.0F, beforeText, yOffset, yOffset + 2.0F, color);
-            RenderUtil.fill(graphics, afterText, this.width, yOffset, yOffset + 2.0F, color);
+            RenderUtil.fill(graphics, 0.0F, yOffset, beforeText, yOffset + 2.0F, color);
+            RenderUtil.fill(graphics, afterText, yOffset, this.width, yOffset + 2.0F, color);
             DrawText.begin(graphics, title).posX(atText).draw();
         }
         else
-            RenderUtil.fill(graphics, 0.0F, this.width, 0.0F, 2.0F, color);
+            RenderUtil.fill(graphics, 0.0F, 0.0F, this.width, 2.0F, color);
 
         RenderUtil.endBatching();
         graphics.pose().popPose();

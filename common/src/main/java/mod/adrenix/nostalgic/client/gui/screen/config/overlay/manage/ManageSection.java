@@ -182,8 +182,8 @@ public enum ManageSection
 
             fillColor = fillColor.fromAlpha(0.2F);
 
-            RenderUtil.fill(graphics, button.getX(), button.getEndX(), button.getY(), button.getEndY(), fillColor.get());
-            RenderUtil.fill(graphics, button.getX(), button.getX() + 2, button.getY(), button.getEndY(), barColor.get());
+            RenderUtil.fill(graphics, button.getX(), button.getY(), button.getEndX(), button.getEndY(), fillColor.get());
+            RenderUtil.fill(graphics, button.getX(), button.getY(), button.getX() + 2, button.getEndY(), barColor.get());
         }
 
         button.getIconManager().apply(icon -> icon.pos(button.getX() + 6, button.getIconY()));

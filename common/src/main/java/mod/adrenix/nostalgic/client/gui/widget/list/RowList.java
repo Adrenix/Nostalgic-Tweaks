@@ -956,7 +956,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
                 if (this.getBuilder().backgroundOpacity != null)
                     color = new Color(Color.BLACK, this.getBuilder().backgroundOpacity.getAsFloat()).get();
 
-                RenderUtil.fill(graphics, x0, x1, y0, y1, color);
+                RenderUtil.fill(graphics, x0, y0, x1, y1, color);
             }
         }
 
@@ -991,8 +991,8 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             RenderUtil.beginBatching();
-            RenderUtil.fromTopGradient(graphics, x0, x1, y0, y0 + 4, Color.BLACK, Color.BLACK.fromAlpha(0));
-            RenderUtil.fromTopGradient(graphics, x0, x1, y1 - 4, y1, Color.BLACK.fromAlpha(0), Color.BLACK);
+            RenderUtil.fromTopGradient(graphics, x0, y0, x1, y0 + 4, Color.BLACK, Color.BLACK.fromAlpha(0));
+            RenderUtil.fromTopGradient(graphics, x0, y1 - 4, x1, y1, Color.BLACK.fromAlpha(0), Color.BLACK);
             RenderUtil.endBatching();
         }
 
@@ -1029,7 +1029,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         if (endY + height < this.getY() || endY + offset > this.getEndY())
             return;
 
-        RenderUtil.fill(graphics, row.getX(), row.getEndX(), endY + offset, endY + height, color.get());
+        RenderUtil.fill(graphics, row.getX(), endY + offset, row.getEndX(), endY + height, color.get());
     }
 
     /**
@@ -1109,7 +1109,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             return;
 
         RenderUtil.pauseBatching();
-        RenderUtil.fill(graphics, row.getX(), row.getEndX(), row.getY(), row.getEndY(), fill.get());
+        RenderUtil.fill(graphics, row.getX(), row.getY(), row.getEndX(), row.getEndY(), fill.get());
         RenderUtil.resumeBatching();
     }
 

@@ -239,7 +239,7 @@ public class TabButton extends AbstractButton<TabBuilder, TabButton>
         if (!this.isVisible())
         {
             if (isSelected)
-                RenderUtil.hLine(graphics, 0, GuiUtil.getScreenWidth(), endY - 1, LIGHT_BORDER);
+                RenderUtil.hLine(graphics, 0, endY - 1, GuiUtil.getScreenWidth(), LIGHT_BORDER);
 
             return;
         }
@@ -255,16 +255,16 @@ public class TabButton extends AbstractButton<TabBuilder, TabButton>
             int dy = this.getEndY();
             int selectOverBackground = new Color(overBackground).brighten(0.05D).get();
 
-            RenderUtil.fill(graphics, this.getX(), dx, this.getY(), dy, isHoverOrFocused ? selectOverBackground : overBackground);
-            RenderUtil.hLine(graphics, 0, startX, endY - 1, LIGHT_BORDER);
-            RenderUtil.hLine(graphics, endX, this.configScreen.width, endY - 1, LIGHT_BORDER);
+            RenderUtil.fill(graphics, this.getX(), this.getY(), dx, dy, isHoverOrFocused ? selectOverBackground : overBackground);
+            RenderUtil.hLine(graphics, 0, endY - 1, startX, LIGHT_BORDER);
+            RenderUtil.hLine(graphics, endX, endY - 1, this.configScreen.width, LIGHT_BORDER);
         }
         else
-            RenderUtil.fill(graphics, startX, endX, startY, endY, isHoverOrFocused ? overBackground : background);
+            RenderUtil.fill(graphics, startX, startY, endX, endY, isHoverOrFocused ? overBackground : background);
 
-        RenderUtil.vLine(graphics, startY, endY, startX, 0x5CFFFFFF);
-        RenderUtil.hLine(graphics, startX + 1, endX, startY, 0x5CFFFFFF);
-        RenderUtil.vLine(graphics, startY, endY, endX - 1, DARK_BORDER);
+        RenderUtil.vLine(graphics, startX, startY, endY, 0x5CFFFFFF);
+        RenderUtil.hLine(graphics, startX + 1, startY, endX, 0x5CFFFFFF);
+        RenderUtil.vLine(graphics, endX - 1, startY, endY, DARK_BORDER);
 
         int iconWidth = this.getIconManager().getWidth() + 3;
         int textWidth = GuiUtil.font().width(this.getTitle());
@@ -306,10 +306,10 @@ public class TabButton extends AbstractButton<TabBuilder, TabButton>
             fill = Color.DARK_GRAY;
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, startX, endX, startY, endY, fill);
-        RenderUtil.vLine(graphics, startY, endY, startX, button.isActive() ? WHITE_BORDER : TAB_BACKGROUND);
-        RenderUtil.hLine(graphics, startX + 1, endX, startY, button.isActive() ? WHITE_BORDER : TAB_BACKGROUND);
-        RenderUtil.vLine(graphics, startY, endY, endX - 1, DARK_BORDER);
+        RenderUtil.fill(graphics, startX, startY, endX, endY, fill);
+        RenderUtil.vLine(graphics, startX, startY, endY, button.isActive() ? WHITE_BORDER : TAB_BACKGROUND);
+        RenderUtil.hLine(graphics, startX + 1, startY, endX, button.isActive() ? WHITE_BORDER : TAB_BACKGROUND);
+        RenderUtil.vLine(graphics, endX - 1, startY, endY, DARK_BORDER);
 
         float textX = DrawText.centerX(button.getX(), button.getWidth(), button.getTitle());
         float textY = DrawText.centerY(button.getY(), button.getHeight()) + 1;

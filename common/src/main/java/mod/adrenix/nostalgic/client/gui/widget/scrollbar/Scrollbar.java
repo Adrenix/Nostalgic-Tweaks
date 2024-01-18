@@ -401,7 +401,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
         graphics.pose().translate(this.x, this.y, 0.0D);
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, 0, this.width, 0, this.height, this.getBuilder().backgroundColor.get());
+        RenderUtil.fill(graphics, 0, 0, this.width, this.height, this.getBuilder().backgroundColor.get());
 
         float scrollStart = (float) this.getScrollStart();
         float scrollEnd = (float) this.getScrollEnd();
@@ -410,14 +410,14 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
         {
             case VERTICAL ->
             {
-                RenderUtil.fill(graphics, 0, this.width, scrollStart, scrollEnd, this.getBuilder().scrollColor.get());
-                RenderUtil.fill(graphics, 0, this.width - 1, scrollStart, scrollEnd - 1, this.getBuilder().borderColor.get());
+                RenderUtil.fill(graphics, 0, scrollStart, this.width, scrollEnd, this.getBuilder().scrollColor.get());
+                RenderUtil.fill(graphics, 0, scrollStart, this.width - 1, scrollEnd - 1, this.getBuilder().borderColor.get());
             }
 
             case HORIZONTAL ->
             {
-                RenderUtil.fill(graphics, scrollStart, scrollEnd, 0, this.height, this.getBuilder().scrollColor.get());
-                RenderUtil.fill(graphics, scrollStart, scrollEnd - 1, 0, this.height - 1, this.getBuilder().borderColor.get());
+                RenderUtil.fill(graphics, scrollStart, 0, scrollEnd, this.height, this.getBuilder().scrollColor.get());
+                RenderUtil.fill(graphics, scrollStart, 0, scrollEnd - 1, this.height - 1, this.getBuilder().borderColor.get());
             }
         }
 

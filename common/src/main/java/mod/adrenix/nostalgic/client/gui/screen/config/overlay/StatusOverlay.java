@@ -277,8 +277,8 @@ public class StatusOverlay
         float fillStartY = button.getY();
 
         if (isActive || button.isHoveredOrFocused())
-            RenderUtil.fill(graphics, startX, endX, fillStartY, barStartY, fill);
+            RenderUtil.fill(graphics, startX, fillStartY, endX, barStartY, fill);
 
-        RenderUtil.fill(graphics, startX, endX, barStartY, barEndY, bar);
+        RenderUtil.fill(graphics, startX, barStartY, endX, barEndY, bar);
     }
 }

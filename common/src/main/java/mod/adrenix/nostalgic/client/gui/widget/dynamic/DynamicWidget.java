@@ -1141,10 +1141,10 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
             graphics.pose().translate(0.0D, 0.0D, 1.0D);
 
             RenderUtil.beginBatching();
-            RenderUtil.fill(graphics, startX, endX, startY, startY + 1, Color.RED.fromAlpha(0.4F));
-            RenderUtil.fill(graphics, endX - 1, endX, startY + 1, endY - 1, Color.PINK.fromAlpha(0.4F));
-            RenderUtil.fill(graphics, startX, startX + 1, startY + 1, endY - 1, Color.CYAN.fromAlpha(0.4F));
-            RenderUtil.fill(graphics, startX, endX, endY - 1, endY, Color.GREEN.fromAlpha(0.4F));
+            RenderUtil.fill(graphics, startX, startY, endX, startY + 1, Color.RED.fromAlpha(0.4F));
+            RenderUtil.fill(graphics, endX - 1, startY + 1, endX, endY - 1, Color.PINK.fromAlpha(0.4F));
+            RenderUtil.fill(graphics, startX, startY + 1, startX + 1, endY - 1, Color.CYAN.fromAlpha(0.4F));
+            RenderUtil.fill(graphics, startX, endY - 1, endX, endY, Color.GREEN.fromAlpha(0.4F));
             RenderUtil.endBatching();
 
             graphics.pose().popPose();

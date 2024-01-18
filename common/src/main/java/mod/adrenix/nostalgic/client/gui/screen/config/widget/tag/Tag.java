@@ -153,7 +153,7 @@ class Tag
         int borderEndY = this.getY() + this.getHeight();
         Color borderColor = this.type.getBorderColor();
 
-        RenderUtil.fill(graphics, borderX, borderEndX, borderY, borderEndY, borderColor);
+        RenderUtil.fill(graphics, borderX, borderY, borderEndX, borderEndY, borderColor);
 
         int inX = this.getX() + 1;
         int inY = this.getY() + 1;
@@ -161,7 +161,7 @@ class Tag
         int inEndY = this.getY() + this.getHeight() - 1;
         Color inColor = this.type.getBackgroundColor();
 
-        RenderUtil.fill(graphics, inX, inEndX, inY, inEndY, inColor);
+        RenderUtil.fill(graphics, inX, inY, inEndX, inEndY, inColor);
 
         int titleX = this.getX() + 2;
         int titleY = this.getY() + 2;

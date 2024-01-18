@@ -142,9 +142,9 @@ public class InputModule<Builder extends AbstractInputMaker<Builder, Input>, Inp
         float y1 = (float) overlay.getEndY();
 
         RenderUtil.beginBatching();
-        RenderUtil.vLine(graphics, y0, y1 - 2.0F, x0, color);
-        RenderUtil.vLine(graphics, y0, y1, x1, color);
-        RenderUtil.hLine(graphics, x0, x1, y0, color);
+        RenderUtil.vLine(graphics, x0, y0, y1 - 2.0F, color);
+        RenderUtil.vLine(graphics, x1, y0, y1, color);
+        RenderUtil.hLine(graphics, x0, y0, x1, color);
         RenderUtil.endBatching();
     }
 }

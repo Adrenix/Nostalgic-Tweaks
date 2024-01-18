@@ -146,6 +146,6 @@ public class ColorInput extends AbstractInput<ColorInputBuilder, ColorInput>
         if (!this.builder.displayColorBox)
             return;
 
-        RenderUtil.fill(graphics, widget.getX(), widget.getEndX(), widget.getY(), widget.getEndY(), this.getColor());
+        RenderUtil.fill(graphics, widget.getX(), widget.getY(), widget.getEndX(), widget.getEndY(), this.getColor());
     }
 }

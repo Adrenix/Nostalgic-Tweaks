@@ -396,7 +396,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
             boolean isHoveredOrFocused = isMouseOver || isFocused;
 
             if (isHoveredOrFocused)
-                RenderUtil.fill(graphics, button.getX(), button.getEndX(), button.getY(), button.getEndY(), color);
+                RenderUtil.fill(graphics, button.getX(), button.getY(), button.getEndX(), button.getEndY(), color);
 
             int startY = button.getIconY() - (isHoveredOrFocused ? 1 : 0);
 

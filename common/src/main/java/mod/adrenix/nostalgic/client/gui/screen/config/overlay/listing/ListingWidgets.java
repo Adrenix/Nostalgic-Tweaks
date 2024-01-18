@@ -89,7 +89,7 @@ public class ListingWidgets<V, L extends Listing<V, L>>
                 int x1 = this.overlay.getInsideEndX();
                 int y1 = disabled.getEndY() + 1;
 
-                RenderUtil.fill(graphics, x0, x1, y0, y1, Color.ALERT_RED.fromAlpha(0.3F));
+                RenderUtil.fill(graphics, x0, y0, x1, y1, Color.ALERT_RED.fromAlpha(0.3F));
             }
         }).build(this.overlay::addWidget);
 

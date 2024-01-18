@@ -353,7 +353,7 @@ class SupporterRow
                     int x1 = widget.getEndX();
                     int y1 = widget.getEndY();
 
-                    RenderUtil.fill(graphics, x0, x1 + 2, y0, y1, Color.RED.fromAlpha(0.3F));
+                    RenderUtil.fill(graphics, x0, y0, x1 + 2, y1, Color.RED.fromAlpha(0.3F));
                 })
                 .build(this.row::addWidget);
 
@@ -401,7 +401,7 @@ class SupporterRow
                 int x1 = widget.getEndX();
                 int y1 = widget.getEndY();
 
-                RenderUtil.fill(graphics, x0, x1, y0, y1, Color.WHITE.fromAlpha(1.0F - (float) animation.getValue()));
+                RenderUtil.fill(graphics, x0, y0, x1, y1, Color.WHITE.fromAlpha(1.0F - (float) animation.getValue()));
             }).build(this.row::addWidget);
         }
 

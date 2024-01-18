@@ -42,6 +42,6 @@ public class SeparatorWidget extends DynamicWidget<SeparatorBuilder, SeparatorWi
         if (this.isInvisible())
             return;
 
-        RenderUtil.fill(graphics, this.getX(), this.getEndX(), this.getY(), this.getEndY(), this.getBuilder().color);
+        RenderUtil.fill(graphics, this.getX(), this.getY(), this.getEndX(), this.getEndY(), this.getBuilder().color);
     }
 }

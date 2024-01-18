@@ -107,35 +107,35 @@ public class ColorSlider extends AbstractSlider<ColorSliderBuilder, ColorSlider>
                 int diff = (int) (innerW / 6.0F);
                 int last = (diff * 6) + Math.abs(innerW - (diff * 6));
 
-                RenderUtil.fromLeftGradient(graphics, 0, diff, 0, innerH, Color.RED, Color.YELLOW);
-                RenderUtil.fromLeftGradient(graphics, diff, diff * 2, 0, innerH, Color.YELLOW, Color.GREEN);
-                RenderUtil.fromLeftGradient(graphics, diff * 2, diff * 3, 0, innerH, Color.GREEN, Color.CYAN);
-                RenderUtil.fromLeftGradient(graphics, diff * 3, diff * 4, 0, innerH, Color.CYAN, Color.BLUE);
-                RenderUtil.fromLeftGradient(graphics, diff * 4, diff * 5, 0, innerH, Color.BLUE, Color.PINK);
-                RenderUtil.fromLeftGradient(graphics, diff * 5, last, 0, innerH, Color.PINK, Color.RED);
+                RenderUtil.fromLeftGradient(graphics, 0, 0, diff, innerH, Color.RED, Color.YELLOW);
+                RenderUtil.fromLeftGradient(graphics, diff, 0, diff * 2, innerH, Color.YELLOW, Color.GREEN);
+                RenderUtil.fromLeftGradient(graphics, diff * 2, 0, diff * 3, innerH, Color.GREEN, Color.CYAN);
+                RenderUtil.fromLeftGradient(graphics, diff * 3, 0, diff * 4, innerH, Color.CYAN, Color.BLUE);
+                RenderUtil.fromLeftGradient(graphics, diff * 4, 0, diff * 5, innerH, Color.BLUE, Color.PINK);
+                RenderUtil.fromLeftGradient(graphics, diff * 5, 0, last, innerH, Color.PINK, Color.RED);
             }
-            case SATURATION -> RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, Color.WHITE, sbColor);
-            case BRIGHTNESS -> RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, Color.BLACK, sbColor);
+            case SATURATION -> RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, Color.WHITE, sbColor);
+            case BRIGHTNESS -> RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, Color.BLACK, sbColor);
             case RED ->
             {
                 Color from = new Color(0, this.color.getGreen(), this.color.getBlue());
                 Color to = new Color(255, this.color.getGreen(), this.color.getBlue());
 
-                RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, from, to);
+                RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, from, to);
             }
             case GREEN ->
             {
                 Color from = new Color(this.color.getRed(), 0, this.color.getBlue());
                 Color to = new Color(this.color.getRed(), 255, this.color.getBlue());
 
-                RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, from, to);
+                RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, from, to);
             }
             case BLUE ->
             {
                 Color from = new Color(this.color.getRed(), this.color.getGreen(), 0);
                 Color to = new Color(this.color.getRed(), this.color.getGreen(), 255);
 
-                RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, from, to);
+                RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, from, to);
             }
             case ALPHA ->
             {
@@ -147,16 +147,16 @@ public class ColorSlider extends AbstractSlider<ColorSliderBuilder, ColorSlider>
                     Color secondary = MathUtil.isOdd(row) ? Color.WHITE : Color.GRAY;
 
                     for (int i = 0; i < (int) (outerW / (float) size) * size; i += size)
-                        RenderUtil.fill(graphics, i, i + size, (row - 1) * size, row * size, MathUtil.isEven(i) ? primary : secondary);
+                        RenderUtil.fill(graphics, i, (row - 1) * size, i + size, row * size, MathUtil.isEven(i) ? primary : secondary);
                 }
 
                 RenderUtil.setFillZOffset(1);
-                RenderUtil.fromLeftGradient(graphics, 0, innerW, 0, innerH, Color.TRANSPARENT.get(), this.color.getOpaque());
+                RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, Color.TRANSPARENT.get(), this.color.getOpaque());
             }
         }
 
         if (this.isInactive())
-            RenderUtil.fill(graphics, 0, this.width, 0, this.height, 0xA5000000);
+            RenderUtil.fill(graphics, 0, 0, this.width, this.height, 0xA5000000);
 
         graphics.pose().popPose();
 

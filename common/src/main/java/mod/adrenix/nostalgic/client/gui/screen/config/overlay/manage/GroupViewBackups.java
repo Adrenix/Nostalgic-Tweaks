@@ -642,7 +642,7 @@ public class GroupViewBackups extends ManageGroup
      */
     private void renderBackground(RowList rowList, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        RenderUtil.fill(graphics, rowList.getX(), rowList.getEndX(), rowList.getY(), rowList.getEndY(), Color.SONIC_SILVER.fromAlpha(0.2F));
+        RenderUtil.fill(graphics, rowList.getX(), rowList.getY(), rowList.getEndX(), rowList.getEndY(), Color.SONIC_SILVER.fromAlpha(0.2F));
     }
 
     /**
@@ -682,10 +682,10 @@ public class GroupViewBackups extends ManageGroup
         Color bottom = barColor.fromAlpha(0.3F);
 
         if (button.isInactive() && button.isHoveredOrFocused())
-            RenderUtil.gradient(Gradient.vertical(top, bottom), graphics, startX, endX, fillStartY, barStartY);
+            RenderUtil.gradient(Gradient.vertical(top, bottom), graphics, startX, fillStartY, endX, barStartY);
         else if (isActive || button.isHoveredOrFocused())
-            RenderUtil.fill(graphics, startX, endX, fillStartY, barStartY, fillColor.get());
+            RenderUtil.fill(graphics, startX, fillStartY, endX, barStartY, fillColor.get());
 
-        RenderUtil.fill(graphics, startX, endX, barStartY, barEndY, barColor.get());
+        RenderUtil.fill(graphics, startX, barStartY, endX, barEndY, barColor.get());
     }
 }

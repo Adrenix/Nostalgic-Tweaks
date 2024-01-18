@@ -793,21 +793,21 @@ public abstract class RenderUtil
      *
      * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param matrix   The {@link Matrix4f} instance.
-     * @param leftX    The left x-coordinate of the rectangle.
-     * @param rightX   The right x-coordinate of the rectangle.
-     * @param topY     The top y-coordinate of the rectangle.
-     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param x0       The left x-coordinate of the rectangle.
+     * @param y0       The top y-coordinate of the rectangle.
+     * @param x1       The right x-coordinate of the rectangle.
+     * @param y1       The bottom y-coordinate of the rectangle.
      * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(VertexConsumer consumer, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, Matrix4f matrix, float x0, float y0, float x1, float y1, int argb)
     {
         float z = 0.0F;
 
-        consumer.vertex(matrix, leftX, bottomY, z).color(argb).endVertex();
-        consumer.vertex(matrix, rightX, bottomY, z).color(argb).endVertex();
-        consumer.vertex(matrix, rightX, topY, z).color(argb).endVertex();
-        consumer.vertex(matrix, leftX, topY, z).color(argb).endVertex();
+        consumer.vertex(matrix, x0, y1, z).color(argb).endVertex();
+        consumer.vertex(matrix, x1, y1, z).color(argb).endVertex();
+        consumer.vertex(matrix, x1, y0, z).color(argb).endVertex();
+        consumer.vertex(matrix, x0, y0, z).color(argb).endVertex();
     }
 
     /**
@@ -815,21 +815,21 @@ public abstract class RenderUtil
      * method does not require a 4D matrix.
      *
      * @param consumer The {@link VertexConsumer} to build vertices with.
-     * @param leftX    The left x-coordinate of the rectangle.
-     * @param rightX   The right x-coordinate of the rectangle.
-     * @param topY     The top y-coordinate of the rectangle.
-     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param x0       The left x-coordinate of the rectangle.
+     * @param y0       The top y-coordinate of the rectangle.
+     * @param x1       The right x-coordinate of the rectangle.
+     * @param y1       The bottom y-coordinate of the rectangle.
      * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(VertexConsumer consumer, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, float x0, float y0, float x1, float y1, int argb)
     {
         float z = 0.0F;
 
-        consumer.vertex(leftX, bottomY, z).color(argb).endVertex();
-        consumer.vertex(rightX, bottomY, z).color(argb).endVertex();
-        consumer.vertex(rightX, topY, z).color(argb).endVertex();
-        consumer.vertex(leftX, topY, z).color(argb).endVertex();
+        consumer.vertex(x0, y1, z).color(argb).endVertex();
+        consumer.vertex(x1, y1, z).color(argb).endVertex();
+        consumer.vertex(x1, y0, z).color(argb).endVertex();
+        consumer.vertex(x0, y0, z).color(argb).endVertex();
     }
 
     /**
@@ -837,16 +837,16 @@ public abstract class RenderUtil
      *
      * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the rectangle.
-     * @param rightX   The right x-coordinate of the rectangle.
-     * @param topY     The top y-coordinate of the rectangle.
-     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param x0       The left x-coordinate of the rectangle.
+     * @param y0       The top y-coordinate of the rectangle.
+     * @param x1       The right x-coordinate of the rectangle.
+     * @param y1       The bottom y-coordinate of the rectangle.
      * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(VertexConsumer consumer, GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, GuiGraphics graphics, float x0, float y0, float x1, float y1, int argb)
     {
-        fill(consumer, graphics.pose().last().pose(), leftX, rightX, topY, bottomY, argb);
+        fill(consumer, graphics.pose().last().pose(), x0, y0, x1, y1, argb);
     }
 
     /**
@@ -854,49 +854,49 @@ public abstract class RenderUtil
      * method does not require a buffer builder or a 4D matrix, but instead uses {@link GuiGraphics}.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the rectangle.
-     * @param rightX   The right x-coordinate of the rectangle.
-     * @param topY     The top y-coordinate of the rectangle.
-     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param x0       The left x-coordinate of the rectangle.
+     * @param y0       The top y-coordinate of the rectangle.
+     * @param x1       The right x-coordinate of the rectangle.
+     * @param y1       The bottom y-coordinate of the rectangle.
      * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(GuiGraphics graphics, float x0, float y0, float x1, float y1, int argb)
     {
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, argb, argb, true);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, argb, argb, true);
     }
 
     /**
      * Overload method for {@link RenderUtil#fill(GuiGraphics, float, float, float, float, int)}.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the rectangle.
-     * @param rightX   The right x-coordinate of the rectangle.
-     * @param topY     The top y-coordinate of the rectangle.
-     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param x0       The left x-coordinate of the rectangle.
+     * @param y0       The top y-coordinate of the rectangle.
+     * @param x1       The right x-coordinate of the rectangle.
+     * @param y1       The bottom y-coordinate of the rectangle.
      * @param color    A {@link Color} instance for the rectangle.
      */
     @PublicAPI
-    public static void fill(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, Color color)
+    public static void fill(GuiGraphics graphics, float x0, float y0, float x1, float y1, Color color)
     {
         int argb = color.get();
 
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, argb, argb, true);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, argb, argb, true);
     }
 
     /**
      * Draws a filled gradient rectangle to the screen.
      *
      * @param poseStack  The current {@link PoseStack}.
-     * @param leftX      The left x-coordinate of the fill.
-     * @param rightX     The right x-coordinate of the fill.
-     * @param topY       The top y-coordinate of the fill.
-     * @param bottomY    The bottom y-coordinate of the fill.
+     * @param x0         The left x-coordinate of the fill.
+     * @param y0         The top y-coordinate of the fill.
+     * @param x1         The right x-coordinate of the fill.
+     * @param y1         The bottom y-coordinate of the fill.
      * @param colorFrom  The starting gradient ARGB integer color.
      * @param colorTo    The ending gradient ARGB integer color.
      * @param isVertical Whether the gradient is vertical, otherwise it will be horizontal.
      */
-    private static void fillGradient(PoseStack poseStack, float leftX, float rightX, float topY, float bottomY, int colorFrom, int colorTo, boolean isVertical)
+    private static void fillGradient(PoseStack poseStack, float x0, float y0, float x1, float y1, int colorFrom, int colorTo, boolean isVertical)
     {
         float z = isBatching ? (float) fillZOffset : 0.0F;
         Matrix4f matrix = getMatrix(poseStack);
@@ -904,17 +904,17 @@ public abstract class RenderUtil
         Consumer<BufferBuilder> vertices = (builder) -> {
             if (isVertical)
             {
-                builder.vertex(matrix, leftX, bottomY, z).color(colorTo).endVertex();
-                builder.vertex(matrix, rightX, bottomY, z).color(colorTo).endVertex();
-                builder.vertex(matrix, rightX, topY, z).color(colorFrom).endVertex();
-                builder.vertex(matrix, leftX, topY, z).color(colorFrom).endVertex();
+                builder.vertex(matrix, x0, y1, z).color(colorTo).endVertex();
+                builder.vertex(matrix, x1, y1, z).color(colorTo).endVertex();
+                builder.vertex(matrix, x1, y0, z).color(colorFrom).endVertex();
+                builder.vertex(matrix, x0, y0, z).color(colorFrom).endVertex();
             }
             else
             {
-                builder.vertex(matrix, leftX, bottomY, z).color(colorFrom).endVertex();
-                builder.vertex(matrix, rightX, bottomY, z).color(colorTo).endVertex();
-                builder.vertex(matrix, rightX, topY, z).color(colorTo).endVertex();
-                builder.vertex(matrix, leftX, topY, z).color(colorFrom).endVertex();
+                builder.vertex(matrix, x0, y1, z).color(colorFrom).endVertex();
+                builder.vertex(matrix, x1, y1, z).color(colorTo).endVertex();
+                builder.vertex(matrix, x1, y0, z).color(colorTo).endVertex();
+                builder.vertex(matrix, x0, y0, z).color(colorFrom).endVertex();
             }
         };
 
@@ -933,68 +933,68 @@ public abstract class RenderUtil
      * Draws a filled gradient rectangle that goes top-down onto the screen.
      *
      * @param graphics  A {@link GuiGraphics} instance.
-     * @param leftX     The left x-coordinate of the fill.
-     * @param rightX    The right x-coordinate of the fill.
-     * @param topY      The top y-coordinate of the fill.
-     * @param bottomY   The bottom y-coordinate of the fill.
+     * @param x0        The left x-coordinate of the fill.
+     * @param y0        The top y-coordinate of the fill.
+     * @param x1        The right x-coordinate of the fill.
+     * @param y1        The bottom y-coordinate of the fill.
      * @param colorFrom The starting gradient ARGB integer color.
      * @param colorTo   The ending gradient ARGB integer color.
      */
     @PublicAPI
-    public static void fromTopGradient(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int colorFrom, int colorTo)
+    public static void fromTopGradient(GuiGraphics graphics, float x0, float y0, float x1, float y1, int colorFrom, int colorTo)
     {
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, colorFrom, colorTo, true);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, colorFrom, colorTo, true);
     }
 
     /**
      * Draws a filled gradient rectangle that goes top-down onto the screen.
      *
      * @param graphics  A {@link GuiGraphics} instance.
-     * @param leftX     The left x-coordinate of the fill.
-     * @param rightX    The right x-coordinate of the fill.
-     * @param topY      The top y-coordinate of the fill.
-     * @param bottomY   The bottom y-coordinate of the fill.
+     * @param x0        The left x-coordinate of the fill.
+     * @param y0        The top y-coordinate of the fill.
+     * @param x1        The right x-coordinate of the fill.
+     * @param y1        The bottom y-coordinate of the fill.
      * @param colorFrom The starting gradient {@link Color}.
      * @param colorTo   The ending gradient {@link Color}.
      */
     @PublicAPI
-    public static void fromTopGradient(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, Color colorFrom, Color colorTo)
+    public static void fromTopGradient(GuiGraphics graphics, float x0, float y0, float x1, float y1, Color colorFrom, Color colorTo)
     {
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, colorFrom.get(), colorTo.get(), true);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, colorFrom.get(), colorTo.get(), true);
     }
 
     /**
      * Draws a filled gradient rectangle that goes left to right onto the screen.
      *
      * @param graphics  A {@link GuiGraphics} instance.
-     * @param leftX     The left x-coordinate of the fill.
-     * @param rightX    The right x-coordinate of the fill.
-     * @param topY      The top y-coordinate of the fill.
-     * @param bottomY   The bottom y-coordinate of the fill.
+     * @param x0        The left x-coordinate of the fill.
+     * @param y0        The top y-coordinate of the fill.
+     * @param x1        The right x-coordinate of the fill.
+     * @param y1        The bottom y-coordinate of the fill.
      * @param colorFrom The starting gradient ARGB integer color.
      * @param colorTo   The ending gradient ARGB integer color.
      */
     @PublicAPI
-    public static void fromLeftGradient(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int colorFrom, int colorTo)
+    public static void fromLeftGradient(GuiGraphics graphics, float x0, float y0, float x1, float y1, int colorFrom, int colorTo)
     {
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, colorFrom, colorTo, false);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, colorFrom, colorTo, false);
     }
 
     /**
      * Draws a filled gradient rectangle that goes left to right onto the screen.
      *
      * @param graphics  A {@link GuiGraphics} instance.
-     * @param leftX     The left x-coordinate of the fill.
-     * @param rightX    The right x-coordinate of the fill.
-     * @param topY      The top y-coordinate of the fill.
-     * @param bottomY   The bottom y-coordinate of the fill.
+     * @param x0        The left x-coordinate of the fill.
+     * @param y0        The top y-coordinate of the fill.
+     * @param x1        The right x-coordinate of the fill.
+     * @param y1        The bottom y-coordinate of the fill.
      * @param colorFrom The starting gradient {@link Color}.
      * @param colorTo   The ending gradient {@link Color}.
      */
     @PublicAPI
-    public static void fromLeftGradient(GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, Color colorFrom, Color colorTo)
+    public static void fromLeftGradient(GuiGraphics graphics, float x0, float y0, float x1, float y1, Color colorFrom, Color colorTo)
     {
-        fillGradient(graphics.pose(), leftX, rightX, topY, bottomY, colorFrom.get(), colorTo.get(), false);
+        fillGradient(graphics.pose(), x0, y0, x1, y1, colorFrom.get(), colorTo.get(), false);
     }
 
     /**
@@ -1002,21 +1002,21 @@ public abstract class RenderUtil
      *
      * @param gradient A {@link Gradient} instance.
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the fill.
-     * @param rightX   The right x-coordinate of the fill.
-     * @param topY     The top y-coordinate of the fill.
-     * @param bottomY  The bottom y-coordinate of the fill.
+     * @param x0       The left x-coordinate of the fill.
+     * @param y0       The top y-coordinate of the fill.
+     * @param x1       The right x-coordinate of the fill.
+     * @param y1       The bottom y-coordinate of the fill.
      */
     @PublicAPI
-    public static void gradient(Gradient gradient, GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY)
+    public static void gradient(Gradient gradient, GuiGraphics graphics, float x0, float y0, float x1, float y1)
     {
         int from = gradient.from().get();
         int to = gradient.to().get();
 
         switch (gradient.direction())
         {
-            case VERTICAL -> fromTopGradient(graphics, leftX, rightX, topY, bottomY, from, to);
-            case HORIZONTAL -> fromLeftGradient(graphics, leftX, rightX, topY, bottomY, from, to);
+            case VERTICAL -> fromTopGradient(graphics, x0, y0, x1, y1, from, to);
+            case HORIZONTAL -> fromLeftGradient(graphics, x0, y0, x1, y1, from, to);
         }
     }
 
@@ -1024,27 +1024,27 @@ public abstract class RenderUtil
      * Draw a line gradient to the screen.
      *
      * @param graphics  A {@link GuiGraphics} instance.
+     * @param x0        Where the line starts relative to the x-axis.
+     * @param y0        Where the line starts relative to the y-axis.
      * @param x1        Where the line starts relative to the x-axis.
      * @param y1        Where the line starts relative to the y-axis.
-     * @param x2        Where the line ends relative to the x-axis.
-     * @param y2        Where the line ends relative to the y-axis.
      * @param width     The width of the line.
      * @param colorFrom The ARGB starting color of the line.
      * @param colorTo   The ARGB ending color of the line.
      */
     @PublicAPI
-    public static void lineGradient(GuiGraphics graphics, float x1, float y1, float x2, float y2, float width, int colorFrom, int colorTo)
+    public static void lineGradient(GuiGraphics graphics, float x0, float y0, float x1, float y1, float width, int colorFrom, int colorTo)
     {
         float z = 0.0F;
         Matrix4f matrix = getMatrix(graphics.pose());
 
         if (isBatching)
-            new LineBuffer(matrix, x1, y1, x2, y2, width, colorFrom, colorTo);
+            new LineBuffer(matrix, x0, y0, x1, y1, width, colorFrom, colorTo);
         else
         {
             BufferBuilder builder = getAndBeginLine(width);
-            builder.vertex(matrix, x1, y1, z).color(colorFrom).normal(1.0F, 1.0F, 1.0F).endVertex();
-            builder.vertex(matrix, x2, y2, z).color(colorTo).normal(1.0F, 1.0F, 1.0F).endVertex();
+            builder.vertex(matrix, x0, y0, z).color(colorFrom).normal(1.0F, 1.0F, 1.0F).endVertex();
+            builder.vertex(matrix, x1, y1, z).color(colorTo).normal(1.0F, 1.0F, 1.0F).endVertex();
 
             endLine(builder);
         }
@@ -1054,102 +1054,102 @@ public abstract class RenderUtil
      * Draw a line to the screen.
      *
      * @param graphics A {@link GuiGraphics} instance.
+     * @param x0       Where the line starts relative to the x-axis.
+     * @param y0       Where the line starts relative to the y-axis.
      * @param x1       Where the line starts relative to the x-axis.
      * @param y1       Where the line starts relative to the y-axis.
-     * @param x2       Where the line ends relative to the x-axis.
-     * @param y2       Where the line ends relative to the y-axis.
      * @param width    The width of the line.
      * @param argb     The ARGB color of the line.
      */
     @PublicAPI
-    public static void line(GuiGraphics graphics, float x1, float y1, float x2, float y2, float width, int argb)
+    public static void line(GuiGraphics graphics, float x0, float y0, float x1, float y1, float width, int argb)
     {
-        lineGradient(graphics, x1, y1, x2, y2, width, argb, argb);
+        lineGradient(graphics, x0, y0, x1, y1, width, argb, argb);
     }
 
     /**
-     * Draw a vertical line.
+     * Draw a 1px vertical line.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param topY     The top y-coordinate of the line.
-     * @param bottomY  The bottom y-coordinate of the line.
-     * @param startX   The starting x-coordinate of the line.
+     * @param x0       The x-coordinate of the line.
+     * @param y0       The top y-coordinate of the line.
+     * @param y1       The bottom y-coordinate of the line.
      * @param argb     The ARGB color of the line.
      */
     @PublicAPI
-    public static void vLine(GuiGraphics graphics, float topY, float bottomY, float startX, int argb)
+    public static void vLine(GuiGraphics graphics, float x0, float y0, float y1, int argb)
     {
-        fill(graphics, startX, startX + 1, topY, bottomY, argb);
+        fill(graphics, x0, y0, x0 + 1, y1, argb);
     }
 
     /**
-     * Draw a vertical line.
+     * Draw a 1px vertical line.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param topY     The top y-coordinate of the line.
-     * @param bottomY  The bottom y-coordinate of the line.
-     * @param startX   The starting x-coordinate of the line.
+     * @param x0       The x-coordinate of the line.
+     * @param y0       The top y-coordinate of the line.
+     * @param y1       The bottom y-coordinate of the line.
      * @param color    The {@link Color} of the line.
      */
     @PublicAPI
-    public static void vLine(GuiGraphics graphics, float topY, float bottomY, float startX, Color color)
+    public static void vLine(GuiGraphics graphics, float x0, float y0, float y1, Color color)
     {
-        vLine(graphics, topY, bottomY, startX, color.get());
+        vLine(graphics, x0, y0, y1, color.get());
     }
 
     /**
-     * Draw a horizontal line.
+     * Draw a 1px horizontal line.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the line.
-     * @param rightX   The right x-coordinate of the line.
-     * @param startY   The starting y-coordinate of the line.
+     * @param x0       The left x-coordinate of the line.
+     * @param y0       The y-coordinate of the line.
+     * @param x1       The right x-coordinate of the line.
      * @param argb     The ARGB color of the line.
      */
     @PublicAPI
-    public static void hLine(GuiGraphics graphics, float leftX, float rightX, float startY, int argb)
+    public static void hLine(GuiGraphics graphics, float x0, float y0, float x1, int argb)
     {
-        fill(graphics, leftX, rightX, startY, startY + 1, argb);
+        fill(graphics, x0, y0, x1, y0 + 1, argb);
     }
 
     /**
-     * Draw a horizontal line.
+     * Draw a 1px horizontal line.
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param leftX    The left x-coordinate of the line.
-     * @param rightX   The right x-coordinate of the line.
-     * @param startY   The starting y-coordinate of the line.
+     * @param x0       The left x-coordinate of the line.
+     * @param y0       The y-coordinate of the line.
+     * @param x1       The right x-coordinate of the line.
      * @param color    The {@link Color} of the line.
      */
     @PublicAPI
-    public static void hLine(GuiGraphics graphics, float leftX, float rightX, float startY, Color color)
+    public static void hLine(GuiGraphics graphics, float x0, float y0, float x1, Color color)
     {
-        hLine(graphics, leftX, rightX, startY, color.get());
+        hLine(graphics, x0, y0, x1, color.get());
     }
 
     /**
      * Draw an outline (a hollow fill algorithm).
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param startX   The starting x-coordinate of the outline box.
-     * @param startY   The starting y-coordinate of the outline box.
+     * @param x0       The starting x-coordinate of the outline box.
+     * @param y0       The starting y-coordinate of the outline box.
      * @param width    The width of the outline box.
      * @param height   The height of the outline box.
      * @param argb     The ARGB color of the outline box.
      */
     @PublicAPI
-    public static void outline(GuiGraphics graphics, float startX, float startY, float width, float height, int argb)
+    public static void outline(GuiGraphics graphics, float x0, float y0, float width, float height, int argb)
     {
         boolean notBatching = !isBatching;
 
         if (notBatching)
             beginBatching();
 
-        vLine(graphics, startY, startY + height, startX, argb);
-        vLine(graphics, startY, startY + height, startX + width - 1, argb);
+        vLine(graphics, x0, y0, y0 + height, argb);
+        vLine(graphics, x0 + width - 1, y0, y0 + height, argb);
 
-        hLine(graphics, startX + 1, startX + width - 1, startY, argb);
-        hLine(graphics, startX + 1, startX + width - 1, startY + height - 1, argb);
+        hLine(graphics, x0 + 1, y0, x0 + width - 1, argb);
+        hLine(graphics, x0 + 1, y0 + height - 1, x0 + width - 1, argb);
 
         if (notBatching)
             endBatching();
@@ -1159,16 +1159,16 @@ public abstract class RenderUtil
      * Draw an outline (a hollow fill algorithm).
      *
      * @param graphics A {@link GuiGraphics} instance.
-     * @param startX   The starting x-coordinate of the outline box.
-     * @param startY   The starting y-coordinate of the outline box.
+     * @param x0       The starting x-coordinate of the outline box.
+     * @param y0       The starting y-coordinate of the outline box.
      * @param width    The width of the outline box.
      * @param height   The height of the outline box.
      * @param color    A {@link Color} instance.
      */
     @PublicAPI
-    public static void outline(GuiGraphics graphics, float startX, float startY, float width, float height, Color color)
+    public static void outline(GuiGraphics graphics, float x0, float y0, float width, float height, Color color)
     {
-        outline(graphics, startX, startY, width, height, color.get());
+        outline(graphics, x0, y0, width, height, color.get());
     }
 
     /**

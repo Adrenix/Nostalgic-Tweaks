@@ -253,7 +253,7 @@ public class ModToast implements Toast
         GearSpinner.getInstance().render(graphics, 0.0215F, 6, 3);
 
         RenderUtil.beginBatching();
-        RenderUtil.fill(graphics, 8, this.width() - 8, 15, this.height() - 8, 0xAF000000);
+        RenderUtil.fill(graphics, 8, 15, this.width() - 8, this.height() - 8, 0xAF000000);
 
         graphics.pose().pushPose();
         graphics.pose().translate(12.0F, 12.0F, 0.0F);
