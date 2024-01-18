@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.widget.WidgetBackground;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.animate.Animate;
+import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
@@ -11,6 +13,7 @@ import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.GameSprite;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -19,6 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder, Slider>, Slider extends AbstractSlider<Builder, Slider>>
     extends DynamicWidget<Builder, Slider>
@@ -30,12 +34,17 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     protected Component title;
     protected boolean dragging;
     protected int handleWidth = 8;
+    protected final SimpleTimer scrollTimer;
+    protected final Animation scrollAnimator;
 
     /* Constructor */
 
     protected AbstractSlider(Builder builder)
     {
         super(builder);
+
+        this.scrollTimer = SimpleTimer.create(1500L, TimeUnit.MILLISECONDS).waitFirst().build();
+        this.scrollAnimator = Animate.linear();
 
         this.builder.addFunction(new ValueSync<>(this.self()));
         this.applyTitle();
@@ -328,8 +337,14 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
      */
     private void renderText(GuiGraphics graphics)
     {
+        int margin = 3;
+        int startX = this.getX() + margin;
+        int endX = this.getEndX() - margin;
         int textX = this.x + this.width / 2;
         int textY = this.y + (this.height - 8) / 2;
+        int textWidth = GuiUtil.font().width(this.title);
+        int extraWidth = Math.abs(startX + textWidth - endX);
+        boolean isScrolling = startX + GuiUtil.font().width(this.title) + margin > endX;
         Color color = this.active ? Color.WHITE : Color.QUICK_SILVER;
 
         if (CandyTweak.OLD_BUTTON_HOVER.get())
@@ -342,7 +357,32 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
                 color = Color.NOSTALGIC_GRAY;
         }
 
-        DrawText.begin(graphics, this.title).pos(textX, textY).color(color).center().draw();
+        if (this.scrollAnimator.isMoving())
+            this.scrollTimer.reset();
+
+        if (isScrolling && this.scrollTimer.hasElapsed() && this.scrollAnimator.isFinished())
+        {
+            this.scrollAnimator.setDuration(40L * extraWidth, TimeUnit.MILLISECONDS);
+            this.scrollAnimator.playOrRewind();
+        }
+
+        if (isScrolling)
+        {
+            final float scrollX = (float) Mth.lerp(this.scrollAnimator.getValue(), startX, startX - extraWidth);
+            final int scrollColor = color.get();
+
+            RenderUtil.deferredRenderer(() -> {
+                RenderUtil.pushScissor(startX, this.getY(), endX, this.getEndY());
+                RenderUtil.pauseBatching();
+
+                DrawText.begin(graphics, this.title).pos(scrollX, textY).color(scrollColor).draw();
+
+                RenderUtil.popScissor();
+                RenderUtil.resumeBatching();
+            });
+        }
+        else
+            DrawText.begin(graphics, this.title).pos(textX, textY).color(color).center().draw();
     }
 
     /**
