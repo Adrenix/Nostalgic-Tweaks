@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 /**
- * For built-in animations, see {@link mod.adrenix.nostalgic.util.common.animate.Animate}.
+ * For built-in animations, see {@link Animate}.
  */
 public interface Animation
 {

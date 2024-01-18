@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.util.client.animate;
 
-import mod.adrenix.nostalgic.util.common.animate.Animate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 

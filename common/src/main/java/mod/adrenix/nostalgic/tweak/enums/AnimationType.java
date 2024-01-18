@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.tweak.enums;
 
 import com.google.common.base.Suppliers;
+import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
-import mod.adrenix.nostalgic.util.common.animate.Animate;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 

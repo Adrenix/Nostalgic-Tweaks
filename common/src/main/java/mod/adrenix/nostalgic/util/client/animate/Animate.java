@@ -1,7 +1,5 @@
-package mod.adrenix.nostalgic.util.common.animate;
+package mod.adrenix.nostalgic.util.client.animate;
 
-import mod.adrenix.nostalgic.util.client.animate.Animation;
-import mod.adrenix.nostalgic.util.client.animate.Animator;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.util.Mth;
 
