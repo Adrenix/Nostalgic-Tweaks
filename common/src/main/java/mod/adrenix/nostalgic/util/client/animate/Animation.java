@@ -203,6 +203,12 @@ public interface Animation
     void animateWith(Function<Double, Double> animator);
 
     /**
+     * @return Get the animation {@link Function}.
+     */
+    @PublicAPI
+    Function<Double, Double> getAnimation();
+
+    /**
      * Define the duration of the animation. For example, a duration of <code>.setDuration(1.5L,
      * TimeUnit.SECONDS)</code> implies that the animation will not finish until 30 ticks have been counted
      * <code>1500 ms * (1 tick / 50 ms) = 30 ticks</code>.

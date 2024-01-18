@@ -263,6 +263,12 @@ public class Animator implements Animation
     }
 
     @Override
+    public Function<Double, Double> getAnimation()
+    {
+        return this.animator;
+    }
+
+    @Override
     public void setDuration(long duration, TimeUnit timeUnit)
     {
         this.durationInTicks = (double) timeUnit.toMillis(duration) / 50.0D;
