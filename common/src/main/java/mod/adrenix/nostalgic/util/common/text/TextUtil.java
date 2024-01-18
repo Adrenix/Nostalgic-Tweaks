@@ -146,6 +146,24 @@ public abstract class TextUtil
     }
 
     /**
+     * Makes the first letter in a string lowercase.
+     *
+     * @param convert The string to convert.
+     * @return A string where the first letter is lowercase.
+     */
+    @PublicAPI
+    public static String lowercaseFirstLetter(String convert)
+    {
+        if (convert.isEmpty())
+            return convert;
+
+        char[] chars = convert.toCharArray();
+        chars[0] = Character.toLowerCase(chars[0]);
+
+        return new String(chars);
+    }
+
+    /**
      * Removes the last three characters of a string and replaces them with ellipsis points (...) if the given text
      * exceeds the given maximum width.
      *

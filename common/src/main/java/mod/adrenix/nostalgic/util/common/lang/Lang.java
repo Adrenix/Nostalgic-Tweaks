@@ -706,7 +706,7 @@ public interface Lang
     /* Enumerations */
 
     /**
-     * Lang keys that are used by tweak enumerations.
+     * Lang keys that tweak's use in enumerations.
      */
     interface Enum
     {
@@ -733,16 +733,54 @@ public interface Lang
         Translation ALPHA_BETA = from("basic.alpha_beta");
         Translation BASIC_CLASSIC = from("basic.classic");
         Translation BASIC_INF_DEV = from("basic.inf_dev");
+        String PARENT_KEY = "gui.nostalgic_tweaks.enum.";
+
+        Translation CLASSIC = from("generic.classic");
+        Translation ALPHA = from("generic.alpha");
+        Translation BETA = from("generic.beta");
+        Translation MODERN = from("generic.modern");
+        Translation ALPHA_BETA = from("generic.alpha_beta");
+        Translation PLAIN_CLASSIC = from("generic.plain_classic");
+        Translation INF_DEV = from("generic.inf_dev");
+        Translation DISABLED = from("generic.disabled");
+        Translation SCREEN_HOME = from("menuOption.home");
+        Translation SCREEN_PACKS = from("menuOption.packs");
+        Translation SCREEN_CONFIG = from("menuOption.config");
+        Translation BACKGROUND_SOLID_BLACK = from("guiBackground.solid_black");
+        Translation BACKGROUND_SOLID_BLUE = from("guiBackground.solid_blue");
+        Translation BACKGROUND_GRADIENT_BLUE = from("guiBackground.gradient_blue");
+        Translation RECIPE_BOOK_DISABLED = from("recipeBook.disabled");
+        Translation RECIPE_BOOK_LARGE = from("recipeBook.large");
+        Translation RECIPE_BOOK_SMALL = from("recipeBook.small");
+        Translation DEBUG_CHART_DISABLED = from("debugChart.disabled");
+        Translation DEBUG_CHART_CLASSIC = from("debugChart.classic");
+        Translation DEBUG_CHART_MODERN = from("debugChart.modern");
+        Translation INVENTORY_SHIELD_INVISIBLE = from("inventoryShield.invisible");
+        Translation INVENTORY_SHIELD_MIDDLE_RIGHT = from("inventoryShield.middle_right");
+        Translation INVENTORY_SHIELD_BOTTOM_LEFT = from("inventoryShield.bottom_left");
+        Translation ANIMATION_LINEAR = from("animationType.linear");
+        Translation ANIMATION_EASE_IN_SINE = from("animationType.ease_in_sine");
+        Translation ANIMATION_EASE_IN_EXPO = from("animationType.ease_in_expo");
+        Translation ANIMATION_EASE_IN_CUBIC = from("animationType.ease_in_cubic");
+        Translation ANIMATION_EASE_IN_CIRCULAR = from("animationType.ease_in_circular");
+        Translation ANIMATION_EASE_OUT_SINE = from("animationType.ease_out_sine");
+        Translation ANIMATION_EASE_OUT_EXPO = from("animationType.ease_out_expo");
+        Translation ANIMATION_EASE_OUT_CUBIC = from("animationType.ease_out_cubic");
+        Translation ANIMATION_EASE_OUT_CIRCULAR = from("animationType.ease_out_circular");
+        Translation ANIMATION_EASE_IN_OUT_SINE = from("animationType.ease_in_out_sine");
+        Translation ANIMATION_EASE_IN_OUT_EXPO = from("animationType.ease_in_out_expo");
+        Translation ANIMATION_EASE_IN_OUT_CUBIC = from("animationType.ease_in_out_cubic");
+        Translation ANIMATION_EASE_IN_OUT_CIRCULAR = from("animationType.ease_in_out_circular");
         Translation CORNER_TOP_LEFT = from("corner.top_left");
         Translation CORNER_TOP_RIGHT = from("corner.top_right");
         Translation CORNER_BOTTOM_LEFT = from("corner.bottom_left");
         Translation CORNER_BOTTOM_RIGHT = from("corner.bottom_right");
-        Translation FOG_ALPHA_R164 = from("fog.alpha_r164");
-        Translation FOG_R17_R118 = from("fog.r17_r118");
+        Translation FOG_ALPHA_R164 = from("worldFog.alpha_r164");
+        Translation FOG_R17_R118 = from("worldFog.r17_r118");
 
         private static Translation from(String name)
         {
-            return new Translation("gui.nostalgic_tweaks.enum." + name);
+            return new Translation(PARENT_KEY + name);
         }
     }
 

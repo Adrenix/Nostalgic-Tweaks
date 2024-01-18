@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.tweak.enums;
 
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 
 /**
  * The fog color enumeration is used by the terrain fog color tweak. That tweak changes the fog color in the overworld.
@@ -11,8 +11,8 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 public enum FogColor implements EnumTweak
 {
     DISABLED(Lang.Enum.DISABLED),
-    INF_DEV(Lang.Enum.BASIC_INF_DEV),
-    CLASSIC(Lang.Enum.BASIC_CLASSIC),
+    INF_DEV(Lang.Enum.INF_DEV),
+    CLASSIC(Lang.Enum.PLAIN_CLASSIC),
     ALPHA_BETA(Lang.Enum.ALPHA_BETA);
 
     private final Translation title;

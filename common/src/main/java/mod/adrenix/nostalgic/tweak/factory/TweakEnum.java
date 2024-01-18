@@ -7,6 +7,8 @@ import mod.adrenix.nostalgic.tweak.TweakEnv;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.tweak.enums.EnumTweak;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
+import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,28 +94,87 @@ public class TweakEnum<T extends Enum<T> & EnumTweak> extends TweakValue<T>
     }
 
     /**
-     * Get an enum description that is specific to a tweak's implementation of the enum value. An example lang key for a
-     * tweak enum description would be {@code gui.nostalgic_tweaks.config.mod.defaultScreen.enum.main_menu}. Where
-     * {@code main_menu} is the enumeration name from some enum class. The enum value string is set to lowercase when
-     * retrieving a translation value.
+     * Get the standard enumeration description key on the given enum value.
      *
-     * @param value An enum value.
-     * @return A {@link Component} enum description unique to this tweak's implementation.
+     * @param value An enumeration value.
+     * @return A lang file key.
      */
-    public Component getEnumDescription(Enum<?> value)
+    private String getStandardKey(Enum<?> value)
     {
-        return DecodeLang.findAndReplace(Component.translatable(this.getEnumKey(value)));
+        String className = TextUtil.lowercaseFirstLetter(value.getClass().getSimpleName());
+
+        return Lang.Enum.PARENT_KEY + className + "." + value.name().toLowerCase(Locale.ROOT) + ".info";
     }
 
     /**
-     * Check if the given enumeration value has a custom description provided by this tweak.
+     * Get a custom enum description provided by this tweak.
      *
      * @param value An enumeration value.
-     * @return Whether a custom description for the enumeration value exists.
+     * @return A custom description or {@code null} if the description does not exist.
+     */
+    @Nullable
+    private String getCustomDescription(Enum<?> value)
+    {
+        String key = this.getEnumKey(value);
+        String parsed = DecodeLang.findAndReplace(Component.translatable(key)).getString();
+
+        if (parsed.equals(key))
+            return null;
+
+        return parsed;
+    }
+
+    /**
+     * Get a standard description provided by the lang file.
+     *
+     * @param value An enumeration value.
+     * @return A standard description or {@code null} if the description does not exist.
+     */
+    @Nullable
+    private String getStandardDescription(Enum<?> value)
+    {
+        String key = this.getStandardKey(value);
+        String parsed = DecodeLang.findAndReplace(Component.translatable(key)).getString();
+
+        if (parsed.equals(key))
+            return null;
+
+        return parsed;
+    }
+
+    /**
+     * Get an enum description that is specific to a tweak's implementation of the enum value. An example lang key for a
+     * tweak enum description would be {@code gui.nostalgic_tweaks.config.mod.defaultScreen.enum.main_menu}. Where
+     * {@code main_menu} is the enumeration name from some enum class. The enum value string is set to lowercase when
+     * retrieving a translation value. Otherwise, an enum's standard description is used if it exists.
+     *
+     * @param value An enum value.
+     * @return A {@link Component} enum description.
+     */
+    public Component getEnumDescription(Enum<?> value)
+    {
+        String description = this.getCustomDescription(value);
+
+        if (description != null)
+            return Component.literal(description);
+
+        String standard = this.getStandardDescription(value);
+
+        if (standard != null)
+            return Component.literal(standard);
+
+        return Component.empty();
+    }
+
+    /**
+     * Check if the given enumeration value has a description.
+     *
+     * @param value An enumeration value.
+     * @return Whether a description for the enumeration value exists.
      */
     public boolean isEnumDescribed(Enum<?> value)
     {
-        return !this.getEnumDescription(value).getString().equals(this.getEnumKey(value));
+        return this.getCustomDescription(value) != null || this.getStandardDescription(value) != null;
     }
 
     @Override

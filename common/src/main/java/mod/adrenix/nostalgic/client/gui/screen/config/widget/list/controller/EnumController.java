@@ -123,14 +123,16 @@ public class EnumController
             .extendWidthToScreenEnd(this.padding)
             .build();
 
-        if (this.tweak.isEnumDescribed(value))
+        boolean isDescribed = this.tweak.isEnumDescribed(value);
+
+        if (isDescribed)
             this.overlay.addWidget(description);
 
         separator.set(SeparatorWidget.create(Color.GRAY)
             .extendWidthToScreenEnd(this.padding)
             .build(this.overlay::addWidget));
 
-        if (this.tweak.isEnumDescribed(value))
+        if (isDescribed)
         {
             separator.map(SeparatorWidget::getBuilder)
                 .ifPresent(builder -> builder.below(description, this.padding).posX(description::getX));

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.tweak.enums;
 
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 
 /**
  * The sky color tweak uses the sky color enumeration. That tweak universally changes the sky color in the overworld.
@@ -12,8 +12,8 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 public enum SkyColor implements EnumTweak
 {
     DISABLED(Lang.Enum.DISABLED),
-    INF_DEV(Lang.Enum.BASIC_INF_DEV),
-    CLASSIC(Lang.Enum.BASIC_CLASSIC),
+    INF_DEV(Lang.Enum.INF_DEV),
+    CLASSIC(Lang.Enum.PLAIN_CLASSIC),
     ALPHA(Generic.ALPHA.getTitle()),
     BETA(Generic.BETA.getTitle());
 
