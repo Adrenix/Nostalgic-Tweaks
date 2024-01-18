@@ -23,6 +23,7 @@ public class EnumController
     private final ButtonWidget widget;
     private final Overlay overlay;
     private final int padding = 6;
+    private boolean initialized;
 
     /* Constructor */
 
@@ -57,8 +58,6 @@ public class EnumController
             .unmovable()
             .borderless()
             .build();
-
-        this.build();
     }
 
     /* Methods */
@@ -76,7 +75,15 @@ public class EnumController
      */
     private void open()
     {
-        this.overlay.open();
+        if (this.initialized)
+            this.overlay.open();
+        else
+        {
+            this.initialized = true;
+
+            this.build();
+            this.overlay.open();
+        }
     }
 
     /**
