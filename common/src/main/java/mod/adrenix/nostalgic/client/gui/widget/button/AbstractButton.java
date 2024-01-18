@@ -31,18 +31,15 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
 {
     /* Fields */
 
-    protected final SimpleTimer timer;
-    protected final Animation animator;
+    protected final SimpleTimer scrollTimer;
+    protected final Animation scrollAnimator;
     protected final CacheHolder<Component> cacheTitle;
     protected final IconManager<Button> iconManager;
     protected final Consumer<Button> onPress;
-
     protected boolean shrunk;
     protected boolean holding;
-
     protected int textX = 0;
     protected int textY = 0;
-
     protected int iconX = 0;
     protected int iconY = 0;
 
@@ -58,8 +55,8 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
     {
         super(builder);
 
-        this.timer = SimpleTimer.create(1500L, TimeUnit.MILLISECONDS).waitFirst().build();
-        this.animator = Animate.linear();
+        this.scrollTimer = SimpleTimer.create(1500L, TimeUnit.MILLISECONDS).waitFirst().build();
+        this.scrollAnimator = Animate.linear();
         this.cacheTitle = CacheHolder.create(this::getTitle);
         this.iconManager = new IconManager<>(this.self());
         this.shrunk = builder.shrunk;
@@ -427,13 +424,13 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
 
         int extraWidth = Math.abs(startX + textWidth - endX - margin);
 
-        if (this.animator.isMoving())
-            this.timer.reset();
+        if (this.scrollAnimator.isMoving())
+            this.scrollTimer.reset();
 
-        if (isScrolling && this.timer.hasElapsed() && this.animator.isFinished())
+        if (isScrolling && this.scrollTimer.hasElapsed() && this.scrollAnimator.isFinished())
         {
-            this.animator.setDuration(40L * extraWidth, TimeUnit.MILLISECONDS);
-            this.animator.playOrRewind();
+            this.scrollAnimator.setDuration(40L * extraWidth, TimeUnit.MILLISECONDS);
+            this.scrollAnimator.playOrRewind();
         }
 
         if (this.iconManager.isEmpty() && !isScrolling)
@@ -450,7 +447,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
             {
                 final int scissorX = startX;
                 final int scissorEndX = endX;
-                final float scrollX = (float) Mth.lerp(this.animator.getValue(), startX, startX - extraWidth);
+                final float scrollX = (float) Mth.lerp(this.scrollAnimator.getValue(), startX, startX - extraWidth);
 
                 RenderUtil.deferredRenderer(() -> {
                     RenderUtil.pushScissor(scissorX, this.getY(), scissorEndX, this.getEndY());
