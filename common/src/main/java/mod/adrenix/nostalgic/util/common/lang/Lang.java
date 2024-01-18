@@ -245,6 +245,9 @@ public interface Lang
         Translation RADIUS = from("radius");
         Translation OFFSET = from("offset");
         Translation DENSITY = from("density");
+        Translation MINIMUM = from("minimum");
+        Translation MAXIMUM = from("maximum");
+        Translation SECONDS = from("seconds");
         Translation ENCROACH = from("encroach");
         Translation INTENSITY = from("intensity");
         Translation THICKNESS = from("thickness");
@@ -710,29 +713,6 @@ public interface Lang
      */
     interface Enum
     {
-        Translation CLASSIC = from("classic");
-        Translation ALPHA = from("alpha");
-        Translation BETA = from("beta");
-        Translation MODERN = from("modern");
-        Translation DISABLED = from("disabled");
-        Translation SCREEN_HOME = from("screen.home");
-        Translation SCREEN_PACKS = from("screen.packs");
-        Translation SCREEN_CONFIG = from("screen.config");
-        Translation BACKGROUND_SOLID_BLACK = from("background.solid_black");
-        Translation BACKGROUND_SOLID_BLUE = from("background.solid_blue");
-        Translation BACKGROUND_GRADIENT_BLUE = from("background.gradient_blue");
-        Translation RECIPE_BOOK_DISABLED = from("recipe_book.disabled");
-        Translation RECIPE_BOOK_LARGE = from("recipe_book.large");
-        Translation RECIPE_BOOK_SMALL = from("recipe_book.small");
-        Translation DEBUG_CHART_DISABLED = from("debug_chart.disabled");
-        Translation DEBUG_CHART_CLASSIC = from("debug_chart.classic");
-        Translation DEBUG_CHART_MODERN = from("debug_chart.modern");
-        Translation INVENTORY_SHIELD_INVISIBLE = from("inventory.shield.invisible");
-        Translation INVENTORY_SHIELD_MIDDLE_RIGHT = from("inventory.shield.middle_right");
-        Translation INVENTORY_SHIELD_BOTTOM_LEFT = from("inventory.shield.bottom_left");
-        Translation ALPHA_BETA = from("basic.alpha_beta");
-        Translation BASIC_CLASSIC = from("basic.classic");
-        Translation BASIC_INF_DEV = from("basic.inf_dev");
         String PARENT_KEY = "gui.nostalgic_tweaks.enum.";
 
         Translation CLASSIC = from("generic.classic");
@@ -758,6 +738,8 @@ public interface Lang
         Translation INVENTORY_SHIELD_INVISIBLE = from("inventoryShield.invisible");
         Translation INVENTORY_SHIELD_MIDDLE_RIGHT = from("inventoryShield.middle_right");
         Translation INVENTORY_SHIELD_BOTTOM_LEFT = from("inventoryShield.bottom_left");
+        Translation RENDER_ORDER_FIRST = from("renderOrder.first");
+        Translation RENDER_ORDER_LAST = from("renderOrder.last");
         Translation ANIMATION_LINEAR = from("animationType.linear");
         Translation ANIMATION_EASE_IN_SINE = from("animationType.ease_in_sine");
         Translation ANIMATION_EASE_IN_EXPO = from("animationType.ease_in_expo");

@@ -58,6 +58,8 @@ public interface CandyTweak
     TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(defaultDisabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
 
+    // Hitbox Outline
+
     /**
      * Generates the default full-block outlines.
      */
@@ -77,9 +79,32 @@ public interface CandyTweak
         return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
     }
 
-    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(defaultBlockOutlines(), CandyGroup.BLOCK_OUTLINE).icon(Icons.BLOCK_OUTLINE).newForUpdate().build();
-    TweakColor CUSTOM_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_OUTLINE).newForUpdate().whenDisabled("#00000066").build();
-    TweakNumber<Float> CUSTOM_OUTLINE_THICKNESS = TweakNumber.client(1.0F, CandyGroup.BLOCK_OUTLINE).newForUpdate().slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).whenDisabled(1.0F).build();
+    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(defaultBlockOutlines(), CandyGroup.BLOCK_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
+
+    // Hitbox Outline Aesthetic
+
+    TweakColor BLOCK_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_OUTLINE_AESTHETIC).newForUpdate().whenDisabled("#00000066").build();
+    TweakNumber<Float> BLOCK_OUTLINE_THICKNESS = TweakNumber.client(2.5F, CandyGroup.BLOCK_OUTLINE_AESTHETIC).newForUpdate().slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).build();
+
+    // Hitbox Overlay
+
+    TweakFlag OLD_BLOCK_OVERLAY = TweakFlag.client(false, CandyGroup.BLOCK_OVERLAY).whenDisabled(false).newForUpdate().build();
+    TweakEnum<RenderOrder> BLOCK_OVERLAY_RENDER_ORDER = TweakEnum.client(RenderOrder.FIRST, CandyGroup.BLOCK_OVERLAY).newForUpdate().build();
+
+    // Hitbox Overlay Color
+
+    TweakColor BLOCK_OVERLAY_COLOR = TweakColor.client("#FFFFFF5A", CandyGroup.BLOCK_OVERLAY_COLOR).newForUpdate().build();
+    TweakFlag BLOCK_OVERLAY_GRADIENT = TweakFlag.client(false, CandyGroup.BLOCK_OVERLAY_COLOR).newForUpdate().build();
+    TweakColor CUSTOM_OVERLAY_GRADIENT_TOP = TweakColor.client("#0000005A", CandyGroup.BLOCK_OVERLAY_COLOR).newForUpdate().build();
+    TweakColor CUSTOM_OVERLAY_GRADIENT_BOTTOM = TweakColor.client("#FFFFFF5A", CandyGroup.BLOCK_OVERLAY_COLOR).newForUpdate().build();
+
+    // Hitbox Overlay Animation
+
+    TweakFlag PULSATE_BLOCK_OVERLAY = TweakFlag.client(true, CandyGroup.BLOCK_OVERLAY_ANIMATION).newForUpdate().build();
+    TweakEnum<AnimationType> PULSATE_OVERLAY_ANIMATION = TweakEnum.client(AnimationType.LINEAR, CandyGroup.BLOCK_OVERLAY_ANIMATION).newForUpdate().build();
+    TweakNumber<Float> BLOCK_OVERLAY_SPEED = TweakNumber.client(0.2F, CandyGroup.BLOCK_OVERLAY_ANIMATION).newForUpdate().slider(Lang.Slider.SECONDS, 0.0F, 10.0F).interval(0.25F).build();
+    TweakNumber<Float> MINIMUM_PULSATION_TRANSPARENCY = TweakNumber.client(0.1F, CandyGroup.BLOCK_OVERLAY_ANIMATION).newForUpdate().slider(Lang.Slider.MINIMUM, 0.0F, 1.0F).interval(0.25F).build();
+    TweakNumber<Float> MAXIMUM_PULSATION_TRANSPARENCY = TweakNumber.client(0.4F, CandyGroup.BLOCK_OVERLAY_ANIMATION).newForUpdate().slider(Lang.Slider.MAXIMUM, 0.0F, 1.0F).interval(0.25F).build();
 
     // Chests
 

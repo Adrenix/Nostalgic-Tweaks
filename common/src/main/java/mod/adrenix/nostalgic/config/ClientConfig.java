@@ -159,11 +159,25 @@ public class ClientConfig implements ConfigMeta
         public boolean disableAllOffset = CandyTweak.DISABLE_ALL_OFFSET.fromJson("disableAllOffset");
         public MissingTexture oldMissingTexture = CandyTweak.OLD_MISSING_TEXTURE.fromJson("oldMissingTexture");
 
-        // Hitbox
+        // Hitbox Outline
 
         public ItemSet oldBlockOutlines = CandyTweak.OLD_BLOCK_OUTLINES.fromJson("oldBlockOutlines");
-        public String customOutlineColor = CandyTweak.CUSTOM_OUTLINE_COLOR.fromJson("customOutlineColor");
-        public float customOutlineThickness = CandyTweak.CUSTOM_OUTLINE_THICKNESS.fromJson("customOutlineThickness");
+        public String oldBlockOutlineColor = CandyTweak.BLOCK_OUTLINE_COLOR.fromJson("oldBlockOutlineColor");
+        public float oldBlockOutlineThickness = CandyTweak.BLOCK_OUTLINE_THICKNESS.fromJson("oldBlockOutlineThickness");
+
+        // Hitbox Overlay
+
+        public boolean oldBlockOverlay = CandyTweak.OLD_BLOCK_OVERLAY.fromJson("oldBlockOverlay");
+        public RenderOrder overlayRenderOrder = CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.fromJson("overlayRenderOrder");
+        public String oldBlockOverlayColor = CandyTweak.BLOCK_OVERLAY_COLOR.fromJson("oldBlockOverlayColor");
+        public boolean pulsateBlockOverlay = CandyTweak.PULSATE_BLOCK_OVERLAY.fromJson("pulsateBlockOverlay");
+        public boolean customBlockOverlayGradient = CandyTweak.BLOCK_OVERLAY_GRADIENT.fromJson("customBlockOverlayGradient");
+        public String customBlockOverlayGradientTop = CandyTweak.CUSTOM_OVERLAY_GRADIENT_TOP.fromJson("customBlockOverlayGradientTop");
+        public String customBlockOverlayGradientBottom = CandyTweak.CUSTOM_OVERLAY_GRADIENT_BOTTOM.fromJson("customBlockOverlayGradientBottom");
+        public AnimationType pulsateOverlayAnimation = CandyTweak.PULSATE_OVERLAY_ANIMATION.fromJson("pulsateOverlayAnimation");
+        public float oldBlockOverlaySpeed = CandyTweak.BLOCK_OVERLAY_SPEED.fromJson("oldBlockOverlaySpeed");
+        public float minimumBlockPulsationTransparency = CandyTweak.MINIMUM_PULSATION_TRANSPARENCY.fromJson("minimumBlockPulsationTransparency");
+        public float maximumBlockPulsationTransparency = CandyTweak.MAXIMUM_PULSATION_TRANSPARENCY.fromJson("maximumBlockPulsationTransparency");
 
         // Chests
 

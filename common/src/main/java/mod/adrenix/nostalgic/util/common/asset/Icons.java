@@ -57,6 +57,7 @@ public interface Icons
     TextureIcon SODIUM = TextureIcon.create().uv(65, 205).square(12).build();
     TextureIcon OPTIFINE = TextureIcon.create().uv(52, 192).square(12).build();
     TextureIcon COLOR_PICKER = TextureIcon.create().uv(13, 218).square(12).build();
+    TextureIcon FILLED_COLOR_PICKER = TextureIcon.create().uv(117, 205).square(12).build();
     TextureIcon TRAFFIC_LIGHT_OFF = TextureIcon.create().uv(0, 153).square(12).maxBrightness(1.2F).build();
     TextureIcon TRAFFIC_LIGHT_RED = TextureIcon.create().uv(0, 166).square(12).maxBrightness(1.2F).build();
     TextureIcon TRAFFIC_LIGHT_YELLOW = TextureIcon.create().uv(0, 179).square(12).maxBrightness(1.2F).build();
@@ -69,7 +70,9 @@ public interface Icons
     TextureIcon EXPERIENCE = TextureIcon.create().uv(91, 231).square(12).build();
     TextureIcon BRAIN = TextureIcon.create().uv(91, 244).square(12).build();
     TextureIcon FIRE = TextureIcon.create().uv(104, 231).square(12).build();
-    TextureIcon BLOCK_OUTLINE = TextureIcon.create().uv(104, 244).square(12).build();
+    TextureIcon HITBOX_OUTLINE = TextureIcon.create().uv(104, 244).square(12).build();
+    TextureIcon HITBOX_OVERLAY = TextureIcon.create().uv(130, 218).square(12).build();
+    TextureIcon PLAYER_CONTROLS = TextureIcon.create().uv(143, 218).square(12).build();
     TextureIcon COLOR_LIST = TextureIcon.create().uv(117, 218).square(12).build();
     TextureIcon COLOR_TREE = TextureIcon.create().uv(104, 218).square(12).build();
     TextureIcon LIST = TextureIcon.create().uv(117, 244).square(12).build();

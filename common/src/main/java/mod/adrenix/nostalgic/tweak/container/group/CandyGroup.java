@@ -12,7 +12,11 @@ public interface CandyGroup
     // Block
 
     Container BLOCK = Container.group(Category.EYE_CANDY, "block").color(0x98C767).icon(Blocks.GRASS_BLOCK).build();
-    Container BLOCK_OUTLINE = Container.group(BLOCK, "block_outline").color(0xFFFFFF).icon(Icons.BLOCK_OUTLINE).build();
+    Container BLOCK_OUTLINE = Container.group(BLOCK, "block_outline").color(0x8A99AD).icon(Icons.HITBOX_OUTLINE).build();
+    Container BLOCK_OUTLINE_AESTHETIC = Container.group(BLOCK_OUTLINE, "block_outline_aesthetic").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
+    Container BLOCK_OVERLAY = Container.group(BLOCK, "block_overlay").color(0xFFFFFF).icon(Icons.HITBOX_OVERLAY).build();
+    Container BLOCK_OVERLAY_COLOR = Container.group(BLOCK_OVERLAY, "block_overlay_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
+    Container BLOCK_OVERLAY_ANIMATION = Container.group(BLOCK_OVERLAY, "block_overlay_animation").color(0x00AEDD).icon(Icons.PLAYER_CONTROLS).build();
     Container BLOCK_CHEST = Container.group(BLOCK, "block_chest").color(0xFFB444).icon(Blocks.CHEST).build();
     Container BLOCK_TORCH = Container.group(BLOCK, "block_torch").color(0xFFD800).icon(Items.TORCH).build();
 
