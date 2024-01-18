@@ -791,51 +791,51 @@ public abstract class RenderUtil
     /**
      * Creates a filled rectangle at the given positions with the given color.
      *
-     * @param builder The current {@link BufferBuilder} instance.
-     * @param matrix  The {@link Matrix4f} instance.
-     * @param leftX   The left x-coordinate of the rectangle.
-     * @param rightX  The right x-coordinate of the rectangle.
-     * @param topY    The top y-coordinate of the rectangle.
-     * @param bottomY The bottom y-coordinate of the rectangle.
-     * @param argb    The ARGB color of the rectangle.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
+     * @param matrix   The {@link Matrix4f} instance.
+     * @param leftX    The left x-coordinate of the rectangle.
+     * @param rightX   The right x-coordinate of the rectangle.
+     * @param topY     The top y-coordinate of the rectangle.
+     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(BufferBuilder builder, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, Matrix4f matrix, float leftX, float rightX, float topY, float bottomY, int argb)
     {
         float z = 0.0F;
 
-        builder.vertex(matrix, leftX, bottomY, z).color(argb).endVertex();
-        builder.vertex(matrix, rightX, bottomY, z).color(argb).endVertex();
-        builder.vertex(matrix, rightX, topY, z).color(argb).endVertex();
-        builder.vertex(matrix, leftX, topY, z).color(argb).endVertex();
+        consumer.vertex(matrix, leftX, bottomY, z).color(argb).endVertex();
+        consumer.vertex(matrix, rightX, bottomY, z).color(argb).endVertex();
+        consumer.vertex(matrix, rightX, topY, z).color(argb).endVertex();
+        consumer.vertex(matrix, leftX, topY, z).color(argb).endVertex();
     }
 
     /**
-     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}. This
+     * Overload method for {@link RenderUtil#fill(VertexConsumer, Matrix4f, float, float, float, float, int)}. This
      * method does not require a 4D matrix.
      *
-     * @param builder A {@link BufferBuilder} instance.
-     * @param leftX   The left x-coordinate of the rectangle.
-     * @param rightX  The right x-coordinate of the rectangle.
-     * @param topY    The top y-coordinate of the rectangle.
-     * @param bottomY The bottom y-coordinate of the rectangle.
-     * @param argb    The ARGB color of the rectangle.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
+     * @param leftX    The left x-coordinate of the rectangle.
+     * @param rightX   The right x-coordinate of the rectangle.
+     * @param topY     The top y-coordinate of the rectangle.
+     * @param bottomY  The bottom y-coordinate of the rectangle.
+     * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(BufferBuilder builder, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, float leftX, float rightX, float topY, float bottomY, int argb)
     {
         float z = 0.0F;
 
-        builder.vertex(leftX, bottomY, z).color(argb).endVertex();
-        builder.vertex(rightX, bottomY, z).color(argb).endVertex();
-        builder.vertex(rightX, topY, z).color(argb).endVertex();
-        builder.vertex(leftX, topY, z).color(argb).endVertex();
+        consumer.vertex(leftX, bottomY, z).color(argb).endVertex();
+        consumer.vertex(rightX, bottomY, z).color(argb).endVertex();
+        consumer.vertex(rightX, topY, z).color(argb).endVertex();
+        consumer.vertex(leftX, topY, z).color(argb).endVertex();
     }
 
     /**
      * Creates a filled rectangle at the given positions with the given color.
      *
-     * @param builder  The current {@link BufferBuilder} instance.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
      * @param leftX    The left x-coordinate of the rectangle.
      * @param rightX   The right x-coordinate of the rectangle.
@@ -844,13 +844,13 @@ public abstract class RenderUtil
      * @param argb     The ARGB color of the rectangle.
      */
     @PublicAPI
-    public static void fill(BufferBuilder builder, GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int argb)
+    public static void fill(VertexConsumer consumer, GuiGraphics graphics, float leftX, float rightX, float topY, float bottomY, int argb)
     {
-        fill(builder, graphics.pose().last().pose(), leftX, rightX, topY, bottomY, argb);
+        fill(consumer, graphics.pose().last().pose(), leftX, rightX, topY, bottomY, argb);
     }
 
     /**
-     * Overload method for {@link RenderUtil#fill(BufferBuilder, Matrix4f, float, float, float, float, int)}. This
+     * Overload method for {@link RenderUtil#fill(VertexConsumer, Matrix4f, float, float, float, float, int)}. This
      * method does not require a buffer builder or a 4D matrix, but instead uses {@link GuiGraphics}.
      *
      * @param graphics A {@link GuiGraphics} instance.
@@ -1253,7 +1253,7 @@ public abstract class RenderUtil
      * Put vertex data into the given {@link BufferBuilder} instance using the cached {@link TextureLocation} from
      * {@link #getAndBeginTexture(TextureLocation)} and given arguments.
      *
-     * @param builder  A {@link BufferBuilder} instance.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
      * @param x        The x-coordinate of the image.
      * @param y        The y-coordinate of the image.
@@ -1263,20 +1263,20 @@ public abstract class RenderUtil
      * @param vHeight  The height of the texture on the texture sheet.
      */
     @PublicAPI
-    public static void blitTexture(BufferBuilder builder, GuiGraphics graphics, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
+    public static void blitTexture(VertexConsumer consumer, GuiGraphics graphics, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         if (texture == null)
             return;
 
         Matrix4f matrix = graphics.pose().last().pose();
 
-        blitTexture(texture, builder, matrix, x, y, uOffset, vOffset, uWidth, vHeight, RenderSystem.getShaderColor());
+        blitTexture(texture, consumer, matrix, x, y, uOffset, vOffset, uWidth, vHeight, RenderSystem.getShaderColor());
     }
 
     /**
      * Internal blit instructions for any texture sheet.
      */
-    private static void blitTexture(TextureLocation texture, BufferBuilder builder, Matrix4f matrix, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight, float[] rgba)
+    private static void blitTexture(TextureLocation texture, VertexConsumer consumer, Matrix4f matrix, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight, float[] rgba)
     {
         float x2 = x + uWidth;
         float y2 = y + vHeight;
@@ -1288,17 +1288,17 @@ public abstract class RenderUtil
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
      * Put vertex data into the given {@link BufferBuilder} instance using the cached {@link TextureLocation} from
      * {@link #getAndBeginTexture(TextureLocation)} and given arguments.
      *
-     * @param builder  A {@link BufferBuilder} instance.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
      * @param x        The x-coordinate of the image.
      * @param y        The y-coordinate of the image.
@@ -1308,9 +1308,9 @@ public abstract class RenderUtil
      * @param vHeight  The height of the texture on the texture sheet.
      */
     @PublicAPI
-    public static void blitTexture(BufferBuilder builder, GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    public static void blitTexture(VertexConsumer consumer, GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
-        blitTexture(builder, graphics, (float) x, (float) y, uOffset, vOffset, uWidth, vHeight);
+        blitTexture(consumer, graphics, (float) x, (float) y, uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
@@ -1394,7 +1394,7 @@ public abstract class RenderUtil
      * Blit a portion of the texture specified by {@link #getAndBeginTexture(ResourceLocation)} onto the screen at the
      * given coordinates and blit texture coordinates.
      *
-     * @param builder       A {@link BufferBuilder} instance.
+     * @param consumer      The {@link VertexConsumer} to build vertices with.
      * @param graphics      A {@link GuiGraphics} instance.
      * @param x             The x-coordinate of the blit position.
      * @param y             The y-coordinate of the blit position.
@@ -1405,7 +1405,7 @@ public abstract class RenderUtil
      * @param textureWidth  The width of the texture.
      * @param textureHeight The height of the texture.
      */
-    public static void blitTexture(BufferBuilder builder, GuiGraphics graphics, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
+    public static void blitTexture(VertexConsumer consumer, GuiGraphics graphics, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
     {
         Matrix4f matrix = graphics.pose().last().pose();
         float[] rgba = RenderSystem.getShaderColor();
@@ -1418,16 +1418,16 @@ public abstract class RenderUtil
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
      * Internal 256x256 texture sheet vertex builder.
      */
-    private static void blit256(BufferBuilder builder, Matrix4f matrix, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight, float[] rgba)
+    private static void blit256(VertexConsumer consumer, Matrix4f matrix, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight, float[] rgba)
     {
         float x2 = x + uWidth;
         float y2 = y + vHeight;
@@ -1439,16 +1439,16 @@ public abstract class RenderUtil
         float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
         int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
 
-        builder.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
     }
 
     /**
      * Put vertex data into the given {@link BufferBuilder} based on the current shader texture and x/y floats.
      *
-     * @param builder  A {@link BufferBuilder} instance.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
      * @param x        The x-coordinate on the screen to place the texture.
      * @param y        The y-coordinate on the screen to place the texture.
@@ -1458,17 +1458,17 @@ public abstract class RenderUtil
      * @param vHeight  The height of the texture on the texture sheet.
      */
     @PublicAPI
-    public static void blit256(BufferBuilder builder, GuiGraphics graphics, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
+    public static void blit256(VertexConsumer consumer, GuiGraphics graphics, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         Matrix4f matrix = graphics.pose().last().pose();
 
-        blit256(builder, matrix, x, y, uOffset, vOffset, uWidth, vHeight, RenderSystem.getShaderColor());
+        blit256(consumer, matrix, x, y, uOffset, vOffset, uWidth, vHeight, RenderSystem.getShaderColor());
     }
 
     /**
      * Put vertex data into the given {@link BufferBuilder} based on the current shader texture and x/y integers.
      *
-     * @param builder  A {@link BufferBuilder} instance.
+     * @param consumer The {@link VertexConsumer} to build vertices with.
      * @param graphics A {@link GuiGraphics} instance.
      * @param x        The x-coordinate on the screen to place the texture.
      * @param y        The y-coordinate on the screen to place the texture.
@@ -1478,9 +1478,9 @@ public abstract class RenderUtil
      * @param vHeight  The height of the texture on the texture sheet.
      */
     @PublicAPI
-    public static void blit256(BufferBuilder builder, GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
+    public static void blit256(VertexConsumer consumer, GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
-        blit256(builder, graphics, (float) x, (float) y, uOffset, vOffset, uWidth, vHeight);
+        blit256(consumer, graphics, (float) x, (float) y, uOffset, vOffset, uWidth, vHeight);
     }
 
     /**
