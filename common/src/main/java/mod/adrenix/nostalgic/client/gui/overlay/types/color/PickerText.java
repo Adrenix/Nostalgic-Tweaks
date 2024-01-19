@@ -36,8 +36,7 @@ class PickerText
         this.green = TextWidget.create(this::getGreen).build();
         this.blue = TextWidget.create(this::getBlue).build();
         this.opacity = TextWidget.create(this::getOpacity).build();
-        this.sample = TextWidget.create(Component.literal("The quick brown fox jumps over the lazy dog."))
-            .build(picker.group.sample::addWidget);
+        this.sample = TextWidget.create(Component.literal("The quick brown fox jumps over the lazy dog.")).build();
     }
 
     /* Methods */

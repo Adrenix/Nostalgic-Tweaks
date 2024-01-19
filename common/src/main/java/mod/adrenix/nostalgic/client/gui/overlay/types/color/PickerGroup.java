@@ -96,5 +96,6 @@ class PickerGroup
         this.rgb.addWidgets(this.picker.text.green, this.picker.slider.green);
         this.rgb.addWidgets(this.picker.text.blue, this.picker.slider.blue);
         this.alpha.addWidgets(this.picker.text.opacity, this.picker.slider.opacity);
+        this.sample.addWidgets(this.picker.text.sample);
     }
 }
