@@ -201,7 +201,12 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     {
         this.text = text;
 
-        this.setHeight(this.text.getCount() * this.getBuilder().lineHeight);
+        int height = this.text.getCount() * this.getBuilder().lineHeight;
+
+        if (this.getBuilder().isHeightOverridden() && height < this.height)
+            return;
+
+        this.setHeight(height);
     }
 
     /**

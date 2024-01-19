@@ -505,6 +505,14 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     }
 
     /**
+     * @return Whether the text height is being controlled by a supplier.
+     */
+    protected boolean isHeightOverridden()
+    {
+        return this.height != null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
