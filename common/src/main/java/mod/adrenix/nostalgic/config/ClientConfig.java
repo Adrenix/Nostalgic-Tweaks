@@ -182,9 +182,10 @@ public class ClientConfig implements ConfigMeta
         // Chests
 
         public boolean oldChest = CandyTweak.OLD_CHEST.fromJson("oldChest");
-        public boolean oldChestVoxel = CandyTweak.OLD_CHEST_VOXEL.fromJson("oldChestVoxel");
         public boolean oldEnderChest = CandyTweak.OLD_ENDER_CHEST.fromJson("oldEnderChest");
         public boolean oldTrappedChest = CandyTweak.OLD_TRAPPED_CHEST.fromJson("oldTrappedChest");
+        public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.fromJson("applyChestVoxel");
+        public StringSet oldModChests = CandyTweak.OLD_MOD_CHESTS.fromJson("oldModChests");
 
         // Torch
 
@@ -352,6 +353,7 @@ public class ClientConfig implements ConfigMeta
         public boolean disableLavaParticles = CandyTweak.DISABLE_LAVA_PARTICLES.fromJson("disableLavaParticles");
         public boolean disableLeverParticles = CandyTweak.DISABLE_LEVER_PARTICLES.fromJson("disableLeverParticles");
         public boolean disableModelDestructionParticles = CandyTweak.DISABLE_MODEL_DESTRUCTION_PARTICLES.fromJson("disableModelDestructionParticles");
+        public boolean disableEnderChestParticles = CandyTweak.DISABLE_ENDER_CHEST_PARTICLES.fromJson("disableEnderChestParticles");
         public boolean disableGrowthParticles = CandyTweak.DISABLE_GROWTH_PARTICLES.fromJson("disableGrowthParticles");
 
         // Player Particles

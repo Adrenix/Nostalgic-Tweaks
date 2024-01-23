@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.ItemListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
+import mod.adrenix.nostalgic.tweak.listing.StringSet;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
@@ -109,9 +110,10 @@ public interface CandyTweak
     // Chests
 
     TweakFlag OLD_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).modIssues(TweakIssue.OPTIFINE).reloadResources().build();
-    TweakFlag OLD_CHEST_VOXEL = TweakFlag.server(false, CandyGroup.BLOCK_CHEST).reloadChunks().warningTag().build();
     TweakFlag OLD_ENDER_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).reloadResources().build();
     TweakFlag OLD_TRAPPED_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).reloadResources().build();
+    TweakFlag APPLY_CHEST_VOXEL = TweakFlag.server(true, CandyGroup.BLOCK_CHEST).newForUpdate().build();
+    TweakStringSet OLD_MOD_CHESTS = TweakStringSet.client(new StringSet(), CandyGroup.BLOCK_CHEST).newForUpdate().reloadResources().build();
 
     // Torch
 
@@ -288,6 +290,7 @@ public interface CandyTweak
     TweakFlag DISABLE_LEVER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
     TweakFlag DISABLE_GROWTH_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
     TweakFlag DISABLE_MODEL_DESTRUCTION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
+    TweakFlag DISABLE_ENDER_CHEST_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_BLOCK).build();
 
     // Player Particles
 

@@ -8,7 +8,15 @@
     "candy.ambient_occlusion_blocks.BlockBehaviourMixin",
     "candy.block_hitbox.LevelRendererMixin",
     "candy.disabled_block_offsets.BlockStateBaseMixin",
+    "candy.old_chest_block.BlockEntityRenderDispatcherMixin",
+    "candy.old_chest_block.ChestBlockMixin",
+    "candy.old_chest_block.EnderChestBlockMixin",
+    "candy.old_chest_block.ItemBlockRenderTypesMixin",
+    "candy.old_chest_block.ModelBakeryMixin",
     "candy.old_missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.uncap_title_fps.MinecraftMixin"
+  ],
+  "mixins": [
+    "candy.old_chest_block.BlockStateBaseMixin"
   ]
 }

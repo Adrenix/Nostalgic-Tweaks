@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This utility class is used by block hitbox outline tweaks.
+ * This utility class is used only by the client.
  */
 public abstract class HitboxUtil
 {
@@ -44,7 +44,7 @@ public abstract class HitboxUtil
      */
     public static VoxelShape getShape(VoxelShape original, Block block)
     {
-        if (CandyTweak.OLD_BLOCK_OUTLINES.get().containsBlock(block))
+        if (CandyTweak.OLD_BLOCK_OUTLINES.get().containsBlock(block) || ChestUtil.isOld(block))
             return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
         return original;

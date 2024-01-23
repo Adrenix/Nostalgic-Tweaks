@@ -51,10 +51,10 @@ public class ServerConfig implements ConfigMeta
     {
         public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.fromJson("oldCreativeHotbar");
         public int itemMergeLimit = CandyTweak.ITEM_MERGE_LIMIT.fromJson("itemMergeLimit");
-        public boolean oldChestVoxel = CandyTweak.OLD_CHEST_VOXEL.fromJson("oldChestVoxel");
         public boolean oldItemMerging = CandyTweak.OLD_ITEM_MERGING.fromJson("oldItemMerging");
         public boolean oldSquareBorder = CandyTweak.OLD_SQUARE_BORDER.fromJson("oldSquareBorder");
         public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.fromJson("oldClassicLighting");
+        public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.fromJson("applyChestVoxel");
         public boolean debugEntityId = CandyTweak.DEBUG_ENTITY_ID.fromJson("debugEntityId");
     }
 
