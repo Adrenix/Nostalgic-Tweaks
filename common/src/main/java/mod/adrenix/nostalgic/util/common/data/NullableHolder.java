@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * A nullable holder is useful in situations where there is a nullable value and a need to avoid Java's pass-by-value
@@ -149,6 +150,21 @@ public class NullableHolder<T>
     public T orElse(T other)
     {
         return optional().orElse(other);
+    }
+
+    /**
+     * If the held value is {@code null}, then the given supplier will be used to generate and cache a new value.
+     *
+     * @param supplier A {@link Supplier} that will generate a new value if the held value is {@code null}.
+     * @return The cached value or a new computed value.
+     */
+    @PublicAPI
+    public T computeIfAbsent(Supplier<T> supplier)
+    {
+        if (this.value == null)
+            this.value = supplier.get();
+
+        return this.value;
     }
 
     /**

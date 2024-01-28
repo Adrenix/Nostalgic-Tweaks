@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic;
 
-import com.google.common.base.Suppliers;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
@@ -8,6 +7,7 @@ import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
@@ -17,7 +17,6 @@ import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class NostalgicTweaks
 {
@@ -95,30 +94,29 @@ public class NostalgicTweaks
 
     /* - Version */
 
-    /**
-     * Uses Architectury to get the mod's current version. Getting the mod's version string is based on the mod loader.
-     * A memoized supplier is used here since the version will never change during runtime.
-     */
-    public static final Supplier<String> VERSION = Suppliers.memoize(Platform.getMod(MOD_ID)::getVersion);
+    private static final NullableHolder<String> FULL_VERSION = NullableHolder.empty();
+    private static final NullableHolder<String> BETA_VERSION = NullableHolder.empty();
+    private static final NullableHolder<String> TINY_VERSION = NullableHolder.empty();
+    private static final NullableHolder<String> SHORT_VERSION = NullableHolder.empty();
 
     /**
-     * This will give a version number where all additional information attached to a version string is removed.
+     * Uses Architectury to retrieve the current Minecraft version.
      *
-     * @return A tiny version number formatted as '#.#.#'.
+     * @return The current Minecraft version.
      */
-    public static String getTinyVersion()
+    public static String getMinecraftVersion()
     {
-        return TextUtil.extract(VERSION.get(), "(\\d\\.\\d\\.\\d)");
+        return Platform.getMinecraftVersion();
     }
 
     /**
-     * This will give the beta version number. If the build is not in beta, then an empty string is returned.
+     * This will give the version number as represented by the mod's jar file.
      *
-     * @return A beta version number formatted as 'Beta-#' or 'Beta-#.#'.
+     * @return A version number stored in the jar file with no formatting.
      */
-    public static String getBetaVersion()
+    public static String getRawVersion()
     {
-        return TextUtil.extract(VERSION.get(), "Beta-\\d+(?:\\.\\d+)?");
+        return Platform.getMod(MOD_ID).getVersion();
     }
 
     /**
@@ -128,7 +126,27 @@ public class NostalgicTweaks
      */
     public static String getFullVersion()
     {
-        return String.format("%s-%s-%s", TextUtil.toTitleCase(getLoader()), Platform.getMinecraftVersion(), VERSION.get());
+        return FULL_VERSION.computeIfAbsent(() -> String.format("%s-%s-%s", TextUtil.toTitleCase(getLoader()), getMinecraftVersion(), getRawVersion()));
+    }
+
+    /**
+     * This will give the beta version number. If the build is not in beta, then an empty string is returned.
+     *
+     * @return A beta version number formatted as 'Beta-#' or 'Beta-#.#'.
+     */
+    public static String getBetaVersion()
+    {
+        return BETA_VERSION.computeIfAbsent(() -> TextUtil.extract(getRawVersion(), "Beta-\\d+(?:\\.\\d+)?"));
+    }
+
+    /**
+     * This will give a version number where all additional information attached to a version string is removed.
+     *
+     * @return A tiny version number formatted as '#.#.#'.
+     */
+    public static String getTinyVersion()
+    {
+        return TINY_VERSION.computeIfAbsent(() -> TextUtil.extract(getRawVersion(), "(\\d\\.\\d\\.\\d)"));
     }
 
     /**
@@ -138,7 +156,7 @@ public class NostalgicTweaks
      */
     public static String getShortVersion()
     {
-        return String.format("%s-%s", Platform.getMinecraftVersion(), VERSION.get());
+        return SHORT_VERSION.computeIfAbsent(() -> String.format("%s-%s", getMinecraftVersion(), getRawVersion()));
     }
 
     /* - Networking */
