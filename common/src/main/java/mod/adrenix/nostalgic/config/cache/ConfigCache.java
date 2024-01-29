@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.config.ClientConfig;
 import mod.adrenix.nostalgic.config.ServerConfig;
 import mod.adrenix.nostalgic.config.factory.ConfigBuilder;
 import mod.adrenix.nostalgic.tweak.TweakValidator;
+import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 
@@ -120,6 +121,9 @@ public abstract class ConfigCache
         // Register and cache config
         ConfigBuilder.create(ClientConfig.class, ConfigCache::reloadClient);
 
+        // Scan for container issues
+        Container.scanForIssues();
+
         // List loaded tweaks
         NostalgicTweaks.LOGGER.info("[Config Cache] Loaded %d client tweaks", TweakPool.values().size());
     }
@@ -138,6 +142,9 @@ public abstract class ConfigCache
 
         // Register and cache config
         ConfigBuilder.create(ServerConfig.class, ConfigCache::reloadServer);
+
+        // Scan for container issues
+        Container.scanForIssues();
 
         // List loaded tweaks
         String message = "[Config Cache] Loaded %d server tweaks";

@@ -77,15 +77,16 @@ public abstract class Tweak<T> implements TweakMeta<T>
      * Get the config JSON identifier for this tweak. This key is set using {@link #setJsonId(String)} in the client or
      * server config structure class.
      *
-     * <br><br>
-     * This should only be used for reflection. If you want to get a tweak from the cache map, then use
+     * <p><br>
+     * This should only be used for reflection. If you want to get a tweak from the cache map, then use the
+     * {@link TweakPool}.
      *
      * @return The json key that is used in the config file.
      */
     public String getJsonId()
     {
         if (this.jsonId == null)
-            throw new AssertionError("Config json identifier was not properly set before retrieving its value");
+            throw new AssertionError(String.format("Tweak (%s) has not set a config json identifier", this.getTypeName()));
 
         return this.jsonId;
     }
@@ -100,9 +101,6 @@ public abstract class Tweak<T> implements TweakMeta<T>
      */
     public String getJsonPathId()
     {
-        if (this.getJsonId() == null)
-            throw new AssertionError("json config key was not set before retrieving its value");
-
         if (this.getContainer().isRoot())
             return this.getJsonId();
 

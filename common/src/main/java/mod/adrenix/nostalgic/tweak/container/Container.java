@@ -61,6 +61,39 @@ public class Container
      */
     public static final LinkedHashSet<Container> GROUPS = new LinkedHashSet<>();
 
+    /* Inspection */
+
+    /**
+     * Inspects the container for potential runtime issues.
+     *
+     * @param container The {@link Container} to inspect.
+     */
+    private static void inspect(Container container)
+    {
+        try
+        {
+            container.getTweaks().forEach(Tweak::getJsonId);
+        }
+        catch (Throwable throwable)
+        {
+            String header = String.format("Container (%s) failed inspection: ", container.toString());
+            String message = header + throwable.getMessage();
+
+            throw new AssertionError(message, throwable.getCause());
+        }
+    }
+
+    /**
+     * Scans all categories and groups for tweaks that have not yet set their config json identifiers in at least one of
+     * the sided configs. If a tweak fails inspection, the mod will crash the game with an assertion error since this
+     * needs resolved by a developer.
+     */
+    public static void scanForIssues()
+    {
+        CATEGORIES.forEach(Container::inspect);
+        GROUPS.forEach(Container::inspect);
+    }
+
     /* Fields */
 
     /**
@@ -291,16 +324,6 @@ public class Container
     public ContainerType getType()
     {
         return this.type;
-    }
-
-    /**
-     * An "embedded" container is a container whose parent is also a "GROUP" container type.
-     *
-     * @return Whether this container is embedded.
-     */
-    public boolean isEmbedded()
-    {
-        return this.getParent().stream().anyMatch(Container::isGroup);
     }
 
     /**
