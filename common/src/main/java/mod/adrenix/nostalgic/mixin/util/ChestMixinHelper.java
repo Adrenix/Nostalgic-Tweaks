@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * This utility is used both the client and server. For safety, keep client-only code out of this class.
  */
-public abstract class ChestUtil
+public abstract class ChestMixinHelper
 {
     /**
      * Checks if the given block should be considered an "old" chest.

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.sound;
 
 import mod.adrenix.nostalgic.mixin.access.EntityAccessor;
-import mod.adrenix.nostalgic.mixin.util.ChestUtil;
+import mod.adrenix.nostalgic.mixin.util.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.Minecraft;
@@ -240,7 +240,7 @@ public abstract class SoundMixinHelper
         if (!isChestSound)
             return false;
 
-        if (SoundTweak.DISABLE_CHEST.get() && ChestUtil.isOld(handler.blockState))
+        if (SoundTweak.DISABLE_CHEST.get() && ChestMixinHelper.isOld(handler.blockState))
             handler.mute();
 
         if (SoundTweak.OLD_CHEST.get())

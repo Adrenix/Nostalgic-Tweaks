@@ -7,7 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.HitboxUtil;
+import mod.adrenix.nostalgic.mixin.util.HitboxMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.RenderOrder;
@@ -58,7 +58,7 @@ public abstract class LevelRendererMixin
     private void NT$setCustomBlockOutline(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state)
     {
         boolean isEnabled = ModTweak.ENABLED.get();
-        VoxelShape hitbox = HitboxUtil.getShape(voxelShape, state.getBlock());
+        VoxelShape hitbox = HitboxMixinHelper.getShape(voxelShape, state.getBlock());
         BufferBuilder buffer = null;
 
         float[] rgba = HexUtil.parseFloatRGBA(CandyTweak.BLOCK_OUTLINE_COLOR.get());
@@ -98,9 +98,9 @@ public abstract class LevelRendererMixin
             final double rz = (double) pos.getZ() - camZ;
 
             if (Minecraft.useShaderTransparency())
-                HitboxUtil.renderOverlay(matrix, hitbox, rx, ry, rz);
+                HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
             else
-                this.NT$renderOverlay = () -> HitboxUtil.renderOverlay(matrix, hitbox, rx, ry, rz);
+                this.NT$renderOverlay = () -> HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
         }
     }
 

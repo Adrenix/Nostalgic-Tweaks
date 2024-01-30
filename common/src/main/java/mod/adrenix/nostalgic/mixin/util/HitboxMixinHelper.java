@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This utility class is used only by the client.
  */
-public abstract class HitboxUtil
+public abstract class HitboxMixinHelper
 {
     /* Fields */
 
@@ -44,7 +44,7 @@ public abstract class HitboxUtil
      */
     public static VoxelShape getShape(VoxelShape original, Block block)
     {
-        if (CandyTweak.OLD_BLOCK_OUTLINES.get().containsBlock(block) || ChestUtil.isOld(block))
+        if (CandyTweak.OLD_BLOCK_OUTLINES.get().containsBlock(block) || ChestMixinHelper.isOld(block))
             return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
         return original;
