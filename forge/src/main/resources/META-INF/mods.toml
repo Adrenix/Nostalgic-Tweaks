@@ -23,6 +23,9 @@ displayTest = "NONE"
 config = "mixin.nostalgic_tweaks.json"
 
 [[mixins]]
+config = "mixin.nostalgic_tweaks-access.json"
+
+[[mixins]]
 config = "mixin.nostalgic_tweaks-duck.json"
 
 [[mixins]]

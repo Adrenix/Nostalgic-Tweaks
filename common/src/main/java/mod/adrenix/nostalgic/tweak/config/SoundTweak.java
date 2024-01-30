@@ -2,10 +2,17 @@ package mod.adrenix.nostalgic.tweak.config;
 
 import mod.adrenix.nostalgic.tweak.container.group.SoundGroup;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
+import mod.adrenix.nostalgic.tweak.factory.TweakStringSet;
+import mod.adrenix.nostalgic.tweak.listing.StringSet;
 
 // @formatter:off
 public interface SoundTweak
 {
+    // Disabled
+
+    TweakStringSet DISABLED_POSITIONED_SOUNDS = TweakStringSet.client(new StringSet(), SoundGroup.DISABLED).newForUpdate().build();
+    TweakStringSet DISABLED_GLOBAL_SOUNDS = TweakStringSet.client(new StringSet(), SoundGroup.DISABLED).newForUpdate().build();
+
     // Ambience
 
     TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
@@ -26,10 +33,14 @@ public interface SoundTweak
     TweakFlag DISABLE_LAVA_AMBIENCE = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).newForUpdate().build();
     TweakFlag DISABLE_LAVA_POP = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).newForUpdate().build();
 
+    // Furnace Block
+
+    TweakFlag DISABLE_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).newForUpdate().build();
+    TweakFlag DISABLE_BLAST_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).newForUpdate().build();
+
     // Blocks
 
     TweakFlag DISABLE_GROWTH = TweakFlag.client(true, SoundGroup.BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK).newForUpdate().build();
     TweakFlag DISABLE_DOOR_PLACE = TweakFlag.client(true, SoundGroup.BLOCK).build();
 
     // Damage

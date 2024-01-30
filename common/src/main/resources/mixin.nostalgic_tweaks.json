@@ -14,7 +14,17 @@
     "candy.old_chest_block.ItemBlockRenderTypesMixin",
     "candy.old_chest_block.ModelBakeryMixin",
     "candy.old_missing_texture.MissingTextureAtlasSpriteMixin",
-    "candy.uncap_title_fps.MinecraftMixin"
+    "candy.uncap_title_fps.MinecraftMixin",
+    "sound.damage_sound.LivingEntityMixin",
+    "sound.damage_sound.PlayerMixin",
+    "sound.disabled_sound.SoundEngineMixin",
+    "sound.entity_step.EntityMixin",
+    "sound.experience_level.PlayerMixin",
+    "sound.nether_ambience.BiomeAmbientSoundsHandlerMixin",
+    "sound.old_bed.BlockMixin",
+    "sound.position_sound.ClientLevelMixin",
+    "sound.water_ambience.LocalPlayerMixin",
+    "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin"
   ],
   "mixins": [
     "candy.old_chest_block.BlockStateBaseMixin"

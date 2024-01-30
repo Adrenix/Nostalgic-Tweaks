@@ -7,6 +7,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.ReloadListenerRegistry;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
+import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
@@ -33,6 +34,9 @@ public abstract class ArchClientEvents
     {
         // Registers the mod's keyboard mappings
         ClientKeyMapping.register();
+
+        // Registers the mod's client sounds
+        ClientSound.register();
 
         // Registers the mod's custom splashes
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, HomeSplash.getInstance());

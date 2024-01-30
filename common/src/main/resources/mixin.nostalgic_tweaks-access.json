@@ -1,0 +1,8 @@
+{
+  "package": "mod.adrenix.nostalgic.mixin.access",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "mixins": [
+    "EntityAccessor"
+  ]
+}

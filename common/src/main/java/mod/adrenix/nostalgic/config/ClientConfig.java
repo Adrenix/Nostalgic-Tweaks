@@ -97,6 +97,11 @@ public class ClientConfig implements ConfigMeta
 
     public static class Sound
     {
+        // Disabled
+
+        public StringSet disabledPositionedSounds = SoundTweak.DISABLED_POSITIONED_SOUNDS.fromJson("disabledPositionedSounds");
+        public StringSet disabledGlobalSounds = SoundTweak.DISABLED_GLOBAL_SOUNDS.fromJson("disabledGlobalSounds");
+
         // Ambient
 
         public boolean disableNetherAmbience = SoundTweak.DISABLE_NETHER_AMBIENCE.fromJson("disableNetherAmbience");
@@ -117,10 +122,14 @@ public class ClientConfig implements ConfigMeta
         public boolean disableLavaAmbience = SoundTweak.DISABLE_LAVA_AMBIENCE.fromJson("disableLavaAmbience");
         public boolean disableLavaPop = SoundTweak.DISABLE_LAVA_POP.fromJson("disableLavaPop");
 
+        // Furnace Block
+
+        public boolean disableFurnace = SoundTweak.DISABLE_FURNACE.fromJson("disableFurnace");
+        public boolean disableBlastFurnace = SoundTweak.DISABLE_BLAST_FURNACE.fromJson("disableBlastFurnace");
+
         // Blocks
 
         public boolean disableGrowth = SoundTweak.DISABLE_GROWTH.fromJson("disableGrowth");
-        public boolean disableFurnace = SoundTweak.DISABLE_FURNACE.fromJson("disableFurnace");
         public boolean disableDoorPlace = SoundTweak.DISABLE_DOOR_PLACE.fromJson("disableDoorPlace");
 
         // Damage
