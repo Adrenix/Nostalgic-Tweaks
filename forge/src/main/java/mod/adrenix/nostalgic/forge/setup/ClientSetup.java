@@ -1,13 +1,10 @@
-package mod.adrenix.nostalgic.forge.register;
+package mod.adrenix.nostalgic.forge.setup;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.event.ArchClientEvents;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeScreen;
-import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -35,15 +32,6 @@ public abstract class ClientSetup
 
         // Define mod screen
         GuiUtil.modScreen = ModListScreen::new;
-
-        // Mod tracking
-        ModTracker.init(ModList.get()::isLoaded);
-
-        // Initialize client
-        NostalgicTweaks.initClient();
-
-        // Register Architectury events
-        ArchClientEvents.register();
     }
 
     /**

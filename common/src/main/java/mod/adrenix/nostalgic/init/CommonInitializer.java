@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.common;
+package mod.adrenix.nostalgic.init;
 
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
@@ -13,25 +13,16 @@ import mod.adrenix.nostalgic.util.server.ServerTimer;
 import mod.adrenix.nostalgic.util.server.world.ServerPlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
 
-/**
- * This class contains a registration helper method that will be used by the common initializers in Fabric and Forge.
- * The Architectury API provides the events used in this class.
- */
-public class ArchCommonEvents
+abstract class CommonInitializer
 {
     /**
-     * Registers common Architectury events.
+     * Registers common events.
      */
-    public static void register()
+    static void register()
     {
-        // Defines the Minecraft server instance in the mod's main class
         LifecycleEvent.SERVER_BEFORE_START.register(NostalgicTweaks::setServer);
-
-        // Handles ticking of server-side timer instances
+        PlayerEvent.PLAYER_JOIN.register(CommonInitializer::onPlayerJoin);
         TickEvent.SERVER_PRE.register(server -> ServerTimer.getInstance().onTick());
-
-        // Instructions for the server to run when a player joins
-        PlayerEvent.PLAYER_JOIN.register(ArchCommonEvents::onPlayerJoin);
     }
 
     /**

@@ -5,11 +5,14 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientScreenInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
-import mod.adrenix.nostalgic.client.event.ClientEventHelper;
+import mod.adrenix.nostalgic.client.gui.screen.home.HomeScreen;
 import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
 
 import java.util.Optional;
 
@@ -58,17 +61,52 @@ public abstract class ClientKeyMapping
             Optional<KeyMapping> mapping = KeyboardUtil.find(Lang.Binding.OPEN_CONFIG);
 
             if (mapping.isPresent() && mapping.get().matches(keyCode, scanCode))
-                ClientEventHelper.gotoSettingsIfPossible(minecraft);
+                gotoSettingsIfPossible(minecraft);
 
             return EventResult.pass();
         });
 
         ClientTickEvent.CLIENT_POST.register(minecraft -> {
             while (CONFIG_KEY.consumeClick())
-                ClientEventHelper.gotoSettingsIfPossible(minecraft);
+                gotoSettingsIfPossible(minecraft);
 
             while (FOG_KEY.consumeClick())
-                ClientEventHelper.cycleRenderDistance(minecraft);
+                cycleRenderDistance(minecraft);
         });
+    }
+
+    /**
+     * This method provides instructions for the mod to perform after the settings screen mapping key is pressed.
+     */
+    private static void gotoSettingsIfPossible(Minecraft minecraft)
+    {
+        if (minecraft.screen != null && ClassUtil.isNotInstanceOf(minecraft.screen, TitleScreen.class))
+            return;
+
+        minecraft.setScreen(new HomeScreen(minecraft.screen, true));
+    }
+
+    /**
+     * This method cycles the game's render distance after the toggle fog mapping key is pressed. The player must be in
+     * a level for a cycle to take effect.
+     */
+    private static void cycleRenderDistance(Minecraft minecraft)
+    {
+        if (minecraft.level != null)
+        {
+            int distance = minecraft.options.renderDistance().get();
+
+            if (distance >= 16)
+                minecraft.options.renderDistance().set(8);
+            else if (distance >= 8)
+                minecraft.options.renderDistance().set(4);
+            else if (distance >= 4)
+                minecraft.options.renderDistance().set(2);
+            else if (distance >= 2)
+                minecraft.options.renderDistance().set(16);
+
+            minecraft.levelRenderer.needsUpdate();
+            minecraft.options.save();
+        }
     }
 }

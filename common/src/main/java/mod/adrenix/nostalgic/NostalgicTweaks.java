@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
+import mod.adrenix.nostalgic.init.NostalgicInitializer;
 import mod.adrenix.nostalgic.network.ModConnection;
-import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
@@ -16,9 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Optional;
 
-public class NostalgicTweaks
+public abstract class NostalgicTweaks
 {
     /* - Identifiers */
 
@@ -89,7 +90,7 @@ public class NostalgicTweaks
      */
     public static String getLoader()
     {
-        return isForge() ? "FORGE" : "FABRIC";
+        return isFabric() ? "FABRIC" : "FORGE";
     }
 
     /* - Version */
@@ -212,7 +213,7 @@ public class NostalgicTweaks
     /**
      * Get the current connection data between a server running Nostalgic Tweaks and the client. If the user is playing
      * in singleplayer, there will be data stored here since the session could possibly move to LAN. It is up to the
-     * invoker to check for a singleplayer only world. If the user is not playing on a server running Nostalgic Tweaks,
+     * invoker to check for a singleplayer-only world. If the user is not playing on a server running Nostalgic Tweaks,
      * then no data will be stored.
      *
      * @return An optional nostalgic connection instance.
@@ -276,45 +277,44 @@ public class NostalgicTweaks
 
     /* - Initialization */
 
-    private static boolean initialized = false;
+    private static boolean modInitialized = false;
 
     /**
      * @return Check whether a mixin is getting mod data too early.
      */
     public static boolean isMixinEarly()
     {
-        return !initialized;
+        return !modInitialized;
     }
 
     /**
-     * Instructions for when the mod is initialized by a logical server.
+     * Initializes the mod for both the client and server.
      */
-    public static void initServer()
+    public static void initialize()
     {
-        PacketRegistry.register();
-        ConfigCache.initServer();
+        NostalgicInitializer.register();
 
-        initialized = true;
+        if (isServer())
+        {
+            ConfigCache.initServer();
 
-        LOGGER.warn("Nostalgic Tweaks server support is still in-development");
-        LOGGER.warn("Please report any problems you encounter");
-        LOGGER.info("Loading mod in [%s] server environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
-    }
+            LOGGER.warn("Nostalgic Tweaks server support is still in-development");
+            LOGGER.warn("Please report any problems you encounter");
+        }
+        else
+        {
+            ConfigCache.initClient();
 
-    /**
-     * Instructions for when the mod is initialized by a logical client.
-     */
-    public static void initClient()
-    {
-        PacketRegistry.register();
-        ConfigCache.initClient();
+            if (ModTracker.OPTIFINE.isInstalled())
+                LOGGER.warn("Optifine is installed - some tweaks may not work as intended");
+        }
 
-        initialized = true;
+        modInitialized = true;
 
-        LOGGER.info("Loading mod in [%s] client environment", LogColor.apply(LogColor.LIGHT_PURPLE, getLoader()));
+        String loader = LogColor.apply(LogColor.LIGHT_PURPLE, getLoader());
+        String environment = Platform.getEnv().toString().toLowerCase(Locale.ROOT);
 
-        if (ModTracker.OPTIFINE.isInstalled())
-            LOGGER.warn("Optifine is installed - some tweaks may not work as intended");
+        LOGGER.info("Loading mod in [%s] %s environment", loader, environment);
     }
 
     /* - Debugging */

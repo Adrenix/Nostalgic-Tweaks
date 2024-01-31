@@ -27,12 +27,6 @@
     "main": [
       "mod.adrenix.nostalgic.fabric.NostalgicFabric"
     ],
-    "client": [
-      "mod.adrenix.nostalgic.fabric.register.ClientInitializer"
-    ],
-    "server": [
-      "mod.adrenix.nostalgic.fabric.register.ServerInitializer"
-    ],
     "modmenu": [
       "mod.adrenix.nostalgic.fabric.client.ModMenuIntegration"
     ]

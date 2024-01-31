@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.forge;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.ModTracker;
 import net.neoforged.fml.IExtensionPoint;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
@@ -32,7 +34,7 @@ public class NostalgicForge
         return new IExtensionPoint.DisplayTest(NostalgicTweaks::getProtocol, NostalgicForge::isProtocolMatched);
     }
 
-    /* Constructor */
+    /* Mod Constructor */
 
     /**
      * Setup for the mod for both the client and server. Important registration and main class fields are defined here.
@@ -42,5 +44,11 @@ public class NostalgicForge
         // Let the connection be rejected by the server if there is a protocol mismatch
         ModLoadingContext.get()
             .registerExtensionPoint(IExtensionPoint.DisplayTest.class, NostalgicForge::getDisplayTest);
+
+        // Mod tracking
+        ModTracker.init(ModList.get()::isLoaded);
+
+        // Initialize mod
+        NostalgicTweaks.initialize();
     }
 }
