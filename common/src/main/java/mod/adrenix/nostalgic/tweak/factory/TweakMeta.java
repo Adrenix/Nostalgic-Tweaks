@@ -21,14 +21,14 @@ import java.util.function.Consumer;
 public interface TweakMeta<T>
 {
     /**
-     * Set the config json identifier for a tweak and retrieve its default value. This method adds tweaks into the
-     * {@link TweakPool} cache map. Additionally, this must be used in the config structure classes so that changes in
-     * the tweak's json name are reflected into the tweak cache map.
+     * Register a tweak by defining its config json identifier. This method will add the tweak into the mod's
+     * {@link TweakPool}. Additionally, this must be used in the config structure classes so that changes in the tweak's
+     * json identifier are reflected onto the {@link TweakPool}.
      *
      * @param jsonId The config json key that points to this tweak.
      * @return The tweak's default value.
      */
-    T fromJson(String jsonId);
+    T register(String jsonId);
 
     /**
      * The value that is returned will be a value that relates to the current game context. For example, if this is a

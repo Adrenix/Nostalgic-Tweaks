@@ -16,15 +16,14 @@ public abstract class TweakPool
     /* Cache Map */
 
     /**
-     * This map contains a list of all tweaks that is called from the {@link Tweak#fromJson(String)} method. The purpose
-     * of this hash map is for obtaining tweaks with only cache map keys. This should only be used in situations where
-     * tweaks aren't specific. Such as sending and receiving tweaks over the network. For example, the packet system
-     * must use this cache map to determine what tweak was just sent over the wire. Both the client and server have
-     * access to this map, but the server will only have access to server side tweaks since it only loads server side
-     * tweaks.
+     * This map contains a list of all tweaks that were made from the {@link Tweak#register(String)} method. The purpose
+     * of this map is to obtain tweaks using a config json path identifier. This should only be used in situations where
+     * tweaks aren't available. For example, the packet system must use this pool to determine what tweak to change by
+     * using a config json path. Both the client and server have access to this map, but the server will only have
+     * access to server side tweaks since it only registers server side tweaks.
      *
      * <p><br>
-     * The keys defined in this map are created using {@link Tweak#getJsonPathId()}.
+     * To get a tweak's config json path, use {@link Tweak#getJsonPathId()}.
      */
     static final LinkedHashMap<String, Tweak<?>> TWEAK_MAP = new LinkedHashMap<>();
 
@@ -33,7 +32,7 @@ public abstract class TweakPool
      * mod's JSON config tree. These keys will be in the format of {@code categoryId.tweakId}. For example,
      * {@code gameplay.oldFire}).
      *
-     * @param poolId A config json identifier that points to a tweak.
+     * @param poolId A config json path identifier that points to a tweak.
      * @return An {@link Optional} {@link Tweak}.
      * @see Tweak#getJsonPathId()
      */

@@ -108,7 +108,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     }
 
     @Override
-    public T fromJson(String jsonId)
+    public T register(String jsonId)
     {
         this.setJsonId(jsonId);
         TweakPool.TWEAK_MAP.putIfAbsent(this.getJsonPathId(), this);

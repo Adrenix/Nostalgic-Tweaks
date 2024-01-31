@@ -34,28 +34,28 @@ public class ServerConfig implements ConfigMeta
         new TweakValidator(true).scan(ServerConfig.class);
     }
 
-    public boolean serverSideOnly = ModTweak.SERVER_SIDE_ONLY.fromJson("serverSideOnly");
-    public boolean serverLogging = ModTweak.SERVER_LOGGING.fromJson("serverLogging");
-    public boolean serverDebugMode = ModTweak.SERVER_DEBUG.fromJson("serverDebugMode");
+    public boolean serverSideOnly = ModTweak.SERVER_SIDE_ONLY.register("serverSideOnly");
+    public boolean serverLogging = ModTweak.SERVER_LOGGING.register("serverLogging");
+    public boolean serverDebugMode = ModTweak.SERVER_DEBUG.register("serverDebugMode");
 
     public static class Mod
     {
         // Config Management
 
-        public int numberOfBackups = ModTweak.NUMBER_OF_BACKUPS.fromJson("numberOfBackups");
+        public int numberOfBackups = ModTweak.NUMBER_OF_BACKUPS.register("numberOfBackups");
     }
 
     public Mod mod = new Mod();
 
     public static class EyeCandy
     {
-        public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.fromJson("oldCreativeHotbar");
-        public int itemMergeLimit = CandyTweak.ITEM_MERGE_LIMIT.fromJson("itemMergeLimit");
-        public boolean oldItemMerging = CandyTweak.OLD_ITEM_MERGING.fromJson("oldItemMerging");
-        public boolean oldSquareBorder = CandyTweak.OLD_SQUARE_BORDER.fromJson("oldSquareBorder");
-        public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.fromJson("oldClassicLighting");
-        public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.fromJson("applyChestVoxel");
-        public boolean debugEntityId = CandyTweak.DEBUG_ENTITY_ID.fromJson("debugEntityId");
+        public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
+        public int itemMergeLimit = CandyTweak.ITEM_MERGE_LIMIT.register("itemMergeLimit");
+        public boolean oldItemMerging = CandyTweak.OLD_ITEM_MERGING.register("oldItemMerging");
+        public boolean oldSquareBorder = CandyTweak.OLD_SQUARE_BORDER.register("oldSquareBorder");
+        public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.register("oldClassicLighting");
+        public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.register("applyChestVoxel");
+        public boolean debugEntityId = CandyTweak.DEBUG_ENTITY_ID.register("debugEntityId");
     }
 
     public EyeCandy eyeCandy = new EyeCandy();
@@ -64,78 +64,78 @@ public class ServerConfig implements ConfigMeta
     {
         // Bugs
 
-        public boolean oldLadderGap = GameplayTweak.OLD_LADDER_GAP.fromJson("oldLadderGap");
-        public boolean oldSquidMilking = GameplayTweak.OLD_SQUID_MILKING.fromJson("oldSquidMilking");
+        public boolean oldLadderGap = GameplayTweak.OLD_LADDER_GAP.register("oldLadderGap");
+        public boolean oldSquidMilking = GameplayTweak.OLD_SQUID_MILKING.register("oldSquidMilking");
 
         // Mobs
 
-        public int animalSpawnCap = GameplayTweak.ANIMAL_SPAWN_CAP.fromJson("animalSpawnCap");
-        public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.fromJson("disableAnimalPanic");
-        public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.fromJson("disableSheepEatGrass");
-        public boolean oldAnimalSpawning = GameplayTweak.OLD_ANIMAL_SPAWNING.fromJson("oldAnimalSpawning");
-        public boolean oldSheepPunching = GameplayTweak.OLD_SHEEP_PUNCHING.fromJson("oldSheepPunching");
-        public boolean oneWoolPunch = GameplayTweak.ONE_WOOL_PUNCH.fromJson("oneWoolPunch");
+        public int animalSpawnCap = GameplayTweak.ANIMAL_SPAWN_CAP.register("animalSpawnCap");
+        public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.register("disableAnimalPanic");
+        public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.register("disableSheepEatGrass");
+        public boolean oldAnimalSpawning = GameplayTweak.OLD_ANIMAL_SPAWNING.register("oldAnimalSpawning");
+        public boolean oldSheepPunching = GameplayTweak.OLD_SHEEP_PUNCHING.register("oldSheepPunching");
+        public boolean oneWoolPunch = GameplayTweak.ONE_WOOL_PUNCH.register("oneWoolPunch");
 
         // Mob Drops
 
-        public boolean oldZombiePigmenDrops = GameplayTweak.OLD_ZOMBIE_PIGMEN_DROPS.fromJson("oldZombiePigmenDrops");
-        public boolean oldSkeletonDrops = GameplayTweak.OLD_SKELETON_DROPS.fromJson("oldSkeletonDrops");
-        public boolean oldChickenDrops = GameplayTweak.OLD_CHICKEN_DROPS.fromJson("oldChickenDrops");
-        public boolean oldZombieDrops = GameplayTweak.OLD_ZOMBIE_DROPS.fromJson("oldZombieDrops");
-        public boolean oldSpiderDrops = GameplayTweak.OLD_SPIDER_DROPS.fromJson("oldSpiderDrops");
-        public boolean oldSheepDrops = GameplayTweak.OLD_SHEEP_DROPS.fromJson("oldSheepDrops");
-        public boolean oldCowDrops = GameplayTweak.OLD_COW_DROPS.fromJson("oldCowDrops");
-        public boolean oldPigDrops = GameplayTweak.OLD_PIG_DROPS.fromJson("oldPigDrops");
+        public boolean oldZombiePigmenDrops = GameplayTweak.OLD_ZOMBIE_PIGMEN_DROPS.register("oldZombiePigmenDrops");
+        public boolean oldSkeletonDrops = GameplayTweak.OLD_SKELETON_DROPS.register("oldSkeletonDrops");
+        public boolean oldChickenDrops = GameplayTweak.OLD_CHICKEN_DROPS.register("oldChickenDrops");
+        public boolean oldZombieDrops = GameplayTweak.OLD_ZOMBIE_DROPS.register("oldZombieDrops");
+        public boolean oldSpiderDrops = GameplayTweak.OLD_SPIDER_DROPS.register("oldSpiderDrops");
+        public boolean oldSheepDrops = GameplayTweak.OLD_SHEEP_DROPS.register("oldSheepDrops");
+        public boolean oldCowDrops = GameplayTweak.OLD_COW_DROPS.register("oldCowDrops");
+        public boolean oldPigDrops = GameplayTweak.OLD_PIG_DROPS.register("oldPigDrops");
 
-        public boolean oldStyleZombieVillagerDrops = GameplayTweak.OLD_STYLE_ZOMBIE_VILLAGER_DROPS.fromJson("oldStyleZombieVillagerDrops");
-        public boolean oldStyleCaveSpiderDrops = GameplayTweak.OLD_STYLE_CAVE_SPIDER_DROPS.fromJson("oldStyleCaveSpiderDrops");
-        public boolean oldStyleMooshroomDrops = GameplayTweak.OLD_STYLE_MOOSHROOM_DROPS.fromJson("oldStyleMooshroomDrops");
-        public boolean oldStyleDrownedDrops = GameplayTweak.OLD_STYLE_DROWNED_DROPS.fromJson("oldStyleDrownedDrops");
-        public boolean oldStyleRabbitDrops = GameplayTweak.OLD_STYLE_RABBIT_DROPS.fromJson("oldStyleRabbitDrops");
-        public boolean oldStyleStrayDrops = GameplayTweak.OLD_STYLE_STRAY_DROPS.fromJson("oldStyleStrayDrops");
-        public boolean oldStyleHuskDrops = GameplayTweak.OLD_STYLE_HUSK_DROPS.fromJson("oldStyleHuskDrops");
+        public boolean oldStyleZombieVillagerDrops = GameplayTweak.OLD_STYLE_ZOMBIE_VILLAGER_DROPS.register("oldStyleZombieVillagerDrops");
+        public boolean oldStyleCaveSpiderDrops = GameplayTweak.OLD_STYLE_CAVE_SPIDER_DROPS.register("oldStyleCaveSpiderDrops");
+        public boolean oldStyleMooshroomDrops = GameplayTweak.OLD_STYLE_MOOSHROOM_DROPS.register("oldStyleMooshroomDrops");
+        public boolean oldStyleDrownedDrops = GameplayTweak.OLD_STYLE_DROWNED_DROPS.register("oldStyleDrownedDrops");
+        public boolean oldStyleRabbitDrops = GameplayTweak.OLD_STYLE_RABBIT_DROPS.register("oldStyleRabbitDrops");
+        public boolean oldStyleStrayDrops = GameplayTweak.OLD_STYLE_STRAY_DROPS.register("oldStyleStrayDrops");
+        public boolean oldStyleHuskDrops = GameplayTweak.OLD_STYLE_HUSK_DROPS.register("oldStyleHuskDrops");
 
         // Combat
 
-        public int arrowSpeed = GameplayTweak.ARROW_SPEED.fromJson("arrowSpeed");
-        public boolean instantBow = GameplayTweak.INSTANT_BOW.fromJson("instantBow");
-        public boolean invincibleBow = GameplayTweak.INVINCIBLE_BOW.fromJson("invincibleBow");
-        public boolean disableCooldown = GameplayTweak.DISABLE_COOLDOWN.fromJson("disableCooldown");
-        public boolean disableMissTimer = GameplayTweak.DISABLE_MISS_TIMER.fromJson("disableMissTimer");
-        public boolean disableCriticalHit = GameplayTweak.DISABLE_CRITICAL_HIT.fromJson("disableCriticalHit");
-        public boolean disableSweep = GameplayTweak.DISABLE_SWEEP.fromJson("disableSweep");
-        public boolean oldDamageValues = GameplayTweak.OLD_DAMAGE_VALUES.fromJson("oldDamageValues");
+        public int arrowSpeed = GameplayTweak.ARROW_SPEED.register("arrowSpeed");
+        public boolean instantBow = GameplayTweak.INSTANT_BOW.register("instantBow");
+        public boolean invincibleBow = GameplayTweak.INVINCIBLE_BOW.register("invincibleBow");
+        public boolean disableCooldown = GameplayTweak.DISABLE_COOLDOWN.register("disableCooldown");
+        public boolean disableMissTimer = GameplayTweak.DISABLE_MISS_TIMER.register("disableMissTimer");
+        public boolean disableCriticalHit = GameplayTweak.DISABLE_CRITICAL_HIT.register("disableCriticalHit");
+        public boolean disableSweep = GameplayTweak.DISABLE_SWEEP.register("disableSweep");
+        public boolean oldDamageValues = GameplayTweak.OLD_DAMAGE_VALUES.register("oldDamageValues");
 
         // Experience
 
-        public boolean disableOrbSpawn = GameplayTweak.DISABLE_ORB_SPAWN.fromJson("disableOrbSpawn");
-        public boolean disableAnvil = GameplayTweak.DISABLE_ANVIL.fromJson("disableAnvil");
-        public boolean disableEnchantTable = GameplayTweak.DISABLE_ENCHANT_TABLE.fromJson("disableEnchantTable");
+        public boolean disableOrbSpawn = GameplayTweak.DISABLE_ORB_SPAWN.register("disableOrbSpawn");
+        public boolean disableAnvil = GameplayTweak.DISABLE_ANVIL.register("disableAnvil");
+        public boolean disableEnchantTable = GameplayTweak.DISABLE_ENCHANT_TABLE.register("disableEnchantTable");
 
         // Mechanics
 
-        public boolean oldFire = GameplayTweak.OLD_FIRE.fromJson("oldFire");
-        public boolean instantAir = GameplayTweak.INSTANT_AIR.fromJson("instantAir");
-        public boolean infiniteBurn = GameplayTweak.INFINITE_BURN.fromJson("infiniteBurn");
-        public boolean leftClickDoor = GameplayTweak.LEFT_CLICK_DOOR.fromJson("leftClickDoor");
-        public boolean leftClickLever = GameplayTweak.LEFT_CLICK_LEVER.fromJson("leftClickLever");
-        public boolean leftClickButton = GameplayTweak.LEFT_CLICK_BUTTON.fromJson("leftClickButton");
-        public boolean instantBonemeal = GameplayTweak.INSTANT_BONEMEAL.fromJson("instantBonemeal");
-        public boolean tilledGrassSeeds = GameplayTweak.TILLED_GRASS_SEEDS.fromJson("tilledGrassSeeds");
-        public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.fromJson("disableBedBounce");
-        public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.fromJson("disableSprint");
-        public boolean disableSwim = GameplayTweak.DISABLE_SWIM.fromJson("disableSwim");
-        public boolean cartBoosting = GameplayTweak.CART_BOOSTING.fromJson("cartBoosting");
+        public boolean oldFire = GameplayTweak.OLD_FIRE.register("oldFire");
+        public boolean instantAir = GameplayTweak.INSTANT_AIR.register("instantAir");
+        public boolean infiniteBurn = GameplayTweak.INFINITE_BURN.register("infiniteBurn");
+        public boolean leftClickDoor = GameplayTweak.LEFT_CLICK_DOOR.register("leftClickDoor");
+        public boolean leftClickLever = GameplayTweak.LEFT_CLICK_LEVER.register("leftClickLever");
+        public boolean leftClickButton = GameplayTweak.LEFT_CLICK_BUTTON.register("leftClickButton");
+        public boolean instantBonemeal = GameplayTweak.INSTANT_BONEMEAL.register("instantBonemeal");
+        public boolean tilledGrassSeeds = GameplayTweak.TILLED_GRASS_SEEDS.register("tilledGrassSeeds");
+        public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
+        public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.register("disableSprint");
+        public boolean disableSwim = GameplayTweak.DISABLE_SWIM.register("disableSwim");
+        public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");
 
         // Food
 
-        public boolean disableHunger = GameplayTweak.DISABLE_HUNGER.fromJson("disableHunger");
-        public boolean instantEat = GameplayTweak.INSTANT_EAT.fromJson("instantEat");
-        public boolean oldFoodStacking = GameplayTweak.OLD_FOOD_STACKING.fromJson("oldFoodStacking");
+        public boolean disableHunger = GameplayTweak.DISABLE_HUNGER.register("disableHunger");
+        public boolean instantEat = GameplayTweak.INSTANT_EAT.register("instantEat");
+        public boolean oldFoodStacking = GameplayTweak.OLD_FOOD_STACKING.register("oldFoodStacking");
 
-        public ItemMap<Integer> customFoodHealth = GameplayTweak.CUSTOM_FOOD_HEALTH.fromJson("customFoodHealth");
-        public ItemMap<Integer> customFoodStacking = GameplayTweak.CUSTOM_FOOD_STACKING.fromJson("customFoodStacking");
-        public ItemMap<Integer> customItemStacking = GameplayTweak.CUSTOM_ITEM_STACKING.fromJson("customItemStacking");
+        public ItemMap<Integer> customFoodHealth = GameplayTweak.CUSTOM_FOOD_HEALTH.register("customFoodHealth");
+        public ItemMap<Integer> customFoodStacking = GameplayTweak.CUSTOM_FOOD_STACKING.register("customFoodStacking");
+        public ItemMap<Integer> customItemStacking = GameplayTweak.CUSTOM_ITEM_STACKING.register("customItemStacking");
     }
 
     public Gameplay gameplay = new Gameplay();
@@ -144,8 +144,8 @@ public class ServerConfig implements ConfigMeta
     {
         // Player
 
-        public boolean oldCreativeCrouch = AnimationTweak.OLD_CREATIVE_CROUCH.fromJson("oldCreativeCrouch");
-        public boolean oldDirectionalDamage = AnimationTweak.OLD_DIRECTIONAL_DAMAGE.fromJson("oldDirectionalDamage");
+        public boolean oldCreativeCrouch = AnimationTweak.OLD_CREATIVE_CROUCH.register("oldCreativeCrouch");
+        public boolean oldDirectionalDamage = AnimationTweak.OLD_DIRECTIONAL_DAMAGE.register("oldDirectionalDamage");
     }
 
     public Animation animation = new Animation();
