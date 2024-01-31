@@ -50,19 +50,19 @@ public abstract class AfterConfigSave
     }
 
     /**
-     * @return Whether the client level chunks are going to reload after {@link #run()} is executed.
-     */
-    public static boolean areChunksGoingToReload()
-    {
-        return reloadChunks;
-    }
-
-    /**
      * Reload the client's resources after reload instructions have executed.
      */
     public static void setResourcesToReload()
     {
         reloadResources = true;
+    }
+
+    /**
+     * @return Whether the client's resources are going to reload after {@link #run()} is executed.
+     */
+    public static boolean areResourcesGoingToReload()
+    {
+        return reloadResources;
     }
 
     /**

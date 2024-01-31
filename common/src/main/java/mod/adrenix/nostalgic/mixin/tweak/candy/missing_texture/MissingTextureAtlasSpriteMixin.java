@@ -101,7 +101,7 @@ public abstract class MissingTextureAtlasSpriteMixin
     @Unique
     private static void nt_missing_texture$clearMissingTexture()
     {
-        if (AfterConfigSave.areChunksGoingToReload())
+        if (AfterConfigSave.areResourcesGoingToReload())
             missingTexture = null;
     }
 
