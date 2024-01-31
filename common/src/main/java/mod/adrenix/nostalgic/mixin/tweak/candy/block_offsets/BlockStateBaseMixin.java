@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.disabled_block_offsets;
+package mod.adrenix.nostalgic.mixin.tweak.candy.block_offsets;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.NostalgicTweaks;
@@ -32,7 +32,7 @@ public abstract class BlockStateBaseMixin
         method = "getOffset",
         at = @At("RETURN")
     )
-    private Vec3 NT$onDisableBlockOffsets(Vec3 offset)
+    private Vec3 nt_block_offsets$modifyOffset(Vec3 offset)
     {
         if (NostalgicTweaks.isMixinEarly() || NostalgicTweaks.isServer() || !this.hasOffsetFunction())
             return offset;

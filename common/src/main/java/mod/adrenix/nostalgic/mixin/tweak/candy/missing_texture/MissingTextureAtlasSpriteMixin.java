@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_missing_texture;
+package mod.adrenix.nostalgic.mixin.tweak.candy.missing_texture;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -43,23 +43,23 @@ public abstract class MissingTextureAtlasSpriteMixin
         method = "generateMissingImage",
         at = @At("RETURN")
     )
-    private static NativeImage NT$setOldMissingTexture(NativeImage vanilla)
+    private static NativeImage nt_missing_texture$modifyMissingImage(NativeImage nativeImage)
     {
         if (CandyTweak.OLD_MISSING_TEXTURE.get() == MissingTexture.MODERN)
-            return vanilla;
+            return nativeImage;
 
         Optional<NativeImage> image = Optional.empty();
 
         try
         {
-            image = NT$getMissingTexture();
+            image = nt_missing_texture$get();
         }
         catch (Exception exception)
         {
             NostalgicTweaks.LOGGER.error("Could not generate missing texture\n%s", exception);
         }
 
-        return image.orElse(vanilla);
+        return image.orElse(nativeImage);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class MissingTextureAtlasSpriteMixin
             args = "intValue=16"
         )
     )
-    private static int NT$onSetMissingTextureSize(int vanilla)
+    private static int nt_missing_texture$modifyImageDimension(int vanilla)
     {
         return switch (CandyTweak.OLD_MISSING_TEXTURE.get())
         {
@@ -89,9 +89,9 @@ public abstract class MissingTextureAtlasSpriteMixin
         method = "<clinit>",
         at = @At("TAIL")
     )
-    private static void NT$setMissingTextureSaveRunnable(CallbackInfo callback)
+    private static void nt_missing_texture$addOnSave(CallbackInfo callback)
     {
-        RunUtil.ON_SAVE_RUNNABLES.add(MissingTextureAtlasSpriteMixin::NT$setMissingTextureToNull);
+        RunUtil.ON_SAVE_RUNNABLES.add(MissingTextureAtlasSpriteMixin::nt_missing_texture$clearMissingTexture);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      * missing texture tweak is made.
      */
     @Unique
-    private static void NT$setMissingTextureToNull()
+    private static void nt_missing_texture$clearMissingTexture()
     {
         missingTexture = null;
     }
@@ -111,7 +111,7 @@ public abstract class MissingTextureAtlasSpriteMixin
      * @throws IOException If the old missing texture location can't be read.
      */
     @Unique
-    private static Optional<NativeImage> NT$getMissingTexture() throws IOException
+    private static Optional<NativeImage> nt_missing_texture$get() throws IOException
     {
         String path = switch (CandyTweak.OLD_MISSING_TEXTURE.get())
         {

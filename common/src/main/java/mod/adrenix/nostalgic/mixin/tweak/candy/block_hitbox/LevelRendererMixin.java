@@ -39,7 +39,7 @@ public abstract class LevelRendererMixin
     /* Injected Fields */
 
     @Shadow @Nullable private ClientLevel level;
-    @Unique @Nullable private Runnable NT$renderOverlay;
+    @Unique @Nullable private Runnable nt$renderOverlay;
 
     /* Injected Methods */
 
@@ -55,7 +55,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderShape(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/phys/shapes/VoxelShape;DDDFFFF)V"
         )
     )
-    private void NT$setCustomBlockOutline(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state)
+    private void nt_block_hitbox$wrapRenderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state)
     {
         boolean isEnabled = ModTweak.ENABLED.get();
         VoxelShape hitbox = HitboxMixinHelper.getShape(voxelShape, state.getBlock());
@@ -100,7 +100,7 @@ public abstract class LevelRendererMixin
             if (Minecraft.useShaderTransparency())
                 HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
             else
-                this.NT$renderOverlay = () -> HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
+                this.nt$renderOverlay = () -> HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
         }
     }
 
@@ -117,10 +117,10 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
         )
     )
-    private void NT$renderHitboxOverlayFirst(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderOverlayFirst(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        if (this.NT$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.FIRST)
-            this.NT$renderOverlay.run();
+        if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.FIRST)
+            this.nt$renderOverlay.run();
     }
 
     /**
@@ -135,10 +135,10 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
         )
     )
-    private void NT$renderHitboxOverlayLast(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderOverlayLast(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        if (this.NT$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.LAST)
-            this.NT$renderOverlay.run();
+        if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.LAST)
+            this.nt$renderOverlay.run();
     }
 
     /**
@@ -148,8 +148,8 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("RETURN")
     )
-    private void NT$clearRenderedOverlay(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$clearRenderedOverlay(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
     {
-        this.NT$renderOverlay = null;
+        this.nt$renderOverlay = null;
     }
 }

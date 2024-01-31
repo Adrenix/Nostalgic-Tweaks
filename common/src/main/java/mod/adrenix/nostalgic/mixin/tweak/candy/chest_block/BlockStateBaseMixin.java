@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.NostalgicTweaks;
@@ -30,9 +30,9 @@ public abstract class BlockStateBaseMixin
         method = "getShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;",
         at = @At("RETURN")
     )
-    private VoxelShape NT$setChestShape(VoxelShape voxelShape)
+    private VoxelShape nt_chest_block$modifyShape(VoxelShape voxelShape)
     {
-        if (NostalgicTweaks.isMixinEarly() || NostalgicTweaks.isServer())
+        if (NostalgicTweaks.isMixinEarly())
             return voxelShape;
 
         if (CandyTweak.APPLY_CHEST_VOXEL.get() && ChestMixinHelper.isOld(this.getBlock()))

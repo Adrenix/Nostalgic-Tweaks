@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -23,7 +23,7 @@ public abstract class ModelBakeryMixin
             target = "Lnet/minecraft/resources/FileToIdConverter;idToFile(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"
         )
     )
-    private ResourceLocation NT$setChestBlockState(ResourceLocation resourceLocation)
+    private ResourceLocation nt_chest_block$modifyBlockStateLocation(ResourceLocation resourceLocation)
     {
         String minecraft = "minecraft";
         String namespace = resourceLocation.getNamespace();
@@ -58,7 +58,7 @@ public abstract class ModelBakeryMixin
         ordinal = 0,
         at = @At("HEAD")
     )
-    private ResourceLocation NT$setChestBlockModel(ResourceLocation resourceLocation)
+    private ResourceLocation nt_chest_block$modifyBlockModelLocation(ResourceLocation resourceLocation)
     {
         String minecraft = "minecraft";
         String namespace = resourceLocation.getNamespace();

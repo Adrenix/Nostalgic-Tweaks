@@ -5,11 +5,11 @@ package mod.adrenix.nostalgic.mixin.duck;
  */
 public interface CameraPitching
 {
-    void NT$setCameraPitch(float cameraPitch);
+    void nt$setCameraPitch(float cameraPitch);
 
-    void NT$setPrevCameraPitch(float prevCameraPitch);
+    void nt$setPrevCameraPitch(float prevCameraPitch);
 
-    float NT$getCameraPitch();
+    float nt$getCameraPitch();
 
-    float NT$getPrevCameraPitch();
+    float nt$getPrevCameraPitch();
 }

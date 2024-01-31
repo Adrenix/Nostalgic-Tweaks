@@ -42,7 +42,7 @@ public abstract class ItemClientUtil
         if (!AnimationTweak.OLD_ITEM_REEQUIP.get() || !isUnequipped)
             return originalItemStack;
 
-        return player.NT$getLastItem();
+        return player.nt$getLastItem();
     }
 
     /**

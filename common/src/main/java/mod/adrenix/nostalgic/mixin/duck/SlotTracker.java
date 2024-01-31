@@ -4,13 +4,13 @@ import net.minecraft.world.item.ItemStack;
 
 public interface SlotTracker extends CameraPitching
 {
-    void NT$setLastSlot(int slot);
+    void nt$setLastSlot(int slot);
 
-    void NT$setReequip(boolean state);
+    void nt$setReequip(boolean state);
 
-    int NT$getLastSlot();
+    int nt$getLastSlot();
 
-    boolean NT$getReequip();
+    boolean nt$getReequip();
 
-    ItemStack NT$getLastItem();
+    ItemStack nt$getLastItem();
 }

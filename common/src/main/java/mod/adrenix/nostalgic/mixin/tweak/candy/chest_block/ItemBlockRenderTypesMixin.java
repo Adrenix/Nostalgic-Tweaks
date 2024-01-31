@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -19,7 +19,7 @@ public abstract class ItemBlockRenderTypesMixin
         method = "getChunkRenderType",
         at = @At("RETURN")
     )
-    private static RenderType NT$setChestRenderType(RenderType renderType, BlockState blockState)
+    private static RenderType nt_chest_block$modifyChunkRenderType(RenderType renderType, BlockState blockState)
     {
         String resourceKey = ItemCommonUtil.getResourceKey(blockState.getBlock());
 

@@ -16,30 +16,30 @@ public abstract class LivingEntityImpl extends Entity implements CameraPitching
         super(entityType, level);
     }
 
-    @Unique private float NT$cameraPitch = 0.0F;
-    @Unique private float NT$prevCameraPitch = 0.0F;
+    @Unique private float nt$cameraPitch = 0.0F;
+    @Unique private float nt$prevCameraPitch = 0.0F;
 
     @Override
-    public void NT$setCameraPitch(float cameraPitch)
+    public void nt$setCameraPitch(float cameraPitch)
     {
-        this.NT$cameraPitch = cameraPitch;
+        this.nt$cameraPitch = cameraPitch;
     }
 
     @Override
-    public void NT$setPrevCameraPitch(float prevCameraPitch)
+    public void nt$setPrevCameraPitch(float prevCameraPitch)
     {
-        this.NT$prevCameraPitch = prevCameraPitch;
+        this.nt$prevCameraPitch = prevCameraPitch;
     }
 
     @Override
-    public float NT$getCameraPitch()
+    public float nt$getCameraPitch()
     {
-        return this.NT$cameraPitch;
+        return this.nt$cameraPitch;
     }
 
     @Override
-    public float NT$getPrevCameraPitch()
+    public float nt$getPrevCameraPitch()
     {
-        return this.NT$prevCameraPitch;
+        return this.nt$prevCameraPitch;
     }
 }

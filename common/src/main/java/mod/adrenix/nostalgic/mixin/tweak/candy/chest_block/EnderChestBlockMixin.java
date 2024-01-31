@@ -1,8 +1,7 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
@@ -23,11 +22,8 @@ public abstract class EnderChestBlockMixin
         method = "getRenderShape",
         at = @At("RETURN")
     )
-    private RenderShape NT$setEnderChestRenderShape(RenderShape renderShape, BlockState blockState)
+    private RenderShape nt_chest_block$modifyRenderShape(RenderShape renderShape, BlockState blockState)
     {
-        if (NostalgicTweaks.isServer())
-            return renderShape;
-
         if (CandyTweak.OLD_ENDER_CHEST.get())
             return RenderShape.MODEL;
 
@@ -44,7 +40,7 @@ public abstract class EnderChestBlockMixin
             target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
         )
     )
-    private boolean NT$useEnderChestParticles(Level level, ParticleOptions particleOptions, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
+    private boolean nt_chest_block$wrapParticles(Level level, ParticleOptions particleOptions, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
         return !CandyTweak.DISABLE_ENDER_CHEST_PARTICLES.get();
     }

@@ -5,15 +5,16 @@
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
-    "candy.ambient_occlusion_blocks.BlockBehaviourMixin",
+    "candy.ambient_occlusion.BlockBehaviourMixin",
     "candy.block_hitbox.LevelRendererMixin",
-    "candy.disabled_block_offsets.BlockStateBaseMixin",
-    "candy.old_chest_block.BlockEntityRenderDispatcherMixin",
-    "candy.old_chest_block.ChestBlockMixin",
-    "candy.old_chest_block.EnderChestBlockMixin",
-    "candy.old_chest_block.ItemBlockRenderTypesMixin",
-    "candy.old_chest_block.ModelBakeryMixin",
-    "candy.old_missing_texture.MissingTextureAtlasSpriteMixin",
+    "candy.block_offsets.BlockStateBaseMixin",
+    "candy.chest_block.BlockEntityRenderDispatcherMixin",
+    "candy.chest_block.BlockStateBaseMixin",
+    "candy.chest_block.ChestBlockMixin",
+    "candy.chest_block.EnderChestBlockMixin",
+    "candy.chest_block.ItemBlockRenderTypesMixin",
+    "candy.chest_block.ModelBakeryMixin",
+    "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.uncap_title_fps.MinecraftMixin",
     "sound.damage_sound.LivingEntityMixin",
     "sound.damage_sound.PlayerMixin",
@@ -25,8 +26,5 @@
     "sound.position_sound.ClientLevelMixin",
     "sound.water_ambience.LocalPlayerMixin",
     "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin"
-  ],
-  "mixins": [
-    "candy.old_chest_block.BlockStateBaseMixin"
   ]
 }

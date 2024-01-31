@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -24,7 +24,7 @@ public abstract class BlockEntityRenderDispatcherMixin
         method = "getRenderer",
         at = @At("RETURN")
     )
-    private <E extends BlockEntity> BlockEntityRenderer<E> NT$setEmptyChestRenderer(@Nullable BlockEntityRenderer<E> renderer, E entity)
+    private <E extends BlockEntity> BlockEntityRenderer<E> nt_chest_block$modifyRenderer(@Nullable BlockEntityRenderer<E> renderer, E entity)
     {
         if (CandyTweak.OLD_CHEST.get() && entity.getClass().equals(ChestBlockEntity.class))
             return null;

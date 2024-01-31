@@ -1,7 +1,6 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.old_chest_block;
+package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.mixin.util.ChestMixinHelper;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -20,9 +19,9 @@ public abstract class ChestBlockMixin
         method = "getRenderShape",
         at = @At("RETURN")
     )
-    private RenderShape NT$setChestRenderShape(RenderShape renderShape, BlockState blockState)
+    private RenderShape nt_chest_block$modifyRenderShape(RenderShape renderShape, BlockState blockState)
     {
-        if (NostalgicTweaks.isClient() && ChestMixinHelper.isOld(blockState))
+        if (ChestMixinHelper.isOld(blockState))
             return RenderShape.MODEL;
 
         return renderShape;

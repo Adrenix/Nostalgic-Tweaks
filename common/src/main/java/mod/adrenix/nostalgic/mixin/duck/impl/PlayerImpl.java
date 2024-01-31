@@ -20,35 +20,35 @@ public abstract class PlayerImpl extends LivingEntity implements SlotTracker
 
     @Shadow private ItemStack lastItemInMainHand;
 
-    @Unique public int NT$lastSlot = -1;
-    @Unique public boolean NT$reequip = false;
+    @Unique public int nt$lastSlot = -1;
+    @Unique public boolean nt$reequip = false;
 
     @Override
-    public void NT$setLastSlot(int slot)
+    public void nt$setLastSlot(int slot)
     {
-        this.NT$lastSlot = slot;
+        this.nt$lastSlot = slot;
     }
 
     @Override
-    public void NT$setReequip(boolean state)
+    public void nt$setReequip(boolean state)
     {
-        this.NT$reequip = state;
+        this.nt$reequip = state;
     }
 
     @Override
-    public int NT$getLastSlot()
+    public int nt$getLastSlot()
     {
-        return this.NT$lastSlot;
+        return this.nt$lastSlot;
     }
 
     @Override
-    public boolean NT$getReequip()
+    public boolean nt$getReequip()
     {
-        return this.NT$reequip;
+        return this.nt$reequip;
     }
 
     @Override
-    public ItemStack NT$getLastItem()
+    public ItemStack nt$getLastItem()
     {
         return this.lastItemInMainHand;
     }
