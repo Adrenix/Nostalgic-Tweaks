@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.client.gui.screen.config.overlay.manage;
 
 import com.google.common.base.Splitter;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageOverlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageType;
@@ -19,7 +20,6 @@ import mod.adrenix.nostalgic.config.ClientConfig;
 import mod.adrenix.nostalgic.config.factory.ConfigBuilder;
 import mod.adrenix.nostalgic.config.factory.ConfigHandler;
 import mod.adrenix.nostalgic.network.packet.backup.*;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
@@ -449,7 +449,7 @@ public class GroupViewBackups extends ManageGroup
             handler.setLoaded(imported.getLoaded());
             handler.save();
 
-            RunUtil.reload();
+            AfterConfigSave.reloadAndRun();
             NostalgicTweaks.LOGGER.info("[Config Import] Imported a new client config using backup (%s)", backup.getFilename());
 
             this.setClientView();

@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.tweak.factory;
 
 import com.google.common.base.Suppliers;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.CacheHolder;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
@@ -12,7 +13,6 @@ import mod.adrenix.nostalgic.tweak.TweakIssue;
 import mod.adrenix.nostalgic.tweak.TweakStatus;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.ModTracker;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
 import net.minecraft.network.chat.Component;
@@ -259,10 +259,10 @@ public abstract class Tweak<T> implements TweakMeta<T>
             throw new RuntimeException("Server tried to access client-only tweak method");
 
         if (this.isChunkReloadRequired())
-            RunUtil.reloadChunks = true;
+            AfterConfigSave.setChunksToReload();
 
         if (this.isResourceReloadRequired())
-            RunUtil.reloadResources = true;
+            AfterConfigSave.setResourcesToReload();
     }
 
     @Override

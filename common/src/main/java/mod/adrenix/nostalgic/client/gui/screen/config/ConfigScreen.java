@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.config;
 
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.GroupRow;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.RowProvider;
@@ -12,7 +13,6 @@ import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
@@ -284,7 +284,7 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
             .forEach(Tweak::applyCacheAndSend);
 
         ConfigCache.save();
-        RunUtil.onSave();
+        AfterConfigSave.run();
     }
 
     /**

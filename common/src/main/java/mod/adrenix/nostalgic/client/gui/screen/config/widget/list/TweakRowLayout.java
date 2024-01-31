@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.widget.list;
 
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.StatusOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.crumb.CrumbWidget;
@@ -14,7 +15,6 @@ import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.tweak.FavoriteTweak;
 import mod.adrenix.nostalgic.tweak.TweakContext;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
@@ -100,7 +100,7 @@ public class TweakRowLayout
             .icon(Icons.SAVE_FLOPPY)
             .tooltip(Lang.Button.SAVE, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.supply(this.tweak::isLocalMode, Lang.Tooltip.SAVE_TWEAK_LOCAL, Lang.Tooltip.SAVE_TWEAK_NETWORK), 35)
-            .onPress(CollectionUtil.runAll(this.tweak::applyCurrentCache, ConfigCache::save, RunUtil::onSave))
+            .onPress(CollectionUtil.runAll(this.tweak::applyCurrentCache, ConfigCache::save, AfterConfigSave::run))
             .enableIf(CollectionUtil.areAllTrue(this.tweak::isCurrentCacheSavable, this.tweak::isNetworkUnlocked))
             .build(this.row::addWidget);
 

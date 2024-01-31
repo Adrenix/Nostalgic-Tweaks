@@ -5,9 +5,9 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.MissingTexture;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -91,7 +91,7 @@ public abstract class MissingTextureAtlasSpriteMixin
     )
     private static void nt_missing_texture$addOnSave(CallbackInfo callback)
     {
-        RunUtil.ON_SAVE_RUNNABLES.add(MissingTextureAtlasSpriteMixin::nt_missing_texture$clearMissingTexture);
+        AfterConfigSave.addInstruction(MissingTextureAtlasSpriteMixin::nt_missing_texture$clearMissingTexture);
     }
 
     /**
@@ -101,7 +101,8 @@ public abstract class MissingTextureAtlasSpriteMixin
     @Unique
     private static void nt_missing_texture$clearMissingTexture()
     {
-        missingTexture = null;
+        if (AfterConfigSave.areChunksGoingToReload())
+            missingTexture = null;
     }
 
     /**

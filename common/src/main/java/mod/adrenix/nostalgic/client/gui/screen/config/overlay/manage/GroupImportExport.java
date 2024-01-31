@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.manage;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
@@ -15,7 +16,6 @@ import mod.adrenix.nostalgic.config.factory.ConfigHandler;
 import mod.adrenix.nostalgic.network.packet.backup.ServerboundReloadConfig;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.dialog.DialogType;
 import mod.adrenix.nostalgic.util.client.dialog.FileDialog;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
@@ -208,7 +208,7 @@ public class GroupImportExport extends ManageGroup
             handler.save();
 
             TweakPool.values().forEach(Tweak::sync);
-            RunUtil.reload();
+            AfterConfigSave.reloadAndRun();
         }
         else
             ManageThreadMessage.IMPORT_ERROR.open();

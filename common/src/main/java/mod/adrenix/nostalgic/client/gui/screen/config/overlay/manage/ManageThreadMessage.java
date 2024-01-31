@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.manage;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageOverlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageType;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonTemplate;
@@ -14,11 +15,10 @@ import mod.adrenix.nostalgic.network.packet.backup.ServerboundCreateBackup;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakMeta;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
-import mod.adrenix.nostalgic.util.client.RunUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.io.PathUtil;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 
 import java.nio.file.Path;
@@ -120,7 +120,7 @@ public enum ManageThreadMessage
             clientHandler.setLoaded(this.client.getLoaded());
             clientHandler.save();
 
-            RunUtil.reload();
+            AfterConfigSave.reloadAndRun();
         }
 
         if (this.equals(IMPORT_SERVER_SUCCESS) && this.server != null)
