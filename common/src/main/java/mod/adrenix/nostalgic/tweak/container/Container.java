@@ -72,7 +72,12 @@ public class Container
     {
         try
         {
-            container.getTweaks().forEach(Tweak::getJsonId);
+            container.getTweaks().forEach(tweak -> {
+                if (NostalgicTweaks.isServer() && tweak.isClient())
+                    return;
+
+                tweak.getJsonId();
+            });
         }
         catch (Throwable throwable)
         {
