@@ -7,9 +7,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * A cache holder is useful in situations where there is a need to hold a value that may change at a later point in
- * time. This utility will cache a value using the given supplier. A check can be performed in this utility to see if
- * the cache is invalid, if so, then a new cache value will be created using the given supplier.
+ * A cache value is useful in situations where there is a need to hold a value that may change at a later point in time.
+ * This utility will cache a value using the given supplier. A check can be performed in this utility to see if the
+ * cache is invalid, if so, then a new cache value will be created using the given supplier.
  *
  * @param <T> The class type of the value held.
  */
@@ -70,7 +70,7 @@ public class CacheValue<T>
     }
 
     /**
-     * Create a new {@link CacheValue} instance using a nullable holder.
+     * Create a new {@link CacheValue} instance using a {@link NullableHolder}.
      *
      * @param holder   A {@link NullableHolder} to get a value to apply to the given function.
      * @param function A {@link Function} that accepts the non-null value and provides a value to cache.
@@ -91,18 +91,18 @@ public class CacheValue<T>
     }
 
     /**
-     * Check if any of the holders have expired. If optimization is desired, then order the given varargs with caches
-     * that are likely to expire first.
+     * Check if any of the given caches have expired. If optimization is desired, then order the given varargs with
+     * caches that are likely to expire first.
      *
-     * @param holders A varargs of {@link CacheValue}.
-     * @return Whether any of the holders have changed.
+     * @param caches A varargs of {@link CacheValue}.
+     * @return Whether any of the caches have changed.
      */
     @PublicAPI
-    public static boolean isAnyExpired(CacheValue<?>... holders)
+    public static boolean isAnyExpired(CacheValue<?>... caches)
     {
-        for (CacheValue<?> holder : holders)
+        for (CacheValue<?> cache : caches)
         {
-            if (holder.isExpired())
+            if (cache.isExpired())
                 return true;
         }
 
@@ -112,7 +112,7 @@ public class CacheValue<T>
     /* Methods */
 
     /**
-     * @return A result from the cached supplier.
+     * @return The result return from the supplier.
      */
     public T next()
     {
@@ -120,7 +120,7 @@ public class CacheValue<T>
     }
 
     /**
-     * @return The current cached result.
+     * @return The value last cached.
      */
     public T last()
     {
@@ -128,7 +128,7 @@ public class CacheValue<T>
     }
 
     /**
-     * Update the cache for this holder using the result from the supplier.
+     * Update the value for this cache using the result returned by the supplier.
      */
     public void update()
     {
@@ -137,7 +137,7 @@ public class CacheValue<T>
     }
 
     /**
-     * Update the cache for this holder and return the result.
+     * Update the value for this cache and return the result.
      *
      * @return The updated cache value.
      */
@@ -149,7 +149,7 @@ public class CacheValue<T>
     }
 
     /**
-     * @return Whether the current cache does not match a result provided by the supplier.
+     * @return Whether the current cached value does not match the result provided by the supplier.
      */
     public boolean isExpired()
     {
