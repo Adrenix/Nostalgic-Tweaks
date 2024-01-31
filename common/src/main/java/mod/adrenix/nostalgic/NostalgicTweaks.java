@@ -172,7 +172,7 @@ public class NostalgicTweaks
      * will cause communication issues with older versions of the mod, then this value needs bumped up. Typically,
      * changes made to network packets and/or changes in tweak data serialization will require a bump.
      */
-    public static final String PROTOCOL = "1.3";
+    public static final String PROTOCOL = "2.0";
 
     /**
      * Functional lambda shortcut method for supplying the network's protocol version.
