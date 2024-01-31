@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.input;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ class LayoutSync<Builder extends AbstractInputMaker<Builder, Input>, Input exten
     @Override
     public boolean isReapplyNeeded(Input widget, Builder builder, WidgetCache cache)
     {
-        return CacheHolder.isAnyExpired(cache.x, cache.width);
+        return CacheValue.isAnyExpired(cache.x, cache.width);
     }
 
     @Override

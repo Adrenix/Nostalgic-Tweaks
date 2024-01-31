@@ -8,7 +8,7 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.color.Color;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
@@ -89,13 +89,13 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
 
         class SyncText implements DynamicFunction<TextBuilder, TextWidget>
         {
-            private final CacheHolder<Component> textSupplier;
-            private final CacheHolder<Integer> maxEndX;
+            private final CacheValue<Component> textSupplier;
+            private final CacheValue<Integer> maxEndX;
 
             SyncText()
             {
-                this.textSupplier = CacheHolder.create(builder.text);
-                this.maxEndX = CacheHolder.nullable(builder.maxEndX, IntSupplier::getAsInt, 0);
+                this.textSupplier = CacheValue.create(builder.text);
+                this.maxEndX = CacheValue.nullable(builder.maxEndX, IntSupplier::getAsInt, 0);
             }
 
             @Override
@@ -109,7 +109,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
             @Override
             public boolean isReapplyNeeded(TextWidget text, TextBuilder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.width, this.textSupplier, this.maxEndX);
+                return CacheValue.isAnyExpired(cache.width, this.textSupplier, this.maxEndX);
             }
 
             @Override

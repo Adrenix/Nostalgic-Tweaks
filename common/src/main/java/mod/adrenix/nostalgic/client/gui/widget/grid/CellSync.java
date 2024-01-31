@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.grid;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class CellSync implements DynamicFunction<CellBuilder, Cell>
                 layoutBuilder.removeAnchor();
         }
 
-        return CacheHolder.isAnyExpired(cache.visible, cache.active, widget.cache.visible, widget.cache.active);
+        return CacheValue.isAnyExpired(cache.visible, cache.active, widget.cache.visible, widget.cache.active);
     }
 
     @Override

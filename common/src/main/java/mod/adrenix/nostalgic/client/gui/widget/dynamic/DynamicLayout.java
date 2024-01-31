@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.widget.dynamic;
 
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.function.ToFloatFunction;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 
@@ -32,11 +32,11 @@ interface DynamicLayout
         class FromScreenEnd<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicX<Builder, Widget>
         {
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             FromScreenEnd(Builder builder, ToIntFunction<Widget> margin)
             {
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -48,7 +48,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, cache.screen.width, this.margin);
+                return CacheValue.isAnyExpired(cache.x, cache.width, cache.screen.width, this.margin);
             }
         }
 
@@ -59,12 +59,12 @@ interface DynamicLayout
             extends DynamicX<Builder, Widget>
         {
             private final DynamicWidget<?, ?> fromEnd;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             FromWidgetEnd(Builder builder, DynamicWidget<?, ?> fromEnd, ToIntFunction<Widget> margin)
             {
                 this.fromEnd = fromEnd;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -76,7 +76,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, this.margin, this.fromEnd.cache.getX(), this.fromEnd.cache.getWidth());
+                return CacheValue.isAnyExpired(cache.x, cache.width, this.margin, this.fromEnd.cache.getX(), this.fromEnd.cache.getWidth());
             }
         }
 
@@ -87,12 +87,12 @@ interface DynamicLayout
             extends DynamicX<Builder, Widget>
         {
             private final DynamicWidget<?, ?> flushTo;
-            private final CacheHolder<Integer> offset;
+            private final CacheValue<Integer> offset;
 
             AlignFlush(Builder builder, DynamicWidget<?, ?> flushTo, ToIntFunction<Widget> offset)
             {
                 this.flushTo = flushTo;
-                this.offset = CacheHolder.nullable(builder.widget, offset::applyAsInt, 0);
+                this.offset = CacheValue.nullable(builder.widget, offset::applyAsInt, 0);
             }
 
             @Override
@@ -104,7 +104,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, this.offset, this.flushTo.cache.getX());
+                return CacheValue.isAnyExpired(cache.x, this.offset, this.flushTo.cache.getX());
             }
         }
 
@@ -115,12 +115,12 @@ interface DynamicLayout
             extends DynamicX<Builder, Widget>
         {
             private final DynamicWidget<?, ?> centerIn;
-            private final CacheHolder<Integer> extraWidth;
+            private final CacheValue<Integer> extraWidth;
 
             CenterInWidget(Builder builder, DynamicWidget<?, ?> centerIn, ToIntFunction<Widget> extraWidth)
             {
                 this.centerIn = centerIn;
-                this.extraWidth = CacheHolder.nullable(builder.widget, extraWidth::applyAsInt, 0);
+                this.extraWidth = CacheValue.nullable(builder.widget, extraWidth::applyAsInt, 0);
             }
 
             @Override
@@ -135,7 +135,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, this.extraWidth, this.centerIn.cache.getX(), this.centerIn.cache.getWidth());
+                return CacheValue.isAnyExpired(cache.x, cache.width, this.extraWidth, this.centerIn.cache.getX(), this.centerIn.cache.getWidth());
             }
         }
 
@@ -145,11 +145,11 @@ interface DynamicLayout
         class CenterInScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicX<Builder, Widget>
         {
-            private final CacheHolder<Integer> extraWidth;
+            private final CacheValue<Integer> extraWidth;
 
             CenterInScreen(Builder builder, ToIntFunction<Widget> extraWidth)
             {
-                this.extraWidth = CacheHolder.nullable(builder.widget, extraWidth::applyAsInt, 0);
+                this.extraWidth = CacheValue.nullable(builder.widget, extraWidth::applyAsInt, 0);
             }
 
             @Override
@@ -165,7 +165,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, cache.screen.x, cache.screen.width, this.extraWidth);
+                return CacheValue.isAnyExpired(cache.x, cache.width, cache.screen.x, cache.screen.width, this.extraWidth);
             }
         }
     }
@@ -192,12 +192,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> above;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             Above(Builder builder, DynamicWidget<?, ?> above, ToIntFunction<Widget> margin)
             {
                 this.above = above;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -209,7 +209,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, this.margin, this.above.cache.getY());
+                return CacheValue.isAnyExpired(cache.y, cache.height, this.margin, this.above.cache.getY());
             }
         }
 
@@ -220,12 +220,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> below;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             Below(Builder builder, DynamicWidget<?, ?> below, ToIntFunction<Widget> margin)
             {
                 this.below = below;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -237,7 +237,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, this.margin, this.below.cache.getY(), this.below.cache.getHeight());
+                return CacheValue.isAnyExpired(cache.y, this.margin, this.below.cache.getY(), this.below.cache.getHeight());
             }
         }
 
@@ -248,12 +248,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final LinkedHashSet<DynamicWidget<?, ?>> all;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             BelowAll(Builder builder, LinkedHashSet<DynamicWidget<?, ?>> all, ToIntFunction<Widget> margin)
             {
                 this.all = all;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -279,8 +279,8 @@ interface DynamicLayout
                 if (this.all.isEmpty())
                     return false;
 
-                return CacheHolder.isAnyExpired(cache.y, this.margin) || this.all.stream()
-                    .anyMatch(dynamic -> CacheHolder.isAnyExpired(dynamic.cache.y, dynamic.cache.height, dynamic.cache.visible));
+                return CacheValue.isAnyExpired(cache.y, this.margin) || this.all.stream()
+                    .anyMatch(dynamic -> CacheValue.isAnyExpired(dynamic.cache.y, dynamic.cache.height, dynamic.cache.visible));
             }
         }
 
@@ -290,11 +290,11 @@ interface DynamicLayout
         class FromScreenEnd<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicY<Builder, Widget>
         {
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             FromScreenEnd(Builder builder, ToIntFunction<Widget> margin)
             {
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -306,7 +306,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.screen.height, cache.y, cache.height, this.margin);
+                return CacheValue.isAnyExpired(cache.screen.height, cache.y, cache.height, this.margin);
             }
         }
 
@@ -317,12 +317,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> fromEnd;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             FromWidgetEnd(Builder builder, DynamicWidget<?, ?> fromEnd, ToIntFunction<Widget> margin)
             {
                 this.fromEnd = fromEnd;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -334,7 +334,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, this.margin, this.fromEnd.cache.getY(), this.fromEnd.cache.getHeight());
+                return CacheValue.isAnyExpired(cache.y, cache.height, this.margin, this.fromEnd.cache.getY(), this.fromEnd.cache.getHeight());
             }
         }
 
@@ -345,12 +345,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> verticalTo;
-            private final CacheHolder<Integer> offset;
+            private final CacheValue<Integer> offset;
 
             AlignVertical(Builder builder, DynamicWidget<?, ?> verticalTo, ToIntFunction<Widget> offset)
             {
                 this.verticalTo = verticalTo;
-                this.offset = CacheHolder.nullable(builder.widget, offset::applyAsInt, 0);
+                this.offset = CacheValue.nullable(builder.widget, offset::applyAsInt, 0);
             }
 
             @Override
@@ -362,7 +362,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, this.offset, this.verticalTo.cache.getY());
+                return CacheValue.isAnyExpired(cache.y, this.offset, this.verticalTo.cache.getY());
             }
         }
 
@@ -373,12 +373,12 @@ interface DynamicLayout
             extends DynamicY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> centerIn;
-            private final CacheHolder<Integer> extraHeight;
+            private final CacheValue<Integer> extraHeight;
 
             CenterInWidget(Builder builder, DynamicWidget<?, ?> centerIn, ToIntFunction<Widget> extraHeight)
             {
                 this.centerIn = centerIn;
-                this.extraHeight = CacheHolder.nullable(builder.widget, extraHeight::applyAsInt, 0);
+                this.extraHeight = CacheValue.nullable(builder.widget, extraHeight::applyAsInt, 0);
             }
 
             @Override
@@ -393,7 +393,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, this.extraHeight, this.centerIn.cache.getHeight(), this.centerIn.cache.getY());
+                return CacheValue.isAnyExpired(cache.y, cache.height, this.extraHeight, this.centerIn.cache.getHeight(), this.centerIn.cache.getY());
             }
         }
 
@@ -403,11 +403,11 @@ interface DynamicLayout
         class CenterInScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicY<Builder, Widget>
         {
-            private final CacheHolder<Integer> extraHeight;
+            private final CacheValue<Integer> extraHeight;
 
             CenterInScreen(Builder builder, ToIntFunction<Widget> extraHeight)
             {
-                this.extraHeight = CacheHolder.nullable(builder.widget, extraHeight::applyAsInt, 0);
+                this.extraHeight = CacheValue.nullable(builder.widget, extraHeight::applyAsInt, 0);
             }
 
             @Override
@@ -423,7 +423,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, cache.screen.height, cache.screen.y, this.extraHeight);
+                return CacheValue.isAnyExpired(cache.y, cache.height, cache.screen.height, cache.screen.y, this.extraHeight);
             }
         }
     }
@@ -450,12 +450,12 @@ interface DynamicLayout
             extends DynamicXY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> leftOf;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             LeftOf(Builder builder, DynamicWidget<?, ?> leftOf, ToIntFunction<Widget> margin)
             {
                 this.leftOf = leftOf;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -468,7 +468,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.y, cache.width, this.margin, this.leftOf.cache.getX(), this.leftOf.cache.getY());
+                return CacheValue.isAnyExpired(cache.x, cache.y, cache.width, this.margin, this.leftOf.cache.getX(), this.leftOf.cache.getY());
             }
         }
 
@@ -479,12 +479,12 @@ interface DynamicLayout
             extends DynamicXY<Builder, Widget>
         {
             private final DynamicWidget<?, ?> rightOf;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             RightOf(Builder builder, DynamicWidget<?, ?> rightOf, ToIntFunction<Widget> margin)
             {
                 this.rightOf = rightOf;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -497,7 +497,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.y, this.margin, this.rightOf.cache.getX(), this.rightOf.cache.getY(), this.rightOf.cache.getWidth());
+                return CacheValue.isAnyExpired(cache.x, cache.y, this.margin, this.rightOf.cache.getX(), this.rightOf.cache.getY(), this.rightOf.cache.getWidth());
             }
         }
     }
@@ -523,11 +523,11 @@ interface DynamicLayout
         class OfScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicWidth<Builder, Widget>
         {
-            private final CacheHolder<Float> ofScreen;
+            private final CacheValue<Float> ofScreen;
 
             OfScreen(Builder builder, ToFloatFunction<Widget> ofScreen)
             {
-                this.ofScreen = CacheHolder.nullable(builder.widget, ofScreen::applyAsFloat, 1.0F);
+                this.ofScreen = CacheValue.nullable(builder.widget, ofScreen::applyAsFloat, 1.0F);
             }
 
             @Override
@@ -542,7 +542,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.width, cache.screen.width, this.ofScreen);
+                return CacheValue.isAnyExpired(cache.width, cache.screen.width, this.ofScreen);
             }
         }
 
@@ -553,12 +553,12 @@ interface DynamicLayout
             extends DynamicWidth<Builder, Widget>
         {
             private final DynamicWidget<?, ?> ofWidget;
-            private final CacheHolder<Float> ofAmount;
+            private final CacheValue<Float> ofAmount;
 
             OfWidget(Builder builder, DynamicWidget<?, ?> ofWidget, ToFloatFunction<Widget> ofAmount)
             {
                 this.ofWidget = ofWidget;
-                this.ofAmount = CacheHolder.nullable(builder.widget, ofAmount::applyAsFloat, 1.0F);
+                this.ofAmount = CacheValue.nullable(builder.widget, ofAmount::applyAsFloat, 1.0F);
             }
 
             @Override
@@ -570,7 +570,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.width, this.ofAmount, this.ofWidget.cache.getWidth());
+                return CacheValue.isAnyExpired(cache.width, this.ofAmount, this.ofWidget.cache.getWidth());
             }
         }
 
@@ -580,11 +580,11 @@ interface DynamicLayout
         class ExtendToScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicWidth<Builder, Widget>
         {
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToScreen(Builder builder, ToIntFunction<Widget> margin)
             {
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -596,7 +596,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, cache.screen.x, cache.screen.width, this.margin);
+                return CacheValue.isAnyExpired(cache.x, cache.width, cache.screen.x, cache.screen.width, this.margin);
             }
         }
 
@@ -607,12 +607,12 @@ interface DynamicLayout
             extends DynamicWidth<Builder, Widget>
         {
             private final DynamicWidget<?, ?> extendTo;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToWidgetStart(Builder builder, DynamicWidget<?, ?> extendTo, ToIntFunction<Widget> margin)
             {
                 this.extendTo = extendTo;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -624,7 +624,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, this.margin, this.extendTo.cache.getX());
+                return CacheValue.isAnyExpired(cache.x, cache.width, this.margin, this.extendTo.cache.getX());
             }
         }
 
@@ -635,12 +635,12 @@ interface DynamicLayout
             extends DynamicWidth<Builder, Widget>
         {
             private final DynamicWidget<?, ?> extendTo;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToWidgetEnd(Builder builder, DynamicWidget<?, ?> extendTo, ToIntFunction<Widget> margin)
             {
                 this.extendTo = extendTo;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -652,7 +652,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.x, cache.width, this.margin, this.extendTo.cache.getX(), this.extendTo.cache.getWidth());
+                return CacheValue.isAnyExpired(cache.x, cache.width, this.margin, this.extendTo.cache.getX(), this.extendTo.cache.getWidth());
             }
         }
 
@@ -682,7 +682,7 @@ interface DynamicLayout
                 return cache.width.isExpired() || this.all.stream()
                     .map(DynamicWidget::getCache)
                     .map(WidgetCache::getWidth)
-                    .anyMatch(CacheHolder::isExpired);
+                    .anyMatch(CacheValue::isExpired);
             }
         }
     }
@@ -708,11 +708,11 @@ interface DynamicLayout
         class OfScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicHeight<Builder, Widget>
         {
-            private final CacheHolder<Float> ofScreen;
+            private final CacheValue<Float> ofScreen;
 
             OfScreen(Builder builder, ToFloatFunction<Widget> ofScreen)
             {
-                this.ofScreen = CacheHolder.nullable(builder.widget, ofScreen::applyAsFloat, 1.0F);
+                this.ofScreen = CacheValue.nullable(builder.widget, ofScreen::applyAsFloat, 1.0F);
             }
 
             @Override
@@ -727,7 +727,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.height, cache.screen.height, this.ofScreen);
+                return CacheValue.isAnyExpired(cache.height, cache.screen.height, this.ofScreen);
             }
         }
 
@@ -738,12 +738,12 @@ interface DynamicLayout
             extends DynamicHeight<Builder, Widget>
         {
             private final DynamicWidget<?, ?> ofWidget;
-            private final CacheHolder<Float> ofAmount;
+            private final CacheValue<Float> ofAmount;
 
             OfWidget(Builder builder, DynamicWidget<?, ?> ofWidget, ToFloatFunction<Widget> ofAmount)
             {
                 this.ofWidget = ofWidget;
-                this.ofAmount = CacheHolder.nullable(builder.widget, ofAmount::applyAsFloat, 1.0F);
+                this.ofAmount = CacheValue.nullable(builder.widget, ofAmount::applyAsFloat, 1.0F);
             }
 
             @Override
@@ -755,7 +755,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.height, this.ofAmount, this.ofWidget.cache.getHeight());
+                return CacheValue.isAnyExpired(cache.height, this.ofAmount, this.ofWidget.cache.getHeight());
             }
         }
 
@@ -765,11 +765,11 @@ interface DynamicLayout
         class ExtendToScreen<Builder extends DynamicBuilder<Builder, Widget>, Widget extends DynamicWidget<Builder, Widget>>
             extends DynamicHeight<Builder, Widget>
         {
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToScreen(Builder builder, ToIntFunction<Widget> margin)
             {
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -781,7 +781,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, cache.screen.y, cache.screen.height, this.margin);
+                return CacheValue.isAnyExpired(cache.y, cache.height, cache.screen.y, cache.screen.height, this.margin);
             }
         }
 
@@ -792,12 +792,12 @@ interface DynamicLayout
             extends DynamicHeight<Builder, Widget>
         {
             private final DynamicWidget<?, ?> extendTo;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToWidgetStart(Builder builder, DynamicWidget<?, ?> extendTo, ToIntFunction<Widget> margin)
             {
                 this.extendTo = extendTo;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -809,7 +809,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.height, cache.y, this.margin, this.extendTo.cache.getY());
+                return CacheValue.isAnyExpired(cache.height, cache.y, this.margin, this.extendTo.cache.getY());
             }
         }
 
@@ -821,12 +821,12 @@ interface DynamicLayout
             extends DynamicHeight<Builder, Widget>
         {
             private final DynamicWidget<?, ?> extendTo;
-            private final CacheHolder<Integer> margin;
+            private final CacheValue<Integer> margin;
 
             ExtendToWidgetEnd(Builder builder, DynamicWidget<?, ?> extendTo, ToIntFunction<Widget> margin)
             {
                 this.extendTo = extendTo;
-                this.margin = CacheHolder.nullable(builder.widget, margin::applyAsInt, 0);
+                this.margin = CacheValue.nullable(builder.widget, margin::applyAsInt, 0);
             }
 
             @Override
@@ -838,7 +838,7 @@ interface DynamicLayout
             @Override
             public boolean isReapplyNeeded(Widget widget, Builder builder, WidgetCache cache)
             {
-                return CacheHolder.isAnyExpired(cache.y, cache.height, this.margin, this.extendTo.cache.getY(), this.extendTo.cache.getHeight());
+                return CacheValue.isAnyExpired(cache.y, cache.height, this.margin, this.extendTo.cache.getY(), this.extendTo.cache.getHeight());
             }
         }
 
@@ -868,7 +868,7 @@ interface DynamicLayout
                 return cache.height.isExpired() || this.all.stream()
                     .map(DynamicWidget::getCache)
                     .map(WidgetCache::getHeight)
-                    .anyMatch(CacheHolder::isExpired);
+                    .anyMatch(CacheValue::isExpired);
             }
         }
     }

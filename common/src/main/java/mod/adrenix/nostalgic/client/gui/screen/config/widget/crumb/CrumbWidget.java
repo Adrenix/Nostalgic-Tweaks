@@ -9,7 +9,7 @@ import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.function.ForEachWithPrevious;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -74,7 +74,7 @@ public class CrumbWidget extends DynamicWidget<CrumbBuilder, CrumbWidget>
             public boolean isReapplyNeeded(CrumbWidget widget, CrumbBuilder builder, WidgetCache cache)
             {
                 if (widget.row != null)
-                    return CacheHolder.isAnyExpired(widget.row.cache.x, widget.row.cache.width);
+                    return CacheValue.isAnyExpired(widget.row.cache.x, widget.row.cache.width);
 
                 return false;
             }

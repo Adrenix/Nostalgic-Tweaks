@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -59,7 +59,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     {
         super(builder);
 
-        this.content = new ScrollbarContent(CacheHolder.create(builder.contentSize::getAsInt));
+        this.content = new ScrollbarContent(CacheValue.create(builder.contentSize::getAsInt));
 
         this.getBuilder().addFunction(this.content);
     }

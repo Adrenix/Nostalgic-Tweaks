@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.gui.widget.input;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicField;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicFunction;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetCache;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -11,14 +11,14 @@ import java.util.List;
 class InputSync<Builder extends AbstractInputMaker<Builder, Input>, Input extends AbstractInput<Builder, Input>>
     implements DynamicFunction<Builder, Input>
 {
-    @Nullable private final CacheHolder<String> input;
+    @Nullable private final CacheValue<String> input;
 
     InputSync(Input widget)
     {
         if (widget.getBuilder().sync == null)
             this.input = null;
         else
-            this.input = CacheHolder.create(() -> widget.getBuilder().sync.apply(widget));
+            this.input = CacheValue.create(() -> widget.getBuilder().sync.apply(widget));
     }
 
     @Override

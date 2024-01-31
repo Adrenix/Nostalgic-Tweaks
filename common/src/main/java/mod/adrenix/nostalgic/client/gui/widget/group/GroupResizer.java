@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.group;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ class GroupResizer implements DynamicFunction<GroupBuilder, Group>
             return false;
 
         boolean isHeightChanged = group.getHeight() != this.resizedCache;
-        boolean isCacheChanged = CacheHolder.isAnyExpired(cache.width, cache.height);
+        boolean isCacheChanged = CacheValue.isAnyExpired(cache.width, cache.height);
 
         return isHeightChanged || isCacheChanged;
     }

@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.client.gui.widget.button;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicField;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicFunction;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetCache;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ class LayoutListener<Builder extends AbstractButtonMaker<Builder, Button>, Butto
     @Override
     public boolean isReapplyNeeded(Button button, Builder builder, WidgetCache cache)
     {
-        boolean isLayoutChanged = CacheHolder.isAnyExpired(cache.x, cache.y, cache.width, cache.height);
+        boolean isLayoutChanged = CacheValue.isAnyExpired(cache.x, cache.y, cache.width, cache.height);
         boolean isTitleChanged = button.cacheTitle.isExpired();
 
         return isLayoutChanged || isTitleChanged;

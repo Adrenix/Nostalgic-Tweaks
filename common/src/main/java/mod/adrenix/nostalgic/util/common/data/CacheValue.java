@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  *
  * @param <T> The class type of the value held.
  */
-public class CacheHolder<T>
+public class CacheValue<T>
 {
     /* Fields */
 
@@ -27,9 +27,9 @@ public class CacheHolder<T>
      * Reference {@code see also}.
      *
      * @param supplier A {@link Supplier} that provides a value to cache.
-     * @see CacheHolder#create(Supplier)
+     * @see CacheValue#create(Supplier)
      */
-    private CacheHolder(Supplier<T> supplier)
+    private CacheValue(Supplier<T> supplier)
     {
         this.supplier = supplier;
         this.cache = supplier.get();
@@ -38,51 +38,51 @@ public class CacheHolder<T>
     /* Static */
 
     /**
-     * Create a new {@link CacheHolder} instance using the given supplier.
+     * Create a new {@link CacheValue} instance using the given supplier.
      *
      * @param supplier A {@link Supplier} that provides a value to cache.
      * @param <V>      The class type of the value.
-     * @return A new {@link CacheHolder} instance.
+     * @return A new {@link CacheValue} instance.
      */
     @PublicAPI
-    public static <V> CacheHolder<V> create(Supplier<V> supplier)
+    public static <V> CacheValue<V> create(Supplier<V> supplier)
     {
-        return new CacheHolder<>(supplier);
+        return new CacheValue<>(supplier);
     }
 
     /**
-     * Create a new {@link CacheHolder} instance from a nullable value.
+     * Create a new {@link CacheValue} instance from a nullable value.
      *
      * @param nullable A nullable value to check.
      * @param function A {@link Function} that accepts the non-null nullable and provides a value to cache.
      * @param orElse   If the nullable is null, then cache this value.
      * @param <T>      The class type of the nullable.
      * @param <V>      The class type of the value.
-     * @return A new {@link CacheHolder} instance.
+     * @return A new {@link CacheValue} instance.
      */
     @PublicAPI
-    public static <T, V> CacheHolder<V> nullable(@Nullable T nullable, Function<T, V> function, V orElse)
+    public static <T, V> CacheValue<V> nullable(@Nullable T nullable, Function<T, V> function, V orElse)
     {
         if (nullable == null)
-            return new CacheHolder<>(() -> orElse);
+            return new CacheValue<>(() -> orElse);
 
-        return new CacheHolder<>(() -> function.apply(nullable));
+        return new CacheValue<>(() -> function.apply(nullable));
     }
 
     /**
-     * Create a new {@link CacheHolder} instance using a nullable holder.
+     * Create a new {@link CacheValue} instance using a nullable holder.
      *
      * @param holder   A {@link NullableHolder} to get a value to apply to the given function.
      * @param function A {@link Function} that accepts the non-null value and provides a value to cache.
      * @param orElse   If the holder has a null value, then this value will be cached.
      * @param <T>      The class type stored in the holder.
      * @param <V>      The class type of the cached value.
-     * @return A new {@link CacheHolder} instance.
+     * @return A new {@link CacheValue} instance.
      */
     @PublicAPI
-    public static <T, V> CacheHolder<V> nullable(NullableHolder<T> holder, Function<T, V> function, V orElse)
+    public static <T, V> CacheValue<V> nullable(NullableHolder<T> holder, Function<T, V> function, V orElse)
     {
-        return new CacheHolder<>(() -> {
+        return new CacheValue<>(() -> {
             if (holder.isPresent())
                 return function.apply(holder.get());
 
@@ -94,13 +94,13 @@ public class CacheHolder<T>
      * Check if any of the holders have expired. If optimization is desired, then order the given varargs with caches
      * that are likely to expire first.
      *
-     * @param holders A varargs of {@link CacheHolder}.
+     * @param holders A varargs of {@link CacheValue}.
      * @return Whether any of the holders have changed.
      */
     @PublicAPI
-    public static boolean isAnyExpired(CacheHolder<?>... holders)
+    public static boolean isAnyExpired(CacheValue<?>... holders)
     {
-        for (CacheHolder<?> holder : holders)
+        for (CacheValue<?> holder : holders)
         {
             if (holder.isExpired())
                 return true;

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.group;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ class GroupSync implements DynamicFunction<GroupBuilder, Group>
     @Override
     public boolean isReapplyNeeded(Group group, GroupBuilder builder, WidgetCache cache)
     {
-        return CacheHolder.isAnyExpired(cache.active, cache.visible);
+        return CacheValue.isAnyExpired(cache.active, cache.visible);
     }
 
     @Override

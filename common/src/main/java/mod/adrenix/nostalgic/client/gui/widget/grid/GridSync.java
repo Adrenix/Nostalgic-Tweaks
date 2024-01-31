@@ -4,7 +4,7 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicField;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicFunction;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicPriority;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetCache;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class GridSync implements DynamicFunction<GridBuilder, Grid>
         if (grid.cellsPerRow != builder.cellsPerRow.applyAsInt(grid))
             return true;
 
-        return CacheHolder.isAnyExpired(cache.width, cache.height, cache.visible);
+        return CacheValue.isAnyExpired(cache.width, cache.height, cache.visible);
     }
 
     @Override

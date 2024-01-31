@@ -3,15 +3,15 @@ package mod.adrenix.nostalgic.client.gui.widget.scrollbar;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicField;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicFunction;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetCache;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
 class ScrollbarContent implements DynamicFunction<ScrollbarBuilder, Scrollbar>
 {
-    private final CacheHolder<Integer> sizeCache;
+    private final CacheValue<Integer> sizeCache;
 
-    ScrollbarContent(CacheHolder<Integer> sizeCache)
+    ScrollbarContent(CacheValue<Integer> sizeCache)
     {
         this.sizeCache = sizeCache;
     }

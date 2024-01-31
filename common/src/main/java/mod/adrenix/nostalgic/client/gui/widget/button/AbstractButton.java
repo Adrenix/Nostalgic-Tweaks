@@ -14,7 +14,7 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
@@ -33,7 +33,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
 
     protected final SimpleTimer scrollTimer;
     protected final Animation scrollAnimator;
-    protected final CacheHolder<Component> cacheTitle;
+    protected final CacheValue<Component> cacheTitle;
     protected final IconManager<Button> iconManager;
     protected final Consumer<Button> onPress;
     protected boolean shrunk;
@@ -57,7 +57,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
 
         this.scrollTimer = SimpleTimer.create(1500L, TimeUnit.MILLISECONDS).waitFirst().build();
         this.scrollAnimator = Animate.linear();
-        this.cacheTitle = CacheHolder.create(this::getTitle);
+        this.cacheTitle = CacheValue.create(this::getTitle);
         this.iconManager = new IconManager<>(this.self());
         this.shrunk = builder.shrunk;
         this.onPress = onPress;

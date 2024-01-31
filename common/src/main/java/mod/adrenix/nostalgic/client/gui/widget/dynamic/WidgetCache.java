@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.dynamic;
 
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import net.minecraft.client.gui.screens.Screen;
 
 import java.util.function.Supplier;
@@ -23,24 +23,24 @@ public class WidgetCache
 
     /* Fields */
 
-    public final CacheHolder<Integer> x;
-    public final CacheHolder<Integer> y;
-    public final CacheHolder<Integer> width;
-    public final CacheHolder<Integer> height;
-    public final CacheHolder<Boolean> active;
-    public final CacheHolder<Boolean> visible;
+    public final CacheValue<Integer> x;
+    public final CacheValue<Integer> y;
+    public final CacheValue<Integer> width;
+    public final CacheValue<Integer> height;
+    public final CacheValue<Boolean> active;
+    public final CacheValue<Boolean> visible;
     public final ScreenCache screen;
 
     /* Constructor */
 
     private WidgetCache(DynamicWidget<?, ?> widget)
     {
-        this.x = CacheHolder.create(widget::getX);
-        this.y = CacheHolder.create(widget::getY);
-        this.width = CacheHolder.create(widget::getWidth);
-        this.height = CacheHolder.create(widget::getHeight);
-        this.active = CacheHolder.create(widget::isActive);
-        this.visible = CacheHolder.create(widget::isVisible);
+        this.x = CacheValue.create(widget::getX);
+        this.y = CacheValue.create(widget::getY);
+        this.width = CacheValue.create(widget::getWidth);
+        this.height = CacheValue.create(widget::getHeight);
+        this.active = CacheValue.create(widget::isActive);
+        this.visible = CacheValue.create(widget::isVisible);
         this.screen = new ScreenCache(widget);
     }
 
@@ -59,38 +59,38 @@ public class WidgetCache
 
     public boolean isAnyExpired()
     {
-        boolean isWidgetExpired = CacheHolder.isAnyExpired(this.x, this.y, this.width, this.height, this.active, this.visible);
-        boolean isScreenExpired = CacheHolder.isAnyExpired(this.screen.x, this.screen.y, this.screen.width, this.screen.height);
+        boolean isWidgetExpired = CacheValue.isAnyExpired(this.x, this.y, this.width, this.height, this.active, this.visible);
+        boolean isScreenExpired = CacheValue.isAnyExpired(this.screen.x, this.screen.y, this.screen.width, this.screen.height);
 
         return isWidgetExpired || isScreenExpired;
     }
 
-    public CacheHolder<Integer> getX()
+    public CacheValue<Integer> getX()
     {
         return this.x;
     }
 
-    public CacheHolder<Integer> getY()
+    public CacheValue<Integer> getY()
     {
         return this.y;
     }
 
-    public CacheHolder<Integer> getWidth()
+    public CacheValue<Integer> getWidth()
     {
         return this.width;
     }
 
-    public CacheHolder<Integer> getHeight()
+    public CacheValue<Integer> getHeight()
     {
         return this.height;
     }
 
-    public CacheHolder<Boolean> getActive()
+    public CacheValue<Boolean> getActive()
     {
         return this.active;
     }
 
-    public CacheHolder<Boolean> getVisible()
+    public CacheValue<Boolean> getVisible()
     {
         return this.visible;
     }
@@ -102,26 +102,26 @@ public class WidgetCache
 
     public static class ScreenCache
     {
-        public final CacheHolder<Integer> x;
-        public final CacheHolder<Integer> y;
-        public final CacheHolder<Integer> width;
-        public final CacheHolder<Integer> height;
+        public final CacheValue<Integer> x;
+        public final CacheValue<Integer> y;
+        public final CacheValue<Integer> width;
+        public final CacheValue<Integer> height;
         public final Supplier<Screen> screen;
 
         private ScreenCache(DynamicWidget<?, ?> widget)
         {
-            this.width = CacheHolder.create(widget::getScreenWidth);
-            this.height = CacheHolder.create(widget::getScreenHeight);
+            this.width = CacheValue.create(widget::getScreenWidth);
+            this.height = CacheValue.create(widget::getScreenHeight);
             this.screen = widget::getScreen;
 
-            this.x = CacheHolder.create(() -> {
+            this.x = CacheValue.create(() -> {
                 if (widget.getScreen() instanceof Overlay overlay)
                     return overlay.getInsideX();
 
                 return 0;
             });
 
-            this.y = CacheHolder.create(() -> {
+            this.y = CacheValue.create(() -> {
                 if (widget.getScreen() instanceof Overlay overlay)
                     return overlay.getInsideY();
 
@@ -137,22 +137,22 @@ public class WidgetCache
             this.height.update();
         }
 
-        public CacheHolder<Integer> getX()
+        public CacheValue<Integer> getX()
         {
             return this.x;
         }
 
-        public CacheHolder<Integer> getY()
+        public CacheValue<Integer> getY()
         {
             return this.y;
         }
 
-        public CacheHolder<Integer> getWidth()
+        public CacheValue<Integer> getWidth()
         {
             return this.width;
         }
 
-        public CacheHolder<Integer> getHeight()
+        public CacheValue<Integer> getHeight()
         {
             return this.height;
         }

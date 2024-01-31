@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.list;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.common.data.CacheHolder;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ class RowResizer<Builder extends AbstractRowMaker<Builder, Row>, Row extends Abs
 
         this.resizedCache = this.getHeight(row);
         boolean isHeightChanged = row.getHeight() != this.resizedCache;
-        boolean isCacheChanged = CacheHolder.isAnyExpired(cache.width, cache.height);
+        boolean isCacheChanged = CacheValue.isAnyExpired(cache.width, cache.height);
 
         return isHeightChanged || isCacheChanged;
     }
