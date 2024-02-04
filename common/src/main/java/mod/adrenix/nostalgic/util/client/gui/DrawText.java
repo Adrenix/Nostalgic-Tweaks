@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.client.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -273,7 +274,7 @@ public abstract class DrawText
                 this.y = (int) this.y;
 
             this.graphics.pose().pushPose();
-            this.graphics.pose().translate(this.x, this.y, 0.0F);
+            this.graphics.pose().translate(this.x, this.y, 0.03F);
 
             Font.DisplayMode mode = Font.DisplayMode.NORMAL;
             Matrix4f matrix = this.graphics.pose().last().pose();
@@ -300,7 +301,11 @@ public abstract class DrawText
             this.graphics.pose().popPose();
 
             if (!RenderUtil.isBatching())
+            {
+                RenderSystem.enableDepthTest();
                 buffer.endBatch();
+                RenderSystem.disableDepthTest();
+            }
 
             return Math.round(this.x) + textWidth;
         }

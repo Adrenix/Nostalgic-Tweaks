@@ -150,7 +150,6 @@ public class ColorSlider extends AbstractSlider<ColorSliderBuilder, ColorSlider>
                         RenderUtil.fill(graphics, i, (row - 1) * size, i + size, row * size, MathUtil.isEven(i) ? primary : secondary);
                 }
 
-                RenderUtil.setFillZOffset(1);
                 RenderUtil.fromLeftGradient(graphics, 0, 0, innerW, innerH, Color.TRANSPARENT.get(), this.color.getOpaque());
             }
         }

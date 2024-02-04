@@ -888,6 +888,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 Color cursorColor = this.getBuilder().cursorVerticalColor;
 
                 RenderUtil.deferredRenderer(() -> {
+                    RenderUtil.setFillZOffset(1);
                     RenderUtil.setRenderType(RenderType.guiOverlay());
                     RenderUtil.fill(graphics, x0, y0, x1, y1, cursorColor.get());
                 });
@@ -948,6 +949,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int y1 = maxY;
 
         RenderUtil.deferredRenderer(() -> {
+            RenderUtil.setFillZOffset(1);
             RenderUtil.setRenderType(RenderType.guiTextHighlight());
             RenderUtil.fill(graphics, x0, y0, x1, y1, 0xFF0000FF);
         });

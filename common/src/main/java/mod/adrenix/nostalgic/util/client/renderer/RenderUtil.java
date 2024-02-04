@@ -545,11 +545,15 @@ public abstract class RenderUtil
      */
     private static void draw(BufferBuilder builder)
     {
+        BufferBuilder.RenderedBuffer rendered = builder.endOrDiscardIfEmpty();
+
+        if (rendered == null)
+            return;
+
         if (renderType == null)
-            BufferUploader.drawWithShader(builder.end());
+            BufferUploader.drawWithShader(rendered);
         else
         {
-            BufferBuilder.RenderedBuffer rendered = builder.end();
             renderType.setupRenderState();
             BufferUploader.drawWithShader(rendered);
             renderType.clearRenderState();
@@ -749,12 +753,16 @@ public abstract class RenderUtil
 
         BufferBuilder builder = getTesselatorBuilder();
 
+        RenderSystem.enableDepthTest();
         endBatchingFills(builder);
         endBatchingLines(builder);
         endBatchingTextures(builder);
         endBatchingItemsQueue();
         endBatchingBlocksQueue();
+
+        RenderSystem.enableDepthTest();
         FONT_BATCH.endBatch();
+        RenderSystem.disableDepthTest();
 
         fillZOffset = 0;
         isBatching = false;
