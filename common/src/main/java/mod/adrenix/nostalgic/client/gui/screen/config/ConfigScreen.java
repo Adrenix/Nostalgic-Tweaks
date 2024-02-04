@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.GroupRow;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.RowProvider;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
+import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.container.Category;
@@ -231,8 +232,23 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
      * {@inheritDoc}
      */
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (!this.visible)
+            return false;
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY)
     {
+        if (!this.visible)
+            return false;
+
         int width = this.width;
         int height = this.configWidgets.getTabLeft().getEndY();
 
@@ -257,6 +273,8 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
             graphics.fillGradient(0, 0, this.width, this.height, 0x32101010, 0x01000000);
         else if (this.minecraft.level == null)
             Panorama.render(graphics, partialTick);
+
+        Tooltip.setVisible(this.visible);
 
         if (this.visible)
             super.render(graphics, mouseX, mouseY, partialTick);

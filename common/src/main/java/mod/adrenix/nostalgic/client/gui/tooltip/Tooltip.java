@@ -24,11 +24,22 @@ public abstract class Tooltip
 {
     private static int mouseX = -1;
     private static int mouseY = -1;
+    private static boolean visible = true;
 
     @Nullable private static LayoutElement focused = null;
     @Nullable private static Component message = null;
     @Nullable private static List<Component> info = null;
     @Nullable private static List<Component> multiline = null;
+
+    /**
+     * Change whether the tooltip can be rendered.
+     *
+     * @param state A boolean flag.
+     */
+    public static void setVisible(boolean state)
+    {
+        Tooltip.visible = state;
+    }
 
     /**
      * Manually define where the tooltip should be rendered at.
@@ -159,6 +170,9 @@ public abstract class Tooltip
      */
     public static void render(Screen screen, GuiGraphics graphics)
     {
+        if (!Tooltip.visible)
+            return;
+
         boolean isNotManager = ClassUtil.isNotInstanceOf(screen, TooltipManager.class);
 
         if (Screen.hasControlDown() || isNotManager)
