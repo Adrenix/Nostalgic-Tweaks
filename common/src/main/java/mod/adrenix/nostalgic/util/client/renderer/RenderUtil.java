@@ -778,8 +778,8 @@ public abstract class RenderUtil
     }
 
     /**
-     * Forcefully finish all batched draw calls. This should only be used as a safety measure when a render cycle ends.
-     * Always use {@link RenderUtil#endBatching()} to finish batching.
+     * Forcefully finish all batched draw calls. This is a safety measure that should be implemented when a render cycle
+     * ends. Always use {@link RenderUtil#endBatching()} to finish batching.
      *
      * @return Whether batching was flushed.
      */

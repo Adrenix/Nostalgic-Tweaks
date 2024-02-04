@@ -18,6 +18,7 @@ import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -77,6 +78,8 @@ abstract class ClientInitializer
 
         if (screen instanceof EnhancedScreen<?, ?> || screen instanceof Overlay)
             GuiUtil.renderDebug(graphics);
+
+        RenderUtil.flush();
     }
 
     /**
