@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     implements LayoutBuilder<TextBuilder, TextWidget>, VisibleBuilder<TextBuilder, TextWidget>,
-               TooltipBuilder<TextBuilder, TextWidget>
+               TooltipBuilder<TextBuilder, TextWidget>, ScaleBuilder<TextBuilder, TextWidget>
 {
     /* Fields */
 
@@ -218,6 +218,15 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
         this.useEllipsis = true;
 
         return this;
+    }
+
+    /**
+     * This is an alias method that is identical to {@link #shorten()}.
+     */
+    @PublicAPI
+    public TextBuilder ellipsis()
+    {
+        return this.shorten();
     }
 
     /**

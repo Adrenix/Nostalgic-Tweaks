@@ -109,7 +109,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
             @Override
             public boolean isReapplyNeeded(TextWidget text, TextBuilder builder, WidgetCache cache)
             {
-                return CacheValue.isAnyExpired(cache.width, this.textSupplier, this.maxEndX);
+                return cache.isScaleExpired() || CacheValue.isAnyExpired(cache.width, this.textSupplier, this.maxEndX);
             }
 
             @Override
@@ -140,17 +140,18 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
      */
     public void createMultiLine()
     {
+        int scaledIcon = Math.round(this.getIconWidth() * this.getSquareScale());
         Component component = this.getBuilder().text.get();
 
         if (this.getBuilder().useEllipsis)
-            component = TextUtil.ellipsis(GuiUtil.font()::width, component, this.getWidth());
+            component = TextUtil.ellipsis(this::getTextWidth, component, this.width - scaledIcon);
 
         Component cleaned = component.getString().contains("§") ? this.getCleanText(component) : component;
         FormattedText format = cleaned.copy().withStyle(this.formatting.toArray(ChatFormatting[]::new));
 
         if (this.getBuilder().useTextWidth)
         {
-            int maxLineWidth = format.getString().lines().mapToInt(GuiUtil.font()::width).max().orElse(0);
+            int maxLineWidth = format.getString().lines().mapToInt(this::getTextWidth).max().orElse(0);
             int maxIconWidth = this.getIconWidth();
             int maxWidth = maxLineWidth + maxIconWidth;
 
@@ -165,7 +166,18 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
             this.setWidth(maxWidth);
         }
 
-        this.setAndUpdate(MultiLineText.create(format, this.width - this.getIconWidth()));
+        this.setAndUpdate(MultiLineText.create(format, Math.round(this.width / this.getSquareScale()) - this.getIconWidth()));
+    }
+
+    /**
+     * Get the correct width of the given text. This will account for widget scaling.
+     *
+     * @param text The text to get a width amount for.
+     * @return The correct width adjusted for scale and font width.
+     */
+    public int getTextWidth(String text)
+    {
+        return Math.round(GuiUtil.font().width(text) * this.getSquareScale());
     }
 
     /**
@@ -189,7 +201,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
         if (this.iconManager.isEmpty())
             return 0;
 
-        return this.iconManager.getWidth() + this.getBuilder().iconMargin;
+        return Math.round((this.iconManager.getWidth() + this.getBuilder().iconMargin) * this.getSquareScale());
     }
 
     /**
@@ -201,7 +213,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     {
         this.text = text;
 
-        int height = this.text.getCount() * this.getBuilder().lineHeight;
+        int height = Math.round(this.text.getCount() * this.getBuilder().lineHeight * this.getSquareScale());
 
         if (this.getBuilder().isHeightOverridden() && height < this.height)
             return;
@@ -277,9 +289,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
         int lineWidth = line.getWidth();
 
         if (index == 0 && this.iconManager.isPresent())
-            lineWidth -= this.getIconWidth();
+            lineWidth -= Math.round(this.getIconWidth() / this.getSquareScale());
 
-        return (this.getWidth() / 2.0F) - lineWidth / 2.0F;
+        return (this.getWidth() / this.getSquareScale() / 2.0F) - (lineWidth / 2.0F);
     }
 
     /**
@@ -439,10 +451,12 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
 
         if (this.getBuilder().isCenterAligned)
         {
-            float centerY = MathUtil.center(this.getY(), this.text.getCount() * GuiUtil.textHeight(), this.getHeight());
+            int scaleHeight = Math.round(GuiUtil.textHeight() * this.getSquareScale());
+            float centerY = MathUtil.center(this.getY(), this.text.getCount() * scaleHeight, this.getHeight());
 
             graphics.pose().pushPose();
             graphics.pose().translate(this.getX(), centerY, 0.0F);
+            graphics.pose().scale(this.getSquareScale(), this.getSquareScale(), 1.0F);
 
             CollectionUtil.forLoop(this.text.getLines(), (line, index) -> DrawText.begin(graphics, line.getText())
                 .pos(this.getCenteredLine(line, index), index * this.getBuilder().lineHeight)
@@ -451,9 +465,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
 
             if (!this.text.getLines().isEmpty())
             {
-                int posX = (int) this.getCenteredLine(this.text.getLines().get(0), 0) - this.getIconWidth();
+                int firstLineX = (int) this.getCenteredLine(this.text.getLines().get(0), 0);
 
-                this.iconManager.pos(posX, 0);
+                this.iconManager.pos(firstLineX - Math.round(this.getIconWidth() / this.getSquareScale()), 0);
                 this.iconManager.render(graphics, mouseX, mouseY, partialTick);
             }
 
@@ -461,11 +475,17 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
         }
         else
         {
-            this.iconManager.get().pos(this.getX(), this.getY());
+            graphics.pose().pushPose();
+            graphics.pose().translate(this.getX(), this.getY(), 0.0F);
+            graphics.pose().scale(this.getSquareScale(), this.getSquareScale(), 1.0F);
+
+            this.iconManager.pos(0, 0);
             this.iconManager.render(graphics, mouseX, mouseY, partialTick);
 
+            graphics.pose().popPose();
             graphics.pose().pushPose();
             graphics.pose().translate(this.getX() + this.getIconWidth(), this.getY(), 0.0F);
+            graphics.pose().scale(this.getSquareScale(), this.getSquareScale(), 1.0F);
 
             CollectionUtil.forLoop(this.text.getLines(), (line, index) -> DrawText.begin(graphics, line.getText())
                 .posY(index * this.getBuilder().lineHeight)
@@ -479,9 +499,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
         {
             Color color = this.getBuilder().separatorColor;
             int barHeight = this.getBuilder().separatorHeight.getAsInt();
-            int textWidth = this.iconManager.getWidth() + this.text.maxWidth();
+            int textWidth = Math.round((this.iconManager.getWidth() + this.text.maxWidth()) * this.getSquareScale());
             float centerY = MathUtil.center(this.getY(), barHeight, this.getHeight());
-            float padding = 4.0F;
+            float padding = 4.0F * this.getSquareScale();
 
             if (this.getBuilder().isCenterAligned)
             {
