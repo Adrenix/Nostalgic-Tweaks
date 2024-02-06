@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Supplier;
@@ -353,6 +354,8 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
         if (this.isNotDebugging() || this.isInvisible())
             return;
 
+        final Matrix4f position = new Matrix4f(graphics.pose().last().pose());
+
         RenderUtil.deferredRenderer(() -> {
             int startX = this.x;
             int startY = this.y;
@@ -360,6 +363,8 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
             int endY = this.getEndY();
 
             graphics.pose().pushPose();
+            graphics.pose().setIdentity();
+            graphics.pose().mulPoseMatrix(position);
             graphics.pose().translate(0.0D, 0.0D, 1.0D);
 
             RenderUtil.beginBatching();
