@@ -6,8 +6,10 @@ import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
+import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.function.FloatSupplier;
+import mod.adrenix.nostalgic.util.common.function.ToFloatFunction;
 import mod.adrenix.nostalgic.util.common.timer.FlagTimer;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
@@ -198,6 +200,8 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     @Nullable protected ToIntFunction<Widget> y = null;
     @Nullable protected ToIntFunction<Widget> width = null;
     @Nullable protected ToIntFunction<Widget> height = null;
+    @Nullable protected ToFloatFunction<Widget> scaleWidth = null;
+    @Nullable protected ToFloatFunction<Widget> scaleHeight = null;
     @Nullable protected RelativeLayout relativeLayout = null;
     protected UniqueArrayList<DynamicWidget<?, ?>> followers = new UniqueArrayList<>();
     protected boolean forceRelativeX = false;
@@ -209,6 +213,22 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     protected int defaultY = 0;
     protected int defaultWidth = 20;
     protected int defaultHeight = 20;
+
+    /**
+     * @return A width scaling amount.
+     */
+    protected float getScaleWidth(Widget widget)
+    {
+        return NullableResult.getOrElse(this.scaleWidth, 1.0F, resizer -> resizer.applyAsFloat(widget));
+    }
+
+    /**
+     * @return A height scaling amount.
+     */
+    protected float getScaleHeight(Widget widget)
+    {
+        return NullableResult.getOrElse(this.scaleHeight, 1.0F, resizer -> resizer.applyAsFloat(widget));
+    }
 
     /* Builder Icons */
 
@@ -328,6 +348,8 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
         this.y = null;
         this.width = null;
         this.height = null;
+        this.scaleWidth = null;
+        this.scaleHeight = null;
         this.relativeLayout = null;
 
         this.managing.clear();

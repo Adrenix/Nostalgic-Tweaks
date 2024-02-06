@@ -930,6 +930,33 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
     }
 
     /**
+     * @return The widget's width scaling amount.
+     */
+    @PublicAPI
+    public float getScaleWidth()
+    {
+        return this.builder.getScaleWidth(this.self());
+    }
+
+    /**
+     * @return The widget's height scaling amount.
+     */
+    @PublicAPI
+    public float getScaleHeight()
+    {
+        return this.builder.getScaleHeight(this.self());
+    }
+
+    /**
+     * @return The widget's average scale size for square scaling.
+     */
+    @PublicAPI
+    public float getSquareScale()
+    {
+        return (this.getScaleWidth() + this.getScaleHeight()) / 2.0F;
+    }
+
+    /**
      * Set the {@code active} state for this widget.
      *
      * @param state The new flag state.
