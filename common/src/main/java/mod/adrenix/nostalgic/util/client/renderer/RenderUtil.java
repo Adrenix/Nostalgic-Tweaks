@@ -1138,6 +1138,52 @@ public abstract class RenderUtil
     /**
      * Draw an outline (a hollow fill algorithm).
      *
+     * @param graphics  A {@link GuiGraphics} instance.
+     * @param x0        The starting x-coordinate of the outline box.
+     * @param y0        The starting y-coordinate of the outline box.
+     * @param width     The width of the outline box.
+     * @param height    The height of the outline box.
+     * @param thickness The thickness of the outline box.
+     * @param argb      The ARGB color of the outline box.
+     */
+    @PublicAPI
+    public static void outline(GuiGraphics graphics, float x0, float y0, float width, float height, float thickness, int argb)
+    {
+        boolean notBatching = !isBatching;
+
+        if (notBatching)
+            beginBatching();
+
+        fill(graphics, x0, y0, x0 + thickness, y0 + height, argb);
+        fill(graphics, x0 + width - thickness, y0, x0 + width, y0 + height, argb);
+
+        fill(graphics, x0, y0, x0 + width, y0 + thickness, argb);
+        fill(graphics, x0, y0 + height - thickness, x0 + width, y0 + height, argb);
+
+        if (notBatching)
+            endBatching();
+    }
+
+    /**
+     * Draw an outline (a hollow fill algorithm).
+     *
+     * @param graphics  A {@link GuiGraphics} instance.
+     * @param x0        The starting x-coordinate of the outline box.
+     * @param y0        The starting y-coordinate of the outline box.
+     * @param width     The width of the outline box.
+     * @param height    The height of the outline box.
+     * @param thickness The thickness of the outline box.
+     * @param color     A {@link Color} instance.
+     */
+    @PublicAPI
+    public static void outline(GuiGraphics graphics, float x0, float y0, float width, float height, float thickness, Color color)
+    {
+        outline(graphics, x0, y0, width, height, thickness, color.get());
+    }
+
+    /**
+     * Draw an outline (a hollow fill algorithm) with a default thickness of {@code 1}.
+     *
      * @param graphics A {@link GuiGraphics} instance.
      * @param x0       The starting x-coordinate of the outline box.
      * @param y0       The starting y-coordinate of the outline box.
@@ -1148,23 +1194,11 @@ public abstract class RenderUtil
     @PublicAPI
     public static void outline(GuiGraphics graphics, float x0, float y0, float width, float height, int argb)
     {
-        boolean notBatching = !isBatching;
-
-        if (notBatching)
-            beginBatching();
-
-        vLine(graphics, x0, y0, y0 + height, argb);
-        vLine(graphics, x0 + width - 1, y0, y0 + height, argb);
-
-        hLine(graphics, x0 + 1, y0, x0 + width - 1, argb);
-        hLine(graphics, x0 + 1, y0 + height - 1, x0 + width - 1, argb);
-
-        if (notBatching)
-            endBatching();
+        outline(graphics, x0, y0, width, height, 1.0F, argb);
     }
 
     /**
-     * Draw an outline (a hollow fill algorithm).
+     * Draw an outline (a hollow fill algorithm) with a default thickness of {@code 1}.
      *
      * @param graphics A {@link GuiGraphics} instance.
      * @param x0       The starting x-coordinate of the outline box.
