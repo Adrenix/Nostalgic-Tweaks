@@ -111,6 +111,17 @@ public interface Lang
         }
     }
 
+    interface Packs
+    {
+        Translation HEADER = from("header");
+        Translation MESSAGE = from("message");
+
+        private static Translation from(String name)
+        {
+            return new Translation("gui.nostalgic_tweaks.screen.packs." + name);
+        }
+    }
+
     /**
      * Lang keys that are used by affirmation screens.
      */

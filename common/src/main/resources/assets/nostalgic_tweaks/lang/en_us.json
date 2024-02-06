@@ -24,6 +24,9 @@
   "gui.nostalgic_tweaks.screen.home.debug_switch": "Switch this toggle to the§a on§r position to activate the mod's§e debug mode§r. Extra information will be displayed in the game's console and§d debugging§r outlines will be displayed in the user interface.",
   "gui.nostalgic_tweaks.screen.home.debug_shortcut": "Debug mode can be quickly toggled with the keyboard shortcut§7 Ctrl + Shift + D§r; similarly, the framerate view shortcut is§7 Ctrl + Shift + F§r.",
 
+  "gui.nostalgic_tweaks.screen.packs.header": "§eTweak Packs §7(§dWIP§7)",
+  "gui.nostalgic_tweaks.screen.packs.message": "This mod will eventually support a \"§eTweak Pack§r\" system that will behave similar to the game's resource pack system. There is currently§c nothing§r to test at this time. Please check again in a later update.",
+
   "gui.nostalgic_tweaks.screen.affirm.quit_title": "§eUnsaved Changes",
   "gui.nostalgic_tweaks.screen.affirm.quit_body": "Are you sure you want to§c quit§r editing? Changes will§c not§r be saved!",
   "gui.nostalgic_tweaks.screen.affirm.quit_discard": "Quit & Discard Changes",
@@ -393,7 +396,7 @@
   "gui.nostalgic_tweaks.enum.generic.plain_classic": "Classic",
   "gui.nostalgic_tweaks.enum.generic.inf_dev": "Inf-Dev",
   "gui.nostalgic_tweaks.enum.menuOption.home": "Home Menu",
-  "gui.nostalgic_tweaks.enum.menuOption.packs": "Tweak Packs (§dWIP§r)",
+  "gui.nostalgic_tweaks.enum.menuOption.packs": "Tweak Packs",
   "gui.nostalgic_tweaks.enum.menuOption.config": "Config Menu",
   "gui.nostalgic_tweaks.enum.guiBackground.solid_black": "Solid Black",
   "gui.nostalgic_tweaks.enum.guiBackground.solid_blue": "Solid Blue",
