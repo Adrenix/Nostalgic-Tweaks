@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.widget.group;
 
+import mod.adrenix.nostalgic.client.gui.PaddingManager;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
@@ -13,7 +14,7 @@ import java.util.function.Supplier;
 
 public class GroupBuilder extends DynamicBuilder<GroupBuilder, Group>
     implements LayoutBuilder<GroupBuilder, Group>, ActiveBuilder<GroupBuilder, Group>,
-               VisibleBuilder<GroupBuilder, Group>
+               VisibleBuilder<GroupBuilder, Group>, PaddingManager<GroupBuilder>
 {
     /* Fields */
 
@@ -21,9 +22,17 @@ public class GroupBuilder extends DynamicBuilder<GroupBuilder, Group>
     final UniqueArrayList<DynamicWidget<?, ?>> widgets;
     Supplier<Component> groupTitle = null;
     TextureIcon icon = TextureIcon.EMPTY;
+    Color outlineColor = Color.TRANSPARENT;
+    Color backgroundColor = Color.TRANSPARENT;
     Color borderColor = Color.WHITE;
+    boolean outline = false;
     boolean border = false;
+    float outlineThickness = 2.0F;
     int bottomOffset = 0;
+    int paddingTop = 0;
+    int paddingBottom = 0;
+    int paddingLeft = 0;
+    int paddingRight = 0;
 
     /* Constructor */
 
@@ -39,6 +48,38 @@ public class GroupBuilder extends DynamicBuilder<GroupBuilder, Group>
     @Override
     public GroupBuilder self()
     {
+        return this;
+    }
+
+    @Override
+    public GroupBuilder paddingLeft(int padding)
+    {
+        this.paddingLeft = padding;
+
+        return this;
+    }
+
+    @Override
+    public GroupBuilder paddingTop(int padding)
+    {
+        this.paddingTop = padding;
+
+        return this;
+    }
+
+    @Override
+    public GroupBuilder paddingRight(int padding)
+    {
+        this.paddingRight = padding;
+
+        return this;
+    }
+
+    @Override
+    public GroupBuilder paddingBottom(int padding)
+    {
+        this.paddingBottom = padding;
+
         return this;
     }
 
@@ -73,15 +114,64 @@ public class GroupBuilder extends DynamicBuilder<GroupBuilder, Group>
     }
 
     /**
-     * Set a border around this group.
+     * Set an outline around this group. There is a difference between the group's outline and the group's border. The
+     * border embedded titles, but the outline does not. The outline allows for custom thickness, but the border does
+     * not. This will <b color=red>disable</b> any previous border options.
+     *
+     * @param color     A {@link Color} instance.
+     * @param thickness A thickness for the outline. The default value is {@code 2}.
+     */
+    @PublicAPI
+    public GroupBuilder outline(Color color, float thickness)
+    {
+        this.border = false;
+        this.outline = true;
+        this.outlineColor = color;
+        this.outlineThickness = thickness;
+
+        return this;
+    }
+
+    /**
+     * Set an outline around this group. There is a difference between the group's outline and the group's border. The
+     * border can embed titles, but the outline cannot. The outline allows for custom thickness, but the border does
+     * not. This method uses a default thickness of {@code 2}. This will <b color=red>disable</b> any previous border
+     * options.
+     *
+     * @param color A {@link Color} instance.
+     */
+    @PublicAPI
+    public GroupBuilder outline(Color color)
+    {
+        return this.outline(color, 2.0F);
+    }
+
+    /**
+     * Set a border around this group. There is a difference between the group's outline and the group's border. The
+     * border can embed titles, but the outline cannot. The outline allows for custom thickness, but the border does
+     * not. This will <b color=red>disable</b> any previous outline options.
      *
      * @param color A {@link Color} instance.
      */
     @PublicAPI
     public GroupBuilder border(Color color)
     {
+        this.outline = false;
         this.border = true;
         this.borderColor = color;
+
+        return this;
+    }
+
+    /**
+     * Set a background color for this group.
+     *
+     * @param color A {@link Color} instance.
+     */
+    @PublicAPI
+    public GroupBuilder background(Color color)
+    {
+        this.backgroundColor = color;
 
         return this;
     }

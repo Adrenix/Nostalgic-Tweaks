@@ -161,7 +161,7 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
     @PublicAPI
     public int getInsideX()
     {
-        return this.x + this.getInsidePaddingX();
+        return this.x + this.getInsidePaddingX() + this.builder.paddingLeft;
     }
 
     /**
@@ -170,7 +170,7 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
     @PublicAPI
     public int getInsideY()
     {
-        return this.y + this.getInsidePaddingY();
+        return this.y + this.getInsidePaddingY() + this.builder.paddingTop;
     }
 
     /**
@@ -179,7 +179,7 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
     @PublicAPI
     public int getInsideWidth()
     {
-        return this.width - (this.isBordered() ? 18 : 0);
+        return this.width - (this.isBordered() ? 18 : 0) - this.builder.paddingRight - this.builder.paddingLeft;
     }
 
     /**
@@ -188,7 +188,7 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
     @PublicAPI
     public int getInsideHeight()
     {
-        return this.height - (this.isBordered() ? 21 : 0);
+        return this.height - (this.isBordered() ? 21 : 0) - this.builder.paddingBottom - this.builder.paddingTop;
     }
 
     /**
@@ -238,8 +238,18 @@ public class Group extends DynamicWidget<GroupBuilder, Group> implements Relativ
         if (this.isInvisible())
             return;
 
+        if (this.builder.backgroundColor.isPresent())
+            RenderUtil.fill(graphics, this.x, this.y, this.getEndX(), this.getEndY(), this.builder.backgroundColor);
+
         if (this.isBordered())
             this.renderBorder(graphics, mouseX, mouseY, partialTick);
+        else if (this.builder.outline)
+        {
+            Color color = this.builder.outlineColor;
+            float thickness = this.builder.outlineThickness;
+
+            RenderUtil.outline(graphics, this.x, this.y, this.width, this.height, thickness, color);
+        }
         else if (this.builder.groupTitle != null)
         {
             int textX = this.x;
