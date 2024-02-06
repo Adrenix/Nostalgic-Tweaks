@@ -29,6 +29,8 @@ public class WidgetCache
     public final CacheValue<Integer> height;
     public final CacheValue<Boolean> active;
     public final CacheValue<Boolean> visible;
+    public final CacheValue<Float> scaleHeight;
+    public final CacheValue<Float> scaleWidth;
     public final ScreenCache screen;
 
     /* Constructor */
@@ -41,6 +43,8 @@ public class WidgetCache
         this.height = CacheValue.create(widget::getHeight);
         this.active = CacheValue.create(widget::isActive);
         this.visible = CacheValue.create(widget::isVisible);
+        this.scaleWidth = CacheValue.create(widget::getScaleWidth);
+        this.scaleHeight = CacheValue.create(widget::getScaleHeight);
         this.screen = new ScreenCache(widget);
     }
 
@@ -59,10 +63,15 @@ public class WidgetCache
 
     public boolean isAnyExpired()
     {
-        boolean isWidgetExpired = CacheValue.isAnyExpired(this.x, this.y, this.width, this.height, this.active, this.visible);
+        boolean isWidgetExpired = CacheValue.isAnyExpired(this.x, this.y, this.width, this.height, this.active, this.visible, this.scaleWidth, this.scaleHeight);
         boolean isScreenExpired = CacheValue.isAnyExpired(this.screen.x, this.screen.y, this.screen.width, this.screen.height);
 
         return isWidgetExpired || isScreenExpired;
+    }
+
+    public boolean isScaleExpired()
+    {
+        return this.getScaleHeight().isExpired() || this.getScaleWidth().isExpired();
     }
 
     public CacheValue<Integer> getX()
@@ -93,6 +102,16 @@ public class WidgetCache
     public CacheValue<Boolean> getVisible()
     {
         return this.visible;
+    }
+
+    public CacheValue<Float> getScaleHeight()
+    {
+        return this.scaleHeight;
+    }
+
+    public CacheValue<Float> getScaleWidth()
+    {
+        return this.scaleWidth;
     }
 
     public ScreenCache getScreen()
