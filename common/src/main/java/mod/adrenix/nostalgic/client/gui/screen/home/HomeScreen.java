@@ -4,6 +4,8 @@ import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.GearSpinner;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
+import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -65,9 +67,9 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
      * {@inheritDoc}
      */
     @Override
-    public void setWidgetManager(HomeWidgets homeWidgets)
+    public void setWidgetManager(HomeWidgets widgetManager)
     {
-        this.homeWidgets = homeWidgets;
+        this.homeWidgets = widgetManager;
     }
 
     /**
@@ -80,6 +82,18 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
 
         this.splash = HomeSplash.getInstance().get();
         this.focusFirst();
+
+        if (this.isRedirected)
+        {
+            this.isRedirected = false;
+
+            switch (ModTweak.DEFAULT_SCREEN.get())
+            {
+                case CONFIG_SCREEN -> this.minecraft.setScreen(new ConfigScreen(this));
+                case PACKS_SCREEN -> this.minecraft.setScreen(new PacksListScreen(this));
+                default -> this.minecraft.setScreen(this);
+            }
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.client.gui.screen.WidgetManager;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.DebugOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.supporter.SupporterOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.LayoutBuilder;
@@ -72,6 +73,7 @@ public class HomeWidgets implements WidgetManager
             .below(config, sectionMargin)
             .useTextWidth()
             .alignLeft(sectionOffset)
+            .onPress(() -> Minecraft.getInstance().setScreen(new PacksListScreen(this.homeScreen)))
             .backgroundRenderer(this::renderTransparent)
             .build(this.homeScreen::addWidget);
 
@@ -192,13 +194,15 @@ public class HomeWidgets implements WidgetManager
      */
     private void renderTransparent(ButtonWidget button, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        final Color bar = new Color(0xF2F2F2, 0.0F);
-        final Color fill = new Color(0x000000, 0.6F);
+        final Color bar = Color.BLACK.fromAlpha(0.0F);
+        final Color fill = Color.BLACK.fromAlpha(0.6F);
         final BufferBuilder builder = RenderUtil.getAndBeginFill();
 
         if (button.isHoveredOrFocused())
         {
-            bar.set(0xFFFF00);
+            bar.set(Color.LEMON_YELLOW);
+            bar.setAlpha(1.0F);
+
             RenderUtil.fill(builder, graphics, button.getX(), button.getY(), button.getEndX(), button.getEndY(), fill.get());
         }
 
