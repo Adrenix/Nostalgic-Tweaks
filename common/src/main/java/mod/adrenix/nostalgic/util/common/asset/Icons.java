@@ -70,7 +70,8 @@ public interface Icons
     TextureIcon EXPERIENCE = TextureIcon.create().uv(91, 231).square(12).build();
     TextureIcon BRAIN = TextureIcon.create().uv(91, 244).square(12).build();
     TextureIcon FIRE = TextureIcon.create().uv(104, 231).square(12).build();
-    TextureIcon HITBOX_OUTLINE = TextureIcon.create().uv(104, 244).square(12).build();
+    TextureIcon CUSTOM_HITBOX = TextureIcon.create().uv(130, 205).square(12).build();
+    TextureIcon HITBOX_OUTLINE = TextureIcon.create().uv(143, 205).square(12).build();
     TextureIcon HITBOX_OVERLAY = TextureIcon.create().uv(130, 218).square(12).build();
     TextureIcon PLAYER_CONTROLS = TextureIcon.create().uv(143, 218).square(12).build();
     TextureIcon COLOR_LIST = TextureIcon.create().uv(117, 218).square(12).build();
