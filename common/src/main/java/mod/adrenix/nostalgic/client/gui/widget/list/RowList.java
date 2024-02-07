@@ -177,13 +177,29 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @Override
     public void setFocused(@Nullable GuiEventListener focused)
     {
+        this.setFocused(focused, true);
+    }
+
+    /**
+     * Sets the focus state of the GUI element.
+     *
+     * @param focused           The focused GUI element.
+     * @param smoothScrollToRow Whether to smooth scroll to a focused row element.
+     */
+    @PublicAPI
+    public void setFocused(@Nullable GuiEventListener focused, boolean smoothScrollToRow)
+    {
         if (this.focusedListener != null)
             this.focusedListener.setFocused(false);
 
         if (focused instanceof AbstractRow<?, ?> row)
         {
             this.focusedRow = row;
-            this.setSmoothScrollOn(row);
+
+            if (smoothScrollToRow)
+                this.setSmoothScrollOn(row);
+            else
+                this.setScrollOn(row);
         }
         else if (focused != null)
         {
