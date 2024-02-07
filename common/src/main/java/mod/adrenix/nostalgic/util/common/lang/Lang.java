@@ -403,6 +403,7 @@ public interface Lang
         Translation ALREADY_ADDED = from("already_added");
         Translation NOTHING_FOUND = from("nothing_found");
         Translation NOTHING_SAVED = from("nothing_saved");
+        Translation INPUT_COPIED = from("input_copied");
         Translation EMPTY_FAVORITES = from("empty_favorites");
 
         private static Translation from(String name)

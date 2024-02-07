@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -17,21 +18,26 @@ public class StringOverlay<V, L extends Listing<V, L>>
     /* Fields */
 
     private final Listing<V, L> listing;
-    private final Consumer<String> onStringAdd;
-    private final Runnable onEmptyAdd;
+    private final Consumer<String> onFinish;
+    private final Runnable onEmpty;
+    private final V startWith;
     final ButtonWidget done;
     final GenericInput input;
     final Overlay overlay;
 
-    /* Constructor */
+    /* Constructors */
 
-    public StringOverlay(Listing<V, L> listing, Runnable onEmptyAdd, Consumer<String> onStringAdd)
+    /**
+     * Create a new {@link StringOverlay} with an input box that starts with the given input.
+     */
+    public StringOverlay(Listing<V, L> listing, Runnable onEmpty, Consumer<String> onFinish, @Nullable V startWith)
     {
         int padding = 2;
 
         this.listing = listing;
-        this.onEmptyAdd = onEmptyAdd;
-        this.onStringAdd = onStringAdd;
+        this.onEmpty = onEmpty;
+        this.onFinish = onFinish;
+        this.startWith = startWith;
 
         this.overlay = Overlay.create(Lang.Listing.ADD)
             .onClose(this::close)
@@ -42,6 +48,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
             .build();
 
         this.input = GenericInput.create()
+            .startWith(startWith == null ? "" : String.valueOf(startWith))
             .whenEmpty(Lang.Input.TYPE)
             .background(Color.BLACK, Color.INK_BLACK)
             .border(this::getUnfocusedColor, this::getFocusedColor)
@@ -50,6 +57,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
             .build(this.overlay::addWidget);
 
         this.done = ButtonWidget.create(Lang.Vanilla.GUI_DONE)
+            .disableIf(this::isInputAdded)
             .onPress(this.overlay::close)
             .below(this.input, padding)
             .icon(Icons.GREEN_CHECK)
@@ -57,6 +65,15 @@ public class StringOverlay<V, L extends Listing<V, L>>
             .build(this.overlay::addWidget);
 
         this.overlay.setFocused(this.input);
+        this.input.moveCursorToEnd(false);
+    }
+
+    /**
+     * Create a new {@link StringOverlay} with an empty input box.
+     */
+    public StringOverlay(Listing<V, L> listing, Runnable onEmpty, Consumer<String> onFinish)
+    {
+        this(listing, onEmpty, onFinish, null);
     }
 
     /* Methods */
@@ -74,10 +91,22 @@ public class StringOverlay<V, L extends Listing<V, L>>
      */
     private void close()
     {
-        if (this.input.getInput().isEmpty() || this.input.getInput().isBlank())
-            this.onEmptyAdd.run();
+        String input = this.input.getInput();
+
+        if (this.isInputAdded() || input.isEmpty() || input.isBlank())
+            this.onEmpty.run();
         else
-            this.onStringAdd.accept(this.input.getInput());
+            this.onFinish.accept(input);
+    }
+
+    /**
+     * @return Whether the current input is already added to the string listing.
+     */
+    private boolean isInputAdded()
+    {
+        String input = this.input.getInput();
+
+        return !input.equals(this.startWith) && this.listing.containsKey(input);
     }
 
     /**
@@ -88,7 +117,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
         if (this.input == null)
             return 0;
 
-        return this.listing.containsKey(this.input.getInput()) ? Color.RED.get() : Color.GRAY.get();
+        return this.isInputAdded() ? Color.RED.get() : Color.GRAY.get();
     }
 
     /**
@@ -99,7 +128,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
         if (this.input == null)
             return 0;
 
-        return this.listing.containsKey(this.input.getInput()) ? Color.RED.get() : Color.WHITE.get();
+        return this.isInputAdded() ? Color.RED.get() : Color.WHITE.get();
     }
 
     /**
@@ -127,9 +156,6 @@ public class StringOverlay<V, L extends Listing<V, L>>
      */
     private Component getTooltip()
     {
-        if (!this.listing.containsKey(this.input.getInput()))
-            return Component.empty();
-
-        return Lang.Listing.ALREADY_ADDED.get(this.input.getInput());
+        return this.isInputAdded() ? Lang.Listing.INPUT_COPIED.get() : Component.empty();
     }
 }

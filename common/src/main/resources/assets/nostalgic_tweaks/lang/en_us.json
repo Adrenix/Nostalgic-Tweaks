@@ -199,6 +199,7 @@
   "gui.nostalgic_tweaks.listing.already_added": "§e%s§r is already in the list.",
   "gui.nostalgic_tweaks.listing.nothing_found": "Nothing was found using the given search query.",
   "gui.nostalgic_tweaks.listing.nothing_saved": "Nothing is saved in this list.",
+  "gui.nostalgic_tweaks.listing.input_copied": "This is already in the list.",
   "gui.nostalgic_tweaks.listing.empty_favorites": "Nothing is saved in the favorites list.",
   "gui.nostalgic_tweaks.listing.invalid_message": "This list is using a class type that is currently§c not§r supported. Only a§e mod developer§r can add support.",
   "gui.nostalgic_tweaks.listing.invalid_type": "Invalid Type",

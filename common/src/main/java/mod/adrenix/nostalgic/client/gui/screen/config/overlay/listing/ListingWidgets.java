@@ -208,9 +208,10 @@ public class ListingWidgets<V, L extends Listing<V, L>>
     /**
      * Find and highlight a row from the given string.
      *
-     * @param string A string to find within a map's keys or a set's elements.
+     * @param string       A string to find within a map's keys or a set's elements.
+     * @param smoothScroll Whether to smoothly scroll to the highlighted.
      */
-    public void findAndHighlight(String string)
+    public void findAndHighlight(String string, boolean smoothScroll)
     {
         AbstractRow<?, ?> row = this.database.getFromDatabase(string);
 
@@ -219,7 +220,18 @@ public class ListingWidgets<V, L extends Listing<V, L>>
         else
             this.highlighted = row;
 
-        this.rowList.setFocused(row);
+        this.rowList.setFocused(row, smoothScroll);
+    }
+
+    /**
+     * Find and highlight a row from the given string. This will smoothly scroll to the highlighted row. If this is not
+     * desired, then use {@link #findAndHighlight(String, boolean)}.
+     *
+     * @param string A string to find within a map's keys or a set's elements.
+     */
+    public void findAndHighlight(String string)
+    {
+        this.findAndHighlight(string, true);
     }
 
     /**
