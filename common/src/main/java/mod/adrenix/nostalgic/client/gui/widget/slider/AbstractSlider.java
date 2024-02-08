@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.widget.slider;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.widget.WidgetBackground;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
@@ -18,7 +19,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -324,8 +324,8 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
 
         return switch (keyCode)
         {
-            case GLFW.GLFW_KEY_D -> this.mouseScrolled(this.x, this.y, 0.0D, 1.0D);
-            case GLFW.GLFW_KEY_A -> this.mouseScrolled(this.x, this.y, 0.0D, -1.0D);
+            case InputConstants.KEY_D -> this.mouseScrolled(this.x, this.y, 0.0D, 1.0D);
+            case InputConstants.KEY_A -> this.mouseScrolled(this.x, this.y, 0.0D, -1.0D);
             default -> false;
         };
     }

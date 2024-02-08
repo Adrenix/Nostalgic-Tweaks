@@ -1,19 +1,17 @@
 package mod.adrenix.nostalgic.util.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Utility class for the keyboard and the mod's key mappings.
- */
 public abstract class KeyboardUtil
 {
     /* Key Press Helpers */
@@ -21,42 +19,34 @@ public abstract class KeyboardUtil
     /**
      * @return Checks if the shift, ctrl, or alt key is held down.
      */
+    @PublicAPI
     public static boolean isModifierDown()
     {
         return Screen.hasShiftDown() || Screen.hasControlDown() || Screen.hasAltDown();
     }
 
     /**
-     * A key combination for paging right.
+     * A key combination for moving right.
      *
      * @param key A pressed key.
      * @return Whether the ctrl or alt key is held down, and the right arrow key is pressed.
      */
+    @PublicAPI
     public static boolean isGoingRight(int key)
     {
-        return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_RIGHT;
+        return (Screen.hasControlDown() || Screen.hasAltDown()) && key == InputConstants.KEY_RIGHT;
     }
 
     /**
-     * A key combination for paging left.
+     * A key combination for moving left.
      *
      * @param key A pressed key.
      * @return Whether the ctrl or alt key is held down and the left arrow key is pressed.
      */
+    @PublicAPI
     public static boolean isGoingLeft(int key)
     {
-        return (Screen.hasControlDown() || Screen.hasAltDown()) && key == GLFW.GLFW_KEY_LEFT;
-    }
-
-    /**
-     * Checks if the given key code is a left arrow key or right arrow key.
-     *
-     * @param key A pressed key.
-     * @return Whether the left or right arrow key is pressed.
-     */
-    public static boolean isLeftOrRight(int key)
-    {
-        return key == GLFW.GLFW_KEY_LEFT || key == GLFW.GLFW_KEY_RIGHT;
+        return (Screen.hasControlDown() || Screen.hasAltDown()) && key == InputConstants.KEY_LEFT;
     }
 
     /**
@@ -65,9 +55,10 @@ public abstract class KeyboardUtil
      * @param key A pressed key.
      * @return Whether the ctrl key is held down and the F key is pressed.
      */
+    @PublicAPI
     public static boolean isSearching(int key)
     {
-        return Screen.hasControlDown() && key == GLFW.GLFW_KEY_F;
+        return Screen.hasControlDown() && key == InputConstants.KEY_F;
     }
 
     /**
@@ -76,9 +67,10 @@ public abstract class KeyboardUtil
      * @param key A pressed key.
      * @return Whether the ctrl key is held down and the S key is pressed.
      */
+    @PublicAPI
     public static boolean isSaving(int key)
     {
-        return Screen.hasControlDown() && key == GLFW.GLFW_KEY_S;
+        return Screen.hasControlDown() && key == InputConstants.KEY_S;
     }
 
     /**
@@ -87,9 +79,10 @@ public abstract class KeyboardUtil
      * @param key A pressed key.
      * @return Whether the ctrl key is held down and the A key is pressed.
      */
+    @PublicAPI
     public static boolean isSelectAll(int key)
     {
-        return Screen.hasControlDown() && key == GLFW.GLFW_KEY_A;
+        return Screen.hasControlDown() && key == InputConstants.KEY_A;
     }
 
     /**
@@ -98,11 +91,12 @@ public abstract class KeyboardUtil
      *
      * @param key A pressed key.
      * @return Whether the number pad enter key, space key, or keyboard enter key is pressed.
-     * @see #isOnlyEnter(int)
+     * @see #isReturnOrEnter(int)
      */
-    public static boolean isEnter(int key)
+    @PublicAPI
+    public static boolean isEnterLike(int key)
     {
-        return key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER || key == GLFW.GLFW_KEY_SPACE;
+        return key == InputConstants.KEY_RETURN || key == InputConstants.KEY_NUMPADENTER || key == InputConstants.KEY_SPACE;
     }
 
     /**
@@ -111,11 +105,12 @@ public abstract class KeyboardUtil
      *
      * @param key A pressed key.
      * @return Whether the number pad enter key or keyboard enter key is pressed.
-     * @see #isEnter(int)
+     * @see #isEnterLike(int)
      */
-    public static boolean isOnlyEnter(int key)
+    @PublicAPI
+    public static boolean isReturnOrEnter(int key)
     {
-        return key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER;
+        return key == InputConstants.KEY_RETURN || key == InputConstants.KEY_NUMPADENTER;
     }
 
     /**
@@ -124,9 +119,10 @@ public abstract class KeyboardUtil
      * @param key A pressed key.
      * @return Whether the Tab key was pressed.
      */
+    @PublicAPI
     public static boolean isTab(int key)
     {
-        return key == GLFW.GLFW_KEY_TAB;
+        return key == InputConstants.KEY_TAB;
     }
 
     /**
@@ -135,9 +131,10 @@ public abstract class KeyboardUtil
      * @param key A pressed key.
      * @return Whether the Esc key was pressed.
      */
+    @PublicAPI
     public static boolean isEsc(int key)
     {
-        return key == GLFW.GLFW_KEY_ESCAPE;
+        return key == InputConstants.KEY_ESCAPE;
     }
 
     /**
@@ -147,6 +144,7 @@ public abstract class KeyboardUtil
      * @param keys    A varargs list of keys to check.
      * @return Whether any of the given keys matched the given key code.
      */
+    @PublicAPI
     public static boolean match(int keyCode, int... keys)
     {
         return Arrays.stream(keys).anyMatch(key -> key == keyCode);
@@ -166,6 +164,7 @@ public abstract class KeyboardUtil
      * @param langKey The key to search for in the game's key mappings.
      * @return A key mapping if one was found.
      */
+    @PublicAPI
     public static Optional<KeyMapping> find(String langKey)
     {
         KeyMapping cache = MAPPING_CACHE.get(langKey);
@@ -193,6 +192,7 @@ public abstract class KeyboardUtil
      * @param langKey A {@link Translation} instance.
      * @return A key mapping if one was found.
      */
+    @PublicAPI
     public static Optional<KeyMapping> find(Translation langKey)
     {
         return find(langKey.langKey());
@@ -204,6 +204,7 @@ public abstract class KeyboardUtil
      * @param mapping A key mapping instance.
      * @return Whether the key mapping conflicts with another key mapping.
      */
+    @PublicAPI
     public static boolean isMappingConflict(KeyMapping mapping)
     {
         if (!mapping.isUnbound())

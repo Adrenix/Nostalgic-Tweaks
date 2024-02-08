@@ -325,7 +325,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
         if (this.holding)
             return true;
 
-        if (KeyboardUtil.isEnter(keyCode))
+        if (KeyboardUtil.isEnterLike(keyCode))
         {
             if (this.getBuilder().holdTimer != null)
             {
@@ -368,7 +368,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
             return false;
         }
 
-        if (KeyboardUtil.isEnter(keyCode) && this.getBuilder().holdTimer != null)
+        if (KeyboardUtil.isEnterLike(keyCode) && this.getBuilder().holdTimer != null)
         {
             ClientTimer.getInstance().cancel(this.getBuilder().holdTimer);
 

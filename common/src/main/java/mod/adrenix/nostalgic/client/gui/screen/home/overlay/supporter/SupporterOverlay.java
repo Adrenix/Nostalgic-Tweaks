@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.home.overlay.supporter;
 
 import com.google.gson.Gson;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
@@ -20,7 +21,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -120,7 +120,7 @@ public class SupporterOverlay
      */
     private boolean keyPressed(Overlay overlay, int keyCode, int scanCode, int modifiers)
     {
-        if (NostalgicTweaks.isDeveloping() && Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_I)
+        if (NostalgicTweaks.isDeveloping() && Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_I)
         {
             this.clearAndReconnect();
             return true;

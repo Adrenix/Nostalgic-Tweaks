@@ -320,7 +320,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (KeyboardUtil.isEnter(keyCode) && this.isFocused() && this.getBuilder().onPress != null)
+        if (KeyboardUtil.isEnterLike(keyCode) && this.isFocused() && this.getBuilder().onPress != null)
         {
             if (this.getBuilder().useClickSound)
                 GuiUtil.playClick();

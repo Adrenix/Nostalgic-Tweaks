@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.overlay;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageOverlay;
@@ -34,7 +35,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Optional;
@@ -1243,19 +1243,19 @@ public class Overlay extends Screen
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_D)
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_D)
         {
             NostalgicTweaks.LOGGER.setDebug();
             return true;
         }
 
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_T)
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_T)
         {
             Minecraft.getInstance().reloadResourcePacks();
             return true;
         }
 
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_F)
+        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_F)
         {
             GuiUtil.toggleShowFps();
             return true;

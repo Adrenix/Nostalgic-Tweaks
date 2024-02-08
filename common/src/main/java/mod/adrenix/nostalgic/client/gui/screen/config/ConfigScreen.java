@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.screen.config;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
@@ -24,7 +25,6 @@ import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -207,16 +207,16 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
         if (super.keyPressed(keyCode, scanCode, modifiers))
             return true;
 
-        if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_Q)
+        if (Screen.hasControlDown() && keyCode == InputConstants.KEY_Q)
             this.configWidgets.getFavorite().onPress();
 
-        if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_A)
+        if (Screen.hasControlDown() && keyCode == InputConstants.KEY_A)
             this.configWidgets.getAll().onPress();
 
-        if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_S)
+        if (Screen.hasControlDown() && keyCode == InputConstants.KEY_S)
             this.saveConfig();
 
-        if (Screen.hasControlDown() && keyCode == GLFW.GLFW_KEY_L)
+        if (Screen.hasControlDown() && keyCode == InputConstants.KEY_L)
             this.visible = !this.visible;
 
         if (KeyboardUtil.isGoingLeft(keyCode))

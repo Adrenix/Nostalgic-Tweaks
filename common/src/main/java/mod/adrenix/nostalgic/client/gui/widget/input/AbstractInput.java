@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.widget.input;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import mod.adrenix.nostalgic.client.gui.tooltip.TooltipManager;
 import mod.adrenix.nostalgic.client.gui.widget.blank.BlankWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
@@ -27,7 +28,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.TimeUnit;
 
@@ -743,7 +743,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
         return switch (keyCode)
         {
-            case GLFW.GLFW_KEY_LEFT ->
+            case InputConstants.KEY_LEFT ->
             {
                 if (this.cursorPos == this.minCursorPos)
                     yield false;
@@ -756,7 +756,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 yield true;
             }
 
-            case GLFW.GLFW_KEY_RIGHT ->
+            case InputConstants.KEY_RIGHT ->
             {
                 if (this.cursorPos == this.input.length())
                     yield false;
@@ -769,7 +769,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 yield true;
             }
 
-            case GLFW.GLFW_KEY_BACKSPACE ->
+            case InputConstants.KEY_BACKSPACE ->
             {
                 if (this.editable)
                     this.deleteText(-1);
@@ -777,7 +777,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 yield true;
             }
 
-            case GLFW.GLFW_KEY_DELETE ->
+            case InputConstants.KEY_DELETE ->
             {
                 if (this.editable)
                     this.deleteText(1);
@@ -785,13 +785,13 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 yield true;
             }
 
-            case GLFW.GLFW_KEY_HOME ->
+            case InputConstants.KEY_HOME ->
             {
                 this.moveCursorToStart(Screen.hasShiftDown());
                 yield true;
             }
 
-            case GLFW.GLFW_KEY_END ->
+            case InputConstants.KEY_END ->
             {
                 this.moveCursorToEnd(Screen.hasShiftDown());
                 yield true;

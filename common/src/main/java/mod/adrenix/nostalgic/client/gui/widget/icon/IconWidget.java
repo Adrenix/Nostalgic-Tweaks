@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.widget.icon;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.IconManager;
@@ -12,7 +13,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import org.joml.Matrix4f;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Supplier;
 
@@ -186,7 +186,7 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        boolean isHandled = KeyboardUtil.isEnter(keyCode) || KeyboardUtil.match(keyCode, GLFW.GLFW_KEY_SPACE);
+        boolean isHandled = KeyboardUtil.isEnterLike(keyCode) || KeyboardUtil.match(keyCode, InputConstants.KEY_SPACE);
 
         if (this.isFocused() && isHandled && this.onPress != null)
         {

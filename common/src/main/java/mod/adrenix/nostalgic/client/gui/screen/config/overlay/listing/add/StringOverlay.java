@@ -142,7 +142,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
      */
     private boolean onKeyPressed(Overlay overlay, int keyCode, int scanCode, int modifiers)
     {
-        if (KeyboardUtil.isOnlyEnter(keyCode))
+        if (KeyboardUtil.isReturnOrEnter(keyCode))
         {
             this.overlay.close();
             return true;
