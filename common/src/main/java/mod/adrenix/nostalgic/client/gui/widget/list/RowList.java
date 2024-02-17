@@ -1006,10 +1006,8 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             RenderUtil.endTexture(builder);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-            RenderUtil.beginBatching();
             RenderUtil.fromTopGradient(graphics, x0, y0, x1, y0 + 4, Color.BLACK, Color.BLACK.fromAlpha(0));
             RenderUtil.fromTopGradient(graphics, x0, y1 - 4, x1, y1, Color.BLACK.fromAlpha(0), Color.BLACK);
-            RenderUtil.endBatching();
         }
 
         DynamicWidget.renderWithoutSync(this.internal, graphics, mouseX, mouseY, partialTick);
