@@ -8,10 +8,7 @@ import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageType;
 import mod.adrenix.nostalgic.client.gui.screen.ParentHolder;
 import mod.adrenix.nostalgic.client.gui.tooltip.TooltipManager;
 import mod.adrenix.nostalgic.client.gui.widget.blank.BlankWidget;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.LayoutBuilder;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.RelativeLayout;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
+import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.scrollbar.Scrollbar;
@@ -25,6 +22,7 @@ import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.math.DynamicRectangle;
@@ -1319,6 +1317,42 @@ public class Overlay extends Screen
     }
 
     /**
+     * Resize the overlay window if a change in the widget's width/height is detected.
+     */
+    public void resizeIfNeeded()
+    {
+        boolean isResized = false;
+
+        if (this.builder.resizeWidthForWidgets || this.builder.resizeForWidgets)
+        {
+            boolean isWidthChanged = this.widgets.external.stream()
+                .map(DynamicWidget::getCache)
+                .map(WidgetCache::getWidth)
+                .anyMatch(CacheValue::isExpired);
+
+            if (isWidthChanged)
+                isResized = true;
+        }
+
+        if (this.builder.resizeHeightForWidgets || this.builder.resizeForWidgets)
+        {
+            boolean isHeightChanged = this.widgets.external.stream()
+                .map(DynamicWidget::getCache)
+                .map(WidgetCache::getHeight)
+                .anyMatch(CacheValue::isExpired);
+
+            if (isHeightChanged)
+                isResized = true;
+        }
+
+        if (isResized)
+        {
+            this.syncBeforeRender();
+            this.updateSize();
+        }
+    }
+
+    /**
      * Updates the overlay's x/y position based on the builder's x/y suppliers if any are present. This method will
      * update the overlay if it is needed.
      */
@@ -1351,22 +1385,19 @@ public class Overlay extends Screen
             if (yBelow + this.height >= scaledHeight - 1)
                 belowDiff = Math.abs((yBelow + this.height) - (scaledHeight - 1));
 
-            if (this.y != yAbove && this.y != yBelow)
-            {
-                boolean isAboveOrBelow = !this.builder.onlyAbove && !this.builder.onlyBelow;
+            boolean isAboveOrBelow = !this.builder.onlyAbove && !this.builder.onlyBelow;
 
-                if (isAboveOrBelow)
-                    this.y = this.builder.aboveOrBelow.getY() > scaledHeight / 2 ? yAbove : yBelow;
-                else if (this.builder.onlyAbove)
-                    this.y = yAbove;
-                else
-                    this.y = yBelow;
+            if (isAboveOrBelow)
+                this.y = this.builder.aboveOrBelow.getY() > scaledHeight / 2 ? yAbove : yBelow;
+            else if (this.builder.onlyAbove)
+                this.y = yAbove;
+            else
+                this.y = yBelow;
 
-                if (this.y == yAbove && isAboveOrBelow)
-                    this.height -= aboveDiff;
-                else if (this.y == yBelow && isAboveOrBelow)
-                    this.height -= belowDiff;
-            }
+            if (this.y == yAbove && isAboveOrBelow)
+                this.height -= aboveDiff;
+            else if (this.y == yBelow && isAboveOrBelow)
+                this.height -= belowDiff;
         }
     }
 
@@ -1452,6 +1483,8 @@ public class Overlay extends Screen
     {
         int winWidth = GuiUtil.getGuiWidth();
         int winHeight = GuiUtil.getGuiHeight();
+
+        this.resizeIfNeeded();
 
         RenderUtil.beginBatching();
 
@@ -1576,29 +1609,29 @@ public class Overlay extends Screen
      */
     private void resizeWithPercentage()
     {
-        if (this.builder.resizeUsingPercentage)
-        {
-            if (this.builder.resizeWidthPercentage.getAsDouble() > 0.0D)
-                this.width = (int) Math.round(this.parentScreen.width * this.builder.resizeWidthPercentage.getAsDouble());
+        if (!this.builder.resizeUsingPercentage)
+            return;
 
-            if (this.builder.resizeHeightPercentage.getAsDouble() > 0.0D)
-                this.height = (int) Math.round(this.parentScreen.height * this.builder.resizeHeightPercentage.getAsDouble());
+        if (this.builder.resizeWidthPercentage.getAsDouble() > 0.0D)
+            this.width = (int) Math.round(this.parentScreen.width * this.builder.resizeWidthPercentage.getAsDouble());
 
-            if (this.builder.resizeWidthMaximum > 0)
-                this.width = Math.min(this.width, this.builder.resizeWidthMaximum);
+        if (this.builder.resizeHeightPercentage.getAsDouble() > 0.0D)
+            this.height = (int) Math.round(this.parentScreen.height * this.builder.resizeHeightPercentage.getAsDouble());
 
-            if (this.builder.resizeHeightMaximum > 0)
-                this.height = Math.min(this.height, this.builder.resizeHeightMaximum);
+        if (this.builder.resizeWidthMaximum > 0)
+            this.width = Math.min(this.width, this.builder.resizeWidthMaximum);
 
-            if (this.width < this.builder.minWidth)
-                this.width = this.builder.minWidth;
+        if (this.builder.resizeHeightMaximum > 0)
+            this.height = Math.min(this.height, this.builder.resizeHeightMaximum);
 
-            if (this.height < this.builder.minHeight)
-                this.height = this.builder.minHeight;
+        if (this.width < this.builder.minWidth)
+            this.width = this.builder.minWidth;
 
-            this.x = MathUtil.center(this.width, GuiUtil.getGuiWidth());
-            this.y = MathUtil.center(this.height, GuiUtil.getGuiHeight());
-        }
+        if (this.height < this.builder.minHeight)
+            this.height = this.builder.minHeight;
+
+        this.x = MathUtil.center(this.width, GuiUtil.getGuiWidth());
+        this.y = MathUtil.center(this.height, GuiUtil.getGuiHeight());
     }
 
     /**
