@@ -1,14 +1,12 @@
 package mod.adrenix.nostalgic.util.client.search;
 
 import mod.adrenix.nostalgic.util.client.search.algorithm.NormalizedLevenshtein;
+import mod.adrenix.nostalgic.util.common.ThreadMaker;
 import net.minecraft.Util;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 public class LevenshteinResult<T>
 {
@@ -53,35 +51,57 @@ public class LevenshteinResult<T>
      */
     public List<Map.Entry<T, Double>> apply(String query)
     {
-        HashMap<T, Double> results = new HashMap<>();
+        int sizeOfMap = this.map.values().size();
+        boolean isEmpty = query.isEmpty() || query.isBlank();
 
-        if (query.isEmpty() || query.isBlank())
+        ArrayList<Map.Entry<T, Double>> results = new ArrayList<>(sizeOfMap);
+        HashMap<Map.Entry<T, Double>, String> pointers = new HashMap<>(sizeOfMap);
+
+        Consumer<Map.Entry<T, Double>> processor = (entry) -> {
+            double levenshtein = NormalizedLevenshtein.get(pointers.get(entry), query);
+
+            if (levenshtein >= this.threshold)
+                entry.setValue(levenshtein);
+            else
+                entry.setValue(-1.0D);
+        };
+
+        this.map.forEach((key, value) -> {
+            Map.Entry<T, Double> entry = new AbstractMap.SimpleEntry<>(value, 1.0D);
+
+            results.add(entry);
+            pointers.put(entry, key);
+        });
+
+        if (isEmpty)
+            return results;
+
+        if (sizeOfMap > 1000)
         {
-            this.map.values()
-                .stream()
-                .map(value -> Map.entry(value, 1.0D))
-                .forEach(entry -> results.put(entry.getKey(), entry.getValue()));
+            HashSet<CompletableFuture<Void>> processes = new HashSet<>();
+            int numberOfProcessors = ThreadMaker.getNumberOfProcessors();
+            int chunkSize = sizeOfMap / numberOfProcessors;
+            int leftOver = sizeOfMap % numberOfProcessors;
+
+            for (int i = 0; i < numberOfProcessors; i++)
+            {
+                final int startIndex = (i * chunkSize);
+                final int endIndex = startIndex + chunkSize + (i == numberOfProcessors - 1 ? leftOver : 0);
+
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> results.subList(startIndex, endIndex)
+                    .forEach(processor), Util.backgroundExecutor());
+
+                processes.add(future);
+            }
+
+            processes.forEach(CompletableFuture::join);
         }
         else
-        {
-            this.map.entrySet().stream().map(entry -> CompletableFuture.supplyAsync(() -> {
-                double levenshtein = NormalizedLevenshtein.get(entry.getKey(), query);
+            results.forEach(processor);
 
-                if (levenshtein >= this.threshold)
-                    return Map.entry(entry.getValue(), levenshtein);
+        results.removeIf(entry -> entry.getValue() < 0.0D);
+        results.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 
-                return null;
-            }, Util.backgroundExecutor())).toList().stream().map(CompletableFuture::join).forEach(entry -> {
-                if (entry == null)
-                    return;
-
-                results.put(entry.getKey(), entry.getValue());
-            });
-        }
-
-        return results.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toList());
+        return results;
     }
 }

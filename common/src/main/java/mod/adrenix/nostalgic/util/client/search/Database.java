@@ -27,6 +27,12 @@ abstract class Database<T> implements LevenshteinDatabase<T>
     }
 
     @Override
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
+
+    @Override
     public LevenshteinResult<T> levenshtein()
     {
         LanguageInfo language = this.getLanguage();

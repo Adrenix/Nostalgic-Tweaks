@@ -56,6 +56,8 @@ public class TweakDatabase extends Database<Tweak<?>>
     public List<Map.Entry<Tweak<?>, Double>> findEntries(String query, double threshold)
     {
         this.lastQuery = query;
+        double cacheThreshold = this.threshold;
+
         this.setThreshold(threshold);
 
         String trimmed = query.toLowerCase().replaceFirst("#\\w+", "").trim();
@@ -63,6 +65,8 @@ public class TweakDatabase extends Database<Tweak<?>>
 
         if (trimmed.isEmpty() || trimmed.isBlank())
             results.sort(Map.Entry.comparingByKey(Tweak::compareTranslationName));
+
+        this.setThreshold(cacheThreshold);
 
         return results;
     }

@@ -1,5 +1,8 @@
 package mod.adrenix.nostalgic.util.common;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import net.minecraft.util.Mth;
+
 /**
  * Simple wrapper utility that reduces the overhead of creating a new thread.
  */
@@ -50,5 +53,35 @@ public abstract class ThreadMaker
                 }
             }
         };
+    }
+
+    /**
+     * Get the number of processors available. This value will be between 1 and 255 inclusive.
+     *
+     * @return Get the maximum number of processors available to the Java virtual machine.
+     */
+    public static int getNumberOfProcessors()
+    {
+        String propertyMaxThreads = System.getProperty("max.bg.threads");
+        int maxThreads = 255;
+
+        if (propertyMaxThreads != null)
+        {
+            try
+            {
+                int parsedProperty = Integer.parseInt(propertyMaxThreads);
+
+                if (parsedProperty >= 1 && parsedProperty <= 255)
+                    maxThreads = parsedProperty;
+
+                NostalgicTweaks.LOGGER.error("Wrong %s property value '%s'. Should be an integer value between 1 and %s.", "max.bg.threads", propertyMaxThreads, 255);
+            }
+            catch (NumberFormatException exception)
+            {
+                NostalgicTweaks.LOGGER.error("Could not parse %s property value '%s'. Should be an integer value between 1 and %s.", "max.bg.threads", propertyMaxThreads, 255);
+            }
+        }
+
+        return Mth.clamp(Runtime.getRuntime().availableProcessors() - 1, 1, maxThreads);
     }
 }

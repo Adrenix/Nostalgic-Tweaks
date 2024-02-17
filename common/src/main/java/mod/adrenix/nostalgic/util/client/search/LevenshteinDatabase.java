@@ -16,9 +16,13 @@ interface LevenshteinDatabase<T>
      */
     default List<Map.Entry<T, Double>> findEntries(String query, double threshold)
     {
+        double cacheThreshold = this.getThreshold();
         this.setThreshold(threshold);
 
-        return this.levenshtein().apply(query.toLowerCase().trim());
+        List<Map.Entry<T, Double>> entries = this.levenshtein().apply(query.toLowerCase().trim());
+        this.setThreshold(cacheThreshold);
+
+        return entries;
     }
 
     /**
@@ -74,6 +78,11 @@ interface LevenshteinDatabase<T>
      * @param threshold A normalized threshold that is between 0.0 and 1.0.
      */
     void setThreshold(double threshold);
+
+    /**
+     * @return The current threshold of the database.
+     */
+    double getThreshold();
 
     /**
      * This will reset a {@link LevenshteinDatabase}'s {@link Map} of cached strings to use for lookup. Use case is for
