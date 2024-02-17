@@ -22,6 +22,8 @@ class ValueSync<Builder extends AbstractSliderMaker<Builder, Slider>, Slider ext
     {
         slider.setValue(slider.getValue());
         slider.applyTitle();
+
+        this.value.update();
     }
 
     @Override
