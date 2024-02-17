@@ -147,10 +147,14 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     protected void applyValue()
     {
         Number numberValue = this.builder.maxValue;
+        double sliderValue = this.getMin() + Math.abs(this.getMax() - this.getMin()) * this.value;
 
-        double sliderValue = BigDecimal.valueOf(this.getMin() + Math.abs(this.getMax() - this.getMin()) * this.value)
-            .setScale(this.builder.roundTo, RoundingMode.HALF_UP)
-            .doubleValue();
+        if (this.builder.useRounding)
+        {
+            sliderValue = BigDecimal.valueOf(this.getMin() + Math.abs(this.getMax() - this.getMin()) * this.value)
+                .setScale(this.builder.roundTo, RoundingMode.HALF_UP)
+                .doubleValue();
+        }
 
         if (numberValue instanceof Byte)
             this.builder.valueConsumer.accept((byte) Math.round(sliderValue));

@@ -27,6 +27,7 @@ public abstract class AbstractSliderMaker<Builder extends AbstractSliderMaker<Bu
     @Nullable protected SliderRenderer<Builder, Slider> handleRenderer = null;
     @Nullable protected Supplier<Number> interval = null;
     protected int roundTo = 2;
+    protected boolean useRounding = false;
     protected boolean scrollRequiresFocus = true;
     protected boolean clickSoundOnRelease = true;
     protected Supplier<Component> title = Component::empty;
@@ -241,6 +242,7 @@ public abstract class AbstractSliderMaker<Builder extends AbstractSliderMaker<Bu
     @PublicAPI
     public Builder roundTo(int place)
     {
+        this.useRounding = true;
         this.roundTo = place;
 
         return this.self();
