@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.util.FormattedCharSink;
 import net.minecraft.util.Mth;
 
 import java.util.LinkedHashSet;
@@ -138,7 +140,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
      * Creates a new {@link MultiLineText} using properties defined in the text's builder and this widget's current
      * layout context.
      */
-    public void createMultiLine()
+    private void createMultiLine()
     {
         int scaledIcon = Math.round(this.getIconWidth() * this.getSquareScale());
         Component component = this.getBuilder().text.get();
@@ -312,6 +314,51 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     {
         this.formatting.clear();
         this.createMultiLine();
+    }
+
+    /**
+     * Get the non-styled string representation of the text widget.
+     *
+     * @param multiline Whether to include new-line characters for each line.
+     * @return A string without style that represents what is displayed by this text widget.
+     */
+    @PublicAPI
+    public String getString(boolean multiline)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        FormattedCharSink sink = (index, style, codePoint) -> {
+            builder.append(Character.toString(codePoint));
+            return true;
+        };
+
+        for (MultiLineText.Line line : this.text.getLines())
+        {
+            if (multiline && !builder.isEmpty())
+                builder.append("\n");
+
+            line.getText().accept(sink);
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * @return A non-styled string representation of this text widget with new-line characters.
+     */
+    @PublicAPI
+    public String getMultilineString()
+    {
+        return this.getString(true);
+    }
+
+    /**
+     * @return A non-styled string representation of this text widget without new-line characters.
+     */
+    @PublicAPI
+    public String getRawString()
+    {
+        return this.getString(false);
     }
 
     /**
