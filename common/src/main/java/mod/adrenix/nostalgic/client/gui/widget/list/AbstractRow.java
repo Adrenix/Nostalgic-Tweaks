@@ -344,6 +344,15 @@ public abstract class AbstractRow<Builder extends AbstractRowMaker<Builder, Row>
     }
 
     /**
+     * @return Whether this row has focusable widgets.
+     */
+    @PublicAPI
+    public boolean hasFocusable()
+    {
+        return this.getVisibleWidgets().anyMatch(DynamicWidget::canFocus);
+    }
+
+    /**
      * @return Whether this row is outside the bounds of the row list.
      */
     @PublicAPI
@@ -363,7 +372,7 @@ public abstract class AbstractRow<Builder extends AbstractRowMaker<Builder, Row>
 
     /**
      * Check if this row's dynamic visibility has changed. If all widgets are invisible, then this row should also be
-     * invisible and vice-versa.
+     * invisible and vice versa.
      *
      * @return Whether this row's visibility has changed.
      */
