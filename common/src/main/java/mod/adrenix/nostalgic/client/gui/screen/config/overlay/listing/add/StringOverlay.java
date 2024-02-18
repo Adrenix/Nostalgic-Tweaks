@@ -2,8 +2,11 @@ package mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.add;
 
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
+import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
 import mod.adrenix.nostalgic.client.gui.widget.input.GenericInput;
-import mod.adrenix.nostalgic.tweak.listing.Listing;
+import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.InputSuggester;
+import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.SoundSuggester;
+import mod.adrenix.nostalgic.tweak.listing.StringSet;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -11,16 +14,20 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class StringOverlay<V, L extends Listing<V, L>>
+public class StringOverlay
 {
     /* Fields */
 
-    private final Listing<V, L> listing;
+    private final StringSet stringSet;
     private final Consumer<String> onFinish;
     private final Runnable onEmpty;
-    private final V startWith;
+    private final String startWith;
+    final ButtonWidget suggestion;
+    final ButtonWidget cancel;
     final ButtonWidget done;
     final GenericInput input;
     final Overlay overlay;
@@ -30,38 +37,68 @@ public class StringOverlay<V, L extends Listing<V, L>>
     /**
      * Create a new {@link StringOverlay} with an input box that starts with the given input.
      */
-    public StringOverlay(Listing<V, L> listing, Runnable onEmpty, Consumer<String> onFinish, @Nullable V startWith)
+    public StringOverlay(StringSet stringSet, Runnable onEmpty, Consumer<String> onFinish, @Nullable String startWith)
     {
         int padding = 2;
 
-        this.listing = listing;
+        this.stringSet = stringSet;
         this.onEmpty = onEmpty;
         this.onFinish = onFinish;
         this.startWith = startWith;
 
         this.overlay = Overlay.create(Lang.Listing.ADD)
-            .onClose(this::close)
             .runOnKeyPressed(this::onKeyPressed)
-            .resizeUsingPercentage(0.4D, 180)
+            .resizeWidthUsingPercentage(0.6D, 215)
             .resizeHeightForWidgets()
             .padding(padding)
             .build();
 
+        Function<GenericInput, ? extends InputSuggester<GenericInput>> suggester = switch (stringSet.getSuggestion())
+        {
+            case SOUND -> SoundSuggester::new;
+            case NONE -> null;
+        };
+
         this.input = GenericInput.create()
-            .startWith(startWith == null ? "" : String.valueOf(startWith))
+            .suggester(suggester)
+            .startWith(startWith == null ? "" : startWith)
             .whenEmpty(Lang.Input.TYPE)
             .background(Color.BLACK, Color.INK_BLACK)
+            .extendWidthToScreenEnd(0)
             .border(this::getUnfocusedColor, this::getFocusedColor)
             .tooltip(this::getTooltip, 45)
-            .extendWidthToScreenEnd(padding)
             .build(this.overlay::addWidget);
 
-        this.done = ButtonWidget.create(Lang.Vanilla.GUI_DONE)
-            .disableIf(this::isInputAdded)
+        if (suggester != null)
+        {
+            this.suggestion = ButtonWidget.create(Lang.Button.SUGGESTIONS)
+                .icon(Icons.SMALL_INFO)
+                .hoverIcon(Icons.SMALL_INFO_HOVER)
+                .tooltip(Lang.Listing.OPEN_SUGGESTIONS, 35, 1, TimeUnit.SECONDS)
+                .extendWidthToScreenEnd(0)
+                .onPress(() -> new SuggestionOverlay(this.input).open())
+                .below(this.input, padding)
+                .build(this.overlay::addWidget);
+        }
+        else
+            this.suggestion = null;
+
+        this.cancel = ButtonWidget.create(Lang.Vanilla.GUI_CANCEL)
+            .icon(Icons.RED_X)
             .onPress(this.overlay::close)
-            .below(this.input, padding)
+            .build();
+
+        this.done = ButtonWidget.create(Lang.Vanilla.GUI_DONE)
+            .onPress(this::close)
+            .disableIf(this::isInputAdded)
             .icon(Icons.GREEN_CHECK)
-            .extendWidthToScreenEnd(padding)
+            .build();
+
+        Grid.create(this.overlay, 2)
+            .extendWidthToScreenEnd(0)
+            .columnSpacing(padding)
+            .below(this.suggestion == null ? this.input : this.suggestion, padding)
+            .addCells(this.cancel, this.done)
             .build(this.overlay::addWidget);
 
         this.overlay.setFocused(this.input);
@@ -71,15 +108,15 @@ public class StringOverlay<V, L extends Listing<V, L>>
     /**
      * Create a new {@link StringOverlay} with an empty input box.
      */
-    public StringOverlay(Listing<V, L> listing, Runnable onEmpty, Consumer<String> onFinish)
+    public StringOverlay(StringSet stringSet, Runnable onEmpty, Consumer<String> onFinish)
     {
-        this(listing, onEmpty, onFinish, null);
+        this(stringSet, onEmpty, onFinish, null);
     }
 
     /* Methods */
 
     /**
-     * Open the add new value to list overlay.
+     * Open the add new string value overlay.
      */
     public void open()
     {
@@ -97,6 +134,8 @@ public class StringOverlay<V, L extends Listing<V, L>>
             this.onEmpty.run();
         else
             this.onFinish.accept(input);
+
+        this.overlay.close();
     }
 
     /**
@@ -106,7 +145,7 @@ public class StringOverlay<V, L extends Listing<V, L>>
     {
         String input = this.input.getInput();
 
-        return !input.equals(this.startWith) && this.listing.containsKey(input);
+        return !input.equals(this.startWith) && this.stringSet.containsKey(input);
     }
 
     /**
@@ -142,9 +181,15 @@ public class StringOverlay<V, L extends Listing<V, L>>
      */
     private boolean onKeyPressed(Overlay overlay, int keyCode, int scanCode, int modifiers)
     {
-        if (KeyboardUtil.isReturnOrEnter(keyCode))
+        if (KeyboardUtil.isReturnOrEnter(keyCode) && this.input.isFocused())
         {
-            this.overlay.close();
+            this.close();
+            return true;
+        }
+
+        if (KeyboardUtil.isSearching(keyCode) && this.suggestion != null)
+        {
+            this.suggestion.onPress();
             return true;
         }
 

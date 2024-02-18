@@ -74,7 +74,7 @@ public class StringSetOverlay implements DeletableSetOverlay<String, StringSet>
     public void onAdd()
     {
         if (this.getListing().genericType().equals(String.class))
-            new StringOverlay<>(this.getListing(), this::createListRows, this::addString).open();
+            new StringOverlay(this.set, this::createListRows, this::addString).open();
         else
             new InvalidTypeOverlay().open();
     }
@@ -133,7 +133,7 @@ public class StringSetOverlay implements DeletableSetOverlay<String, StringSet>
 
         ButtonWidget edit = ButtonWidget.create(Lang.Button.EDIT)
             .icon(Icons.PENCIL)
-            .onPress(() -> new StringOverlay<>(this.getListing(), onEmptyEdit, onEditFinish, value).open())
+            .onPress(() -> new StringOverlay(this.set, onEmptyEdit, onEditFinish, value).open())
             .disableIf(() -> this.getSet().isDeleted(value) || this.isLocked())
             .useTextWidth()
             .leftOf(delete, 1)

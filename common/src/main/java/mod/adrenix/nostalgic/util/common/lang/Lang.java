@@ -280,6 +280,7 @@ public interface Lang
         Translation MANAGE = from("manage");
         Translation DOWNLOAD = from("download");
         Translation RECONNECT = from("reconnect");
+        Translation SUGGESTIONS = from("suggestions");
         Translation MENU_OPTIONS = from("menu_options");
         Translation IMPORT_AND_EXPORT = from("import_and_export");
         Translation SERVER_OPERATIONS = from("server_operations");
@@ -405,6 +406,8 @@ public interface Lang
         Translation NOTHING_SAVED = from("nothing_saved");
         Translation INPUT_COPIED = from("input_copied");
         Translation EMPTY_FAVORITES = from("empty_favorites");
+        Translation EMPTY_SUGGESTIONS = from("empty_suggestions");
+        Translation OPEN_SUGGESTIONS = from("open_suggestions");
 
         private static Translation from(String name)
         {

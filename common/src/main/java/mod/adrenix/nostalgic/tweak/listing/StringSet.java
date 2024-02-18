@@ -12,6 +12,7 @@ public class StringSet implements DeletableSet<String, StringSet>
 
     private final LinkedHashSet<String> list = new LinkedHashSet<>();
     private final transient LinkedHashSet<String> deleted = new LinkedHashSet<>();
+    private final transient ListingSuggestion suggestion;
     private boolean disabled;
 
     /* Constructors */
@@ -21,6 +22,17 @@ public class StringSet implements DeletableSet<String, StringSet>
      */
     public StringSet()
     {
+        this.suggestion = ListingSuggestion.NONE;
+    }
+
+    /**
+     * Create a new {@link StringSet} instance.
+     *
+     * @param suggestion The {@link ListingSuggestion} for this set.
+     */
+    public StringSet(ListingSuggestion suggestion)
+    {
+        this.suggestion = suggestion;
     }
 
     /* Building */
@@ -33,6 +45,14 @@ public class StringSet implements DeletableSet<String, StringSet>
     }
 
     /* Methods */
+
+    /**
+     * @return The {@link ListingSuggestion} associated with this {@link StringSet}.
+     */
+    public ListingSuggestion getSuggestion()
+    {
+        return this.suggestion;
+    }
 
     /**
      * @return The {@link LinkedHashSet} associated with this {@link StringSet}.
@@ -55,7 +75,7 @@ public class StringSet implements DeletableSet<String, StringSet>
     @Override
     public StringSet create()
     {
-        return new StringSet();
+        return new StringSet(this.suggestion);
     }
 
     @Override
