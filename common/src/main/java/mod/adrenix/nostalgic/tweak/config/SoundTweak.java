@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.tweak.config;
 import mod.adrenix.nostalgic.tweak.container.group.SoundGroup;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import mod.adrenix.nostalgic.tweak.factory.TweakStringSet;
+import mod.adrenix.nostalgic.tweak.listing.ListingSuggestion;
 import mod.adrenix.nostalgic.tweak.listing.StringSet;
 
 // @formatter:off
@@ -10,8 +11,8 @@ public interface SoundTweak
 {
     // Disabled
 
-    TweakStringSet DISABLED_POSITIONED_SOUNDS = TweakStringSet.client(new StringSet(), SoundGroup.DISABLED).newForUpdate().build();
-    TweakStringSet DISABLED_GLOBAL_SOUNDS = TweakStringSet.client(new StringSet(), SoundGroup.DISABLED).newForUpdate().build();
+    TweakStringSet DISABLED_POSITIONED_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).newForUpdate().build();
+    TweakStringSet DISABLED_GLOBAL_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).newForUpdate().build();
 
     // Ambience
 
