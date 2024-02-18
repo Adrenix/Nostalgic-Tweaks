@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.client.gui.widget.input;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
+import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.InputSuggester;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.network.chat.Component;
@@ -21,6 +23,8 @@ public abstract class AbstractInputMaker<Builder extends AbstractInputMaker<Buil
 
     @Nullable protected BiConsumer<Input, String> responder;
     @Nullable protected Function<Input, String> sync;
+    @Nullable protected Function<Input, ? extends InputSuggester<Input>> suggesterProvider;
+    protected UniqueArrayList<Consumer<String>> listeners;
     protected BiFunction<String, Integer, FormattedCharSequence> formatter;
     protected Predicate<String> filter;
 
@@ -50,11 +54,54 @@ public abstract class AbstractInputMaker<Builder extends AbstractInputMaker<Buil
     protected AbstractInputMaker()
     {
         this.brightenOnHover = true;
+        this.listeners = new UniqueArrayList<>();
         this.formatter = (string, maxLength) -> FormattedCharSequence.forward(string, Style.EMPTY);
         this.filter = Objects::nonNull;
     }
 
     /* Methods */
+
+    /**
+     * Define a suggester provider for this input widget. The suggester will suggest options based on the current input.
+     * The suggestion appears as ghost text in front of the last input character.
+     *
+     * @param provider A {@link Function} that accepts the {@link Input} widget and returns a new {@link InputSuggester}
+     *                 instance.
+     */
+    @PublicAPI
+    public Builder suggester(@Nullable Function<Input, ? extends InputSuggester<Input>> provider)
+    {
+        this.suggesterProvider = provider;
+
+        return this.self();
+    }
+
+    /**
+     * Add an input listener. This listener will receive updates when the input is updated. When you are done listening,
+     * make sure you remove the listener using {@link #removeListener(Consumer)}.
+     *
+     * @param listener A {@link Consumer} that accepts the new input.
+     */
+    @PublicAPI
+    public Builder addListener(Consumer<String> listener)
+    {
+        this.listeners.add(listener);
+
+        return this.self();
+    }
+
+    /**
+     * Remove an input listener.
+     *
+     * @param listener The {@link Consumer} listener to remove.
+     */
+    @PublicAPI
+    public Builder removeListener(Consumer<String> listener)
+    {
+        this.listeners.remove(listener);
+
+        return this.self();
+    }
 
     /**
      * When this property is defined, the widget's text value will update with what is provided by the supplier at the

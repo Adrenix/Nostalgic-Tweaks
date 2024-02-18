@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.IconManager;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
+import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.InputSuggester;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -30,6 +31,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, Input>, Input extends AbstractInput<Builder, Input>>
     extends DynamicWidget<Builder, Input> implements TooltipManager
@@ -37,6 +39,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     /* Fields */
 
     protected InputModule<Builder, Input> module;
+    @Nullable protected final InputSuggester<Input> suggester;
     protected final UniqueArrayList<DynamicWidget<?, ?>> internal;
     protected final IconManager<Input> icon;
     protected final IconWidget controls;
@@ -120,6 +123,11 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         this.getBuilder().addFunction(new LayoutSync<>());
         this.getBuilder().addFunction(new IconSync<>());
         this.getBuilder().addFunction(new InputSync<>(this.self()));
+
+        if (builder.suggesterProvider != null)
+            this.suggester = builder.suggesterProvider.apply(this.self());
+        else
+            this.suggester = null;
     }
 
     /* Methods */
@@ -285,7 +293,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     }
 
     /**
-     * Sends changes on input to the builder's responder if it was defined.
+     * Sends changes on input to the builder's responder and listeners if either are defined.
      *
      * @param text The new text of this input widget.
      */
@@ -293,6 +301,8 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     {
         if (this.getBuilder().responder != null)
             this.getBuilder().responder.accept(this.self(), text);
+
+        this.getBuilder().listeners.forEach(listener -> listener.accept(text));
     }
 
     /**
@@ -316,6 +326,9 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         {
             this.changingInput.process(() -> this.onInputChange(text));
             this.moveCursorToEnd(false);
+
+            if (this.suggester != null)
+                this.suggester.generate();
         }
     }
 
@@ -336,6 +349,38 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int max = Math.max(this.cursorPos, this.highlightPos);
 
         return this.input.substring(min, max);
+    }
+
+    /**
+     * @return The {@link InputSuggester} provider, if it exists.
+     */
+    @Nullable
+    public InputSuggester<Input> getSuggester()
+    {
+        return this.suggester;
+    }
+
+    /**
+     * Add an input listener. This listener will receive updates when the input is updated. When you are done listening,
+     * make sure you remove the listener using {@link #removeListener(Consumer)}.
+     *
+     * @param listener A {@link Consumer} that accepts the new input.
+     */
+    @PublicAPI
+    public void addListener(Consumer<String> listener)
+    {
+        this.getBuilder().addListener(listener);
+    }
+
+    /**
+     * Remove an input listener.
+     *
+     * @param listener The {@link Consumer} listener to remove.
+     */
+    @PublicAPI
+    public void removeListener(Consumer<String> listener)
+    {
+        this.getBuilder().removeListener(listener);
     }
 
     /**
@@ -769,6 +814,22 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
                 yield true;
             }
 
+            case InputConstants.KEY_TAB ->
+            {
+                if (this.suggester != null)
+                {
+                    String suggestion = this.suggester.get();
+
+                    if (!suggestion.isEmpty())
+                    {
+                        this.setInput(this.suggester.get());
+                        yield true;
+                    }
+                }
+
+                yield false;
+            }
+
             case InputConstants.KEY_BACKSPACE ->
             {
                 if (this.editable)
@@ -835,12 +896,16 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int beginIndex = this.cursorPos - this.displayPos;
         Color color = this.isFocused() ? this.getBuilder().textColor : this.getBuilder().textUnfocusedColor;
         String text = GuiUtil.font().plainSubstrByWidth(this.input.substring(this.displayPos), this.getPrinterWidth());
-        boolean isAllInputVisible = beginIndex >= 0 && beginIndex <= text.length();
-        boolean isFlashing = this.isFocused() && (Util.getMillis() - this.focusedTime) / 300L % 2L == 0L && isAllInputVisible;
+        boolean isInputSplit = beginIndex >= 0 && beginIndex <= text.length();
+        boolean isFlashing = this.isFocused() && (Util.getMillis() - this.focusedTime) / 300L % 2L == 0L && isInputSplit;
         int startX = printer.getX();
         int startY = printer.getY();
         int textEndX = startX;
         int highlightPos = Mth.clamp(this.highlightPos - this.displayPos, 0, text.length());
+        String suggestion = null;
+        String snippet = null;
+        String ghost = null;
+        String hint = null;
 
         if (text.isEmpty())
         {
@@ -850,7 +915,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
         if (!text.isEmpty())
         {
-            String displayText = isAllInputVisible ? text.substring(0, beginIndex) : text;
+            String displayText = isInputSplit ? text.substring(0, beginIndex) : text;
 
             textEndX = DrawText.begin(graphics, this.getBuilder().formatter.apply(displayText, this.displayPos))
                 .pos(textEndX, startY)
@@ -861,7 +926,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         boolean isVerticalCursor = this.cursorPos < this.input.length() || this.input.length() >= this.getMaxLength();
         int verticalX = textEndX;
 
-        if (!isAllInputVisible)
+        if (!isInputSplit)
             verticalX = beginIndex > 0 ? startX + printer.getWidth() : startX;
         else if (isVerticalCursor)
         {
@@ -869,12 +934,26 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
             --textEndX;
         }
 
-        if (!text.isEmpty() && isAllInputVisible && beginIndex < text.length())
+        if (!text.isEmpty() && isInputSplit && beginIndex < text.length())
         {
-            DrawText.begin(graphics, this.getBuilder().formatter.apply(text.substring(beginIndex), this.cursorPos))
+            textEndX = DrawText.begin(graphics, this.getBuilder().formatter.apply(text.substring(beginIndex), this.cursorPos))
                 .pos(textEndX, startY)
                 .color(color)
                 .draw();
+        }
+
+        if (!text.isEmpty() && !text.equals(this.getBuilder().whenEmpty) && this.suggester != null)
+        {
+            suggestion = this.suggester.get();
+            snippet = suggestion.substring(Math.min(suggestion.length(), this.displayPos));
+            ghost = GuiUtil.font().plainSubstrByWidth(snippet, this.getPrinterWidth());
+
+            if (!ghost.isEmpty() && !ghost.isBlank())
+            {
+                hint = ghost.substring(Math.min(ghost.length(), text.length()));
+
+                DrawText.begin(graphics, hint).color(color.fromAlpha(0.5F)).pos(textEndX, startY).draw();
+            }
         }
 
         if (isFlashing)
@@ -907,6 +986,8 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
             int endX = startX + GuiUtil.font().width(text.substring(0, highlightPos)) - 1;
             this.renderHighlight(graphics, verticalX, startY - 1, endX, startY + 1 + GuiUtil.textHeight());
         }
+        else if (hint != null && hint.isEmpty() && suggestion.length() < this.input.length())
+            this.displayPos += Math.max(0, snippet.length() - ghost.length());
     }
 
     /**
