@@ -370,6 +370,15 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             .ifPresent(focused -> focused.setFocused(false));
     }
 
+    /**
+     * Set the focus on the first widget found in the row list.
+     */
+    @PublicAPI
+    public void focusOnFirst()
+    {
+        this.visibleRows.stream().filter(AbstractRow::hasFocusable).findFirst().ifPresent(AbstractRow::focusOnFirst);
+    }
+
     /* Methods */
 
     /**
@@ -603,7 +612,8 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     /**
      * @return An average calculation based on the height of each visible row subscribed to this list.
      */
-    private double getAverageRowHeight()
+    @PublicAPI
+    public double getAverageRowHeight()
     {
         return (double) this.visibleRows.stream().mapToInt(AbstractRow::getHeight).sum() / (double) this.getRowCount();
     }
@@ -612,7 +622,8 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
      * @return This height is the addition of this list's row margin and the sum of all visible row heights combined
      * with their margin to the next row.
      */
-    private int getContentHeight()
+    @PublicAPI
+    public int getContentHeight()
     {
         return this.getBuilder().verticalMargin + this.visibleRows.stream()
             .mapToInt(AbstractRow::getHeightWithMargin)
