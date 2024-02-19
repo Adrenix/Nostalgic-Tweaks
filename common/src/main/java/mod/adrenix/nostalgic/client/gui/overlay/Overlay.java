@@ -1194,6 +1194,8 @@ public class Overlay extends Screen
             this.x += dragX;
             this.y += dragY;
 
+            this.syncBeforeRender();
+
             return true;
         }
 
