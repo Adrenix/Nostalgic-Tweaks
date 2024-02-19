@@ -207,6 +207,7 @@
   "gui.nostalgic_tweaks.listing.invalid_message": "This list is using a class type that is currently§c not§r supported. Only a§e mod developer§r can add support.",
   "gui.nostalgic_tweaks.listing.invalid_type": "Invalid Type",
   "gui.nostalgic_tweaks.listing.invalid_item": "Invalid Item",
+  "gui.nostalgic_tweaks.listing.item_info": "Item Information",
   "gui.nostalgic_tweaks.listing.item_rule.no_tools": "No Tools",
   "gui.nostalgic_tweaks.listing.item_rule.no_tools.info": "Filter out any items that are tool-like.",
   "gui.nostalgic_tweaks.listing.item_rule.no_items": "No Items",

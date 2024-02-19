@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
+import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +52,7 @@ public class ItemSetOverlay extends ItemListingOverlay<String, ItemSet> implemen
         ButtonWidget undo = this.getUndoBuilder(value).fromWidgetEndX(row, 2).build(row::addWidget);
         ButtonWidget delete = this.getDeleteBuilder(value).leftOf(undo, 1).build(row::addWidget);
         TextWidget title = this.getTitleBuilder(key, value, icon, () -> this.isWildcardChanged(key))
+            .onPress(() -> new ItemInfoOverlay(key).open(), Color.LEMON_YELLOW)
             .extendWidthTo(delete, 2)
             .build(row::addWidget);
 
@@ -67,6 +69,7 @@ public class ItemSetOverlay extends ItemListingOverlay<String, ItemSet> implemen
             .rightOf(wildcard.header(), 4)
             .build(row::addWidget);
 
+        title.setTabOrderGroup(tabOrder.getAndIncrement());
         delete.setTabOrderGroup(tabOrder.getAndIncrement());
         undo.setTabOrderGroup(tabOrder.getAndIncrement());
         wildcard.toggle().setTabOrderGroup(tabOrder.getAndIncrement());

@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.client.gui.widget.list.Row;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
+import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.Holder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +55,7 @@ public class ItemMapOverlay<V> extends ItemListingOverlay<V, ItemMap<V>> impleme
 
         IconWidget icon = this.getIconFactory(key, this.getRowIcon(key)).build(row::addWidget);
         TextWidget title = this.getTitleBuilder(key, icon, cache, () -> this.isWildcardChanged(key))
+            .onPress(() -> new ItemInfoOverlay(key).open(), Color.LEMON_YELLOW)
             .build(row::addWidget);
 
         ButtonWidget delete = this.getDeleteBuilder(key).posY(2).fromWidgetEndX(row, 2).build(row::addWidget);
@@ -85,6 +87,7 @@ public class ItemMapOverlay<V> extends ItemListingOverlay<V, ItemMap<V>> impleme
         if (controller.getBuilder() instanceof ActiveBuilder<?, ?> builder)
             builder.disableIf(() -> this.getMap().isDeleted(key) || this.isLocked());
 
+        title.setTabOrderGroup(tabOrder.getAndIncrement());
         delete.setTabOrderGroup(tabOrder.getAndIncrement());
         help.setTabOrderGroup(tabOrder.getAndIncrement());
         undo.setTabOrderGroup(tabOrder.getAndIncrement());
