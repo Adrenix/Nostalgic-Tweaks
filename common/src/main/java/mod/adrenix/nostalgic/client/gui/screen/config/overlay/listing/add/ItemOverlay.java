@@ -269,6 +269,8 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
             this.items.addAll(items.filter(ItemFilter::isItemLike).map(Item::getDefaultInstance).toList());
         else if (this.rules.contains(ItemRule.ONLY_BLOCKS))
             this.items.addAll(items.filter(ItemFilter::isBlockLike).map(Item::getDefaultInstance).toList());
+        else if (this.rules.contains(ItemRule.ONLY_CHESTS))
+            this.items.addAll(items.filter(ItemFilter::isChestLike).map(Item::getDefaultInstance).toList());
         else if (this.rules.contains(ItemRule.ONLY_EDIBLES))
             this.items.addAll(items.filter(Item::isEdible).map(Item::getDefaultInstance).toList());
         else

@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.util.common.world;
 import mod.adrenix.nostalgic.tweak.listing.ItemListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.AbstractChestBlock;
 
 public abstract class ItemFilter
 {
@@ -96,5 +97,19 @@ public abstract class ItemFilter
     public static boolean isItemLike(Item item)
     {
         return !isToolLike(item) && !isBlockLike(item);
+    }
+
+    /**
+     * Check if the given {@link Item} is a chest-like item.
+     *
+     * @param item An {@link Item} instance.
+     * @return Whether the given {@link Item} is chest-like.
+     */
+    public static boolean isChestLike(Item item)
+    {
+        if (item instanceof BlockItem blockItem)
+            return blockItem.getBlock() instanceof AbstractChestBlock<?>;
+
+        return false;
     }
 }

@@ -10,7 +10,6 @@ import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.ItemListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
-import mod.adrenix.nostalgic.tweak.listing.StringSet;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
@@ -104,7 +103,7 @@ public interface CandyTweak
     TweakFlag OLD_ENDER_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).reloadResources().build();
     TweakFlag OLD_TRAPPED_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).reloadResources().build();
     TweakFlag APPLY_CHEST_VOXEL = TweakFlag.server(true, CandyGroup.BLOCK_CHEST).newForUpdate().build();
-    TweakStringSet OLD_MOD_CHESTS = TweakStringSet.client(new StringSet(), CandyGroup.BLOCK_CHEST).newForUpdate().reloadResources().build();
+    TweakItemSet OLD_MOD_CHESTS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_CHESTS), CandyGroup.BLOCK_CHEST).newForUpdate().reloadResources().build();
 
     // Torch
 

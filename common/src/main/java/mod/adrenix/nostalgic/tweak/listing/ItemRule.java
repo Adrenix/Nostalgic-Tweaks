@@ -28,6 +28,7 @@ public enum ItemRule
     ONLY_TOOLS,
     ONLY_ITEMS,
     ONLY_BLOCKS,
+    ONLY_CHESTS,
     ONLY_EDIBLES,
     NO_TOOLS,
     NO_ITEMS,
