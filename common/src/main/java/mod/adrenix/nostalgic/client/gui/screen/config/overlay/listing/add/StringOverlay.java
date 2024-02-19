@@ -47,6 +47,7 @@ public class StringOverlay
         this.startWith = startWith;
 
         this.overlay = Overlay.create(Lang.Listing.ADD)
+            .icon(Icons.SMALL_ADD)
             .runOnKeyPressed(this::onKeyPressed)
             .resizeWidthUsingPercentage(0.6D, 215)
             .resizeHeightForWidgets()

@@ -129,5 +129,6 @@ public interface Icons
     TextureIcon SMALL_INFO = TextureIcon.create().uv(60, 10).square(9).build();
     TextureIcon SMALL_INFO_HOVER = TextureIcon.create().uv(60, 0).square(9).build();
     TextureIcon SMALL_INFO_OFF = TextureIcon.create().uv(60, 20).square(9).build();
+    TextureIcon SMALL_ADD = TextureIcon.create().uv(70, 0).square(9).build();
     TextureIcon STEVE = TextureIcon.create().uv(248, 0).square(8).build();
 }
