@@ -9,16 +9,23 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-public enum Panorama
+public enum Panorama implements PreparableReloadListener
 {
     ALPHA,
     BETA,
@@ -87,6 +94,7 @@ public enum Panorama
     /* Fields */
 
     private final PanoramaRenderer panorama;
+    private final CubeMap cubeMap;
 
     /* Constructor */
 
@@ -95,10 +103,20 @@ public enum Panorama
         String root = NostalgicTweaks.MOD_ID + ":textures/panorama/";
         String branch = this.toString().toLowerCase(Locale.ROOT);
 
-        this.panorama = new PanoramaRenderer(new CubeMap(new ResourceLocation(root + branch + "/panorama")));
+        this.cubeMap = new CubeMap(new ResourceLocation(root + branch + "/panorama"));
+        this.panorama = new PanoramaRenderer(this.cubeMap);
     }
 
     /* Methods */
+
+    @Override
+    public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, ProfilerFiller prepareProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor)
+    {
+        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+
+        return CompletableFuture.runAsync(() -> this.cubeMap.preload(textureManager, backgroundExecutor), backgroundExecutor)
+            .thenCompose(barrier::wait);
+    }
 
     /**
      * Render this panorama.

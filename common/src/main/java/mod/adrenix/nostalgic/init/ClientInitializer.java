@@ -35,8 +35,10 @@ abstract class ClientInitializer
         ClientKeyMapping.register();
         ClientSound.register();
 
-        // Registers the mod's custom splashes
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, HomeSplash.getInstance());
+
+        for (Panorama panorama : Panorama.values())
+            ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, panorama);
 
         ClientGuiEvent.RENDER_PRE.register(ClientInitializer::setMousePosition);
         ClientGuiEvent.RENDER_POST.register(ClientInitializer::renderModGraphics);
