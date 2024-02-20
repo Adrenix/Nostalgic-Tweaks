@@ -123,6 +123,7 @@ public class ServerConfig implements ConfigMeta
         public boolean instantBonemeal = GameplayTweak.INSTANT_BONEMEAL.register("instantBonemeal");
         public boolean tilledGrassSeeds = GameplayTweak.TILLED_GRASS_SEEDS.register("tilledGrassSeeds");
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
+        public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");
         public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.register("disableSprint");
         public boolean disableSwim = GameplayTweak.DISABLE_SWIM.register("disableSwim");
         public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");

@@ -10,8 +10,8 @@
     "candy.block_offsets.BlockStateBaseMixin",
     "candy.chest_block.BlockEntityRenderDispatcherMixin",
     "candy.chest_block.BlockStateBaseMixin",
-    "candy.chest_block.ChestBlockMixin",
-    "candy.chest_block.EnderChestBlockMixin",
+    "candy.chest_block.ClientChestBlockMixin",
+    "candy.chest_block.ClientEnderChestBlockMixin",
     "candy.chest_block.ItemBlockRenderTypesMixin",
     "candy.chest_block.ModelBakeryMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
@@ -26,5 +26,9 @@
     "sound.position_sound.ClientLevelMixin",
     "sound.water_ambience.LocalPlayerMixin",
     "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin"
+  ],
+  "mixins": [
+    "candy.chest_block.ChestBlockMixin",
+    "candy.chest_block.EnderChestBlockMixin"
   ]
 }
