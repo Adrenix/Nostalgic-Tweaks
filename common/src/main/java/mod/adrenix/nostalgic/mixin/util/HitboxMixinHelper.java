@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.util;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -48,6 +47,47 @@ public abstract class HitboxMixinHelper
             return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
         return original;
+    }
+
+    /**
+     * Prepares a {@link BufferBuilder} and sets up the render state for rendering a hitbox outline.
+     *
+     * @return The {@link BufferBuilder} for the outline vertices.
+     */
+    public static BufferBuilder getAndSetupOutline()
+    {
+        BufferBuilder builder = RenderUtil.getAndBeginLine(CandyTweak.BLOCK_OUTLINE_THICKNESS.get());
+
+        RenderTarget mainTarget = Minecraft.getInstance().getMainRenderTarget();
+        RenderTarget weatherTarget = Minecraft.getInstance().levelRenderer.getWeatherTarget();
+
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
+
+        if (Minecraft.useShaderTransparency() && weatherTarget != null)
+        {
+            weatherTarget.copyDepthFrom(mainTarget);
+            weatherTarget.bindWrite(false);
+        }
+
+        RenderStateShard.VIEW_OFFSET_Z_LAYERING.setupRenderState();
+
+        return builder;
+    }
+
+    /**
+     * Render and end a hitbox outline.
+     *
+     * @param buffer The {@link BufferBuilder} with the outline vertices.
+     */
+    public static void endOutline(BufferBuilder buffer)
+    {
+        RenderUtil.endLine(buffer);
+
+        RenderSystem.enableCull();
+        RenderSystem.disableDepthTest();
+        RenderSystem.defaultBlendFunc();
+        RenderStateShard.VIEW_OFFSET_Z_LAYERING.clearRenderState();
     }
 
     /**
@@ -141,23 +181,17 @@ public abstract class HitboxMixinHelper
             buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
         });
 
-        RenderTarget mainTarget = Minecraft.getInstance().getMainRenderTarget();
         RenderTarget itemEntityTarget = Minecraft.getInstance().levelRenderer.getItemEntityTarget();
 
         RenderSystem.disableCull();
-        RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
         if (Minecraft.useShaderTransparency() && itemEntityTarget != null)
-        {
-            itemEntityTarget.copyDepthFrom(mainTarget);
             itemEntityTarget.bindWrite(false);
-        }
         else
             RenderSystem.depthMask(false);
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderStateShard.VIEW_OFFSET_Z_LAYERING.setupRenderState();
 
         RenderUtil.endFill(buffer);
@@ -166,7 +200,6 @@ public abstract class HitboxMixinHelper
             RenderSystem.depthMask(true);
 
         RenderSystem.enableCull();
-        RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableDepthTest();
         RenderStateShard.VIEW_OFFSET_Z_LAYERING.clearRenderState();
