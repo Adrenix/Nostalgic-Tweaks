@@ -7,18 +7,14 @@ import mod.adrenix.nostalgic.tweak.container.group.CandyGroup;
 import mod.adrenix.nostalgic.tweak.enums.*;
 import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
-import mod.adrenix.nostalgic.tweak.listing.ItemListing;
+import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-
-import java.util.LinkedHashSet;
 
 // @formatter:off
 public interface CandyTweak
@@ -26,63 +22,13 @@ public interface CandyTweak
     // Block
 
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
-
-    /**
-     * Generates the default ambient occlusion blocks.
-     */
-    private static ItemSet defaultAmbientOcclusion()
-    {
-        LinkedHashSet<String> set = new LinkedHashSet<>();
-
-        set.add(ItemCommonUtil.getResourceKey(Blocks.POWDER_SNOW));
-        set.add(ItemCommonUtil.getResourceKey(Blocks.COMPOSTER));
-
-        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
-    }
-
-    TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(defaultAmbientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
-
-    /**
-     * Generates the default disabled block offsets.
-     */
-    private static ItemSet defaultDisabledOffsets()
-    {
-        LinkedHashSet<String> set = new LinkedHashSet<>();
-
-        set.addAll(ItemListing.getWildcardKeys(Blocks.POPPY));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.ROSE_BUSH));
-
-        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
-    }
-
-    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(defaultDisabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
+    TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(DefaultListing.ambientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(DefaultListing.disabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
-
-    // Hitbox Outline
-
-    /**
-     * Generates the default full-block outlines.
-     */
-    private static ItemSet defaultBlockOutlines()
-    {
-        LinkedHashSet<String> set = new LinkedHashSet<>();
-
-        set.addAll(ItemListing.getWildcardKeys(Blocks.COBBLESTONE_STAIRS));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.COBBLESTONE_WALL));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.OAK_FENCE));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.CHEST));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.ENDER_CHEST));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.CAULDRON));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.HOPPER));
-        set.addAll(ItemListing.getWildcardKeys(Blocks.ANVIL));
-
-        return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
-    }
-
-    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(defaultBlockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
 
     // Custom Hitbox
 
+    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(DefaultListing.blockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
     TweakColor BLOCK_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().whenDisabled("#00000066").build();
     TweakNumber<Float> BLOCK_OUTLINE_THICKNESS = TweakNumber.client(2.5F, CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).build();
     TweakFlag OLD_BLOCK_OVERLAY = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OVERLAY).whenDisabled(false).newForUpdate().build();
@@ -218,15 +164,10 @@ public interface CandyTweak
 
     // Items
 
-    private static ItemSet defaultIgnoredHoldingItems()
-    {
-        return new ItemSet(ItemRule.NO_BLOCKS).startWith(ItemCommonUtil.getKeysFromItems(Items.CROSSBOW));
-    }
-
     TweakFlag FIX_ITEM_MODEL_GAP = TweakFlag.client(true, CandyGroup.ITEM).reloadResources().build();
     TweakFlag OLD_DAMAGE_ARMOR_TINT = TweakFlag.client(true, CandyGroup.ITEM).newForUpdate().modIssues(TweakIssue.OPTIFINE).build();
     TweakFlag OLD_ITEM_HOLDING = TweakFlag.client(true, CandyGroup.ITEM).build();
-    TweakItemSet IGNORED_HOLDING_ITEMS = TweakItemSet.client(defaultIgnoredHoldingItems(), CandyGroup.ITEM).newForUpdate().build();
+    TweakItemSet IGNORED_HOLDING_ITEMS = TweakItemSet.client(DefaultListing.ignoredHoldingItems(), CandyGroup.ITEM).newForUpdate().build();
 
     // Item Merging
 
