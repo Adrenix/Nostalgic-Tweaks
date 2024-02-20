@@ -94,6 +94,7 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     protected void init()
     {
+        this.clearWidgets();
         this.setWidgetManager(this.widgetManager.apply(this.self()));
         this.getWidgetManager().init();
     }
