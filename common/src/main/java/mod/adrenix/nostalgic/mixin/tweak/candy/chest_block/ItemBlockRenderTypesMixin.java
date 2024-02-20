@@ -24,7 +24,7 @@ public abstract class ItemBlockRenderTypesMixin
         String resourceKey = ItemCommonUtil.getResourceKey(blockState.getBlock());
 
         if (CandyTweak.OLD_MOD_CHESTS.get().containsKey(resourceKey))
-            return RenderType.translucent();
+            return RenderType.cutout();
 
         return renderType;
     }
