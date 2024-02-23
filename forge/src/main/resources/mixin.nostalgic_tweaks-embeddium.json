@@ -1,0 +1,10 @@
+{
+  "package": "mod.adrenix.nostalgic.forge.mixin.embeddium",
+  "plugin": "mod.adrenix.nostalgic.forge.mixin.MixinEmbeddiumPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [
+    "candy.torch_block.BlockRendererMixin"
+  ]
+}

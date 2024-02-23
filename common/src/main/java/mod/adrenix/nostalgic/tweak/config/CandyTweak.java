@@ -54,9 +54,10 @@ public interface CandyTweak
     // Torch
 
     TweakFlag OLD_TORCH_BRIGHTNESS = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
-    TweakFlag OLD_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM).andIf(TweakCondition::isSodiumAbsent).build();
-    TweakFlag OLD_REDSTONE_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM).andIf(TweakCondition::isSodiumAbsent).build();
-    TweakFlag OLD_SOUL_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM).andIf(TweakCondition::isSodiumAbsent).build();
+    TweakFlag OLD_TORCH_BOTTOM = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
+    TweakFlag OLD_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
+    TweakFlag OLD_REDSTONE_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
+    TweakFlag OLD_SOUL_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
 
     // Interface
 

@@ -199,6 +199,7 @@ public class ClientConfig implements ConfigMeta
         // Torch
 
         public boolean oldTorchBrightness = CandyTweak.OLD_TORCH_BRIGHTNESS.register("oldTorchBrightness");
+        public boolean oldTorchBottom = CandyTweak.OLD_TORCH_BOTTOM.register("oldTorchBottom");
         public boolean oldTorchModel = CandyTweak.OLD_TORCH_MODEL.register("oldTorchModel");
         public boolean oldRedstoneTorchModel = CandyTweak.OLD_REDSTONE_TORCH_MODEL.register("oldRedstoneTorchModel");
         public boolean oldSoulTorchModel = CandyTweak.OLD_SOUL_TORCH_MODEL.register("oldSoulTorchModel");

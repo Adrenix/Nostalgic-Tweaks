@@ -27,6 +27,9 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
+
+    // Embeddium Support
+    modCompileOnly "maven.modrinth:embeddium:${rootProject.forge_embeddium_version}"
 }
 
 processResources {

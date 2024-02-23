@@ -35,7 +35,8 @@
     "mixin.nostalgic_tweaks.json",
     "mixin.nostalgic_tweaks-access.json",
     "mixin.nostalgic_tweaks-duck.json",
-    "mixin.nostalgic_tweaks-fabric.json"
+    "mixin.nostalgic_tweaks-fabric.json",
+    "mixin.nostalgic_tweaks-sodium.json"
   ],
   "depends": {
     "fabric": "*",

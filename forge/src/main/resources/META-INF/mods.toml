@@ -31,6 +31,9 @@ config = "mixin.nostalgic_tweaks-duck.json"
 [[mixins]]
 config = "mixin.nostalgic_tweaks-forge.json"
 
+[[mixins]]
+config = "mixin.nostalgic_tweaks-embeddium.json"
+
 [[dependencies.nostalgic_tweaks]]
 modId = "neoforge"
 type = "required"

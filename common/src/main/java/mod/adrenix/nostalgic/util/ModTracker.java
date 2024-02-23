@@ -12,21 +12,21 @@ public enum ModTracker
 {
     DISTANT_HORIZONS("distanthorizons"),
     APPLE_SKIN("appleskin"),
-    SODIUM("sodium"),
+    SODIUM("sodium", "embeddium"),
     EXORDIUM("exordium"),
     OPTIFINE("optifine"),
     FLYWHEEL("flywheel");
 
     /* Fields */
 
-    private final String id;
+    private final String[] identifiers;
     private boolean installed;
 
     /* Constructor */
 
-    ModTracker(String id)
+    ModTracker(String... identifiers)
     {
-        this.id = id;
+        this.identifiers = identifiers;
     }
 
     /* Methods */
@@ -56,7 +56,15 @@ public enum ModTracker
      */
     public static void init(Function<String, Boolean> loader)
     {
-        ModTracker.stream().forEach(mod -> mod.installed = loader.apply(mod.id));
+        ModTracker.stream().forEach(mod -> {
+            for (String id : mod.identifiers)
+            {
+                if (mod.installed)
+                    break;
+
+                mod.installed = loader.apply(id);
+            }
+        });
     }
 
     /**

@@ -744,6 +744,8 @@
 
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBrightness": "Old Torch Brightness",
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBrightness.info": "Bring back the full-bright torch model. This does§c not§r change the amount of light§e emitted§r.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBottom": "Old Torch Bottom",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBottom.info": "Disable rendering of the bottom part of the torch model when the §7@decode{tweak=eyeCandy.oldTorchModel}§r tweak is§a enabled§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchModel": "Old Torch Model",
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchModel.info": "Bring back the old parallelepiped wall torches.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldRedstoneTorchModel": "Old Redstone Torch Model",
