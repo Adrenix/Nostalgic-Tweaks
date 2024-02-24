@@ -8,6 +8,8 @@
     "candy.ambient_occlusion.BlockBehaviourMixin",
     "candy.block_hitbox.LevelRendererMixin",
     "candy.block_offsets.BlockStateBaseMixin",
+    "candy.button_hover.AbstractButtonMixin",
+    "candy.button_hover.AbstractSliderButtonMixin",
     "candy.chest_block.BlockEntityRenderDispatcherMixin",
     "candy.chest_block.BlockStateBaseMixin",
     "candy.chest_block.ClientChestBlockMixin",

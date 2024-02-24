@@ -333,6 +333,16 @@ public class Color
         return RGBtoHSB(r, g, b, null);
     }
 
+    /**
+     * Get a new transparent color instance.
+     *
+     * @return An empty color instance.
+     */
+    public static Color empty()
+    {
+        return new Color(0xFFFFFF, 0.0F);
+    }
+
     /* Fields */
 
     /**
