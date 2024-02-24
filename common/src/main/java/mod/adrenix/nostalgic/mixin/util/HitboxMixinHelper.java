@@ -3,6 +3,9 @@ package mod.adrenix.nostalgic.mixin.util;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
@@ -10,9 +13,11 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
+import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -31,6 +36,17 @@ public abstract class HitboxMixinHelper
      * Global animation instance for pulsating a hitbox overlay color.
      */
     public static final Animation PULSATE_ANIMATION = Animate.linear(1L, TimeUnit.SECONDS);
+
+    /**
+     * An overlay render type used to buffer the hitbox overlay in fabulous mode.
+     */
+    public static final RenderType OVERLAY_RENDER_TYPE = RenderType.create("nt_hitbox_overlay", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
+        .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
+        .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+        .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+        .setCullState(RenderStateShard.NO_CULL)
+        .createCompositeState(false));
 
     /* Methods */
 
@@ -110,9 +126,18 @@ public abstract class HitboxMixinHelper
         PULSATE_ANIMATION.setDuration((long) (CandyTweak.BLOCK_OVERLAY_SPEED.get() * 1000.0F), TimeUnit.MILLISECONDS);
         PULSATE_ANIMATION.playOrRewind();
 
-        BufferBuilder buffer = RenderUtil.getAndBeginFill();
+        NullableHolder<VertexConsumer> vertexHolder = NullableHolder.empty();
         IntegerHolder top = IntegerHolder.create(HexUtil.parseInt(CandyTweak.BLOCK_OVERLAY_COLOR.get()));
         IntegerHolder bottom = IntegerHolder.create(top.get().intValue());
+        BufferBuilder builder = null;
+
+        if (Minecraft.useShaderTransparency())
+            vertexHolder.set(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(OVERLAY_RENDER_TYPE));
+        else
+        {
+            builder = RenderUtil.getAndBeginFill();
+            vertexHolder.set(builder);
+        }
 
         if (CandyTweak.BLOCK_OVERLAY_GRADIENT.get())
         {
@@ -129,6 +154,7 @@ public abstract class HitboxMixinHelper
         }
 
         shape.forAllBoxes((x0, y0, z0, x1, y1, z1) -> {
+            VertexConsumer buffer = vertexHolder.getOrThrow();
             int argbTop = top.get();
             int argbBottom = bottom.get();
 
@@ -181,20 +207,19 @@ public abstract class HitboxMixinHelper
             buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
         });
 
-        RenderTarget itemEntityTarget = Minecraft.getInstance().levelRenderer.getItemEntityTarget();
+        if (builder == null)
+            return;
 
         RenderSystem.disableCull();
         RenderSystem.enableDepthTest();
 
-        if (Minecraft.useShaderTransparency() && itemEntityTarget != null)
-            itemEntityTarget.bindWrite(false);
-        else
+        if (!Minecraft.useShaderTransparency())
             RenderSystem.depthMask(false);
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderStateShard.VIEW_OFFSET_Z_LAYERING.setupRenderState();
 
-        RenderUtil.endFill(buffer);
+        RenderUtil.endFill(builder);
 
         if (!Minecraft.useShaderTransparency())
             RenderSystem.depthMask(true);
