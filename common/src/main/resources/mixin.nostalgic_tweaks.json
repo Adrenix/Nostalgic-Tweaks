@@ -18,6 +18,7 @@
     "candy.chest_block.ModelBakeryMixin",
     "candy.debug_entity.EntityRendererMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
+    "candy.name_tag.EntityRendererMixin",
     "candy.uncap_title_fps.MinecraftMixin",
     "candy.window_title.MinecraftMixin",
     "sound.damage_sound.LivingEntityMixin",
