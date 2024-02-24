@@ -16,6 +16,7 @@
     "candy.chest_block.ClientEnderChestBlockMixin",
     "candy.chest_block.ItemBlockRenderTypesMixin",
     "candy.chest_block.ModelBakeryMixin",
+    "candy.debug_entity.EntityRendererMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.uncap_title_fps.MinecraftMixin",
     "candy.window_title.MinecraftMixin",
