@@ -94,7 +94,7 @@ public abstract class AbstractButton<Builder extends AbstractButtonMaker<Builder
      */
     protected int getTextColor()
     {
-        boolean isOldHover = CandyTweak.OLD_BUTTON_HOVER.get();
+        boolean isOldHover = CandyTweak.OLD_BUTTON_TEXT_COLOR.get();
         int color = this.active ? isOldHover ? 0xE0E0E0 : 0xFFFFFF : 0xA0A0A0;
 
         if (this.isHoveredOrFocused() && this.active && isOldHover)

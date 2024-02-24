@@ -34,7 +34,7 @@ public abstract class AbstractButtonMixin extends AbstractWidget
     )
     private int nt_button_hover$textColor(int color)
     {
-        if (!CandyTweak.OLD_BUTTON_HOVER.get())
+        if (!CandyTweak.OLD_BUTTON_TEXT_COLOR.get())
             return color;
 
         return WidgetMixinHelper.getTextColor(this, this.alpha);

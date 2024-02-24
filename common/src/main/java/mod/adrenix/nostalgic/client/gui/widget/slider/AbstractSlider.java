@@ -351,7 +351,7 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
         boolean isScrolling = startX + GuiUtil.font().width(this.title) + margin > endX;
         Color color = this.active ? Color.WHITE : Color.QUICK_SILVER;
 
-        if (CandyTweak.OLD_BUTTON_HOVER.get())
+        if (CandyTweak.OLD_BUTTON_TEXT_COLOR.get())
         {
             if (this.isInactive())
                 color = Color.QUICK_SILVER;

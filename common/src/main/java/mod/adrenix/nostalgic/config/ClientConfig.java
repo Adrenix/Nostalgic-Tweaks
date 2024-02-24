@@ -206,7 +206,7 @@ public class ClientConfig implements ConfigMeta
 
         // Interface
 
-        public boolean oldButtonHover = CandyTweak.OLD_BUTTON_HOVER.register("oldButtonHover");
+        public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
         public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
 
         // Window Title
