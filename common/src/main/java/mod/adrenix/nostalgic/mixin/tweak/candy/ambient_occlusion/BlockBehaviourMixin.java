@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.ambient_occlusion;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.ChestMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;

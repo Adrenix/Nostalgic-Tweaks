@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.util;
+package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.util.common.color.Color;
 import net.minecraft.client.gui.components.AbstractWidget;

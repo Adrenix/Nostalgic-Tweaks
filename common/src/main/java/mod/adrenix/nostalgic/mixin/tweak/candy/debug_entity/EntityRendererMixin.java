@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.debug_entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.DebugMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.DebugMixinHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.network.chat.Component;

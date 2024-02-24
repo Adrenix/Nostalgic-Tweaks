@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.sound;
 
 import mod.adrenix.nostalgic.mixin.access.EntityAccessor;
-import mod.adrenix.nostalgic.mixin.util.ChestMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.Minecraft;

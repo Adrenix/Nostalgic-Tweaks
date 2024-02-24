@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.util;
+package mod.adrenix.nostalgic.mixin.util.candy;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;

@@ -12,7 +12,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRende
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import me.jellysquid.mods.sodium.client.render.chunk.terrain.material.Material;
 import me.jellysquid.mods.sodium.client.render.chunk.vertex.format.ChunkVertexEncoder;
-import mod.adrenix.nostalgic.mixin.util.TorchMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.TorchMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.button_hover;
 
-import mod.adrenix.nostalgic.mixin.util.WidgetMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;

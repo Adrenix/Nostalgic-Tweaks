@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.util;
+package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.Minecraft;
