@@ -63,6 +63,12 @@ public class TweakText extends TweakValue<String>
     /* Methods */
 
     @Override
+    public String get()
+    {
+        return super.get().replaceAll("%([a-fA-F\\d])", "§$1");
+    }
+
+    @Override
     public @Nullable TweakPacket getClientboundPacket()
     {
         return new ClientboundTweakText(this);
@@ -72,6 +78,17 @@ public class TweakText extends TweakValue<String>
     public @Nullable TweakPacket getServerboundPacket()
     {
         return new ServerboundTweakText(this);
+    }
+
+    /**
+     * Get a parsed string with placeholders replaced with the given value.
+     *
+     * @param value The value to replace %v with.
+     * @return A parsed string with the given value included.
+     */
+    public String parse(String value)
+    {
+        return this.get().replaceAll("%v", value);
     }
 
     /* Builder */
