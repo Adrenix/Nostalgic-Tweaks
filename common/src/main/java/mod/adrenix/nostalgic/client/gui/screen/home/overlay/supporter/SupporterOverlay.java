@@ -45,6 +45,7 @@ public class SupporterOverlay
     private static boolean isVersionWrong = false;
 
     static final AtomicInteger THREAD_ID = new AtomicInteger(0);
+    static final HashMap<String, Color> NAMES = new HashMap<>();
     static final HashMap<String, PlayerFace> FACES = new HashMap<>();
 
     /* Fields */
@@ -87,6 +88,28 @@ public class SupporterOverlay
 
     /* Methods */
 
+    /**
+     * @return A {@link HashMap} of supporter names and their respective color.
+     */
+    public static HashMap<String, Color> getNames()
+    {
+        if (cache == null && !isConnecting)
+        {
+            isConnecting = true;
+            ThreadMaker.create(getThreadName(), SupporterOverlay::getSupporterJson, () -> isConnecting = false).start();
+        }
+        else if (cache != null && NAMES.isEmpty())
+        {
+            for (Map.Entry<String, GithubJson.Supporter> entry : cache.supporters.entrySet())
+                NAMES.put(entry.getKey(), new Color(entry.getValue().color));
+        }
+
+        return NAMES;
+    }
+
+    /**
+     * Open the supporter overlay.
+     */
     public void open()
     {
         if (!ModTweak.OPENED_SUPPORTER_SCREEN.get())
@@ -167,7 +190,7 @@ public class SupporterOverlay
     /**
      * @return A thread name used by the json downloader thread.
      */
-    private String getConnectorName()
+    private static String getThreadName()
     {
         return "Supporter Connector #" + THREAD_ID.incrementAndGet();
     }
@@ -175,7 +198,7 @@ public class SupporterOverlay
     /**
      * Thread locking method that downloads json data from GitHub.
      */
-    private void getSupporterJson()
+    private static void getSupporterJson()
     {
         isConnecting = true;
 
@@ -239,7 +262,7 @@ public class SupporterOverlay
      */
     private void connect()
     {
-        ThreadMaker.create(this.getConnectorName(), this::getSupporterJson, this::callback).start();
+        ThreadMaker.create(getThreadName(), SupporterOverlay::getSupporterJson, this::callback).start();
     }
 
     /**

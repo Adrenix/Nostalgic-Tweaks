@@ -22,6 +22,7 @@ public class TextureLocation extends ResourceLocation
     public static final ResourceLocation MINECRAFT_LOGO = VanillaAsset.texture("gui/title/minecraft.png");
 
     public static final TextureLocation NT_LOGO_64 = new TextureLocation(ModAsset.icon("nt_logo_64.png"), 64);
+    public static final TextureLocation NT_SUPPORTER_64 = new TextureLocation(ModAsset.icon("nt_supporter_64.png"), 64);
     public static final TextureLocation SOUND_256 = new TextureLocation(ModAsset.twemoji("sound_256.png"), 256);
     public static final TextureLocation CANDY_256 = new TextureLocation(ModAsset.twemoji("candy_256.png"), 256);
     public static final TextureLocation JUGGLER_256 = new TextureLocation(ModAsset.twemoji("juggler_256.png"), 256);

@@ -516,6 +516,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.interface_tooltip_parts": "Parts",
   "gui.nostalgic_tweaks.container.eyeCandy.item": "Item Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.item_flat": "2D Items",
+  "gui.nostalgic_tweaks.container.eyeCandy.name_tags": "Name Tags",
   "gui.nostalgic_tweaks.container.eyeCandy.item_display": "Display",
   "gui.nostalgic_tweaks.container.eyeCandy.item_merging": "Merging",
   "gui.nostalgic_tweaks.container.eyeCandy.lighting": "Lighting Candy",
@@ -977,6 +978,11 @@
   "gui.nostalgic_tweaks.config.eyeCandy.fixItemModelGap.info": "Fixes the transparent gaps seen in held item models.",
   "gui.nostalgic_tweaks.config.eyeCandy.fixItemModelGap.search": "Hole, Pixel",
 
+  "gui.nostalgic_tweaks.config.eyeCandy.oldNameTags": "Old Name Tags",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldNameTags.info": "Bring back the old name tag rendering for entities. This will make tags bigger as you move further away.",
+  "gui.nostalgic_tweaks.config.eyeCandy.supporterTags": "Show Supporter Name Tags",
+  "gui.nostalgic_tweaks.config.eyeCandy.supporterTags.info": "Display custom visual effects on name tags for player's who have supporter this mod.",
+
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles": "Old Explosion Particles",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles.info": "Bring back the classic explosion particles for§a all§r explosions.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles.search": "TNT, Smoke",
@@ -1050,8 +1056,6 @@
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.info": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if§b old light rendering§r is§a enabled§r and the world is too§e bright§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.search": "Shader, Bright",
 
-  "gui.nostalgic_tweaks.config.eyeCandy.oldNameTags": "Old Name Tags",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldNameTags.info": "Bring back the old name tag rendering for entities. This will make tags bigger as you move further away.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSquareBorder": "Old Square Border",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSquareBorder.info": "Replaces the disc chunk border with a square border.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSquareBorder.search": "World, Disc, Chunk",

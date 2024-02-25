@@ -3,10 +3,15 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.name_tag;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
+import mod.adrenix.nostalgic.mixin.util.candy.SupporterRenderer;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,5 +49,23 @@ public abstract class EntityRendererMixin
         }
 
         operation.call(poseStack, x, y, z);
+    }
+
+    /**
+     * Renders supporter visual effects on top of their name tags.
+     */
+    @WrapOperation(
+        method = "renderNameTag",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/Font;drawInBatch(Lnet/minecraft/network/chat/Component;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/gui/Font$DisplayMode;II)I"
+        )
+    )
+    private int nt_name_tag$renderSupporter(Font font, Component displayName, float x, float y, int color, boolean dropShadow, Matrix4f matrix, MultiBufferSource bufferSource, Font.DisplayMode displayMode, int backgroundColor, int packedLight, Operation<Integer> operation, Entity entity, Component arg2, PoseStack poseStack)
+    {
+        if (SupporterRenderer.isNotSupporter(displayName) || entity.isDiscrete())
+            return operation.call(font, displayName, x, y, color, dropShadow, matrix, bufferSource, displayMode, backgroundColor, packedLight);
+
+        return SupporterRenderer.render(displayName, x, y, poseStack, bufferSource, backgroundColor, packedLight);
     }
 }

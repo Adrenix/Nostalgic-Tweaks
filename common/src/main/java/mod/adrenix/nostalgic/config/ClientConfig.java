@@ -335,6 +335,11 @@ public class ClientConfig implements ConfigMeta
         public boolean oldNoSelectedItemName = CandyTweak.OLD_NO_SELECTED_ITEM_NAME.register("oldNoSelectedItemName");
         public boolean oldPlainSelectedItemName = CandyTweak.OLD_PLAIN_SELECTED_ITEM_NAME.register("oldPlainSelectedItemName");
 
+        // Name Tag
+
+        public boolean oldNameTags = CandyTweak.OLD_NAME_TAGS.register("oldNameTags");
+        public boolean supporterTags = CandyTweak.SUPPORTER_TAGS.register("supporterTags");
+
         // World Lighting
 
         public boolean fixChunkBorderLag = CandyTweak.FIX_CHUNK_BORDER_LAG.register("fixChunkBorderLag");
@@ -412,7 +417,6 @@ public class ClientConfig implements ConfigMeta
         // World
 
         public boolean oldSquareBorder = CandyTweak.OLD_SQUARE_BORDER.register("oldSquareBorder");
-        public boolean oldNameTags = CandyTweak.OLD_NAME_TAGS.register("oldNameTags");
 
         // World Fog
 

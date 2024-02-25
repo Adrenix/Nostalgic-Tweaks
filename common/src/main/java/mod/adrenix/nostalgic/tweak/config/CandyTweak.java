@@ -190,6 +190,11 @@ public interface CandyTweak
     TweakFlag OLD_NO_SELECTED_ITEM_NAME = TweakFlag.client(true, CandyGroup.ITEM_DISPLAY).build();
     TweakFlag OLD_PLAIN_SELECTED_ITEM_NAME = TweakFlag.client(false, CandyGroup.ITEM_DISPLAY).build();
 
+    // Name Tag
+
+    TweakFlag OLD_NAME_TAGS = TweakFlag.client(false, CandyGroup.NAME_TAG).newForUpdate().build();
+    TweakFlag SUPPORTER_TAGS = TweakFlag.client(true, CandyGroup.NAME_TAG).newForUpdate().build();
+
     // World Lighting
 
     TweakFlag FIX_CHUNK_BORDER_LAG = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD).newForUpdate().build();
@@ -270,7 +275,6 @@ public interface CandyTweak
     // World
 
     TweakFlag OLD_SQUARE_BORDER = TweakFlag.server(true, CandyGroup.WORLD).reloadChunks().ignoreNetworkCheck().build();
-    TweakFlag OLD_NAME_TAGS = TweakFlag.client(false, CandyGroup.WORLD).newForUpdate().build();
 
     // World Fog
 

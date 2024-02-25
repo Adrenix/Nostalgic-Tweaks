@@ -76,7 +76,6 @@ public interface Icons
     TextureIcon PLAYER_CONTROLS = TextureIcon.create().uv(143, 218).square(12).build();
     TextureIcon COLOR_LIST = TextureIcon.create().uv(117, 218).square(12).build();
     TextureIcon COLOR_TREE = TextureIcon.create().uv(104, 218).square(12).build();
-    TextureIcon LIST = TextureIcon.create().uv(117, 244).square(12).build();
     TextureIcon CHAT = TextureIcon.create().uv(117, 231).square(12).build();
     TextureIcon BUTTON = TextureIcon.create().uv(130, 244).square(12).build();
     TextureIcon MOJANG = TextureIcon.create().uv(156, 218).square(12).build();

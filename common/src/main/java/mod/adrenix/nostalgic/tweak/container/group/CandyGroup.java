@@ -23,8 +23,8 @@ public interface CandyGroup
 
     // Interface
 
-    Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.LIST).build();
-    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0xE0E0E0).icon(Icons.BUTTON).build();
+    Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.BUTTON).build();
+    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0xE0E0E0).icon(Icons.CLIENT).build();
     Container INTERFACE_ANVIL = Container.group(INTERFACE, "interface_anvil").color(0x969696).icon(Blocks.ANVIL).build();
     Container INTERFACE_CHAT = Container.group(INTERFACE, "interface_chat").color(0xFFFFFF).icon(Icons.CHAT).build();
     Container INTERFACE_CRAFTING = Container.group(INTERFACE, "interface_crafting").color(0xF38A47).icon(Blocks.CRAFTING_TABLE).build();
@@ -47,10 +47,14 @@ public interface CandyGroup
 
     // Item
 
-    Container ITEM = Container.group(Category.EYE_CANDY, "item").color(0x8CF4E2).icon(Items.DIAMOND).build();
+    Container ITEM = Container.group(Category.EYE_CANDY, "item").color(0x8CF4E2).icon(Items.DIAMOND_PICKAXE).build();
     Container ITEM_FLAT = Container.group(ITEM, "item_flat").color(0xFFFFFF).icon(Items.PAPER).build();
     Container ITEM_DISPLAY = Container.group(ITEM, "item_display").color(0xBC9862).icon(Items.ITEM_FRAME).build();
     Container ITEM_MERGING = Container.group(ITEM, "item_merging").color(0x969696).icon(Blocks.HOPPER).build();
+
+    // Name Tag
+
+    Container NAME_TAG = Container.group(Category.EYE_CANDY, "name_tags").color(0xE6C78C).icon(Items.NAME_TAG).build();
 
     // Lighting
 
