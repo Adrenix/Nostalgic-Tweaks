@@ -18,6 +18,7 @@ import mod.adrenix.nostalgic.util.client.link.LinkUtil;
 import mod.adrenix.nostalgic.util.client.renderer.InternetTexture;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -255,11 +256,10 @@ class SupporterRow
      */
     private void setTextCaptain3()
     {
-        Animation animation = Animate.linear(2L, TimeUnit.SECONDS);
+        Animation animation = Animate.linear(100L, TimeUnit.MILLISECONDS);
+        CycleIndex cycleIndex = new CycleIndex(this.name.split(""), true);
 
         CollectionUtil.forLoop(Arrays.stream(this.name.split("")), (letter, index) -> {
-            final float offset = index / (float) this.name.length();
-
             TextWidget widget = TextWidget.create(new Color(this.supporter.color).apply(letter))
                 .rightOf(this.text.last().orElse(this.face), this.text.last().isEmpty() ? 4 : 0)
                 .alignVerticalTo(this.face)
@@ -268,14 +268,12 @@ class SupporterRow
                     if (animation.isFinished())
                     {
                         animation.reset();
-                        animation.tick();
+                        cycleIndex.cycle();
                     }
 
                     animation.play();
 
-                    double radians = Math.toRadians(360.0D * (1.0F - (float) animation.getValue() + offset));
-
-                    return this.face.getY() + (int) Math.round(Math.sin(radians));
+                    return this.face.getY() + (cycleIndex.get() == index ? -1 : 0);
                 })
                 .build(List.of(this.row::addWidget, this.text.last()::set));
 
