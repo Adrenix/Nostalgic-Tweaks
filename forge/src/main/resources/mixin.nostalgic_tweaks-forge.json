@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
+    "candy.debug_screen.DebugScreenOverlayMixin",
     "candy.torch_block.BlockRenderDispatcherMixin"
   ]
 }

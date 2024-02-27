@@ -223,7 +223,6 @@ public class ClientConfig implements ConfigMeta
         // Debug Chart
 
         public DebugChart fpsChart = CandyTweak.FPS_CHART.register("fpsChart");
-        public boolean showDebugTpsChart = CandyTweak.SHOW_DEBUG_TPS_CHART.register("showDebugTpsChart");
         public boolean showDebugPieChart = CandyTweak.SHOW_DEBUG_PIE_CHART.register("showDebugPieChart");
         public boolean oldPieChartBackground = CandyTweak.OLD_PIE_CHART_BACKGROUND.register("oldPieChartBackground");
 

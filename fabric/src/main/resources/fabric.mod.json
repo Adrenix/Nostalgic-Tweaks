@@ -55,7 +55,6 @@
       }
     },
     "sodium:options": {
-      "mixin.features.gui.hooks.debug": false,
       "mixin.features.render.world.clouds": false
     }
   }

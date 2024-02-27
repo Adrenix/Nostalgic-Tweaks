@@ -227,14 +227,25 @@ public abstract class DrawText
         }
 
         /**
+         * Set the {@code dropShadow} flag.
+         *
+         * @param dropShadow The new flag state.
+         */
+        @PublicAPI
+        public Builder setShadow(boolean dropShadow)
+        {
+            this.dropShadow = dropShadow;
+
+            return this;
+        }
+
+        /**
          * Set the {@code dropShadow} flag to {@code false}.
          */
         @PublicAPI
         public Builder flat()
         {
-            this.dropShadow = false;
-
-            return this;
+            return this.setShadow(false);
         }
 
         /**

@@ -78,7 +78,6 @@ public interface CandyTweak
     // Debug Chart
 
     TweakEnum<DebugChart> FPS_CHART = TweakEnum.client(DebugChart.CLASSIC, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().whenDisabled(DebugChart.MODERN).build();
-    TweakFlag SHOW_DEBUG_TPS_CHART = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().build();
     TweakFlag SHOW_DEBUG_PIE_CHART = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().build();
     TweakFlag OLD_PIE_CHART_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().build();
 
