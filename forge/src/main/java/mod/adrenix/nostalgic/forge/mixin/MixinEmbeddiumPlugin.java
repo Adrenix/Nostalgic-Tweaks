@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
+import com.google.common.base.Suppliers;
 import net.neoforged.fml.ModList;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -7,6 +8,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Do <b color=red>not</b> class load any mod related classes here. Doing so will cause "applied too early" ASM errors
@@ -16,7 +18,7 @@ public class MixinEmbeddiumPlugin implements IMixinConfigPlugin
 {
     /* Fields */
 
-    private final boolean isEmbeddiumPresent = ModList.get().isLoaded("embeddium");
+    private final Supplier<Boolean> isEmbeddiumPresent = Suppliers.memoize(() -> ModList.get().isLoaded("embeddium"));
 
     /* Methods */
 
@@ -43,7 +45,10 @@ public class MixinEmbeddiumPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return this.isEmbeddiumPresent;
+        if (ModList.get() == null)
+            return false;
+
+        return this.isEmbeddiumPresent.get();
     }
 
     /**
