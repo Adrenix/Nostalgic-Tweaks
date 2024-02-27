@@ -136,6 +136,12 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
         if (this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers))
             return true;
 
+        for (DynamicWidget<?, ?> widget : this.widgets)
+        {
+            if (widget.keyPressed(keyCode, scanCode, modifiers))
+                return true;
+        }
+
         if (KeyboardUtil.isEsc(keyCode) && this.shouldCloseOnEsc())
         {
             this.onFinish();

@@ -734,8 +734,8 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     {
         if (KeyboardUtil.isSearching(keyCode) && this.getBuilder().searchShortcut)
         {
-            this.setFocused(true);
-            this.moveCursorToEnd(false);
+            if (this.isUnfocused())
+                this.setFocused(true);
 
             if (this.getScreen() != null)
                 this.getScreen().setFocused(this);
