@@ -14,12 +14,6 @@ import java.util.Set;
  */
 public class MixinSodiumPlugin implements IMixinConfigPlugin
 {
-    /* Fields */
-
-    private final boolean isSodiumPresent = FabricLoader.getInstance().getModContainer("sodium").isPresent();
-
-    /* Methods */
-
     /**
      * {@inheritDoc}
      */
@@ -43,7 +37,7 @@ public class MixinSodiumPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return this.isSodiumPresent;
+        return FabricLoader.getInstance().getModContainer("sodium").isPresent();
     }
 
     /**
