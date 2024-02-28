@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Entity.class)
-public interface EntityAccessor
+public interface EntityAccess
 {
     @Invoker("getPrimaryStepSoundBlockPos")
     BlockPos nt$getPrimaryStepSoundBlockPos(BlockPos blockPos);

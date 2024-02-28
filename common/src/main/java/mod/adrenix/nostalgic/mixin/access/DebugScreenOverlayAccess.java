@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import java.util.Map;
 
 @Mixin(DebugScreenOverlay.class)
-public interface DebugScreenOverlayAccessor
+public interface DebugScreenOverlayAccess
 {
     @Accessor("renderFpsCharts")
     boolean nt$showFpsChart();

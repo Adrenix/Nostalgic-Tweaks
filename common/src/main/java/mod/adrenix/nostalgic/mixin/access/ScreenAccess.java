@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @SuppressWarnings("UnusedReturnValue")
 @Mixin(Screen.class)
-public interface ScreenAccessor
+public interface ScreenAccess
 {
     @Invoker("addRenderableWidget")
     <T extends GuiEventListener & NarratableEntry> T nt$addRenderableWidget(T listener);

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(FpsDebugChart.class)
-public interface FpsDebugChartAccessor
+public interface FpsDebugChartAccess
 {
     @Invoker("getSampleHeight")
     int nt$getSampleHeight(double value);

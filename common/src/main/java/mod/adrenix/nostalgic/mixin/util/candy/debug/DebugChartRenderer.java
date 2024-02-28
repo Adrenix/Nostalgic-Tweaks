@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.util.candy.debug;
 
-import mod.adrenix.nostalgic.mixin.access.FpsDebugChartAccessor;
+import mod.adrenix.nostalgic.mixin.access.FpsDebugChartAccess;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.debugchart.FpsDebugChart;
@@ -28,8 +28,8 @@ class DebugChartRenderer
         this.height = 76;
         this.logger = logger;
         this.graphics = graphics;
-        this.getSampleHeight = ((FpsDebugChartAccessor) fpsChart)::nt$getSampleHeight;
-        this.getSampleColor = ((FpsDebugChartAccessor) fpsChart)::nt$getSampleColor;
+        this.getSampleHeight = ((FpsDebugChartAccess) fpsChart)::nt$getSampleHeight;
+        this.getSampleColor = ((FpsDebugChartAccess) fpsChart)::nt$getSampleColor;
     }
 
     /* Methods */

@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.inventory_screen;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccessor;
+import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
 import mod.adrenix.nostalgic.mixin.util.candy.inventory.InventoryMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
@@ -66,7 +66,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onInit(CallbackInfo callback)
     {
-        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccessor) this);
+        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this);
     }
 
     /**

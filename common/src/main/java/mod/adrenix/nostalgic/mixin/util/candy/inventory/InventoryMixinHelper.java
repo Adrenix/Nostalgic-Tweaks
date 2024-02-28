@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.candy.inventory;
 
-import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccessor;
-import mod.adrenix.nostalgic.mixin.access.ScreenAccessor;
+import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
+import mod.adrenix.nostalgic.mixin.access.ScreenAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
 import mod.adrenix.nostalgic.tweak.enums.RecipeBook;
@@ -79,11 +79,11 @@ public abstract class InventoryMixinHelper
     /**
      * Get a new image button that represents the "large" recipe button.
      *
-     * @param inventory The inventory {@link AbstractContainerScreenAccessor} instance.
+     * @param inventory The inventory {@link AbstractContainerScreenAccess} instance.
      * @param original  The original {@link ImageButton} instance.
      * @return A new {@link ImageButton} instance.
      */
-    private static ImageButton getLargeBook(AbstractContainerScreenAccessor inventory, ImageButton original)
+    private static ImageButton getLargeBook(AbstractContainerScreenAccess inventory, ImageButton original)
     {
         return new ImageButton(inventory.nt$getLeftPos() + 151, inventory.nt$getTopPos() + 7, 18, 18, LARGE_RECIPE_BUTTON, (button) -> {
             original.onPress();
@@ -94,11 +94,11 @@ public abstract class InventoryMixinHelper
     /**
      * Get a new image button that represents the "small" recipe button.
      *
-     * @param inventory The inventory {@link AbstractContainerScreenAccessor} instance.
+     * @param inventory The inventory {@link AbstractContainerScreenAccess} instance.
      * @param original  The original {@link ImageButton} instance.
      * @return A new {@link ImageButton} instance.
      */
-    private static ImageButton getSmallBook(AbstractContainerScreenAccessor inventory, ImageButton original)
+    private static ImageButton getSmallBook(AbstractContainerScreenAccess inventory, ImageButton original)
     {
         return new ImageButton(inventory.nt$getLeftPos() + 160, inventory.nt$getTopPos() + 7, 9, 10, SMALL_RECIPE_BUTTON, (button) -> {
             original.onPress();
@@ -109,9 +109,9 @@ public abstract class InventoryMixinHelper
     /**
      * Set the inventory screen's recipe button to use.
      *
-     * @param inventory The inventory {@link AbstractContainerScreenAccessor} instance.
+     * @param inventory The inventory {@link AbstractContainerScreenAccess} instance.
      */
-    public static void setRecipeButton(AbstractContainerScreenAccessor inventory)
+    public static void setRecipeButton(AbstractContainerScreenAccess inventory)
     {
         ImageButton recipeButton = null;
         RecipeBook book = CandyTweak.INVENTORY_BOOK.get();
@@ -141,13 +141,13 @@ public abstract class InventoryMixinHelper
             }
             case LARGE ->
             {
-                ((ScreenAccessor) screen).nt$removeWidget(recipeButton);
-                ((ScreenAccessor) screen).nt$addRenderableWidget(getLargeBook(inventory, recipeButton));
+                ((ScreenAccess) screen).nt$removeWidget(recipeButton);
+                ((ScreenAccess) screen).nt$addRenderableWidget(getLargeBook(inventory, recipeButton));
             }
             case SMALL ->
             {
-                ((ScreenAccessor) screen).nt$removeWidget(recipeButton);
-                ((ScreenAccessor) screen).nt$addRenderableWidget(getSmallBook(inventory, recipeButton));
+                ((ScreenAccess) screen).nt$removeWidget(recipeButton);
+                ((ScreenAccess) screen).nt$addRenderableWidget(getSmallBook(inventory, recipeButton));
             }
         }
     }

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.util.sound;
 
-import mod.adrenix.nostalgic.mixin.access.EntityAccessor;
+import mod.adrenix.nostalgic.mixin.access.EntityAccess;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
@@ -317,7 +317,7 @@ public abstract class SoundMixinHelper
         if (isModdedStepIgnored(entity) || !standingOn.getFluidState().isEmpty())
             return false;
 
-        SoundType soundType = handler.getSoundTypeAt(((EntityAccessor) entity).nt$getPrimaryStepSoundBlockPos(handler.blockPos.below()));
+        SoundType soundType = handler.getSoundTypeAt(((EntityAccess) entity).nt$getPrimaryStepSoundBlockPos(handler.blockPos.below()));
 
         handler.source = entity.getSoundSource();
         handler.volume = soundType.getVolume() * 0.15F;

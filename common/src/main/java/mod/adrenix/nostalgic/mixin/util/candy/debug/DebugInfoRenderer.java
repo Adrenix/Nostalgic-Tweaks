@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.util.candy.debug;
 
 import com.google.common.base.Strings;
-import mod.adrenix.nostalgic.mixin.access.DebugScreenOverlayAccessor;
-import mod.adrenix.nostalgic.mixin.access.LevelRendererAccessor;
+import mod.adrenix.nostalgic.mixin.access.DebugScreenOverlayAccess;
+import mod.adrenix.nostalgic.mixin.access.LevelRendererAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -70,12 +70,12 @@ class DebugInfoRenderer
 
         this.playerPos = this.player.blockPosition();
         this.isReducedInfo = this.minecraft.showOnlyReducedInfo();
-        this.renderFpsCharts = ((DebugScreenOverlayAccessor) overlay).nt$showFpsChart();
-        this.renderNetworkCharts = ((DebugScreenOverlayAccessor) overlay).nt$showNetworkChart();
-        this.blockHit = ((DebugScreenOverlayAccessor) overlay).nt$getBlockHitResult();
-        this.liquidHit = ((DebugScreenOverlayAccessor) overlay).nt$getLiquidHitResult();
-        this.getPropertyValue = ((DebugScreenOverlayAccessor) overlay)::nt$getPropertyValueString;
-        this.printBiome = DebugScreenOverlayAccessor::nt$printBiome;
+        this.renderFpsCharts = ((DebugScreenOverlayAccess) overlay).nt$showFpsChart();
+        this.renderNetworkCharts = ((DebugScreenOverlayAccess) overlay).nt$showNetworkChart();
+        this.blockHit = ((DebugScreenOverlayAccess) overlay).nt$getBlockHitResult();
+        this.liquidHit = ((DebugScreenOverlayAccess) overlay).nt$getLiquidHitResult();
+        this.getPropertyValue = ((DebugScreenOverlayAccess) overlay)::nt$getPropertyValueString;
+        this.printBiome = DebugScreenOverlayAccess::nt$printBiome;
         this.left = new ArrayList<>();
         this.right = new ArrayList<>();
     }
@@ -162,8 +162,8 @@ class DebugInfoRenderer
     {
         int width = this.minecraft.getWindow().getGuiScaledWidth();
         int chunkUpdates = this.levelRenderer.getSectionRenderDispatcher().getToUpload();
-        int renderedEntities = ((LevelRendererAccessor) this.levelRenderer).nt$getRenderedEntities();
-        int culledEntities = ((LevelRendererAccessor) this.levelRenderer).nt$getCulledEntities();
+        int renderedEntities = ((LevelRendererAccess) this.levelRenderer).nt$getRenderedEntities();
+        int culledEntities = ((LevelRendererAccess) this.levelRenderer).nt$getCulledEntities();
 
         String overlay = CandyTweak.OLD_OVERLAY_TEXT.parse(SharedConstants.getCurrentVersion().getName());
         String title = overlay.isEmpty() ? "Minecraft " + SharedConstants.getCurrentVersion().getName() : overlay;
