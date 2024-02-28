@@ -921,7 +921,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.furnaceBook.enum.small": "The recipe book button will be a small unobtrusive button with a question mark. It will be located at the top right corner of the furnace screen.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.oldInventory": "Old Inventory Screen",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldInventory.info": "Bring back the old inventory screen. This will change the crafting grid location and widen the player box.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldInventory.info": "Bring back the old inventory screen texture. This will widen the player box background and change where the crafting grid is located. Other inventory tweaks can be used even if this tweak is§c disabled§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.inventoryBook": "Recipe Book",
   "gui.nostalgic_tweaks.config.eyeCandy.inventoryBook.info": "Disable or change the look of the recipe book button.",
   "gui.nostalgic_tweaks.config.eyeCandy.inventoryBook.enum.modern": "The modern recipe book button will be displayed on the inventory screen.",

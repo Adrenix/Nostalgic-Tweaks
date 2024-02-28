@@ -10,7 +10,7 @@ public abstract class ModAsset
      * Get a new resource location from the mod's assets directory.
      *
      * @param path A path in the mod's assets directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as {@code modId:$path} where
+     * @return A new {@link ResourceLocation} instance where the full-path appears as {@code modId:$path} where
      * {@code $path} is the given {@code path} argument.
      */
     public static ResourceLocation get(String path)
@@ -22,8 +22,8 @@ public abstract class ModAsset
      * Get a new resource location from the mod's textures directory.
      *
      * @param path A path in the mod's {@code textures} directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as
-     * {@code modId:textures/$path} where {@code $path} is the given {@code path} argument.
+     * @return A new {@link ResourceLocation} instance where the full-path appears as {@code modId:textures/$path} where
+     * {@code $path} is the given {@code path} argument.
      */
     public static ResourceLocation texture(String path)
     {
@@ -34,8 +34,8 @@ public abstract class ModAsset
      * Get a new resource location from the mod's icon directory.
      *
      * @param path A path in the mod's {@code icon} directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as
-     * {@code modId:textures/icon/$path} where {@code $path} is the given {@code path} argument.
+     * @return A new {@link ResourceLocation} instance where the full-path appears as {@code modId:textures/icon/$path}
+     * where {@code $path} is the given {@code path} argument.
      */
     public static ResourceLocation icon(String path)
     {
@@ -43,10 +43,25 @@ public abstract class ModAsset
     }
 
     /**
+     * Get a new resource location from the mod's gui sprites directory. These textures will be stored on the vanilla
+     * gui texture atlas. Therefore, sprites are stored in {@code assets/minecraft/textures/gui/sprites/mod_id}. Do
+     * <b color=red>not</b> include {@code .png} in the path. The game does not use the file extension.
+     *
+     * @param path A path in the mod's {@code sprites} directory.
+     * @return A new {@link ResourceLocation} instance where the returned-path references a location on the gui atlas
+     * texture sheet, and appears as {@code minecraft:nostalgic_tweaks/$path} where {@code $path} is the given
+     * {@code path} argument.
+     */
+    public static ResourceLocation sprite(String path)
+    {
+        return new ResourceLocation(NostalgicTweaks.MOD_ID + "/" + path);
+    }
+
+    /**
      * Get a new resource location from the mod's twemoji directory.
      *
      * @param path A path in the mod's {@code twemoji} directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as
+     * @return A new {@link ResourceLocation} instance where the full-path appears as
      * {@code modId:textures/icon/twemoji/$path} where {@code $path} is the given {@code path} argument.
      */
     public static ResourceLocation twemoji(String path)

@@ -3,9 +3,11 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
+    "AbstractContainerScreenAccessor",
     "DebugScreenOverlayAccessor",
     "FpsDebugChartAccessor",
-    "LevelRendererAccessor"
+    "LevelRendererAccessor",
+    "ScreenAccessor"
   ],
   "mixins": [
     "EntityAccessor"
