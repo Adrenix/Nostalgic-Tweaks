@@ -40,11 +40,11 @@ public abstract class HitboxMixinHelper
     /**
      * An overlay render type used to buffer the hitbox overlay in fabulous mode.
      */
-    public static final RenderType OVERLAY_RENDER_TYPE = RenderType.create("nt_hitbox_overlay", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
+    public static final RenderType OVERLAY_RENDER_TYPE = RenderType.create("nt_hitbox_overlay", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 1536, true, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
         .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-        .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+        .setOutputState(RenderStateShard.WEATHER_TARGET)
         .setCullState(RenderStateShard.NO_CULL)
         .createCompositeState(false));
 
