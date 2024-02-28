@@ -102,7 +102,6 @@ public interface CandyTweak
     TweakEnum<InventoryShield> INVENTORY_SHIELD = TweakEnum.client(InventoryShield.MIDDLE_RIGHT, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(InventoryShield.MODERN).alert(TweakAlert.SHIELD_CONFLICT).build();
     TweakFlag DISABLE_EMPTY_ARMOR_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakFlag DISABLE_EMPTY_SHIELD_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
-    TweakFlag INVERTED_BLOCK_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
 
     // Gui
@@ -211,6 +210,7 @@ public interface CandyTweak
 
     // Block Lighting
 
+    TweakFlag INVERTED_BLOCK_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).newForUpdate().build();
     TweakFlag OLD_LEAVES_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
     TweakFlag OLD_WATER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
 

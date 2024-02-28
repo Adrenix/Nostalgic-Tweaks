@@ -940,8 +940,6 @@
   "gui.nostalgic_tweaks.config.eyeCandy.disableEmptyShieldTexture.info": "Disable the shield overlay icon that appears in an empty off-hand slot.",
   "gui.nostalgic_tweaks.config.eyeCandy.invertedPlayerLighting": "Inverted Player Lighting",
   "gui.nostalgic_tweaks.config.eyeCandy.invertedPlayerLighting.info": "Bring back the old inverted lighting casted onto the player entity in the inventory screen.",
-  "gui.nostalgic_tweaks.config.eyeCandy.invertedBlockLighting": "Inverted Block Lighting",
-  "gui.nostalgic_tweaks.config.eyeCandy.invertedBlockLighting.info": "Bring back the old inverted lighting casted onto blocks in the inventory screen.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.itemMergeLimit": "Item Merging Limit",
   "gui.nostalgic_tweaks.config.eyeCandy.itemMergeLimit.info": "Begin merging items into stacks when surrounding items become§e greater than or equal to§r the defined limit. Having§a smaller§r limits provides§2 better§r FPS/TPS performance.\n\nSet limit to§6 64§r to§c disable§r.",
@@ -1050,6 +1048,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldWaterLighting.info": "Bring back the old water lighting so that water blocks§e 3§r light levels instead of§6 1§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLeavesLighting": "Old Leaves Lighting",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLeavesLighting.info": "Bring back the old leaves lighting from§e beta§r. This will§c remove§r ambient occlusion casting on blocks that are§e next§r to leaves.",
+  "gui.nostalgic_tweaks.config.eyeCandy.invertedBlockLighting": "Inverted Block Lighting",
+  "gui.nostalgic_tweaks.config.eyeCandy.invertedBlockLighting.info": "Bring back the old light direction casted onto 3D blocks in the game's user interfaces.",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight": "Max Block Light",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.info": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if§b old light rendering§r is§a enabled§r and the world is too§e bright§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.search": "Shader, Bright",
