@@ -254,8 +254,8 @@ public class ClientConfig implements ConfigMeta
 
         public GuiBackground oldGuiBackground = CandyTweak.OLD_GUI_BACKGROUND.register("oldGuiBackground");
         public boolean customGuiBackground = CandyTweak.CUSTOM_GUI_BACKGROUND.register("customGuiBackground");
-        public String customTopGradient = CandyTweak.CUSTOM_TOP_GRADIENT.register("customTopGradient");
-        public String customBottomGradient = CandyTweak.CUSTOM_BOTTOM_GRADIENT.register("customBottomGradient");
+        public String customGuiTopGradient = CandyTweak.CUSTOM_GUI_TOP_GRADIENT.register("customGuiTopGradient");
+        public String customGuiBottomGradient = CandyTweak.CUSTOM_GUI_BOTTOM_GRADIENT.register("customGuiBottomGradient");
 
         // Loading Overlay
 

@@ -108,8 +108,8 @@ public interface CandyTweak
 
     TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI).newForUpdate().build();
     TweakFlag CUSTOM_GUI_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_GUI).newForUpdate().build();
-    TweakColor CUSTOM_TOP_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).load().build();
-    TweakColor CUSTOM_BOTTOM_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).load().build();
+    TweakColor CUSTOM_GUI_TOP_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).load().build();
+    TweakColor CUSTOM_GUI_BOTTOM_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).load().build();
 
     // Loading Overlay
 
