@@ -88,10 +88,10 @@ public class TextureLayer
      * queue since colored vertices are clamped to colors in a range of 0-255. The shader color system will be used to
      * bright textures.
      *
-     * @param sprite A {@link ResourceLocation} that points to a sprite in the game's gui texture atlas.
-     * @param buffer A {@link RenderUtil.SpriteBuffer} instance.
+     * @param atlasLocation A {@link ResourceLocation} texture atlas.
+     * @param buffer        A {@link RenderUtil.SpriteBuffer} instance.
      */
-    void add(ResourceLocation sprite, RenderUtil.SpriteBuffer buffer)
+    void add(ResourceLocation atlasLocation, RenderUtil.SpriteBuffer buffer)
     {
         LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> map;
 
@@ -100,14 +100,14 @@ public class TextureLayer
         else
             map = this.spriteMap;
 
-        if (map.containsKey(sprite))
-            map.get(sprite).add(buffer);
+        if (map.containsKey(atlasLocation))
+            map.get(atlasLocation).add(buffer);
         else
         {
             ArrayDeque<RenderUtil.SpriteBuffer> queue = new ArrayDeque<>();
             queue.add(buffer);
 
-            map.put(sprite, queue);
+            map.put(atlasLocation, queue);
         }
     }
 
