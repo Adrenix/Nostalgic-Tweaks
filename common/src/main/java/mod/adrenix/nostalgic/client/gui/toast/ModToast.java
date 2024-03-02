@@ -3,13 +3,13 @@ package mod.adrenix.nostalgic.client.gui.toast;
 import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.GearSpinner;
-import mod.adrenix.nostalgic.client.gui.overlay.OverlayTexture;
 import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
@@ -248,7 +248,7 @@ public class ModToast implements Toast
         float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
         scale = scale * 4.0F / (float) (GuiUtil.font().width(splash));
 
-        OverlayTexture.render(graphics, 0, 0, this.width(), this.height());
+        RenderUtil.blitSprite(TextureLocation.OVERLAY, graphics, 0, 0, this.width(), this.height());
 
         GearSpinner.getInstance().render(graphics, 0.0215F, 6, 3);
 

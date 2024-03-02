@@ -10,7 +10,7 @@ public class TextureLocation extends ResourceLocation
     public static final ResourceLocation DEV_MODE = ModAsset.texture("gui/nt_dev.png");
     public static final ResourceLocation BLOCK_SHADOW = ModAsset.texture("block_shadow.png");
     public static final ResourceLocation WIDGETS = ModAsset.texture("gui/widgets.png");
-    public static final ResourceLocation OVERLAY = ModAsset.texture("gui/overlay.png");
+    public static final ResourceLocation OVERLAY = ModAsset.sprite("overlay/border");
     public static final ResourceLocation INVENTORY = ModAsset.texture("gui/inventory.png");
     public static final ResourceLocation MOJANG_ALPHA = ModAsset.texture("gui/mojang_alpha.png");
     public static final ResourceLocation MOJANG_BETA = ModAsset.texture("gui/mojang_beta.png");
