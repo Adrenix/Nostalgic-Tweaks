@@ -28,9 +28,11 @@ import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public abstract class RenderUtil
 {
@@ -323,6 +325,14 @@ public abstract class RenderUtil
             layer.add(location, new TextureBuffer(matrix, x, y, uOffset, vOffset, uWidth, vHeight, rgba));
             TEXTURE_LAYERS.add(layer);
         }
+
+        /**
+         * @return A unique ARGB hash code.
+         */
+        int hashColor()
+        {
+            return Arrays.hashCode(this.rgba);
+        }
     }
 
     /**
@@ -344,13 +354,21 @@ public abstract class RenderUtil
         /**
          * Add a sprite to the texture queue array for batch rendering.
          */
-        static void create(Matrix4f matrix, ResourceLocation sprite, float x1, float x2, float y1, float y2, float minU, float maxU, float minV, float maxV)
+        static void create(Matrix4f matrix, ResourceLocation atlasLocation, float x1, float x2, float y1, float y2, float minU, float maxU, float minV, float maxV)
         {
             float[] color = RenderSystem.getShaderColor();
             float[] rgba = new float[] { color[0], color[1], color[2], color[3] };
 
-            layer.add(sprite, new SpriteBuffer(matrix, x1, x2, y1, y2, minU, maxU, minV, maxV, rgba));
+            layer.add(atlasLocation, new SpriteBuffer(matrix, x1, x2, y1, y2, minU, maxU, minV, maxV, rgba));
             TEXTURE_LAYERS.add(layer);
+        }
+
+        /**
+         * @return A unique ARGB hash code.
+         */
+        int hashColor()
+        {
+            return Arrays.hashCode(this.rgba);
         }
     }
 
@@ -684,25 +702,35 @@ public abstract class RenderUtil
 
                 if (location instanceof TextureLocation sheet)
                 {
-                    queue.forEach(buffer -> {
+                    queue.stream().collect(Collectors.groupingBy(TextureBuffer::hashColor)).forEach((argb, buffers) -> {
                         if (!builder.building())
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                        RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+                        float r = buffers.get(0).rgba[0];
+                        float g = buffers.get(0).rgba[1];
+                        float b = buffers.get(0).rgba[2];
+                        float a = buffers.get(0).rgba[3];
 
-                        blitTexture(sheet, builder, buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
+                        RenderSystem.setShaderColor(r, g, b, a);
+
+                        buffers.forEach(buffer -> blitTexture(sheet, builder, buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba));
                         draw(builder);
                     });
                 }
                 else
                 {
-                    queue.forEach(buffer -> {
+                    queue.stream().collect(Collectors.groupingBy(TextureBuffer::hashColor)).forEach((argb, buffers) -> {
                         if (!builder.building())
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                        RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+                        float r = buffers.get(0).rgba[0];
+                        float g = buffers.get(0).rgba[1];
+                        float b = buffers.get(0).rgba[2];
+                        float a = buffers.get(0).rgba[3];
 
-                        blit256(buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
+                        RenderSystem.setShaderColor(r, g, b, a);
+
+                        buffers.forEach(buffer -> blit256(buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba));
                         draw(builder);
                     });
                 }
@@ -723,13 +751,18 @@ public abstract class RenderUtil
             layer.spriteLightMap.forEach((sprite, queue) -> {
                 RenderSystem.setShaderTexture(0, sprite);
 
-                queue.forEach(buffer -> {
+                queue.stream().collect(Collectors.groupingBy(SpriteBuffer::hashColor)).forEach((argb, buffers) -> {
                     if (!builder.building())
                         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                    RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+                    float r = buffers.get(0).rgba[0];
+                    float g = buffers.get(0).rgba[1];
+                    float b = buffers.get(0).rgba[2];
+                    float a = buffers.get(0).rgba[3];
 
-                    innerBlit(builder, buffer);
+                    RenderSystem.setShaderColor(r, g, b, a);
+
+                    buffers.forEach(buffer -> innerBlit(builder, buffer));
                     draw(builder);
                 });
             });
@@ -1385,14 +1418,12 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / (float) texture.getWidth();
         float minV = vOffset / (float) texture.getHeight();
         float maxV = (vOffset + vHeight) / (float) texture.getHeight();
+        int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
 
-        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
-        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
-
-        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(color).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(color).endVertex();
     }
 
     /**
@@ -1420,13 +1451,12 @@ public abstract class RenderUtil
     private static void blitTexture(Matrix4f matrix, int width, int height, float[] rgba)
     {
         BufferBuilder builder = getTesselatorBuilder();
-        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
-        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
+        int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
 
-        builder.vertex(matrix, 0, height, 0).uv(0.0F, 1.0F).color(argb).endVertex();
-        builder.vertex(matrix, width, height, 0).uv(1.0F, 1.0F).color(argb).endVertex();
-        builder.vertex(matrix, width, 0, 0).uv(1.0F, 0.0F).color(argb).endVertex();
-        builder.vertex(matrix, 0, 0, 0).uv(0.0F, 0.0F).color(argb).endVertex();
+        builder.vertex(matrix, 0, height, 0).uv(0.0F, 1.0F).color(color).endVertex();
+        builder.vertex(matrix, width, height, 0).uv(1.0F, 1.0F).color(color).endVertex();
+        builder.vertex(matrix, width, 0, 0).uv(1.0F, 0.0F).color(color).endVertex();
+        builder.vertex(matrix, 0, 0, 0).uv(0.0F, 0.0F).color(color).endVertex();
     }
 
     /**
@@ -1516,13 +1546,12 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / (float) textureWidth;
         float minV = vOffset / (float) textureHeight;
         float maxV = (vOffset + vHeight) / (float) textureHeight;
-        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
-        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
+        int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
 
-        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(color).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(color).endVertex();
     }
 
     /**
@@ -1536,14 +1565,12 @@ public abstract class RenderUtil
         float maxU = (uOffset + uWidth) / 256.0F;
         float minV = vOffset / 256.0F;
         float maxV = (vOffset + vHeight) / 256.0F;
+        int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
 
-        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
-        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
-
-        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(argb).endVertex();
-        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(argb).endVertex();
+        consumer.vertex(matrix, x, y2, 0.0F).uv(minU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(color).endVertex();
+        consumer.vertex(matrix, x2, y, 0.0F).uv(maxU, minV).color(color).endVertex();
+        consumer.vertex(matrix, x, y, 0.0F).uv(minU, minV).color(color).endVertex();
     }
 
     /**
@@ -1759,17 +1786,16 @@ public abstract class RenderUtil
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         float[] rgba = RenderSystem.getShaderColor();
-        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
-        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
+        int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
 
         BufferBuilder builder = getTesselatorBuilder();
         Matrix4f matrix = poseStack.last().pose();
 
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        builder.vertex(matrix, x1, y1, 0.0F).uv(minU, minV).color(argb).endVertex();
-        builder.vertex(matrix, x1, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
-        builder.vertex(matrix, x2, y1, 0.0F).uv(maxU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x1, y1, 0.0F).uv(minU, minV).color(color).endVertex();
+        builder.vertex(matrix, x1, y2, 0.0F).uv(minU, maxV).color(color).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(color).endVertex();
+        builder.vertex(matrix, x2, y1, 0.0F).uv(maxU, minV).color(color).endVertex();
 
         BufferUploader.drawWithShader(builder.end());
     }
