@@ -9,7 +9,8 @@ import java.util.LinkedHashMap;
 
 /**
  * This class follows the concepts of "layers" within a program like Photoshop. A layer with a lower priority number is
- * rendered first.
+ * rendered first. The purpose of this utility is to provide a more robust solution to the game's "blit offset"
+ * concept.
  */
 public class TextureLayer
 {
@@ -34,16 +35,22 @@ public class TextureLayer
     /* Fields */
 
     final int index;
-    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> queueMap;
-    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> brightMap;
+    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureMap;
+    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureLightMap;
+    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> spriteMap;
+    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> spriteLightMap;
 
     /* Constructor */
 
     private TextureLayer(int index)
     {
         this.index = index;
-        this.queueMap = new LinkedHashMap<>();
-        this.brightMap = new LinkedHashMap<>();
+
+        this.textureMap = new LinkedHashMap<>();
+        this.textureLightMap = new LinkedHashMap<>();
+
+        this.spriteMap = new LinkedHashMap<>();
+        this.spriteLightMap = new LinkedHashMap<>();
     }
 
     /* Methods */
@@ -53,26 +60,54 @@ public class TextureLayer
      * queue since colored vertices are clamped to colors in a range of 0-255. The shader color system will be used to
      * brighten textures.
      *
-     * @param location A {@link ResourceLocation} instance.
-     * @param texture  A {@link RenderUtil.TextureBuffer} instance.
+     * @param texture A {@link ResourceLocation} instance.
+     * @param buffer  A {@link RenderUtil.TextureBuffer} instance.
      */
-    void add(ResourceLocation location, RenderUtil.TextureBuffer texture)
+    void add(ResourceLocation texture, RenderUtil.TextureBuffer buffer)
     {
         LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> map;
 
-        if (MathUtil.getLargest(texture.rgba()[0], texture.rgba()[1], texture.rgba()[2]) > 1.0F)
-            map = this.brightMap;
+        if (MathUtil.getLargest(buffer.rgba()[0], buffer.rgba()[1], buffer.rgba()[2]) > 1.0F)
+            map = this.textureLightMap;
         else
-            map = this.queueMap;
+            map = this.textureMap;
 
-        if (map.containsKey(location))
-            map.get(location).add(texture);
+        if (map.containsKey(texture))
+            map.get(texture).add(buffer);
         else
         {
-            ArrayDeque<RenderUtil.TextureBuffer> buffer = new ArrayDeque<>();
-            buffer.add(texture);
+            ArrayDeque<RenderUtil.TextureBuffer> queue = new ArrayDeque<>();
+            queue.add(buffer);
 
-            map.put(location, buffer);
+            map.put(texture, queue);
+        }
+    }
+
+    /**
+     * Add the given buffer to the correct queue map. A sprite with a brightness value greater than 1 uses a separate
+     * queue since colored vertices are clamped to colors in a range of 0-255. The shader color system will be used to
+     * bright textures.
+     *
+     * @param sprite A {@link ResourceLocation} that points to a sprite in the game's gui texture atlas.
+     * @param buffer A {@link RenderUtil.SpriteBuffer} instance.
+     */
+    void add(ResourceLocation sprite, RenderUtil.SpriteBuffer buffer)
+    {
+        LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> map;
+
+        if (MathUtil.getLargest(buffer.rgba()[0], buffer.rgba()[1], buffer.rgba()[2]) > 1.0F)
+            map = this.spriteLightMap;
+        else
+            map = this.spriteMap;
+
+        if (map.containsKey(sprite))
+            map.get(sprite).add(buffer);
+        else
+        {
+            ArrayDeque<RenderUtil.SpriteBuffer> queue = new ArrayDeque<>();
+            queue.add(buffer);
+
+            map.put(sprite, queue);
         }
     }
 
@@ -81,8 +116,11 @@ public class TextureLayer
      */
     void clear()
     {
-        this.queueMap.clear();
-        this.brightMap.clear();
+        this.textureMap.clear();
+        this.textureLightMap.clear();
+
+        this.spriteMap.clear();
+        this.spriteLightMap.clear();
     }
 
     /**

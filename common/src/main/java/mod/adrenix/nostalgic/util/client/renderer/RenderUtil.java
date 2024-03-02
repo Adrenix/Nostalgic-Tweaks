@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.metadata.gui.GuiSpriteScaling;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -311,7 +313,7 @@ public abstract class RenderUtil
     record TextureBuffer(Matrix4f matrix, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight, float[] rgba)
     {
         /**
-         * Add a texture to the texture queue array for render batching.
+         * Add a texture to the texture queue array for batch rendering.
          */
         static void create(Matrix4f matrix, ResourceLocation location, float x, float y, int uOffset, int vOffset, int uWidth, int vHeight)
         {
@@ -319,6 +321,35 @@ public abstract class RenderUtil
             float[] rgba = new float[] { color[0], color[1], color[2], color[3] };
 
             layer.add(location, new TextureBuffer(matrix, x, y, uOffset, vOffset, uWidth, vHeight, rgba));
+            TEXTURE_LAYERS.add(layer);
+        }
+    }
+
+    /**
+     * A record class that defines the structure of a sprite instance.
+     *
+     * @param matrix The position matrix that will be used for vertices.
+     * @param x1     The x-coordinate of the first corner for the blit position.
+     * @param x2     The x-coordinate of the second corner for the blit position.
+     * @param y1     The y-coordinate of the first corner for the blit position.
+     * @param y2     The y-coordinate of the second corner for the blit position.
+     * @param minU   The minimum horizontal texture coordinate.
+     * @param maxU   The maximum horizontal texture coordinate.
+     * @param minV   The minimum vertical texture coordinate.
+     * @param maxV   The maximum vertical texture coordinate.
+     * @param rgba   The RGBA[] array to apply to the vertices' colors.
+     */
+    record SpriteBuffer(Matrix4f matrix, float x1, float x2, float y1, float y2, float minU, float maxU, float minV, float maxV, float[] rgba)
+    {
+        /**
+         * Add a sprite to the texture queue array for batch rendering.
+         */
+        static void create(Matrix4f matrix, ResourceLocation sprite, float x1, float x2, float y1, float y2, float minU, float maxU, float minV, float maxV)
+        {
+            float[] color = RenderSystem.getShaderColor();
+            float[] rgba = new float[] { color[0], color[1], color[2], color[3] };
+
+            layer.add(sprite, new SpriteBuffer(matrix, x1, x2, y1, y2, minU, maxU, minV, maxV, rgba));
             TEXTURE_LAYERS.add(layer);
         }
     }
@@ -633,7 +664,7 @@ public abstract class RenderUtil
         RenderSystem.enableBlend();
 
         TEXTURE_LAYERS.stream().sorted(Comparator.comparingInt(TextureLayer::getIndex)).forEach(layer -> {
-            layer.queueMap.forEach((location, queue) -> {
+            layer.textureMap.forEach((location, queue) -> {
                 RenderSystem.setShaderTexture(0, location);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -648,7 +679,7 @@ public abstract class RenderUtil
                 draw(builder);
             });
 
-            layer.brightMap.forEach((location, queue) -> {
+            layer.textureLightMap.forEach((location, queue) -> {
                 RenderSystem.setShaderTexture(0, location);
 
                 if (location instanceof TextureLocation sheet)
@@ -658,6 +689,7 @@ public abstract class RenderUtil
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
                         RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+
                         blitTexture(sheet, builder, buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
                         draw(builder);
                     });
@@ -669,10 +701,37 @@ public abstract class RenderUtil
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
                         RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+
                         blit256(buffer.matrix, buffer.x, buffer.y, buffer.uOffset, buffer.vOffset, buffer.uWidth, buffer.vHeight, buffer.rgba);
                         draw(builder);
                     });
                 }
+            });
+
+            layer.spriteMap.forEach((sprite, queue) -> {
+                RenderSystem.setShaderTexture(0, sprite);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+                if (!builder.building())
+                    builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+                queue.forEach(buffer -> innerBlit(builder, buffer));
+
+                draw(builder);
+            });
+
+            layer.spriteLightMap.forEach((sprite, queue) -> {
+                RenderSystem.setShaderTexture(0, sprite);
+
+                queue.forEach(buffer -> {
+                    if (!builder.building())
+                        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+                    RenderSystem.setShaderColor(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]);
+
+                    innerBlit(builder, buffer);
+                    draw(builder);
+                });
             });
         });
 
@@ -1578,6 +1637,247 @@ public abstract class RenderUtil
     public static void blit256(ResourceLocation location, GuiGraphics graphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight)
     {
         blit256(location, graphics, (float) x, (float) y, uOffset, vOffset, uWidth, vHeight);
+    }
+
+    /* Sprite Rendering */
+
+    /**
+     * Render a texture using a blit operation with the given scaling.
+     *
+     * @param sprite   The {@link ResourceLocation} from the game's gui atlas sprite sheet.
+     * @param graphics The {@link GuiGraphics} instance.
+     * @param scale    The scale to apply.
+     * @param x        The x-coordinate of where to start the blit.
+     * @param y        The y-coordinate of where to start the blit.
+     * @param width    The width of the blit.
+     * @param height   The height of the blit.
+     */
+    @PublicAPI
+    public static void blitSprite(ResourceLocation sprite, GuiGraphics graphics, float scale, int x, int y, int width, int height)
+    {
+        TextureAtlasSprite atlasSprite = Minecraft.getInstance().getGuiSprites().getSprite(sprite);
+        GuiSpriteScaling spriteScaling = Minecraft.getInstance().getGuiSprites().getSpriteScaling(atlasSprite);
+
+        graphics.pose().pushPose();
+        graphics.pose().translate(x, y, 0.0F);
+        graphics.pose().scale(scale, scale, scale);
+
+        if (spriteScaling instanceof GuiSpriteScaling.Stretch)
+            blitSprite(atlasSprite, graphics.pose(), 0, 0, width, height);
+        else if (spriteScaling instanceof GuiSpriteScaling.Tile tile)
+            blitTiledSprite(atlasSprite, graphics.pose(), 0, 0, width, height, 0, 0, tile.width(), tile.height(), tile.width(), tile.height());
+        else if (spriteScaling instanceof GuiSpriteScaling.NineSlice nineSlice)
+            blitNineSlicedSprite(atlasSprite, nineSlice, graphics.pose(), 0, 0, width, height);
+
+        graphics.pose().popPose();
+    }
+
+    /**
+     * Render a texture using a blit operation.
+     *
+     * @param sprite   The {@link ResourceLocation} from the game's gui atlas sprite sheet.
+     * @param graphics The {@link GuiGraphics} instance.
+     * @param x        The x-coordinate of where to start the blit.
+     * @param y        The y-coordinate of where to start the blit.
+     * @param width    The width of the blit.
+     * @param height   The height of the blit.
+     */
+    @PublicAPI
+    public static void blitSprite(ResourceLocation sprite, GuiGraphics graphics, int x, int y, int width, int height)
+    {
+        blitSprite(sprite, graphics, 1.0F, x, y, width, height);
+    }
+
+    /**
+     * Performs an inner blit operation for rendering a texture if the width and height are both not zero.
+     *
+     * @param sprite    The {@link TextureAtlasSprite} instance.
+     * @param poseStack The {@link PoseStack} instance.
+     * @param x         The x-coordinate of the top-left corner for the blit.
+     * @param y         The y-coordinate of the top-left corner for the blit.
+     * @param width     The width of what to blit.
+     * @param height    The height of what to blit.
+     */
+    @SuppressWarnings("SameParameterValue")
+    private static void blitSprite(TextureAtlasSprite sprite, PoseStack poseStack, int x, int y, int width, int height)
+    {
+        if (width != 0 && height != 0)
+            innerBlit(sprite.atlasLocation(), poseStack, x, x + width, y, y + height, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1());
+    }
+
+    /**
+     * Performs an inner blit operation for rendering a tiled texture if the width and height are both not zero.
+     *
+     * @param sprite      The {@link TextureAtlasSprite} instance.
+     * @param poseStack   The {@link PoseStack} instance.
+     * @param sliceWidth  The slice width.
+     * @param sliceHeight The slice height.
+     * @param tileWidth   The tile width.
+     * @param tileHeight  The tile height.
+     * @param x           The x-coordinate of the top-left corner for the blit.
+     * @param y           The y-coordinate of the top-left corner for the blit.
+     * @param width       The width of what to blit.
+     * @param height      The height of what to blit.
+     */
+    private static void blitSprite(TextureAtlasSprite sprite, PoseStack poseStack, int sliceWidth, int sliceHeight, int tileWidth, int tileHeight, int x, int y, int width, int height)
+    {
+        if (width == 0 || height == 0)
+            return;
+
+        float minU = sprite.getU((float) tileWidth / (float) sliceWidth);
+        float maxU = sprite.getU((float) (tileWidth + width) / (float) sliceWidth);
+        float minV = sprite.getV((float) tileHeight / (float) sliceHeight);
+        float maxV = sprite.getV((float) (tileHeight + height) / (float) sliceHeight);
+
+        innerBlit(sprite.atlasLocation(), poseStack, x, x + width, y, y + height, minU, maxU, minV, maxV);
+    }
+
+    /**
+     * Performs an inner blit operation for rendering a texture with the specified scaling, coordinates, and texture
+     * coordinates.
+     *
+     * @param atlasLocation The {@link ResourceLocation} of the texture atlas.
+     * @param poseStack     The {@link PoseStack} instance.
+     * @param x1            The x-coordinate of the first corner for the blit position.
+     * @param x2            The x-coordinate of the second corner for the blit position.
+     * @param y1            The y-coordinate of the first corner for the blit position.
+     * @param y2            The y-coordinate of the second corner for the blit position.
+     * @param minU          The minimum horizontal texture coordinate.
+     * @param maxU          The maximum horizontal texture coordinate.
+     * @param minV          The minimum vertical texture coordinate.
+     * @param maxV          The maximum vertical texture coordinate.
+     */
+    private static void innerBlit(ResourceLocation atlasLocation, PoseStack poseStack, float x1, float x2, float y1, float y2, float minU, float maxU, float minV, float maxV)
+    {
+        if (isBatching)
+        {
+            SpriteBuffer.create(getMatrix(poseStack), atlasLocation, x1, x2, y1, y2, minU, maxU, minV, maxV);
+            return;
+        }
+
+        RenderSystem.setShaderTexture(0, atlasLocation);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+        float[] rgba = RenderSystem.getShaderColor();
+        float brightness = MathUtil.getLargest(rgba[0], rgba[1], rgba[2]);
+        int argb = new Color(Color.HSBtoRGB(0.0F, 0.0F, brightness), rgba[3]).get();
+
+        BufferBuilder builder = getTesselatorBuilder();
+        Matrix4f matrix = poseStack.last().pose();
+
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        builder.vertex(matrix, x1, y1, 0.0F).uv(minU, minV).color(argb).endVertex();
+        builder.vertex(matrix, x1, y2, 0.0F).uv(minU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y2, 0.0F).uv(maxU, maxV).color(argb).endVertex();
+        builder.vertex(matrix, x2, y1, 0.0F).uv(maxU, minV).color(argb).endVertex();
+
+        BufferUploader.drawWithShader(builder.end());
+    }
+
+    /**
+     * Builds vertices for the given builder using the given sprite data.
+     *
+     * @param builder The {@link BufferBuilder} instance.
+     * @param buffer  The {@link SpriteBuffer} instance.
+     */
+    private static void innerBlit(BufferBuilder builder, SpriteBuffer buffer)
+    {
+        int color = new Color(buffer.rgba[0], buffer.rgba[1], buffer.rgba[2], buffer.rgba[3]).get();
+
+        builder.vertex(buffer.matrix, buffer.x1, buffer.y1, 0.0F).uv(buffer.minU, buffer.minV).color(color).endVertex();
+        builder.vertex(buffer.matrix, buffer.x1, buffer.y2, 0.0F).uv(buffer.minU, buffer.maxV).color(color).endVertex();
+        builder.vertex(buffer.matrix, buffer.x2, buffer.y2, 0.0F).uv(buffer.maxU, buffer.maxV).color(color).endVertex();
+        builder.vertex(buffer.matrix, buffer.x2, buffer.y1, 0.0F).uv(buffer.maxU, buffer.minV).color(color).endVertex();
+    }
+
+    /**
+     * Performs an inner blit operation for rendering a tiled texture with the specified scaling, sprite, and tile
+     * data.
+     *
+     * @param sprite       The {@link TextureAtlasSprite} instance.
+     * @param poseStack    The {@link PoseStack} instance.
+     * @param x            The x-coordinate of where to start the blit.
+     * @param y            The y-coordinate of where to start the blit.
+     * @param width        The width of the blit.
+     * @param height       The height of the blit.
+     * @param tileWidth    The tile width.
+     * @param tileHeight   The tile height.
+     * @param spriteWidth  The sprite width.
+     * @param spriteHeight The sprite height.
+     * @param sliceWidth   The slice width.
+     * @param sliceHeight  The slice height.
+     */
+    private static void blitTiledSprite(TextureAtlasSprite sprite, PoseStack poseStack, int x, int y, int width, int height, int tileWidth, int tileHeight, int spriteWidth, int spriteHeight, int sliceWidth, int sliceHeight)
+    {
+        if (width <= 0 || height <= 0)
+            return;
+
+        if (spriteWidth > 0 && spriteHeight > 0)
+        {
+            for (int i = 0; i < width; i += spriteWidth)
+            {
+                int minWidth = Math.min(spriteWidth, width - i);
+
+                for (int j = 0; j < height; j += spriteHeight)
+                {
+                    int minHeight = Math.min(spriteHeight, height - j);
+
+                    blitSprite(sprite, poseStack, sliceWidth, sliceHeight, tileWidth, tileHeight, x + i, y + j, minWidth, minHeight);
+                }
+            }
+        }
+        else
+            throw new IllegalArgumentException("Tiled sprite texture size must be positive, got " + spriteWidth + "x" + spriteHeight);
+    }
+
+    /**
+     * Performs an inner blit operation for rendering a nine-slice texture with the specified scaling, sprite, and
+     * nine-slice data.
+     *
+     * @param sprite    The {@link TextureAtlasSprite} instance.
+     * @param nineSlice The {@link GuiSpriteScaling.NineSlice} instance.
+     * @param poseStack The {@link PoseStack} instance.
+     * @param x         The x-coordinate of where to start the blit.
+     * @param y         The y-coordinate of where to start the blit.
+     * @param width     The width of the blit.
+     * @param height    The height of the blit.
+     */
+    @SuppressWarnings("SameParameterValue")
+    private static void blitNineSlicedSprite(TextureAtlasSprite sprite, GuiSpriteScaling.NineSlice nineSlice, PoseStack poseStack, int x, int y, int width, int height)
+    {
+        GuiSpriteScaling.NineSlice.Border border = nineSlice.border();
+
+        int left = Math.min(border.left(), width / 2);
+        int right = Math.min(border.right(), width / 2);
+        int top = Math.min(border.top(), height / 2);
+        int bottom = Math.min(border.bottom(), height / 2);
+
+        if (width == nineSlice.width() && height == nineSlice.height())
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, 0, x, y, width, height);
+        else if (height == nineSlice.height())
+        {
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, 0, x, y, left, height);
+            blitTiledSprite(sprite, poseStack, x + left, y, width - right - left, height, left, 0, nineSlice.width() - right - left, nineSlice.height(), nineSlice.width(), nineSlice.height());
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), nineSlice.width() - right, 0, x + width - right, y, right, height);
+        }
+        else if (width == nineSlice.width())
+        {
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, 0, x, y, width, top);
+            blitTiledSprite(sprite, poseStack, x, y + top, width, height - bottom - top, 0, top, nineSlice.width(), nineSlice.height() - bottom - top, nineSlice.width(), nineSlice.height());
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, nineSlice.height() - bottom, x, y + height - bottom, width, bottom);
+        }
+        else
+        {
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, 0, x, y, left, top);
+            blitTiledSprite(sprite, poseStack, x + left, y, width - right - left, top, left, 0, nineSlice.width() - right - left, top, nineSlice.width(), nineSlice.height());
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), nineSlice.width() - right, 0, x + width - right, y, right, top);
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), 0, nineSlice.height() - bottom, x, y + height - bottom, left, bottom);
+            blitTiledSprite(sprite, poseStack, x + left, y + height - bottom, width - right - left, bottom, left, nineSlice.height() - bottom, nineSlice.width() - right - left, bottom, nineSlice.width(), nineSlice.height());
+            blitSprite(sprite, poseStack, nineSlice.width(), nineSlice.height(), nineSlice.width() - right, nineSlice.height() - bottom, x + width - right, y + height - bottom, right, bottom);
+            blitTiledSprite(sprite, poseStack, x, y + top, left, height - bottom - top, 0, top, left, nineSlice.height() - bottom - top, nineSlice.width(), nineSlice.height());
+            blitTiledSprite(sprite, poseStack, x + left, y + top, width - right - left, height - bottom - top, left, top, nineSlice.width() - right - left, nineSlice.height() - bottom - top, nineSlice.width(), nineSlice.height());
+            blitTiledSprite(sprite, poseStack, x + width - right, y + top, left, height - bottom - top, nineSlice.width() - right, top, right, nineSlice.height() - bottom - top, nineSlice.width(), nineSlice.height());
+        }
     }
 
     /* Item Rendering */
