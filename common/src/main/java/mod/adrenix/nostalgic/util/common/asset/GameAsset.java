@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.util.common.asset;
 
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class VanillaAsset
+public abstract class GameAsset
 {
     /**
      * Get a new resource location from the game's texture directory.

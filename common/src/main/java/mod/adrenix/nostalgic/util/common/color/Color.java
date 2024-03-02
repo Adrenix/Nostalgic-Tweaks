@@ -47,6 +47,7 @@ public class Color
     @PublicAPI public static final Color SPACE_CADET = new Color(0x0E2A55).lock();
     @PublicAPI public static final Color METALLIC_BLUE = new Color(0x2B4B7C).lock();
     @PublicAPI public static final Color DARK_BLUE = new Color(0x303060).lock();
+    @PublicAPI public static final Color MOJANG_PURPLE = new Color(0x373363).lock();
     @PublicAPI public static final Color IRIS_BLUE = new Color(0x5560CB).lock();
     @PublicAPI public static final Color FRENCH_SKY_BLUE = new Color(0x87ADFF).lock();
     @PublicAPI public static final Color MAYA_BLUE = new Color(0x72C9FC).lock();

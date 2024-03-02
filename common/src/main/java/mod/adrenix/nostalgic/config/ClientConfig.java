@@ -262,6 +262,11 @@ public class ClientConfig implements ConfigMeta
         public Overlay oldLoadingOverlay = CandyTweak.OLD_LOADING_OVERLAY.register("oldLoadingOverlay");
         public boolean removeLoadingBar = CandyTweak.REMOVE_LOADING_BAR.register("removeLoadingBar");
         public boolean oldLoadingScreens = CandyTweak.OLD_LOADING_SCREENS.register("oldLoadingScreens");
+        public boolean customLoadingOverlayBackground = CandyTweak.CUSTOM_LOADING_OVERLAY_BACKGROUND.register("customLoadingOverlayBackground");
+        public String loadingOverlayBackgroundColor = CandyTweak.LOADING_OVERLAY_BACKGROUND_COLOR.register("loadingOverlayBackgroundColor");
+        public boolean customLoadingProgressBar = CandyTweak.CUSTOM_LOADING_PROGRESS_BAR.register("customLoadingProgressBar");
+        public String progressBarOutlineColor = CandyTweak.PROGRESS_BAR_OUTLINE_COLOR.register("progressBarOutlineColor");
+        public String progressBarInsideColor = CandyTweak.PROGRESS_BAR_INSIDE_COLOR.register("progressBarInsideColor");
 
         // Version Overlay
 

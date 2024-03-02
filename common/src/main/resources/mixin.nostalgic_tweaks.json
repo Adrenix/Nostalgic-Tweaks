@@ -26,6 +26,7 @@
     "candy.inventory_screen.InventoryScreenMixin",
     "candy.inventory_screen.InventoryShieldSlotMixin",
     "candy.inventory_screen.LightingMixin",
+    "candy.loading_overlay.LoadingOverlayMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.name_tag.EntityRendererMixin",
     "candy.uncap_title_fps.MinecraftMixin",

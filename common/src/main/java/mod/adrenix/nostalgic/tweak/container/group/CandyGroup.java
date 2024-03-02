@@ -35,6 +35,7 @@ public interface CandyGroup
     Container INTERFACE_FURNACE = Container.group(INTERFACE, "interface_furnace").color(0x8F8F90).icon(Blocks.FURNACE).build();
     Container INTERFACE_INVENTORY = Container.group(INTERFACE, "interface_inventory").color(0xB6896C).icon(Items.PLAYER_HEAD).build();
     Container INTERFACE_LOADING = Container.group(INTERFACE, "interface_loading").color(0xE22837).icon(Icons.MOJANG).build();
+    Container INTERFACE_LOADING_COLOR = Container.group(INTERFACE_LOADING, "interface_loading_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
     Container INTERFACE_PAUSE = Container.group(INTERFACE, "interface_pause").color(0xFFFFA0).icon(Icons.PAUSE).build();
     Container INTERFACE_TITLE = Container.group(INTERFACE, "interface_title").color(0xFFFF00).icon(Icons.TEXT).build();
     Container INTERFACE_TITLE_BUTTON = Container.group(INTERFACE_TITLE, "interface_title_button").color(0xE0E0E0).icon(Icons.BUTTON).build();

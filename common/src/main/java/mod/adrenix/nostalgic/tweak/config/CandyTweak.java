@@ -61,6 +61,7 @@ public interface CandyTweak
 
     // Interface
 
+    TweakFlag OLD_LOADING_SCREENS = TweakFlag.client(true, CandyGroup.INTERFACE).build();
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE).build();
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
 
@@ -115,7 +116,11 @@ public interface CandyTweak
 
     TweakEnum<Overlay> OLD_LOADING_OVERLAY = TweakEnum.client(Overlay.ALPHA, CandyGroup.INTERFACE_LOADING).whenDisabled(Overlay.MODERN).load().build();
     TweakFlag REMOVE_LOADING_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING).modIssues(TweakIssue.OPTIFINE).build();
-    TweakFlag OLD_LOADING_SCREENS = TweakFlag.client(true, CandyGroup.INTERFACE_LOADING).build();
+    TweakFlag CUSTOM_LOADING_OVERLAY_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
+    TweakColor LOADING_OVERLAY_BACKGROUND_COLOR = TweakColor.client("#000000", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
+    TweakFlag CUSTOM_LOADING_PROGRESS_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
+    TweakColor PROGRESS_BAR_OUTLINE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
+    TweakColor PROGRESS_BAR_INSIDE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
 
     // Version Overlay
 
