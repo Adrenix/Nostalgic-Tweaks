@@ -30,7 +30,6 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     /* Fields */
 
     protected double value;
-    protected Number lastValue;
     protected Component title;
     protected boolean dragging;
     protected int handleWidth = 8;
@@ -61,10 +60,7 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     @PublicAPI
     public void setValue(double value)
     {
-        double current = Mth.clamp(value, this.getMin(), this.getMax()) - this.getMin();
-        double outOf = Math.abs(this.getMax() - this.getMin());
-
-        this.setNormalizedValue(current / outOf);
+        this.setNormalizedValue((value - this.getMin()) / (this.getMax() - this.getMin()));
     }
 
     /**
@@ -168,8 +164,6 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
             this.builder.valueConsumer.accept((float) sliderValue);
         else
             this.builder.valueConsumer.accept(sliderValue);
-
-        this.lastValue = this.builder.valueSupplier.get();
     }
 
     /**

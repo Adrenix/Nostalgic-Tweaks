@@ -20,7 +20,9 @@ class ValueSync<Builder extends AbstractSliderMaker<Builder, Slider>, Slider ext
     @Override
     public void apply(Slider slider, Builder builder)
     {
-        slider.setValue(slider.getValue());
+        if (!slider.dragging)
+            slider.setValue(slider.getValue());
+
         slider.applyTitle();
 
         this.value.update();
