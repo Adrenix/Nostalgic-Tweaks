@@ -84,9 +84,16 @@ public interface CandyTweak
 
     // Debug Color
 
-    TweakFlag SHOW_DEBUG_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(false).build();
-    TweakFlag SHOW_DEBUG_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(true).build();
-    TweakColor DEBUG_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#50505090").build();
+    TweakFlag SHOW_DEBUG_LEFT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
+    TweakFlag SHOW_DEBUG_RIGHT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
+    TweakFlag SHOW_DEBUG_LEFT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(true).build();
+    TweakFlag SHOW_DEBUG_RIGHT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(true).build();
+    TweakColor DEBUG_LEFT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#50505090").build();
+    TweakColor DEBUG_RIGHT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#50505090").build();
+    TweakFlag SHOW_DEBUG_LEFT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
+    TweakFlag SHOW_DEBUG_RIGHT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
+    TweakColor DEBUG_LEFT_TEXT_COLOR = TweakColor.client("#FFFFFFFF", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#FFFFFFFF").build();
+    TweakColor DEBUG_RIGHT_TEXT_COLOR = TweakColor.client("#E0E0E0FF", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#FFFFFFFF").build();
 
     // Debug Extra
 

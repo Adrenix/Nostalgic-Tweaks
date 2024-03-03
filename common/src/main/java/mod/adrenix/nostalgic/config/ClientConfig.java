@@ -228,9 +228,16 @@ public class ClientConfig implements ConfigMeta
 
         // Debug Color
 
-        public boolean showDebugTextShadow = CandyTweak.SHOW_DEBUG_TEXT_SHADOW.register("showDebugTextShadow");
-        public boolean showDebugBackground = CandyTweak.SHOW_DEBUG_BACKGROUND.register("showDebugBackground");
-        public String debugBackgroundColor = CandyTweak.DEBUG_BACKGROUND_COLOR.register("debugBackgroundColor");
+        public boolean showDebugLeftTextShadow = CandyTweak.SHOW_DEBUG_LEFT_TEXT_SHADOW.register("showDebugLeftTextShadow");
+        public boolean showDebugRightTextShadow = CandyTweak.SHOW_DEBUG_RIGHT_TEXT_SHADOW.register("showDebugRightTextShadow");
+        public boolean showDebugLeftBackground = CandyTweak.SHOW_DEBUG_LEFT_BACKGROUND.register("showDebugLeftBackground");
+        public boolean showDebugRightBackground = CandyTweak.SHOW_DEBUG_RIGHT_BACKGROUND.register("showDebugRightBackground");
+        public String debugLeftBackgroundColor = CandyTweak.DEBUG_LEFT_BACKGROUND_COLOR.register("debugLeftBackgroundColor");
+        public String debugRightBackgroundColor = CandyTweak.DEBUG_RIGHT_BACKGROUND_COLOR.register("debugRightBackgroundColor");
+        public boolean showDebugLeftTextColor = CandyTweak.SHOW_DEBUG_LEFT_TEXT_COLOR.register("showDebugLeftTextColor");
+        public boolean showDebugRightTextColor = CandyTweak.SHOW_DEBUG_RIGHT_TEXT_COLOR.register("showDebugRightTextColor");
+        public String debugLeftTextColor = CandyTweak.DEBUG_LEFT_TEXT_COLOR.register("debugLeftTextColor");
+        public String debugRightTextColor = CandyTweak.DEBUG_RIGHT_TEXT_COLOR.register("debugRightTextColor");
 
         // Debug Extra
 

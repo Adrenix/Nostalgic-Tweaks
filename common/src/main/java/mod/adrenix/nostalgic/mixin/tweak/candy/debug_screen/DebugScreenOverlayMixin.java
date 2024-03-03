@@ -4,8 +4,11 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import mod.adrenix.nostalgic.mixin.util.candy.debug.DebugMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.DebugChart;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,7 +20,11 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(DebugScreenOverlay.class)
 public abstract class DebugScreenOverlayMixin
@@ -48,6 +55,18 @@ public abstract class DebugScreenOverlayMixin
     }
 
     /**
+     * Tracks whether the left or right side of the debug overlay is being rendered.
+     */
+    @Inject(
+        method = "renderLines",
+        at = @At("HEAD")
+    )
+    private void nt_debug_screen$onRenderLines(GuiGraphics graphics, List<String> lines, boolean leftSide, CallbackInfo callback, @Share("leftSide") LocalBooleanRef leftSideRef)
+    {
+        leftSideRef.set(leftSide);
+    }
+
+    /**
      * Changes the text rendering to have a shadow when displaying game information.
      */
     @ModifyArg(
@@ -57,9 +76,39 @@ public abstract class DebugScreenOverlayMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"
         )
     )
-    private boolean nt_debug_screen$showTextShadow(boolean dropShadow)
+    private boolean nt_debug_screen$showTextShadow(boolean dropShadow, @Share("leftSide") LocalBooleanRef leftSideRef)
     {
-        return CandyTweak.SHOW_DEBUG_TEXT_SHADOW.get() || dropShadow;
+        if (leftSideRef.get())
+            return CandyTweak.SHOW_DEBUG_LEFT_TEXT_SHADOW.get() || dropShadow;
+        else
+            return CandyTweak.SHOW_DEBUG_RIGHT_TEXT_SHADOW.get() || dropShadow;
+    }
+
+    /**
+     * Changes the text's color when displaying game information.
+     */
+    @ModifyArg(
+        method = "renderLines",
+        index = 4,
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"
+        )
+    )
+    private int nt_debug_screen$setTextColor(int color, @Share("leftSide") LocalBooleanRef leftSideRef)
+    {
+        if (leftSideRef.get())
+        {
+            if (CandyTweak.SHOW_DEBUG_LEFT_TEXT_COLOR.get())
+                return HexUtil.parseInt(CandyTweak.DEBUG_LEFT_TEXT_COLOR.get());
+        }
+        else
+        {
+            if (CandyTweak.SHOW_DEBUG_RIGHT_TEXT_COLOR.get())
+                return HexUtil.parseInt(CandyTweak.DEBUG_RIGHT_TEXT_COLOR.get());
+        }
+
+        return color;
     }
 
     /**
@@ -73,12 +122,20 @@ public abstract class DebugScreenOverlayMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"
         )
     )
-    private int nt_debug_screen$setTextBackground(int backgroundColor)
+    private int nt_debug_screen$setTextBackground(int backgroundColor, @Share("leftSide") LocalBooleanRef leftSideRef)
     {
-        if (CandyTweak.SHOW_DEBUG_BACKGROUND.get())
-            return HexUtil.parseInt(CandyTweak.DEBUG_BACKGROUND_COLOR.get());
+        if (leftSideRef.get())
+        {
+            if (CandyTweak.SHOW_DEBUG_LEFT_BACKGROUND.get())
+                return HexUtil.parseInt(CandyTweak.DEBUG_LEFT_BACKGROUND_COLOR.get());
+        }
+        else
+        {
+            if (CandyTweak.SHOW_DEBUG_RIGHT_BACKGROUND.get())
+                return HexUtil.parseInt(CandyTweak.DEBUG_RIGHT_BACKGROUND_COLOR.get());
+        }
 
-        return backgroundColor;
+        return ModTweak.ENABLED.get() ? 0x00FFFFFF : backgroundColor;
     }
 
     /**

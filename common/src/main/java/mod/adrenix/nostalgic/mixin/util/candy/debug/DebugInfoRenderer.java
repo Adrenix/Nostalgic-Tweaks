@@ -100,7 +100,7 @@ class DebugInfoRenderer
                 continue;
 
             this.drawBackground(text, i, true);
-            this.drawText(text, 2, 2 + GuiUtil.textHeight() * i, Color.WHITE.get());
+            this.drawText(text, 2, 2 + GuiUtil.textHeight() * i, true);
         }
 
         int width = this.minecraft.getWindow().getGuiScaledWidth();
@@ -113,42 +113,68 @@ class DebugInfoRenderer
             int y = 2 + GuiUtil.textHeight() * i;
 
             this.drawBackground(text, i, false);
-            this.drawText(text, x, y, Color.NOSTALGIC_GRAY.get());
+            this.drawText(text, x, y, false);
         }
     }
 
     /**
      * Draws debug text using defined tweak settings.
      *
-     * @param text  The text to draw.
-     * @param x     The x-coordinate of where to draw.
-     * @param y     The y-coordinate of where to draw.
-     * @param color The ARGB color of the text to draw.
+     * @param text     The text to draw.
+     * @param x        The x-coordinate of where to draw.
+     * @param y        The y-coordinate of where to draw.
+     * @param leftSide Whether the text is on the left side of the debug screen.
      */
-    void drawText(String text, int x, int y, int color)
+    void drawText(String text, int x, int y, boolean leftSide)
     {
-        this.graphics.drawString(GuiUtil.font(), text, x, y, color, CandyTweak.SHOW_DEBUG_TEXT_SHADOW.get());
+        int color;
+        boolean dropShadow;
+
+        if (leftSide)
+        {
+            if (CandyTweak.SHOW_DEBUG_LEFT_TEXT_COLOR.get())
+                color = HexUtil.parseInt(CandyTweak.DEBUG_LEFT_TEXT_COLOR.get());
+            else
+                color = Color.WHITE.get();
+
+            dropShadow = CandyTweak.SHOW_DEBUG_LEFT_TEXT_SHADOW.get();
+        }
+        else
+        {
+            if (CandyTweak.SHOW_DEBUG_RIGHT_TEXT_COLOR.get())
+                color = HexUtil.parseInt(CandyTweak.DEBUG_RIGHT_TEXT_COLOR.get());
+            else
+                color = Color.NOSTALGIC_GRAY.get();
+
+            dropShadow = CandyTweak.SHOW_DEBUG_RIGHT_TEXT_SHADOW.get();
+        }
+
+        this.graphics.drawString(GuiUtil.font(), text, x, y, color, dropShadow);
     }
 
     /**
      * Draws a background color behind a debug line.
      *
-     * @param text   The text to draw.
-     * @param index  The line index to calculate the y-offset.
-     * @param isLeft Whether the text is on the left side of the debug screen.
+     * @param text     The text to draw.
+     * @param index    The line index to calculate the y-offset.
+     * @param leftSide Whether the text is on the left side of the debug screen.
      */
-    void drawBackground(String text, int index, boolean isLeft)
+    void drawBackground(String text, int index, boolean leftSide)
     {
-        if (!CandyTweak.SHOW_DEBUG_BACKGROUND.get())
+        boolean isLeftOff = leftSide && !CandyTweak.SHOW_DEBUG_LEFT_BACKGROUND.get();
+        boolean isRightOff = !leftSide && !CandyTweak.SHOW_DEBUG_RIGHT_BACKGROUND.get();
+
+        if (isLeftOff || isRightOff)
             return;
 
-        int color = HexUtil.parseInt(CandyTweak.DEBUG_BACKGROUND_COLOR.get());
+        String hex = leftSide ? CandyTweak.DEBUG_LEFT_BACKGROUND_COLOR.get() : CandyTweak.DEBUG_RIGHT_BACKGROUND_COLOR.get();
+        int color = HexUtil.parseInt(hex);
         int scaledWidth = GuiUtil.getGuiWidth();
         int fontWidth = GuiUtil.font().width(text);
         int fontHeight = GuiUtil.textHeight();
 
-        int minX = isLeft ? 1 : (scaledWidth - 2 - fontWidth) - 1;
-        int maxX = isLeft ? 2 + fontWidth + 1 : (scaledWidth - 2 - fontWidth) + fontWidth + 1;
+        int minX = leftSide ? 1 : (scaledWidth - 2 - fontWidth) - 1;
+        int maxX = leftSide ? 2 + fontWidth + 1 : (scaledWidth - 2 - fontWidth) + fontWidth + 1;
         int minY = (2 + fontHeight * index) - 1;
         int maxY = (2 + fontHeight * index) + fontHeight - 1;
 
