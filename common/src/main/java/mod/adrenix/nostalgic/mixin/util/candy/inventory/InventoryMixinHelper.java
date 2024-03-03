@@ -5,7 +5,7 @@ import mod.adrenix.nostalgic.mixin.access.ScreenAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
 import mod.adrenix.nostalgic.tweak.enums.RecipeBook;
-import mod.adrenix.nostalgic.util.common.asset.ModAsset;
+import mod.adrenix.nostalgic.util.common.asset.ModSprite;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -25,8 +25,8 @@ public abstract class InventoryMixinHelper
 {
     /* Sprites */
 
-    private static final WidgetSprites SMALL_RECIPE_BUTTON = new WidgetSprites(ModAsset.sprite("recipe_book/button_small"), ModAsset.sprite("recipe_book/button_small_highlighted"));
-    private static final WidgetSprites LARGE_RECIPE_BUTTON = new WidgetSprites(ModAsset.sprite("recipe_book/button_large"), ModAsset.sprite("recipe_book/button_large_highlighted"));
+    private static final WidgetSprites SMALL_RECIPE_BUTTON = new WidgetSprites(ModSprite.RECIPE_BUTTON_SMALL, ModSprite.RECIPE_BUTTON_SMALL_HIGHLIGHTED);
+    private static final WidgetSprites LARGE_RECIPE_BUTTON = new WidgetSprites(ModSprite.RECIPE_BUTTON_LARGE, ModSprite.RECIPE_BUTTON_LARGE_HIGHLIGHTED);
 
     /* Methods */
 

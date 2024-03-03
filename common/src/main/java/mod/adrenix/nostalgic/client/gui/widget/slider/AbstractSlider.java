@@ -12,12 +12,12 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.GameSprite;
-import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 import java.math.BigDecimal;
@@ -201,12 +201,12 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
     }
 
     /**
-     * Gets the proper handle texture for this slider based on the widget's current context.
+     * Gets the proper handle sprite for this slider based on the widget's current context.
      *
-     * @return A {@link TextureLocation} instance.
+     * @return A {@link ResourceLocation} instance.
      */
     @PublicAPI
-    public TextureLocation getHandleTexture()
+    public ResourceLocation getHandleSprite()
     {
         if (this.isHoveredOrFocused() && this.isActive())
             return GameSprite.SLIDER_HANDLE_HIGHLIGHTED;
@@ -405,9 +405,6 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
         else
             WidgetBackground.SLIDER.render(this, graphics);
 
-        if (this.builder.effectsRenderer != null)
-            this.builder.effectsRenderer.accept(this.self(), graphics, mouseX, mouseY, partialTick);
-
         if (this.builder.handleRenderer != null)
             this.builder.handleRenderer.accept(this.self(), graphics, mouseX, mouseY, partialTick);
         else
@@ -415,9 +412,12 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
             float color = this.getHandleShaderColor();
 
             RenderSystem.setShaderColor(color, color, color, 1.0F);
-            RenderUtil.blitTexture(this.getHandleTexture(), graphics, this.getHandleX(), this.y);
+            RenderUtil.blitSprite(this.getHandleSprite(), graphics, this.getHandleX(), this.y, 8, 20);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
+
+        if (this.builder.effectsRenderer != null)
+            this.builder.effectsRenderer.accept(this.self(), graphics, mouseX, mouseY, partialTick);
 
         this.renderText(graphics);
     }

@@ -2,17 +2,14 @@ package mod.adrenix.nostalgic.client.gui.screen.config.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.widget.slider.SliderBuilder;
-import mod.adrenix.nostalgic.client.gui.widget.slider.SliderRenderer;
 import mod.adrenix.nostalgic.client.gui.widget.slider.SliderWidget;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.gui.TweakSlider;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.asset.GameSprite;
-import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -57,7 +54,6 @@ public class SliderTweak
     private SliderBuilder getBuilder()
     {
         return SliderWidget.create(this.slider.getMin(), this.slider.getMax(), this.valueConsumer, this.valueSupplier)
-            .handleRenderer(this.getHandleRenderer())
             .effectsRenderer(this::effectsRenderer)
             .title(this::getTitle)
             .suffix(this::getSuffix)
@@ -104,48 +100,6 @@ public class SliderTweak
     }
 
     /**
-     * @return A {@link SliderRenderer} method based on the {@link SliderType}.
-     */
-    @Nullable
-    private SliderRenderer<SliderBuilder, SliderWidget> getHandleRenderer()
-    {
-        return this.slider.getType() == SliderType.HEARTS ? this::handleRenderer : null;
-    }
-
-    /**
-     * Custom slider handle rendering for sliders that need it, such as the heart slider.
-     *
-     * @param slider      The {@link SliderWidget} instance.
-     * @param graphics    The {@link GuiGraphics} instance.
-     * @param mouseX      The x-coordinate of the mouse.
-     * @param mouseY      The y-coordinate of the mouse.
-     * @param partialTick The normalized progress made between two ticks [0.0F, 1.0F].
-     */
-    private void handleRenderer(SliderWidget slider, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
-    {
-        int heartX = slider.getX() + (slider.getWidth() / 2) - 45;
-        int handleX = slider.getHandleX();
-        int handleY = slider.getY();
-        float color = slider.getHandleShaderColor();
-
-        TextureLocation texture = slider.getHandleTexture();
-
-        RenderUtil.beginBatching();
-        RenderSystem.setShaderColor(color, color, color, 1.0F);
-
-        if (handleX < heartX - 8 || handleX > heartX + 90)
-            RenderUtil.blitTexture(texture, graphics, handleX, handleY);
-        else
-        {
-            RenderUtil.blitTexture(texture, graphics, handleX, handleY, 0, 0, 8, 5);
-            RenderUtil.blitTexture(texture, graphics, handleX, handleY + 16, 0, 16, 8, 4);
-        }
-
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderUtil.endBatching();
-    }
-
-    /**
      * Custom effects rendering for sliders that need it, such as the heart slider.
      *
      * @param slider      The {@link SliderWidget} instance.
@@ -171,7 +125,7 @@ public class SliderTweak
 
         for (int i = 0; i < 10; i++)
         {
-            RenderUtil.blitTexture(GameSprite.EMPTY_HEART, graphics, dx, y);
+            RenderUtil.blitSprite(GameSprite.EMPTY_HEART, graphics, dx, y, 9, 9);
             dx += 9;
         }
 
@@ -182,12 +136,12 @@ public class SliderTweak
             if (MathUtil.isOdd(i))
                 continue;
 
-            RenderUtil.blitTexture(GameSprite.FULL_HEART, graphics, dx, y);
+            RenderUtil.blitSprite(GameSprite.FULL_HEART, graphics, dx, y, 9, 9);
             dx += 9;
         }
 
         if (MathUtil.isOdd(value))
-            RenderUtil.blitTexture(GameSprite.HALF_HEART, graphics, dx, y);
+            RenderUtil.blitSprite(GameSprite.HALF_HEART, graphics, dx, y, 9, 9);
 
         RenderUtil.endBatching();
     }

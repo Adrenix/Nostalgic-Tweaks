@@ -292,9 +292,7 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
         {
             graphics.pose().pushPose();
             graphics.pose().translate(0.0D, 0.0D, this.zOffset);
-
             RenderUtil.blitTexture(icon.getTextureLocation().get(), graphics, scale, x, y);
-
             graphics.pose().popPose();
 
             this.renderDebug(graphics);
@@ -302,29 +300,14 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
             return;
         }
 
-        if (icon.getItem().isEmpty() && icon.getBlock().isEmpty())
+        if (icon.getSpriteLocation().isPresent())
         {
-            int u = icon.getU();
-            int v = icon.getV();
             int width = icon.getWidth();
             int height = icon.getHeight();
 
             graphics.pose().pushPose();
-
-            if (scale == 0)
-            {
-                graphics.pose().translate(0.0D, 0.0D, this.zOffset);
-
-                RenderUtil.blit256(icon.getTextureSheet(), graphics, x, y, u, v, width, height);
-            }
-            else
-            {
-                graphics.pose().translate(x, y, this.zOffset);
-                graphics.pose().scale(scale, scale, scale);
-
-                RenderUtil.blit256(icon.getTextureSheet(), graphics, 0, 0, u, v, width, height);
-            }
-
+            graphics.pose().translate(0.0D, 0.0D, this.zOffset);
+            RenderUtil.blitSprite(icon.getSpriteLocation().get(), graphics, scale, x, y, width, height);
             graphics.pose().popPose();
 
             this.renderDebug(graphics);
@@ -339,9 +322,7 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
         graphics.pose().pushPose();
         graphics.pose().translate(x, y, this.zOffset);
         graphics.pose().scale(scale, scale, scale);
-
         RenderUtil.renderItem(graphics, item.getDefaultInstance(), 0, 0, brightness);
-
         graphics.pose().popPose();
     }
 

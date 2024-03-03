@@ -15,18 +15,15 @@ public class TextureIcon
 {
     /* Static */
 
-    public static final TextureIcon EMPTY = new TextureIcon(0, 0, 0, 0);
+    public static final TextureIcon EMPTY = new TextureIcon(0, 0);
 
     /* Fields */
 
-    private final int u;
-    private final int v;
-
     private final int width;
     private final int height;
-    private float brightenAmount;
+    private float maxBrightness;
 
-    private ResourceLocation textureSheet;
+    @Nullable private ResourceLocation spriteLocation;
     @Nullable private TextureLocation textureLocation;
     @Nullable private Block block;
     @Nullable private Item item;
@@ -36,19 +33,14 @@ public class TextureIcon
     /**
      * Create a new texture icon instance.
      *
-     * @param u      The u-position of where the icon sits on the texture sheet.
-     * @param v      The v-position of where the icon sits on the texture sheet.
-     * @param width  The width of the icon as defined in the texture sheet.
-     * @param height The height of the icon as defined in the texture sheet.
+     * @param width  The width of the icon.
+     * @param height The height of the icon.
      */
-    private TextureIcon(int u, int v, int width, int height)
+    private TextureIcon(int width, int height)
     {
-        this.u = u;
-        this.v = v;
         this.width = width;
         this.height = height;
-        this.brightenAmount = 1.02F;
-        this.textureSheet = TextureLocation.WIDGETS;
+        this.maxBrightness = 1.02F;
     }
 
     /**
@@ -58,9 +50,23 @@ public class TextureIcon
      */
     private TextureIcon(@Nullable Item item)
     {
-        this(0, 0, 16, 16);
+        this(16, 16);
 
         this.item = item;
+    }
+
+    /**
+     * Create a new texture icon instance using a sprite.
+     *
+     * @param spriteLocation The sprite location instance.
+     * @param width          The width of the sprite texture.
+     * @param height         The height of the sprite texture.
+     */
+    private TextureIcon(@Nullable ResourceLocation spriteLocation, int width, int height)
+    {
+        this(width, height);
+
+        this.spriteLocation = spriteLocation;
     }
 
     /**
@@ -70,28 +76,12 @@ public class TextureIcon
      */
     private TextureIcon(TextureLocation location)
     {
-        this(0, 0, location.getWidth(), location.getHeight());
+        this(location.getWidth(), location.getHeight());
 
         this.textureLocation = location;
     }
 
     /* Getters */
-
-    /**
-     * @return The u-coordinate of this icon on the texture sheet.
-     */
-    public int getU()
-    {
-        return this.u;
-    }
-
-    /**
-     * @return The v-coordinate of this icon on the texture sheet.
-     */
-    public int getV()
-    {
-        return this.v;
-    }
 
     /**
      * @return The width of this icon on the texture sheet.
@@ -112,9 +102,17 @@ public class TextureIcon
     /**
      * @return The maximum amount of brightness that can be applied to an icon.
      */
-    public float getBrightness()
+    public float getMaxBrightenAmount()
     {
-        return this.brightenAmount;
+        return this.maxBrightness;
+    }
+
+    /**
+     * @return The {@link ResourceLocation} of the sprite icon, if it exists.
+     */
+    public Optional<ResourceLocation> getSpriteLocation()
+    {
+        return Optional.ofNullable(this.spriteLocation);
     }
 
     /**
@@ -141,14 +139,6 @@ public class TextureIcon
         return Optional.ofNullable(this.item);
     }
 
-    /**
-     * @return The resource location of the texture sheet.
-     */
-    public ResourceLocation getTextureSheet()
-    {
-        return this.textureSheet;
-    }
-
     /* Methods */
 
     /**
@@ -172,39 +162,16 @@ public class TextureIcon
     }
 
     /**
-     * Change the resource location of where this icon's texture is found.
-     * <p><br><b color=red>Important:</b> Texture sheets must be 256x256.
-     *
-     * @param location A resource location instance.
-     * @return The invoking instance so that functional chaining can be used.
-     */
-    public TextureIcon setResourceLocation(ResourceLocation location)
-    {
-        this.textureSheet = location;
-        return this;
-    }
-
-    /**
      * @param amount The amount of brightness to use when the icon is brightened.
      * @return The invoking instance so that functional chaining can be used.
      */
-    public TextureIcon setBrightenAmount(float amount)
+    public TextureIcon maxBrightness(float amount)
     {
-        this.brightenAmount = amount;
+        this.maxBrightness = amount;
         return this;
     }
 
     /* Builders */
-
-    /**
-     * Create a new icon instance using a factory.
-     *
-     * @return An icon factory builder instance.
-     */
-    public static Builder create()
-    {
-        return new Builder();
-    }
 
     /**
      * Create a new icon instance from an item.
@@ -235,7 +202,7 @@ public class TextureIcon
     }
 
     /**
-     * Create a new icon instance from a texture location.
+     * Create a new icon instance from a texture image.
      *
      * @param location A texture location instance.
      * @return A new {@link TextureIcon} instance.
@@ -245,118 +212,55 @@ public class TextureIcon
         return new TextureIcon(location);
     }
 
-    public static class Builder
+    /**
+     * Create a new icon instance from a sprite location.
+     *
+     * @param spriteLocation A sprite location instance.
+     * @param width          The width of the sprite texture.
+     * @param height         The height of the sprite texture.
+     * @return A new {@link TextureIcon} instance.
+     */
+    public static TextureIcon fromSprite(ResourceLocation spriteLocation, int width, int height)
     {
-        private ResourceLocation location = TextureLocation.WIDGETS;
+        return new TextureIcon(spriteLocation, width, height);
+    }
 
-        private int u = 0;
-        private int v = 0;
-        private int width = 0;
-        private int height = 0;
-        private float brightenAmount = 1.02F;
+    /**
+     * Create a new icon instance from a sprite location.
+     *
+     * @param spriteLocation A sprite location instance.
+     * @param width          The width of the sprite texture.
+     * @param height         The height of the sprite texture.
+     * @param maxBrightness  The maximum amount of brightness that can be applied.
+     * @return A new {@link TextureIcon} instance.
+     */
+    public static TextureIcon fromSprite(ResourceLocation spriteLocation, int width, int height, float maxBrightness)
+    {
+        return fromSprite(spriteLocation, width, height).maxBrightness(maxBrightness);
+    }
 
-        private Builder()
-        {
-        }
+    /**
+     * Create a new icon instance from a sprite location.
+     *
+     * @param spriteLocation A sprite location instance.
+     * @param squareSize     The square size of the sprite texture.
+     * @return A new {@link TextureIcon} instance.
+     */
+    public static TextureIcon fromSprite(ResourceLocation spriteLocation, int squareSize)
+    {
+        return new TextureIcon(spriteLocation, squareSize, squareSize);
+    }
 
-        /**
-         * Set the (u, v) location of this icon on the texture sheet.
-         *
-         * @param u The u-position.
-         * @param v The v-position.
-         */
-        public Builder uv(int u, int v)
-        {
-            this.u = u;
-            this.v = v;
-
-            return this;
-        }
-
-        /**
-         * If the icon has a square size (i.e., the same width and height) then use this shortcut method to define the
-         * width of height as defined in the texture sheet.
-         *
-         * @param size The size of the square.
-         */
-        public Builder square(int size)
-        {
-            this.width = size;
-            this.height = size;
-
-            return this;
-        }
-
-        /**
-         * Set the width and height of this icon as defined in the texture sheet.
-         *
-         * @param width  The icon's width.
-         * @param height The icon's height.
-         */
-        public Builder size(int width, int height)
-        {
-            this.width(width);
-            this.height(height);
-
-            return this;
-        }
-
-        /**
-         * Set the width of this icon as defined in the texture sheet.
-         *
-         * @param width The icon's width.
-         */
-        public Builder width(int width)
-        {
-            this.width = width;
-            return this;
-        }
-
-        /**
-         * Set the height of this icon as defined in the texture sheet.
-         *
-         * @param height The icon's height.
-         */
-        public Builder height(int height)
-        {
-            this.height = height;
-            return this;
-        }
-
-        /**
-         * Change the resource location of where this icon's texture is found.
-         * <br><br><b color=red>Important:</b> Texture sheets must be 256x256.
-         *
-         * @param location A resource location instance.
-         */
-        public Builder location(ResourceLocation location)
-        {
-            this.location = location;
-            return this;
-        }
-
-        /**
-         * Change the amount of brightness that is applied to the icon when it is brightened. The default brightness
-         * amount is set to {@code 1.02F}. This is useful in situations such as brightening an icon when the mouse
-         * hovers over it.
-         *
-         * @param amount The amount of brightness to apply when the icon is brightened.
-         */
-        public Builder maxBrightness(float amount)
-        {
-            this.brightenAmount = amount;
-            return this;
-        }
-
-        /**
-         * Finalize the building process of this icon.
-         *
-         * @return A new icon instance.
-         */
-        public TextureIcon build()
-        {
-            return new TextureIcon(this.u, this.v, this.width, this.height).setResourceLocation(this.location)
-                .setBrightenAmount(this.brightenAmount);
-        }
+    /**
+     * Create a new icon instance from a sprite location.
+     *
+     * @param spriteLocation A sprite location instance.
+     * @param squareSize     The square size of the sprite texture.
+     * @param maxBrightness  The maximum amount of brightness that can be applied.
+     * @return A new {@link TextureIcon} instance.
+     */
+    public static TextureIcon fromSprite(ResourceLocation spriteLocation, int squareSize, float maxBrightness)
+    {
+        return fromSprite(spriteLocation, squareSize).maxBrightness(maxBrightness);
     }
 }

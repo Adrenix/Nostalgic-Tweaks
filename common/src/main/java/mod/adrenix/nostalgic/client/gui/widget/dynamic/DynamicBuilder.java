@@ -243,7 +243,7 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     protected int disabledIconHeight = 0;
     protected boolean brightenOnHover = false;
     protected boolean darkenOnDisable = true;
-    protected FloatSupplier brightenAmount = () -> this.iconSupplier.get().getBrightness();
+    protected FloatSupplier brightenAmount = () -> this.iconSupplier.get().getMaxBrightenAmount();
     protected FloatSupplier darkenAmount = () -> 0.4F;
 
     /* Builder Tooltips */

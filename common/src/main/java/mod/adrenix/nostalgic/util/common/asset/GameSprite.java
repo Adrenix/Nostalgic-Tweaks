@@ -1,14 +1,16 @@
 package mod.adrenix.nostalgic.util.common.asset;
 
+import net.minecraft.resources.ResourceLocation;
+
 public interface GameSprite
 {
-    TextureLocation BUTTON = new TextureLocation(GameAsset.widget("button.png"), 200, 20);
-    TextureLocation BUTTON_DISABLED = new TextureLocation(GameAsset.widget("button_disabled.png"), 200, 20);
-    TextureLocation BUTTON_HIGHLIGHTED = new TextureLocation(GameAsset.widget("button_highlighted.png"), 200, 20);
-    TextureLocation SLIDER = new TextureLocation(GameAsset.widget("slider.png"), 200, 20);
-    TextureLocation SLIDER_HANDLE = new TextureLocation(GameAsset.widget("slider_handle.png"), 8, 20);
-    TextureLocation SLIDER_HANDLE_HIGHLIGHTED = new TextureLocation(GameAsset.widget("slider_handle_highlighted.png"), 8, 20);
-    TextureLocation FULL_HEART = new TextureLocation(GameAsset.heart("full.png"), 9, 9);
-    TextureLocation HALF_HEART = new TextureLocation(GameAsset.heart("half.png"), 9, 9);
-    TextureLocation EMPTY_HEART = new TextureLocation(GameAsset.heart("container.png"), 9, 9);
+    ResourceLocation BUTTON = GameAsset.sprite("widget/button");
+    ResourceLocation BUTTON_DISABLED = GameAsset.sprite("widget/button_disabled");
+    ResourceLocation BUTTON_HIGHLIGHTED = GameAsset.sprite("widget/button_highlighted");
+    ResourceLocation SLIDER = GameAsset.sprite("widget/slider");
+    ResourceLocation SLIDER_HANDLE = GameAsset.sprite("widget/slider_handle");
+    ResourceLocation SLIDER_HANDLE_HIGHLIGHTED = GameAsset.sprite("widget/slider_handle_highlighted");
+    ResourceLocation FULL_HEART = GameAsset.sprite("hud/heart/full");
+    ResourceLocation HALF_HEART = GameAsset.sprite("hud/heart/half");
+    ResourceLocation EMPTY_HEART = GameAsset.sprite("hud/heart/container");
 }

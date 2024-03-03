@@ -21,7 +21,7 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
-import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
+import mod.adrenix.nostalgic.util.common.asset.ModSprite;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -1527,7 +1527,7 @@ public class Overlay extends Screen
         if (this.borderless())
             return;
 
-        RenderUtil.blitSprite(TextureLocation.OVERLAY, graphics, (int) this.x, (int) this.y, this.width, this.height);
+        RenderUtil.blitSprite(ModSprite.OVERLAY, graphics, (int) this.x, (int) this.y, this.width, this.height);
     }
 
     /**

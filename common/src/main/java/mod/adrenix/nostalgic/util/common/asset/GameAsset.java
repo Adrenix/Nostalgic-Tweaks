@@ -17,26 +17,16 @@ public abstract class GameAsset
     }
 
     /**
-     * Get a new resource location from the game's sprite widgets texture directory.
+     * Get a new resource location from the game's gui sprites directory. These textures will be stored on the vanilla
+     * gui texture atlas. Therefore, sprites are stored in {@code assets/minecraft/textures/gui/sprites}. Do
+     * <b color=red>not</b> include {@code .png} in the path. The path should be relative to the sprite directory. For
+     * example, {@code "recipe_book/button"}.
      *
-     * @param path A path in the game's {@code widgets} directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as
-     * {@code minecraft:textures/gui/sprites/widget/$path} where {@code path} is the given {@code path} argument.
+     * @param path A path in the game's {@code sprites} directory.
+     * @return A new {@link ResourceLocation} location instance.
      */
-    public static ResourceLocation widget(String path)
+    public static ResourceLocation sprite(String path)
     {
-        return new ResourceLocation("textures/gui/sprites/widget/" + path);
-    }
-
-    /**
-     * Get a new resource location from the game's sprite heart texture directory.
-     *
-     * @param path A path in the game's {@code heart} directory.
-     * @return A new {@link ResourceLocation} location instance where the full-path appears as
-     * {@code minecraft:textures/gui/sprites/hud/heart/$path} where {@code path} is the given {@code path} argument.
-     */
-    public static ResourceLocation heart(String path)
-    {
-        return new ResourceLocation("textures/gui/sprites/hud/heart/" + path);
+        return new ResourceLocation(path);
     }
 }
