@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import mod.adrenix.nostalgic.mixin.util.candy.OverlayMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.Overlay;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
@@ -146,7 +147,7 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setOutlineProgressBarColor(int color)
     {
-        return OverlayMixinHelper.getOutlineProgressBarColor();
+        return ModTweak.ENABLED.get() ? OverlayMixinHelper.getOutlineProgressBarColor() : color;
     }
 
     /**
@@ -163,6 +164,6 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setInsideProgressBarColor(int color)
     {
-        return OverlayMixinHelper.getInsideProgressBarColor();
+        return ModTweak.ENABLED.get() ? OverlayMixinHelper.getInsideProgressBarColor() : color;
     }
 }
