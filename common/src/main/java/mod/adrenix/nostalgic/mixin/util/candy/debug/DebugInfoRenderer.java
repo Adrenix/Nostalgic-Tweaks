@@ -5,13 +5,13 @@ import mod.adrenix.nostalgic.mixin.access.DebugScreenOverlayAccess;
 import mod.adrenix.nostalgic.mixin.access.LevelRendererAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
@@ -191,8 +191,8 @@ class DebugInfoRenderer
         int renderedEntities = ((LevelRendererAccess) this.levelRenderer).nt$getRenderedEntities();
         int culledEntities = ((LevelRendererAccess) this.levelRenderer).nt$getCulledEntities();
 
-        String overlay = CandyTweak.OLD_OVERLAY_TEXT.parse(SharedConstants.getCurrentVersion().getName());
-        String title = overlay.isEmpty() ? "Minecraft " + SharedConstants.getCurrentVersion().getName() : overlay;
+        String overlay = CandyTweak.OLD_OVERLAY_TEXT.parse(GameUtil.getVersion());
+        String title = overlay.isEmpty() ? "Minecraft " + GameUtil.getVersion() : overlay;
         String fps = String.format(" (%s fps, %s chunk updates)", this.minecraft.getFps(), chunkUpdates);
         String sections = String.format("C: %d/%d. F: 0, O: 0, E: 0", this.levelRenderer.countRenderedSections(), (long) this.levelRenderer.getTotalSections());
         String entities = String.format("E: %s/%s. B: %s, I: 0", renderedEntities, this.level.getEntityCount(), culledEntities);

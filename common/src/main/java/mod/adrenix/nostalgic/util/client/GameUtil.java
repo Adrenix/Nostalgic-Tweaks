@@ -1,9 +1,18 @@
 package mod.adrenix.nostalgic.util.client;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 
 public abstract class GameUtil
 {
+    /**
+     * @return The current version of the game.
+     */
+    public static String getVersion()
+    {
+        return SharedConstants.getCurrentVersion().getName();
+    }
+
     /**
      * Check if the current game mode is creative.
      *

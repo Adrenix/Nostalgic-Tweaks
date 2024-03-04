@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.window_title;
 
 import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import net.minecraft.SharedConstants;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,7 +40,7 @@ public abstract class MinecraftMixin
         if (!CandyTweak.ENABLE_WINDOW_TITLE.get())
             return title;
 
-        final String VERSION = SharedConstants.getCurrentVersion().getName();
+        final String VERSION = GameUtil.getVersion();
 
         if (CandyTweak.MATCH_VERSION_OVERLAY.get())
             return CandyTweak.OLD_OVERLAY_TEXT.parse(VERSION).replaceAll("§.", "");
