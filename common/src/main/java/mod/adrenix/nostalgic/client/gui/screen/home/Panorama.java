@@ -40,7 +40,7 @@ public enum Panorama implements PreparableReloadListener
 
     private static final Animation FADE_IN_ANIMATION = Animate.linear(4L, TimeUnit.SECONDS);
     private static final SimpleTimer SWITCH_TIMER = SimpleTimer.create(15L, TimeUnit.SECONDS).immediate().build();
-    private static final CycleIndex CYCLE_INDEX = new CycleIndex(Panorama.values());
+    private static final CycleIndex CYCLE_INDEX = new CycleIndex(Panorama.values(), true);
 
     /**
      * @return The {@link Panorama} to display.

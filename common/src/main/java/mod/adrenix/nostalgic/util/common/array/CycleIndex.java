@@ -47,18 +47,6 @@ public class CycleIndex
         this(0, array.length - 1, 0, resetAtEnd);
     }
 
-    /**
-     * Create a new {@link CycleIndex} instance using an array where the {@code minIndex} is zero and the
-     * {@code maxIndex} is the length of the array minus one.
-     *
-     * @param array An array.
-     * @param <T>   The class type of the values in the array.
-     */
-    public <T> CycleIndex(T[] array)
-    {
-        this(array, false);
-    }
-
     /* Methods */
 
     /**
