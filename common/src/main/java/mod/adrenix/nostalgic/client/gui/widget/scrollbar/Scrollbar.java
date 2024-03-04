@@ -342,7 +342,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
         else if (this.isHorizontal() && !Screen.hasShiftDown())
             return false;
 
-        double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 4.0D, 12.0D);
+        double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 6.8D, 12.0D);
 
         if (this.isSmoothScrolling())
             this.scrollTo = Mth.clamp(this.scrollTo - deltaY * averageScrollAmount, 0.0D, this.getMaxScrollAmount());
