@@ -114,6 +114,31 @@ public abstract class TextUtil
     }
 
     /**
+     * Apply a Minecraft color section code to the given percent based on the given percent's value. The lower the
+     * percentage value is, the more <font color="red">dangerous</font> the color will appear. A reset section code will
+     * be applied to the end of the returned string.
+     *
+     * @param percent The percent value to check (<font color="red">0</font>-<font color="green">100</font>).
+     * @return The given percent value with a Minecraft color § code attached and a reset section code appended.
+     */
+    @PublicAPI
+    public static String getPercentColorLow(int percent)
+    {
+        if (percent <= 0)
+            return "§4" + percent + "§r";
+        else if (percent < 20)
+            return "§c" + percent + "§r";
+        else if (percent < 40)
+            return "§6" + percent + "§r";
+        else if (percent < 60)
+            return "§e" + percent + "§r";
+        else if (percent < 80)
+            return "§2" + percent + "§r";
+
+        return "§a" + percent + "§r";
+    }
+
+    /**
      * Converts a string into a title case format. Handles space and underscore delimiters.
      *
      * @param convert The string to convert.

@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
-import mod.adrenix.nostalgic.init.NostalgicInitializer;
+import mod.adrenix.nostalgic.init.ModInitializer;
 import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
@@ -292,7 +292,7 @@ public abstract class NostalgicTweaks
      */
     public static void initialize()
     {
-        NostalgicInitializer.register();
+        ModInitializer.register();
 
         if (isServer())
         {
