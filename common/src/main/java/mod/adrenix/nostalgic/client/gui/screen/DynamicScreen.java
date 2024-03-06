@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.client.gui.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.tooltip.TooltipManager;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
@@ -20,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> The class type of the extending {@link Screen}.
  */
-public interface DynamicScreen<T extends Screen> extends WidgetHolder, ParentHolder, MouseManager, TooltipManager
+public interface DynamicScreen<T extends Screen> extends WidgetHolder, ParentHolder, TooltipManager
 {
     /**
      * A pointer to the extending screen instance is required so that dynamic widgets can update properly. Below is a

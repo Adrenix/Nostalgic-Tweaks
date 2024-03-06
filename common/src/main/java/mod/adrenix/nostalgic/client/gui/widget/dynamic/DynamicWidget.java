@@ -659,10 +659,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
     @PublicAPI
     public int getMouseX()
     {
-        if (this.getScreen() instanceof MouseManager manager)
-            return manager.getMouseX();
-
-        return GuiUtil.getMouseX();
+        return MouseManager.getX();
     }
 
     /**
@@ -671,10 +668,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
     @PublicAPI
     public int getMouseY()
     {
-        if (this.getScreen() instanceof MouseManager manager)
-            return manager.getMouseY();
-
-        return GuiUtil.getMouseY();
+        return MouseManager.getY();
     }
 
     /**

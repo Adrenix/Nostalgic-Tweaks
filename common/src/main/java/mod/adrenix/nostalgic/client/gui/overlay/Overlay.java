@@ -42,8 +42,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Overlay extends Screen
-    implements RelativeLayout, WidgetHolder, ParentHolder, MouseManager, TooltipManager, GuiOffset
+public class Overlay extends Screen implements RelativeLayout, WidgetHolder, ParentHolder, TooltipManager, GuiOffset
 {
     /* Builders */
 
@@ -98,8 +97,6 @@ public class Overlay extends Screen
     protected final boolean hasBorder;
     protected final boolean canDrag;
     protected boolean isMoving;
-    protected int mouseX;
-    protected int mouseY;
 
     /* Constructor */
 
@@ -117,8 +114,6 @@ public class Overlay extends Screen
         this.canDrag = builder.canDrag;
         this.hasBorder = builder.hasBorder;
         this.scrollbarSize = 4;
-        this.mouseX = -1;
-        this.mouseY = -1;
 
         this.relativeTop = BlankWidget.create()
             .size(0)
@@ -954,34 +949,6 @@ public class Overlay extends Screen
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMousePosition(int mouseX, int mouseY)
-    {
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseX()
-    {
-        return this.mouseX;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseY()
-    {
-        return this.mouseY;
-    }
-
-    /**
      * Handler method for when the game window resizes.
      *
      * @param minecraft The {@link Minecraft} singleton instance.
@@ -1444,7 +1411,11 @@ public class Overlay extends Screen
         if (this.parentScreen != null)
         {
             Minecraft.getInstance().screen = this.parentScreen;
+            MouseManager.setPosition(-1, -1);
+
             this.parentScreen.render(graphics, -1, -1, partialTick);
+
+            MouseManager.setPosition(mouseX, mouseY);
             Minecraft.getInstance().screen = this;
         }
 

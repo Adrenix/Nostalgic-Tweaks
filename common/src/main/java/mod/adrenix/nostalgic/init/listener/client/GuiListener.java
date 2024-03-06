@@ -63,8 +63,7 @@ public abstract class GuiListener
      */
     private static EventResult setMousePosition(Screen screen, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        if (screen instanceof MouseManager manager)
-            manager.setMousePosition(mouseX, mouseY);
+        MouseManager.setPosition(mouseX, mouseY);
 
         return EventResult.pass();
     }

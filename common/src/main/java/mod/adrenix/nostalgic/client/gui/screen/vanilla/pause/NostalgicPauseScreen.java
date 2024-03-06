@@ -19,8 +19,6 @@ public class NostalgicPauseScreen extends PauseScreen implements DynamicScreen<N
     private final PauseWidgets pauseWidgets;
     private final PauseLayout layout;
     private boolean isLayoutSet;
-    private int mouseX;
-    private int mouseY;
 
     /* Constructor */
 
@@ -75,34 +73,6 @@ public class NostalgicPauseScreen extends PauseScreen implements DynamicScreen<N
     public UniqueArrayList<DynamicWidget<?, ?>> getWidgets()
     {
         return this.widgets;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMousePosition(int mouseX, int mouseY)
-    {
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseX()
-    {
-        return this.mouseX;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseY()
-    {
-        return this.mouseY;
     }
 
     /**

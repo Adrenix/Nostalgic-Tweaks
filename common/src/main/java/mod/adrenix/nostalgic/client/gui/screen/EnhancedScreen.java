@@ -19,8 +19,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     protected final Minecraft minecraft;
     private final Function<T, W> widgetManager;
     private final UniqueArrayList<DynamicWidget<?, ?>> widgets;
-    private int mouseX;
-    private int mouseY;
 
     /* Constructor */
 
@@ -32,8 +30,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
         this.widgets = new UniqueArrayList<>();
         this.widgetManager = widgetManager;
         this.parentScreen = parentScreen;
-        this.mouseX = -1;
-        this.mouseY = -1;
     }
 
     /* Abstraction */
@@ -214,34 +210,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     public UniqueArrayList<DynamicWidget<?, ?>> getWidgets()
     {
         return this.widgets;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMousePosition(int mouseX, int mouseY)
-    {
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseX()
-    {
-        return this.mouseX;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMouseY()
-    {
-        return this.mouseY;
     }
 
     /**
