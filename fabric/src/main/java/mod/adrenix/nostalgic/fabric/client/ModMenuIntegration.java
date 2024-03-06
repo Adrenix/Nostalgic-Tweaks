@@ -13,7 +13,7 @@ public class ModMenuIntegration implements ModMenuApi
 {
     static
     {
-        GuiUtil.modScreen = ModMenuApi::createModsScreen;
+        GuiUtil.modListScreen = ModMenuApi::createModsScreen;
     }
 
     /**

@@ -31,7 +31,7 @@ public abstract class ClientSetup
             .registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, ClientSetup::getScreenFactory);
 
         // Define mod screen
-        GuiUtil.modScreen = ModListScreen::new;
+        GuiUtil.modListScreen = ModListScreen::new;
     }
 
     /**

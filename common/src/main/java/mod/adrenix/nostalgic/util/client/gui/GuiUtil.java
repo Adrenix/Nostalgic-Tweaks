@@ -59,7 +59,7 @@ public abstract class GuiUtil
     /**
      * A mod list screen supplier (defined in mod loaders).
      */
-    public static @Nullable Function<Screen, Screen> modScreen = null;
+    public static @Nullable Function<Screen, Screen> modListScreen = null;
 
     /**
      * @return Get the game's current screen.

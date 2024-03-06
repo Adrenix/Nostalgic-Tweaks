@@ -3,6 +3,7 @@
   "key.nostalgic_tweaks.toggle_fog": "Toggle Fog",
   "key.nostalgic_tweaks.unbound": "Unbound",
 
+  "gui.nostalgic_tweaks.support": "Donate §c♥§r",
   "gui.nostalgic_tweaks.title": "Nostalgic Tweaks",
   "gui.nostalgic_tweaks.empty": "",
 
@@ -48,7 +49,7 @@
   "gui.nostalgic_tweaks.screen.title.copyright_alpha": "Copyright Mojang Specifications. Do not distribute.",
   "gui.nostalgic_tweaks.screen.title.copyright_beta": "Copyright Mojang AB. Do not distribute.",
 
-  "gui.nostalgic_tweaks.screen.pause.game": "Game menu",
+  "gui.nostalgic_tweaks.screen.pause.game_menu": "Game menu",
   "gui.nostalgic_tweaks.screen.pause.return": "Back to game",
   "gui.nostalgic_tweaks.screen.pause.save": "Save and quit to title",
   "gui.nostalgic_tweaks.screen.pause.achievements": "Achievements",

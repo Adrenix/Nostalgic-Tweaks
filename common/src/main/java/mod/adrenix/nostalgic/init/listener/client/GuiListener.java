@@ -1,14 +1,17 @@
 package mod.adrenix.nostalgic.init.listener.client;
 
+import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.tweak.enums.PauseLayout;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.client.gui.CornerManager;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -17,6 +20,7 @@ import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
 
@@ -30,6 +34,21 @@ public abstract class GuiListener
         ClientGuiEvent.RENDER_PRE.register(GuiListener::setMousePosition);
         ClientGuiEvent.RENDER_POST.register(GuiListener::renderModGraphics);
         ClientGuiEvent.RENDER_HUD.register(GuiListener::renderTextOverlay);
+        ClientGuiEvent.SET_SCREEN.register(GuiListener::rerouteScreen);
+    }
+
+    /**
+     * Reroutes screens to a nostalgic alternative if applicable.
+     *
+     * @param screen The {@link Screen} that is about to be set.
+     * @return A {@link CompoundEventResult} instance.
+     */
+    private static CompoundEventResult<Screen> rerouteScreen(Screen screen)
+    {
+        if (CandyTweak.OLD_PAUSE_MENU.get() != PauseLayout.MODERN && screen instanceof PauseScreen)
+            return CompoundEventResult.interruptTrue(new NostalgicPauseScreen());
+
+        return CompoundEventResult.pass();
     }
 
     /**

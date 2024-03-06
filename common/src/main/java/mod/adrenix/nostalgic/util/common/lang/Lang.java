@@ -181,7 +181,7 @@ public interface Lang
      */
     interface Pause
     {
-        Translation GAME = from("game");
+        Translation GAME_MENU = from("game_menu");
         Translation ACHIEVEMENTS = from("achievements");
         Translation RETURN_LOWER = from("return");
         Translation SAVE_LOWER = from("save");
