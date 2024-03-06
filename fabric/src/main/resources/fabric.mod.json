@@ -36,6 +36,7 @@
     "mixin.nostalgic_tweaks-access.json",
     "mixin.nostalgic_tweaks-duck.json",
     "mixin.nostalgic_tweaks-fabric.json",
+    "mixin.nostalgic_tweaks-required.json",
     "mixin.nostalgic_tweaks-sodium.json"
   ],
   "depends": {
@@ -51,7 +52,7 @@
     "modmenu": {
       "links": {
         "modmenu.discord": "${mod_discord}",
-        "gui.nostalgic_tweaks.settings.support": "${mod_donate}"
+        "gui.nostalgic_tweaks.support": "${mod_donate}"
       }
     },
     "sodium:options": {

@@ -49,7 +49,7 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
      * {@inheritDoc}
      */
     @Override
-    protected HomeScreen self()
+    public HomeScreen self()
     {
         return this;
     }

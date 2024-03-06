@@ -26,7 +26,7 @@ public class PacksListScreen extends EnhancedScreen<PacksListScreen, PacksListWi
      * {@inheritDoc}
      */
     @Override
-    protected PacksListScreen self()
+    public PacksListScreen self()
     {
         return this;
     }

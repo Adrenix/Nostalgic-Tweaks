@@ -39,7 +39,7 @@ import java.util.function.Predicate;
 
 public class ConfigWidgets implements WidgetManager
 {
-    /* Widget Constants */
+    /* Constants */
 
     public static final int TAB_CONTROLLER_SIZE = 14;
     public static final int BOTTOM_OFFSET = 21;
@@ -691,7 +691,7 @@ public class ConfigWidgets implements WidgetManager
     {
         return ButtonWidget.create()
             .posY(this.configScreen.height - BOTTOM_OFFSET)
-            .onPress(this.configScreen::onFinish)
+            .onPress(this.configScreen::onClose)
             .icon(this::getFinishIcon)
             .title(this::getFinishTitle)
             .tooltip(this::getFinishTitle, 500L, TimeUnit.MILLISECONDS)

@@ -86,7 +86,7 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     }
 
     @Override
-    protected ConfigScreen self()
+    public ConfigScreen self()
     {
         return this;
     }
@@ -311,16 +311,8 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     protected void undoAndClose()
     {
         TweakPool.values().forEach(Tweak::sync);
-        this.onClose();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onClose()
-    {
         SCREEN_CACHE.push(this);
+
         super.onClose();
     }
 
@@ -328,7 +320,7 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
      * {@inheritDoc}
      */
     @Override
-    protected void onFinish()
+    public void onClose()
     {
         if (!this.isSavable())
         {

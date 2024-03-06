@@ -1,18 +1,9 @@
 package mod.adrenix.nostalgic.client.gui.screen;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.client.gui.MouseManager;
-import mod.adrenix.nostalgic.client.gui.tooltip.TooltipManager;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
-import mod.adrenix.nostalgic.util.client.KeyboardUtil;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
-import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends WidgetManager> extends Screen
-    implements WidgetHolder, ParentHolder, MouseManager, TooltipManager
+    implements DynamicScreen<T>
 {
     /* Fields */
 
@@ -48,23 +39,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     /* Abstraction */
 
     /**
-     * A pointer to the extending screen instance is required so that this abstract enhanced screen can update widgets
-     * properly. Below is a simple example of what an override self-method would look like.
-     *
-     * <pre>
-     * &#64;Override
-     * public T self()
-     * {
-     *     return this;
-     * }
-     * </pre>
-     * Where {@code T} is replaced with the class extending this {@link EnhancedScreen}.
-     *
-     * @return A pointer to {@code this}.
-     */
-    protected abstract T self();
-
-    /**
      * @return The current {@link W WidgetManager} instance for this screen.
      */
     public abstract W getWidgetManager();
@@ -81,9 +55,8 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     /**
      * {@inheritDoc}
      */
-    @Nullable
     @Override
-    public Screen getParentScreen()
+    public @Nullable Screen getParentScreen()
     {
         return this.parentScreen;
     }
@@ -133,39 +106,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers))
-            return true;
-
-        for (DynamicWidget<?, ?> widget : this.widgets)
-        {
-            if (widget.keyPressed(keyCode, scanCode, modifiers))
-                return true;
-        }
-
-        if (KeyboardUtil.isEsc(keyCode) && this.shouldCloseOnEsc())
-        {
-            this.onFinish();
-            return true;
-        }
-
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_D)
-        {
-            NostalgicTweaks.LOGGER.setDebug();
-            return true;
-        }
-
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_T)
-        {
-            this.minecraft.reloadResourcePacks();
-            return true;
-        }
-
-        if (Screen.hasShiftDown() && Screen.hasControlDown() && keyCode == InputConstants.KEY_F)
-        {
-            GuiUtil.toggleShowFps();
-            return true;
-        }
-
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
@@ -219,32 +159,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        NostalgicTweaks.LOGGER.debug(String.format("mouseX: %s | mouseY: %s", mouseX, mouseY));
-
-        boolean isWidgetClicked = false;
-
-        for (DynamicWidget<?, ?> widget : this.widgets)
-        {
-            if (widget.mouseClicked(mouseX, mouseY, button))
-            {
-                this.widgets.stream().filter(DynamicWidget::isFocused).forEach(DynamicWidget::setUnfocused);
-                widget.setClickFocus();
-
-                this.setFocused(widget);
-
-                if (button == 0)
-                    this.setDragging(true);
-
-                isWidgetClicked = true;
-                break;
-            }
-        }
-
-        if (isWidgetClicked)
-            return true;
-
-        this.widgets.stream().filter(DynamicWidget::isFocused).forEach(DynamicWidget::setUnfocused);
-
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
@@ -259,9 +173,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button)
     {
-        if (this.widgets.stream().anyMatch(widget -> widget.mouseReleased(mouseX, mouseY, button)))
-            return true;
-
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
@@ -293,54 +204,7 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
     {
-        if (this.widgets.stream().anyMatch(widget -> widget.mouseDragged(mouseX, mouseY, button, dragX, dragY)))
-            return true;
-
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-    }
-
-    /**
-     * Focus the first eligible widget.
-     */
-    @PublicAPI
-    public void focusFirst()
-    {
-        this.widgets.stream().filter(DynamicWidget::canFocus).findFirst().ifPresent(this::setFocused);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFocused(@Nullable GuiEventListener focused)
-    {
-        if (focused instanceof DynamicWidget<?, ?> dynamic)
-        {
-            if (!dynamic.canFocus())
-                return;
-        }
-
-        this.widgets.stream().filter(DynamicWidget::isFocused).forEach(DynamicWidget::setUnfocused);
-
-        super.setFocused(focused);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UniqueArrayList<? extends GuiEventListener> children()
-    {
-        return this.widgets;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UniqueArrayList<DynamicWidget<?, ?>> getTooltipWidgets()
-    {
-        return this.widgets;
     }
 
     /**
@@ -350,26 +214,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     public UniqueArrayList<DynamicWidget<?, ?>> getWidgets()
     {
         return this.widgets;
-    }
-
-    /**
-     * Add a widget to this screen and set its parent screen to this.
-     */
-    @Override
-    public void addWidget(DynamicWidget<?, ?> widget)
-    {
-        this.widgets.add(widget);
-        widget.setScreen(this);
-    }
-
-    /**
-     * Clears all screen widgets.
-     */
-    @Override
-    protected void clearWidgets()
-    {
-        this.widgets.clear();
-        super.clearWidgets();
     }
 
     /**
@@ -412,14 +256,6 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
         DynamicWidget.render(this.widgets, graphics, mouseX, mouseY, partialTick);
-    }
-
-    /**
-     * Instructions to perform before this screen is closed.
-     */
-    protected void onFinish()
-    {
-        this.onClose();
     }
 
     /**

@@ -32,6 +32,9 @@ config = "mixin.nostalgic_tweaks-duck.json"
 config = "mixin.nostalgic_tweaks-forge.json"
 
 [[mixins]]
+config = "mixin.nostalgic_tweaks-required.json"
+
+[[mixins]]
 config = "mixin.nostalgic_tweaks-embeddium.json"
 
 [[dependencies.nostalgic_tweaks]]
