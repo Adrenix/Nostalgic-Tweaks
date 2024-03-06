@@ -4,11 +4,13 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +39,7 @@ public abstract class AbstractContainerScreenMixin extends Screen
     )
     private boolean nt_crafting_screen$renderLabels(GuiGraphics graphics, Font font, Component text, int x, int y, int color, boolean dropShadow)
     {
-        if (!CandyTweak.OLD_CRAFTING_SCREEN.get())
+        if (ClassUtil.isNotInstanceOf(this, CraftingScreen.class) || !CandyTweak.OLD_CRAFTING_SCREEN.get())
             return true;
 
         RenderUtil.beginBatching();
