@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,9 +21,21 @@ public abstract class DrawText
     /**
      * Build a text drawer that will leverage the render utility's batching if it is available.
      *
-     * @param graphics A {@link GuiGraphics} instance.
-     * @param string   A string to draw.
-     * @return A {@link Builder} instance.
+     * @param graphics    The {@link GuiGraphics} instance.
+     * @param translation The {@link Translation} that will be converted into a {@link Component}.
+     * @return A new {@link Builder} instance.
+     */
+    public static Builder begin(GuiGraphics graphics, Translation translation)
+    {
+        return new Builder(graphics, translation.get());
+    }
+
+    /**
+     * Build a text drawer that will leverage the render utility's batching if it is available.
+     *
+     * @param graphics The {@link GuiGraphics} instance.
+     * @param string   The string to draw.
+     * @return A new {@link Builder} instance.
      */
     public static Builder begin(GuiGraphics graphics, @Nullable String string)
     {
@@ -32,9 +45,9 @@ public abstract class DrawText
     /**
      * Build a text drawer that will leverage the render utility's batching if it is available.
      *
-     * @param graphics  A {@link GuiGraphics} instance.
-     * @param component A {@link Component} instance.
-     * @return A {@link Builder} instance.
+     * @param graphics  The {@link GuiGraphics} instance.
+     * @param component The {@link Component} instance to draw.
+     * @return A new {@link Builder} instance.
      */
     public static Builder begin(GuiGraphics graphics, @Nullable Component component)
     {
@@ -44,9 +57,9 @@ public abstract class DrawText
     /**
      * Build a text drawer that will leverage the render utility's batching if it is available.
      *
-     * @param graphics A {@link GuiGraphics} instance.
-     * @param sequence A {@link FormattedCharSequence} instance.
-     * @return A {@link Builder} instance.
+     * @param graphics The {@link GuiGraphics} instance.
+     * @param sequence The {@link FormattedCharSequence} instance to draw.
+     * @return A new {@link Builder} instance.
      */
     public static Builder begin(GuiGraphics graphics, @Nullable FormattedCharSequence sequence)
     {
