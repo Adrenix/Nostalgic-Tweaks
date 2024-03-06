@@ -24,6 +24,8 @@
     "candy.debug_screen.DebugScreenOverlayMixin",
     "candy.debug_screen.GuiMixin",
     "candy.debug_screen.MinecraftMixin",
+    "candy.furnace_screen.AbstractContainerScreenMixin",
+    "candy.furnace_screen.AbstractFurnaceScreenMixin",
     "candy.gui_background.ScreenMixin",
     "candy.inventory_screen.InventoryArmorSlotMixin",
     "candy.inventory_screen.InventoryScreenMixin",
