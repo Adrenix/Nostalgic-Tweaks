@@ -5,7 +5,7 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
-import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
+import mod.adrenix.nostalgic.client.gui.screen.DynamicScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
@@ -82,7 +82,7 @@ public abstract class GuiListener
         Tooltip.render(screen, graphics);
         ModToast.update(screen);
 
-        if (screen instanceof EnhancedScreen<?, ?> || screen instanceof Overlay)
+        if (screen instanceof DynamicScreen<?> || screen instanceof Overlay)
             GuiUtil.renderDebug(graphics);
 
         RenderUtil.flush();
