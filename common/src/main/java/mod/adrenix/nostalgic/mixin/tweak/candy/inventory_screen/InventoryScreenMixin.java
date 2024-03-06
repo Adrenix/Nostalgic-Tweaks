@@ -66,7 +66,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onInit(CallbackInfo callback)
     {
-        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this);
+        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.INVENTORY_BOOK.get());
     }
 
     /**

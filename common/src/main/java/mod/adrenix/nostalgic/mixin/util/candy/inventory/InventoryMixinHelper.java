@@ -110,11 +110,11 @@ public abstract class InventoryMixinHelper
      * Set the inventory screen's recipe button to use.
      *
      * @param inventory The inventory {@link AbstractContainerScreenAccess} instance.
+     * @param book      The {@link RecipeBook} value to use.
      */
-    public static void setRecipeButton(AbstractContainerScreenAccess inventory)
+    public static void setRecipeButton(AbstractContainerScreenAccess inventory, RecipeBook book)
     {
         ImageButton recipeButton = null;
-        RecipeBook book = CandyTweak.INVENTORY_BOOK.get();
         Screen screen = Minecraft.getInstance().screen;
 
         if (screen == null)
