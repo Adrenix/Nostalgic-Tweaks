@@ -7,11 +7,11 @@ import mod.adrenix.nostalgic.tweak.TweakIssue;
 import mod.adrenix.nostalgic.tweak.TweakStatus;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public abstract class TweakBuilder<B extends TweakBuilder<B>>
 {
@@ -21,7 +21,8 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
     final Container container;
     final Set<TweakIssue> modIssues = new HashSet<>();
     final Set<ModTracker> conflictMods = new HashSet<>();
-    Supplier<Boolean> andIf = () -> true;
+    BooleanSupplier andIf = BooleanSupplier.ALWAYS;
+    BooleanSupplier ignoreIf = BooleanSupplier.NEVER;
     TweakAlert alert = TweakAlert.NONE;
     TweakStatus status = TweakStatus.WAIT;
 
@@ -31,7 +32,6 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
     boolean doesChunkReload = false;
     boolean doesResourceReload = false;
     boolean top = false;
-    boolean ignore = false;
 
     /* Constructor */
 
@@ -107,7 +107,19 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
      */
     public B ignore()
     {
-        this.ignore = true;
+        this.ignoreIf = BooleanSupplier.ALWAYS;
+        return this.self();
+    }
+
+    /**
+     * A supplier that indicates if a tweak should be ignored. This is useful if a tweak should only be ignored in
+     * certain circumstances. Such as a mod loader specific tweak.
+     *
+     * @param condition A {@link BooleanSupplier} that provides whether a tweak should be considered ignored.
+     */
+    public B ignoreIf(BooleanSupplier condition)
+    {
+        this.ignoreIf = condition;
         return this.self();
     }
 
@@ -116,9 +128,9 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
      * be made in the mod config when it gets the value of a tweak. If the supplier returns a {@code false} boolean
      * value then the tweak will give back its disabled value.
      *
-     * @param condition A {@link Supplier} that provides whether a tweak should be considered enabled.
+     * @param condition A {@link BooleanSupplier} that provides whether a tweak should be considered enabled.
      */
-    public B andIf(Supplier<Boolean> condition)
+    public B andIf(BooleanSupplier condition)
     {
         this.andIf = condition;
         return this.self();

@@ -446,7 +446,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
      */
     public boolean isIgnored()
     {
-        return this.builder.ignore;
+        return this.builder.ignoreIf.getAsBoolean();
     }
 
     /**
@@ -591,7 +591,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
      */
     public boolean isExtraConditionMet()
     {
-        return this.builder.andIf.get();
+        return this.builder.andIf.getAsBoolean();
     }
 
     /**
