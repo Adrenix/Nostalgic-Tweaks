@@ -6,6 +6,7 @@
   "priority": 1001,
   "client": [
     "candy.debug_screen.DebugScreenOverlayMixin",
+    "candy.tooltip_background.TooltipRenderUtilMixin",
     "candy.torch_block.TerrainRenderContextMixin"
   ]
 }

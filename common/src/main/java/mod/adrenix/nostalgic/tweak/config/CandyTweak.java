@@ -170,8 +170,8 @@ public interface CandyTweak
     // Tooltip Parts
 
     TweakFlag SHOW_ENCHANTMENT_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
-    TweakFlag SHOW_MODIFIER_TIP = TweakFlag.client(false, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
-    TweakFlag SHOW_DYE_TIP = TweakFlag.client(false, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
+    TweakFlag SHOW_MODIFIER_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
+    TweakFlag SHOW_DYE_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
 
     // Items
 

@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeSplash;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.init.listener.client.GuiListener;
+import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ abstract class ClientInitializer
         ClientKeyMapping.register();
         ClientSound.register();
         GuiListener.register();
+        TooltipListener.register();
 
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, HomeSplash.getInstance());
 
