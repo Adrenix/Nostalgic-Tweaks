@@ -23,7 +23,7 @@ public abstract class FabricModelGapFix
     }
 
     /**
-     * Fixes the face uv using by applying the uv shrink ratio.
+     * Fixes the face uv by applying the uv shrink ratio.
      *
      * @param uv            The uv to fix.
      * @param center        The center of u/v.
