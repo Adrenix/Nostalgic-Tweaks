@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.tweak.config;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.TweakCondition;
 import mod.adrenix.nostalgic.tweak.TweakIssue;
@@ -175,7 +176,7 @@ public interface CandyTweak
 
     // Items
 
-    TweakFlag FIX_ITEM_MODEL_GAP = TweakFlag.client(true, CandyGroup.ITEM).reloadResources().build();
+    TweakFlag FIX_ITEM_MODEL_GAP = TweakFlag.client(true, CandyGroup.ITEM).reloadResources().ignoreIf(NostalgicTweaks::isForge).build();
     TweakFlag OLD_DAMAGE_ARMOR_TINT = TweakFlag.client(true, CandyGroup.ITEM).newForUpdate().modIssues(TweakIssue.OPTIFINE).build();
     TweakFlag OLD_ITEM_HOLDING = TweakFlag.client(true, CandyGroup.ITEM).build();
     TweakItemSet IGNORED_HOLDING_ITEMS = TweakItemSet.client(DefaultListing.ignoredHoldingItems(), CandyGroup.ITEM).newForUpdate().build();
