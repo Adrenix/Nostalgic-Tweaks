@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.tweak.listing;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashSet;
@@ -205,5 +206,16 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             return true;
 
         return this.isItemWildcard(item);
+    }
+
+    /**
+     * Check if the given item stack's resource key is within the listing or is a wildcard within the listing.
+     *
+     * @param itemStack An {@link ItemStack} instance to check.
+     * @return Whether this list contains the given item stack.
+     */
+    public boolean containsItem(ItemStack itemStack)
+    {
+        return this.containsItem(itemStack.getItem());
     }
 }
