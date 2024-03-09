@@ -34,7 +34,7 @@ public abstract class ArmorMixinHelper
     public static VertexConsumer getDamagedConsumer(@Nullable LivingEntity entity, VertexConsumer armorConsumer, MultiBufferSource bufferSource, ResourceLocation armorLocation)
     {
         if (CandyTweak.OLD_DAMAGE_ARMOR_TINT.get() && isEntityHurt(entity))
-            return bufferSource.getBuffer(RenderType.entityCutoutNoCull(armorLocation));
+            return bufferSource.getBuffer(RenderType.entityCutoutNoCullZOffset(armorLocation));
 
         return armorConsumer;
     }
