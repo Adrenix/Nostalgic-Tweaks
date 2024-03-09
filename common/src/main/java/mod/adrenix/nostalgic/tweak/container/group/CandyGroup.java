@@ -48,7 +48,7 @@ public interface CandyGroup
 
     // Item
 
-    Container ITEM = Container.group(Category.EYE_CANDY, "item").color(0x8CF4E2).icon(Items.DIAMOND_PICKAXE).build();
+    Container ITEM = Container.group(Category.EYE_CANDY, "item").color(0x8CF4E2).icon(Items.DIAMOND).build();
     Container ITEM_FLAT = Container.group(ITEM, "item_flat").color(0xFFFFFF).icon(Items.PAPER).build();
     Container ITEM_DISPLAY = Container.group(ITEM, "item_display").color(0xBC9862).icon(Items.ITEM_FRAME).build();
     Container ITEM_MERGING = Container.group(ITEM, "item_merging").color(0x969696).icon(Blocks.HOPPER).build();
