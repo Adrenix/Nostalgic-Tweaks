@@ -54,6 +54,9 @@
   ],
   "mixins": [
     "candy.chest_block.ChestBlockMixin",
-    "candy.chest_block.EnderChestBlockMixin"
+    "candy.chest_block.EnderChestBlockMixin",
+    "candy.item_merge.BlockMixin",
+    "candy.item_merge.ItemEntityMixin",
+    "candy.item_merge.LivingEntityMixin"
   ]
 }
