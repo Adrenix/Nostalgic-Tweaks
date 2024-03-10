@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.init.listener.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientGuiEvent;
@@ -13,6 +14,7 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.PauseLayout;
 import mod.adrenix.nostalgic.util.client.GameUtil;
+import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.CornerManager;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
@@ -45,8 +47,13 @@ public abstract class GuiListener
      */
     private static CompoundEventResult<Screen> rerouteScreen(Screen screen)
     {
-        if (CandyTweak.OLD_PAUSE_MENU.get() != PauseLayout.MODERN && screen instanceof PauseScreen)
-            return CompoundEventResult.interruptTrue(new NostalgicPauseScreen());
+        if (screen instanceof PauseScreen)
+        {
+            boolean isHoldingF3 = KeyboardUtil.isDown(InputConstants.KEY_F3);
+
+            if (CandyTweak.OLD_PAUSE_MENU.get() != PauseLayout.MODERN && !isHoldingF3)
+                return CompoundEventResult.interruptTrue(new NostalgicPauseScreen());
+        }
 
         return CompoundEventResult.pass();
     }
