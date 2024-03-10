@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * This utility is used by both client and server.
  */
-public abstract class ItemCommonUtil
+public abstract class ItemUtil
 {
     /**
      * Get an optional item instance based on the provided resource location key.

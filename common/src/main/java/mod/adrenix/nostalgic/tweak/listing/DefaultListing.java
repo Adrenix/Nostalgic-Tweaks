@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.tweak.listing;
 
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
@@ -15,8 +15,8 @@ public interface DefaultListing
     {
         LinkedHashSet<String> set = new LinkedHashSet<>();
 
-        set.add(ItemCommonUtil.getResourceKey(Blocks.POWDER_SNOW));
-        set.add(ItemCommonUtil.getResourceKey(Blocks.COMPOSTER));
+        set.add(ItemUtil.getResourceKey(Blocks.POWDER_SNOW));
+        set.add(ItemUtil.getResourceKey(Blocks.COMPOSTER));
 
         return new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
     }
@@ -49,7 +49,7 @@ public interface DefaultListing
 
     static ItemSet ignoredHoldingItems()
     {
-        return new ItemSet(ItemRule.NO_BLOCKS).startWith(ItemCommonUtil.getKeysFromItems(Items.CROSSBOW));
+        return new ItemSet(ItemRule.NO_BLOCKS).startWith(ItemUtil.getKeysFromItems(Items.CROSSBOW));
     }
 
     // Gameplay Listings
@@ -58,19 +58,19 @@ public interface DefaultListing
     {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 
-        map.put(ItemCommonUtil.getResourceKey(Items.ROTTEN_FLESH), 0);
-        map.put(ItemCommonUtil.getResourceKey(Items.SPIDER_EYE), 0);
-        map.put(ItemCommonUtil.getResourceKey(Items.CARROT), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.MELON_SLICE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.CHORUS_FRUIT), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.SWEET_BERRIES), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.GLOW_BERRIES), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.MUSHROOM_STEW), 10);
-        map.put(ItemCommonUtil.getResourceKey(Items.BEETROOT_SOUP), 10);
-        map.put(ItemCommonUtil.getResourceKey(Items.RABBIT_STEW), 10);
-        map.put(ItemCommonUtil.getResourceKey(Items.SUSPICIOUS_STEW), 10);
-        map.put(ItemCommonUtil.getResourceKey(Items.GOLDEN_APPLE), 20);
-        map.put(ItemCommonUtil.getResourceKey(Items.ENCHANTED_GOLDEN_APPLE), 20);
+        map.put(ItemUtil.getResourceKey(Items.ROTTEN_FLESH), 0);
+        map.put(ItemUtil.getResourceKey(Items.SPIDER_EYE), 0);
+        map.put(ItemUtil.getResourceKey(Items.CARROT), 1);
+        map.put(ItemUtil.getResourceKey(Items.MELON_SLICE), 1);
+        map.put(ItemUtil.getResourceKey(Items.CHORUS_FRUIT), 1);
+        map.put(ItemUtil.getResourceKey(Items.SWEET_BERRIES), 1);
+        map.put(ItemUtil.getResourceKey(Items.GLOW_BERRIES), 1);
+        map.put(ItemUtil.getResourceKey(Items.MUSHROOM_STEW), 10);
+        map.put(ItemUtil.getResourceKey(Items.BEETROOT_SOUP), 10);
+        map.put(ItemUtil.getResourceKey(Items.RABBIT_STEW), 10);
+        map.put(ItemUtil.getResourceKey(Items.SUSPICIOUS_STEW), 10);
+        map.put(ItemUtil.getResourceKey(Items.GOLDEN_APPLE), 20);
+        map.put(ItemUtil.getResourceKey(Items.ENCHANTED_GOLDEN_APPLE), 20);
 
         return new ItemMap<>(10).startWith(map).rules(ItemRule.ONLY_EDIBLES);
     }
@@ -79,44 +79,44 @@ public interface DefaultListing
     {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKIE), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.BEETROOT), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.CARROT), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.CHORUS_FRUIT), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.DRIED_KELP), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.MELON_SLICE), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.POTATO), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.POISONOUS_POTATO), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.SWEET_BERRIES), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.GLOW_BERRIES), 8);
-        map.put(ItemCommonUtil.getResourceKey(Items.APPLE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.BAKED_POTATO), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.BEEF), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.BEETROOT_SOUP), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.BREAD), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.CHICKEN), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COD), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_BEEF), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_CHICKEN), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_COD), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_MUTTON), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_PORKCHOP), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_RABBIT), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.COOKED_SALMON), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.ENCHANTED_GOLDEN_APPLE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.GOLDEN_APPLE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.GOLDEN_CARROT), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.HONEY_BOTTLE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.MUSHROOM_STEW), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.MUTTON), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.PORKCHOP), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.PUFFERFISH), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.PUMPKIN_PIE), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.RABBIT), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.RABBIT_STEW), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.SALMON), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.SUSPICIOUS_STEW), 1);
-        map.put(ItemCommonUtil.getResourceKey(Items.TROPICAL_FISH), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKIE), 8);
+        map.put(ItemUtil.getResourceKey(Items.BEETROOT), 8);
+        map.put(ItemUtil.getResourceKey(Items.CARROT), 8);
+        map.put(ItemUtil.getResourceKey(Items.CHORUS_FRUIT), 8);
+        map.put(ItemUtil.getResourceKey(Items.DRIED_KELP), 8);
+        map.put(ItemUtil.getResourceKey(Items.MELON_SLICE), 8);
+        map.put(ItemUtil.getResourceKey(Items.POTATO), 8);
+        map.put(ItemUtil.getResourceKey(Items.POISONOUS_POTATO), 8);
+        map.put(ItemUtil.getResourceKey(Items.SWEET_BERRIES), 8);
+        map.put(ItemUtil.getResourceKey(Items.GLOW_BERRIES), 8);
+        map.put(ItemUtil.getResourceKey(Items.APPLE), 1);
+        map.put(ItemUtil.getResourceKey(Items.BAKED_POTATO), 1);
+        map.put(ItemUtil.getResourceKey(Items.BEEF), 1);
+        map.put(ItemUtil.getResourceKey(Items.BEETROOT_SOUP), 1);
+        map.put(ItemUtil.getResourceKey(Items.BREAD), 1);
+        map.put(ItemUtil.getResourceKey(Items.CHICKEN), 1);
+        map.put(ItemUtil.getResourceKey(Items.COD), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_BEEF), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_CHICKEN), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_COD), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_MUTTON), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_PORKCHOP), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_RABBIT), 1);
+        map.put(ItemUtil.getResourceKey(Items.COOKED_SALMON), 1);
+        map.put(ItemUtil.getResourceKey(Items.ENCHANTED_GOLDEN_APPLE), 1);
+        map.put(ItemUtil.getResourceKey(Items.GOLDEN_APPLE), 1);
+        map.put(ItemUtil.getResourceKey(Items.GOLDEN_CARROT), 1);
+        map.put(ItemUtil.getResourceKey(Items.HONEY_BOTTLE), 1);
+        map.put(ItemUtil.getResourceKey(Items.MUSHROOM_STEW), 1);
+        map.put(ItemUtil.getResourceKey(Items.MUTTON), 1);
+        map.put(ItemUtil.getResourceKey(Items.PORKCHOP), 1);
+        map.put(ItemUtil.getResourceKey(Items.PUFFERFISH), 1);
+        map.put(ItemUtil.getResourceKey(Items.PUMPKIN_PIE), 1);
+        map.put(ItemUtil.getResourceKey(Items.RABBIT), 1);
+        map.put(ItemUtil.getResourceKey(Items.RABBIT_STEW), 1);
+        map.put(ItemUtil.getResourceKey(Items.SALMON), 1);
+        map.put(ItemUtil.getResourceKey(Items.SUSPICIOUS_STEW), 1);
+        map.put(ItemUtil.getResourceKey(Items.TROPICAL_FISH), 1);
 
         return new ItemMap<>(1).startWith(map).rules(ItemRule.ONLY_EDIBLES);
     }

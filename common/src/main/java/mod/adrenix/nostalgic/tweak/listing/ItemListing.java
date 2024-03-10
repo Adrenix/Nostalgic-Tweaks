@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.tweak.listing;
 
 import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +23,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public static Set<String> getWildcardKeys(Block block)
     {
-        String resourceKey = ItemCommonUtil.getResourceKey(block);
+        String resourceKey = ItemUtil.getResourceKey(block);
         return Set.of(resourceKey, resourceKey + WILDCARD);
     }
 
@@ -149,7 +149,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             if (!this.isWildcard(key))
                 continue;
 
-            Block wildcard = ItemCommonUtil.getBlock(key.replace(WILDCARD, ""));
+            Block wildcard = ItemUtil.getBlock(key.replace(WILDCARD, ""));
 
             if (ClassUtil.isInstanceOf(block, wildcard.getClass()))
                 return true;
@@ -171,7 +171,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             if (!this.isWildcard(key))
                 continue;
 
-            Item wildcard = ItemCommonUtil.getItem(key.replace(WILDCARD, ""));
+            Item wildcard = ItemUtil.getItem(key.replace(WILDCARD, ""));
 
             if (ClassUtil.isInstanceOf(item, wildcard.getClass()))
                 return true;
@@ -188,7 +188,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean containsBlock(Block block)
     {
-        if (this.containsKey(ItemCommonUtil.getResourceKey(block)))
+        if (this.containsKey(ItemUtil.getResourceKey(block)))
             return true;
 
         return this.isBlockWildcard(block);
@@ -202,7 +202,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean containsItem(Item item)
     {
-        if (this.containsKey(ItemCommonUtil.getResourceKey(item)))
+        if (this.containsKey(ItemUtil.getResourceKey(item)))
             return true;
 
         return this.isItemWildcard(item);

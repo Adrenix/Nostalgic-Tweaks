@@ -17,8 +17,8 @@ import mod.adrenix.nostalgic.util.common.data.Pair;
 import mod.adrenix.nostalgic.util.common.function.BooleanConsumer;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.world.ItemFilter;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -100,10 +100,10 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
      */
     private void addItem(ItemStack itemStack)
     {
-        this.onRowAdd(ItemCommonUtil.getResourceKey(itemStack));
+        this.onRowAdd(ItemUtil.getResourceKey(itemStack));
 
         this.createListRows();
-        this.widgets.findAndHighlight(ItemCommonUtil.getLocalizedItem(itemStack));
+        this.widgets.findAndHighlight(ItemUtil.getLocalizedItem(itemStack));
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
     protected SwitchGroup.Widgets getWildcardWidgets(Row row, String key)
     {
         Component wildcardHead = Lang.Listing.WILDCARD_TITLE.get();
-        Component wildcardInfo = Lang.Listing.WILDCARD_MESSAGE.get(ItemCommonUtil.getLocalizedItem(key));
+        Component wildcardInfo = Lang.Listing.WILDCARD_MESSAGE.get(ItemUtil.getLocalizedItem(key));
 
         BooleanSupplier isWildcard = () -> this.getListing().containsWildcard(key);
         BooleanConsumer setWildcard = (state) -> {
@@ -158,8 +158,8 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
     @Override
     public String getLocalizedKey(String listKey)
     {
-        if (ItemCommonUtil.getOptionalItem(listKey).isPresent())
-            return ItemCommonUtil.getLocalizedItem(listKey);
+        if (ItemUtil.getOptionalItem(listKey).isPresent())
+            return ItemUtil.getLocalizedItem(listKey);
 
         return listKey;
     }
@@ -171,7 +171,7 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
 
         for (Pair<String, V> pair : this.getEntries())
         {
-            Optional<Item> item = ItemCommonUtil.getOptionalItem(pair.left());
+            Optional<Item> item = ItemUtil.getOptionalItem(pair.left());
 
             if (item.isPresent() && this.filter != null && this.filter.isFiltered(item.get()))
                 continue;
@@ -185,13 +185,13 @@ public abstract class ItemListingOverlay<V, L extends ItemListing<V, L>> impleme
     @Override
     public TextureIcon getRowIcon(String listKey)
     {
-        return TextureIcon.fromItem(ItemCommonUtil.getOptionalItem(listKey).orElse(Items.BARRIER));
+        return TextureIcon.fromItem(ItemUtil.getOptionalItem(listKey).orElse(Items.BARRIER));
     }
 
     @Override
     public Component appendToRowTitle(final String listKey, MutableComponent rowTitle)
     {
-        if (ItemCommonUtil.getOptionalItem(listKey).isEmpty())
+        if (ItemUtil.getOptionalItem(listKey).isEmpty())
         {
             return rowTitle.append(Component.literal(" ["))
                 .append(Lang.Listing.INVALID_ITEM.withStyle(ChatFormatting.RED))

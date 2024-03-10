@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.util.candy;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.world.BlockCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -38,7 +38,7 @@ public abstract class TorchMixinHelper
      */
     public static boolean isLikeTorch(BlockState blockState)
     {
-        return BlockCommonUtil.match(blockState, Blocks.TORCH, Blocks.REDSTONE_TORCH, Blocks.SOUL_TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_WALL_TORCH);
+        return BlockUtil.match(blockState, Blocks.TORCH, Blocks.REDSTONE_TORCH, Blocks.SOUL_TORCH, Blocks.WALL_TORCH, Blocks.REDSTONE_WALL_TORCH, Blocks.SOUL_WALL_TORCH);
     }
 
     /**
@@ -122,7 +122,7 @@ public abstract class TorchMixinHelper
      */
     public static boolean isBright(BlockState blockState)
     {
-        if (BlockCommonUtil.match(blockState, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH))
+        if (BlockUtil.match(blockState, Blocks.REDSTONE_TORCH, Blocks.REDSTONE_WALL_TORCH))
             return CandyTweak.OLD_TORCH_BRIGHTNESS.get() && blockState.getValue(RedstoneTorchBlock.LIT);
 
         return CandyTweak.OLD_TORCH_BRIGHTNESS.get();

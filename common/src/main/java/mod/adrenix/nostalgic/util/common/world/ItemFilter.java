@@ -61,7 +61,7 @@ public abstract class ItemFilter
     public static boolean isUnique(Item item)
     {
         ItemStack itemStack = item.getDefaultInstance();
-        ItemStack copyStack = ItemCommonUtil.getItemStack(ItemCommonUtil.getResourceKey(item));
+        ItemStack copyStack = ItemUtil.getItemStack(ItemUtil.getResourceKey(item));
 
         return itemStack.getTag() != null && !itemStack.getTag().equals(copyStack.getTag());
     }

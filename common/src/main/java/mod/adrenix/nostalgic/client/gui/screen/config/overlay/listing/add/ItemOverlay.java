@@ -25,8 +25,8 @@ import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import mod.adrenix.nostalgic.util.common.text.TextWrap;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
 import mod.adrenix.nostalgic.util.common.world.ItemFilter;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -290,7 +290,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
         }
 
         this.items.forEach(itemStack -> {
-            this.database.put(ItemCommonUtil.getLocalizedItem(itemStack), itemStack);
+            this.database.put(ItemUtil.getLocalizedItem(itemStack), itemStack);
             this.icons.put(itemStack.getItem(), TextureIcon.fromItem(itemStack.getItem()));
         });
     }
@@ -373,7 +373,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
          */
         private boolean isInList()
         {
-            return this.parent().listing.containsKey(ItemCommonUtil.getResourceKey(this.getItemStack()));
+            return this.parent().listing.containsKey(ItemUtil.getResourceKey(this.getItemStack()));
         }
 
         /**

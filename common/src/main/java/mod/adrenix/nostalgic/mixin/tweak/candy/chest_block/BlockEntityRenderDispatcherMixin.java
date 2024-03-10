@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,7 +33,7 @@ public abstract class BlockEntityRenderDispatcherMixin
         else if (CandyTweak.OLD_TRAPPED_CHEST.get() && entity.getClass().equals(TrappedChestBlockEntity.class))
             return null;
 
-        String resourceKey = ItemCommonUtil.getResourceKey(entity.getBlockState().getBlock());
+        String resourceKey = ItemUtil.getResourceKey(entity.getBlockState().getBlock());
 
         if (CandyTweak.OLD_MOD_CHESTS.get().containsKey(resourceKey))
             return null;

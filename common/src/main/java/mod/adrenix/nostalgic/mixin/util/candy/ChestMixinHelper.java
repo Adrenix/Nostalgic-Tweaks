@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
@@ -24,7 +24,7 @@ public abstract class ChestMixinHelper
         boolean isOldChest = CandyTweak.OLD_CHEST.get() && block.getClass().equals(ChestBlock.class);
         boolean isOldEnder = CandyTweak.OLD_ENDER_CHEST.get() && block.getClass().equals(EnderChestBlock.class);
         boolean isOldTrap = CandyTweak.OLD_TRAPPED_CHEST.get() && block.getClass().equals(TrappedChestBlock.class);
-        boolean isOldMod = CandyTweak.OLD_MOD_CHESTS.get().containsKey(ItemCommonUtil.getResourceKey(block));
+        boolean isOldMod = CandyTweak.OLD_MOD_CHESTS.get().containsKey(ItemUtil.getResourceKey(block));
 
         return isOldChest || isOldEnder || isOldTrap || isOldMod;
     }

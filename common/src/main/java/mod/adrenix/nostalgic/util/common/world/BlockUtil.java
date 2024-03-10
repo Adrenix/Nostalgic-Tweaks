@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * This utility is used by both client and server.
  */
-public abstract class BlockCommonUtil
+public abstract class BlockUtil
 {
     /**
      * Check if the given {@link BlockState} matches any of the given blocks.

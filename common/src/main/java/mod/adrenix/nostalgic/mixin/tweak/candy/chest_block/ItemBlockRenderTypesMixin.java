@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.world.ItemCommonUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +21,7 @@ public abstract class ItemBlockRenderTypesMixin
     )
     private static RenderType nt_chest_block$modifyChunkRenderType(RenderType renderType, BlockState blockState)
     {
-        String resourceKey = ItemCommonUtil.getResourceKey(blockState.getBlock());
+        String resourceKey = ItemUtil.getResourceKey(blockState.getBlock());
 
         if (CandyTweak.OLD_MOD_CHESTS.get().containsKey(resourceKey))
             return RenderType.cutout();
