@@ -11,9 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 
 /**
- * This utility is used by both client and server. For safety, keep client-only code out. For a client only utility use
- * {@link mod.adrenix.nostalgic.util.client.world.ItemClientUtil}. For a server only utility use
- * {@link mod.adrenix.nostalgic.util.server.world.ItemServerUtil}.
+ * This utility is used by both client and server.
  */
 public abstract class ItemCommonUtil
 {

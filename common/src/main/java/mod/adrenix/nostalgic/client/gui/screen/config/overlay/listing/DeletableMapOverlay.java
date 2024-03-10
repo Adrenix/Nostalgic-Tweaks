@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.client.gui.widget.text.TextBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakMap;
 import mod.adrenix.nostalgic.tweak.listing.DeletableMap;
-import mod.adrenix.nostalgic.util.client.world.ItemClientUtil;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -70,7 +70,7 @@ public interface DeletableMapOverlay<V, L extends DeletableMap<V, L>> extends Li
     default IconFactory getIconFactory(String key, TextureIcon icon)
     {
         return IconWidget.create(icon)
-            .pos(1, ItemClientUtil.isModelFlat(icon.getItem().orElse(Items.BARRIER)) ? 1 : 2)
+            .pos(1, GameUtil.isModelFlat(icon.getItem().orElse(Items.BARRIER)) ? 1 : 2)
             .disableIf(() -> this.getMap().isDeleted(key))
             .darkenOnDisable(0.8F);
     }
