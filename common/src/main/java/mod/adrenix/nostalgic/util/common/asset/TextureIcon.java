@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.common.asset;
 
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -179,6 +180,7 @@ public class TextureIcon
      * @param item An item instance.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromItem(Item item)
     {
         TextureIcon icon = new TextureIcon(item);
@@ -193,6 +195,7 @@ public class TextureIcon
      * @param block A block instance.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromBlock(Block block)
     {
         TextureIcon icon = new TextureIcon(block.asItem());
@@ -207,6 +210,7 @@ public class TextureIcon
      * @param location A texture location instance.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromTexture(TextureLocation location)
     {
         return new TextureIcon(location);
@@ -220,9 +224,24 @@ public class TextureIcon
      * @param height         The height of the sprite texture.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromSprite(ResourceLocation spriteLocation, int width, int height)
     {
         return new TextureIcon(spriteLocation, width, height);
+    }
+
+    /**
+     * Create a new icon instance from a sprite path.
+     *
+     * @param path   The sprite path in {@code assets/minecraft/textures/gui/sprites/mod_id/icon/}.
+     * @param width  The width of the sprite texture.
+     * @param height The height of the sprite texture.
+     * @return A new {@link TextureIcon} instance.
+     */
+    @PublicAPI
+    public static TextureIcon fromSprite(String path, int width, int height)
+    {
+        return fromSprite(ModSprite.icon(path), width, height);
     }
 
     /**
@@ -234,9 +253,25 @@ public class TextureIcon
      * @param maxBrightness  The maximum amount of brightness that can be applied.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromSprite(ResourceLocation spriteLocation, int width, int height, float maxBrightness)
     {
         return fromSprite(spriteLocation, width, height).maxBrightness(maxBrightness);
+    }
+
+    /**
+     * Create a new icon instance from a sprite path.
+     *
+     * @param path          The sprite path in {@code assets/minecraft/textures/gui/sprites/mod_id/icon/}.
+     * @param width         The width of the sprite texture.
+     * @param height        The height of the sprite texture.
+     * @param maxBrightness The maximum amount of brightness that can be applied.
+     * @return A new {@link TextureIcon} instance.
+     */
+    @PublicAPI
+    public static TextureIcon fromSprite(String path, int width, int height, float maxBrightness)
+    {
+        return fromSprite(ModSprite.icon(path), width, height, maxBrightness);
     }
 
     /**
@@ -246,9 +281,23 @@ public class TextureIcon
      * @param squareSize     The square size of the sprite texture.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromSprite(ResourceLocation spriteLocation, int squareSize)
     {
         return new TextureIcon(spriteLocation, squareSize, squareSize);
+    }
+
+    /**
+     * Create a new icon instance from a sprite path.
+     *
+     * @param path       The sprite path in {@code assets/minecraft/textures/gui/sprites/mod_id/icon/}.
+     * @param squareSize The square size of the sprite texture.
+     * @return A new {@link TextureIcon} instance.
+     */
+    @PublicAPI
+    public static TextureIcon fromSprite(String path, int squareSize)
+    {
+        return fromSprite(ModSprite.icon(path), squareSize);
     }
 
     /**
@@ -259,8 +308,23 @@ public class TextureIcon
      * @param maxBrightness  The maximum amount of brightness that can be applied.
      * @return A new {@link TextureIcon} instance.
      */
+    @PublicAPI
     public static TextureIcon fromSprite(ResourceLocation spriteLocation, int squareSize, float maxBrightness)
     {
         return fromSprite(spriteLocation, squareSize).maxBrightness(maxBrightness);
+    }
+
+    /**
+     * Create a new icon instance from a sprite path.
+     *
+     * @param path          The sprite path in {@code assets/minecraft/textures/gui/sprites/mod_id/icon/}.
+     * @param squareSize    The square size of the sprite texture.
+     * @param maxBrightness The maximum amount of brightness that can be applied.
+     * @return A new {@link TextureIcon} instance.
+     */
+    @PublicAPI
+    public static TextureIcon fromSprite(String path, int squareSize, float maxBrightness)
+    {
+        return fromSprite(ModSprite.icon(path), squareSize, maxBrightness);
     }
 }
