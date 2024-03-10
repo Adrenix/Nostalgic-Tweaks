@@ -133,6 +133,15 @@ public abstract class GuiUtil
     }
 
     /**
+     * @return A pointer to the native window object that is passed to GLFW.
+     */
+    @PublicAPI
+    public static long getWindowPointer()
+    {
+        return getWindow().getWindow();
+    }
+
+    /**
      * @return The game's window gui scale.
      */
     @PublicAPI
