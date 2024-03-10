@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.client.KeyMapping;
@@ -135,6 +136,18 @@ public abstract class KeyboardUtil
     public static boolean isEsc(int key)
     {
         return key == InputConstants.KEY_ESCAPE;
+    }
+
+    /**
+     * Check if the given keycode is being held down.
+     *
+     * @param key The keycode to check.
+     * @return Whether the given key is being held down.
+     */
+    @PublicAPI
+    public static boolean isDown(int key)
+    {
+        return InputConstants.isKeyDown(GuiUtil.getWindowPointer(), key);
     }
 
     /**
