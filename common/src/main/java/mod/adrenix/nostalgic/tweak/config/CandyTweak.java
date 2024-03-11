@@ -188,12 +188,10 @@ public interface CandyTweak
 
     // 2D Items
 
-    TweakFlag OLD_2D_COLORS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).newForUpdate().build();
     TweakFlag OLD_2D_ITEMS = TweakFlag.client(true, CandyGroup.ITEM_FLAT).build();
-    TweakFlag OLD_2D_FRAMES = TweakFlag.client(true, CandyGroup.ITEM_FLAT).build();
-    TweakFlag OLD_2D_THROWN_ITEMS = TweakFlag.client(true, CandyGroup.ITEM_FLAT).build();
-    TweakFlag OLD_2D_ENCHANTED_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
     TweakFlag OLD_2D_RENDERING = TweakFlag.client(true, CandyGroup.ITEM_FLAT).newForUpdate().modIssues(TweakIssue.OPTIFINE).build();
+    TweakFlag DISABLE_ENCHANTED_GROUND_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
+    TweakFlag DISABLE_ENCHANTED_STATIC_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
 
     // Item Display
 
