@@ -7,6 +7,7 @@
   "client": [
     "candy.armor_damage.HumanoidArmorLayerMixin",
     "candy.debug_screen.DebugScreenOverlayMixin",
+    "candy.item_display.GuiMixin",
     "candy.model_gap_fix.ItemModelGeneratorMixin",
     "candy.tooltip_background.TooltipRenderUtilMixin",
     "candy.torch_block.TerrainRenderContextMixin"
