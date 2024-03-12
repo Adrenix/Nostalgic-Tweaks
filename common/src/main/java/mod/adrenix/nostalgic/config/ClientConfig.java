@@ -351,7 +351,6 @@ public class ClientConfig implements ConfigMeta
 
         // World Lighting
 
-        public boolean fixChunkBorderLag = CandyTweak.FIX_CHUNK_BORDER_LAG.register("fixChunkBorderLag");
         public boolean disableBrightness = CandyTweak.DISABLE_BRIGHTNESS.register("disableBrightness");
         public boolean disableLightFlicker = CandyTweak.DISABLE_LIGHT_FLICKER.register("disableLightFlicker");
         public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.register("oldClassicLighting");

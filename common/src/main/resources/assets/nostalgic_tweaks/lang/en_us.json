@@ -1044,8 +1044,6 @@
   "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles.info": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
   "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles.search": "TNT, Smoke, Big, Physics",
 
-  "gui.nostalgic_tweaks.config.eyeCandy.fixChunkBorderLag": "Fix Chunk Border Lag",
-  "gui.nostalgic_tweaks.config.eyeCandy.fixChunkBorderLag.info": "Fixes lag spikes that occur when crossing chunk borders.",
   "gui.nostalgic_tweaks.config.eyeCandy.disableBrightness": "Disable Vanilla Brightness",
   "gui.nostalgic_tweaks.config.eyeCandy.disableBrightness.info": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting§7 old light rendering§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.disableLightFlicker": "Disable Light Flickering",

@@ -206,7 +206,6 @@ public interface CandyTweak
 
     // World Lighting
 
-    TweakFlag FIX_CHUNK_BORDER_LAG = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD).newForUpdate().build();
     TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD).newForUpdate().alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
     TweakFlag DISABLE_LIGHT_FLICKER = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD).build();
     TweakFlag OLD_NETHER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD).reloadChunks().build();
