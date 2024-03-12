@@ -45,7 +45,10 @@ public abstract class GuiGraphicsMixin
     private void nt_item_display$wrapDecorationForeground(GuiGraphics graphics, RenderType renderType, int minX, int minY, int maxX, int maxY, int color, Operation<Void> operation, Font font, ItemStack itemStack, int x, int y)
     {
         if (!CandyTweak.OLD_DURABILITY_COLORS.get())
+        {
             operation.call(graphics, renderType, minX, minY, maxX, maxY, color);
+            return;
+        }
 
         double health = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
         double healthRemaining = ((double) itemStack.getDamageValue() * 255.0D) / (double) itemStack.getMaxDamage();
