@@ -53,7 +53,7 @@ public abstract class ItemMixinHelper
         entity.getItem().setCount(1);
         entity.setDefaultPickUpDelay();
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < Math.max(0, count - 1); i++)
         {
             double x = (double) ((float) entity.getX() + 0.01F) + Mth.nextDouble(level.random, -0.04, 0.04);
             double y = (double) ((float) entity.getY() + 0.01F) + Mth.nextDouble(level.random, -0.04, 0.04) - (double) EntityType.ITEM.getHeight() / 2.0F;
