@@ -35,6 +35,7 @@
     "candy.inventory_screen.InventoryScreenMixin",
     "candy.inventory_screen.InventoryShieldSlotMixin",
     "candy.inventory_screen.LightingMixin",
+    "candy.item_display.GuiGraphicsMixin",
     "candy.item_holding.ItemInHandRendererMixin",
     "candy.item_tooltip.AbstractContainerScreenMixin",
     "candy.item_tooltip.ItemStackMixin",
