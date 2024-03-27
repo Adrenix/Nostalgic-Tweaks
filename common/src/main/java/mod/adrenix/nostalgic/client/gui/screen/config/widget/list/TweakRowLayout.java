@@ -65,18 +65,18 @@ public class TweakRowLayout
 
         this.tags = TagWidget.create(this.tweak)
             .alignFlushTo(this.breadcrumbs)
-            .below(this.breadcrumbs, 10)
+            .below(this.breadcrumbs, this.padding)
             .build(this.row::addWidget);
 
         this.title = TextWidget.create(this.tweak.getTranslation())
             .color(this.row.getColor().brighter())
-            .below(this.tags, this.padding)
+            .below(this.tags, this.padding + 2)
             .alignFlushTo(this.breadcrumbs)
             .italicsWhen(this.tweak::isCurrentCacheSavable)
             .build(this.row::addWidget);
 
         this.reset = ButtonWidget.create()
-            .below(this.tags, -1)
+            .below(this.tags, 1)
             .icon(Icons.RED_REDO)
             .tooltip(Lang.Button.RESET, 40, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.TweakRow.RESET, 40)
