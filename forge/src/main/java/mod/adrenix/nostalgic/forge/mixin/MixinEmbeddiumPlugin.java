@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
-import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -37,10 +37,7 @@ public class MixinEmbeddiumPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        if (ModList.get() == null)
-            return false;
-
-        return ModList.get().isLoaded("embeddium");
+        return FMLLoader.getLoadingModList().getModFileById("embeddium") != null;
     }
 
     /**
