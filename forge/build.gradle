@@ -62,6 +62,7 @@ shadowJar {
 }
 
 remapJar {
+    atAccessWideners.add("nostalgic_tweaks.accesswidener")
     input.set shadowJar.archiveFile
     dependsOn shadowJar
 }
