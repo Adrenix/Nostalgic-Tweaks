@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.util.client;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +15,19 @@ public abstract class GameUtil
     public static String getVersion()
     {
         return SharedConstants.getCurrentVersion().getName();
+    }
+
+    /**
+     * @return Whether this was called on the integrated server thread.
+     */
+    public static boolean isOnIntegratedSeverThread()
+    {
+        IntegratedServer integratedServer = Minecraft.getInstance().getSingleplayerServer();
+
+        if (integratedServer == null)
+            return false;
+
+        return Thread.currentThread() == integratedServer.getRunningThread();
     }
 
     /**
