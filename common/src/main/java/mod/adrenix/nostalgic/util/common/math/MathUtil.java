@@ -96,6 +96,19 @@ public abstract class MathUtil
     }
 
     /**
+     * Checks if the given value is greater than or equal to the given start or less than or equal to the given end.
+     *
+     * @param value The float to check.
+     * @param start The starting float.
+     * @param end   The ending float.
+     * @return Whether the given value was within range of the given start/end.
+     */
+    public static boolean isInRange(float value, float start, float end)
+    {
+        return value >= start && value <= end;
+    }
+
+    /**
      * Determine if two integers are within a given {@code tolerance}.
      *
      * @param a         First integer.
