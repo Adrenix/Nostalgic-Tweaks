@@ -51,7 +51,9 @@ public abstract class BlockUtil
     }
 
     /**
-     * Check if the given block state matches a water-like block.
+     * Check if the given block state matches a water-like block. There are no block or block pos overload methods since
+     * it is possible to get an incorrect value. For example, if the default block state is given, then it cannot be
+     * checked if the block state is waterlogged.
      *
      * @param blockState The {@link BlockState} to check.
      * @return Whether the block is water-like.
@@ -59,16 +61,5 @@ public abstract class BlockUtil
     public static boolean isWaterLike(BlockState blockState)
     {
         return blockState.getFluidState().is(FluidTags.WATER);
-    }
-
-    /**
-     * Check if the given block is water-like.
-     *
-     * @param block The {@link Block} to check.
-     * @return Whether the block is water-like.
-     */
-    public static boolean isWaterLike(Block block)
-    {
-        return isWaterLike(block.defaultBlockState());
     }
 }
