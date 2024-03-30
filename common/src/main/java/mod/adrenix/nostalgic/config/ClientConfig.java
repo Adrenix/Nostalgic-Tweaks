@@ -254,7 +254,6 @@ public class ClientConfig implements ConfigMeta
         public InventoryShield inventoryShield = CandyTweak.INVENTORY_SHIELD.register("inventoryShield");
         public boolean disableEmptyArmorTexture = CandyTweak.DISABLE_EMPTY_ARMOR_TEXTURE.register("disableEmptyArmorTexture");
         public boolean disableEmptyShieldTexture = CandyTweak.DISABLE_EMPTY_SHIELD_TEXTURE.register("disableEmptyShieldTexture");
-        public boolean invertedBlockLighting = CandyTweak.INVERTED_BLOCK_LIGHTING.register("invertedBlockLighting");
         public boolean invertedPlayerLighting = CandyTweak.INVERTED_PLAYER_LIGHTING.register("invertedPlayerLighting");
 
         // GUI
@@ -349,21 +348,30 @@ public class ClientConfig implements ConfigMeta
         public boolean oldNameTags = CandyTweak.OLD_NAME_TAGS.register("oldNameTags");
         public boolean supporterTags = CandyTweak.SUPPORTER_TAGS.register("supporterTags");
 
-        // World Lighting
-
-        public boolean disableBrightness = CandyTweak.DISABLE_BRIGHTNESS.register("disableBrightness");
-        public boolean disableLightFlicker = CandyTweak.DISABLE_LIGHT_FLICKER.register("disableLightFlicker");
-        public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.register("oldClassicLighting");
-        public boolean oldNetherLighting = CandyTweak.OLD_NETHER_LIGHTING.register("oldNetherLighting");
-        public boolean oldLightRendering = CandyTweak.OLD_LIGHT_RENDERING.register("oldLightRendering");
-        public boolean oldLightColor = CandyTweak.OLD_LIGHT_COLOR.register("oldLightColor");
-        public boolean oldSmoothLighting = CandyTweak.OLD_SMOOTH_LIGHTING.register("oldSmoothLighting");
-        public int maxBlockLight = CandyTweak.MAX_BLOCK_LIGHT.register("maxBlockLight");
-
         // Block Lighting
 
+        public boolean disableLightFlicker = CandyTweak.DISABLE_LIGHT_FLICKER.register("disableLightFlicker");
+        public boolean invertedBlockLighting = CandyTweak.INVERTED_BLOCK_LIGHTING.register("invertedBlockLighting");
         public boolean oldLeavesLighting = CandyTweak.OLD_LEAVES_LIGHTING.register("oldLeavesLighting");
         public boolean oldWaterLighting = CandyTweak.OLD_WATER_LIGHTING.register("oldWaterLighting");
+        public boolean chestLightBlock = CandyTweak.CHEST_LIGHT_BLOCK.register("chestLightBlock");
+
+        // Light Engine
+
+        public boolean roundRobinRelight = CandyTweak.ROUND_ROBIN_RELIGHT.register("roundRobinRelight");
+        public boolean oldSmoothLighting = CandyTweak.OLD_SMOOTH_LIGHTING.register("oldSmoothLighting");
+        public boolean oldNetherLighting = CandyTweak.OLD_NETHER_LIGHTING.register("oldNetherLighting");
+        public boolean oldClassicEngine = CandyTweak.OLD_CLASSIC_ENGINE.register("oldClassicEngine");
+
+        // Lightmap Texture
+
+        public boolean smoothLightTransition = CandyTweak.SMOOTH_LIGHT_TRANSITION.register("smoothLightTransition");
+        public boolean disableBrightness = CandyTweak.DISABLE_BRIGHTNESS.register("disableBrightness");
+        public boolean oldLightColor = CandyTweak.OLD_LIGHT_COLOR.register("oldLightColor");
+
+        // Shader Support
+
+        public int maxBlockLight = CandyTweak.MAX_BLOCK_LIGHT.register("maxBlockLight");
 
         // Particles
 

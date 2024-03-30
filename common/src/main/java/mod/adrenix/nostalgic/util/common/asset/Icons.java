@@ -83,9 +83,7 @@ public interface Icons
     TextureIcon TEXT = TextureIcon.fromSprite("text", 12);
     TextureIcon WRENCH = TextureIcon.fromSprite("wrench", 12);
     TextureIcon SCREWDRIVER = TextureIcon.fromSprite("screwdriver", 12);
-    TextureIcon GRAY_LIGHT = TextureIcon.fromSprite("gray_light", 12);
-    TextureIcon BLUE_LIGHT = TextureIcon.fromSprite("blue_light", 12);
-    TextureIcon RED_LIGHT = TextureIcon.fromSprite("red_light", 12);
+    TextureIcon EARTH_LIGHT = TextureIcon.fromSprite("earth_light", 12);
     TextureIcon YELLOW_LIGHT = TextureIcon.fromSprite("yellow_light", 12);
     TextureIcon PARTICLES = TextureIcon.fromSprite("particles", 12);
     TextureIcon CIRCLE_EARTH = TextureIcon.fromSprite("circle_earth", 12);

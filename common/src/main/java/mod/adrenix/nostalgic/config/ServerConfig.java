@@ -53,7 +53,7 @@ public class ServerConfig implements ConfigMeta
         public int itemMergeLimit = CandyTweak.ITEM_MERGE_LIMIT.register("itemMergeLimit");
         public boolean oldItemMerging = CandyTweak.OLD_ITEM_MERGING.register("oldItemMerging");
         public boolean oldSquareBorder = CandyTweak.OLD_SQUARE_BORDER.register("oldSquareBorder");
-        public boolean oldClassicLighting = CandyTweak.OLD_CLASSIC_LIGHTING.register("oldClassicLighting");
+        public boolean oldClassicEngine = CandyTweak.OLD_CLASSIC_ENGINE.register("oldClassicEngine");
         public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.register("applyChestVoxel");
         public boolean debugEntityId = CandyTweak.DEBUG_ENTITY_ID.register("debugEntityId");
     }

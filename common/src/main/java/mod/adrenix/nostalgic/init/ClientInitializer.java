@@ -4,12 +4,16 @@ import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.ReloadListenerRegistry;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeSplash;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.init.listener.client.GuiListener;
 import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
+import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightmapMixinHelper;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import net.minecraft.client.Minecraft;
@@ -34,18 +38,25 @@ abstract class ClientInitializer
             ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, panorama);
 
         ClientTickEvent.CLIENT_PRE.register(ClientInitializer::onTick);
-        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::setModConnection);
+        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::onPlayerQuit);
+
+        AfterConfigSave.addInstruction(ChestMixinHelper::runAfterSave);
+        AfterConfigSave.addInstruction(LightingMixinHelper::runAfterSave);
     }
 
     /**
-     * Removes the verification of the mod connection when the player leaves a level with the mod installed.
+     * Removes the verification of the mod connection when the player leaves a world with the mod installed and performs
+     * other needed tasks when the player leaves the world.
      *
      * @param player The {@link LocalPlayer} instance.
      */
-    private static void setModConnection(LocalPlayer player)
+    private static void onPlayerQuit(LocalPlayer player)
     {
         NostalgicTweaks.setNetworkVerification(false);
         NostalgicTweaks.setConnection(null);
+
+        LightingMixinHelper.resetLightingCache();
+        LightmapMixinHelper.resetLightingCache();
     }
 
     /**
@@ -58,5 +69,7 @@ abstract class ClientInitializer
         ClientTimer.getInstance().onTick();
         Animator.onTick();
         Panorama.onTick();
+
+        LightingMixinHelper.onTick();
     }
 }

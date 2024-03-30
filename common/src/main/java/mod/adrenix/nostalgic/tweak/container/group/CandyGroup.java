@@ -60,9 +60,11 @@ public interface CandyGroup
     // Lighting
 
     Container LIGHTING = Container.group(Category.EYE_CANDY, "lighting").color(0xFEDB5B).icon(Icons.YELLOW_LIGHT).build();
-    Container LIGHTING_BLOCK = Container.group(LIGHTING, "lighting_block").color(0xF4EFE9).icon(Icons.GRAY_LIGHT).build();
-    Container LIGHTING_WORLD = Container.group(LIGHTING, "lighting_world").color(0xCDF7F8).icon(Icons.BLUE_LIGHT).build();
-    Container LIGHTING_WORLD_SHADER = Container.group(LIGHTING_WORLD, "lighting_world_shader").color(0xF5967A).icon(Icons.RED_LIGHT).build();
+    Container LIGHTING_BLOCK = Container.group(LIGHTING, "lighting_block").color(0xF9D49D).icon(Blocks.GLOWSTONE).build();
+    Container LIGHTING_WORLD = Container.group(LIGHTING, "lighting_world").color(0x46A2EE).icon(Icons.EARTH_LIGHT).build();
+    Container LIGHTING_WORLD_ENGINE = Container.group(LIGHTING_WORLD, "lighting_world_engine").color(0xDAAE6D).icon(Blocks.PISTON).build();
+    Container LIGHTING_WORLD_TEXTURE = Container.group(LIGHTING_WORLD, "lighting_world_texture").color(0xB7B7B7).icon(Items.PAINTING).build();
+    Container LIGHTING_WORLD_SHADER = Container.group(LIGHTING_WORLD, "lighting_world_shader").color(0xF4E5FF).icon(Items.NETHER_STAR).build();
 
     // Particle
 

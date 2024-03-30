@@ -6,8 +6,8 @@ import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.FogColor;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
 import mod.adrenix.nostalgic.tweak.enums.SkyColor;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
@@ -24,7 +24,6 @@ public enum TweakAlert
     CUSTOM_GUI_DISABLED(TweakAlert::getCustomGuiDisabled, Lang.Alert.CUSTOM_GUI_GRADIENT),
     SHIELD_CONFLICT(TweakAlert::isShieldConflict, Lang.Alert.SHIELD),
     BRIGHTNESS_CONFLICT(TweakAlert::isBrightnessConflict, Lang.Alert.BRIGHTNESS),
-    LIGHT_CONFLICT(TweakAlert::isLightConflict, Lang.Alert.LIGHT),
     DYNAMIC_FOG(TweakAlert::isDynamicFogConflict, Lang.Alert.DYNAMIC_FOG),
     DYNAMIC_SKY(TweakAlert::isDynamicSkyConflict, Lang.Alert.DYNAMIC_SKY),
     UNIVERSAL_FOG(TweakAlert::isUniversalFogConflict, Lang.Alert.UNIVERSAL_FOG),
@@ -119,31 +118,17 @@ public enum TweakAlert
     }
 
     /**
-     * Checks if the user has disabled old light colors while keeping old light rendering enabled.
+     * Checks if the user has old lighting engine disabled and disabled vanilla brightness enabled.
      * <p>
-     * Having the modern light color map with old light rendering will result in wrong colors since skylight is replaced
-     * with block light. For example, the nighttime blue color will look orange instead.
-     */
-    private static boolean isLightConflict()
-    {
-        boolean isOldColor = CandyTweak.OLD_LIGHT_COLOR.fromCache();
-        boolean isOldLight = CandyTweak.OLD_LIGHT_RENDERING.fromCache();
-
-        return !isOldColor && isOldLight;
-    }
-
-    /**
-     * Checks if the user has old light rendering disabled and disabled vanilla brightness enabled.
-     * <p>
-     * Having disabled vanilla brightness enabled without old light rendering enabled will not work since the brightness
+     * Having disabled vanilla brightness enabled without old lighting engine enabled will not work since the brightness
      * tweak does not impact the vanilla lightmap calculations.
      */
     private static boolean isBrightnessConflict()
     {
-        boolean isOldLight = CandyTweak.OLD_LIGHT_RENDERING.fromCache();
+        boolean isOldLightColor = CandyTweak.OLD_LIGHT_COLOR.fromCache();
         boolean isDisabledBrightness = CandyTweak.DISABLE_BRIGHTNESS.fromCache();
 
-        return !isOldLight && isDisabledBrightness;
+        return !isOldLightColor && isDisabledBrightness;
     }
 
     /**
@@ -161,7 +146,7 @@ public enum TweakAlert
     }
 
     /**
-     * Checks if the user has dynamic fog or custom fog tweaks enabled. Having either enabled will not work since
+     * Checks if the user has dynamic fog or custom fog tweaks enabled. Having either enabled will not work because
      * dynamic and custom fog will override universal fog.
      */
     private static boolean isUniversalFogConflict()
@@ -174,7 +159,7 @@ public enum TweakAlert
     }
 
     /**
-     * Checks if the user has dynamic sky or custom sky tweaks enabled. Having either enabled will not work since
+     * Checks if the user has dynamic sky or custom sky tweaks enabled. Having either enabled will not work because
      * dynamic and custom sky will override universal sky.
      */
     private static boolean isUniversalSkyConflict()
