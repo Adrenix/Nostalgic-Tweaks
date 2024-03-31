@@ -28,13 +28,16 @@ public abstract class BlockStateBaseMixin
 
     /* Injection */
 
+    /**
+     * Disables block offsets for some or all blocks.
+     */
     @ModifyReturnValue(
         method = "getOffset",
         at = @At("RETURN")
     )
     private Vec3 nt_block_offsets$modifyOffset(Vec3 offset)
     {
-        if (NostalgicTweaks.isMixinEarly() || NostalgicTweaks.isServer() || !this.hasOffsetFunction())
+        if (NostalgicTweaks.isMixinEarly() || !this.hasOffsetFunction())
             return offset;
 
         Block block = this.getBlock();
