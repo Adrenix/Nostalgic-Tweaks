@@ -11,8 +11,10 @@ import mod.adrenix.nostalgic.util.common.world.BlockUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -148,6 +150,26 @@ public abstract class LightingMixinHelper
             if (TIME_SKYLIGHT.get() > 4)
                 ENQUEUE_RELIGHT.enable();
         }
+    }
+
+    /**
+     * Gets the greatest light value surrounding a water block.
+     *
+     * @param level    A {@link BlockAndTintGetter} instance.
+     * @param blockPos The {@link BlockPos} of the water block.
+     * @return The largest light value around the water block.
+     */
+    public static int getWaterLight(BlockAndTintGetter level, BlockPos blockPos)
+    {
+        int center = LevelRenderer.getLightColor(level, blockPos);
+        int above = LevelRenderer.getLightColor(level, blockPos.above());
+        int below = LevelRenderer.getLightColor(level, blockPos.below());
+        int north = LevelRenderer.getLightColor(level, blockPos.north());
+        int south = LevelRenderer.getLightColor(level, blockPos.south());
+        int west = LevelRenderer.getLightColor(level, blockPos.west());
+        int east = LevelRenderer.getLightColor(level, blockPos.east());
+
+        return MathUtil.getLargest(center, above, below, north, south, west, east);
     }
 
     /**

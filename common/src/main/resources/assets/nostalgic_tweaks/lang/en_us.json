@@ -692,6 +692,8 @@
   "gui.nostalgic_tweaks.config.sound.disabledGlobalSounds": "Disabled Global Sounds",
   "gui.nostalgic_tweaks.config.sound.disabledGlobalSounds.info": "Define a custom list of sounds to§c disable§e globally§r. This means you will never hear the sound played during gameplay. The entries used in this list are sound resource locations. For example,§b minecraft:block.sweet_berry_bush.pick_berries§r is a§a valid§r sound resource location.",
 
+  "gui.nostalgic_tweaks.config.eyeCandy.sodiumWaterAo": "Sodium Water Ambient Occlusion",
+  "gui.nostalgic_tweaks.config.eyeCandy.sodiumWaterAo.info": "Apply§e Sodium's§r ambient occlusion to§b water§r when Sodium is installed.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture": "Old Missing Texture",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture.info": "Bring back the old missing textures ranging from Beta 1.4 until 1.12.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldMissingTexture.enum.modern": "The missing texture will have a §7black§r/§5pink§r color scheme where a §7black§r square starts in the top left corner.",

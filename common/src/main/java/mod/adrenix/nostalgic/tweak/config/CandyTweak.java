@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemRule;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -22,6 +23,7 @@ public interface CandyTweak
     // Block
 
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
+    TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().ignoreIf(ModTracker.SODIUM::isNotInstalled).build();
     TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(DefaultListing.ambientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
     TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(DefaultListing.disabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();

@@ -163,6 +163,7 @@ public class ClientConfig implements ConfigMeta
     {
         // Block
 
+        public boolean sodiumWaterAo = CandyTweak.SODIUM_WATER_AO.register("sodiumWaterAo");
         public ItemSet ambientOcclusionBlocks = CandyTweak.AMBIENT_OCCLUSION_BLOCKS.register("ambientOcclusionBlocks");
         public ItemSet disableBlockOffsets = CandyTweak.DISABLE_BLOCK_OFFSETS.register("disableBlockOffsets");
         public boolean disableAllOffset = CandyTweak.DISABLE_ALL_OFFSET.register("disableAllOffset");
