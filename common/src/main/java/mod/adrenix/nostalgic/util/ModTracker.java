@@ -83,4 +83,14 @@ public enum ModTracker
 
         return this.installed;
     }
+
+    /**
+     * Functional shortcut check if the mod is currently not installed.
+     *
+     * @return Whether the mod is not installed.
+     */
+    public boolean isNotInstalled()
+    {
+        return !this.isInstalled();
+    }
 }
