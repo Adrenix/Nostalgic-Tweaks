@@ -35,10 +35,10 @@ public interface CandyTweak
     TweakNumber<Float> BLOCK_OUTLINE_THICKNESS = TweakNumber.client(3.25F, CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).build();
     TweakFlag OLD_BLOCK_OVERLAY = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OVERLAY).whenDisabled(false).newForUpdate().build();
     TweakEnum<RenderOrder> BLOCK_OVERLAY_RENDER_ORDER = TweakEnum.client(RenderOrder.FIRST, CandyGroup.BLOCK_HITBOX_OVERLAY).newForUpdate().build();
+    TweakEnum<ColorType> BLOCK_OVERLAY_COLOR_TYPE = TweakEnum.client(ColorType.SOLID, CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
     TweakColor BLOCK_OVERLAY_COLOR = TweakColor.client("#FFFFFF5A", CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
-    TweakFlag BLOCK_OVERLAY_GRADIENT = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
-    TweakColor CUSTOM_OVERLAY_GRADIENT_TOP = TweakColor.client("#0000005A", CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
-    TweakColor CUSTOM_OVERLAY_GRADIENT_BOTTOM = TweakColor.client("#FFFFFF5A", CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
+    TweakColor BLOCK_OVERLAY_GRADIENT_TOP = TweakColor.client("#0000005A", CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
+    TweakColor BLOCK_OVERLAY_GRADIENT_BOTTOM = TweakColor.client("#FFFFFF5A", CandyGroup.BLOCK_HITBOX_OVERLAY_COLOR).newForUpdate().build();
     TweakFlag PULSATE_BLOCK_OVERLAY = TweakFlag.client(true, CandyGroup.BLOCK_HITBOX_OVERLAY_ANIMATION).newForUpdate().build();
     TweakEnum<AnimationType> PULSATE_OVERLAY_ANIMATION = TweakEnum.client(AnimationType.LINEAR, CandyGroup.BLOCK_HITBOX_OVERLAY_ANIMATION).newForUpdate().build();
     TweakNumber<Float> BLOCK_OVERLAY_SPEED = TweakNumber.client(0.2F, CandyGroup.BLOCK_HITBOX_OVERLAY_ANIMATION).newForUpdate().slider(Lang.Slider.SECONDS, 0.0F, 10.0F).interval(0.25F).build();

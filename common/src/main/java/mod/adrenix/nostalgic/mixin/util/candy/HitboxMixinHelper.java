@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.enums.ColorType;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
@@ -139,10 +140,10 @@ public abstract class HitboxMixinHelper
             vertexHolder.set(builder);
         }
 
-        if (CandyTweak.BLOCK_OVERLAY_GRADIENT.get())
+        if (CandyTweak.BLOCK_OVERLAY_COLOR_TYPE.get() == ColorType.GRADIENT)
         {
-            top.set(HexUtil.parseInt(CandyTweak.CUSTOM_OVERLAY_GRADIENT_TOP.get()));
-            bottom.set(HexUtil.parseInt(CandyTweak.CUSTOM_OVERLAY_GRADIENT_BOTTOM.get()));
+            top.set(HexUtil.parseInt(CandyTweak.BLOCK_OVERLAY_GRADIENT_TOP.get()));
+            bottom.set(HexUtil.parseInt(CandyTweak.BLOCK_OVERLAY_GRADIENT_BOTTOM.get()));
         }
 
         if (CandyTweak.PULSATE_BLOCK_OVERLAY.get())

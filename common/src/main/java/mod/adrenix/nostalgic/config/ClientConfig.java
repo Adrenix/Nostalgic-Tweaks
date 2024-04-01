@@ -172,18 +172,18 @@ public class ClientConfig implements ConfigMeta
         // Hitbox Outline
 
         public ItemSet oldBlockOutlines = CandyTweak.OLD_BLOCK_OUTLINES.register("oldBlockOutlines");
-        public String oldBlockOutlineColor = CandyTweak.BLOCK_OUTLINE_COLOR.register("oldBlockOutlineColor");
-        public float oldBlockOutlineThickness = CandyTweak.BLOCK_OUTLINE_THICKNESS.register("oldBlockOutlineThickness");
+        public String blockOutlineColor = CandyTweak.BLOCK_OUTLINE_COLOR.register("blockOutlineColor");
+        public float blockOutlineThickness = CandyTweak.BLOCK_OUTLINE_THICKNESS.register("blockOutlineThickness");
 
         // Hitbox Overlay
 
         public boolean oldBlockOverlay = CandyTweak.OLD_BLOCK_OVERLAY.register("oldBlockOverlay");
         public RenderOrder overlayRenderOrder = CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.register("overlayRenderOrder");
-        public String oldBlockOverlayColor = CandyTweak.BLOCK_OVERLAY_COLOR.register("oldBlockOverlayColor");
+        public ColorType blockOverlayColorType = CandyTweak.BLOCK_OVERLAY_COLOR_TYPE.register("blockOverlayColorType");
+        public String blockOverlayColor = CandyTweak.BLOCK_OVERLAY_COLOR.register("blockOverlayColor");
+        public String blockOverlayGradientTop = CandyTweak.BLOCK_OVERLAY_GRADIENT_TOP.register("blockOverlayGradientTop");
+        public String blockOverlayGradientBottom = CandyTweak.BLOCK_OVERLAY_GRADIENT_BOTTOM.register("blockOverlayGradientBottom");
         public boolean pulsateBlockOverlay = CandyTweak.PULSATE_BLOCK_OVERLAY.register("pulsateBlockOverlay");
-        public boolean customBlockOverlayGradient = CandyTweak.BLOCK_OVERLAY_GRADIENT.register("customBlockOverlayGradient");
-        public String customBlockOverlayGradientTop = CandyTweak.CUSTOM_OVERLAY_GRADIENT_TOP.register("customBlockOverlayGradientTop");
-        public String customBlockOverlayGradientBottom = CandyTweak.CUSTOM_OVERLAY_GRADIENT_BOTTOM.register("customBlockOverlayGradientBottom");
         public AnimationType pulsateOverlayAnimation = CandyTweak.PULSATE_OVERLAY_ANIMATION.register("pulsateOverlayAnimation");
         public float oldBlockOverlaySpeed = CandyTweak.BLOCK_OVERLAY_SPEED.register("oldBlockOverlaySpeed");
         public float minimumBlockPulsationTransparency = CandyTweak.MINIMUM_PULSATION_TRANSPARENCY.register("minimumBlockPulsationTransparency");
