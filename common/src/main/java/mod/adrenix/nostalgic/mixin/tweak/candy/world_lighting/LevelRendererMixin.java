@@ -57,14 +57,14 @@ public abstract class LevelRendererMixin
 
         if (!LightingMixinHelper.PACKED_RELIGHT_QUEUE.isEmpty())
         {
-            long packedPos = LightingMixinHelper.PACKED_RELIGHT_QUEUE.pop();
-            ChunkPos chunkPos = new ChunkPos(packedPos);
+            Pair<Long, Byte> packedRelight = LightingMixinHelper.PACKED_RELIGHT_QUEUE.pop();
+            ChunkPos chunkPos = new ChunkPos(packedRelight.left());
             LevelChunk chunk = this.level.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
 
             if (chunk != null)
-                LightingMixinHelper.relightChunk(chunk);
+                LightingMixinHelper.relightChunk(chunk, packedRelight.right());
             else if (this.isSectionCompiled(chunkPos.getWorldPosition()))
-                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedPos);
+                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
         }
 
         for (int i = 0; i < 4096; i++)
@@ -100,7 +100,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_world_lighting$onAllChanged(CallbackInfo callback)
     {
-        if (!LightingMixinHelper.RELIGHT_ALL_CHUNKS.get() || this.level == null || this.viewArea == null)
+        if (!LightingMixinHelper.RELIGHT_ALL_CHUNKS.get() || ModTracker.SODIUM.isInstalled() || this.level == null || this.viewArea == null)
             return;
 
         for (SectionRenderDispatcher.RenderSection renderSection : this.viewArea.sections)
@@ -109,7 +109,7 @@ public abstract class LevelRendererMixin
                 continue;
 
             long packedPos = SectionPos.of(renderSection.getOrigin()).chunk().toLong();
-            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedPos);
+            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(packedPos, (byte) 1));
         }
 
         LightingMixinHelper.RELIGHT_ALL_CHUNKS.disable();

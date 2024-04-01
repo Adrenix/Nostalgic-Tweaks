@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -52,9 +51,11 @@ public abstract class LightingMixinHelper
 
     /**
      * This tracks the chunks that need relighting. Chunks that load into view only need a chunk relight pass once. The
-     * change in light data is stored in the client level lighting engine. The packed chunk pos is stored in the array.
+     * change in light data is stored in the client level lighting engine. The packed chunk pos is stored on the left
+     * and a boolean-like byte (1 is on/all other values are off) that indicates if the chunk needs full relighting. A
+     * boolean-like byte is used to save memory.
      */
-    public static final ArrayDeque<Long> PACKED_RELIGHT_QUEUE = new ArrayDeque<>();
+    public static final ConcurrentLinkedDeque<Pair<Long, Byte>> PACKED_RELIGHT_QUEUE = new ConcurrentLinkedDeque<>();
 
     /**
      * This is a queue of packed longs where the packed chunk pos is on the left, and the packed block pos is on the
@@ -307,22 +308,23 @@ public abstract class LightingMixinHelper
     /**
      * Applies relighting to the given chunk based on tweak context.
      *
-     * @param chunk The {@link LevelChunk} to relight.
+     * @param chunk      The {@link LevelChunk} to relight.
+     * @param allChanged A boolean-like byte (where 1 is true and all other values are false) that indicates whether the
+     *                   chunk needs full relighting.
      */
-    public static void relightChunk(@Nullable final LevelChunk chunk)
+    public static void relightChunk(@Nullable final LevelChunk chunk, final byte allChanged)
     {
         if (chunk == null)
             return;
 
         final boolean isChestLightBlocked = CandyTweak.CHEST_LIGHT_BLOCK.get();
         final boolean isWaterDarker = CandyTweak.OLD_WATER_LIGHTING.get();
-        final boolean allChanged = RELIGHT_ALL_CHUNKS.get();
 
         if (!isChestLightBlocked && !isWaterDarker)
             return;
 
         CompletableFuture.runAsync(() -> chunk.findBlocks(blockState -> {
-            if (allChanged)
+            if (allChanged == 1)
                 return BlockUtil.isWaterLike(blockState) || BlockUtil.isChestLike(blockState);
 
             boolean relightChest = isChestLightBlocked && ChestMixinHelper.isOld(blockState);

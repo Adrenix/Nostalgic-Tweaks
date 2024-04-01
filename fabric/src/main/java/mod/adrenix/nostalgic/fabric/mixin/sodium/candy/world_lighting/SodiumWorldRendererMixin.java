@@ -7,6 +7,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
 import me.jellysquid.mods.sodium.client.render.viewport.Viewport;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,6 +41,16 @@ public abstract class SodiumWorldRendererMixin
                 for (int y = this.world.getMinSection(); y < this.world.getMaxSection(); y++)
                     this.renderSectionManager.scheduleRebuild(x, y, z, false);
             });
+        }
+
+        if (LightingMixinHelper.RELIGHT_ALL_CHUNKS.get())
+        {
+            ChunkTrackerHolder.get(this.world).getReadyChunks().forEach(packedPos -> {
+                Pair<Long, Byte> packedRelight = new Pair<>(packedPos, (byte) 1);
+                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
+            });
+
+            LightingMixinHelper.RELIGHT_ALL_CHUNKS.disable();
         }
     }
 

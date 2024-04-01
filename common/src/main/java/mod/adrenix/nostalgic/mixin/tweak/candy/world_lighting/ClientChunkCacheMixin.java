@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +25,7 @@ public abstract class ClientChunkCacheMixin
     private LevelChunk nt_world_lighting$onCreateLevelChunk(LevelChunk chunk)
     {
         if (ModTweak.ENABLED.get())
-            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(chunk.getPos().toLong());
+            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(chunk.getPos().toLong(), (byte) 0));
 
         return chunk;
     }
