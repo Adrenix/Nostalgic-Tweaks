@@ -76,7 +76,7 @@ public abstract class ConfigReflect
     private static Optional<Field> getFieldFromClass(Class<?> classType, Tweak<?> tweak)
     {
         return Arrays.stream(classType.getFields())
-            .filter(field -> field.getName().contains(tweak.getJsonId()))
+            .filter(field -> field.getName().equals(tweak.getJsonId()))
             .findFirst();
     }
 
