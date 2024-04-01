@@ -13,7 +13,7 @@ import java.util.BitSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This utility is used both the client and server. For safety, keep client-only code out of this class.
+ * This utility is used by both the client and server. For safety, keep client-only code out of this class.
  */
 public abstract class ChestMixinHelper
 {
