@@ -70,8 +70,11 @@ public abstract class BlockStateBaseMixin
         if (CandyTweak.OLD_WATER_LIGHTING.get() && BlockUtil.isWaterLike(this.asState()))
             return 3;
 
-        if (CandyTweak.CHEST_LIGHT_BLOCK.get() && ChestMixinHelper.isOld(this.getBlock()))
-            return 15;
+        if (CandyTweak.CHEST_LIGHT_BLOCK.get())
+        {
+            if (ChestMixinHelper.isOld(this.getBlock()) && !ChestMixinHelper.isTranslucent(this.getBlock()))
+                return 15;
+        }
 
         return lightBlock;
     }

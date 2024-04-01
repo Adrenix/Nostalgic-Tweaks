@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.world.ItemUtil;
+import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ItemBlockRenderTypesMixin
 {
     /**
-     * Allows for transparent chests for mods that make use of translucency.
+     * Allows for the addition of translucent chests for mods that may have them.
      */
     @ModifyReturnValue(
         method = "getChunkRenderType",
@@ -21,10 +20,8 @@ public abstract class ItemBlockRenderTypesMixin
     )
     private static RenderType nt_chest_block$modifyChunkRenderType(RenderType renderType, BlockState blockState)
     {
-        String resourceKey = ItemUtil.getResourceKey(blockState.getBlock());
-
-        if (CandyTweak.OLD_MOD_CHESTS.get().containsKey(resourceKey))
-            return RenderType.cutout();
+        if (ChestMixinHelper.isTranslucent(blockState))
+            return RenderType.translucent();
 
         return renderType;
     }

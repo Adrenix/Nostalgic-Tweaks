@@ -52,6 +52,7 @@ public interface CandyTweak
     TweakFlag OLD_TRAPPED_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).reloadResources().build();
     TweakFlag APPLY_CHEST_VOXEL = TweakFlag.server(true, CandyGroup.BLOCK_CHEST).newForUpdate().build();
     TweakItemSet OLD_MOD_CHESTS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_CHESTS), CandyGroup.BLOCK_CHEST).newForUpdate().reloadResources().build();
+    TweakItemSet TRANSLUCENT_CHESTS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_CHESTS), CandyGroup.BLOCK_CHEST).newForUpdate().reloadChunks().build();
 
     // Torch
 

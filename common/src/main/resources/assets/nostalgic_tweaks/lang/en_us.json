@@ -747,6 +747,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.applyChestVoxel.info": "Allow players to use their own chest voxel shapes on the server. This will let players§e stand§r on chests as if they are§a full-sized§r blocks.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldModChests": "Old Modded Chests",
   "gui.nostalgic_tweaks.config.eyeCandy.oldModChests.info": "Customize which chests from§e mods§r should be considered§a full-sized§r blocks. You must§6 manually override§r the mod's blockstates, models, and texture files using a§b resource pack§r.",
+  "gui.nostalgic_tweaks.config.eyeCandy.translucentChests": "Translucent Chests",
+  "gui.nostalgic_tweaks.config.eyeCandy.translucentChests.info": "Customize which chests should be considered§e translucent§r blocks. This will change the block's§6 render type§r and§c disable§r the chest from blocking light if the §7@decode{tweak=eyeCandy.chestLightBlock}§r tweak is§a enabled§r.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBrightness": "Old Torch Brightness",
   "gui.nostalgic_tweaks.config.eyeCandy.oldTorchBrightness.info": "Bring back the full-bright torch model. This does§c not§r change the amount of light§e emitted§r.",

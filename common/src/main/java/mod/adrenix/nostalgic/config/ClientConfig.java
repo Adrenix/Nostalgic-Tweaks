@@ -196,6 +196,7 @@ public class ClientConfig implements ConfigMeta
         public boolean oldTrappedChest = CandyTweak.OLD_TRAPPED_CHEST.register("oldTrappedChest");
         public boolean applyChestVoxel = CandyTweak.APPLY_CHEST_VOXEL.register("applyChestVoxel");
         public ItemSet oldModChests = CandyTweak.OLD_MOD_CHESTS.register("oldModChests");
+        public ItemSet translucentChests = CandyTweak.TRANSLUCENT_CHESTS.register("translucentChests");
 
         // Torch
 
