@@ -742,6 +742,8 @@ public interface Lang
         Translation SCREEN_HOME = from("menuOption.home");
         Translation SCREEN_PACKS = from("menuOption.packs");
         Translation SCREEN_CONFIG = from("menuOption.config");
+        Translation SOLID_COLOR = from("colorType.solid");
+        Translation GRADIENT_COLOR = from("colorType.gradient");
         Translation BACKGROUND_SOLID_BLACK = from("guiBackground.solid_black");
         Translation BACKGROUND_SOLID_BLUE = from("guiBackground.solid_blue");
         Translation BACKGROUND_GRADIENT_BLUE = from("guiBackground.gradient_blue");

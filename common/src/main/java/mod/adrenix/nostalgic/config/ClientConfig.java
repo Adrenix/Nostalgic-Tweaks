@@ -320,6 +320,13 @@ public class ClientConfig implements ConfigMeta
         public boolean showModifierTip = CandyTweak.SHOW_MODIFIER_TIP.register("showModifierTip");
         public boolean showDyeTip = CandyTweak.SHOW_DYE_TIP.register("showDyeTip");
 
+        // Tooltip Color
+
+        public ColorType tooltipColorType = CandyTweak.TOOLTIP_COLOR_TYPE.register("tooltipColorType");
+        public String tooltipBackgroundColor = CandyTweak.TOOLTIP_BACKGROUND_COLOR.register("tooltipBackgroundColor");
+        public String tooltipGradientTop = CandyTweak.TOOLTIP_GRADIENT_TOP.register("tooltipGradientTop");
+        public String tooltipGradientBottom = CandyTweak.TOOLTIP_GRADIENT_BOTTOM.register("tooltipGradientBottom");
+
         // Items
 
         public boolean fixItemModelGap = CandyTweak.FIX_ITEM_MODEL_GAP.register("fixItemModelGap");

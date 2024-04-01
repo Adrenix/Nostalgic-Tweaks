@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.forge.mixin.tweak.candy.tooltip_background;
 
-import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,6 @@ public abstract class TooltipRenderUtilMixin
     )
     private static void nt_forge_tooltip_background$onRender(GuiGraphics graphics, int x, int y, int width, int height, int z, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, CallbackInfo callback)
     {
-        if (CandyTweak.OLD_TOOLTIP_BOXES.get())
-            graphics.fill(x - 3, y - 3, x + width + 3, y + height + 3, z, 0xC0000000);
+        TooltipListener.render(graphics, x, y, width, height, z);
     }
 }

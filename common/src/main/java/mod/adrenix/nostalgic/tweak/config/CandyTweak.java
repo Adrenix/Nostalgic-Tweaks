@@ -176,6 +176,13 @@ public interface CandyTweak
     TweakFlag SHOW_MODIFIER_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
     TweakFlag SHOW_DYE_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).load().build();
 
+    // Tooltip Color
+
+    TweakEnum<ColorType> TOOLTIP_COLOR_TYPE = TweakEnum.client(ColorType.SOLID, CandyGroup.INTERFACE_TOOLTIP_COLOR).newForUpdate().build();
+    TweakColor TOOLTIP_BACKGROUND_COLOR = TweakColor.client("#000000C0", CandyGroup.INTERFACE_TOOLTIP_COLOR).newForUpdate().build();
+    TweakColor TOOLTIP_GRADIENT_TOP = TweakColor.client("#FFFFFFC0", CandyGroup.INTERFACE_TOOLTIP_COLOR).newForUpdate().build();
+    TweakColor TOOLTIP_GRADIENT_BOTTOM = TweakColor.client("#000000C0", CandyGroup.INTERFACE_TOOLTIP_COLOR).newForUpdate().build();
+
     // Items
 
     TweakFlag FIX_ITEM_MODEL_GAP = TweakFlag.client(true, CandyGroup.ITEM).reloadResources().ignoreIf(NostalgicTweaks::isForge).build();

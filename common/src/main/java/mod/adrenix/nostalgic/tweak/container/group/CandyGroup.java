@@ -43,6 +43,7 @@ public interface CandyGroup
     Container INTERFACE_TITLE_TEXT = Container.group(INTERFACE_TITLE, "interface_title_text").color(0xB79859).icon(Items.OAK_SIGN).build();
     Container INTERFACE_TOOLTIP = Container.group(INTERFACE, "interface_tooltip").color(0x98D0E7).icon(Icons.TOOLTIP).build();
     Container INTERFACE_TOOLTIP_PARTS = Container.group(INTERFACE_TOOLTIP, "interface_tooltip_parts").color(0xFFDB5C).icon(Icons.SCREWDRIVER).build();
+    Container INTERFACE_TOOLTIP_COLOR = Container.group(INTERFACE_TOOLTIP, "interface_tooltip_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
     Container INTERFACE_VERSION = Container.group(INTERFACE, "interface_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
     Container INTERFACE_WINDOW = Container.group(INTERFACE, "interface_window").color(0xFFFFFF).icon(Blocks.GLASS_PANE).build();
 
