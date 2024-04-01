@@ -79,7 +79,7 @@ class PickerText
             .centerAligned();
 
         this.opacity.getBuilder()
-            .color(this.picker.transparent ? this.color::getOpaque : Color.GRAY::get)
+            .color(this.picker.transparent ? Color.WHITE::get : Color.GRAY::get)
             .width(this.picker.group.alpha::getInsideWidth)
             .centerAligned();
 
