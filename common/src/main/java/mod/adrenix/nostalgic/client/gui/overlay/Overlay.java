@@ -1729,7 +1729,7 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
 
         if (width < this.width)
         {
-            this.setWidth(width - this.padding + (this.hasBorder ? 16 : 0) + this.scrollbarSize);
+            this.setWidth(width - this.padding + (this.hasBorder ? 16 : this.padding * 2) + (this.hasBorder ? this.scrollbarSize : 0));
             this.offScreenCheck();
             this.center();
         }
@@ -1749,7 +1749,7 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
 
         if (height < this.height)
         {
-            this.setHeight(height - this.padding + (this.hasBorder ? 23 : 0) + this.scrollbarSize);
+            this.setHeight(height - this.padding + (this.hasBorder ? 23 : this.padding * 2) + (this.hasBorder ? this.scrollbarSize : 0));
             this.offScreenCheck();
             this.center();
         }
