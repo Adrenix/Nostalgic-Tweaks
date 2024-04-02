@@ -118,11 +118,9 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
      */
     public void setCategory(Container category)
     {
-        if (this.category == category && RowProvider.DEFAULT.isProviding())
-            return;
-
         this.category = category;
 
+        this.configWidgets.stopGivingSearchResults();
         this.configWidgets.getRowList().resetScrollAmount();
         this.configWidgets.populateRowList();
     }

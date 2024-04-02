@@ -159,7 +159,10 @@ class Crumb
      */
     public void onClick()
     {
-        GuiUtil.getScreenAs(ConfigScreen.class).ifPresent(screen -> screen.jumpTo(this.container));
+        GuiUtil.getScreenAs(ConfigScreen.class).ifPresent(screen -> {
+            screen.setCategory(this.container.getCategory());
+            screen.jumpTo(this.container);
+        });
     }
 
     /**

@@ -415,6 +415,14 @@ public class ConfigWidgets implements WidgetManager
     }
 
     /**
+     * Stops the row list from populating rows based on the last known search query.
+     */
+    public void stopGivingSearchResults()
+    {
+        this.lastQuery = "";
+    }
+
+    /**
      * Create a new tab based on the position data from the last created tab.
      *
      * @param rightOf  The previously created tab button.
