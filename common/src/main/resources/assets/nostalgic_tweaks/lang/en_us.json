@@ -190,6 +190,8 @@
   "gui.nostalgic_tweaks.tooltip.delete_all_backups": "Delete all backup files from your filesystem. This action§c cannot§r be undone.",
   "gui.nostalgic_tweaks.tooltip.open_discord": "When clicked, a new screen will appear asking what you would like to do with the discord invite link.",
   "gui.nostalgic_tweaks.tooltip.review_changes": "When clicked, this overlay will§c close§r and the searchbar will be set to search for§7 #save§r.",
+  "gui.nostalgic_tweaks.tooltip.searching": "Searching",
+  "gui.nostalgic_tweaks.tooltip.everywhere": "Everywhere",
 
   "gui.nostalgic_tweaks.listing.add": "Add to List",
   "gui.nostalgic_tweaks.listing.disabled_title": "Disable List",

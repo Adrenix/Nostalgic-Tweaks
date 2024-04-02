@@ -111,6 +111,9 @@ public interface Lang
         }
     }
 
+    /**
+     * Lang keys that are used by the tweak packs screen.
+     */
     interface Packs
     {
         Translation HEADER = from("header");
@@ -379,6 +382,8 @@ public interface Lang
         Translation REVIEW_CHANGES = from("review_changes");
         Translation DELETE_ALL_BACKUPS = from("delete_all_backups");
         Translation OPEN_DISCORD = from("open_discord");
+        Translation SEARCHING = from("searching");
+        Translation EVERYWHERE = from("everywhere");
 
         private static Translation from(String name)
         {
