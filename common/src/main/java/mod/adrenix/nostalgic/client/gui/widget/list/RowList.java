@@ -525,6 +525,9 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         this.children.removeAll(row.widgets);
         this.rows.remove(row);
         this.visibleRows.remove(row);
+
+        if (row == this.focusedRow)
+            this.clearFocus();
     }
 
     /**
@@ -536,6 +539,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         this.rows.clear();
         this.visibleRows.clear();
         this.resetScrollAmount();
+        this.clearFocus();
     }
 
     /**
