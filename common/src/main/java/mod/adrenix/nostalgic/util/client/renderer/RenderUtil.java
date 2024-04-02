@@ -1246,10 +1246,10 @@ public abstract class RenderUtil
         if (notBatching)
             beginBatching();
 
-        fill(graphics, x0, y0, x0 + thickness, y0 + height, argb);
-        fill(graphics, x0 + width - thickness, y0, x0 + width, y0 + height, argb);
+        fill(graphics, x0, y0 + thickness, x0 + thickness, y0 + height - thickness, argb);
+        fill(graphics, x0 + width - thickness, y0, x0 + width, y0 + height - thickness, argb);
 
-        fill(graphics, x0, y0, x0 + width, y0 + thickness, argb);
+        fill(graphics, x0, y0, x0 + width - thickness, y0 + thickness, argb);
         fill(graphics, x0, y0 + height - thickness, x0 + width, y0 + height, argb);
 
         if (notBatching)
