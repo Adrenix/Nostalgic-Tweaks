@@ -310,9 +310,6 @@ public interface Lang
         Translation OVERRIDE = from("override");
         Translation NETWORK = from("network");
         Translation INSPECT = from("inspect");
-        Translation DISABLE = from("disable");
-        Translation ENABLE = from("enable");
-        Translation REMOVE = from("remove");
         Translation REFRESH = from("refresh");
         Translation SEE_ALL = from("see_all");
         Translation STATUS = from("status");
@@ -329,10 +326,7 @@ public interface Lang
         Translation HELP = from("help");
         Translation OKAY = from("okay");
         Translation UNDO = from("undo");
-        Translation REDO = from("redo");
         Translation ADD = from("add");
-        Translation YES = from("yes");
-        Translation NO = from("no");
 
         private static Translation from(String name)
         {
@@ -694,7 +688,6 @@ public interface Lang
     {
         Translation NONE = from("none");
         Translation VOID = from("void");
-        Translation LIGHT = from("light");
         Translation SHIELD = from("shield");
         Translation BRIGHTNESS = from("brightness");
         Translation DYNAMIC_FOG = from("dynamic_fog");
