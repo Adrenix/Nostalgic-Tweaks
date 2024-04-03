@@ -8,6 +8,8 @@
     "FpsDebugChartAccess",
     "LevelRendererAccess",
     "PauseScreenAccess",
+    "ProgressScreenAccess",
+    "ReceivingLevelScreenAccess",
     "ScreenAccess"
   ],
   "mixins": [

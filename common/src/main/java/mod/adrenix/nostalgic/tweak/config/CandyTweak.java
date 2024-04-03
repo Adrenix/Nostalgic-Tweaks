@@ -138,6 +138,10 @@ public interface CandyTweak
     TweakEnum<Corner> OLD_OVERLAY_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_VERSION).newForUpdate().load().build();
     TweakText OLD_OVERLAY_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_VERSION).load().build();
 
+    // Progress Screen
+
+    TweakFlag OLD_PROGRESS_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_PROGRESS).build();
+
     // Pause Screen
 
     TweakEnum<PauseLayout> OLD_PAUSE_MENU = TweakEnum.client(PauseLayout.MODERN, CandyGroup.INTERFACE_PAUSE).newForUpdate().load().build();

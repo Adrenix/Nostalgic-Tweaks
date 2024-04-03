@@ -8,6 +8,8 @@ import mod.adrenix.nostalgic.client.gui.MouseManager;
 import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.screen.DynamicScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicLoadingScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -18,12 +20,14 @@ import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.CornerManager;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.PauseScreen;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.progress.StoringChunkProgressListener;
 import net.minecraft.world.entity.player.Player;
 
 public abstract class GuiListener
@@ -55,7 +59,69 @@ public abstract class GuiListener
                 return CompoundEventResult.interruptTrue(new NostalgicPauseScreen());
         }
 
+        if (CandyTweak.OLD_PROGRESS_SCREEN.get())
+        {
+            if (screen instanceof ProgressScreen)
+                return CompoundEventResult.interruptTrue(new NostalgicProgressScreen((ProgressScreen) screen));
+
+            if (screen instanceof LevelLoadingScreen)
+            {
+                StoringChunkProgressListener progressListener = Minecraft.getInstance().getProgressListener();
+                Component header = Lang.Level.LOADING.get();
+                Component stage = Lang.Level.BUILDING.get();
+
+                if (progressListener != null)
+                    return CompoundEventResult.interruptTrue(new NostalgicLoadingScreen(progressListener, header, stage));
+            }
+
+            if (screen instanceof ReceivingLevelScreen)
+            {
+                NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(true), (ReceivingLevelScreen) screen);
+                progressScreen.setHeader(Lang.Level.LOADING.get());
+                progressScreen.setStage(Lang.Level.SIMULATE.get());
+                progressScreen.setProgressVisibility(false);
+
+                return CompoundEventResult.interruptTrue(progressScreen);
+            }
+
+            if (screen instanceof GenericDirtMessageScreen)
+            {
+                NostalgicProgressScreen progressScreen = getProgressScreen(screen.getTitle().getString());
+
+                if (progressScreen.hasStage())
+                    return CompoundEventResult.interruptTrue(progressScreen);
+            }
+        }
+
         return CompoundEventResult.pass();
+    }
+
+    /**
+     * Get a progress screen for a generic dirt message screen, if applicable.
+     *
+     * @param title The current {@link Screen} title.
+     * @return A {@link NostalgicProgressScreen} instance.
+     */
+    private static NostalgicProgressScreen getProgressScreen(String title)
+    {
+        NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(false));
+
+        if (title.equals(Lang.Vanilla.SAVE_LEVEL.getString()))
+            progressScreen.setStage(Lang.Level.SAVING.get());
+
+        if (title.equals(Lang.Vanilla.WORLD_RESOURCE_LOAD.getString()))
+        {
+            progressScreen.setHeader(Lang.Level.LOADING.get());
+            progressScreen.setStage(Lang.Vanilla.WORLD_RESOURCE_LOAD.get());
+        }
+
+        if (title.equals(Lang.Vanilla.WORLD_DATA_READ.getString()))
+        {
+            progressScreen.setHeader(Lang.Level.LOADING.get());
+            progressScreen.setStage(Lang.Vanilla.WORLD_DATA_READ.get());
+        }
+
+        return progressScreen;
     }
 
     /**

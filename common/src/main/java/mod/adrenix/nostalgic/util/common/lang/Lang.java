@@ -67,7 +67,6 @@ public interface Lang
         Translation GUI_CANCEL = new Translation("gui.cancel");
         Translation GUI_STATS = new Translation("gui.stats");
         Translation GUI_DONE = new Translation("gui.done");
-        Translation READ_WORLD_DATA = new Translation("selectWorld.data_read");
         Translation MENU_SINGLEPLAYER = new Translation("menu.singleplayer");
         Translation MENU_MULTIPLAYER = new Translation("menu.multiplayer");
         Translation MENU_DISCONNECT = new Translation("menu.disconnect");
@@ -78,6 +77,8 @@ public interface Lang
         Translation MENU_GAME = new Translation("menu.game");
         Translation MENU_LAN = new Translation("menu.shareToLan");
         Translation SAVE_LEVEL = new Translation("menu.savingLevel");
+        Translation WORLD_DATA_READ = new Translation("selectWorld.data_read");
+        Translation WORLD_RESOURCE_LOAD = new Translation("selectWorld.resource_load");
     }
 
     /* Screens */

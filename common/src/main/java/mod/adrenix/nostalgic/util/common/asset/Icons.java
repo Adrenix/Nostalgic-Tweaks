@@ -66,6 +66,7 @@ public interface Icons
     TextureIcon TRAFFIC_LIGHT_ERROR = TextureIcon.fromSprite("traffic_light_error", 12, 1.2F);
     TextureIcon TRAFFIC_LIGHT_ORANGE = TextureIcon.fromSprite("traffic_light_orange", 12, 1.2F);
     TextureIcon TRAFFIC_LIGHT_PURPLE = TextureIcon.fromSprite("traffic_light_purple", 12, 1.2F);
+    TextureIcon PROGRESS_SCREEN = TextureIcon.fromSprite("progress_screen", 12);
     TextureIcon BREAK_WOOD = TextureIcon.fromSprite("break_wood", 12);
     TextureIcon EXPERIENCE = TextureIcon.fromSprite("experience", 12);
     TextureIcon BRAIN = TextureIcon.fromSprite("brain", 12);

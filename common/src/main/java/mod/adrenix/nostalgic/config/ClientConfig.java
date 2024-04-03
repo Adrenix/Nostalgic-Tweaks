@@ -282,6 +282,10 @@ public class ClientConfig implements ConfigMeta
         public Corner oldOverlayCorner = CandyTweak.OLD_OVERLAY_CORNER.register("oldOverlayCorner");
         public String oldOverlayText = CandyTweak.OLD_OVERLAY_TEXT.register("oldOverlayText");
 
+        // Progress Screen
+
+        public boolean oldProgressScreen = CandyTweak.OLD_PROGRESS_SCREEN.register("oldProgressScreen");
+
         // Pause Screen
 
         public PauseLayout oldPauseMenu = CandyTweak.OLD_PAUSE_MENU.register("oldPauseMenu");
