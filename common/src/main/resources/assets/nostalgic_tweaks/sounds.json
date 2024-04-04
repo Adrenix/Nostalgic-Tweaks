@@ -4,6 +4,23 @@
       "nostalgic_tweaks:blank"
     ]
   },
+  "cave": {
+    "sounds": [
+      "minecraft:ambient/cave/cave1",
+      "minecraft:ambient/cave/cave2",
+      "minecraft:ambient/cave/cave3",
+      "minecraft:ambient/cave/cave4",
+      "minecraft:ambient/cave/cave5",
+      "minecraft:ambient/cave/cave6",
+      "minecraft:ambient/cave/cave7",
+      "minecraft:ambient/cave/cave8",
+      "minecraft:ambient/cave/cave9",
+      "minecraft:ambient/cave/cave10",
+      "minecraft:ambient/cave/cave11",
+      "minecraft:ambient/cave/cave12",
+      "minecraft:ambient/cave/cave13"
+    ]
+  },
   "entity.player.hurt": {
     "sounds": [
       "nostalgic_tweaks:damage/hit1",

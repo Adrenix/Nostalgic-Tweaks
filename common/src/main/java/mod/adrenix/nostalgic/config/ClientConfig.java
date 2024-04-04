@@ -104,6 +104,7 @@ public class ClientConfig implements ConfigMeta
 
         // Ambient
 
+        public boolean oldCaveAmbience = SoundTweak.OLD_CAVE_AMBIENCE.register("oldCaveAmbience");
         public boolean disableNetherAmbience = SoundTweak.DISABLE_NETHER_AMBIENCE.register("disableNetherAmbience");
         public boolean disableWaterAmbience = SoundTweak.DISABLE_WATER_AMBIENCE.register("disableWaterAmbience");
 

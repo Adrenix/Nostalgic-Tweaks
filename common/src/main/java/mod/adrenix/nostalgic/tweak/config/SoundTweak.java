@@ -16,6 +16,7 @@ public interface SoundTweak
 
     // Ambience
 
+    TweakFlag OLD_CAVE_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
     TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
     TweakFlag DISABLE_WATER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
 

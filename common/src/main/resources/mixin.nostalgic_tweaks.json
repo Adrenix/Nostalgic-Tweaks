@@ -55,6 +55,7 @@
     "candy.world_lighting.LightingMixin",
     "candy.world_lighting.LightTextureMixin",
     "candy.world_lighting.LiquidBlockRendererMixin",
+    "sound.cave_ambience.BiomeAmbientSoundsHandlerMixin",
     "sound.damage_sound.LivingEntityMixin",
     "sound.damage_sound.PlayerMixin",
     "sound.disabled_sound.SoundEngineMixin",
