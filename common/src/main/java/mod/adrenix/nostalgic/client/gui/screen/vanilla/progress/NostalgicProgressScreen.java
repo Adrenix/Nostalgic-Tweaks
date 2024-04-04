@@ -4,7 +4,6 @@ import mod.adrenix.nostalgic.mixin.access.ProgressScreenAccess;
 import mod.adrenix.nostalgic.mixin.access.ReceivingLevelScreenAccess;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
-import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.ReceivingLevelScreen;
@@ -184,7 +183,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     @Override
     public void tick()
     {
-        if (this.progress < 100 && MathUtil.randomInt(0, 1) == 1)
+        if (this.progress < 100)
             this.progress++;
 
         super.tick();
