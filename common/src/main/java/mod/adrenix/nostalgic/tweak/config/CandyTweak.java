@@ -169,6 +169,33 @@ public interface CandyTweak
     TweakFlag DISABLE_SIGNATURE_BOXES = TweakFlag.client(false, CandyGroup.INTERFACE_CHAT).newForUpdate().build();
     TweakNumber<Integer> CHAT_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_CHAT).newForUpdate().slider(Lang.Slider.OFFSET, 0, 32).load().build();
 
+    // Title Screen
+
+    TweakFlag OVERRIDE_TITLE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).build();
+    TweakFlag OLD_TITLE_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).load().build();
+    TweakFlag UNCAP_TITLE_FPS = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).load().build();
+
+    // Title Screen Logo
+
+    TweakFlag OLD_ALPHA_LOGO = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_LOGO).load().build();
+
+    // Title Screen Buttons
+
+    TweakEnum<TitleLayout> TITLE_BUTTON_LAYOUT = TweakEnum.client(TitleLayout.MODERN, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
+    TweakFlag INCLUDE_MODS_ON_TITLE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
+    TweakFlag REMOVE_TITLE_REALMS_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
+    TweakFlag REMOVE_TITLE_ACCESSIBILITY_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
+    TweakFlag REMOVE_TITLE_LANGUAGE_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
+    TweakFlag REMOVE_EXTRA_TITLE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
+    TweakFlag ADD_QUIT_BUTTON = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
+
+    // Title Screen Text
+
+    TweakText TITLE_VERSION_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_TITLE_TEXT).load().build();
+    TweakFlag TITLE_BOTTOM_LEFT_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).load().build();
+    TweakFlag TITLE_TOP_RIGHT_DEBUG_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).newForUpdate().load().build();
+    TweakFlag REMOVE_TITLE_MOD_LOADER_TEXT = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_TEXT).load().build();
+
     // Tooltips
 
     TweakFlag OLD_TOOLTIP_BOXES = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP).build();
@@ -273,31 +300,6 @@ public interface CandyTweak
     TweakFlag OLD_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).build();
     TweakFlag OLD_MIXED_EXPLOSION_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_EXPLOSION).build();
     TweakFlag UNOPTIMIZED_EXPLOSION_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_EXPLOSION).newForUpdate().build();
-
-    // Title Screen
-
-    TweakFlag OVERRIDE_TITLE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).build();
-    TweakFlag OLD_TITLE_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).load().build();
-    TweakFlag UNCAP_TITLE_FPS = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).load().build();
-
-    // Title Screen Logo
-
-    TweakFlag OLD_ALPHA_LOGO = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_LOGO).load().build();
-    TweakFlag OLD_LOGO_OUTLINE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_LOGO).load().build();
-
-    // Title Screen Buttons
-
-    TweakEnum<TitleLayout> OLD_BUTTON_LAYOUT = TweakEnum.client(TitleLayout.MODERN, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
-    TweakFlag INCLUDE_MODS_ON_TITLE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
-    TweakFlag REMOVE_TITLE_REALMS_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().load().build();
-    TweakFlag REMOVE_TITLE_ACCESSIBILITY_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
-    TweakFlag REMOVE_TITLE_LANGUAGE_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).load().build();
-
-    // Title Screen Text
-
-    TweakText TITLE_VERSION_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_TITLE_TEXT).load().build();
-    TweakFlag TITLE_BOTTOM_LEFT_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).load().build();
-    TweakFlag REMOVE_TITLE_MOD_LOADER_TEXT = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_TEXT).load().build();
 
     // World
 

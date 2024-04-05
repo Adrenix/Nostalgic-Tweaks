@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.client.gui.screen.DynamicScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicLoadingScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicProgressScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicTitleScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -51,6 +52,21 @@ public abstract class GuiListener
      */
     private static CompoundEventResult<Screen> rerouteScreen(Screen screen)
     {
+        if (screen == null)
+            return CompoundEventResult.pass();
+
+        if (screen.getClass() == TitleScreen.class)
+        {
+            if (CandyTweak.OVERRIDE_TITLE_SCREEN.get())
+                return CompoundEventResult.interruptTrue(new NostalgicTitleScreen());
+        }
+
+        if (screen.getClass() == NostalgicTitleScreen.class)
+        {
+            if (!CandyTweak.OVERRIDE_TITLE_SCREEN.get())
+                return CompoundEventResult.interruptTrue(new TitleScreen());
+        }
+
         if (screen instanceof PauseScreen)
         {
             boolean isHoldingF3 = KeyboardUtil.isDown(InputConstants.KEY_F3);

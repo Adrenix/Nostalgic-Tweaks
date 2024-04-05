@@ -61,8 +61,6 @@ public interface Lang
     interface Vanilla
     {
         Translation INVENTORY = new Translation("container.inventory");
-        Translation GENERAL = new Translation("stat.generalButton");
-        Translation SEARCH = new Translation("gui.socialInteractions.search_hint");
         Translation GUI_ADVANCEMENTS = new Translation("gui.advancements");
         Translation GUI_CANCEL = new Translation("gui.cancel");
         Translation GUI_STATS = new Translation("gui.stats");
@@ -73,12 +71,15 @@ public interface Lang
         Translation MENU_OPTIONS = new Translation("menu.options");
         Translation MENU_RETURN_TO_GAME = new Translation("menu.returnToGame");
         Translation MENU_RETURN_TO_TITLE = new Translation("menu.returnToMenu");
+        Translation MENU_ONLINE = new Translation("menu.online");
+        Translation MENU_MODDED = new Translation("menu.modded");
         Translation MENU_QUIT = new Translation("menu.quit");
         Translation MENU_GAME = new Translation("menu.game");
         Translation MENU_LAN = new Translation("menu.shareToLan");
         Translation SAVE_LEVEL = new Translation("menu.savingLevel");
         Translation WORLD_DATA_READ = new Translation("selectWorld.data_read");
         Translation WORLD_RESOURCE_LOAD = new Translation("selectWorld.resource_load");
+        Translation RESOURCE_PACK_TITLE = new Translation("resourcePack.title");
     }
 
     /* Screens */

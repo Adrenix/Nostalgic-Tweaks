@@ -10,7 +10,8 @@
     "PauseScreenAccess",
     "ProgressScreenAccess",
     "ReceivingLevelScreenAccess",
-    "ScreenAccess"
+    "ScreenAccess",
+    "TitleScreenAccess"
   ],
   "mixins": [
     "EntityAccess"

@@ -314,6 +314,33 @@ public class ClientConfig implements ConfigMeta
         public boolean disableSignatureBoxes = CandyTweak.DISABLE_SIGNATURE_BOXES.register("disableSignatureBoxes");
         public int chatOffset = CandyTweak.CHAT_OFFSET.register("chatOffset");
 
+        // Title Screen
+
+        public boolean overrideTitleScreen = CandyTweak.OVERRIDE_TITLE_SCREEN.register("overrideTitleScreen");
+        public boolean oldTitleBackground = CandyTweak.OLD_TITLE_BACKGROUND.register("oldTitleBackground");
+        public boolean uncapTitleFPS = CandyTweak.UNCAP_TITLE_FPS.register("uncapTitleFPS");
+
+        // Title Screen Logo
+
+        public boolean oldAlphaLogo = CandyTweak.OLD_ALPHA_LOGO.register("oldAlphaLogo");
+
+        // Title Screen Buttons
+
+        public TitleLayout titleButtonLayout = CandyTweak.TITLE_BUTTON_LAYOUT.register("titleButtonLayout");
+        public boolean includeModsOnTitle = CandyTweak.INCLUDE_MODS_ON_TITLE.register("includeModsOnTitle");
+        public boolean removeTitleRealmsButton = CandyTweak.REMOVE_TITLE_REALMS_BUTTON.register("removeTitleRealmsButton");
+        public boolean removeTitleAccessibilityButton = CandyTweak.REMOVE_TITLE_ACCESSIBILITY_BUTTON.register("removeTitleAccessibilityButton");
+        public boolean removeTitleLanguageButton = CandyTweak.REMOVE_TITLE_LANGUAGE_BUTTON.register("removeTitleLanguageButton");
+        public boolean removeExtraTitleButtons = CandyTweak.REMOVE_EXTRA_TITLE_BUTTONS.register("removeExtraTitleButtons");
+        public boolean addQuitButton = CandyTweak.ADD_QUIT_BUTTON.register("addQuitButton");
+
+        // Title Screen Text
+
+        public String titleVersionText = CandyTweak.TITLE_VERSION_TEXT.register("titleVersionText");
+        public boolean titleBottomLeftText = CandyTweak.TITLE_BOTTOM_LEFT_TEXT.register("titleBottomLeftText");
+        public boolean titleTopRightDebugText = CandyTweak.TITLE_TOP_RIGHT_DEBUG_TEXT.register("titleTopRightDebugText");
+        public boolean removeTitleModLoaderText = CandyTweak.REMOVE_TITLE_MOD_LOADER_TEXT.register("removeTitleModLoaderText");
+
         // Tooltips
 
         public boolean oldTooltipBoxes = CandyTweak.OLD_TOOLTIP_BOXES.register("oldTooltipBoxes");
@@ -418,31 +445,6 @@ public class ClientConfig implements ConfigMeta
         public boolean oldExplosionParticles = CandyTweak.OLD_EXPLOSION_PARTICLES.register("oldExplosionParticles");
         public boolean oldMixedExplosionParticles = CandyTweak.OLD_MIXED_EXPLOSION_PARTICLES.register("oldMixedExplosionParticles");
         public boolean unoptimizedExplosionParticles = CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES.register("unoptimizedExplosionParticles");
-
-        // Title Screen
-
-        public boolean overrideTitleScreen = CandyTweak.OVERRIDE_TITLE_SCREEN.register("overrideTitleScreen");
-        public boolean oldTitleBackground = CandyTweak.OLD_TITLE_BACKGROUND.register("oldTitleBackground");
-        public boolean uncapTitleFPS = CandyTweak.UNCAP_TITLE_FPS.register("uncapTitleFPS");
-
-        // Title Screen Logo
-
-        public boolean oldAlphaLogo = CandyTweak.OLD_ALPHA_LOGO.register("oldAlphaLogo");
-        public boolean oldLogoOutline = CandyTweak.OLD_LOGO_OUTLINE.register("oldLogoOutline");
-
-        // Title Screen Buttons
-
-        public TitleLayout oldButtonLayout = CandyTweak.OLD_BUTTON_LAYOUT.register("oldButtonLayout");
-        public boolean includeModsOnTitle = CandyTweak.INCLUDE_MODS_ON_TITLE.register("includeModsOnTitle");
-        public boolean removeTitleRealmsButton = CandyTweak.REMOVE_TITLE_REALMS_BUTTON.register("removeTitleRealmsButton");
-        public boolean removeTitleAccessibilityButton = CandyTweak.REMOVE_TITLE_ACCESSIBILITY_BUTTON.register("removeTitleAccessibilityButton");
-        public boolean removeTitleLanguageButton = CandyTweak.REMOVE_TITLE_LANGUAGE_BUTTON.register("removeTitleLanguageButton");
-
-        // Title Screen Text
-
-        public String titleVersionText = CandyTweak.TITLE_VERSION_TEXT.register("titleVersionText");
-        public boolean titleBottomLeftText = CandyTweak.TITLE_BOTTOM_LEFT_TEXT.register("titleBottomLeftText");
-        public boolean removeTitleModLoaderText = CandyTweak.REMOVE_TITLE_MOD_LOADER_TEXT.register("removeTitleModLoaderText");
 
         // World
 
