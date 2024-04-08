@@ -56,6 +56,33 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     protected RenderPass renderPass = RenderPass.MIDDLE;
     protected boolean focusOnClick = true;
     protected int tabOrderGroup = 0;
+    protected final UniqueArrayList<Object> attachedData = new UniqueArrayList<>();
+
+    /**
+     * Add data to this widget.
+     *
+     * @param data A data {@link Object} to attach to this widget.
+     */
+    @PublicAPI
+    public Builder attach(Object... data)
+    {
+        this.attachedData.addAll(List.of(data));
+
+        return this.self();
+    }
+
+    /**
+     * Remove data from this widget.
+     *
+     * @param data The data {@link Object} to remove from this widget.
+     */
+    @PublicAPI
+    public Builder detach(Object... data)
+    {
+        this.attachedData.removeAll(List.of(data));
+
+        return this.self();
+    }
 
     /**
      * Perform specialized instructions after the widget has synced with its builder.
@@ -203,7 +230,7 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     @Nullable protected ToFloatFunction<Widget> scaleWidth = null;
     @Nullable protected ToFloatFunction<Widget> scaleHeight = null;
     @Nullable protected RelativeLayout relativeLayout = null;
-    protected UniqueArrayList<DynamicWidget<?, ?>> followers = new UniqueArrayList<>();
+    protected final UniqueArrayList<DynamicWidget<?, ?>> followers = new UniqueArrayList<>();
     protected boolean forceRelativeX = false;
     protected boolean forceRelativeY = false;
     protected boolean relativeAnchor = false;

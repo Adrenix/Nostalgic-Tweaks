@@ -1114,6 +1114,18 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
     }
 
     /**
+     * Check if this widget has the given data.
+     *
+     * @param data A data {@link Object} instance.
+     * @return Whether this widget contains the given data.
+     */
+    @PublicAPI
+    public boolean has(Object data)
+    {
+        return this.builder.attachedData.contains(data);
+    }
+
+    /**
      * Render instructions for the widget.
      *
      * @param graphics    The {@link GuiGraphics} object used for rendering.
