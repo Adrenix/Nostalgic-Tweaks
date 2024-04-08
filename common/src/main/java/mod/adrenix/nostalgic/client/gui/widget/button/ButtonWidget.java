@@ -13,6 +13,17 @@ public class ButtonWidget extends AbstractButton<ButtonBuilder, ButtonWidget>
     /**
      * Create a new {@link ButtonWidget} instance.
      *
+     * @param supplier A {@link Supplier} that provides a {@link Component} to render.
+     * @return A new {@link ButtonBuilder} instance.
+     */
+    public static ButtonBuilder create(Supplier<Component> supplier)
+    {
+        return new ButtonBuilder(Component.empty()).title(supplier);
+    }
+
+    /**
+     * Create a new {@link ButtonWidget} instance.
+     *
      * @param title A component that represents the button title.
      * @return A new {@link ButtonBuilder} instance.
      */
