@@ -14,7 +14,12 @@ class RowResizer<Builder extends AbstractRowMaker<Builder, Row>, Row extends Abs
     {
         int defaultHeight = row.getRowList().getBuilder().defaultRowHeight;
         int margin = row.getBuilder().heightOverflowMargin;
-        int maxEndY = row.getVisibleWidgets().mapToInt(DynamicWidget::getEndY).max().orElse(0);
+        int maxEndY = row.getVisibleWidgets()
+            .filter(widget -> !widget.has(RowData.WIDGET_SYNCED_WITH_HEIGHT))
+            .mapToInt(DynamicWidget::getEndY)
+            .max()
+            .orElse(0);
+
         int widgetHeight = Math.abs(row.getY() - maxEndY) + margin;
 
         if (widgetHeight == 0 || widgetHeight <= defaultHeight)
