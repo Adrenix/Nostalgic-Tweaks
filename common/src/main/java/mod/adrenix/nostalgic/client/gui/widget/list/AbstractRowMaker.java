@@ -18,6 +18,7 @@ public abstract class AbstractRowMaker<Builder extends AbstractRowMaker<Builder,
 
     protected final RowList rowList;
     protected final UniqueArrayList<DynamicWidget<?, ?>> widgets;
+    protected RowRenderer<Builder, Row> preRenderer = null;
     protected RowRenderer<Builder, Row> postRenderer = null;
     protected RowRenderer<Builder, Row> hiddenRenderer = null;
     protected Animation highlightAnimation = null;
@@ -115,6 +116,19 @@ public abstract class AbstractRowMaker<Builder extends AbstractRowMaker<Builder,
     public Builder useEmptyHighlight()
     {
         this.ignoreHighlight = true;
+
+        return this.self();
+    }
+
+    /**
+     * Provide custom rendering instructions to perform before the row starts rendering.
+     *
+     * @param renderer A custom renderer consumer that accepts the required parameters.
+     */
+    @PublicAPI
+    public Builder preRenderer(RowRenderer<Builder, Row> renderer)
+    {
+        this.preRenderer = renderer;
 
         return this.self();
     }

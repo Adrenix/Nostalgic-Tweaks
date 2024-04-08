@@ -471,6 +471,9 @@ public abstract class AbstractRow<Builder extends AbstractRowMaker<Builder, Row>
         if (this.isInvisible())
             return;
 
+        if (this.getBuilder().preRenderer != null)
+            this.getBuilder().preRenderer.accept(this.self(), graphics, mouseX, mouseY, partialTick);
+
         DynamicWidget.renderWithoutSync(this.widgets, graphics, mouseX, mouseY, partialTick);
 
         if (this.getBuilder().postRenderer != null)
