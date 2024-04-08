@@ -18,6 +18,7 @@ import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
+import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -80,6 +81,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
 
         this.scrollbar = Scrollbar.vertical(this::getContentHeight, this::getAverageRowHeight)
             .animation(Animate.easeInOutCircular(1L, TimeUnit.SECONDS))
+            .backgroundColor(this.getBuilder().scrollbarBackground)
             .onVisibleChange(this::setPositionForRows)
             .pos(this::getScrollbarStartX, this::getY)
             .height(this::getHeight)
@@ -523,6 +525,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     public void removeRow(AbstractRow<?, ?> row)
     {
         this.children.removeAll(row.widgets);
+        this.children.remove(row);
         this.rows.remove(row);
         this.visibleRows.remove(row);
 
@@ -582,6 +585,9 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public int getRowStartX()
     {
+        if (this.getBuilder().centerRows)
+            return (int) MathUtil.center(this.getX(), this.getRowWidth(), this.getWidth());
+
         return this.getX() + this.getBuilder().horizontalMargin;
     }
 
@@ -601,7 +607,12 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public int getRowWidth()
     {
-        return (this.scrollbar.isVisible() ? this.getScrollbarStartX() : this.getEndX()) - this.getRowStartX() - this.getBuilder().horizontalMargin;
+        int defaultWidth = this.getBuilder().defaultRowWidth;
+
+        if (defaultWidth == 0)
+            return (this.scrollbar.isVisible() ? this.getScrollbarStartX() : this.getEndX()) - this.getRowStartX() - this.getBuilder().horizontalMargin;
+        else
+            return defaultWidth;
     }
 
     /**
@@ -629,7 +640,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public int getContentHeight()
     {
-        return this.getBuilder().verticalMargin + this.visibleRows.stream()
+        return this.getBuilder().verticalMargin + (this.getBuilder().topMargin * 2) + this.visibleRows.stream()
             .mapToInt(AbstractRow::getHeightWithMargin)
             .sum();
     }
@@ -640,7 +651,13 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public int getScrollbarStartX()
     {
-        return this.getEndX() - 6;
+        if (this.getBuilder().leftAlignedScrollbar)
+        {
+            int endX = this.getVisibleRows().stream().mapToInt(AbstractRow::getEndX).max().orElse(0);
+            return endX + this.getBuilder().scrollbarLeftMargin;
+        }
+
+        return this.getEndX() - this.getBuilder().scrollbarWidth;
     }
 
     /**
@@ -791,11 +808,9 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         if (this.scrollbar.isDragging())
             return true;
 
-        boolean isWidgetClicked = false;
-
         if (this.isMouseOver(mouseX, mouseY))
         {
-            isWidgetClicked = this.isEventListened(widget -> {
+            boolean isWidgetClicked = this.isEventListened(widget -> {
                 boolean isClicked = widget.mouseClicked(mouseX, mouseY, button);
 
                 if (isClicked)
@@ -806,10 +821,13 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
 
                 return isClicked;
             });
-        }
 
-        if (isWidgetClicked)
-            return true;
+            if (isWidgetClicked)
+                return true;
+
+            if (this.visibleRows.stream().anyMatch(row -> row.mouseClicked(mouseX, mouseY, button)))
+                return true;
+        }
 
         this.clearFocus();
 
@@ -915,8 +933,10 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     {
         DynamicWidget.sync(this.rows);
 
+        int verticalMargin = this.getBuilder().verticalMargin;
+        int topMargin = this.getBuilder().topMargin;
         int rowStartX = this.getRowStartX();
-        int rowStartY = this.getY() + this.getBuilder().verticalMargin - (int) Math.round(this.getScrollAmount());
+        int rowStartY = this.getY() + topMargin + verticalMargin - (int) Math.round(this.getScrollAmount());
         int rowWidth = this.getRowWidth();
         boolean isVisibilityChanged = false;
 
@@ -982,7 +1002,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
 
             if (this.getBuilder().renderBackgroundOpacity)
             {
-                int color = 0xAF000000;
+                int color = 0xDF000000;
 
                 if (this.getBuilder().backgroundOpacity != null)
                     color = new Color(Color.BLACK, this.getBuilder().backgroundOpacity.getAsFloat()).get();
@@ -1020,7 +1040,10 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             RenderUtil.blitTexture(builder, graphics, 0, y1, 0.0F, 0.0F, screenWidth, screenHeight - y1, 32, 32);
             RenderUtil.endTexture(builder);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
 
+        if (this.getBuilder().renderTopAndBottomShadow || this.getBuilder().renderTopAndBottomDirt)
+        {
             RenderUtil.fromTopGradient(graphics, x0, y0, x1, y0 + 4, Color.BLACK, Color.BLACK.fromAlpha(0));
             RenderUtil.fromTopGradient(graphics, x0, y1 - 4, x1, y1, Color.BLACK.fromAlpha(0), Color.BLACK);
         }

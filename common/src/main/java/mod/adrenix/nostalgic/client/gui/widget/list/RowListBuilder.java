@@ -24,19 +24,27 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
 {
     /* Fields */
 
+    int topMargin = 0;
     int heightOverflowMargin = 0;
     int verticalMargin = 4;
     int horizontalMargin = 4;
     int separatorHeight = 1;
     int separatorPadding = 2;
     int defaultRowHeight = 20;
+    int defaultRowWidth = 0;
+    int scrollbarWidth = 6;
+    int scrollbarLeftMargin = 0;
+    Color scrollbarBackground = Color.DARK_CHARCOAL;
     Color separatorColor = Color.WHITE;
+    boolean leftAlignedScrollbar = false;
+    boolean centerRows = false;
     boolean renderBatched = true;
     boolean useSeparators = false;
     boolean useScissorRendering = true;
     boolean showSelectionBorder = false;
     boolean renderBackgroundDirt = false;
     boolean renderTopAndBottomDirt = false;
+    boolean renderTopAndBottomShadow = false;
     boolean renderBackgroundOpacity = false;
     double rowHighlightAlpha = 0.0D;
     Color rowHighlightColor = Color.WHITE;
@@ -170,6 +178,72 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     }
 
     /**
+     * Center rows horizontally.
+     */
+    @PublicAPI
+    public RowListBuilder centerRows()
+    {
+        this.centerRows = true;
+
+        return this;
+    }
+
+    /**
+     * Align the scrollbar to the left. This will move the scrollbar to the right of the widest row with the given
+     * margin.
+     *
+     * @param margin The margin between the widest row and the scrollbar.
+     */
+    @PublicAPI
+    public RowListBuilder leftAlignedScrollbar(int margin)
+    {
+        this.leftAlignedScrollbar = true;
+        this.scrollbarLeftMargin = margin;
+
+        return this;
+    }
+
+    /**
+     * Change the scrollbar's background color.
+     *
+     * @param color A background {@link Color}.
+     */
+    @PublicAPI
+    public RowListBuilder scrollbarBackground(Color color)
+    {
+        this.scrollbarBackground = color;
+
+        return this;
+    }
+
+    /**
+     * Change the default scrollbar width, which is 6, to a different width.
+     *
+     * @param width The scrollbar width.
+     */
+    @PublicAPI
+    public RowListBuilder scrollbarWidth(int width)
+    {
+        this.scrollbarWidth = width;
+
+        return this;
+    }
+
+    /**
+     * Change the default row width, which is 0, to a different width. Rows will automatically adjust their width to the
+     * current list context, but if a static width is desired, then use this builder property.
+     *
+     * @param defaultWidth The default row width.
+     */
+    @PublicAPI
+    public RowListBuilder defaultRowWidth(int defaultWidth)
+    {
+        this.defaultRowWidth = defaultWidth;
+
+        return this;
+    }
+
+    /**
      * Change the default row height, which is 20, to a different height. Rows will have their height resized if their
      * widgets exceed the default row height. Otherwise, the default row height is used.
      *
@@ -281,6 +355,19 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     }
 
     /**
+     * Change the margin added between the first row and the top of the row list. The default margin is {@code 0}.
+     *
+     * @param margin A margin amount.
+     */
+    @PublicAPI
+    public RowListBuilder topMargin(int margin)
+    {
+        this.topMargin = margin;
+
+        return this;
+    }
+
+    /**
      * Change the margin added between the top and bottom of rows. The default margin is {@code 4}.
      *
      * @param margin A margin amount.
@@ -331,6 +418,18 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     }
 
     /**
+     * Render shadow edges at the top and bottom of the row list. If {@link #renderTopAndBottomDirt()} is used, then
+     * this is already enabled.
+     */
+    @PublicAPI
+    public RowListBuilder renderTopAndBottomShadow()
+    {
+        this.renderTopAndBottomShadow = true;
+
+        return this;
+    }
+
+    /**
      * Disable the use of OpenGL scissor rendering. The scissored rendering prevents rows from being rendered outside
      * the row list's bounds. This method should only be invoked if top and bottom dirt rendering is enabled.
      */
@@ -376,7 +475,7 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
      * Set the background opacity for this list. The yield from the supplier will be clamped. Note, this will only be
      * applied when using {@link #renderTopAndBottomDirt()}.
      *
-     * @param opacity An {@link IntSupplier} that provides an opacity in the range 0-100.
+     * @param opacity An {@link IntSupplier} that provides opacity in the range 0-100.
      */
     @PublicAPI
     public RowListBuilder backgroundOpacity(IntSupplier opacity)
@@ -397,6 +496,17 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     public RowListBuilder backgroundOpacity(int opacity)
     {
         return this.backgroundOpacity(() -> opacity);
+    }
+
+    /**
+     * Render the default background opacity.
+     */
+    @PublicAPI
+    public RowListBuilder renderBackgroundOpacity()
+    {
+        this.renderBackgroundOpacity = true;
+
+        return this;
     }
 
     /**
