@@ -36,6 +36,7 @@ public interface CandyGroup
     Container INTERFACE_DEBUG_CHART = Container.group(INTERFACE_DEBUG, "interface_debug_chart").color(0x886AE2).icon(Icons.DEBUG_CHART).build();
     Container INTERFACE_LOADING = Container.group(INTERFACE, "interface_loading").color(0xE22837).icon(Icons.MOJANG).build();
     Container INTERFACE_LOADING_COLOR = Container.group(INTERFACE_LOADING, "interface_loading_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
+    Container INTERFACE_WORLD_SELECT = Container.group(INTERFACE, "interface_world_select").color(0x46A2EE).icon(Icons.FLAT_EARTH).build();
     Container INTERFACE_PROGRESS = Container.group(INTERFACE, "interface_progress").color(0x80FF80).icon(Icons.PROGRESS_SCREEN).build();
     Container INTERFACE_PAUSE = Container.group(INTERFACE, "interface_pause").color(0xFFFFA0).icon(Icons.PAUSE).build();
     Container INTERFACE_TITLE = Container.group(INTERFACE, "interface_title").color(0xFFFF00).icon(Icons.TEXT).build();

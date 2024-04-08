@@ -11,10 +11,12 @@ import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScree
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicLoadingScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicTitleScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.worlds.NostalgicSelectWorldScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.tweak.enums.Generic;
 import mod.adrenix.nostalgic.tweak.enums.PauseLayout;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
@@ -27,6 +29,7 @@ import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.*;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 import net.minecraft.world.entity.player.Player;
@@ -65,6 +68,14 @@ public abstract class GuiListener
         {
             if (!CandyTweak.OVERRIDE_TITLE_SCREEN.get())
                 return CompoundEventResult.interruptTrue(new TitleScreen());
+        }
+
+        if (screen.getClass() == SelectWorldScreen.class)
+        {
+            Screen parentScreen = Minecraft.getInstance().screen;
+
+            if (CandyTweak.OLD_WORLD_SELECT_SCREEN.get() != Generic.MODERN && parentScreen != null)
+                return CompoundEventResult.interruptTrue(new NostalgicSelectWorldScreen(parentScreen));
         }
 
         if (screen instanceof PauseScreen)

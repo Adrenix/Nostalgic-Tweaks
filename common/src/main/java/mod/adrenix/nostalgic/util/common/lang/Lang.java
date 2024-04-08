@@ -77,7 +77,11 @@ public interface Lang
         Translation MENU_GAME = new Translation("menu.game");
         Translation MENU_LAN = new Translation("menu.shareToLan");
         Translation SAVE_LEVEL = new Translation("menu.savingLevel");
+        Translation WORLD_CREATE = new Translation("selectWorld.create");
         Translation WORLD_DATA_READ = new Translation("selectWorld.data_read");
+        Translation WORLD_LOADING_LIST = new Translation("selectWorld.loading_list");
+        Translation WORLD_SELECT_TITLE = new Translation("selectWorld.title");
+        Translation WORLD_PLAY_SELECTED = new Translation("selectWorld.select");
         Translation WORLD_RESOURCE_LOAD = new Translation("selectWorld.resource_load");
         Translation RESOURCE_PACK_TITLE = new Translation("resourcePack.title");
     }
@@ -140,6 +144,27 @@ public interface Lang
         private static Translation from(String name)
         {
             return new Translation("gui.nostalgic_tweaks.screen.affirm." + name);
+        }
+    }
+
+    /**
+     * Lang keys that are used by the world selection screen.
+     */
+    interface Worlds
+    {
+        Translation ALPHA_EMPTY = from("alpha_empty");
+        Translation ALPHA_DELETE_TITLE = from("alpha_delete_title");
+        Translation ALPHA_DELETE_BUTTON = from("alpha_delete_button");
+        Translation ALPHA_CANNOT_DELETE = from("alpha_cannot_delete");
+        Translation ALPHA_PAGE_TITLE = from("alpha_page_title");
+        Translation ALPHA_MOVE_RIGHT = from("alpha_move_right");
+        Translation ALPHA_MOVE_LEFT = from("alpha_move_left");
+        Translation BETA_RENAME = from("beta_rename");
+        Translation BETA_UNKNOWN_LAST_PLAYED = from("beta_unknown_last_played");
+
+        private static Translation from(String name)
+        {
+            return new Translation("gui.nostalgic_tweaks.screen.worlds." + name);
         }
     }
 
@@ -380,6 +405,7 @@ public interface Lang
         Translation OPEN_DISCORD = from("open_discord");
         Translation SEARCHING = from("searching");
         Translation EVERYWHERE = from("everywhere");
+        Translation KEYBOARD_SHORTCUT = from("keyboard_shortcut");
 
         private static Translation from(String name)
         {

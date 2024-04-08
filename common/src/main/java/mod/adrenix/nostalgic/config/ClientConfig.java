@@ -314,6 +314,13 @@ public class ClientConfig implements ConfigMeta
         public boolean disableSignatureBoxes = CandyTweak.DISABLE_SIGNATURE_BOXES.register("disableSignatureBoxes");
         public int chatOffset = CandyTweak.CHAT_OFFSET.register("chatOffset");
 
+        // World Select Screen
+
+        public Generic oldWorldSelectScreen = CandyTweak.OLD_WORLD_SELECT_SCREEN.register("oldWorldSelectScreen");
+        public boolean addWorldThumbnail = CandyTweak.ADD_WORLD_THUMBNAIL.register("addWorldThumbnail");
+        public boolean addWorldMetadata = CandyTweak.ADD_WORLD_METADATA.register("addWorldMetadata");
+        public boolean ignoreWorldSize = CandyTweak.IGNORE_WORLD_SIZE.register("ignoreWorldSize");
+
         // Title Screen
 
         public boolean overrideTitleScreen = CandyTweak.OVERRIDE_TITLE_SCREEN.register("overrideTitleScreen");

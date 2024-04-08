@@ -11,7 +11,10 @@
     "ProgressScreenAccess",
     "ReceivingLevelScreenAccess",
     "ScreenAccess",
-    "TitleScreenAccess"
+    "SelectWorldScreenAccess",
+    "TitleScreenAccess",
+    "WorldListEntryAccess",
+    "WorldSelectionListAccess"
   ],
   "mixins": [
     "EntityAccess"

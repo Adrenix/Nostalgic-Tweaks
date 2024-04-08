@@ -169,6 +169,13 @@ public interface CandyTweak
     TweakFlag DISABLE_SIGNATURE_BOXES = TweakFlag.client(false, CandyGroup.INTERFACE_CHAT).newForUpdate().build();
     TweakNumber<Integer> CHAT_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_CHAT).newForUpdate().slider(Lang.Slider.OFFSET, 0, 32).load().build();
 
+    // World Select Screen
+
+    TweakEnum<Generic> OLD_WORLD_SELECT_SCREEN = TweakEnum.client(Generic.BETA, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().whenDisabled(Generic.MODERN).build();
+    TweakFlag ADD_WORLD_THUMBNAIL = TweakFlag.client(true, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().build();
+    TweakFlag ADD_WORLD_METADATA = TweakFlag.client(true, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().build();
+    TweakFlag IGNORE_WORLD_SIZE = TweakFlag.client(false, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().build();
+
     // Title Screen
 
     TweakFlag OVERRIDE_TITLE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).build();
