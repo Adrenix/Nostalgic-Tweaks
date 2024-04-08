@@ -9,19 +9,83 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class PathUtil
 {
+    /**
+     * Get the size of a directory in bytes.
+     *
+     * @param directory The {@link Path} of a directory.
+     * @return The size of the directory in bytes.
+     */
+    @PublicAPI
+    public static long getSizeOfDirectory(Path directory)
+    {
+        long size = 0;
+
+        try (Stream<Path> walk = Files.walk(directory))
+        {
+            size = walk.filter(path -> Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)).mapToLong(path -> {
+                try
+                {
+                    return Files.size(path);
+                }
+                catch (Exception e)
+                {
+                    return 0L;
+                }
+            }).sum();
+
+        }
+        catch (IOException exception)
+        {
+            NostalgicTweaks.LOGGER.error("An IO error occurred when getting directory size\n%s", exception);
+        }
+
+        return size;
+    }
+
+    /**
+     * Get the future size of a directory in bytes.
+     *
+     * @param directory The {@link Path} of a directory.
+     * @return A {@link CompletableFuture} that will determine the size of the directory in bytes.
+     */
+    @PublicAPI
+    public static CompletableFuture<Long> getFutureSizeOfDirectory(final Path directory)
+    {
+        return CompletableFuture.supplyAsync(() -> PathUtil.getSizeOfDirectory(directory), Util.backgroundExecutor());
+    }
+
+    /**
+     * Get a human-readable file size.
+     *
+     * @param size The size of the file in bytes.
+     * @return A human-readable file size.
+     */
+    @PublicAPI
+    public static String getFormattedFileSize(long size)
+    {
+        String[] types = new String[] { "B", "KB", "MB", "GB", "TB" };
+        int index = (int) (Math.log10(size) / 3);
+        double typeValue = 1 << (index * 10);
+
+        return new DecimalFormat("#,##0.0").format(size / typeValue) + " " + types[index];
+    }
+
     /**
      * Check if the given path is a directory.
      *

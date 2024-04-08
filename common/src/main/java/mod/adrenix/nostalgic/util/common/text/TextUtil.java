@@ -171,6 +171,24 @@ public abstract class TextUtil
     }
 
     /**
+     * Makes the first letter in a string uppercase.
+     *
+     * @param convert The string to convert.
+     * @return A string where the first letter is uppercase.
+     */
+    @PublicAPI
+    public static String uppercaseFirstLetter(String convert)
+    {
+        if (convert.isEmpty())
+            return convert;
+
+        char[] chars = convert.toCharArray();
+        chars[0] = Character.toUpperCase(chars[0]);
+
+        return new String(chars);
+    }
+
+    /**
      * Makes the first letter in a string lowercase.
      *
      * @param convert The string to convert.

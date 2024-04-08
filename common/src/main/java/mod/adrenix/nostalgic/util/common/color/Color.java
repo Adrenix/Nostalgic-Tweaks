@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,6 +64,7 @@ public class Color
     @PublicAPI public static final Color RICH_BLACK = new Color(0x050500).lock();
     @PublicAPI public static final Color INK_BLACK = new Color(0x121212).lock();
     @PublicAPI public static final Color OLIVE_BLACK = new Color(0x202020).lock();
+    @PublicAPI public static final Color DARK_CHARCOAL = new Color(0x313131).lock();
     @PublicAPI public static final Color DARK_GRAY = new Color(0x3F3F3F).lock();
     @PublicAPI public static final Color ASPHALT_GRAY = new Color(0x565754).lock();
     @PublicAPI public static final Color SONIC_SILVER = new Color(0x777777).lock();
@@ -238,8 +240,7 @@ public class Color
 
     /**
      * Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for
-     * hue, saturation, and brightness that are the three components of the HSB model (<i>also known as
-     * {@code HSV}</i>).
+     * hue, saturation, and brightness that are the three parts of the HSB model (<i>also known as {@code HSV}</i>).
      *
      * <br><br>
      * If the {@code hsbValues} argument is {@code null}, then a new array is created to return the result. Otherwise,
@@ -318,8 +319,7 @@ public class Color
 
     /**
      * Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for
-     * hue, saturation, and brightness that are the three components of the HSB model (<i>also known as
-     * {@code HSV}</i>).
+     * hue, saturation, and brightness that are the three parts of the HSB model (<i>also known as {@code HSV}</i>).
      *
      * @param r The red component of the color.
      * @param g The green component of the color.
@@ -691,7 +691,7 @@ public class Color
     }
 
     /**
-     * @return Whether this {@code Color} instance has an alpha component less than 1.0F (or < 255).
+     * @return Whether this {@code Color} instance has an alpha part less than 1.0F (or < 255).
      */
     @PublicAPI
     public boolean isTransparent()
@@ -772,6 +772,17 @@ public class Color
     public int getAlpha()
     {
         return (this.get() >> 24) & 0xFF;
+    }
+
+    /**
+     * Get an RGB integer where the alpha component is left out of the integer.
+     *
+     * @return An RGB integer of this color.
+     */
+    @PublicAPI
+    public int getRGB()
+    {
+        return (this.getRed() << 16) | (this.getGreen() << 8) | this.getBlue();
     }
 
     /**
@@ -1090,6 +1101,21 @@ public class Color
     public boolean isPresent()
     {
         return !this.isEmpty();
+    }
+
+    /**
+     * Check if the given style's color matches this color.
+     *
+     * @param style The {@link Style} to check.
+     * @return Whether the style's color matches this.
+     */
+    @PublicAPI
+    public boolean matches(Style style)
+    {
+        if (style.getColor() == null)
+            return false;
+
+        return style.getColor().getValue() == this.getRGB();
     }
 
     /**
