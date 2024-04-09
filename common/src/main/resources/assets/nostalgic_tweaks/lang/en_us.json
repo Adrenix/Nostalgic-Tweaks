@@ -833,8 +833,6 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldLoadingOverlay.enum.release_black": "The loading overlay will use the small§7 black Mojang§r logo with a white background and a§c red§r loading bar.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLoadingOverlay.enum.modern": "The loading overlay will use the§6 current§r Mojang logo, background, and loading bar.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLoadingOverlay.search": "Mojang, Logo, Start",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldLoadingScreens": "Old Level Loading Screens",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldLoadingScreens.info": "Bring back the old world loading screens.",
   "gui.nostalgic_tweaks.config.eyeCandy.removeLoadingBar": "Remove Loading Bar",
   "gui.nostalgic_tweaks.config.eyeCandy.removeLoadingBar.info": "Remove the loading bar from the game loading overlay. This tweak does§c not§r modify the§6 modern§r loading overlay.",
   "gui.nostalgic_tweaks.config.eyeCandy.removeLoadingBar.@Optifine": "§cVisual Bug§r: The loading bar color will be§6 overridden§r when§b Optifine§r is installed.",

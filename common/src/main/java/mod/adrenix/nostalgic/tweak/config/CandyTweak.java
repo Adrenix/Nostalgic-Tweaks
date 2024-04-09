@@ -64,7 +64,6 @@ public interface CandyTweak
 
     // Interface
 
-    TweakFlag OLD_LOADING_SCREENS = TweakFlag.client(true, CandyGroup.INTERFACE).build();
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE).build();
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
 
