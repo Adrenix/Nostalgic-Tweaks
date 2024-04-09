@@ -3,8 +3,10 @@ package mod.adrenix.nostalgic.client.gui.widget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.client.renderer.TextureLayer;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.GameSprite;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -27,18 +29,61 @@ public record WidgetBackground(ResourceLocation background, ResourceLocation hig
     /**
      * Get the proper widget sprite.
      *
-     * @param widget A {@link DynamicWidget} instance.
-     * @return A {@link ResourceLocation} instance.
+     * @param isActive           Whether the widget is active.
+     * @param isHoveredOrFocused Whether the widget is hovered or focused.
+     * @return A sprite {@link ResourceLocation} instance.
      */
-    public ResourceLocation get(DynamicWidget<?, ?> widget)
+    public ResourceLocation get(boolean isActive, boolean isHoveredOrFocused)
     {
-        if (widget.isHoveredOrFocused() && widget.isActive())
+        if (isHoveredOrFocused && isActive)
             return this.highlighted;
 
-        if (widget.isInactive())
+        if (!isActive)
             return this.disabled;
 
         return this.background;
+    }
+
+    /**
+     * Get the proper widget sprite.
+     *
+     * @param widget A {@link DynamicWidget} instance.
+     * @return A sprite {@link ResourceLocation} instance.
+     */
+    public ResourceLocation get(DynamicWidget<?, ?> widget)
+    {
+        return this.get(widget.isActive(), widget.isHoveredOrFocused());
+    }
+
+    /**
+     * Get the proper widget sprite.
+     *
+     * @param widget A {@link AbstractWidget} instance.
+     * @return A sprite {@link ResourceLocation} instance.
+     */
+    public ResourceLocation get(AbstractWidget widget)
+    {
+        return this.get(widget.isActive(), widget.isHoveredOrFocused());
+    }
+
+    /**
+     * Render a widget sprite background based on the given context.
+     *
+     * @param graphics The {@link GuiGraphics} instance.
+     * @param sprite   The sprite {@link ResourceLocation} instance.
+     * @param x        The starting x-coordinate.
+     * @param y        The starting y-coordinate.
+     * @param width    The width of the render.
+     * @param height   The height of the render.
+     */
+    @PublicAPI
+    public void render(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    {
+        RenderUtil.beginBatching();
+        RenderUtil.pushLayer(LAYER);
+        RenderUtil.blitSprite(sprite, graphics, x, y, width, height);
+        RenderUtil.endBatching();
+        RenderUtil.popLayer();
     }
 
     /**
@@ -47,17 +92,21 @@ public record WidgetBackground(ResourceLocation background, ResourceLocation hig
      * @param widget   A {@link DynamicWidget} instance.
      * @param graphics A {@link GuiGraphics} instance.
      */
+    @PublicAPI
     public void render(DynamicWidget<?, ?> widget, GuiGraphics graphics)
     {
-        int x = widget.getX();
-        int y = widget.getY();
-        int width = widget.getWidth();
-        int height = widget.getHeight();
+        this.render(graphics, this.get(widget), widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
+    }
 
-        RenderUtil.beginBatching();
-        RenderUtil.pushLayer(LAYER);
-        RenderUtil.blitSprite(this.get(widget), graphics, x, y, width, height);
-        RenderUtil.endBatching();
-        RenderUtil.popLayer();
+    /**
+     * Render a widget sprite background based on the given widget's state context.
+     *
+     * @param widget   A {@link AbstractWidget} instance.
+     * @param graphics A {@link GuiGraphics} instance.
+     */
+    @PublicAPI
+    public void render(AbstractWidget widget, GuiGraphics graphics)
+    {
+        this.render(graphics, this.get(widget), widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight());
     }
 }
