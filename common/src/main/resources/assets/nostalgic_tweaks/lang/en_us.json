@@ -874,7 +874,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldChatBox": "Old Chat Box",
   "gui.nostalgic_tweaks.config.eyeCandy.oldChatBox.info": "Bring back the old chat box size, position, and fading animations.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor": "Old Button Text Colors",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor.info": "Bring back the old button text colors. Text on buttons will have a slight§7 gray§r color, and when hovered, the text turns§e yellow§r. To get the old§9 blue§r button background and§c removal§r of the white border around buttons, use a resource pack.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor.info": "Bring back the old button text colors. Text on buttons will have a slight§7 gray§r color, and when hovered, the text turns§e yellow§r. To get the old§9 blue§r button background and§c removal§r of the white border around buttons, use the§e Programmer Art§r resource pack.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeHotbar": "Old Creative Hotbar",
   "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeHotbar.info": "Start with a filled hotbar when joining a world with an empty inventory in creative mode.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeHotbar.enum.classic": "The hotbar will start with stone, cobblestone, bricks, dirt, oak wood planks, oak wood, oak leaves, glass, and a stone slab.",
