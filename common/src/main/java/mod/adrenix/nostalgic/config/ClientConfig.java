@@ -321,6 +321,11 @@ public class ClientConfig implements ConfigMeta
         public boolean addWorldMetadata = CandyTweak.ADD_WORLD_METADATA.register("addWorldMetadata");
         public boolean ignoreWorldSize = CandyTweak.IGNORE_WORLD_SIZE.register("ignoreWorldSize");
 
+        // World Create Screen
+
+        public boolean oldStyleCreateWorldTabs = CandyTweak.OLD_STYLE_CREATE_WORLD_TABS.register("oldStyleCreateWorldTabs");
+        public boolean removeCreateWorldFooter = CandyTweak.REMOVE_CREATE_WORLD_FOOTER.register("removeCreateWorldFooter");
+
         // Title Screen
 
         public boolean overrideTitleScreen = CandyTweak.OVERRIDE_TITLE_SCREEN.register("overrideTitleScreen");

@@ -176,6 +176,11 @@ public interface CandyTweak
     TweakFlag ADD_WORLD_METADATA = TweakFlag.client(true, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().build();
     TweakFlag IGNORE_WORLD_SIZE = TweakFlag.client(false, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().build();
 
+    // World Create Screen
+
+    TweakFlag OLD_STYLE_CREATE_WORLD_TABS = TweakFlag.client(true, CandyGroup.INTERFACE_WORLD_CREATE).newForUpdate().build();
+    TweakFlag REMOVE_CREATE_WORLD_FOOTER = TweakFlag.client(true, CandyGroup.INTERFACE_WORLD_CREATE).newForUpdate().build();
+
     // Title Screen
 
     TweakFlag OVERRIDE_TITLE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE).build();

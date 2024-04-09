@@ -58,6 +58,8 @@ public abstract class GuiListener
         if (screen == null)
             return CompoundEventResult.pass();
 
+        Screen parentScreen = Minecraft.getInstance().screen;
+
         if (screen.getClass() == TitleScreen.class)
         {
             if (CandyTweak.OVERRIDE_TITLE_SCREEN.get())
@@ -72,8 +74,6 @@ public abstract class GuiListener
 
         if (screen.getClass() == SelectWorldScreen.class)
         {
-            Screen parentScreen = Minecraft.getInstance().screen;
-
             if (CandyTweak.OLD_WORLD_SELECT_SCREEN.get() != Generic.MODERN && parentScreen != null)
                 return CompoundEventResult.interruptTrue(new NostalgicSelectWorldScreen(parentScreen));
         }

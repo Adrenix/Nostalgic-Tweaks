@@ -4,6 +4,7 @@
   "minVersion": "0.8",
   "client": [
     "AbstractContainerScreenAccess",
+    "AbstractWidgetAccess",
     "DebugScreenOverlayAccess",
     "FpsDebugChartAccess",
     "LevelRendererAccess",
