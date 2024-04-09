@@ -169,6 +169,12 @@ public interface CandyTweak
     TweakFlag DISABLE_SIGNATURE_BOXES = TweakFlag.client(false, CandyGroup.INTERFACE_CHAT).newForUpdate().build();
     TweakNumber<Integer> CHAT_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_CHAT).newForUpdate().slider(Lang.Slider.OFFSET, 0, 32).load().build();
 
+    // Death Screen
+
+    TweakFlag OLD_DEATH_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_DEATH).newForUpdate().build();
+    TweakFlag OLD_DEATH_SCORE = TweakFlag.client(true, CandyGroup.INTERFACE_DEATH).newForUpdate().build();
+    TweakFlag HIDE_CAUSE_OF_DEATH = TweakFlag.client(true, CandyGroup.INTERFACE_DEATH).newForUpdate().build();
+
     // World Select Screen
 
     TweakEnum<Generic> OLD_WORLD_SELECT_SCREEN = TweakEnum.client(Generic.BETA, CandyGroup.INTERFACE_WORLD_SELECT).newForUpdate().whenDisabled(Generic.MODERN).build();

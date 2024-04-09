@@ -314,6 +314,12 @@ public class ClientConfig implements ConfigMeta
         public boolean disableSignatureBoxes = CandyTweak.DISABLE_SIGNATURE_BOXES.register("disableSignatureBoxes");
         public int chatOffset = CandyTweak.CHAT_OFFSET.register("chatOffset");
 
+        // Death Screen
+
+        public boolean oldDeathScreen = CandyTweak.OLD_DEATH_SCREEN.register("oldDeathScreen");
+        public boolean oldDeathScore = CandyTweak.OLD_DEATH_SCORE.register("oldDeathScore");
+        public boolean hideCauseOfDeath = CandyTweak.HIDE_CAUSE_OF_DEATH.register("hideCauseOfDeath");
+
         // World Select Screen
 
         public Generic oldWorldSelectScreen = CandyTweak.OLD_WORLD_SELECT_SCREEN.register("oldWorldSelectScreen");

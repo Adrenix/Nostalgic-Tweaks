@@ -148,7 +148,7 @@ public interface Lang
     }
 
     /**
-     * Lang keys that are used by the world selection screen.
+     * Lang keys that are used by the world screens.
      */
     interface Worlds
     {
@@ -165,6 +165,21 @@ public interface Lang
         private static Translation from(String name)
         {
             return new Translation("gui.nostalgic_tweaks.screen.worlds." + name);
+        }
+    }
+
+    /**
+     * Lang keys that are used by the death screen.
+     */
+    interface Death
+    {
+        Translation SCORE = from("score");
+        Translation GAME_OVER = from("game_over");
+        Translation TITLE_MENU = from("title_menu");
+
+        private static Translation from(String name)
+        {
+            return new Translation("gui.nostalgic_tweaks.screen.death." + name);
         }
     }
 

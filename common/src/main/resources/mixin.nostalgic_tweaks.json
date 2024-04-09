@@ -25,6 +25,7 @@
     "candy.create_world_screen.CreateWorldScreenMixin",
     "candy.create_world_screen.TabButtonMixin",
     "candy.create_world_screen.TabNavigationBarMixin",
+    "candy.death_screen.DeathScreenMixin",
     "candy.debug_entity.EntityRendererMixin",
     "candy.debug_screen.DebugScreenOverlayMixin",
     "candy.debug_screen.GuiMixin",
