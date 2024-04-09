@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.gui.screen.vanilla.worlds;
+package mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select;
 
 import mod.adrenix.nostalgic.client.gui.widget.list.AbstractRowMaker;
 import mod.adrenix.nostalgic.client.gui.widget.list.RowList;

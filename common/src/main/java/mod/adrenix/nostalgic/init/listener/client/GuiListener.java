@@ -11,7 +11,7 @@ import mod.adrenix.nostalgic.client.gui.screen.vanilla.pause.NostalgicPauseScree
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicLoadingScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.progress.NostalgicProgressScreen;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicTitleScreen;
-import mod.adrenix.nostalgic.client.gui.screen.vanilla.worlds.NostalgicSelectWorldScreen;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select.NostalgicSelectWorldScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;

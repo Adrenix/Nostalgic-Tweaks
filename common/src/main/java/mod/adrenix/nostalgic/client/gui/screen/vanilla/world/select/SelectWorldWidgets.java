@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.client.gui.screen.vanilla.worlds;
+package mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import mod.adrenix.nostalgic.NostalgicTweaks;
