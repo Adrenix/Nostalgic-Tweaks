@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,5 +36,17 @@ public abstract class PlayerMixin
     private SoundEvent nt_damage_sound$modifyDeathSound(SoundEvent sound)
     {
         return SoundTweak.OLD_HURT.get() ? ClientSound.BLANK.get() : sound;
+    }
+
+    /**
+     * Disables the player's falling sounds.
+     */
+    @ModifyReturnValue(
+        method = "getFallSounds",
+        at = @At("RETURN")
+    )
+    private LivingEntity.Fallsounds nt_damage_sound$modifyFallSounds(LivingEntity.Fallsounds sounds)
+    {
+        return SoundTweak.OLD_FALL.get() ? new LivingEntity.Fallsounds(ClientSound.BLANK.get(), ClientSound.BLANK.get()) : sounds;
     }
 }
