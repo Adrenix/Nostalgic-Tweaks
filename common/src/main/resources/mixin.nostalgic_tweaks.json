@@ -47,6 +47,7 @@
     "candy.loading_overlay.LoadingOverlayMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.name_tag.EntityRendererMixin",
+    "candy.particle_engine.ParticleEngineMixin",
     "candy.progress_screen.LevelLoadingScreenMixin",
     "candy.progress_screen.MinecraftMixin",
     "candy.select_world_screen.WorldSelectionListMixin",
