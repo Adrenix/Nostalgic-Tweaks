@@ -547,6 +547,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.lighting_world_shader": "Shaders",
   "gui.nostalgic_tweaks.container.eyeCandy.particle": "Particle Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_block": "Block Particles",
+  "gui.nostalgic_tweaks.container.eyeCandy.particle_disabled": "Disabled Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_experience": "Experience Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_explosion": "Explosion Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_attack": "Attack Particles",
@@ -1057,6 +1058,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.supporterTags": "Show Supporter Name Tags",
   "gui.nostalgic_tweaks.config.eyeCandy.supporterTags.info": "Display custom visual effects on name tags for player's who have supporter this mod.",
 
+  "gui.nostalgic_tweaks.config.eyeCandy.disabledParticles": "Disabled Particles",
+  "gui.nostalgic_tweaks.config.eyeCandy.disabledParticles.info": "Define a custom list of particles to§c disable§r from appearing within the world. The entries used in this list are particle resource locations. For example,§b minecraft:cherry_leaves§r is a§a valid§r particle resource location.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles": "Old Explosion Particles",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles.info": "Bring back the classic explosion particles for§a all§r explosions.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles.search": "TNT, Smoke",

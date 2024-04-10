@@ -431,9 +431,16 @@ public class ClientConfig implements ConfigMeta
 
         public int maxBlockLight = CandyTweak.MAX_BLOCK_LIGHT.register("maxBlockLight");
 
-        // Particles
+        // Disabled Particles
+
+        public StringSet disabledParticles = CandyTweak.DISABLED_PARTICLES.register("disabledParticles");
+
+        // Experience Particles
 
         public boolean oldOpaqueExperience = CandyTweak.OLD_OPAQUE_EXPERIENCE.register("oldOpaqueExperience");
+
+        // Biome Particles
+
         public boolean disableNetherParticles = CandyTweak.DISABLE_NETHER_PARTICLES.register("disableNetherParticles");
         public boolean disableUnderwaterParticles = CandyTweak.DISABLE_UNDERWATER_PARTICLES.register("disableUnderwaterParticles");
 

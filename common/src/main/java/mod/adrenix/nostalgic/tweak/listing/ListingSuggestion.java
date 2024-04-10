@@ -6,5 +6,6 @@ package mod.adrenix.nostalgic.tweak.listing;
 public enum ListingSuggestion
 {
     NONE,
-    SOUND
+    SOUND,
+    PARTICLE
 }

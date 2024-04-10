@@ -4,6 +4,8 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -34,6 +36,11 @@ public abstract class ParticleMixinHelper
             if (typeEqualTo(type, ParticleTypes.ASH, ParticleTypes.WHITE_ASH, ParticleTypes.WARPED_SPORE, ParticleTypes.CRIMSON_SPORE))
                 return null;
         }
+
+        ResourceLocation key = BuiltInRegistries.PARTICLE_TYPE.getKey(type);
+
+        if (key != null && CandyTweak.DISABLED_PARTICLES.get().contains(key.toString()))
+            return null;
 
         return particle;
     }

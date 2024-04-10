@@ -8,9 +8,7 @@ import mod.adrenix.nostalgic.tweak.container.group.CandyGroup;
 import mod.adrenix.nostalgic.tweak.enums.*;
 import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
-import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
-import mod.adrenix.nostalgic.tweak.listing.ItemRule;
-import mod.adrenix.nostalgic.tweak.listing.ItemSet;
+import mod.adrenix.nostalgic.tweak.listing.*;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
@@ -282,6 +280,10 @@ public interface CandyTweak
     // Shader Support
 
     TweakNumber<Integer> MAX_BLOCK_LIGHT = TweakNumber.client(15, CandyGroup.LIGHTING_WORLD_SHADER).slider(Lang.Slider.BLOCK_LIGHT, 0, 15).newForUpdate().reloadChunks().build();
+
+    // Disabled Particles
+
+    TweakStringSet DISABLED_PARTICLES = TweakStringSet.client(new StringSet(ListingSuggestion.PARTICLE), CandyGroup.PARTICLE_DISABLED).newForUpdate().build();
 
     // Experience Particles
 
