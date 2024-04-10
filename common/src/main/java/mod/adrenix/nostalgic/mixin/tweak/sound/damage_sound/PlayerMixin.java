@@ -13,7 +13,8 @@ public abstract class PlayerMixin
 {
     /**
      * Brings back the old "oof" sound. Changing the sound here ensures only the player's hurt sound is changed. This
-     * allows for the vanilla player hurt sound to be played in situations where it would be preferred.
+     * allows for the vanilla player hurt sound to be played in situations where it would be preferred. Such as when the
+     * Ender Dragon dies.
      */
     @ModifyReturnValue(
         method = "getHurtSound",
@@ -22,5 +23,17 @@ public abstract class PlayerMixin
     private SoundEvent nt_damage_sound$modifyHurtSound(SoundEvent sound)
     {
         return SoundTweak.OLD_HURT.get() ? ClientSound.PLAYER_HURT.get() : sound;
+    }
+
+    /**
+     * Disables the death sound when the player dies to prevent duplicate "off" sounds.
+     */
+    @ModifyReturnValue(
+        method = "getDeathSound",
+        at = @At("RETURN")
+    )
+    private SoundEvent nt_damage_sound$modifyDeathSound(SoundEvent sound)
+    {
+        return SoundTweak.OLD_HURT.get() ? ClientSound.BLANK.get() : sound;
     }
 }
