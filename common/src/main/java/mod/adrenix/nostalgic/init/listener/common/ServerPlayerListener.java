@@ -105,29 +105,18 @@ public abstract class ServerPlayerListener
         if (player.getInventory().isEmpty() && isCreative && isNostalgic)
         {
             setBlockInSlot(player, 0, Blocks.STONE);
+            setBlockInSlot(player, 1, Blocks.COBBLESTONE);
+            setBlockInSlot(player, 2, Blocks.BRICKS);
+            setBlockInSlot(player, 3, Blocks.DIRT);
+            setBlockInSlot(player, 4, Blocks.OAK_PLANKS);
+            setBlockInSlot(player, 5, Blocks.OAK_LOG);
+            setBlockInSlot(player, 6, Blocks.OAK_LEAVES);
+            setBlockInSlot(player, 8, Blocks.SMOOTH_STONE_SLAB);
 
             if (hotbar == Hotbar.BETA)
-            {
-                setBlockInSlot(player, 1, Blocks.COBBLESTONE);
-                setBlockInSlot(player, 2, Blocks.BRICKS);
-                setBlockInSlot(player, 3, Blocks.DIRT);
-                setBlockInSlot(player, 4, Blocks.OAK_PLANKS);
-                setBlockInSlot(player, 5, Blocks.OAK_LOG);
-                setBlockInSlot(player, 6, Blocks.OAK_LEAVES);
                 setBlockInSlot(player, 7, Blocks.TORCH);
-                setBlockInSlot(player, 8, Blocks.SMOOTH_STONE_SLAB);
-            }
             else
-            {
-                setBlockInSlot(player, 1, Blocks.DIRT);
-                setBlockInSlot(player, 2, Blocks.OAK_PLANKS);
-                setBlockInSlot(player, 3, Blocks.COBBLESTONE);
-                setBlockInSlot(player, 4, Blocks.SAND);
-                setBlockInSlot(player, 5, Blocks.GRAVEL);
-                setBlockInSlot(player, 6, Blocks.OAK_LOG);
-                setBlockInSlot(player, 7, Blocks.OAK_LEAVES);
-                setBlockInSlot(player, 8, Blocks.RED_MUSHROOM);
-            }
+                setBlockInSlot(player, 7, Blocks.GLASS);
         }
     }
 }
