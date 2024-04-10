@@ -283,11 +283,14 @@ public interface CandyTweak
 
     TweakNumber<Integer> MAX_BLOCK_LIGHT = TweakNumber.client(15, CandyGroup.LIGHTING_WORLD_SHADER).slider(Lang.Slider.BLOCK_LIGHT, 0, 15).newForUpdate().reloadChunks().build();
 
-    // Particles
+    // Experience Particles
 
-    TweakFlag OLD_OPAQUE_EXPERIENCE = TweakFlag.client(true, CandyGroup.PARTICLE).build();
-    TweakFlag DISABLE_NETHER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE).newForUpdate().build();
-    TweakFlag DISABLE_UNDERWATER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE).newForUpdate().build();
+    TweakFlag OLD_OPAQUE_EXPERIENCE = TweakFlag.client(true, CandyGroup.PARTICLE_EXPERIENCE).build();
+
+    // Biome Particles
+
+    TweakFlag DISABLE_NETHER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).newForUpdate().build();
+    TweakFlag DISABLE_UNDERWATER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).newForUpdate().build();
 
     // Block Particles
 
