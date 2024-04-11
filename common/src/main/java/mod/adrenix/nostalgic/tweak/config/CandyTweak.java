@@ -320,7 +320,7 @@ public interface CandyTweak
 
     TweakFlag OLD_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).build();
     TweakFlag OLD_MIXED_EXPLOSION_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_EXPLOSION).build();
-    TweakFlag UNOPTIMIZED_EXPLOSION_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_EXPLOSION).newForUpdate().build();
+    TweakFlag UNOPTIMIZED_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).newForUpdate().build();
 
     // World
 

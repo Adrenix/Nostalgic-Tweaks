@@ -33,6 +33,7 @@
     "candy.debug_screen.GuiMixin",
     "candy.debug_screen.MinecraftMixin",
     "candy.experience_particles.ExperienceOrbRendererMixin",
+    "candy.explosion_particles.ExplosionMixin",
     "candy.flat_items.ItemEntityRendererMixin",
     "candy.flat_items.ItemRendererMixin",
     "candy.furnace_screen.AbstractContainerScreenMixin",

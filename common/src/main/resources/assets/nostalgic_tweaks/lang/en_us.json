@@ -1109,7 +1109,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.disableUnderwaterParticles": "Disable Underwater Particles",
   "gui.nostalgic_tweaks.config.eyeCandy.disableUnderwaterParticles.info": "Prevent water particulates from appearing while the player is underwater.",
   "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles": "Unoptimized Explosion Particles",
-  "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles.info": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance for explosions.",
+  "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles.info": "Bring back the old calculation of explosion particles. This adds more particles during an explosion.\n\nThis may§c reduce§r FPS performance when there are many explosions.",
   "gui.nostalgic_tweaks.config.eyeCandy.unoptimizedExplosionParticles.search": "TNT, Smoke, Big, Physics",
 
   "gui.nostalgic_tweaks.config.eyeCandy.disableLightFlicker": "Disable Light Flickering",
