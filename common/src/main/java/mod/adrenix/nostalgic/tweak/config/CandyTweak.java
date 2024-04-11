@@ -297,6 +297,8 @@ public interface CandyTweak
     // Block Particles
 
     TweakFlag DISABLE_LAVA_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
+    TweakFlag DISABLE_LAVA_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
+    TweakFlag DISABLE_WATER_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
     TweakFlag DISABLE_LEVER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
     TweakFlag DISABLE_GROWTH_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
     TweakFlag DISABLE_MODEL_DESTRUCTION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();

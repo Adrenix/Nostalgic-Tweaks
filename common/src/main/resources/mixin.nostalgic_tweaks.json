@@ -10,6 +10,8 @@
     "candy.block_hitbox.LevelRendererMixin",
     "candy.block_lighting.LightingMixin",
     "candy.block_offsets.BlockStateBaseMixin",
+    "candy.block_particles.BoneMealItemMixin",
+    "candy.block_particles.LeverBlockMixin",
     "candy.button_hover.AbstractButtonMixin",
     "candy.button_hover.AbstractSliderButtonMixin",
     "candy.chat_screen.ChatComponentMixin",

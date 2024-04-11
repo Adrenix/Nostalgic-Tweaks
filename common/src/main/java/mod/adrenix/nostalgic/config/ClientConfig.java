@@ -447,6 +447,8 @@ public class ClientConfig implements ConfigMeta
         // Block Particles
 
         public boolean disableLavaParticles = CandyTweak.DISABLE_LAVA_PARTICLES.register("disableLavaParticles");
+        public boolean disableLavaDripParticles = CandyTweak.DISABLE_LAVA_DRIP_PARTICLES.register("disableLavaDripParticles");
+        public boolean disableWaterDripParticles = CandyTweak.DISABLE_WATER_DRIP_PARTICLES.register("disableWaterDripParticles");
         public boolean disableLeverParticles = CandyTweak.DISABLE_LEVER_PARTICLES.register("disableLeverParticles");
         public boolean disableModelDestructionParticles = CandyTweak.DISABLE_MODEL_DESTRUCTION_PARTICLES.register("disableModelDestructionParticles");
         public boolean disableEnderChestParticles = CandyTweak.DISABLE_ENDER_CHEST_PARTICLES.register("disableEnderChestParticles");
