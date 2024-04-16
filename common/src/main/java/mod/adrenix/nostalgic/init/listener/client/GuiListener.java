@@ -23,6 +23,7 @@ import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.CornerManager;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
@@ -88,7 +89,7 @@ public abstract class GuiListener
 
         if (CandyTweak.OLD_PROGRESS_SCREEN.get())
         {
-            if (screen instanceof ProgressScreen)
+            if (screen instanceof ProgressScreen && ClassUtil.isNotInstanceOf(screen, NostalgicProgressScreen.class))
                 return CompoundEventResult.interruptTrue(new NostalgicProgressScreen((ProgressScreen) screen));
 
             if (screen instanceof LevelLoadingScreen)

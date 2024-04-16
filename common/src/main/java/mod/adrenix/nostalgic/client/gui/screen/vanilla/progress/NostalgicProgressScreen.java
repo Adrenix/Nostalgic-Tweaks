@@ -7,14 +7,13 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ProgressScreen;
 import net.minecraft.client.gui.screens.ReceivingLevelScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ProgressListener;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class NostalgicProgressScreen extends Screen implements ProgressListener
+public class NostalgicProgressScreen extends ProgressScreen implements ProgressListener
 {
     /* Static */
 
@@ -25,7 +24,6 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
 
     @Nullable private Component header;
     @Nullable private Component stage;
-
     private int progress = -1;
     private boolean renderProgress = true;
     private boolean stop = false;
@@ -41,7 +39,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
      */
     public NostalgicProgressScreen(ProgressScreen progressScreen)
     {
-        super(Component.empty());
+        super(((ProgressScreenAccess) progressScreen).nt$clearScreenAfterStop());
 
         this.progressScreen = (ProgressScreenAccess) progressScreen;
         this.levelScreen = null;
@@ -55,7 +53,7 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
      */
     public NostalgicProgressScreen(ProgressScreen progressScreen, ReceivingLevelScreen levelScreen)
     {
-        super(Component.empty());
+        super(((ProgressScreenAccess) progressScreen).nt$clearScreenAfterStop());
 
         this.progressScreen = (ProgressScreenAccess) progressScreen;
         this.levelScreen = (ReceivingLevelScreenAccess) levelScreen;
@@ -163,6 +161,15 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
      * {@inheritDoc}
      */
     @Override
+    public boolean isPauseScreen()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void stop()
     {
         this.stop = true;
@@ -199,33 +206,6 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean shouldCloseOnEsc()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean shouldNarrateNavigation()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isPauseScreen()
-    {
-        return false;
-    }
-
-    /**
      * Renders the header and stage if they are non-null.
      *
      * @param graphics The {@link GuiGraphics} instance.
@@ -248,6 +228,14 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
         if (this.minecraft == null)
             return;
 
+        if (this.stop)
+        {
+            if (this.progressScreen.nt$clearScreenAfterStop())
+                this.minecraft.setScreen(null);
+
+            return;
+        }
+
         this.setHeaderAndStage();
 
         if (this.header == null && this.stage == null)
@@ -259,12 +247,6 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
             ProgressRenderer.renderProgressWithInt(this.progress);
 
         this.renderText(graphics);
-
-        if (this.stop)
-        {
-            if (this.progressScreen.nt$clearScreenAfterStop())
-                this.minecraft.setScreen(null);
-        }
     }
 
     /**
@@ -297,5 +279,6 @@ public class NostalgicProgressScreen extends Screen implements ProgressListener
     @Override
     public void progressStagePercentage(int progress)
     {
+        this.progress = progress;
     }
 }
