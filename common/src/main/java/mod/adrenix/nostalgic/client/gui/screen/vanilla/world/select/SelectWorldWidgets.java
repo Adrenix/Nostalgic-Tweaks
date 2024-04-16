@@ -193,6 +193,9 @@ class SelectWorldWidgets implements WidgetManager
             if (world != null)
                 world.deleteWorld();
 
+            this.deleteMode.disable();
+            this.selectWorldScreen.moveAlphaListHome();
+
             return;
         }
 
@@ -200,6 +203,17 @@ class SelectWorldWidgets implements WidgetManager
             world.joinWorld();
         else
             CreateWorldScreen.openFresh(this.minecraft, this.selectWorldScreen);
+    }
+
+    /**
+     * Instructions to perform when the cancel button is pressed in the alpha-like screen.
+     */
+    private void runAlphaOnCancel()
+    {
+        if (this.deleteMode.get())
+            this.deleteMode.disable();
+        else
+            this.selectWorldScreen.onClose();
     }
 
     /**
@@ -243,7 +257,7 @@ class SelectWorldWidgets implements WidgetManager
     {
         final int x = (this.selectWorldScreen.width / 2) - 100;
         final int y = 40;
-        final int maxIndex = this.selectWorldScreen.getMaxAlphaListIndex();
+        final int numberOfWorlds = this.selectWorldScreen.getAllWorlds().size();
         final ArrayList<WorldSelectionList.WorldListEntry> worlds = this.selectWorldScreen.getPagedWorldsForAlpha();
         final NullableHolder<ButtonWidget> lastButton = NullableHolder.empty();
 
@@ -277,22 +291,20 @@ class SelectWorldWidgets implements WidgetManager
 
             lastButton.set(button);
 
-            if (i == 2 && maxIndex != 1)
+            if (i == 2 && numberOfWorlds > 4)
             {
                 ButtonWidget.create(Lang.literal("<"))
                     .leftOf(button, 4)
-                    .tooltip(Lang.Tooltip.KEYBOARD_SHORTCUT, 300L, TimeUnit.MILLISECONDS)
+                    .tooltip(Lang.Tooltip.KEYBOARD_SHORTCUT, 800L, TimeUnit.MILLISECONDS)
                     .infoTooltip(Lang.Worlds.ALPHA_MOVE_LEFT, 45)
-                    .invisibleIf(() -> maxIndex == 0)
                     .enableIf(this.selectWorldScreen::canMoveAlphaLeft)
                     .onPress(this.selectWorldScreen::moveAlphaListIndexLeft)
                     .build(this.selectWorldScreen::addWidget);
 
                 ButtonWidget.create(Lang.literal(">"))
                     .rightOf(button, 4)
-                    .tooltip(Lang.Tooltip.KEYBOARD_SHORTCUT, 300L, TimeUnit.MILLISECONDS)
+                    .tooltip(Lang.Tooltip.KEYBOARD_SHORTCUT, 800L, TimeUnit.MILLISECONDS)
                     .infoTooltip(Lang.Worlds.ALPHA_MOVE_RIGHT, 45)
-                    .invisibleIf(() -> maxIndex == 0)
                     .enableIf(this.selectWorldScreen::canMoveAlphaRight)
                     .onPress(this.selectWorldScreen::moveAlphaListIndexRight)
                     .build(this.selectWorldScreen::addWidget);
@@ -311,7 +323,7 @@ class SelectWorldWidgets implements WidgetManager
             .posX(x)
             .below(deleteWorld, 16)
             .width(ALPHA_BUTTON)
-            .onPress(this.selectWorldScreen::onClose)
+            .onPress(this::runAlphaOnCancel)
             .build(this.selectWorldScreen::addWidget);
     }
 

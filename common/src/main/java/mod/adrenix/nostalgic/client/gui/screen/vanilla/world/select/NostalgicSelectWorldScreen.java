@@ -124,7 +124,12 @@ public class NostalgicSelectWorldScreen extends SelectWorldScreen implements Dyn
      */
     public boolean canMoveAlphaRight()
     {
-        return this.alphaListIndex < this.getMaxAlphaListIndex() - 1;
+        int listed = this.getPagedWorldsForAlpha().size();
+
+        if (listed == 0)
+            return false;
+
+        return this.alphaListIndex < this.getMaxAlphaListIndex() - 1 || listed % 5 == 0;
     }
 
     /**
@@ -157,6 +162,14 @@ public class NostalgicSelectWorldScreen extends SelectWorldScreen implements Dyn
             this.alphaListIndex = Math.min(this.alphaListIndex + 1, this.getMaxAlphaListIndex());
             this.refreshWidgets();
         }
+    }
+
+    /**
+     * Move the alpha screen list index back to the home position.
+     */
+    public void moveAlphaListHome()
+    {
+        this.alphaListIndex = 0;
     }
 
     /**
