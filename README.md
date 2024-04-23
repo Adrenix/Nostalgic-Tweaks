@@ -24,7 +24,7 @@ Mod API is not yet available for 1.20.4 (beta 9).
 ## Rewrite Progress
 
 - Sound Tweaks (✅ 100%)
-- Candy Tweaks (🚧 92%)
+- Candy Tweaks (✅ 100%)
 - Animation Tweaks (❌ 0%)
 - Gameplay Tweaks (🚧 12%)
 - Swing Tweaks (❌ 0%)
