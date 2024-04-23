@@ -14,6 +14,9 @@ import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightmapMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;
+import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
+import mod.adrenix.nostalgic.mixin.util.candy.world.fog.WaterFogRenderer;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import net.minecraft.client.Minecraft;
@@ -57,6 +60,10 @@ abstract class ClientInitializer
 
         LightingMixinHelper.resetLightingCache();
         LightmapMixinHelper.resetLightingCache();
+
+        OverworldFogRenderer.reset();
+        WaterFogRenderer.reset();
+        VoidFogRenderer.reset();
     }
 
     /**

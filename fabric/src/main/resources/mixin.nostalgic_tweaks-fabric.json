@@ -10,6 +10,7 @@
     "candy.item_display.GuiMixin",
     "candy.model_gap_fix.ItemModelGeneratorMixin",
     "candy.tooltip_background.TooltipRenderUtilMixin",
-    "candy.torch_block.TerrainRenderContextMixin"
+    "candy.torch_block.TerrainRenderContextMixin",
+    "candy.world_fog.FogRendererMixin"
   ]
 }

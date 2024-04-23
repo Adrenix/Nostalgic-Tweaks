@@ -329,7 +329,6 @@ public interface CandyTweak
     // World Fog
 
     TweakEnum<WorldFog> OLD_WORLD_FOG = TweakEnum.client(WorldFog.ALPHA_R164, CandyGroup.WORLD_FOG).newForUpdate().build();
-    TweakFlag DISABLE_HORIZON_FOG = TweakFlag.client(false, CandyGroup.WORLD_FOG).newForUpdate().build();
     TweakFlag OLD_SUNRISE_SUNSET_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
     TweakFlag OLD_DARK_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().build();
     TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().alert(TweakAlert.DYNAMIC_FOG).build();
@@ -338,10 +337,22 @@ public interface CandyTweak
 
     // Custom World Fog
 
-    TweakFlag CUSTOM_TERRAIN_FOG = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
-    TweakColor CUSTOM_TERRAIN_FOG_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
-    TweakFlag CUSTOM_NETHER_FOG = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
-    TweakColor CUSTOM_NETHER_FOG_COLOR = TweakColor.client("#FF0000", CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
+    TweakFlag USE_CUSTOM_OVERWORLD_FOG_DENSITY = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
+    TweakFlag USE_CUSTOM_OVERWORLD_FOG_COLOR = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
+    TweakFlag USE_CUSTOM_NETHER_FOG_DENSITY = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
+    TweakFlag USE_CUSTOM_NETHER_FOG_COLOR = TweakFlag.client(false, CandyGroup.WORLD_FOG_CUSTOM).newForUpdate().build();
+
+    // Custom Fog Color
+
+    TweakColor CUSTOM_OVERWORLD_FOG_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_FOG_CUSTOM_COLOR).newForUpdate().alert(TweakAlert.OVERWORLD_FOG_COLOR).build();
+    TweakColor CUSTOM_NETHER_FOG_COLOR = TweakColor.client("#540E0E", CandyGroup.WORLD_FOG_CUSTOM_COLOR).newForUpdate().alert(TweakAlert.NETHER_FOG_COLOR).build();
+
+    // Custom Fog Density
+
+    TweakNumber<Integer> CUSTOM_OVERWORLD_FOG_START = TweakNumber.client(100, CandyGroup.WORLD_FOG_CUSTOM_DENSITY).newForUpdate().alert(TweakAlert.OVERWORLD_FOG_DENSITY).slider(Lang.Slider.PERCENTAGE, 0, 100, "%").build();
+    TweakNumber<Integer> CUSTOM_OVERWORLD_FOG_END = TweakNumber.client(60, CandyGroup.WORLD_FOG_CUSTOM_DENSITY).newForUpdate().alert(TweakAlert.OVERWORLD_FOG_DENSITY).slider(Lang.Slider.DENSITY, 0, 100, "%").build();
+    TweakNumber<Integer> CUSTOM_NETHER_FOG_START = TweakNumber.client(100, CandyGroup.WORLD_FOG_CUSTOM_DENSITY).newForUpdate().alert(TweakAlert.NETHER_FOG_DENSITY).slider(Lang.Slider.PERCENTAGE, 0, 100, "%").build();
+    TweakNumber<Integer> CUSTOM_NETHER_FOG_END = TweakNumber.client(60, CandyGroup.WORLD_FOG_CUSTOM_DENSITY).newForUpdate().alert(TweakAlert.NETHER_FOG_DENSITY).slider(Lang.Slider.DENSITY, 0, 100, "%").build();
 
     // Water Fog
 
@@ -352,20 +363,18 @@ public interface CandyTweak
 
     // World Sky
 
-    TweakNumber<Integer> OLD_CLOUD_HEIGHT = TweakNumber.client(108, CandyGroup.WORLD_SKY).range(108, 192).type(SliderType.CLOUD).whenDisabled(192).build();
-    TweakFlag DISABLE_SUNRISE_SUNSET_COLORS = TweakFlag.client(false, CandyGroup.WORLD_SKY).newForUpdate().build();
+    TweakNumber<Integer> OLD_CLOUD_HEIGHT = TweakNumber.client(128, CandyGroup.WORLD_SKY).range(108, 192).type(SliderType.CLOUD).whenDisabled(192).build();
+    TweakFlag RENDER_SUNRISE_SUNSET_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).whenDisabled(true).newForUpdate().build();
     TweakFlag OLD_SUNRISE_AT_NORTH = TweakFlag.client(true, CandyGroup.WORLD_SKY).build();
     TweakEnum<Generic> OLD_STARS = TweakEnum.client(Generic.ALPHA, CandyGroup.WORLD_SKY).whenDisabled(Generic.MODERN).build();
-    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).newForUpdate().alert(TweakAlert.DYNAMIC_SKY).build();
     TweakEnum<SkyColor> UNIVERSAL_SKY_COLOR = TweakEnum.client(SkyColor.DISABLED, CandyGroup.WORLD_SKY).newForUpdate().alert(TweakAlert.UNIVERSAL_SKY).build();
+    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).newForUpdate().alert(TweakAlert.DYNAMIC_SKY).build();
     TweakFlag OLD_NETHER_SKY = TweakFlag.client(true, CandyGroup.WORLD_SKY).newForUpdate().build();
 
-    // Custom World Sky
+    // Custom Sky
 
-    TweakFlag CUSTOM_WORLD_SKY = TweakFlag.client(false, CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
-    TweakColor CUSTOM_WORLD_SKY_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
-    TweakFlag CUSTOM_NETHER_SKY = TweakFlag.client(false, CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
-    TweakColor CUSTOM_NETHER_SKY_COLOR = TweakColor.client("#FF0000", CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
+    TweakFlag CUSTOM_OVERWORLD_SKY = TweakFlag.client(false, CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
+    TweakColor CUSTOM_OVERWORLD_SKY_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
 
     // Void Sky
 
@@ -377,12 +386,11 @@ public interface CandyTweak
 
     // Void Fog
 
-    TweakFlag DISABLE_VOID_FOG = TweakFlag.client(false, CandyGroup.WORLD_VOID_FOG).newForUpdate().whenDisabled(true).build();
+    TweakFlag RENDER_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
     TweakFlag CREATIVE_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
     TweakFlag CREATIVE_VOID_PARTICLES = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
-    TweakFlag LIGHT_REMOVES_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().whenDisabled(true).build();
-    TweakColor VOID_FOG_COLOR = TweakColor.client("#0C0C0C", CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
-    TweakNumber<Integer> VOID_FOG_ENCROACH = TweakNumber.client(50, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.ENCROACH, 0, 100, "%").build();
+    TweakFlag LIGHT_REMOVES_VOID_FOG = TweakFlag.client(false, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
+    TweakNumber<Integer> VOID_FOG_ENCROACH = TweakNumber.client(70, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.ENCROACH, 0, 100, "%").build();
     TweakNumber<Integer> VOID_FOG_START = TweakNumber.client(50, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.Y_LEVEL, -64, 320).build();
     TweakNumber<Integer> VOID_PARTICLE_START = TweakNumber.client(-47, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.Y_LEVEL, -64, 320).build();
     TweakNumber<Integer> VOID_PARTICLE_RADIUS = TweakNumber.client(16, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.RADIUS, 0, 32).build();

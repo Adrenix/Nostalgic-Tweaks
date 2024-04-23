@@ -307,6 +307,7 @@ public interface Lang
         Translation ENCROACH = from("encroach");
         Translation INTENSITY = from("intensity");
         Translation THICKNESS = from("thickness");
+        Translation PERCENTAGE = from("percentage");
         Translation BLOCK_LIGHT = from("block_light");
         Translation Y_LEVEL = from("y_level");
 
@@ -737,6 +738,10 @@ public interface Lang
         Translation DYNAMIC_SKY = from("dynamic_sky");
         Translation UNIVERSAL_FOG = from("universal_fog");
         Translation UNIVERSAL_SKY = from("universal_sky");
+        Translation OVERWORLD_FOG_DENSITY = from("overworld_fog_density");
+        Translation OVERWORLD_FOG_COLOR = from("overworld_fog_color");
+        Translation NETHER_FOG_DENSITY = from("nether_fog_density");
+        Translation NETHER_FOG_COLOR = from("nether_fog_color");
         Translation FOOD_STACKING = from("food_stacking");
         Translation FOOD_HEALTH = from("food_health");
         Translation WINDOW_TITLE_DISABLED = from("window_title_disabled");

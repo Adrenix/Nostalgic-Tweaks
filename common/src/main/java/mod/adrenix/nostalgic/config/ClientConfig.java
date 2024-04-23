@@ -479,19 +479,30 @@ public class ClientConfig implements ConfigMeta
         // World Fog
 
         public WorldFog oldWorldFog = CandyTweak.OLD_WORLD_FOG.register("oldWorldFog");
-        public boolean disableHorizonFog = CandyTweak.DISABLE_HORIZON_FOG.register("disableHorizonFog");
         public boolean oldNetherFog = CandyTweak.OLD_NETHER_FOG.register("oldNetherFog");
         public boolean oldSunriseSunsetFog = CandyTweak.OLD_SUNRISE_SUNSET_FOG.register("oldSunriseSunsetFog");
         public boolean oldDarkFog = CandyTweak.OLD_DARK_FOG.register("oldDarkFog");
         public boolean oldDynamicFogColor = CandyTweak.OLD_DYNAMIC_FOG_COLOR.register("oldDynamicFogColor");
         public FogColor universalFogColor = CandyTweak.UNIVERSAL_FOG_COLOR.register("universalFogColor");
 
-        // Custom World Fog
+        // Custom Fog
 
-        public boolean customTerrainFog = CandyTweak.CUSTOM_TERRAIN_FOG.register("customTerrainFog");
-        public String customTerrainFogColor = CandyTweak.CUSTOM_TERRAIN_FOG_COLOR.register("customTerrainFogColor");
-        public boolean customNetherFog = CandyTweak.CUSTOM_NETHER_FOG.register("customNetherFog");
+        public boolean useCustomOverworldFogDensity = CandyTweak.USE_CUSTOM_OVERWORLD_FOG_DENSITY.register("useCustomOverworldFogDensity");
+        public boolean useCustomOverworldFogColor = CandyTweak.USE_CUSTOM_OVERWORLD_FOG_COLOR.register("useCustomOverworldFogColor");
+        public boolean useCustomNetherFogDensity = CandyTweak.USE_CUSTOM_NETHER_FOG_DENSITY.register("useCustomNetherFogDensity");
+        public boolean useCustomNetherFogColor = CandyTweak.USE_CUSTOM_NETHER_FOG_COLOR.register("useCustomNetherFogColor");
+
+        // Custom Fog Color
+
+        public String customOverworldFogColor = CandyTweak.CUSTOM_OVERWORLD_FOG_COLOR.register("customOverworldFogColor");
         public String customNetherFogColor = CandyTweak.CUSTOM_NETHER_FOG_COLOR.register("customNetherFogColor");
+
+        // Custom Fog Density
+
+        public int customOverworldFogStart = CandyTweak.CUSTOM_OVERWORLD_FOG_START.register("customOverworldFogStart");
+        public int customOverworldFogEnd = CandyTweak.CUSTOM_OVERWORLD_FOG_END.register("customOverworldFogEnd");
+        public int customNetherFogStart = CandyTweak.CUSTOM_NETHER_FOG_START.register("customNetherFogStart");
+        public int customNetherFogEnd = CandyTweak.CUSTOM_NETHER_FOG_END.register("customNetherFogEnd");
 
         // Water Fog
 
@@ -502,7 +513,7 @@ public class ClientConfig implements ConfigMeta
 
         // World Sky
 
-        public boolean disableSunriseSunsetColors = CandyTweak.DISABLE_SUNRISE_SUNSET_COLORS.register("disableSunriseSunsetColors");
+        public boolean renderSunriseSunsetColor = CandyTweak.RENDER_SUNRISE_SUNSET_COLOR.register("renderSunriseSunsetColor");
         public boolean oldSunriseAtNorth = CandyTweak.OLD_SUNRISE_AT_NORTH.register("oldSunriseAtNorth");
         public Generic oldStars = CandyTweak.OLD_STARS.register("oldStars");
         public boolean oldDynamicSkyColor = CandyTweak.OLD_DYNAMIC_SKY_COLOR.register("oldDynamicSkyColor");
@@ -510,12 +521,10 @@ public class ClientConfig implements ConfigMeta
         public boolean oldNetherSky = CandyTweak.OLD_NETHER_SKY.register("oldNetherSky");
         public int oldCloudHeight = CandyTweak.OLD_CLOUD_HEIGHT.register("oldCloudHeight");
 
-        // Custom World Sky
+        // Custom Sky
 
-        public boolean customWorldSky = CandyTweak.CUSTOM_WORLD_SKY.register("customWorldSky");
-        public String customWorldSkyColor = CandyTweak.CUSTOM_WORLD_SKY_COLOR.register("customWorldSkyColor");
-        public boolean customNetherSky = CandyTweak.CUSTOM_NETHER_SKY.register("customNetherSky");
-        public String customNetherSkyColor = CandyTweak.CUSTOM_NETHER_SKY_COLOR.register("customNetherSkyColor");
+        public boolean customOverworldSky = CandyTweak.CUSTOM_OVERWORLD_SKY.register("customOverworldSky");
+        public String customOverworldSkyColor = CandyTweak.CUSTOM_OVERWORLD_SKY_COLOR.register("customOverworldSkyColor");
 
         // Void Sky
 
@@ -527,11 +536,10 @@ public class ClientConfig implements ConfigMeta
 
         // Void Fog
 
-        public boolean disableVoidFog = CandyTweak.DISABLE_VOID_FOG.register("disableVoidFog");
+        public boolean renderVoidFog = CandyTweak.RENDER_VOID_FOG.register("renderVoidFog");
         public boolean creativeVoidFog = CandyTweak.CREATIVE_VOID_FOG.register("creativeVoidFog");
         public boolean creativeVoidParticles = CandyTweak.CREATIVE_VOID_PARTICLES.register("creativeVoidParticles");
         public boolean lightRemovesVoidFog = CandyTweak.LIGHT_REMOVES_VOID_FOG.register("lightRemovesVoidFog");
-        public String voidFogColor = CandyTweak.VOID_FOG_COLOR.register("voidFogColor");
         public int voidFogEncroach = CandyTweak.VOID_FOG_ENCROACH.register("voidFogEncroach");
         public int voidFogStart = CandyTweak.VOID_FOG_START.register("voidFogStart");
         public int voidParticleStart = CandyTweak.VOID_PARTICLE_START.register("voidParticleStart");

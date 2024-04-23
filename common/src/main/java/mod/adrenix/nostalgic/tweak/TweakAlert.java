@@ -28,6 +28,10 @@ public enum TweakAlert
     DYNAMIC_SKY(TweakAlert::isDynamicSkyConflict, Lang.Alert.DYNAMIC_SKY),
     UNIVERSAL_FOG(TweakAlert::isUniversalFogConflict, Lang.Alert.UNIVERSAL_FOG),
     UNIVERSAL_SKY(TweakAlert::isUniversalSkyConflict, Lang.Alert.UNIVERSAL_SKY),
+    OVERWORLD_FOG_DENSITY(TweakAlert::isOverworldFogDensityConflict, Lang.Alert.OVERWORLD_FOG_DENSITY),
+    OVERWORLD_FOG_COLOR(TweakAlert::isOverworldFogColorConflict, Lang.Alert.OVERWORLD_FOG_COLOR),
+    NETHER_FOG_DENSITY(TweakAlert::isNetherFogDensityConflict, Lang.Alert.NETHER_FOG_DENSITY),
+    NETHER_FOG_COLOR(TweakAlert::isNetherFogColorConflict, Lang.Alert.NETHER_FOG_COLOR),
     VOID_CONFLICT(TweakAlert::isVoidConflict, Lang.Alert.VOID),
     FOOD_HEALTH_CONFLICT(TweakAlert::isCustomFoodHealthConflict, Lang.Alert.FOOD_HEALTH),
     FOOD_STACKING_CONFLICT(TweakAlert::isCustomFoodStackingConflict, Lang.Alert.FOOD_STACKING);
@@ -152,7 +156,7 @@ public enum TweakAlert
     private static boolean isUniversalFogConflict()
     {
         FogColor fogColor = CandyTweak.UNIVERSAL_FOG_COLOR.fromCache();
-        boolean isFogCustom = CandyTweak.CUSTOM_TERRAIN_FOG.fromCache();
+        boolean isFogCustom = CandyTweak.USE_CUSTOM_OVERWORLD_FOG_COLOR.fromCache();
         boolean isFogDynamic = CandyTweak.OLD_DYNAMIC_FOG_COLOR.fromCache();
 
         return fogColor != FogColor.DISABLED && (isFogCustom || isFogDynamic);
@@ -165,7 +169,7 @@ public enum TweakAlert
     private static boolean isUniversalSkyConflict()
     {
         SkyColor skyColor = CandyTweak.UNIVERSAL_SKY_COLOR.fromCache();
-        boolean isSkyCustom = CandyTweak.CUSTOM_WORLD_SKY.fromCache();
+        boolean isSkyCustom = CandyTweak.CUSTOM_OVERWORLD_SKY.fromCache();
         boolean isSkyDynamic = CandyTweak.OLD_DYNAMIC_SKY_COLOR.fromCache();
 
         return skyColor != SkyColor.DISABLED && (isSkyCustom || isSkyDynamic);
@@ -176,7 +180,7 @@ public enum TweakAlert
      */
     private static boolean isDynamicFogConflict()
     {
-        boolean isFogCustom = CandyTweak.CUSTOM_TERRAIN_FOG.fromCache();
+        boolean isFogCustom = CandyTweak.USE_CUSTOM_OVERWORLD_FOG_COLOR.fromCache();
         boolean isFogDynamic = CandyTweak.OLD_DYNAMIC_FOG_COLOR.fromCache();
 
         return isFogCustom && isFogDynamic;
@@ -187,10 +191,42 @@ public enum TweakAlert
      */
     private static boolean isDynamicSkyConflict()
     {
-        boolean isSkyCustom = CandyTweak.CUSTOM_WORLD_SKY.fromCache();
+        boolean isSkyCustom = CandyTweak.CUSTOM_OVERWORLD_SKY.fromCache();
         boolean isSkyDynamic = CandyTweak.OLD_DYNAMIC_SKY_COLOR.fromCache();
 
         return isSkyCustom && isSkyDynamic;
+    }
+
+    /**
+     * Checks if the user has not enabled custom overworld fog coloring.
+     */
+    private static boolean isOverworldFogColorConflict()
+    {
+        return !CandyTweak.USE_CUSTOM_OVERWORLD_FOG_COLOR.fromCache();
+    }
+
+    /**
+     * Checks if the user has not enabled custom overworld fog density.
+     */
+    private static boolean isOverworldFogDensityConflict()
+    {
+        return !CandyTweak.USE_CUSTOM_OVERWORLD_FOG_DENSITY.fromCache();
+    }
+
+    /**
+     * Checks if the user has not enabled custom Nether fog coloring.
+     */
+    private static boolean isNetherFogColorConflict()
+    {
+        return !CandyTweak.USE_CUSTOM_NETHER_FOG_COLOR.fromCache();
+    }
+
+    /**
+     * Checks if the user has not enabled custom Nether fog density.
+     */
+    private static boolean isNetherFogDensityConflict()
+    {
+        return !CandyTweak.USE_CUSTOM_NETHER_FOG_DENSITY.fromCache();
     }
 
     /**

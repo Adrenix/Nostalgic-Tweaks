@@ -88,6 +88,8 @@ public interface CandyGroup
     Container WORLD = Container.group(Category.EYE_CANDY, "world").color(0x46A2EE).icon(Icons.FLAT_EARTH).build();
     Container WORLD_FOG = Container.group(WORLD, "world_fog").color(0xFFFFFF).icon(Icons.FOG_EARTH).build();
     Container WORLD_FOG_CUSTOM = Container.group(WORLD_FOG, "world_fog_custom").color(0xDFADD5).icon(Icons.PINK_FOG).build();
+    Container WORLD_FOG_CUSTOM_DENSITY = Container.group(WORLD_FOG_CUSTOM, "world_fog_custom_density").color(0x969696).icon(Icons.VOID_FOG).build();
+    Container WORLD_FOG_CUSTOM_COLOR = Container.group(WORLD_FOG_CUSTOM, "world_fog_custom_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
     Container WORLD_FOG_WATER = Container.group(WORLD_FOG, "world_fog_water").color(0x8ED1FF).icon(Icons.WATER_FOG).build();
     Container WORLD_SKY = Container.group(WORLD, "world_sky").color(0xFEDB5B).icon(Icons.SKY).build();
     Container WORLD_SKY_CUSTOM = Container.group(WORLD_SKY, "world_sky_custom").color(0xEBC8E3).icon(Icons.PINK_SKY).build();
