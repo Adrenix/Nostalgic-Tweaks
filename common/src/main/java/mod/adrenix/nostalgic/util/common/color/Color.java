@@ -547,6 +547,17 @@ public class Color
     }
 
     /**
+     * Creates an sRGB color with the given {@code rgb[3]} or {@code rgba[4]} RGB/A array. The alpha component is
+     * optional, and if missing, will be defaulted to {@code 1.0F}.
+     *
+     * @param rgba An RGB[3] or RGBA[4] array.
+     */
+    public Color(float[] rgba)
+    {
+        this(rgba[0], rgba[1], rgba[2], rgba.length == 4 ? rgba[3] : 1.0F);
+    }
+
+    /**
      * Creates an sRGB color with the given {@code int[4]} RGBA array.
      *
      * @param rgba An {@code int[4]} array where index 0 represents {@code R} and index 3 represents {@code A}.

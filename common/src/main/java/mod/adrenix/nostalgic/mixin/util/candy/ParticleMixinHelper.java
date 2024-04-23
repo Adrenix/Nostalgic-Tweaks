@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TerrainParticle;
@@ -80,7 +81,7 @@ public abstract class ParticleMixinHelper
             return null;
         else if (CandyTweak.DISABLE_LAVA_DRIP_PARTICLES.get() && type == ParticleTypes.DRIPPING_LAVA)
             return null;
-        else if (CandyTweak.DISABLE_NETHER_PARTICLES.get())
+        else if (CandyTweak.DISABLE_NETHER_PARTICLES.get() && GameUtil.isInNether())
         {
             if (typeEqualTo(type, ParticleTypes.ASH, ParticleTypes.WHITE_ASH, ParticleTypes.WARPED_SPORE, ParticleTypes.CRIMSON_SPORE))
                 return null;

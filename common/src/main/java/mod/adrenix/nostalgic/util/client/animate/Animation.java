@@ -63,6 +63,20 @@ public interface Animation
     double getValue();
 
     /**
+     * Use this method to retrieve a float value that can be used for animating a specific value. Linear interpolation
+     * is applied to this float value using the progress between two ticks (also known as the game's "frame time").
+     *
+     * @return An animated value is usually between 0.0F and 1.0F. This range is <b color=red>not</b> enforced and some
+     * animators may yield a value outside of this range depending on the purpose of the animation. It is up to the
+     * caller to perform bound enforcement as needed.
+     */
+    @PublicAPI
+    default float getFloat()
+    {
+        return (float) this.getValue();
+    }
+
+    /**
      * An animator instance will only be ticked if an animation is currently taking place. The animation is considered
      * "finished" if both the last and current values are equal. Additionally, if the tick progress reaches zero while
      * the animator is in "reverse", or if the tick progress reaches the maximum duration in ticks when moving
@@ -159,6 +173,16 @@ public interface Animation
      */
     @PublicAPI
     void play();
+
+    /**
+     * Reset the animation and then play it.
+     */
+    @PublicAPI
+    default void resetAndPlay()
+    {
+        this.reset();
+        this.play();
+    }
 
     /**
      * If the animation has already played, then rewind. If the animation hasn't moved yet, then this will play the

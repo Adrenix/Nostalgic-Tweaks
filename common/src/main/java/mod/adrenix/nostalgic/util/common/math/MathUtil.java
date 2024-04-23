@@ -179,6 +179,29 @@ public abstract class MathUtil
     }
 
     /**
+     * Check if the two given arrays are within the given {@code tolerance}.
+     *
+     * @param a         The first array of floats to compare.
+     * @param b         The second array of floats to compare.
+     * @param tolerance The maximum distance each float can be from each other.
+     * @return Whether all three floats in each array are within the given {@code tolerance}.
+     */
+    @PublicAPI
+    public static boolean tolerance(float[] a, float[] b, float tolerance)
+    {
+        if (a.length != b.length)
+            throw new AssertionError("Arrays must be the same length!");
+
+        for (int i = 0; i < a.length; i++)
+        {
+            if (!tolerance(a[i], b[i], tolerance))
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Checks if a point is within a bounding box.
      *
      * @param pointX The x-point to check against.
@@ -443,6 +466,46 @@ public abstract class MathUtil
         }
 
         return largest;
+    }
+
+    /**
+     * Get the smallest number within the given varargs.
+     *
+     * @param numbers The numbers to check.
+     * @return The smallest number.
+     */
+    @PublicAPI
+    public static int getSmallest(int... numbers)
+    {
+        int smallest = Integer.MAX_VALUE;
+
+        for (int number : numbers)
+        {
+            if (number < smallest)
+                smallest = number;
+        }
+
+        return smallest;
+    }
+
+    /**
+     * Get the smallest number within the given varargs.
+     *
+     * @param numbers The numbers to check.
+     * @return The smallest number.
+     */
+    @PublicAPI
+    public static float getSmallest(float... numbers)
+    {
+        float smallest = Float.MAX_VALUE;
+
+        for (float number : numbers)
+        {
+            if (number < smallest)
+                smallest = number;
+        }
+
+        return smallest;
     }
 
     /**

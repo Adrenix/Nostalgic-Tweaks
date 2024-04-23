@@ -1,6 +1,9 @@
 package mod.adrenix.nostalgic.util.common.world;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -10,6 +13,18 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public abstract class BlockUtil
 {
+    /**
+     * Get a random block position within the given {@code bounds}.
+     *
+     * @param randomSource The {@link RandomSource} instance.
+     * @param bound        How far out from the source a random position can be.
+     * @return A random {@link BlockPos} instance.
+     */
+    public static BlockPos getRandom(RandomSource randomSource, int bound)
+    {
+        return new BlockPos(randomSource.nextInt(bound), randomSource.nextInt(bound), randomSource.nextInt(bound));
+    }
+
     /**
      * Check if the given {@link BlockState} matches any of the given blocks.
      *
@@ -61,5 +76,17 @@ public abstract class BlockUtil
     public static boolean isWaterLike(BlockState blockState)
     {
         return blockState.getFluidState().is(FluidTags.WATER);
+    }
+
+    /**
+     * Check if the given block position is near the bedrock layer.
+     *
+     * @param blockPos The {@link BlockPos} to check.
+     * @param level    The {@link Level} to get height context from.
+     * @return Whether the given position is less than five blocks above the minimum build height.
+     */
+    public static boolean isNearBedrock(BlockPos blockPos, Level level)
+    {
+        return blockPos.getY() < level.getMinBuildHeight() + 5;
     }
 }

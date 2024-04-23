@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.common.color;
 
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import net.minecraft.util.Mth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,15 +98,20 @@ public abstract class HexUtil
     }
 
     /**
-     * Converts an array of four floats (RGBA) into an ARGB integer.
+     * Converts an array of four normalized floats (RGBA) into an ARGB integer.
      *
-     * @param rgba An array of four floats (RGBA).
+     * @param rgba An array of four normalized floats (RGBA). All floats are clamped.
      * @return An ARGB integer.
      */
     @PublicAPI
     public static int parseInt(float[] rgba)
     {
-        return (int) (rgba[3] * 255.0F) << 24 | (int) (rgba[0] * 255.0F) << 16 | (int) (rgba[1] * 255.0F) << 8 | (int) (rgba[2] * 255.0F);
+        int r = (int) (Mth.clamp(rgba[0], 0.0F, 1.0F) * 255.0F);
+        int g = (int) (Mth.clamp(rgba[1], 0.0F, 1.0F) * 255.0F);
+        int b = (int) (Mth.clamp(rgba[2], 0.0F, 1.0F) * 255.0F);
+        int a = (int) (Mth.clamp(rgba[3], 0.0F, 1.0F) * 255.0F);
+
+        return a << 24 | r << 16 | g << 8 | b;
     }
 
     /**

@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -23,7 +23,7 @@ public abstract class ClientLevelMixin
     )
     private boolean nt_world_lighting$modifyNetherShading(boolean isConstantAmbientLight)
     {
-        if (CandyTweak.OLD_NETHER_LIGHTING.get() && ((ClientLevel) (Object) this).dimension() == Level.NETHER)
+        if (GameUtil.isInNether() && CandyTweak.OLD_NETHER_LIGHTING.get())
             return false;
 
         return isConstantAmbientLight;

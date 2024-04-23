@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.common.data;
 
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.function.ForEachWithPrevious;
 
 import java.util.Arrays;
@@ -118,5 +119,37 @@ public class FlagHolder extends Holder<Boolean>
     public void disable()
     {
         this.set(false);
+    }
+
+    /**
+     * @return Whether the holder was enabled.
+     */
+    @PublicAPI
+    public boolean ifDisabledThenEnable()
+    {
+        if (!this.value)
+        {
+            this.enable();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Whether the holder was disabled.
+     */
+    @PublicAPI
+    public boolean ifEnabledThenDisable()
+    {
+        if (this.value)
+        {
+            this.disable();
+
+            return true;
+        }
+
+        return false;
     }
 }
