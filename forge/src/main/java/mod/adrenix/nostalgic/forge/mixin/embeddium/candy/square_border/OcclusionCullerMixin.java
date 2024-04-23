@@ -31,7 +31,7 @@ public abstract class OcclusionCullerMixin
         method = "isWithinRenderDistance",
         at = @At(value = "RETURN")
     )
-    private static boolean nt_sodium_square_border$isWithinRenderDistance(boolean isWithinRenderDistance, CameraTransform camera, RenderSection section, float maxDistance)
+    private static boolean nt_embeddium_square_border$isWithinRenderDistance(boolean isWithinRenderDistance, CameraTransform camera, RenderSection section, float maxDistance)
     {
         if (!CandyTweak.OLD_SQUARE_BORDER.get())
             return isWithinRenderDistance;
