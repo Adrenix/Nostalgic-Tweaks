@@ -38,6 +38,7 @@
     "candy.flat_items.ItemRendererMixin",
     "candy.furnace_screen.AbstractContainerScreenMixin",
     "candy.furnace_screen.AbstractFurnaceScreenMixin",
+    "candy.grass_texture.ModelBakeryMixin",
     "candy.gui_background.ScreenMixin",
     "candy.inventory_screen.InventoryArmorSlotMixin",
     "candy.inventory_screen.InventoryScreenMixin",
