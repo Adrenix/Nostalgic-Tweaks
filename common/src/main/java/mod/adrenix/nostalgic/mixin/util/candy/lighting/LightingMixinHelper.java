@@ -255,7 +255,7 @@ public abstract class LightingMixinHelper
         Level level = Minecraft.getInstance().level;
 
         if (level == null || skyLight <= 0)
-            return Math.max(skyLight, blockLight);
+            return 0;
 
         int maxLightLevel = level.getMaxLightLevel();
         int lightFromTime = TIME_SKYLIGHT.get();
