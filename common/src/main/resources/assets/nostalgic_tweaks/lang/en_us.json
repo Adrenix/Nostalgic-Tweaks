@@ -734,6 +734,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldGrassSideTexture": "Old Grass Side Texture",
   "gui.nostalgic_tweaks.config.eyeCandy.oldGrassSideTexture.info": "Removes the grass color from the sides of grass blocks.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldGrassSideTexture.search": "Grass, Fast, Side",
+  "gui.nostalgic_tweaks.config.eyeCandy.removeMipmapTexture": "Remove Mipmap Texturing",
+  "gui.nostalgic_tweaks.config.eyeCandy.removeMipmapTexture.info": "Removes the §e\"smoothing\"§r of textures in the distance. This will§c override§r any value set by the§d Mipmap Levels§r option in the game's video settings.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOutlines": "Full Block Hitbox Outlines",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOutlines.info": "Choose which blocks will render a full block hitbox outline. This is an§e aesthetic§r tweak and does§c not§r change the hitbox itself.",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineColor": "Hitbox Outline Color",
