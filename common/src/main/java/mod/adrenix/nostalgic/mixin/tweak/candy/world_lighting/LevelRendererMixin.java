@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.Camera;
 import net.minecraft.client.PrioritizeChunkUpdates;
@@ -83,7 +84,8 @@ public abstract class LevelRendererMixin
                 int y = blockPos.getY() & 15;
                 int z = blockPos.getZ() & 15;
 
-                chunk.getSkyLightSources().update(chunk, x, y, z);
+                NullableAction.attempt(chunk.getSkyLightSources(), skyLightSources -> skyLightSources.update(chunk, x, y, z));
+
                 chunk.getLevel().getLightEngine().checkBlock(blockPos);
             }
             else if (this.isSectionCompiled(chunkPos.getWorldPosition()))
