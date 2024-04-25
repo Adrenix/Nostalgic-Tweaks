@@ -702,7 +702,7 @@ public class ClientConfig implements ConfigMeta
     {
         // Arm
 
-        public boolean oldArmSway = AnimationTweak.OLD_ARM_SWAY.register("oldArmSway");
+        public boolean preventArmSway = AnimationTweak.PREVENT_ARM_SWAY.register("preventArmSway");
         public boolean armSwayMirror = AnimationTweak.ARM_SWAY_MIRROR.register("armSwayMirror");
         public int armSwayIntensity = AnimationTweak.ARM_SWAY_INTENSITY.register("armSwayIntensity");
         public boolean oldSwing = AnimationTweak.OLD_SWING.register("oldSwing");

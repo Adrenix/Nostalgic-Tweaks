@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.tweak.config;
 
+import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.container.group.AnimationGroup;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import mod.adrenix.nostalgic.tweak.factory.TweakNumber;
@@ -8,16 +9,11 @@ import mod.adrenix.nostalgic.tweak.gui.SliderType;
 // @formatter:off
 public interface AnimationTweak
 {
-    // Constants
-
-    // TODO: Move to animation utility
-    float SNEAK_HEIGHT = 1.41F;
-
     // Arm
 
-    TweakFlag OLD_ARM_SWAY = TweakFlag.client(true, AnimationGroup.ARM).build();
-    TweakFlag ARM_SWAY_MIRROR = TweakFlag.client(false, AnimationGroup.ARM).load().build();
-    TweakNumber<Integer> ARM_SWAY_INTENSITY = TweakNumber.client(100, AnimationGroup.ARM).slider(0, 300, 10, SliderType.INTENSITY).build();
+    TweakFlag PREVENT_ARM_SWAY = TweakFlag.client(true, AnimationGroup.ARM).build();
+    TweakFlag ARM_SWAY_MIRROR = TweakFlag.client(false, AnimationGroup.ARM).alert(TweakAlert.ARM_SWAY_CONFLICT).build();
+    TweakNumber<Integer> ARM_SWAY_INTENSITY = TweakNumber.client(100, AnimationGroup.ARM).alert(TweakAlert.ARM_SWAY_CONFLICT).slider(0, 300, 10, SliderType.INTENSITY).build();
 
     TweakFlag OLD_SWING = TweakFlag.client(true, AnimationGroup.ARM).build();
     TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM).newForUpdate().build();

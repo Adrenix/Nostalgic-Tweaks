@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.tweak;
 
+import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
@@ -34,7 +35,8 @@ public enum TweakAlert
     NETHER_FOG_COLOR(TweakAlert::isNetherFogColorConflict, Lang.Alert.NETHER_FOG_COLOR),
     VOID_CONFLICT(TweakAlert::isVoidConflict, Lang.Alert.VOID),
     FOOD_HEALTH_CONFLICT(TweakAlert::isCustomFoodHealthConflict, Lang.Alert.FOOD_HEALTH),
-    FOOD_STACKING_CONFLICT(TweakAlert::isCustomFoodStackingConflict, Lang.Alert.FOOD_STACKING);
+    FOOD_STACKING_CONFLICT(TweakAlert::isCustomFoodStackingConflict, Lang.Alert.FOOD_STACKING),
+    ARM_SWAY_CONFLICT(TweakAlert::isArmSwayConflict, Lang.Alert.ARM_SWAY);
 
     /* Fields */
 
@@ -243,5 +245,13 @@ public enum TweakAlert
     private static boolean isCustomFoodStackingConflict()
     {
         return !GameplayTweak.OLD_FOOD_STACKING.fromCache();
+    }
+
+    /**
+     * Checks if the user has the old arm sway tweak enabled. If so, custom arm sway tweaks will not work.
+     */
+    private static boolean isArmSwayConflict()
+    {
+        return AnimationTweak.PREVENT_ARM_SWAY.fromCache();
     }
 }

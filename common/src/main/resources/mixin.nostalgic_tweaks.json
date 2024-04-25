@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
+    "animation.arm_sway.ItemInHandRendererMixin",
     "candy.ambient_occlusion.BlockBehaviourMixin",
     "candy.anvil_screen.AnvilScreenMixin",
     "candy.block_hitbox.LevelRendererMixin",
