@@ -2,6 +2,8 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.grass_texture;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import net.minecraft.client.GraphicsStatus;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +28,10 @@ public abstract class ModelBakeryMixin
         String namespace = resourceLocation.getNamespace();
         String path = resourceLocation.getPath();
         String modId = NostalgicTweaks.MOD_ID;
-        boolean isOldGrass = CandyTweak.OLD_GRASS_SIDE_TEXTURE.get();
+
+        boolean isGraphicsFast = Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FAST;
+        boolean isFastGrass = CandyTweak.OLD_FAST_GRASS_TEXTURE.get() && isGraphicsFast;
+        boolean isOldGrass = CandyTweak.OLD_GRASS_SIDE_TEXTURE.get() || isFastGrass;
 
         if (!namespace.equals(minecraft))
             return resourceLocation;

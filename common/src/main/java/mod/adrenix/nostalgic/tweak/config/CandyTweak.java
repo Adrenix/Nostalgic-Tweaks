@@ -22,6 +22,7 @@ public interface CandyTweak
 
     TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag OLD_GRASS_SIDE_TEXTURE = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
+    TweakFlag OLD_FAST_GRASS_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag REMOVE_MIPMAP_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().ignoreIf(ModTracker.SODIUM::isNotInstalled).build();
     TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(DefaultListing.ambientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();

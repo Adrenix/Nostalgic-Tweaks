@@ -166,6 +166,7 @@ public class ClientConfig implements ConfigMeta
 
         public boolean sodiumWaterAo = CandyTweak.SODIUM_WATER_AO.register("sodiumWaterAo");
         public boolean oldGrassSideTexture = CandyTweak.OLD_GRASS_SIDE_TEXTURE.register("oldGrassSideTexture");
+        public boolean oldFastGrassTexture = CandyTweak.OLD_FAST_GRASS_TEXTURE.register("oldFastGrassTexture");
         public boolean removeMipmapTexture = CandyTweak.REMOVE_MIPMAP_TEXTURE.register("removeMipmapTexture");
         public ItemSet ambientOcclusionBlocks = CandyTweak.AMBIENT_OCCLUSION_BLOCKS.register("ambientOcclusionBlocks");
         public ItemSet disableBlockOffsets = CandyTweak.DISABLE_BLOCK_OFFSETS.register("disableBlockOffsets");
