@@ -1167,7 +1167,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldSunriseSunsetFog": "Old Sunrise/Sunset Fog",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSunriseSunsetFog.info": "Removes the custom fog color that is applied during a sunrise or sunset.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldDarkFog": "Old Dark Fog",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldDarkFog.info": "Bring back the fog getting darker depending on the light surrounding the player. This will§e only§r be applied to render distances§6 less than or equal§r to§b 8§r.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldDarkFog.info": "The fog will get darker depending on the skylight above the player.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldDarkFog.search": "Dark, Black, Gray, Grey",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWorldFog": "Old World Fog",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWorldFog.info": "Change the world fog rendering based on the selected game version.",
