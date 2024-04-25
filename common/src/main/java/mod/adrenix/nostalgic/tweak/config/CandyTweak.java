@@ -264,12 +264,12 @@ public interface CandyTweak
     TweakFlag DISABLE_LIGHT_FLICKER = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).build();
     TweakFlag INVERTED_BLOCK_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).newForUpdate().build();
     TweakFlag OLD_LEAVES_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
-    TweakFlag OLD_WATER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
-    TweakFlag CHEST_LIGHT_BLOCK = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
+    TweakFlag OLD_WATER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().conflictMods(ModTracker.STARLIGHT).build();
+    TweakFlag CHEST_LIGHT_BLOCK = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().conflictMods(ModTracker.STARLIGHT).build();
 
     // Light Engine
 
-    TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE).reloadChunks().build();
+    TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE).conflictMods(ModTracker.STARLIGHT).build();
     TweakFlag OLD_SMOOTH_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_NETHER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_CLASSIC_ENGINE = TweakFlag.server(false, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().warningTag().build();
