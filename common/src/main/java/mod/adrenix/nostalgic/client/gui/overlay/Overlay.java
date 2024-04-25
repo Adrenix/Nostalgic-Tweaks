@@ -1096,6 +1096,9 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
         NostalgicTweaks.LOGGER.debug(String.format("mouseX: %s | mouseY: %s", mouseX, mouseY));
 
         boolean isWidgetClicked = this.isEventListened(widget -> {
+            if (this.widgets.external.contains(widget) && !this.isMouseInsideWindow(mouseX, mouseY))
+                return false;
+
             boolean isClicked = widget.mouseClicked(mouseX, mouseY, button);
 
             if (isClicked)
@@ -1118,7 +1121,7 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
         else if (this.borderless())
             this.close();
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return false;
     }
 
     /**
