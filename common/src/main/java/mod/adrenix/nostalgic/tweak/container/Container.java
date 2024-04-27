@@ -81,7 +81,7 @@ public class Container
         }
         catch (Throwable throwable)
         {
-            String header = String.format("Container (%s) failed inspection: ", container.toString());
+            String header = String.format("Container (%s) failed inspection: ", container.getJsonPathId());
             String message = header + throwable.getMessage();
 
             throw new AssertionError(message, throwable.getCause());
@@ -182,7 +182,7 @@ public class Container
             this.category = this;
 
             if (this.isDuplicated(CATEGORIES, this))
-                throw new AssertionError(String.format("Cannot have duplicate categories (%s)", this));
+                throw new AssertionError(String.format("Cannot have duplicate categories (%s)", this.getJsonPathId()));
 
             if (!this.isRoot())
                 CATEGORIES.add(this);
@@ -193,7 +193,7 @@ public class Container
             this.category = this.getCategory();
 
             if (this.isDuplicated(GROUPS, this))
-                throw new AssertionError(String.format("Cannot have duplicate groups (%s)", this));
+                throw new AssertionError(String.format("Cannot have duplicate groups (%s)", this.getJsonPathId()));
 
             GROUPS.add(this);
         }
@@ -239,7 +239,7 @@ public class Container
     private boolean isDuplicated(LinkedHashSet<Container> checkSet, Container container)
     {
         Optional<Container> duplicate = checkSet.stream()
-            .filter(checking -> Objects.equals(checking.toString(), container.toString()) && !checking.equals(container))
+            .filter(checking -> Objects.equals(checking.getJsonPathId(), container.getJsonPathId()) && !checking.equals(container))
             .findFirst();
 
         return duplicate.isPresent();
