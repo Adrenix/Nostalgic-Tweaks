@@ -6,6 +6,10 @@
   "priority": 1001,
   "client": [
     "animation.arm_sway.ItemInHandRendererMixin",
+    "animation.swing.ItemInHandRendererMixin",
+    "animation.swing.LocalPlayerMixin",
+    "animation.swing.MinecraftMixin",
+    "animation.swing.PlayerMixin",
     "candy.ambient_occlusion.BlockBehaviourMixin",
     "candy.anvil_screen.AnvilScreenMixin",
     "candy.block_hitbox.LevelRendererMixin",

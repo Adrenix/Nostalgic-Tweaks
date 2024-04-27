@@ -498,6 +498,8 @@
 
   "gui.nostalgic_tweaks.container.animation": "Animation",
   "gui.nostalgic_tweaks.container.animation.arm": "Arm Animations",
+  "gui.nostalgic_tweaks.container.animation.arm_sway": "Arm Sway",
+  "gui.nostalgic_tweaks.container.animation.arm_swing": "Arm Swing",
   "gui.nostalgic_tweaks.container.animation.mob": "Mob Animations",
   "gui.nostalgic_tweaks.container.animation.player": "Player Animations",
   "gui.nostalgic_tweaks.container.animation.item": "Item Animations",
@@ -1502,8 +1504,10 @@
   "gui.nostalgic_tweaks.config.animation.oldSwingDropping.info": "Disable the swinging animation that occurs when dropping an item on the ground.",
   "gui.nostalgic_tweaks.config.animation.oldSwingInterrupt": "Old Swing Interrupt",
   "gui.nostalgic_tweaks.config.animation.oldSwingInterrupt.info": "Reset the swing animation everytime the player attacks, regardless of whether the player is in the middle of a swing animation.",
-  "gui.nostalgic_tweaks.config.animation.oldClassicSwing": "Old Classic Swing",
-  "gui.nostalgic_tweaks.config.animation.oldClassicSwing.info": "Bring back the arm swinging animation from Minecraft classic.",
+  "gui.nostalgic_tweaks.config.animation.oldClassicHitSwing": "Old Classic Hit Swing",
+  "gui.nostalgic_tweaks.config.animation.oldClassicHitSwing.info": "Bring back the arm swinging animation from Minecraft classic when the arm is hitting.",
+  "gui.nostalgic_tweaks.config.animation.oldClassicPlaceSwing": "Old Classic Place Swing",
+  "gui.nostalgic_tweaks.config.animation.oldClassicPlaceSwing.info": "Bring back the arm swinging animation from Minecraft classic when the arm is placing.",
 
   "gui.nostalgic_tweaks.config.animation.oldItemCooldown": "Disable Cooldown",
   "gui.nostalgic_tweaks.config.animation.oldItemCooldown.info": "Disable the animation modifier that changes how fast an item will appear after a swing or change in slot.",

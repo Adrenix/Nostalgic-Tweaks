@@ -6,6 +6,7 @@
   "priority": 1001,
   "client": [
     "LivingEntityImpl",
+    "LocalPlayerImpl",
     "PlayerImpl"
   ]
 }

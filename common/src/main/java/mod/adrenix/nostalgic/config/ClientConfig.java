@@ -709,7 +709,8 @@ public class ClientConfig implements ConfigMeta
         public boolean oldSwing = AnimationTweak.OLD_SWING.register("oldSwing");
         public boolean oldSwingInterrupt = AnimationTweak.OLD_SWING_INTERRUPT.register("oldSwingInterrupt");
         public boolean oldSwingDropping = AnimationTweak.OLD_SWING_DROPPING.register("oldSwingDropping");
-        public boolean oldClassicSwing = AnimationTweak.OLD_CLASSIC_SWING.register("oldClassicSwing");
+        public boolean oldClassicHitSwing = AnimationTweak.OLD_CLASSIC_HIT_SWING.register("oldClassicHitSwing");
+        public boolean oldClassicPlaceSwing = AnimationTweak.OLD_CLASSIC_PLACE_SWING.register("oldClassicPlaceSwing");
 
         // Item
 

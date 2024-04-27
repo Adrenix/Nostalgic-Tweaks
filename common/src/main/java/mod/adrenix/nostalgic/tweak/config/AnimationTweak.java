@@ -11,14 +11,15 @@ public interface AnimationTweak
 {
     // Arm
 
-    TweakFlag PREVENT_ARM_SWAY = TweakFlag.client(true, AnimationGroup.ARM).build();
-    TweakFlag ARM_SWAY_MIRROR = TweakFlag.client(false, AnimationGroup.ARM).alert(TweakAlert.ARM_SWAY_CONFLICT).build();
-    TweakNumber<Integer> ARM_SWAY_INTENSITY = TweakNumber.client(100, AnimationGroup.ARM).alert(TweakAlert.ARM_SWAY_CONFLICT).slider(0, 300, 10, SliderType.INTENSITY).build();
+    TweakFlag PREVENT_ARM_SWAY = TweakFlag.client(true, AnimationGroup.ARM_SWAY).build();
+    TweakFlag ARM_SWAY_MIRROR = TweakFlag.client(false, AnimationGroup.ARM_SWAY).alert(TweakAlert.ARM_SWAY_CONFLICT).build();
+    TweakNumber<Integer> ARM_SWAY_INTENSITY = TweakNumber.client(100, AnimationGroup.ARM_SWAY).alert(TweakAlert.ARM_SWAY_CONFLICT).slider(0, 300, 10, SliderType.INTENSITY).build();
 
-    TweakFlag OLD_SWING = TweakFlag.client(true, AnimationGroup.ARM).build();
-    TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM).newForUpdate().build();
-    TweakFlag OLD_SWING_DROPPING = TweakFlag.client(true, AnimationGroup.ARM).build();
-    TweakFlag OLD_CLASSIC_SWING = TweakFlag.client(false, AnimationGroup.ARM).newForUpdate().build();
+    TweakFlag OLD_SWING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
+    TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM_SWING).newForUpdate().build();
+    TweakFlag OLD_SWING_DROPPING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
+    TweakFlag OLD_CLASSIC_HIT_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
+    TweakFlag OLD_CLASSIC_PLACE_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
 
     // Item
 
