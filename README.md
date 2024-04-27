@@ -25,6 +25,6 @@ Mod API is not yet available for 1.20.4 (beta 9).
 
 - Sound Tweaks (✅ 100%)
 - Candy Tweaks (✅ 100%)
-- Animation Tweaks (🚧 14%)
+- Animation Tweaks (🚧 33%)
 - Gameplay Tweaks (🚧 12%)
 - Swing Tweaks (❌ 0%)
