@@ -6,6 +6,8 @@
   "priority": 1001,
   "client": [
     "animation.arm_sway.ItemInHandRendererMixin",
+    "animation.held_item.ItemInHandRendererMixin",
+    "animation.held_item.LivingEntityMixin",
     "animation.swing.ItemInHandRendererMixin",
     "animation.swing.LocalPlayerMixin",
     "animation.swing.MinecraftMixin",
