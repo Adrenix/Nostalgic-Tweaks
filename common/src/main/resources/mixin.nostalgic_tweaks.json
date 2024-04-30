@@ -6,8 +6,12 @@
   "priority": 1001,
   "client": [
     "animation.arm_sway.ItemInHandRendererMixin",
+    "animation.ghast_charge.GhastRendererMixin",
     "animation.held_item.ItemInHandRendererMixin",
     "animation.held_item.LivingEntityMixin",
+    "animation.mob_arms.AbstractZombieModelMixin",
+    "animation.mob_arms.AnimationUtilsMixin",
+    "animation.mob_arms.SkeletonModelMixin",
     "animation.swing.ItemInHandRendererMixin",
     "animation.swing.LocalPlayerMixin",
     "animation.swing.MinecraftMixin",
