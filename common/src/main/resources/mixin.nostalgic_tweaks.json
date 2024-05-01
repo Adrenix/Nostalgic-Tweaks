@@ -14,6 +14,7 @@
     "animation.mob_arms.SkeletonModelMixin",
     "animation.player.GameRendererMixin",
     "animation.player.LivingEntityMixin",
+    "animation.player.LocalPlayerMixin",
     "animation.swing.ItemInHandRendererMixin",
     "animation.swing.LocalPlayerMixin",
     "animation.swing.MinecraftMixin",
@@ -104,6 +105,7 @@
     "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin"
   ],
   "mixins": [
+    "animation.player.PlayerMixin",
     "candy.chest_block.ChestBlockMixin",
     "candy.chest_block.EnderChestBlockMixin",
     "candy.item_merge.BlockMixin",
