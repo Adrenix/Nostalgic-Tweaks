@@ -12,6 +12,7 @@
     "animation.mob_arms.AbstractZombieModelMixin",
     "animation.mob_arms.AnimationUtilsMixin",
     "animation.mob_arms.SkeletonModelMixin",
+    "animation.player.GameRendererMixin",
     "animation.player.LivingEntityMixin",
     "animation.swing.ItemInHandRendererMixin",
     "animation.swing.LocalPlayerMixin",
