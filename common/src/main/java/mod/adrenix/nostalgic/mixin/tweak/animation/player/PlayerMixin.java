@@ -1,6 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.mixin.util.animation.AnimationConstant;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
@@ -38,5 +40,23 @@ public abstract class PlayerMixin
             return false;
 
         return isFlying;
+    }
+
+    /**
+     * Changes the camera position when the player is crouching on the client.
+     */
+    @ModifyExpressionValue(
+        method = "getStandingEyeHeight",
+        at = @At(
+            value = "CONSTANT",
+            args = "floatValue=1.27F"
+        )
+    )
+    private float nt_player_animation$modifyStandingEyeHeight(float eyeHeight)
+    {
+        if (NostalgicTweaks.isServer())
+            return eyeHeight;
+
+        return AnimationTweak.OLD_SNEAKING.get() ? AnimationConstant.SNEAK_EYE_HEIGHT : eyeHeight;
     }
 }
