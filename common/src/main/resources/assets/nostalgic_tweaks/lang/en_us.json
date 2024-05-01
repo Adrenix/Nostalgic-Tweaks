@@ -1528,9 +1528,6 @@
 
   "gui.nostalgic_tweaks.config.animation.oldBackwardWalking": "Old Backwards Walking",
   "gui.nostalgic_tweaks.config.animation.oldBackwardWalking.info": "Bring back the old walking animation where the player's body tilts to the side.",
-  "gui.nostalgic_tweaks.config.animation.oldCollideBobbing": "Remove Collision Bobbing",
-  "gui.nostalgic_tweaks.config.animation.oldCollideBobbing.info": "Remove the subtle animation that is applied to the arm and viewing distance when trying to move while colliding with a block.",
-  "gui.nostalgic_tweaks.config.animation.oldCollideBobbing.search": "Hand, Arm, Distance, Background",
   "gui.nostalgic_tweaks.config.animation.oldVerticalBobbing": "Old Vertical Bobbing",
   "gui.nostalgic_tweaks.config.animation.oldVerticalBobbing.info": "A subtle animation that is applied to the arm and viewing distance when jumping or falling.",
   "gui.nostalgic_tweaks.config.animation.oldVerticalBobbing.search": "Hand, Arm, Distance, Background, Jumping, Falling",
