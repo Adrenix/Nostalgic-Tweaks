@@ -1540,9 +1540,9 @@
   "gui.nostalgic_tweaks.config.animation.oldRandomDamage": "Old Random Damage",
   "gui.nostalgic_tweaks.config.animation.oldRandomDamage.info": "Randomizes camera tilting between left or right when receiving non-directional damage.",
   "gui.nostalgic_tweaks.config.animation.oldRandomDamage.search": "Directional, Tilt, Camera",
-  "gui.nostalgic_tweaks.config.animation.disableDeathTopple": "Disable Death Topple",
-  "gui.nostalgic_tweaks.config.animation.disableDeathTopple.info": "Disable the death fall-over animation for player entities.",
-  "gui.nostalgic_tweaks.config.animation.disableDeathTopple.search": "Fall Over, Died, Player",
+  "gui.nostalgic_tweaks.config.animation.preventDeathTopple": "Prevent Death Topple",
+  "gui.nostalgic_tweaks.config.animation.preventDeathTopple.info": "Prevent the death fall-over animation for player entities.",
+  "gui.nostalgic_tweaks.config.animation.preventDeathTopple.search": "Fall Over, Died, Player",
 
   "gui.nostalgic_tweaks.config.swing.leftClickSpeedOnBlockInteract": "Left-Click Speed on Block Interact",
   "gui.nostalgic_tweaks.config.swing.leftClickSpeedOnBlockInteract.info": "If§a enabled§r, the left-click speed will be used when interacting with a block when right-clicking.",

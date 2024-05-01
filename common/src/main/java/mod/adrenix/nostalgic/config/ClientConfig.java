@@ -731,7 +731,7 @@ public class ClientConfig implements ConfigMeta
         public boolean oldCreativeCrouch = AnimationTweak.OLD_CREATIVE_CROUCH.register("oldCreativeCrouch");
         public boolean oldRandomDamage = AnimationTweak.OLD_RANDOM_DAMAGE.register("oldRandomDamage");
         public boolean oldSneaking = AnimationTweak.OLD_SNEAKING.register("oldSneaking");
-        public boolean disableDeathTopple = AnimationTweak.DISABLE_DEATH_TOPPLE.register("disableDeathTopple");
+        public boolean preventDeathTopple = AnimationTweak.PREVENT_DEATH_TOPPLE.register("preventDeathTopple");
     }
 
     public Animation animation = new Animation();

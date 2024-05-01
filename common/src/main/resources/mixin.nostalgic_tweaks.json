@@ -15,6 +15,7 @@
     "animation.player.CameraMixin",
     "animation.player.GameRendererMixin",
     "animation.player.LivingEntityMixin",
+    "animation.player.LivingEntityRendererMixin",
     "animation.player.LocalPlayerMixin",
     "animation.swing.ItemInHandRendererMixin",
     "animation.swing.LocalPlayerMixin",
