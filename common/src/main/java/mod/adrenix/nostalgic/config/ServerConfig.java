@@ -146,7 +146,6 @@ public class ServerConfig implements ConfigMeta
         // Player
 
         public boolean oldCreativeCrouch = AnimationTweak.OLD_CREATIVE_CROUCH.register("oldCreativeCrouch");
-        public boolean oldDirectionalDamage = AnimationTweak.OLD_DIRECTIONAL_DAMAGE.register("oldDirectionalDamage");
     }
 
     public Animation animation = new Animation();
