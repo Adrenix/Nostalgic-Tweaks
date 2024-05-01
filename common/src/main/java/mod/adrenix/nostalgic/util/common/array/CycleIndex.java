@@ -101,13 +101,25 @@ public class CycleIndex
     }
 
     /**
-     * Move the current index forwards or backwards and get the resulting index.
+     * Move the current index forwards or backwards and then get the resulting index.
      */
     @PublicAPI
     public int cycleAndGet()
     {
         this.cycle();
         return this.get();
+    }
+
+    /**
+     * Get the current index and then move forwards or backwards.
+     */
+    @PublicAPI
+    public int getAndCycle()
+    {
+        int index = this.get();
+        this.cycle();
+
+        return index;
     }
 
     /**
