@@ -14,6 +14,7 @@
     "animation.mob_arms.SkeletonModelMixin",
     "animation.player.CameraMixin",
     "animation.player.GameRendererMixin",
+    "animation.player.HumanoidModelMixin",
     "animation.player.LivingEntityMixin",
     "animation.player.LivingEntityRendererMixin",
     "animation.player.LocalPlayerMixin",
