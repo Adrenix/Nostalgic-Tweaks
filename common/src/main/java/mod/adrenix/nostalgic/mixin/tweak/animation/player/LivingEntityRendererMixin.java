@@ -45,7 +45,7 @@ public abstract class LivingEntityRendererMixin
     )
     private <T extends LivingEntity> void nt_player_animation$applyClassicWalkBobbing(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
-        if (AnimationTweak.OLD_CLASSIC_WALKING.get() && entity instanceof Player)
+        if (AnimationTweak.OLD_CLASSIC_WALK_BOBBING.get() && entity instanceof Player)
             ClassicWalkMixinHelper.applyBobbing(entity, poseStack, partialTick);
     }
 }

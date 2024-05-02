@@ -1526,8 +1526,10 @@
   "gui.nostalgic_tweaks.config.animation.oldGhastCharging": "Old Ghast Charging",
   "gui.nostalgic_tweaks.config.animation.oldGhastCharging.info": "Bring back the old 'squishy' ghast charging animation.",
 
-  "gui.nostalgic_tweaks.config.animation.oldClassicWalking": "Old Classic Walking",
-  "gui.nostalgic_tweaks.config.animation.oldClassicWalking.info": "Bring back the old classic walking animation where the player bobs up and down and their arms flail around while the player walks or runs.",
+  "gui.nostalgic_tweaks.config.animation.oldClassicWalkBobbing": "Old Classic Walk Bobbing",
+  "gui.nostalgic_tweaks.config.animation.oldClassicWalkBobbing.info": "Bring back the old classic walking animation where the player bobs up and down when the player walks or runs.",
+  "gui.nostalgic_tweaks.config.animation.oldClassicWalkArms": "Old Classic Walk Arms",
+  "gui.nostalgic_tweaks.config.animation.oldClassicWalkArms.info": "Bring back the old classic walking animation where the player's arms flail around when the player walks or runs.",
   "gui.nostalgic_tweaks.config.animation.oldBackwardWalking": "Old Backwards Walking",
   "gui.nostalgic_tweaks.config.animation.oldBackwardWalking.info": "Bring back the old walking animation where the player's body tilts to the side.",
   "gui.nostalgic_tweaks.config.animation.oldVerticalBobbing": "Old Vertical Bobbing",

@@ -38,7 +38,7 @@ public abstract class HumanoidModelMixin
     )
     private <T extends LivingEntity> void nt_player_animation$setupClassicWalkingAnimation(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
-        if (!AnimationTweak.OLD_CLASSIC_WALKING.get() || ClassUtil.isNotInstanceOf(entity, Player.class))
+        if (!AnimationTweak.OLD_CLASSIC_WALK_ARMS.get() || ClassUtil.isNotInstanceOf(entity, Player.class))
             return;
 
         this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + 3.1415927F) * 2.0F * limbSwingAmount;

@@ -726,7 +726,8 @@ public class ClientConfig implements ConfigMeta
 
         // Player
 
-        public boolean oldClassicWalking = AnimationTweak.OLD_CLASSIC_WALKING.register("oldClassicWalking");
+        public boolean oldClassicWalkBobbing = AnimationTweak.OLD_CLASSIC_WALK_BOBBING.register("oldClassicWalkBobbing");
+        public boolean oldClassicWalkArms = AnimationTweak.OLD_CLASSIC_WALK_ARMS.register("oldClassicWalkArms");
         public boolean oldBackwardWalking = AnimationTweak.OLD_BACKWARD_WALKING.register("oldBackwardWalking");
         public boolean oldVerticalBobbing = AnimationTweak.OLD_VERTICAL_BOBBING.register("oldVerticalBobbing");
         public boolean oldCreativeCrouch = AnimationTweak.OLD_CREATIVE_CROUCH.register("oldCreativeCrouch");
