@@ -63,6 +63,10 @@ public interface CandyTweak
     TweakFlag OLD_REDSTONE_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
     TweakFlag OLD_SOUL_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
 
+    // Bed
+
+    TweakFlag HIDE_PLAYER_IN_BED = TweakFlag.client(true, CandyGroup.BLOCK_BED).newForUpdate().build();
+
     // Window Title
 
     TweakFlag ENABLE_WINDOW_TITLE = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).newForUpdate().whenDisabled(false).build();

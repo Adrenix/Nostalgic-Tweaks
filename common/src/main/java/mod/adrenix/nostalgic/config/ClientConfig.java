@@ -210,6 +210,10 @@ public class ClientConfig implements ConfigMeta
         public boolean oldRedstoneTorchModel = CandyTweak.OLD_REDSTONE_TORCH_MODEL.register("oldRedstoneTorchModel");
         public boolean oldSoulTorchModel = CandyTweak.OLD_SOUL_TORCH_MODEL.register("oldSoulTorchModel");
 
+        // Bed
+
+        public boolean hidePlayerInBed = CandyTweak.HIDE_PLAYER_IN_BED.register("hidePlayerInBed");
+
         // Interface
 
         public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");

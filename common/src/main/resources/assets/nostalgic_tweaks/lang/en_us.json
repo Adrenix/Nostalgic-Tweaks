@@ -508,6 +508,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.block": "Block Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.block_chest": "Chest Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.block_torch": "Torch Candy",
+  "gui.nostalgic_tweaks.container.eyeCandy.block_bed": "Bed Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox": "Custom Hitbox",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox_outline": "Hitbox Outline",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox_outline_aesthetic": "Outline Aesthetic",
@@ -802,6 +803,10 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldRedstoneTorchModel.info": "Bring back the old parallelepiped redstone wall torches.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSoulTorchModel": "Old Soul Torch Model",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSoulTorchModel.info": "Make soul torches render as parallelepiped when attached to walls.",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed": "Hide Player When Sleeping",
+  "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.info": "Hide the player's model when the player is sleeping in a bed in first-person view.",
+  "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.search": "Bed",
 
   "gui.nostalgic_tweaks.config.eyeCandy.overrideTitleScreen": "Override Title Screen",
   "gui.nostalgic_tweaks.config.eyeCandy.overrideTitleScreen.info": "This option will apply the tweaks listed in this category to the title screen.",
