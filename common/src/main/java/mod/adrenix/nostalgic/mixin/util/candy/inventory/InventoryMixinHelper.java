@@ -180,9 +180,9 @@ public abstract class InventoryMixinHelper
             }
         }
         else if (InventoryShield.MIDDLE_RIGHT == shield || isModernOverride)
-            graphics.blit(TextureLocation.INVENTORY, leftPos + 151, height / 2 - 22, 178, 0, 18, 18);
+            graphics.blit(TextureLocation.INVENTORY, leftPos + 151, height / 2 - 22, 178, 56, 18, 18);
 
         if (!CandyTweak.OLD_INVENTORY.get() && InventoryShield.MODERN != shield)
-            graphics.blit(TextureLocation.INVENTORY, leftPos + 76, height / 2 - 22, 178, 18, 18, 18);
+            graphics.blit(TextureLocation.INVENTORY, leftPos + 76, height / 2 - 22, 178, 74, 18, 18);
     }
 }
