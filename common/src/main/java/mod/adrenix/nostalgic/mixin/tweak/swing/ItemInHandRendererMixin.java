@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.mixin.tweak.swing;
 
-import mod.adrenix.nostalgic.mixin.util.swing.SwingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.config.SwingTweak;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -28,6 +27,6 @@ public abstract class ItemInHandRendererMixin
         if (!ModTweak.ENABLED.get())
             return equippedProgress;
 
-        return SwingMixinHelper.getGlobalSpeed() == SwingTweak.PHOTOSENSITIVE ? 0 : equippedProgress;
+        return SwingTweak.RIGHT_GLOBAL_SPEED.get() == SwingTweak.PHOTOSENSITIVE ? 0.0F : equippedProgress;
     }
 }
