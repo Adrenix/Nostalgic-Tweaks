@@ -227,6 +227,7 @@ public abstract class GuiListener
 
         CornerManager corner = new CornerManager();
         boolean isCreative = PlayerUtil.isCreativeOrSpectator(player);
+        boolean isHungerEnabled = !GameplayTweak.DISABLE_HUNGER.get();
         boolean isExperienceLevelCreative = isCreative && GameplayTweak.SHOW_XP_LEVEL_IN_CREATIVE.get();
         boolean isExperienceProgressCreative = isCreative && GameplayTweak.SHOW_XP_PROGRESS_IN_CREATIVE.get();
 
@@ -256,7 +257,7 @@ public abstract class GuiListener
             corner.drawText(graphics, text, GameplayTweak.ALT_XP_PROGRESS_CORNER.get());
         }
 
-        if (GameplayTweak.SHOW_HUNGER_FOOD_TEXT.get() && !isCreative)
+        if (GameplayTweak.SHOW_HUNGER_FOOD_TEXT.get() && isHungerEnabled && !isCreative)
         {
             String food = GameplayTweak.USE_DYNAMIC_FOOD_COLOR.get() ? getFoodColor(foodLevel) : Integer.toString(foodLevel);
             String text = GameplayTweak.ALT_HUNGER_FOOD_TEXT.parse(food);
@@ -264,7 +265,7 @@ public abstract class GuiListener
             corner.drawText(graphics, text, GameplayTweak.ALT_HUNGER_FOOD_CORNER.get());
         }
 
-        if (GameplayTweak.SHOW_HUNGER_SATURATION_TEXT.get() && !isCreative)
+        if (GameplayTweak.SHOW_HUNGER_SATURATION_TEXT.get() && isHungerEnabled && !isCreative)
         {
             String saturation = GameplayTweak.USE_DYNAMIC_SATURATION_COLOR.get() ? TextUtil.getPercentColorLow(saturationPercent) : Integer.toString(saturationPercent);
             String text = GameplayTweak.ALT_HUNGER_SATURATION_TEXT.parse(saturation);
