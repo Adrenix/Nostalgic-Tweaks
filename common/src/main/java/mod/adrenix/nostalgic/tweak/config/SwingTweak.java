@@ -51,15 +51,6 @@ public interface SwingTweak
     TweakFlag OVERRIDE_SPEEDS = TweakFlag.client(false, Category.SWING).whenDisabled(true).top().build();
 
     /**
-     * Assigns a left-click speed when a player interacts with a block.
-     */
-    TweakFlag LEFT_CLICK_SPEED_ON_BLOCK_INTERACT = TweakFlag.client(true, SwingGroup.GLOBAL)
-        .newForUpdate()
-        .whenDisabled(true)
-        .load()
-        .build();
-
-    /**
      * Assigns a global swing speed for the left-hand. This will override everything.
      */
     TweakNumber<Integer> LEFT_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)

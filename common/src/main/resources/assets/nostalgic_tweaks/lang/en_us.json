@@ -1553,8 +1553,6 @@
   "gui.nostalgic_tweaks.config.animation.preventDeathTopple.info": "Prevent the death fall-over animation for player entities.",
   "gui.nostalgic_tweaks.config.animation.preventDeathTopple.search": "Fall Over, Died, Player",
 
-  "gui.nostalgic_tweaks.config.swing.leftClickSpeedOnBlockInteract": "Left-Click Speed on Block Interact",
-  "gui.nostalgic_tweaks.config.swing.leftClickSpeedOnBlockInteract.info": "If§a enabled§r, the left-click speed will be used when interacting with a block when right-clicking.",
   "gui.nostalgic_tweaks.config.swing.overrideSpeeds": "§rOverride Speeds",
   "gui.nostalgic_tweaks.config.swing.overrideSpeeds.info": "§aEnable§r this to§c ignore§r every speed on this page. The§6 modern§r speed will be used§e globally§r.",
   "gui.nostalgic_tweaks.config.swing.leftToolSpeed": "Tool Left-Click Swing Speed",

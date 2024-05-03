@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -52,31 +51,6 @@ public abstract class MinecraftMixin
     private void nt_animation_swing$onStartUseItem(CallbackInfo callback)
     {
         PlayerArmMixinHelper.SWING_TYPE.set(SwingType.PLACE);
-    }
-
-    /**
-     * Sets the animation utility swing type back to left if left-click speed on right-click interact is enabled. The
-     * classic swing tweak being enabled will prevent this.
-     */
-    @Inject(
-        method = "startUseItem",
-        slice = @Slice(
-            from = @At(
-                value = "INVOKE",
-                target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"
-            )
-        ),
-        at = @At(
-            value = "INVOKE",
-            ordinal = 0,
-            shift = At.Shift.BEFORE,
-            target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
-        )
-    )
-    private void nt_animation_swing$onStartUseItemOn(CallbackInfo callback)
-    {
-        if (AnimationTweak.OLD_CLASSIC_PLACE_SWING.get())
-            PlayerArmMixinHelper.SWING_TYPE.set(SwingType.PLACE);
     }
 
     /**

@@ -747,7 +747,6 @@ public class ClientConfig implements ConfigMeta
         // Global Speeds
 
         public boolean overrideSpeeds = SwingTweak.OVERRIDE_SPEEDS.register("overrideSpeeds");
-        public boolean leftClickSpeedOnBlockInteract = SwingTweak.LEFT_CLICK_SPEED_ON_BLOCK_INTERACT.register("leftClickSpeedOnBlockInteract");
         public int leftGlobalSpeed = SwingTweak.LEFT_GLOBAL_SPEED.register("leftGlobalSpeed");
         public int rightGlobalSpeed = SwingTweak.RIGHT_GLOBAL_SPEED.register("rightGlobalSpeed");
 
