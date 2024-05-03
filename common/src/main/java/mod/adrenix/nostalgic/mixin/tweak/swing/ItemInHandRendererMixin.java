@@ -6,7 +6,7 @@ import mod.adrenix.nostalgic.tweak.config.SwingTweak;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin
@@ -15,10 +15,13 @@ public abstract class ItemInHandRendererMixin
      * Enhances photosensitivity mode by completely disabling any hand movement when placing or interacting. Only checks
      * for global photosensitivity since this will break reequip animations if checking by item.
      */
-    @ModifyVariable(
-        argsOnly = true,
-        method = "applyItemArmTransform",
-        at = @At("HEAD")
+    @ModifyArg(
+        index = 6,
+        method = "renderHandsWithItems",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
+        )
     )
     private float nt_swing$modifyEquippedProgress(float equippedProgress)
     {
