@@ -106,7 +106,9 @@
     "sound.old_bed.BlockMixin",
     "sound.position_sound.ClientLevelMixin",
     "sound.water_ambience.LocalPlayerMixin",
-    "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin"
+    "sound.water_ambience.UnderwaterAmbientSoundHandlerMixin",
+    "swing.ItemInHandRendererMixin",
+    "swing.LivingEntityMixin"
   ],
   "mixins": [
     "animation.player.PlayerMixin",

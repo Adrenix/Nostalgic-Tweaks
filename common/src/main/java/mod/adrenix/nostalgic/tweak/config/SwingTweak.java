@@ -19,6 +19,7 @@ public interface SwingTweak
     int OLD_SPEED = 8;
     int MIN_SPEED = 0;
     int MAX_SPEED = 16;
+    int PHOTOSENSITIVE = 0;
 
     // Slider Builders
 
@@ -163,7 +164,7 @@ public interface SwingTweak
     /**
      * Assigns a global left-hand swing speed when the player has the haste potion effect.
      */
-    TweakNumber<Integer> LEFT_HASTE_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.POTION)
+    TweakNumber<Integer> LEFT_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -173,7 +174,7 @@ public interface SwingTweak
     /**
      * Assigns a global right-hand swing speed when the player as the haste potion effect.
      */
-    TweakNumber<Integer> RIGHT_HASTE_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.POTION)
+    TweakNumber<Integer> RIGHT_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -183,7 +184,7 @@ public interface SwingTweak
     /**
      * Assigns a global left-hand swing speed when the player has the fatigue potion effect.
      */
-    TweakNumber<Integer> LEFT_FATIGUE_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.POTION)
+    TweakNumber<Integer> LEFT_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -193,7 +194,7 @@ public interface SwingTweak
     /**
      * Assigns a global right-hand swing speed when the player has the fatigue potion effect.
      */
-    TweakNumber<Integer> RIGHT_FATIGUE_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.POTION)
+    TweakNumber<Integer> RIGHT_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
