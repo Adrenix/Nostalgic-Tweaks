@@ -57,6 +57,9 @@ public abstract class PlayerMixin
         if (NostalgicTweaks.isServer())
             return eyeHeight;
 
+        if (AnimationTweak.OLD_CREATIVE_CROUCH.get() && this.abilities.flying)
+            return 1.62F;
+
         return AnimationTweak.OLD_SNEAKING.get() ? AnimationConstant.SNEAK_EYE_HEIGHT : eyeHeight;
     }
 }
