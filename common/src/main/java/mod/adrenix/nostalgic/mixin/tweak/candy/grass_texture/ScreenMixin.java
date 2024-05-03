@@ -22,12 +22,16 @@ public abstract class ScreenMixin
     /**
      * Tracks the current graphics mode.
      */
+    @SuppressWarnings("ConstantValue") // Some mods load a screen so early that the game doesn't have options yet
     @Inject(
         method = "<init>",
         at = @At("RETURN")
     )
     private void nt_grass_texture$onConstructScreen(CallbackInfo callback)
     {
+        if (Minecraft.getInstance().options == null)
+            return;
+
         this.nt$oldGraphicsMode = Minecraft.getInstance().options.graphicsMode().get();
     }
 
