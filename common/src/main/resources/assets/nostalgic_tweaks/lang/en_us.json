@@ -345,7 +345,7 @@
   "gui.nostalgic_tweaks.overlay.manage.operations.wip": "Work in Progress",
   "gui.nostalgic_tweaks.overlay.manage.operations.wip.message": "The server operations section is still a§e work in progress§r. Not all features are finished and may not work as intended.",
   "gui.nostalgic_tweaks.overlay.manage.operations.lan": "LAN Restriction",
-  "gui.nostalgic_tweaks.overlay.manage.operations.lan.message": "Prevent or allow§e connected§r players from changing your§b client§r settings on your§6 LAN§r session.",
+  "gui.nostalgic_tweaks.overlay.manage.operations.lan.message": "Prevent§e connected§r players from changing your§b client§r settings during a§6 LAN§r session.",
   "gui.nostalgic_tweaks.overlay.manage.operations.sso": "Server Side Only",
   "gui.nostalgic_tweaks.overlay.manage.operations.sso.message": "Change whether the server is in§e server-side-only§r (§eSSO§r) mode. This will control whether players are§c required§r to have the mod installed when connecting to the server. If changed, then the server§6 must§r be§c restarted§r for changes to take effect. This setting does§c not§r work on LAN sessions.",
   "gui.nostalgic_tweaks.overlay.manage.operations.logging": "Server Logging",
