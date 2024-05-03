@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing<V, L>
@@ -137,12 +138,12 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
     }
 
     /**
-     * Check if the given block matches a wildcard.
+     * Get the parent wildcard block, if possible, from the given block.
      *
-     * @param block A {@link Block} instance to check.
-     * @return Whether the given block matches a wildcard.
+     * @param block The child {@link Block} to check.
+     * @return An {@link Optional} with the wildcard parent {@link Block}.
      */
-    public boolean isBlockWildcard(Block block)
+    public Optional<Block> getParentBlockFromWildcard(Block block)
     {
         for (String key : this.getResourceKeys())
         {
@@ -152,10 +153,43 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
             Block wildcard = ItemUtil.getBlock(key.replace(WILDCARD, ""));
 
             if (ClassUtil.isInstanceOf(block, wildcard.getClass()))
-                return true;
+                return Optional.of(wildcard);
         }
 
-        return false;
+        return Optional.empty();
+    }
+
+    /**
+     * Get the parent wildcard item, if possible, from the given item.
+     *
+     * @param item The child {@link Item} to check.
+     * @return An {@link Optional} with the wildcard parent {@link Item}.
+     */
+    public Optional<Item> getParentItemFromWildcard(Item item)
+    {
+        for (String key : this.getResourceKeys())
+        {
+            if (!this.isWildcard(key))
+                continue;
+
+            Item wildcard = ItemUtil.getItem(key.replace(WILDCARD, ""));
+
+            if (ClassUtil.isInstanceOf(item, wildcard.getClass()))
+                return Optional.of(wildcard);
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Check if the given block matches a wildcard.
+     *
+     * @param block A {@link Block} instance to check.
+     * @return Whether the given block matches a wildcard.
+     */
+    public boolean isBlockWildcard(Block block)
+    {
+        return this.getParentBlockFromWildcard(block).isPresent();
     }
 
     /**
@@ -166,18 +200,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean isItemWildcard(Item item)
     {
-        for (String key : this.getResourceKeys())
-        {
-            if (!this.isWildcard(key))
-                continue;
-
-            Item wildcard = ItemUtil.getItem(key.replace(WILDCARD, ""));
-
-            if (ClassUtil.isInstanceOf(item, wildcard.getClass()))
-                return true;
-        }
-
-        return false;
+        return this.getParentItemFromWildcard(item).isPresent();
     }
 
     /**
