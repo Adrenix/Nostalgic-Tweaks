@@ -52,13 +52,13 @@ public abstract class LivingEntityMixin extends Entity
                 return currentSwingDuration;
         }
 
+        int speed = SwingMixinHelper.getSwingSpeed(player);
+
         if (AnimationTweak.OLD_CLASSIC_HIT_SWING.get() && PlayerArmMixinHelper.SWING_TYPE.get() == SwingType.HIT)
-            return 7;
+            return SwingMixinHelper.isSpeedGlobal() ? speed : 7;
 
         if (AnimationTweak.OLD_CLASSIC_PLACE_SWING.get() && PlayerArmMixinHelper.SWING_TYPE.get() == SwingType.PLACE)
-            return 3;
-
-        int speed = SwingMixinHelper.getSwingSpeed(player);
+            return SwingMixinHelper.isSpeedGlobal() ? speed : 3;
 
         if (SwingMixinHelper.isSpeedGlobal())
             return speed;
