@@ -4,7 +4,6 @@ import mod.adrenix.nostalgic.mixin.duck.SwingBlocker;
 import mod.adrenix.nostalgic.mixin.util.animation.PlayerArmMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.swing.SwingType;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
-import mod.adrenix.nostalgic.tweak.config.SwingTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.Nullable;
@@ -76,8 +75,8 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartUseItemOn(CallbackInfo callback)
     {
-        if (SwingTweak.LEFT_CLICK_SPEED_ON_BLOCK_INTERACT.get() && !AnimationTweak.OLD_CLASSIC_PLACE_SWING.get())
-            PlayerArmMixinHelper.SWING_TYPE.set(SwingType.HIT);
+        if (AnimationTweak.OLD_CLASSIC_PLACE_SWING.get())
+            PlayerArmMixinHelper.SWING_TYPE.set(SwingType.PLACE);
     }
 
     /**
