@@ -3,6 +3,10 @@ package mod.adrenix.nostalgic.tweak.listing;
 import mod.adrenix.nostalgic.tweak.TweakValidator;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -76,6 +80,40 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     /* Methods */
 
     /**
+     * Get a value using the given item.
+     *
+     * @param item The {@link Item} to check.
+     * @return A value associated with the given item or the default value.
+     */
+    @PublicAPI
+    public V valueFrom(Item item)
+    {
+        String childKey = ItemUtil.getResourceKey(item);
+
+        if (this.items.containsKey(childKey))
+            return this.items.get(childKey);
+
+        Optional<Item> parent = this.getParentItemFromWildcard(item);
+
+        if (parent.isEmpty())
+            return this.defaultValue;
+
+        return this.items.getOrDefault(ItemUtil.getResourceKey(parent.get()), this.defaultValue);
+    }
+
+    /**
+     * Get a value using the given block.
+     *
+     * @param block The {@link Block} to check.
+     * @return A value associated with the given block or the default value.
+     */
+    @PublicAPI
+    public V valueFrom(Block block)
+    {
+        return this.valueFrom(block.asItem());
+    }
+
+    /**
      * @return The {@link LinkedHashMap} associated within this {@link ItemMap}.
      */
     @Override
@@ -128,7 +166,7 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
     {
         this.putAll(list.items);
         this.putAll(list.deleted);
-        
+
         this.disabled = list.disabled;
     }
 
