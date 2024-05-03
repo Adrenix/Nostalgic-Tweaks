@@ -18,8 +18,8 @@ public interface AnimationTweak
     TweakFlag OLD_SWING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
     TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM_SWING).newForUpdate().build();
     TweakFlag OLD_SWING_DROPPING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
-    TweakFlag OLD_CLASSIC_HIT_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
-    TweakFlag OLD_CLASSIC_PLACE_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
+    TweakFlag OLD_CLASSIC_ATTACK_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
+    TweakFlag OLD_CLASSIC_USE_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
 
     // Item
 

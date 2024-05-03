@@ -713,8 +713,8 @@ public class ClientConfig implements ConfigMeta
         public boolean oldSwing = AnimationTweak.OLD_SWING.register("oldSwing");
         public boolean oldSwingInterrupt = AnimationTweak.OLD_SWING_INTERRUPT.register("oldSwingInterrupt");
         public boolean oldSwingDropping = AnimationTweak.OLD_SWING_DROPPING.register("oldSwingDropping");
-        public boolean oldClassicHitSwing = AnimationTweak.OLD_CLASSIC_HIT_SWING.register("oldClassicHitSwing");
-        public boolean oldClassicPlaceSwing = AnimationTweak.OLD_CLASSIC_PLACE_SWING.register("oldClassicPlaceSwing");
+        public boolean oldClassicAttackSwing = AnimationTweak.OLD_CLASSIC_ATTACK_SWING.register("oldClassicAttackSwing");
+        public boolean oldClassicUseSwing = AnimationTweak.OLD_CLASSIC_USE_SWING.register("oldClassicUseSwing");
 
         // Item
 
@@ -747,31 +747,31 @@ public class ClientConfig implements ConfigMeta
         // Global Speeds
 
         public boolean overrideSpeeds = SwingTweak.OVERRIDE_SPEEDS.register("overrideSpeeds");
-        public int leftGlobalSpeed = SwingTweak.LEFT_GLOBAL_SPEED.register("leftGlobalSpeed");
-        public int rightGlobalSpeed = SwingTweak.RIGHT_GLOBAL_SPEED.register("rightGlobalSpeed");
+        public int attackGlobalSpeed = SwingTweak.ATTACK_GLOBAL_SPEED.register("attackGlobalSpeed");
+        public int useGlobalSpeed = SwingTweak.USE_GLOBAL_SPEED.register("useGlobalSpeed");
 
         // Item Speeds
 
-        public int leftItemSpeed = SwingTweak.LEFT_ITEM_SPEED.register("leftItemSpeed");
-        public int rightItemSpeed = SwingTweak.RIGHT_ITEM_SPEED.register("rightItemSpeed");
-        public int leftToolSpeed = SwingTweak.LEFT_TOOL_SPEED.register("leftToolSpeed");
-        public int rightToolSpeed = SwingTweak.RIGHT_TOOL_SPEED.register("rightToolSpeed");
-        public int leftBlockSpeed = SwingTweak.LEFT_BLOCK_SPEED.register("leftBlockSpeed");
-        public int rightBlockSpeed = SwingTweak.RIGHT_BLOCK_SPEED.register("rightBlockSpeed");
-        public int leftSwordSpeed = SwingTweak.LEFT_SWORD_SPEED.register("leftSwordSpeed");
-        public int rightSwordSpeed = SwingTweak.RIGHT_SWORD_SPEED.register("rightSwordSpeed");
+        public int attackItemSpeed = SwingTweak.ATTACK_ITEM_SPEED.register("attackItemSpeed");
+        public int useItemSpeed = SwingTweak.USE_ITEM_SPEED.register("useItemSpeed");
+        public int attackToolSpeed = SwingTweak.ATTACK_TOOL_SPEED.register("attackToolSpeed");
+        public int useToolSpeed = SwingTweak.USE_TOOL_SPEED.register("useToolSpeed");
+        public int attackBlockSpeed = SwingTweak.ATTACK_BLOCK_SPEED.register("attackBlockSpeed");
+        public int useBlockSpeed = SwingTweak.USE_BLOCK_SPEED.register("useBlockSpeed");
+        public int attackSwordSpeed = SwingTweak.ATTACK_SWORD_SPEED.register("attackSwordSpeed");
+        public int useSwordSpeed = SwingTweak.USE_SWORD_SPEED.register("useSwordSpeed");
 
         // Potion Speeds
 
-        public int leftHasteSpeed = SwingTweak.LEFT_HASTE_SPEED.register("leftHasteSpeed");
-        public int rightHasteSpeed = SwingTweak.RIGHT_HASTE_SPEED.register("rightHasteSpeed");
-        public int leftFatigueSpeed = SwingTweak.LEFT_FATIGUE_SPEED.register("leftFatigueSpeed");
-        public int rightFatigueSpeed = SwingTweak.RIGHT_FATIGUE_SPEED.register("rightFatigueSpeed");
+        public int attackHasteSpeed = SwingTweak.ATTACK_HASTE_SPEED.register("attackHasteSpeed");
+        public int useHasteSpeed = SwingTweak.USE_HASTE_SPEED.register("useHasteSpeed");
+        public int attackFatigueSpeed = SwingTweak.ATTACK_FATIGUE_SPEED.register("attackFatigueSpeed");
+        public int useFatigueSpeed = SwingTweak.USE_FATIGUE_SPEED.register("useFatigueSpeed");
 
         // Custom Speeds
 
-        public ItemMap<Integer> leftClickSwingSpeeds = SwingTweak.LEFT_CLICK_SWING_SPEEDS.register("leftClickSwingSpeeds");
-        public ItemMap<Integer> rightClickSwingSpeeds = SwingTweak.RIGHT_CLICK_SWING_SPEEDS.register("rightClickSwingSpeeds");
+        public ItemMap<Integer> attackSwingSpeeds = SwingTweak.ATTACK_SWING_SPEEDS.register("attackSwingSpeeds");
+        public ItemMap<Integer> useSwingSpeeds = SwingTweak.USE_SWING_SPEEDS.register("useSwingSpeeds");
     }
 
     public Swing swing = new Swing();

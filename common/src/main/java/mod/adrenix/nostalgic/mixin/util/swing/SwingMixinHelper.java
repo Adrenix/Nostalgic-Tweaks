@@ -21,8 +21,8 @@ public abstract class SwingMixinHelper
     {
         return switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_GLOBAL_SPEED.get() != SwingTweak.DISABLED;
-            case PLACE -> SwingTweak.RIGHT_GLOBAL_SPEED.get() != SwingTweak.DISABLED;
+            case ATTACK -> SwingTweak.ATTACK_GLOBAL_SPEED.get() != SwingTweak.DISABLED;
+            case USE -> SwingTweak.USE_GLOBAL_SPEED.get() != SwingTweak.DISABLED;
         };
     }
 
@@ -33,8 +33,8 @@ public abstract class SwingMixinHelper
     {
         return switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_GLOBAL_SPEED.get();
-            case PLACE -> SwingTweak.RIGHT_GLOBAL_SPEED.get();
+            case ATTACK -> SwingTweak.ATTACK_GLOBAL_SPEED.get();
+            case USE -> SwingTweak.USE_GLOBAL_SPEED.get();
         };
     }
 
@@ -50,55 +50,55 @@ public abstract class SwingMixinHelper
 
         boolean containsItem = switch (swingType)
         {
-            case HIT -> SwingTweak.LEFT_CLICK_SWING_SPEEDS.get().containsItem(item);
-            case PLACE -> SwingTweak.RIGHT_CLICK_SWING_SPEEDS.get().containsItem(item);
+            case ATTACK -> SwingTweak.ATTACK_SWING_SPEEDS.get().containsItem(item);
+            case USE -> SwingTweak.USE_SWING_SPEEDS.get().containsItem(item);
         };
 
         if (isSpeedGlobal())
         {
             return switch (swingType)
             {
-                case HIT -> SwingTweak.LEFT_GLOBAL_SPEED.get();
-                case PLACE -> SwingTweak.RIGHT_GLOBAL_SPEED.get();
+                case ATTACK -> SwingTweak.ATTACK_GLOBAL_SPEED.get();
+                case USE -> SwingTweak.USE_GLOBAL_SPEED.get();
             };
         }
         else if (containsItem)
         {
             return switch (swingType)
             {
-                case HIT -> SwingTweak.LEFT_CLICK_SWING_SPEEDS.get().valueFrom(item);
-                case PLACE -> SwingTweak.RIGHT_CLICK_SWING_SPEEDS.get().valueFrom(item);
+                case ATTACK -> SwingTweak.ATTACK_SWING_SPEEDS.get().valueFrom(item);
+                case USE -> SwingTweak.USE_SWING_SPEEDS.get().valueFrom(item);
             };
         }
         else if (item instanceof SwordItem)
         {
             return switch (swingType)
             {
-                case HIT -> SwingTweak.LEFT_SWORD_SPEED.get();
-                case PLACE -> SwingTweak.RIGHT_SWORD_SPEED.get();
+                case ATTACK -> SwingTweak.ATTACK_SWORD_SPEED.get();
+                case USE -> SwingTweak.USE_SWORD_SPEED.get();
             };
         }
         else if (item instanceof BlockItem)
         {
             return switch (swingType)
             {
-                case HIT -> SwingTweak.LEFT_BLOCK_SPEED.get();
-                case PLACE -> SwingTweak.RIGHT_BLOCK_SPEED.get();
+                case ATTACK -> SwingTweak.ATTACK_BLOCK_SPEED.get();
+                case USE -> SwingTweak.USE_BLOCK_SPEED.get();
             };
         }
         else if (item instanceof DiggerItem)
         {
             return switch (swingType)
             {
-                case HIT -> SwingTweak.LEFT_TOOL_SPEED.get();
-                case PLACE -> SwingTweak.RIGHT_TOOL_SPEED.get();
+                case ATTACK -> SwingTweak.ATTACK_TOOL_SPEED.get();
+                case USE -> SwingTweak.USE_TOOL_SPEED.get();
             };
         }
 
         return switch (swingType)
         {
-            case HIT -> SwingTweak.LEFT_ITEM_SPEED.get();
-            case PLACE -> SwingTweak.RIGHT_ITEM_SPEED.get();
+            case ATTACK -> SwingTweak.ATTACK_ITEM_SPEED.get();
+            case USE -> SwingTweak.USE_ITEM_SPEED.get();
         };
     }
 
@@ -123,8 +123,8 @@ public abstract class SwingMixinHelper
     {
         return ModTweak.ENABLED.get() && switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_FATIGUE_SPEED.get() != SwingTweak.DISABLED;
-            case PLACE -> SwingTweak.RIGHT_FATIGUE_SPEED.get() != SwingTweak.DISABLED;
+            case ATTACK -> SwingTweak.ATTACK_FATIGUE_SPEED.get() != SwingTweak.DISABLED;
+            case USE -> SwingTweak.USE_FATIGUE_SPEED.get() != SwingTweak.DISABLED;
         };
     }
 
@@ -135,8 +135,8 @@ public abstract class SwingMixinHelper
     {
         return isSpeedGlobal() ? getGlobalSpeed() : switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_FATIGUE_SPEED.get();
-            case PLACE -> SwingTweak.RIGHT_FATIGUE_SPEED.get();
+            case ATTACK -> SwingTweak.ATTACK_FATIGUE_SPEED.get();
+            case USE -> SwingTweak.USE_FATIGUE_SPEED.get();
         };
     }
 
@@ -147,8 +147,8 @@ public abstract class SwingMixinHelper
     {
         return ModTweak.ENABLED.get() && switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_HASTE_SPEED.get() != SwingTweak.DISABLED;
-            case PLACE -> SwingTweak.RIGHT_HASTE_SPEED.get() != SwingTweak.DISABLED;
+            case ATTACK -> SwingTweak.ATTACK_HASTE_SPEED.get() != SwingTweak.DISABLED;
+            case USE -> SwingTweak.USE_HASTE_SPEED.get() != SwingTweak.DISABLED;
         };
     }
 
@@ -159,8 +159,8 @@ public abstract class SwingMixinHelper
     {
         return isSpeedGlobal() ? getGlobalSpeed() : switch (PlayerArmMixinHelper.SWING_TYPE.get())
         {
-            case HIT -> SwingTweak.LEFT_HASTE_SPEED.get();
-            case PLACE -> SwingTweak.RIGHT_HASTE_SPEED.get();
+            case ATTACK -> SwingTweak.ATTACK_HASTE_SPEED.get();
+            case USE -> SwingTweak.USE_HASTE_SPEED.get();
         };
     }
 }

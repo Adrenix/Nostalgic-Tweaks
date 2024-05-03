@@ -51,18 +51,18 @@ public interface SwingTweak
     TweakFlag OVERRIDE_SPEEDS = TweakFlag.client(false, Category.SWING).whenDisabled(true).top().build();
 
     /**
-     * Assigns a global swing speed for the left-hand. This will override everything.
+     * Assigns a global swing speed for attacking. This will override everything.
      */
-    TweakNumber<Integer> LEFT_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
+    TweakNumber<Integer> ATTACK_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
         .newForUpdate()
         .apply(SwingTweak::disable)
         .load()
         .build();
 
     /**
-     * Assigns a global swing speed for the right-hand. This will override everything.
+     * Assigns a global swing speed for using an item or block. This will override everything.
      */
-    TweakNumber<Integer> RIGHT_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
+    TweakNumber<Integer> USE_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
         .newForUpdate()
         .apply(SwingTweak::disable)
         .load()
@@ -71,9 +71,9 @@ public interface SwingTweak
     // Item Speeds
 
     /**
-     * Assigns a global left-hand swing speed for any item that is a block, tool, or sword.
+     * Assigns the global attacking swing speed for any item that is a block, tool, or sword.
      */
-    TweakNumber<Integer> LEFT_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> ATTACK_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -81,9 +81,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed for any item that is a block, tool, or sword.
+     * Assigns the global using item swing speed for any item that is a block, tool, or sword.
      */
-    TweakNumber<Integer> RIGHT_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> USE_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -91,9 +91,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global left-hand swing speed for tool items.
+     * Assigns the global attack swing speed for tool items.
      */
-    TweakNumber<Integer> LEFT_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> ATTACK_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -101,9 +101,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed for tool items.
+     * Assigns the global using swing speed for tool items.
      */
-    TweakNumber<Integer> RIGHT_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> USE_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -111,9 +111,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global left-hand swing speed for block items.
+     * Assigns the global attack swing speed for block items.
      */
-    TweakNumber<Integer> LEFT_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> ATTACK_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -121,9 +121,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed for block items.
+     * Assigns the global using swing speed for block items.
      */
-    TweakNumber<Integer> RIGHT_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> USE_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -131,9 +131,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global left-hand swing speed for sword items.
+     * Assigns the global attack swing speed for sword items.
      */
-    TweakNumber<Integer> LEFT_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> ATTACK_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -141,9 +141,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed for sword items.
+     * Assigns the global using swing speed for sword items.
      */
-    TweakNumber<Integer> RIGHT_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
+    TweakNumber<Integer> USE_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
@@ -153,9 +153,9 @@ public interface SwingTweak
     // Potion Speeds
 
     /**
-     * Assigns a global left-hand swing speed when the player has the haste potion effect.
+     * Assigns a global attack swing speed when the player has the haste potion effect.
      */
-    TweakNumber<Integer> LEFT_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
+    TweakNumber<Integer> ATTACK_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -163,9 +163,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed when the player as the haste potion effect.
+     * Assigns a global use swing speed when the player as the haste potion effect.
      */
-    TweakNumber<Integer> RIGHT_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
+    TweakNumber<Integer> USE_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -173,9 +173,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global left-hand swing speed when the player has the fatigue potion effect.
+     * Assigns a global attack swing speed when the player has the fatigue potion effect.
      */
-    TweakNumber<Integer> LEFT_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
+    TweakNumber<Integer> ATTACK_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -183,9 +183,9 @@ public interface SwingTweak
         .build();
 
     /**
-     * Assigns a global right-hand swing speed when the player has the fatigue potion effect.
+     * Assigns a global use swing speed when the player has the fatigue potion effect.
      */
-    TweakNumber<Integer> RIGHT_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
+    TweakNumber<Integer> USE_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
@@ -195,18 +195,18 @@ public interface SwingTweak
     // Custom Speeds
 
     /**
-     * Assigns individual items a custom swing speed when the left mouse button is clicked.
+     * Assigns individual items a custom swing speed when the attack swing is used.
      */
-    TweakItemMap<Integer> LEFT_CLICK_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
+    TweakItemMap<Integer> ATTACK_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
         .slider(MIN_SPEED, MAX_SPEED, SliderType.SWING)
         .icon(Icons.BREAK_WOOD)
         .load()
         .build();
 
     /**
-     * Assigns individual items a custom swing speed when the right mouse button is clicked.
+     * Assigns individual items a custom swing speed when the use item or block swing is used.
      */
-    TweakItemMap<Integer> RIGHT_CLICK_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
+    TweakItemMap<Integer> USE_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
         .slider(MIN_SPEED, MAX_SPEED, SliderType.SWING)
         .icon(Icons.BREAK_WOOD)
         .load()

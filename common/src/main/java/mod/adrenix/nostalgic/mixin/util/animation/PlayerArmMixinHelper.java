@@ -18,7 +18,7 @@ public abstract class PlayerArmMixinHelper
      * Changes the swinging animation based on the current swing type. This is used by the old classic swing tweak since
      * different animations played depending on whether the mouse was left-clicked or right-clicked.
      */
-    public static final Holder<SwingType> SWING_TYPE = Holder.create(SwingType.HIT);
+    public static final Holder<SwingType> SWING_TYPE = Holder.create(SwingType.ATTACK);
 
     /* Methods */
 
@@ -48,16 +48,16 @@ public abstract class PlayerArmMixinHelper
      */
     public static boolean oldClassicSwing(PoseStack poseStack, HumanoidArm arm, float swingProgress, float equippedProgress)
     {
-        boolean isHit = AnimationTweak.OLD_CLASSIC_HIT_SWING.get();
-        boolean isPlace = AnimationTweak.OLD_CLASSIC_PLACE_SWING.get();
+        boolean isAttack = AnimationTweak.OLD_CLASSIC_ATTACK_SWING.get();
+        boolean isUseItem = AnimationTweak.OLD_CLASSIC_USE_SWING.get();
 
-        if (!isHit && !isPlace)
+        if (!isAttack && !isUseItem)
             return false;
 
         float flip = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
         SwingType swingType = SWING_TYPE.get();
 
-        if (isHit && swingType == SwingType.HIT)
+        if (isAttack && swingType == SwingType.ATTACK)
         {
             float x = -0.4F * Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI);
             float y = 0.2F * Mth.sin(Mth.sqrt(swingProgress) * ((float) Math.PI * 2));
@@ -70,7 +70,7 @@ public abstract class PlayerArmMixinHelper
 
             return true;
         }
-        else if (isPlace && swingType == SwingType.PLACE)
+        else if (isUseItem && swingType == SwingType.USE)
         {
             float rotateProgress = Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI);
 

@@ -32,7 +32,7 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartAttack(CallbackInfoReturnable<Boolean> callback)
     {
-        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.HIT);
+        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.ATTACK);
 
         if (AnimationTweak.OLD_SWING_INTERRUPT.get() && this.player != null)
         {
@@ -42,7 +42,7 @@ public abstract class MinecraftMixin
     }
 
     /**
-     * Sets the swing helper swing type tracker to right-click when the player uses an item.
+     * Sets the swing type tracker when the player uses an item.
      */
     @Inject(
         method = "startUseItem",
@@ -50,7 +50,7 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartUseItem(CallbackInfo callback)
     {
-        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.PLACE);
+        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.USE);
     }
 
     /**

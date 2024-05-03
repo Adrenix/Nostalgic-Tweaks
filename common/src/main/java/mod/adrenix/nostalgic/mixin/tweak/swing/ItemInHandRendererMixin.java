@@ -27,6 +27,6 @@ public abstract class ItemInHandRendererMixin
         if (!ModTweak.ENABLED.get())
             return equippedProgress;
 
-        return SwingTweak.RIGHT_GLOBAL_SPEED.get() == SwingTweak.PHOTOSENSITIVE ? 0.0F : equippedProgress;
+        return SwingTweak.USE_GLOBAL_SPEED.get() == SwingTweak.PHOTOSENSITIVE ? 0.0F : equippedProgress;
     }
 }
