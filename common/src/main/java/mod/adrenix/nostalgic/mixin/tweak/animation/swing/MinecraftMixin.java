@@ -32,7 +32,7 @@ public abstract class MinecraftMixin
         method = "startAttack",
         at = @At("HEAD")
     )
-    private void nt_swing$onStartAttack(CallbackInfoReturnable<Boolean> callback)
+    private void nt_animation_swing$onStartAttack(CallbackInfoReturnable<Boolean> callback)
     {
         PlayerArmMixinHelper.SWING_TYPE.set(SwingType.HIT);
 
@@ -50,7 +50,7 @@ public abstract class MinecraftMixin
         method = "startUseItem",
         at = @At("HEAD")
     )
-    private void nt_swing$onStartUseItem(CallbackInfo callback)
+    private void nt_animation_swing$onStartUseItem(CallbackInfo callback)
     {
         PlayerArmMixinHelper.SWING_TYPE.set(SwingType.PLACE);
     }
@@ -74,7 +74,7 @@ public abstract class MinecraftMixin
             target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
         )
     )
-    private void nt_swing$onStartUseItemOn(CallbackInfo callback)
+    private void nt_animation_swing$onStartUseItemOn(CallbackInfo callback)
     {
         if (SwingTweak.LEFT_CLICK_SPEED_ON_BLOCK_INTERACT.get() && !AnimationTweak.OLD_CLASSIC_PLACE_SWING.get())
             PlayerArmMixinHelper.SWING_TYPE.set(SwingType.HIT);
@@ -91,7 +91,7 @@ public abstract class MinecraftMixin
             target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
         )
     )
-    private void nt_swing$onDropItem(CallbackInfo callback)
+    private void nt_animation_swing$onDropItem(CallbackInfo callback)
     {
         SwingBlocker swingBlocker = (SwingBlocker) this.player;
 

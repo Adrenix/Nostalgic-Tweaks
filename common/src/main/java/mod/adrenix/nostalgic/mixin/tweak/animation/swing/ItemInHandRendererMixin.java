@@ -24,7 +24,7 @@ public abstract class ItemInHandRendererMixin
         method = "applyItemArmAttackTransform",
         at = @At("HEAD")
     )
-    private void nt_swing$onApplyItemArmAttackTransform(PoseStack poseStack, HumanoidArm hand, float swingProgress, CallbackInfo callback)
+    private void nt_animation_swing$onApplyItemArmAttackTransform(PoseStack poseStack, HumanoidArm hand, float swingProgress, CallbackInfo callback)
     {
         if (AnimationTweak.OLD_SWING.get())
             PlayerArmMixinHelper.oldSwing(poseStack, swingProgress);
@@ -41,7 +41,7 @@ public abstract class ItemInHandRendererMixin
             target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;applyItemArmAttackTransform(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/entity/HumanoidArm;F)V"
         )
     )
-    private boolean nt_swing$onRenderArmWithItem(ItemInHandRenderer handRenderer, PoseStack poseStack, HumanoidArm arm, float swingProgress, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float copyOfSwingProgress, ItemStack itemStack, float equippedProgress)
+    private boolean nt_animation_swing$onRenderArmWithItem(ItemInHandRenderer handRenderer, PoseStack poseStack, HumanoidArm arm, float swingProgress, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float copyOfSwingProgress, ItemStack itemStack, float equippedProgress)
     {
         return !PlayerArmMixinHelper.oldClassicSwing(poseStack, arm, swingProgress, equippedProgress);
     }

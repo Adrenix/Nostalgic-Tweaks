@@ -20,7 +20,7 @@ public abstract class PlayerMixin
             target = "Lnet/minecraft/world/entity/player/Player;swing(Lnet/minecraft/world/InteractionHand;)V"
         )
     )
-    private boolean nt_swing$shouldSwingOnDropItem(Player player, InteractionHand hand)
+    private boolean nt_animation_swing$shouldSwingOnDropItem(Player player, InteractionHand hand)
     {
         return !AnimationTweak.OLD_SWING_DROPPING.get();
     }

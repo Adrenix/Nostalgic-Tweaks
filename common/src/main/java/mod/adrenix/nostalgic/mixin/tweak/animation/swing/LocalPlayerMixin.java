@@ -25,7 +25,7 @@ public abstract class LocalPlayerMixin
             target = "Lnet/minecraft/client/player/AbstractClientPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"
         )
     )
-    private boolean nt_swing$shouldSwing(AbstractClientPlayer player, InteractionHand hand)
+    private boolean nt_animation_swing$shouldSwing(AbstractClientPlayer player, InteractionHand hand)
     {
         return !((SwingBlocker) this).nt$isSwingBlocked();
     }
@@ -41,7 +41,7 @@ public abstract class LocalPlayerMixin
             target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"
         )
     )
-    private boolean nt_swing$shouldSendSwingPacket(ClientPacketListener packetListener, Packet<?> packet)
+    private boolean nt_animation_swing$shouldSendSwingPacket(ClientPacketListener packetListener, Packet<?> packet)
     {
         boolean isSwingBlocked = ((SwingBlocker) this).nt$isSwingBlocked();
         ((SwingBlocker) this).nt$setSwingBlocked(false);
