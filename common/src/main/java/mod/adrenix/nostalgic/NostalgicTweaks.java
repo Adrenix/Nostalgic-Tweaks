@@ -5,7 +5,6 @@ import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.init.ModInitializer;
 import mod.adrenix.nostalgic.network.ModConnection;
-import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
@@ -326,7 +325,7 @@ public abstract class NostalgicTweaks
      */
     public static boolean isDebugging()
     {
-        return isServer() ? ModTweak.SERVER_DEBUG.get() : LOGGER.isDebugMode();
+        return LOGGER.isDebugMode();
     }
 
     /**

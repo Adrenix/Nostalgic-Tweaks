@@ -1,6 +1,8 @@
 package mod.adrenix.nostalgic.util.common.log;
 
 import dev.architectury.platform.Platform;
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +33,7 @@ public record ModLogger(String prefix)
      */
     public boolean isDebugMode()
     {
-        return isDebugging;
+        return NostalgicTweaks.isServer() ? ModTweak.SERVER_DEBUG.get() : isDebugging;
     }
 
     /**
@@ -182,7 +184,7 @@ public record ModLogger(String prefix)
      */
     public void debug(String message)
     {
-        if (isDebugging)
+        if (this.isDebugMode())
         {
             String input = String.format(this.getPrefix() + "[%s] ", LogColor.apply(LogColor.LIGHT_PURPLE, "DEBUG")) + message;
             LOGGER.info(getOutput(input));
@@ -197,7 +199,7 @@ public record ModLogger(String prefix)
      */
     public void debug(String message, Object... args)
     {
-        if (isDebugging)
+        if (this.isDebugMode())
             this.debug(String.format(message, args));
     }
 }
