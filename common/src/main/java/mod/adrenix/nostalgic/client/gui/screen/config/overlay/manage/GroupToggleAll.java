@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
 import mod.adrenix.nostalgic.client.gui.widget.group.Group;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
+import mod.adrenix.nostalgic.tweak.container.Category;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakMeta;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
@@ -217,6 +218,8 @@ public class GroupToggleAll extends ManageGroup
                 .toList();
 
             Stream<Tweak<Object>> tweaks = TweakPool.filter(predicates)
+                .filter(tweak -> tweak.getCategory() != Category.ROOT)
+                .filter(tweak -> tweak.getCategory() != Category.MOD)
                 .filter(Tweak::isNotIgnored)
                 .filter(Tweak::isNotInternal)
                 .map(TweakMeta::wildcard);
