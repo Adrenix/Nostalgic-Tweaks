@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.util.client.link;
+package mod.adrenix.nostalgic.util.client.gui;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.minecraft.Util;
@@ -19,7 +19,7 @@ public abstract class LinkUtil
      */
     public static Runnable onPress(String url)
     {
-        return () -> Minecraft.getInstance().setScreen(LinkUtil.confirm(Minecraft.getInstance().screen, url));
+        return () -> Minecraft.getInstance().setScreen(confirm(Minecraft.getInstance().screen, url));
     }
 
     /**
@@ -31,7 +31,7 @@ public abstract class LinkUtil
      */
     private static ConfirmLinkScreen confirm(Screen parent, String url)
     {
-        return new ConfirmLinkScreen(accepted -> LinkUtil.jump(parent, url, accepted), url, true);
+        return new ConfirmLinkScreen(accepted -> jump(parent, url, accepted), url, true);
     }
 
     /**

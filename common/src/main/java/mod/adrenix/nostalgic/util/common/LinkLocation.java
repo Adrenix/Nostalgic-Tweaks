@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.util.client.link;
+package mod.adrenix.nostalgic.util.common;
 
 /**
  * This utility stores URLs that are used by the mod.

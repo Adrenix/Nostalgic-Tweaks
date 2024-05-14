@@ -14,7 +14,7 @@ import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
-import mod.adrenix.nostalgic.util.client.link.LinkUtil;
+import mod.adrenix.nostalgic.util.client.gui.LinkUtil;
 import mod.adrenix.nostalgic.util.client.renderer.InternetTexture;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;

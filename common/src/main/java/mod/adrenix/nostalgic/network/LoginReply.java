@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.network;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.util.client.link.LinkLocation;
+import mod.adrenix.nostalgic.util.common.LinkLocation;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
