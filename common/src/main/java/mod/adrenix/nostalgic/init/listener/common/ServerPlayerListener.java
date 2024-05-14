@@ -8,7 +8,6 @@ import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
-import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,7 +39,7 @@ public abstract class ServerPlayerListener
      */
     private static void onPlayerJoin(ServerPlayer player)
     {
-        String loader = TextUtil.toTitleCase(NostalgicTweaks.getLoader());
+        String loader = NostalgicTweaks.getLoader();
         String tiny = NostalgicTweaks.getTinyVersion();
         String beta = NostalgicTweaks.getBetaVersion();
         String version = beta.isEmpty() ? tiny : tiny + "-" + beta;

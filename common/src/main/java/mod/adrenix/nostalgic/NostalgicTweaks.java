@@ -85,11 +85,11 @@ public abstract class NostalgicTweaks
     /**
      * Gets a string representation of the current mod loader the user is using.
      *
-     * @return The mod loader name in caps.
+     * @return The mod loader name.
      */
     public static String getLoader()
     {
-        return isFabric() ? "FABRIC" : "FORGE";
+        return isFabric() ? "Fabric" : "NeoForge";
     }
 
     /* - Version */
@@ -126,7 +126,7 @@ public abstract class NostalgicTweaks
      */
     public static String getFullVersion()
     {
-        return FULL_VERSION.computeIfAbsent(() -> String.format("%s-%s-%s", TextUtil.toTitleCase(getLoader()), getMinecraftVersion(), getRawVersion()));
+        return FULL_VERSION.computeIfAbsent(() -> String.format("%s-%s-%s", getLoader(), getMinecraftVersion(), getRawVersion()));
     }
 
     /**
