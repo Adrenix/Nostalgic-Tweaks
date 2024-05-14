@@ -238,7 +238,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
 
         RenderSystem.enableDepthTest();
 
-        if (this.titleAccess.nt$getRealmsNotificationsEnabled())
+        if (this.titleAccess.nt$getRealmsNotificationsEnabled() && this.getLayout() == TitleLayout.MODERN)
             this.titleAccess.nt$getRealmsNotificationsScreen().render(graphics, mouseX, mouseY, partialTick);
     }
 }
