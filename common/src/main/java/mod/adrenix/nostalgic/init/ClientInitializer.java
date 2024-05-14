@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.client.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeSplash;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
+import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicLogoText;
 import mod.adrenix.nostalgic.init.listener.client.GuiListener;
 import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
@@ -37,6 +38,7 @@ abstract class ClientInitializer
         TooltipListener.register();
 
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, HomeSplash.getInstance());
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, NostalgicLogoText.getInstance());
 
         for (Panorama panorama : Panorama.values())
             ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, panorama);

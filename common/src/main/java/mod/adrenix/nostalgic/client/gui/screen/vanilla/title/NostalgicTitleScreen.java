@@ -26,7 +26,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -39,12 +38,12 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
 
     /* Fields */
 
-    private final TitleScreenAccess titleAccess;
+    private NostalgicLogoRenderer blockLogo;
     private final LogoRenderer imageLogo;
-    private final NostalgicLogoRenderer blockLogo;
     private final PanoramaRenderer panorama;
     private final UniqueArrayList<DynamicWidget<?, ?>> widgets;
     private final TitleWidgets titleWidgets;
+    private final TitleScreenAccess titleAccess;
     private boolean isLayoutSet;
 
     /* Constructor */
@@ -57,7 +56,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
         this.widgets = new UniqueArrayList<>();
         this.titleWidgets = new TitleWidgets(this);
         this.panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
-        this.blockLogo = new NostalgicLogoRenderer(RandomSource.create().nextFloat() < 1.0E-4);
+        this.blockLogo = new NostalgicLogoRenderer();
         this.imageLogo = new LogoRenderer(false);
         this.titleAccess = (TitleScreenAccess) this;
     }
@@ -185,6 +184,9 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
 
         if (this.minecraft == null || this.minecraft.getOverlay() != null)
             return;
+
+        if (NostalgicLogoText.LOGO_CHANGED.ifEnabledThenDisable())
+            this.blockLogo = new NostalgicLogoRenderer();
 
         if (CandyTweak.OLD_ALPHA_LOGO.get())
             this.blockLogo.render(partialTick);

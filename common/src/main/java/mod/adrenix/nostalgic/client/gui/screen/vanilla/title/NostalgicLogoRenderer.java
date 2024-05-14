@@ -9,29 +9,23 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.MatrixUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
-import mod.adrenix.nostalgic.util.common.color.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import org.joml.Matrix4f;
+
+import java.util.List;
 
 class NostalgicLogoRenderer
 {
     /* Fields */
-
-    private static final String[] MINECRAFT = {
-        " *   * * *   * *** *** *** *** *** ***",
-        " ** ** * **  * *   *   * * * * *    * ",
-        " * * * * * * * **  *   **  *** **   * ",
-        " *   * * *  ** *   *   * * * * *    * ",
-        " *   * * *   * *** *** * * * * *    * "
-    };
 
     /**
      * A two-dimensional array that holds falling block effect data. Array is set up in [x][y] format.
@@ -43,20 +37,20 @@ class NostalgicLogoRenderer
      */
     private final Minecraft minecraft = Minecraft.getInstance();
 
-    /* Constructor */
+    /**
+     * Stores the title screen logo characters.
+     */
+    private final List<String> logo = NostalgicLogoText.getInstance().logo();
 
     /**
-     * Create a new {@link NostalgicLogoRenderer} instance.
-     *
-     * @param isEasterEgged Whether the title screen should be modified to show an Easter egg.
+     * The number of lines in the logo.
      */
-    public NostalgicLogoRenderer(boolean isEasterEgged)
-    {
-        if (isEasterEgged)
-            MINECRAFT[2] = " * * * * * * * *   **  **  *** **   * ";
-        else
-            MINECRAFT[2] = " * * * * * * * **  *   **  *** **   * ";
-    }
+    private final int height = NostalgicLogoText.getInstance().size();
+
+    /**
+     * The length of the longest line in the logo.
+     */
+    private final int width = NostalgicLogoText.getInstance().longestLine();
 
     /* Methods */
 
@@ -71,12 +65,12 @@ class NostalgicLogoRenderer
             .getItemModelShaper()
             .getItemModel(Blocks.STONE.asItem());
 
-        if (blockModel == null)
+        if (this.logo.isEmpty() || blockModel == null)
             return;
 
         if (this.logoEffects == null)
         {
-            this.logoEffects = new LogoEffectRandomizer[MINECRAFT[0].length()][MINECRAFT.length];
+            this.logoEffects = new LogoEffectRandomizer[this.width][this.height];
 
             for (int x = 0; x < this.logoEffects.length; x++)
             {
@@ -141,7 +135,7 @@ class NostalgicLogoRenderer
             modelViewStack.scale(1.0F, -1.0F, 1.0F);
             modelViewStack.mulPose(Axis.XP.rotationDegrees(15.0F));
             modelViewStack.scale(0.89F, 1.0F, 0.4F);
-            modelViewStack.translate((float) (-MINECRAFT[0].length()) * 0.5F, (float) (-MINECRAFT.length) * 0.5F, 0.0F);
+            modelViewStack.translate((float) (-this.width) * 0.5F, (float) (-this.height) * 0.5F, 0.0F);
 
             if (pass == 0)
             {
@@ -151,14 +145,14 @@ class NostalgicLogoRenderer
             else
             {
                 RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
-                RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+                RenderStateShard.BLOCK_SHEET.setupRenderState();
             }
 
-            for (int y = 0; y < MINECRAFT.length; y++)
+            for (int y = 0; y < this.height; y++)
             {
-                for (int x = 0; x < MINECRAFT[y].length(); x++)
+                for (int x = 0; x < this.logo.get(y).length(); x++)
                 {
-                    if (MINECRAFT[y].charAt(x) == ' ')
+                    if (this.logo.get(y).charAt(x) == ' ')
                         continue;
 
                     modelViewStack.pushPose();
@@ -220,14 +214,12 @@ class NostalgicLogoRenderer
                 case WEST, EAST -> 0.6F;
             };
 
-            int light = new Color(brightness, brightness, brightness).get();
-
             for (BakedQuad quad : blockModel.getQuads(null, direction, RandomSource.create()))
             {
                 if (pass == 0)
                     RenderUtil.putTransparentBulkData(modelViewStack.last(), vertexConsumer, quad, brightness, alpha);
                 else
-                    vertexConsumer.putBulkData(modelViewStack.last(), quad, brightness, brightness, brightness, light, OverlayTexture.NO_OVERLAY);
+                    vertexConsumer.putBulkData(modelViewStack.last(), quad, brightness, brightness, brightness, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
             }
         }
     }
