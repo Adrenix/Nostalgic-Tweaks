@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
+import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class ClientboundHandshake implements ModPacket
@@ -62,24 +63,24 @@ public class ClientboundHandshake implements ModPacket
 
         NostalgicTweaks.LOGGER.debug(output, loader, version, protocol);
 
-        // Inform client
+        // Notify client
         if (connection.getProtocol().equals(NostalgicTweaks.PROTOCOL))
         {
             NostalgicTweaks.setNetworkVerification(true);
             ToastNotification.handshake();
+            PacketUtil.sendToServer(new ServerboundSync());
         }
         else
         {
             NostalgicTweaks.setNetworkVerification(false);
-            NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received an incorrect protocol");
+            NostalgicTweaks.LOGGER.warn("Connected to a server with Nostalgic Tweaks but received mismatched protocol");
 
-            // Debug protocol
             String info = "Protocol: [server=%s, client=%s]";
-            String sent = LogColor.apply(LogColor.RED, connection.getProtocol());
-            String using = LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL);
+            String server = LogColor.apply(LogColor.RED, connection.getProtocol());
+            String client = LogColor.apply(LogColor.GREEN, NostalgicTweaks.PROTOCOL);
 
-            NostalgicTweaks.LOGGER.warn(info, sent, using);
-            NostalgicTweaks.LOGGER.warn("This shouldn't happen! Continuing to play on this server is at your own risk!");
+            NostalgicTweaks.LOGGER.warn(info, server, client);
+            NostalgicTweaks.LOGGER.warn("Client should disconnect due to an incorrect mod network state");
         }
     }
 }

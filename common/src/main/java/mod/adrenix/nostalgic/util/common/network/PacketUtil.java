@@ -5,6 +5,8 @@ import net.fabricmc.api.EnvType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.ArrayList;
+
 public abstract class PacketUtil
 {
     /**
@@ -18,8 +20,13 @@ public abstract class PacketUtil
      */
     public static <Packet> void sendToPlayer(ServerPlayer player, Packet packet)
     {
-        NostalgicTweaks.NETWORK.sendToPlayer(player, packet);
-        NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to (%s)", packet, player);
+        if (NostalgicTweaks.NETWORK.canPlayerReceive(player, packet.getClass()))
+        {
+            NostalgicTweaks.NETWORK.sendToPlayer(player, packet);
+            NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to (%s)", packet, player);
+        }
+        else
+            NostalgicTweaks.LOGGER.debug("(S2C) Player (%s) cannot receive (%s)", player, packet);
     }
 
     /**
@@ -34,7 +41,14 @@ public abstract class PacketUtil
      */
     public static <Packet> void sendToAll(Iterable<ServerPlayer> players, Packet packet)
     {
-        NostalgicTweaks.NETWORK.sendToPlayers(players, packet);
+        ArrayList<ServerPlayer> receivers = new ArrayList<>();
+
+        players.forEach(player -> {
+            if (NostalgicTweaks.NETWORK.canPlayerReceive(player, packet.getClass()))
+                receivers.add(player);
+        });
+
+        NostalgicTweaks.NETWORK.sendToPlayers(receivers, packet);
         NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to all players", packet);
     }
 
@@ -72,11 +86,16 @@ public abstract class PacketUtil
     {
         if (NostalgicTweaks.isNetworkVerified())
         {
-            NostalgicTweaks.NETWORK.sendToServer(packet);
-            NostalgicTweaks.LOGGER.debug("(C2S) Sent (%s) to server", packet);
+            if (NostalgicTweaks.NETWORK.canServerReceive(packet.getClass()))
+            {
+                NostalgicTweaks.NETWORK.sendToServer(packet);
+                NostalgicTweaks.LOGGER.debug("(C2S) Sent (%s) to server", packet);
+            }
+            else
+                NostalgicTweaks.LOGGER.debug("(C2S) Server cannot receive (%s)", packet);
         }
         else
-            NostalgicTweaks.LOGGER.info("N.T network is unverified - not sending %s", packet.getClass());
+            NostalgicTweaks.LOGGER.info("Mod network is unverified: Not sending (%s)", packet.getClass());
     }
 
     /**

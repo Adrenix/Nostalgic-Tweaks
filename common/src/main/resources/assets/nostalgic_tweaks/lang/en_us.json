@@ -347,7 +347,7 @@
   "gui.nostalgic_tweaks.overlay.manage.operations.lan": "LAN Restriction",
   "gui.nostalgic_tweaks.overlay.manage.operations.lan.message": "Prevent§e connected§r players from changing your§b client§r settings during a§6 LAN§r session.",
   "gui.nostalgic_tweaks.overlay.manage.operations.sso": "Server Side Only",
-  "gui.nostalgic_tweaks.overlay.manage.operations.sso.message": "Change whether the server is in§e server-side-only§r (§eSSO§r) mode. This will control whether players are§c required§r to have the mod installed when connecting to the server. If changed, then the server§6 must§r be§c restarted§r for changes to take effect. This setting does§c not§r work on LAN sessions.",
+  "gui.nostalgic_tweaks.overlay.manage.operations.sso.message": "Change whether the server is in§e server-side-only§r (§eSSO§r) mode. This will control whether players are§c required§r to have the mod installed when connecting to the server.",
   "gui.nostalgic_tweaks.overlay.manage.operations.logging": "Server Logging",
   "gui.nostalgic_tweaks.overlay.manage.operations.logging.message": "Change whether the server sends§e informative§r logging statements to the§7 console§r window. This will§c not§r hide important logging statements.",
   "gui.nostalgic_tweaks.overlay.manage.operations.debug": "Debug Mode",

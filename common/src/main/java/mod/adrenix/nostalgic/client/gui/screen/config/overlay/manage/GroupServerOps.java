@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 
 import java.util.concurrent.TimeUnit;
@@ -78,18 +79,35 @@ public class GroupServerOps extends ManageGroup
 
         ButtonWidget setSSO = new BooleanController(ModTweak.SERVER_SIDE_ONLY).getBuilder()
             .disabledTooltip(Lang.Tooltip.NOT_CONNECTED_OR_OPERATOR, 35, 500, TimeUnit.MILLISECONDS)
-            .disableIf(NetUtil::isNotConnectedOrOperator)
+            .enableIf(() -> NetUtil.isPlayerOp())
             .centerInWidgetX(sso, manager.padding + 20)
             .below(ssoInformation, manager.padding * 2)
             .build(sso::addWidget);
+
+        BooleanSupplier isSSOSavable = () -> {
+            if (NetUtil.isConnectedAndOperator())
+                return ModTweak.SERVER_SIDE_ONLY.isNetworkSavable();
+            else
+                return ModTweak.SERVER_SIDE_ONLY.isLocalSavable();
+        };
+
+        Runnable onSSOSave = () -> {
+            if (!NetUtil.isConnectedAndOperator())
+            {
+                ModTweak.SERVER_SIDE_ONLY.setDisk(ModTweak.SERVER_SIDE_ONLY.fromLocal());
+                ConfigCache.save();
+            }
+            else
+                ModTweak.SERVER_SIDE_ONLY.applyCacheAndSend();
+        };
 
         ButtonWidget.create()
             .icon(Icons.SAVE_FLOPPY)
             .tooltip(Lang.Button.SAVE, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.SAVE_SSO, 35)
             .rightOf(setSSO, manager.padding)
-            .onPress(ModTweak.SERVER_SIDE_ONLY::applyCacheAndSend)
-            .enableIf(CollectionUtil.areAllTrue(NetUtil::isConnectedAndOperator, ModTweak.SERVER_SIDE_ONLY::isNetworkSavable))
+            .enableIf(isSSOSavable)
+            .onPress(onSSOSave)
             .build(sso::addWidget);
 
         /* Logging */

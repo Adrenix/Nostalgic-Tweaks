@@ -8,9 +8,6 @@ import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
-import mod.adrenix.nostalgic.tweak.factory.Tweak;
-import mod.adrenix.nostalgic.tweak.factory.TweakPool;
-import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -37,9 +34,7 @@ public abstract class ServerPlayerListener
     }
 
     /**
-     * This method provides instructions for the mod to perform after a player connects to the server level. The client
-     * handles disconnection instructions. The server will verify network protocol and inform the client that it is
-     * connected to a server with Nostalgic Tweaks installed.
+     * This method provides instructions for the mod to perform after a player connects to the server level.
      *
      * @param player A {@link ServerPlayer} instance.
      */
@@ -51,8 +46,7 @@ public abstract class ServerPlayerListener
         String version = beta.isEmpty() ? tiny : tiny + "-" + beta;
         String protocol = NostalgicTweaks.getProtocol();
 
-        PacketUtil.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
-        TweakPool.filter(Tweak::isMultiplayerLike).forEach(tweak -> tweak.sendToPlayer(player));
+        NostalgicTweaks.NETWORK.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
 
         setCreativeHotbar(player);
     }

@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.network;
 
 import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
+import mod.adrenix.nostalgic.network.packet.ServerboundSync;
 import mod.adrenix.nostalgic.network.packet.backup.*;
 import mod.adrenix.nostalgic.network.packet.tweak.*;
 
@@ -11,6 +12,7 @@ public abstract class PacketRegistry
     {
         // Handshake
         ModPacket.register(ClientboundHandshake.class, ClientboundHandshake::new);
+        ModPacket.register(ServerboundSync.class, ServerboundSync::new);
 
         // Config Backups
         ModPacket.register(ServerboundCreateBackup.class, ServerboundCreateBackup::new);

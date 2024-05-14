@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.fabric;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.fabric.network.Networking;
 import mod.adrenix.nostalgic.util.ModTracker;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -15,5 +16,8 @@ public class NostalgicFabric implements ModInitializer
 
         // Initialize mod
         NostalgicTweaks.initialize();
+
+        // Register networking
+        Networking.register();
     }
 }
