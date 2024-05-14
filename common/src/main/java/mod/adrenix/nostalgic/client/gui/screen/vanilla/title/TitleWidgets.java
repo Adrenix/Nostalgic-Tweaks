@@ -57,6 +57,14 @@ class TitleWidgets implements WidgetManager
     }
 
     /**
+     * @return Whether the layout includes the "Mods" button.
+     */
+    private boolean hasModsButton()
+    {
+        return CandyTweak.INCLUDE_MODS_ON_TITLE.get() && GuiUtil.modListScreen != null;
+    }
+
+    /**
      * @return The x-coordinate for all left-side buttons.
      */
     private int getX()
@@ -69,7 +77,7 @@ class TitleWidgets implements WidgetManager
      */
     private int getY()
     {
-        return this.titleScreen.height / 4 + 48;
+        return this.titleScreen.height / 4 + 48 - (this.hasModsButton() ? 12 : 0);
     }
 
     /**
@@ -160,7 +168,7 @@ class TitleWidgets implements WidgetManager
 
         ButtonWidget mods = null;
 
-        if (CandyTweak.INCLUDE_MODS_ON_TITLE.get() && GuiUtil.modListScreen != null)
+        if (this.hasModsButton())
         {
             mods = ButtonWidget.create(Lang.Title.MODS)
                 .posX(this.getX())
@@ -215,9 +223,8 @@ class TitleWidgets implements WidgetManager
             .build(this.titleScreen::addWidget);
 
         ButtonWidget mods = null;
-        boolean isMods = CandyTweak.INCLUDE_MODS_ON_TITLE.get() && GuiUtil.modListScreen != null;
 
-        if (isMods)
+        if (this.hasModsButton())
         {
             mods = ButtonWidget.create(Lang.Title.MODS)
                 .posX(this.getX())
@@ -227,7 +234,7 @@ class TitleWidgets implements WidgetManager
                 .build(this.titleScreen::addWidget);
         }
 
-        ButtonWidget packs = ButtonWidget.create(isMods ? Lang.Title.TEXTURE_PACK : Lang.Title.MODS_TEXTURE)
+        ButtonWidget packs = ButtonWidget.create(this.hasModsButton() ? Lang.Title.TEXTURE_PACK : Lang.Title.MODS_TEXTURE)
             .posX(this.getX())
             .below(mods != null ? mods : multiplayer, WIDGET_MARGIN)
             .width(LARGE_BUTTON)
@@ -277,7 +284,7 @@ class TitleWidgets implements WidgetManager
         ButtonWidget mods = null;
         ButtonWidget packs = null;
 
-        if (CandyTweak.INCLUDE_MODS_ON_TITLE.get() && GuiUtil.modListScreen != null)
+        if (this.hasModsButton())
         {
             mods = ButtonWidget.create(Lang.Title.MODS)
                 .posX(this.getX())
