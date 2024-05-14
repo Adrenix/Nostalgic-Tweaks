@@ -117,6 +117,7 @@
     "candy.item_merge.BlockMixin",
     "candy.item_merge.ItemEntityMixin",
     "candy.item_merge.LivingEntityMixin",
-    "candy.square_border.ChunkTrackingViewMixin"
+    "candy.square_border.ChunkTrackingViewMixin",
+    "gameplay.bugs.LivingEntityMixin"
   ]
 }
