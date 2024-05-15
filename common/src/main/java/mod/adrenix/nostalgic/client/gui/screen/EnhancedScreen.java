@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
+import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -102,6 +103,12 @@ public abstract class EnhancedScreen<T extends EnhancedScreen<T, W>, W extends W
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
+        if (KeyboardUtil.isEsc(keyCode))
+        {
+            if (this.getWidgets().stream().anyMatch(widget -> widget.keyPressed(keyCode, scanCode, modifiers)))
+                return true;
+        }
+
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
