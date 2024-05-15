@@ -1,6 +1,8 @@
 package mod.adrenix.nostalgic.tweak.config;
 
 import mod.adrenix.nostalgic.tweak.container.group.SoundGroup;
+import mod.adrenix.nostalgic.tweak.enums.MusicType;
+import mod.adrenix.nostalgic.tweak.factory.TweakEnum;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import mod.adrenix.nostalgic.tweak.factory.TweakStringSet;
 import mod.adrenix.nostalgic.tweak.listing.ListingSuggestion;
@@ -19,6 +21,15 @@ public interface SoundTweak
     TweakFlag OLD_CAVE_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
     TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
     TweakFlag DISABLE_WATER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
+
+    // Music
+
+    TweakFlag PLAY_MUSIC_WHEN_PAUSED = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
+    TweakEnum<MusicType> MUSIC_FOR_MENU = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).newForUpdate().build();
+    TweakEnum<MusicType> MUSIC_FOR_CREATIVE = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).newForUpdate().build();
+    TweakFlag REPLACE_OVERWORLD_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
+    TweakFlag REPLACE_NETHER_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
+    TweakFlag REPLACE_GAMEPLAY_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
 
     // Bed Block
 

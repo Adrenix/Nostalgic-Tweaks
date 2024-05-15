@@ -70,6 +70,7 @@ public interface Icons
     TextureIcon ARM_SWAY = TextureIcon.fromSprite("arm_sway", 12);
     TextureIcon BREAK_WOOD = TextureIcon.fromSprite("break_wood", 12);
     TextureIcon EXPERIENCE = TextureIcon.fromSprite("experience", 12);
+    TextureIcon MUSIC_NOTES = TextureIcon.fromSprite("music_notes", 12);
     TextureIcon BRAIN = TextureIcon.fromSprite("brain", 12);
     TextureIcon FIRE = TextureIcon.fromSprite("fire", 12);
     TextureIcon CUSTOM_HITBOX = TextureIcon.fromSprite("custom_hitbox", 12);

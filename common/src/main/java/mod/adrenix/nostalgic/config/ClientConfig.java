@@ -57,6 +57,8 @@ public class ClientConfig implements ConfigMeta
         public MenuOption defaultScreen = ModTweak.DEFAULT_SCREEN.register("defaultScreen");
         public int openConfigBinding = ModTweak.OPEN_CONFIG_BINDING.register("openConfigBinding");
         public int fogBinding = ModTweak.FOG_BINDING.register("fogBinding");
+        public int stopSongBinding = ModTweak.STOP_SONG_BINDING.register("stopSongBinding");
+        public int nextSongBinding = ModTweak.NEXT_SONG_BINDING.register("nextSongBinding");
 
         // Config Management
 
@@ -101,6 +103,15 @@ public class ClientConfig implements ConfigMeta
 
         public StringSet disabledPositionedSounds = SoundTweak.DISABLED_POSITIONED_SOUNDS.register("disabledPositionedSounds");
         public StringSet disabledGlobalSounds = SoundTweak.DISABLED_GLOBAL_SOUNDS.register("disabledGlobalSounds");
+
+        // Music
+
+        public boolean playMusicWhenPaused = SoundTweak.PLAY_MUSIC_WHEN_PAUSED.register("playMusicWhenPaused");
+        public MusicType musicForMenu = SoundTweak.MUSIC_FOR_MENU.register("musicForMenu");
+        public MusicType musicForCreative = SoundTweak.MUSIC_FOR_CREATIVE.register("musicForCreative");
+        public boolean replaceOverworldBiomeMusic = SoundTweak.REPLACE_OVERWORLD_BIOME_MUSIC.register("replaceOverworldBiomeMusic");
+        public boolean replaceNetherBiomeMusic = SoundTweak.REPLACE_NETHER_BIOME_MUSIC.register("replaceNetherBiomeMusic");
+        public boolean replaceGameplayMusic = SoundTweak.REPLACE_GAMEPLAY_MUSIC.register("replaceGameplayMusic");
 
         // Ambient
 

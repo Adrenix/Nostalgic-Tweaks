@@ -17,9 +17,19 @@ public abstract class ClientSound
 
     private static final ResourceLocation BLANK_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "blank");
     private static final ResourceLocation PLAYER_HURT_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "entity.player.hurt");
+    private static final ResourceLocation MUSIC_ALPHA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.gameplay.alpha");
+    private static final ResourceLocation MUSIC_MENU_BETA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.menu.beta");
+    private static final ResourceLocation MUSIC_MENU_BLENDED_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.menu.blended");
+    private static final ResourceLocation MUSIC_CREATIVE_BETA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.creative.beta");
+    private static final ResourceLocation MUSIC_CREATIVE_BLENDED_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.creative.blended");
 
     public static final RegistrySupplier<SoundEvent> BLANK = DEFERRED_REGISTER.register(BLANK_LOCATION, () -> SoundEvent.createVariableRangeEvent(BLANK_LOCATION));
     public static final RegistrySupplier<SoundEvent> PLAYER_HURT = DEFERRED_REGISTER.register(PLAYER_HURT_LOCATION, () -> SoundEvent.createVariableRangeEvent(PLAYER_HURT_LOCATION));
+    public static final RegistrySupplier<SoundEvent> MUSIC_ALPHA = DEFERRED_REGISTER.register(MUSIC_ALPHA_LOCATION, () -> SoundEvent.createVariableRangeEvent(MUSIC_ALPHA_LOCATION));
+    public static final RegistrySupplier<SoundEvent> MUSIC_MENU_BETA = DEFERRED_REGISTER.register(MUSIC_MENU_BETA_LOCATION, () -> SoundEvent.createVariableRangeEvent(MUSIC_MENU_BETA_LOCATION));
+    public static final RegistrySupplier<SoundEvent> MUSIC_MENU_BLENDED = DEFERRED_REGISTER.register(MUSIC_MENU_BLENDED_LOCATION, () -> SoundEvent.createVariableRangeEvent(MUSIC_MENU_BLENDED_LOCATION));
+    public static final RegistrySupplier<SoundEvent> MUSIC_CREATIVE_BETA = DEFERRED_REGISTER.register(MUSIC_CREATIVE_BETA_LOCATION, () -> SoundEvent.createVariableRangeEvent(MUSIC_CREATIVE_BETA_LOCATION));
+    public static final RegistrySupplier<SoundEvent> MUSIC_CREATIVE_BLENDED = DEFERRED_REGISTER.register(MUSIC_CREATIVE_BLENDED_LOCATION, () -> SoundEvent.createVariableRangeEvent(MUSIC_CREATIVE_BLENDED_LOCATION));
 
     /* Methods */
 

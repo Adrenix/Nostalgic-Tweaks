@@ -2,12 +2,17 @@ package mod.adrenix.nostalgic.tweak.container.group;
 
 import mod.adrenix.nostalgic.tweak.container.Category;
 import mod.adrenix.nostalgic.tweak.container.Container;
+import mod.adrenix.nostalgic.util.common.asset.Icons;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
 // @formatter:off
 public interface SoundGroup
 {
+    // Music
+
+    Container MUSIC = Container.group(Category.SOUND, "music").color(0x8CF1FF).icon(Icons.MUSIC_NOTES).build();
+
     // Ambient Sound
 
     Container AMBIENT = Container.group(Category.SOUND, "ambient").color(0xEFD251).icon(Items.MUSIC_DISC_13).build();

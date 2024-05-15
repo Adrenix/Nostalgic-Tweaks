@@ -50,6 +50,8 @@ public interface Lang
     {
         Translation OPEN_CONFIG = new Translation("key.nostalgic_tweaks.open_config");
         Translation TOGGLE_FOG = new Translation("key.nostalgic_tweaks.toggle_fog");
+        Translation STOP_SONG = new Translation("key.nostalgic_tweaks.stop_song");
+        Translation NEXT_SONG = new Translation("key.nostalgic_tweaks.next_song");
         Translation UNBOUND = new Translation("key.nostalgic_tweaks.unbound");
     }
 
@@ -786,6 +788,9 @@ public interface Lang
         Translation PLAIN_CLASSIC = from("generic.plain_classic");
         Translation INF_DEV = from("generic.inf_dev");
         Translation DISABLED = from("generic.disabled");
+        Translation MUSIC_ALPHA = from("musicType.alpha");
+        Translation MUSIC_BETA = from("musicType.beta");
+        Translation MUSIC_BLENDED = from("musicType.blended");
         Translation SCREEN_HOME = from("menuOption.home");
         Translation SCREEN_PACKS = from("menuOption.packs");
         Translation SCREEN_CONFIG = from("menuOption.config");

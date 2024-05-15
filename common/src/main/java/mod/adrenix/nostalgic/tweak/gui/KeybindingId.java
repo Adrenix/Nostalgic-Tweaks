@@ -6,5 +6,7 @@ package mod.adrenix.nostalgic.tweak.gui;
 public enum KeybindingId
 {
     CONFIG,
-    FOG
+    FOG,
+    NEXT_SONG,
+    STOP_SONG
 }

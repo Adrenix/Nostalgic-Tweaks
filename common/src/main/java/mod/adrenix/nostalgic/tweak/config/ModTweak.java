@@ -53,6 +53,16 @@ public interface ModTweak
     TweakBinding FOG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.FOG).build();
 
     /**
+     * A key binding that will stop the current song if one is playing.
+     */
+    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.STOP_SONG).build();
+
+    /**
+     * A key binding that will stop the current song if one is playing and then plays a new song.
+     */
+    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.NEXT_SONG).build();
+
+    /**
      * Controls how many backup files are made in the user's backup folder directory.
      */
     TweakNumber<Integer> NUMBER_OF_BACKUPS = TweakNumber.server(5, ModGroup.CONFIG).slider(Lang.Slider.FILES, 1, 100).load().build();
