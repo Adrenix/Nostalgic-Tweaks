@@ -335,12 +335,14 @@ public interface TweakMeta<T>
     /**
      * @return A {@link TweakPacket} instance that will be sent to clients running the mod.
      */
-    @Nullable TweakPacket getClientboundPacket();
+    @Nullable
+    TweakPacket getClientboundPacket();
 
     /**
      * @return A {@link TweakPacket} instance that will be sent to a server running the mod.
      */
-    @Nullable TweakPacket getServerboundPacket();
+    @Nullable
+    TweakPacket getServerboundPacket();
 
     /**
      * Sends an update packet to the server. The server will handle these packets, so they are also responsible for
@@ -396,6 +398,32 @@ public interface TweakMeta<T>
     default void setDiskAndSave(T value)
     {
         this.setDisk(value);
+        ConfigCache.save();
+    }
+
+    /**
+     * Change the value stored in the cache and change the value stored on the disk. Note, this does not perform any I/O
+     * saving operations. To save to disk: {@link ConfigCache#save()} or {@link #setCacheAndDiskThenSave(Object)}.
+     *
+     * @param value The new value that will be set to the tweak's cache and the disk.
+     * @see #setCacheAndDiskThenSave(Object)
+     */
+    default void setCacheAndDisk(T value)
+    {
+        this.setCacheValue(value);
+        this.setDisk(value);
+    }
+
+    /**
+     * Change the value stored in the cache and change the value stored on the disk and then save changes to the disk.
+     * If saving to disk is not desired then use {@link #setCacheAndDisk(Object)}.
+     *
+     * @param value The new value that will be set to the tweak's cache and the disk.
+     * @see #setCacheAndDisk(Object)
+     */
+    default void setCacheAndDiskThenSave(T value)
+    {
+        this.setCacheAndDisk(value);
         ConfigCache.save();
     }
 
