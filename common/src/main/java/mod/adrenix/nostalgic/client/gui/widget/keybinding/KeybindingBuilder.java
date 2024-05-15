@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.gui.widget.keybinding;
 
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
 import mod.adrenix.nostalgic.client.gui.widget.button.AbstractButtonMaker;
-import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
+import mod.adrenix.nostalgic.tweak.factory.TweakBinding;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 
@@ -10,15 +10,17 @@ public class KeybindingBuilder extends AbstractButtonMaker<KeybindingBuilder, Ke
 {
     /* Fields */
 
+    final TweakBinding tweak;
     final KeyMapping mapping;
 
     /* Constructor */
 
-    public KeybindingBuilder(KeybindingId id)
+    public KeybindingBuilder(TweakBinding tweak)
     {
         super(Component.empty());
 
-        this.mapping = ClientKeyMapping.getFromId(id);
+        this.tweak = tweak;
+        this.mapping = ClientKeyMapping.getFromId(tweak.getKeybindingId());
     }
 
     /* Methods */

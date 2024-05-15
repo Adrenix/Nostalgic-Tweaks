@@ -179,6 +179,30 @@ public class TweakRowLayout
     }
 
     /**
+     * @return The save {@link ButtonWidget}.
+     */
+    public ButtonWidget getSave()
+    {
+        return this.save;
+    }
+
+    /**
+     * @return The undo {@link ButtonWidget}.
+     */
+    public ButtonWidget getUndo()
+    {
+        return this.undo;
+    }
+
+    /**
+     * @return The reset {@link ButtonWidget}.
+     */
+    public ButtonWidget getReset()
+    {
+        return this.reset;
+    }
+
+    /**
      * @return A {@link Component} to display for the sided tweak-cache context.
      */
     private Component getCacheTooltip()

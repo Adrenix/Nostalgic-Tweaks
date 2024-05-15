@@ -42,6 +42,14 @@ public class Controller
     /* Methods */
 
     /**
+     * @return The {@link TweakRowLayout} instance.
+     */
+    TweakRowLayout getLayout()
+    {
+        return this.layout;
+    }
+
+    /**
      * @return The widget that will be to the right of a {@link Controller} widget.
      */
     DynamicWidget<?, ?> getLeftOf()

@@ -1,10 +1,9 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.widget.list.controller;
 
 import mod.adrenix.nostalgic.client.ClientKeyMapping;
-import mod.adrenix.nostalgic.client.gui.widget.button.AbstractButtonMaker;
-import mod.adrenix.nostalgic.client.gui.widget.dynamic.ActiveBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.keybinding.KeybindingWidget;
 import mod.adrenix.nostalgic.tweak.factory.TweakBinding;
+import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 
 public class KeybindingController
 {
@@ -34,16 +33,18 @@ public class KeybindingController
      */
     public KeybindingWidget getWidget()
     {
-        KeybindingWidget widget = KeybindingWidget.create(this.tweak.getKeybindingId())
+        KeybindingWidget widget = KeybindingWidget.create(this.tweak)
             .leftOf(this.controller.getLeftOf(), 1)
             .width(Controller.BUTTON_WIDTH)
             .build();
 
-        if (this.controller.getLeftOf().getBuilder() instanceof ActiveBuilder<?, ?> builder)
-            builder.disableIf(ClientKeyMapping.getFromId(this.tweak.getKeybindingId())::isDefault);
-
-        if (this.controller.getLeftOf().getBuilder() instanceof AbstractButtonMaker<?, ?> builder)
-            builder.onPress(widget::reset);
+        this.controller.getLayout().getSave().getBuilder().disableIf(BooleanSupplier.ALWAYS);
+        this.controller.getLayout().getUndo().getBuilder().disableIf(BooleanSupplier.ALWAYS);
+        this.controller.getLayout().getReset().getBuilder().onPress(widget::reset);
+        this.controller.getLayout()
+            .getReset()
+            .getBuilder()
+            .disableIf(ClientKeyMapping.getFromId(this.tweak.getKeybindingId())::isDefault);
 
         return widget;
     }

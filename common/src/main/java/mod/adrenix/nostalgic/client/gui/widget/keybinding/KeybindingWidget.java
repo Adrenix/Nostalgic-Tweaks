@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.client.gui.widget.keybinding;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import mod.adrenix.nostalgic.client.gui.widget.button.AbstractButton;
-import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
+import mod.adrenix.nostalgic.tweak.factory.TweakBinding;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.ChatFormatting;
@@ -19,16 +19,17 @@ public class KeybindingWidget extends AbstractButton<KeybindingBuilder, Keybindi
     /**
      * Create a new {@link KeybindingWidget}.
      *
-     * @param id A {@link KeybindingId} enumeration that points to a {@link KeyMapping}.
+     * @param tweak A {@link TweakBinding} instance.
      * @return A new {@link KeybindingBuilder} instance.
      */
-    public static KeybindingBuilder create(KeybindingId id)
+    public static KeybindingBuilder create(TweakBinding tweak)
     {
-        return new KeybindingBuilder(id);
+        return new KeybindingBuilder(tweak);
     }
 
     /* Fields */
 
+    private final TweakBinding tweak;
     private final KeyMapping mapping;
 
     /* Constructor */
@@ -37,6 +38,7 @@ public class KeybindingWidget extends AbstractButton<KeybindingBuilder, Keybindi
     {
         super(builder, onPress);
 
+        this.tweak = builder.tweak;
         this.mapping = builder.mapping;
 
         builder.title(this::setTitle);
@@ -49,7 +51,10 @@ public class KeybindingWidget extends AbstractButton<KeybindingBuilder, Keybindi
      */
     public void reset()
     {
-        Minecraft.getInstance().options.setKey(this.mapping, this.mapping.getDefaultKey());
+        InputConstants.Key defaultKey = this.mapping.getDefaultKey();
+
+        Minecraft.getInstance().options.setKey(this.mapping, defaultKey);
+        this.tweak.setCacheAndDiskThenSave(defaultKey.getValue());
         KeyMapping.resetMapping();
 
         this.setFocused(false);
@@ -64,9 +69,17 @@ public class KeybindingWidget extends AbstractButton<KeybindingBuilder, Keybindi
     protected void setKey(int keyCode, int scanCode)
     {
         if (KeyboardUtil.isEsc(keyCode))
+        {
             Minecraft.getInstance().options.setKey(this.mapping, InputConstants.UNKNOWN);
+            this.tweak.setCacheAndDiskThenSave(InputConstants.UNKNOWN.getValue());
+        }
         else
-            Minecraft.getInstance().options.setKey(this.mapping, InputConstants.getKey(keyCode, scanCode));
+        {
+            InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
+
+            Minecraft.getInstance().options.setKey(this.mapping, key);
+            this.tweak.setCacheAndDiskThenSave(key.getValue());
+        }
 
         KeyMapping.resetMapping();
 
