@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.tweak.TweakIssue;
 import mod.adrenix.nostalgic.tweak.container.group.CandyGroup;
 import mod.adrenix.nostalgic.tweak.enums.*;
 import mod.adrenix.nostalgic.tweak.factory.*;
+import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.*;
 import mod.adrenix.nostalgic.util.ModTracker;
@@ -336,6 +337,7 @@ public interface CandyTweak
     // World Fog
 
     TweakEnum<WorldFog> OLD_WORLD_FOG = TweakEnum.client(WorldFog.ALPHA_R164, CandyGroup.WORLD_FOG).newForUpdate().build();
+    TweakBinding FOG_BINDING = TweakBinding.client(-1, CandyGroup.WORLD_FOG, KeybindingId.FOG).build();
     TweakFlag OLD_SUNRISE_SUNSET_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
     TweakFlag OLD_DARK_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().build();
     TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().alert(TweakAlert.DYNAMIC_FOG).build();

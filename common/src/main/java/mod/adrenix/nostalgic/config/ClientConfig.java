@@ -56,9 +56,6 @@ public class ClientConfig implements ConfigMeta
 
         public MenuOption defaultScreen = ModTweak.DEFAULT_SCREEN.register("defaultScreen");
         public int openConfigBinding = ModTweak.OPEN_CONFIG_BINDING.register("openConfigBinding");
-        public int fogBinding = ModTweak.FOG_BINDING.register("fogBinding");
-        public int stopSongBinding = ModTweak.STOP_SONG_BINDING.register("stopSongBinding");
-        public int nextSongBinding = ModTweak.NEXT_SONG_BINDING.register("nextSongBinding");
 
         // Config Management
 
@@ -112,6 +109,11 @@ public class ClientConfig implements ConfigMeta
         public boolean replaceOverworldBiomeMusic = SoundTweak.REPLACE_OVERWORLD_BIOME_MUSIC.register("replaceOverworldBiomeMusic");
         public boolean replaceNetherBiomeMusic = SoundTweak.REPLACE_NETHER_BIOME_MUSIC.register("replaceNetherBiomeMusic");
         public boolean replaceGameplayMusic = SoundTweak.REPLACE_GAMEPLAY_MUSIC.register("replaceGameplayMusic");
+
+        // Music Controls
+
+        public int stopSongBinding = SoundTweak.STOP_SONG_BINDING.register("stopSongBinding");
+        public int nextSongBinding = SoundTweak.NEXT_SONG_BINDING.register("nextSongBinding");
 
         // Ambient
 
@@ -497,6 +499,7 @@ public class ClientConfig implements ConfigMeta
         // World Fog
 
         public WorldFog oldWorldFog = CandyTweak.OLD_WORLD_FOG.register("oldWorldFog");
+        public int fogBinding = CandyTweak.FOG_BINDING.register("fogBinding");
         public boolean oldNetherFog = CandyTweak.OLD_NETHER_FOG.register("oldNetherFog");
         public boolean oldSunriseSunsetFog = CandyTweak.OLD_SUNRISE_SUNSET_FOG.register("oldSunriseSunsetFog");
         public boolean oldDarkFog = CandyTweak.OLD_DARK_FOG.register("oldDarkFog");

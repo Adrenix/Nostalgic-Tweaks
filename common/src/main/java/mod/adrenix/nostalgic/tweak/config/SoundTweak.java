@@ -2,9 +2,11 @@ package mod.adrenix.nostalgic.tweak.config;
 
 import mod.adrenix.nostalgic.tweak.container.group.SoundGroup;
 import mod.adrenix.nostalgic.tweak.enums.MusicType;
+import mod.adrenix.nostalgic.tweak.factory.TweakBinding;
 import mod.adrenix.nostalgic.tweak.factory.TweakEnum;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import mod.adrenix.nostalgic.tweak.factory.TweakStringSet;
+import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
 import mod.adrenix.nostalgic.tweak.listing.ListingSuggestion;
 import mod.adrenix.nostalgic.tweak.listing.StringSet;
 
@@ -30,6 +32,11 @@ public interface SoundTweak
     TweakFlag REPLACE_OVERWORLD_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
     TweakFlag REPLACE_NETHER_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
     TweakFlag REPLACE_GAMEPLAY_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
+
+    // Music Controls
+
+    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.STOP_SONG).build();
+    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.NEXT_SONG).build();
 
     // Bed Block
 

@@ -12,6 +12,7 @@ public interface SoundGroup
     // Music
 
     Container MUSIC = Container.group(Category.SOUND, "music").color(0x8CF1FF).icon(Icons.MUSIC_NOTES).build();
+    Container MUSIC_CONTROLS = Container.group(SoundGroup.MUSIC, "music_controls").color(0xF0C636).icon(Icons.PLAYER_CONTROLS).build();
 
     // Ambient Sound
 

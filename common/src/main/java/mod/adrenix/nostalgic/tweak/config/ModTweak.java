@@ -38,29 +38,14 @@ public interface ModTweak
     TweakFlag SERVER_DEBUG = TweakFlag.server(false, Category.ROOT).load().ignore().build();
 
     /**
-     * Enumeration option that determines which screen is opened when the defined hotkey is pressed.
-     */
-    TweakEnum<MenuOption> DEFAULT_SCREEN = TweakEnum.client(MenuOption.HOME_SCREEN, Category.MOD).load().top().build();
-
-    /**
      * A key binding that opens the mod's configuration menu.
      */
     TweakBinding OPEN_CONFIG_BINDING = TweakBinding.client(79, ModGroup.BINDING, KeybindingId.CONFIG).build();
 
     /**
-     * A key binding that toggles the fog rendering distance.
+     * Enumeration option that determines which screen is opened when the defined hotkey is pressed.
      */
-    TweakBinding FOG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.FOG).build();
-
-    /**
-     * A key binding that will stop the current song if one is playing.
-     */
-    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.STOP_SONG).build();
-
-    /**
-     * A key binding that will stop the current song if one is playing and then plays a new song.
-     */
-    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, ModGroup.BINDING, KeybindingId.NEXT_SONG).build();
+    TweakEnum<MenuOption> DEFAULT_SCREEN = TweakEnum.client(MenuOption.HOME_SCREEN, ModGroup.BINDING).load().top().build();
 
     /**
      * Controls how many backup files are made in the user's backup folder directory.
