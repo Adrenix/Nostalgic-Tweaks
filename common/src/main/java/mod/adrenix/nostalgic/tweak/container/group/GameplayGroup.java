@@ -32,17 +32,17 @@ public interface GameplayGroup
     Container MECHANICS = Container.group(Category.GAMEPLAY, "mechanics").color(0xFFDB5C).icon(Icons.MECHANICAL_TOOLS).build();
     Container MECHANICS_FIRE = Container.group(MECHANICS, "mechanics_fire").color(0xCE7806).icon(Icons.FIRE).build();
     Container MECHANICS_CART = Container.group(MECHANICS, "mechanics_cart").color(0x8D8E93).icon(Items.MINECART).build();
-    Container MECHANICS_BLOCK = Container.group(MECHANICS, "mechanics_block").color(0x78B74E).icon(Blocks.GRASS_BLOCK).build();
+    Container MECHANICS_BLOCK = Container.group(MECHANICS, "mechanics_block").color(0x98C767).icon(Blocks.GRASS_BLOCK).build();
     Container MECHANICS_BLOCK_BED = Container.group(MECHANICS_BLOCK, "mechanics_block_bed").color(0xDB433B).icon(Blocks.RED_BED).build();
     Container MECHANICS_BLOCK_CHEST = Container.group(MECHANICS_BLOCK, "mechanics_block_chest").color(0xFFB444).icon(Blocks.CHEST).build();
-    Container MECHANICS_PLAYER = Container.group(MECHANICS, "mechanics_player").color(0xB6896C).icon(Items.PLAYER_HEAD).build();
     Container MECHANICS_FARMING = Container.group(MECHANICS, "mechanics_farming").color(0x69B038).icon(Items.WHEAT_SEEDS).build();
+    Container MECHANICS_PLAYER = Container.group(MECHANICS, "mechanics_player").color(0xB6896C).icon(Items.PLAYER_HEAD).build();
     Container MECHANICS_SWIMMING = Container.group(MECHANICS, "mechanics_swimming").color(0x375DCA).icon(Items.WATER_BUCKET).build();
-    Container MECHANICS_ITEMS = Container.group(MECHANICS, "mechanics_items").color(0xC3C3C3).icon(Items.IRON_PICKAXE).build();
+    Container MECHANICS_ITEMS = Container.group(MECHANICS, "mechanics_items").color(0x8CF4E2).icon(Items.DIAMOND).build();
 
     // Hunger
 
-    Container HUNGER = Container.group(Category.GAMEPLAY, "hunger").color(0xFAB2B3).icon(Items.PORKCHOP).build();
+    Container HUNGER = Container.group(Category.GAMEPLAY, "hunger").color(0xFF8C8C).icon(Items.PORKCHOP).build();
     Container HUNGER_BAR = Container.group(HUNGER, "hunger_bar").color(0xD42A2A).icon(Icons.HUNGER).build();
     Container HUNGER_BAR_ALT_FOOD = Container.group(HUNGER_BAR, "hunger_bar_alt_food").color(0xB79859).icon(Items.OAK_SIGN).build();
     Container HUNGER_BAR_ALT_SATURATION = Container.group(HUNGER_BAR, "hunger_bar_alt_saturation").color(0xE56B7E).icon(Icons.HUNGER_PARTIAL).build();
@@ -50,12 +50,12 @@ public interface GameplayGroup
 
     // Mob
 
-    Container MOB = Container.group(Category.GAMEPLAY, "mob").color(0x208A1E).icon(Items.CREEPER_HEAD).build();
-    Container MOB_AI = Container.group(MOB, "mob_ai").color(0xB55088).icon(Icons.BRAIN).build();
+    Container MOB = Container.group(Category.GAMEPLAY, "mob").color(0x70DC5D).icon(Items.CREEPER_HEAD).build();
+    Container MOB_AI = Container.group(MOB, "mob_ai").color(0xF57C83).icon(Icons.BRAIN).build();
     Container MOB_ANIMAL = Container.group(MOB, "mob_animal").color(0xD96927).icon(Items.TROPICAL_FISH).build();
-    Container MOB_ANIMAL_SPAWN = Container.group(MOB_ANIMAL, "mob_animal_spawn").color(0xE699E8).icon(Items.PIG_SPAWN_EGG).build();
+    Container MOB_ANIMAL_SPAWN = Container.group(MOB_ANIMAL, "mob_animal_spawn").color(0x377BA8).icon(Blocks.SPAWNER).build();
     Container MOB_ANIMAL_SHEEP = Container.group(MOB_ANIMAL, "mob_animal_sheep").color(0xFFFFFF).icon(Blocks.WHITE_WOOL).build();
-    Container MOB_DROPS = Container.group(MOB, "mob_drops").color(0xBC5932).icon(Items.LEATHER).build();
+    Container MOB_DROPS = Container.group(MOB, "mob_drops").color(0xC65C35).icon(Items.LEATHER).build();
     Container MOB_DROPS_CLASSIC = Container.group(MOB_DROPS, "mob_drops_classic").color(0xCECECE).icon(Items.FEATHER).build();
-    Container MOB_DROPS_MODERN = Container.group(MOB_DROPS, "mob_drops_modern").color(0xB44C18).icon(Items.ROTTEN_FLESH).build();
+    Container MOB_DROPS_MODERN = Container.group(MOB_DROPS, "mob_drops_modern").color(0xC79E67).icon(Items.RABBIT_FOOT).build();
 }
