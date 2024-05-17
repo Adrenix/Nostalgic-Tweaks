@@ -124,6 +124,10 @@
     "gameplay.mob_ai.AnimalPanicMixin",
     "gameplay.mob_ai.PanicGoalMixin",
     "gameplay.mob_ai.SquidFleeGoalMixin",
-    "gameplay.mob_ai.SquidMixin"
+    "gameplay.mob_ai.SquidMixin",
+    "gameplay.monster_rule.MobMixin",
+    "gameplay.monster_spawn.MobMixin",
+    "gameplay.monster_spawn.PiglinMixin",
+    "gameplay.monster_spawn.ZombieMixin"
   ]
 }

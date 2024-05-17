@@ -581,7 +581,20 @@ public class ClientConfig implements ConfigMeta
 
         public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.register("disableAnimalPanic");
 
-        // Mob Spawning
+        // Monsters
+
+        public boolean disableMonsterItemPickup = GameplayTweak.DISABLE_MONSTER_ITEM_PICKUP.register("disableMonsterItemPickup");
+
+        // Monster Spawning
+
+        public boolean disableBabyZombieSpawn = GameplayTweak.DISABLE_BABY_ZOMBIE_SPAWN.register("disableBabyZombieSpawn");
+        public boolean disableBabyPiglinSpawn = GameplayTweak.DISABLE_BABY_PIGLIN_SPAWN.register("disableBabyPiglinSpawn");
+        public boolean disableMonsterItemSpawn = GameplayTweak.DISABLE_MONSTER_ITEM_SPAWN.register("disableMonsterItemSpawn");
+        public boolean disableMonsterArmorSpawn = GameplayTweak.DISABLE_MONSTER_ARMOR_SPAWN.register("disableMonsterArmorSpawn");
+        public boolean disableMonsterEnchantSpawn = GameplayTweak.DISABLE_MONSTER_ENCHANT_SPAWN.register("disableMonsterEnchantSpawn");
+        public boolean piglinOnlyGoldSwordSpawn = GameplayTweak.PIGLIN_ONLY_GOLD_SWORD_SPAWN.register("piglinOnlyGoldSwordSpawn");
+
+        // Animal Spawning
 
         public int animalSpawnCap = GameplayTweak.ANIMAL_SPAWN_CAP.register("animalSpawnCap");
         public boolean oldAnimalSpawning = GameplayTweak.OLD_ANIMAL_SPAWNING.register("oldAnimalSpawning");

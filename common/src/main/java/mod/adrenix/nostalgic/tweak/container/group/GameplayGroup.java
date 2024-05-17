@@ -52,6 +52,8 @@ public interface GameplayGroup
 
     Container MOB = Container.group(Category.GAMEPLAY, "mob").color(0x70DC5D).icon(Items.CREEPER_HEAD).build();
     Container MOB_AI = Container.group(MOB, "mob_ai").color(0xF57C83).icon(Icons.BRAIN).build();
+    Container MOB_MONSTER = Container.group(MOB, "mob_monster").color(0x9B9B9B).icon(Items.GUNPOWDER).build();
+    Container MOB_MONSTER_SPAWN = Container.group(MOB_MONSTER, "mob_monster_spawn").color(0x377BA8).icon(Blocks.SPAWNER).build();
     Container MOB_ANIMAL = Container.group(MOB, "mob_animal").color(0xD96927).icon(Items.TROPICAL_FISH).build();
     Container MOB_ANIMAL_SPAWN = Container.group(MOB_ANIMAL, "mob_animal_spawn").color(0x377BA8).icon(Blocks.SPAWNER).build();
     Container MOB_ANIMAL_SHEEP = Container.group(MOB_ANIMAL, "mob_animal_sheep").color(0xFFFFFF).icon(Blocks.WHITE_WOOL).build();

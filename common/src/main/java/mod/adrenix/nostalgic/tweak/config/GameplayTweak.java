@@ -23,7 +23,20 @@ public interface GameplayTweak
 
     TweakFlag DISABLE_ANIMAL_PANIC = TweakFlag.server(true, GameplayGroup.MOB_AI).newForUpdate().build();
 
-    // Mob Spawning
+    // Monsters
+
+    TweakFlag DISABLE_MONSTER_ITEM_PICKUP = TweakFlag.server(false, GameplayGroup.MOB_MONSTER).newForUpdate().build();
+
+    // Monster Spawning
+
+    TweakFlag DISABLE_BABY_ZOMBIE_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakFlag DISABLE_BABY_PIGLIN_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakFlag DISABLE_MONSTER_ITEM_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakFlag DISABLE_MONSTER_ARMOR_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakFlag DISABLE_MONSTER_ENCHANT_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakFlag PIGLIN_ONLY_GOLD_SWORD_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+
+    // Animal Spawning
 
     TweakNumber<Integer> ANIMAL_SPAWN_CAP = TweakNumber.server(25, GameplayGroup.MOB_ANIMAL_SPAWN)
         .slider(Lang.Slider.CAP, 0, 100)
