@@ -13,20 +13,6 @@ public interface GameplayGroup
 
     Container BUGS = Container.group(Category.GAMEPLAY, "bugs").color(0xFB4A4C).icon(Icons.BUG).build();
 
-    // Combat
-
-    Container COMBAT = Container.group(Category.GAMEPLAY, "combat").color(0x2BC7AC).icon(Items.DIAMOND_SWORD).build();
-    Container COMBAT_BOW = Container.group(COMBAT, "combat_bow").color(0x896727).icon(Items.BOW).build();
-
-    // Experience
-
-    Container EXPERIENCE = Container.group(Category.GAMEPLAY, "experience").color(0xF5FF8F).icon(Items.EXPERIENCE_BOTTLE).build();
-    Container EXPERIENCE_BAR = Container.group(EXPERIENCE, "experience_bar").color(0x86C457).icon(Icons.XP_BAR).build();
-    Container EXPERIENCE_BAR_ALT_LEVEL = Container.group(EXPERIENCE_BAR, "experience_bar_alt_level").color(0x7EFC20).icon(Icons.XP_LEVEL).build();
-    Container EXPERIENCE_BAR_ALT_PROGRESS = Container.group(EXPERIENCE_BAR, "experience_bar_alt_progress").color(0x8FB7A3).icon(Icons.XP_HALF_BAR).build();
-    Container EXPERIENCE_ORB = Container.group(EXPERIENCE, "experience_orb").color(0xBBB71B).icon(Icons.EXPERIENCE).build();
-    Container EXPERIENCE_BLOCK = Container.group(EXPERIENCE, "experience_block").color(0xA4EDDC).icon(Blocks.ENCHANTING_TABLE).build();
-
     // Mechanics
 
     Container MECHANICS = Container.group(Category.GAMEPLAY, "mechanics").color(0xFFDB5C).icon(Icons.MECHANICAL_TOOLS).build();
@@ -40,6 +26,15 @@ public interface GameplayGroup
     Container MECHANICS_SWIMMING = Container.group(MECHANICS, "mechanics_swimming").color(0x375DCA).icon(Items.WATER_BUCKET).build();
     Container MECHANICS_ITEMS = Container.group(MECHANICS, "mechanics_items").color(0x8CF4E2).icon(Items.DIAMOND).build();
 
+    // Experience
+
+    Container EXPERIENCE = Container.group(Category.GAMEPLAY, "experience").color(0xF5FF8F).icon(Items.EXPERIENCE_BOTTLE).build();
+    Container EXPERIENCE_BAR = Container.group(EXPERIENCE, "experience_bar").color(0x86C457).icon(Icons.XP_BAR).build();
+    Container EXPERIENCE_BAR_ALT_LEVEL = Container.group(EXPERIENCE_BAR, "experience_bar_alt_level").color(0x7EFC20).icon(Icons.XP_LEVEL).build();
+    Container EXPERIENCE_BAR_ALT_PROGRESS = Container.group(EXPERIENCE_BAR, "experience_bar_alt_progress").color(0x8FB7A3).icon(Icons.XP_HALF_BAR).build();
+    Container EXPERIENCE_ORB = Container.group(EXPERIENCE, "experience_orb").color(0xBBB71B).icon(Icons.EXPERIENCE).build();
+    Container EXPERIENCE_BLOCK = Container.group(EXPERIENCE, "experience_block").color(0xA4EDDC).icon(Blocks.ENCHANTING_TABLE).build();
+
     // Hunger
 
     Container HUNGER = Container.group(Category.GAMEPLAY, "hunger").color(0xFF8C8C).icon(Items.PORKCHOP).build();
@@ -47,6 +42,11 @@ public interface GameplayGroup
     Container HUNGER_BAR_ALT_FOOD = Container.group(HUNGER_BAR, "hunger_bar_alt_food").color(0xB79859).icon(Items.OAK_SIGN).build();
     Container HUNGER_BAR_ALT_SATURATION = Container.group(HUNGER_BAR, "hunger_bar_alt_saturation").color(0xE56B7E).icon(Icons.HUNGER_PARTIAL).build();
     Container HUNGER_FOOD = Container.group(HUNGER, "hunger_food").color(0xDA8947).icon(Items.COOKIE).build();
+
+    // Combat
+
+    Container COMBAT = Container.group(Category.GAMEPLAY, "combat").color(0x2BC7AC).icon(Items.DIAMOND_SWORD).build();
+    Container COMBAT_BOW = Container.group(COMBAT, "combat_bow").color(0x896727).icon(Items.BOW).build();
 
     // Mob
 
