@@ -122,6 +122,8 @@
     "candy.square_border.ChunkTrackingViewMixin",
     "gameplay.bugs.LivingEntityMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
+    "gameplay.mob_ai.FleeSunGoalMixin",
+    "gameplay.mob_ai.GroundPathNavigationMixin",
     "gameplay.mob_ai.PanicGoalMixin",
     "gameplay.mob_ai.SquidFleeGoalMixin",
     "gameplay.mob_ai.SquidMixin",

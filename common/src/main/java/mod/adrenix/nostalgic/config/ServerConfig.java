@@ -67,6 +67,11 @@ public class ServerConfig implements ConfigMeta
         public boolean oldLadderGap = GameplayTweak.OLD_LADDER_GAP.register("oldLadderGap");
         public boolean oldSquidMilking = GameplayTweak.OLD_SQUID_MILKING.register("oldSquidMilking");
 
+        // Mob AI
+
+        public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.register("disableAnimalPanic");
+        public boolean disableMonsterAvoidSun = GameplayTweak.DISABLE_MONSTER_AVOID_SUN.register("disableMonsterAvoidSun");
+
         // Monsters
 
         public boolean disableMonsterItemPickup = GameplayTweak.DISABLE_MONSTER_ITEM_PICKUP.register("disableMonsterItemPickup");
@@ -83,7 +88,6 @@ public class ServerConfig implements ConfigMeta
         // Animals
 
         public int animalSpawnCap = GameplayTweak.ANIMAL_SPAWN_CAP.register("animalSpawnCap");
-        public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.register("disableAnimalPanic");
         public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.register("disableSheepEatGrass");
         public boolean oldAnimalSpawning = GameplayTweak.OLD_ANIMAL_SPAWNING.register("oldAnimalSpawning");
         public boolean oldSheepPunching = GameplayTweak.OLD_SHEEP_PUNCHING.register("oldSheepPunching");

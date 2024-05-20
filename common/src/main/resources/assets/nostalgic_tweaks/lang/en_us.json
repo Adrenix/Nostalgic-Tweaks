@@ -1331,6 +1331,13 @@
   "gui.nostalgic_tweaks.config.gameplay.oldSquidMilking": "Old Squid Milking",
   "gui.nostalgic_tweaks.config.gameplay.oldSquidMilking.info": "Bring back the old bug that allows players to milk squids.",
 
+  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic": "Disable Animal Panic",
+  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic.info": "Prevent animals from panicking when they receive damage.",
+  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic.search": "Scare, Attack, Passive, Damage",
+  "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun": "Disable Monster Sun Avoidance",
+  "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun.info": "Prevent monsters from creating movement paths that avoid the sun.",
+  "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun.search": "Burn, Sunlight, Damage",
+
   "gui.nostalgic_tweaks.config.gameplay.disableBabyZombieSpawn": "Disable Baby Zombie Spawns",
   "gui.nostalgic_tweaks.config.gameplay.disableBabyZombieSpawn.info": "Prevent the chance that a baby zombie will spawn.",
   "gui.nostalgic_tweaks.config.gameplay.disableBabyPiglinSpawn": "Disable Baby Piglin Spawns",
@@ -1348,9 +1355,6 @@
 
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass": "Disable Grass Consumption",
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass.info": "Prevents sheep from eating grass blocks and regenerating their wool.",
-  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic": "Disable Animal Panic",
-  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic.info": "Disable animals from panicking when they receive damage.",
-  "gui.nostalgic_tweaks.config.gameplay.disableAnimalPanic.search": "Scare, Attack, Passive, Damage",
   "gui.nostalgic_tweaks.config.gameplay.animalSpawnCap": "Animal Spawn Cap",
   "gui.nostalgic_tweaks.config.gameplay.animalSpawnCap.info": "Controls how many§e groups§r of animals can spawn around a player. A§a higher cap§r yields§a more§r animals.",
   "gui.nostalgic_tweaks.config.gameplay.animalSpawnCap.search": "Passive, Chunk, Group",

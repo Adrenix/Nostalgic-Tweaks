@@ -580,6 +580,7 @@ public class ClientConfig implements ConfigMeta
         // Mob AI
 
         public boolean disableAnimalPanic = GameplayTweak.DISABLE_ANIMAL_PANIC.register("disableAnimalPanic");
+        public boolean disableMonsterAvoidSun = GameplayTweak.DISABLE_MONSTER_AVOID_SUN.register("disableMonsterAvoidSun");
 
         // Monsters
 
