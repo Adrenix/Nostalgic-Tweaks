@@ -86,11 +86,15 @@ public class ServerConfig implements ConfigMeta
         public boolean piglinOnlyGoldSwordSpawn = GameplayTweak.PIGLIN_ONLY_GOLD_SWORD_SPAWN.register("piglinOnlyGoldSwordSpawn");
         public int monsterSpawnCap = GameplayTweak.MONSTER_SPAWN_CAP.register("monsterSpawnCap");
 
-        // Animals
+        // Animal Spawning
 
         public int animalSpawnCap = GameplayTweak.ANIMAL_SPAWN_CAP.register("animalSpawnCap");
-        public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.register("disableSheepEatGrass");
         public boolean oldAnimalSpawning = GameplayTweak.OLD_ANIMAL_SPAWNING.register("oldAnimalSpawning");
+
+        // Sheep
+
+        public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.register("disableSheepEatGrass");
+        public boolean randomSheepWoolRegen = GameplayTweak.RANDOM_SHEEP_WOOL_REGEN.register("randomSheepWoolRegen");
         public boolean oldSheepPunching = GameplayTweak.OLD_SHEEP_PUNCHING.register("oldSheepPunching");
         public boolean oneWoolPunch = GameplayTweak.ONE_WOOL_PUNCH.register("oneWoolPunch");
 

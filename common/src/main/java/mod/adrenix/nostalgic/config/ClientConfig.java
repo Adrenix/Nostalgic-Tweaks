@@ -605,6 +605,7 @@ public class ClientConfig implements ConfigMeta
         // Sheep
 
         public boolean disableSheepEatGrass = GameplayTweak.DISABLE_SHEEP_EAT_GRASS.register("disableSheepEatGrass");
+        public boolean randomSheepWoolRegen = GameplayTweak.RANDOM_SHEEP_WOOL_REGEN.register("randomSheepWoolRegen");
         public boolean oldSheepPunching = GameplayTweak.OLD_SHEEP_PUNCHING.register("oldSheepPunching");
         public boolean oneWoolPunch = GameplayTweak.ONE_WOOL_PUNCH.register("oneWoolPunch");
 

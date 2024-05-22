@@ -53,8 +53,9 @@ public interface GameplayTweak
 
     // Sheep
 
-    TweakFlag DISABLE_SHEEP_EAT_GRASS = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
-    TweakFlag OLD_SHEEP_PUNCHING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
+    TweakFlag DISABLE_SHEEP_EAT_GRASS = TweakFlag.server(true, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
+    TweakFlag RANDOM_SHEEP_WOOL_REGEN = TweakFlag.server(true, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
+    TweakFlag OLD_SHEEP_PUNCHING = TweakFlag.server(true, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
     TweakFlag ONE_WOOL_PUNCH = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SHEEP).newForUpdate().build();
 
     // Classic Mob Drops
