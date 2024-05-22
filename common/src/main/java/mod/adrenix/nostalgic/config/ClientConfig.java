@@ -478,6 +478,7 @@ public class ClientConfig implements ConfigMeta
 
         public boolean disableFallingParticles = CandyTweak.DISABLE_FALLING_PARTICLES.register("disableFallingParticles");
         public boolean disableSprintingParticles = CandyTweak.DISABLE_SPRINTING_PARTICLES.register("disableSprintingParticles");
+        public boolean hideFirstPersonMagicParticles = CandyTweak.HIDE_FIRST_PERSON_MAGIC_PARTICLES.register("hideFirstPersonMagicParticles");
 
         // Attack Particles
 

@@ -39,10 +39,10 @@ public abstract class ParticleEngineMixin
             target = "Lnet/minecraft/client/particle/ParticleEngine;makeParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)Lnet/minecraft/client/particle/Particle;"
         )
     )
-    private Particle nt_particle_engine$modifyMakeParticle(Particle particle, ParticleOptions options)
+    private Particle nt_particle_engine$modifyMakeParticle(Particle particle, ParticleOptions options, double x, double y, double z)
     {
         if (ModTweak.ENABLED.get() && particle != null)
-            return ParticleMixinHelper.getParticle(particle, options.getType());
+            return ParticleMixinHelper.getParticle(particle, options.getType(), x, y, z);
 
         return particle;
     }

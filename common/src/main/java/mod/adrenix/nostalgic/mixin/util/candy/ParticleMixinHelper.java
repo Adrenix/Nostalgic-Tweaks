@@ -1,10 +1,14 @@
 package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.CameraUtil;
 import mod.adrenix.nostalgic.util.client.GameUtil;
+import mod.adrenix.nostalgic.util.common.math.MathUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -60,10 +64,13 @@ public abstract class ParticleMixinHelper
      *
      * @param particle The original {@link Particle} instance.
      * @param type     The {@link ParticleType} of the given particle.
+     * @param x        The x-coordinate of the particle.
+     * @param y        The y-coordinate of the particle.
+     * @param z        The z-coordinate of the particle.
      * @return A {@code nullable} {@link Particle} to use.
      */
     @Nullable
-    public static Particle getParticle(Particle particle, ParticleType<?> type)
+    public static Particle getParticle(Particle particle, ParticleType<?> type, double x, double y, double z)
     {
         if (CandyTweak.OLD_SWEEP_PARTICLES.get() && type == ParticleTypes.SWEEP_ATTACK)
             return null;
@@ -87,10 +94,50 @@ public abstract class ParticleMixinHelper
                 return null;
         }
 
+        if (getPlayerParticle(particle, type, x, y, z) == null)
+            return null;
+
         ResourceLocation key = BuiltInRegistries.PARTICLE_TYPE.getKey(type);
 
         if (key != null && CandyTweak.DISABLED_PARTICLES.get().contains(key.toString()))
             return null;
+
+        return particle;
+    }
+
+    /**
+     * Get a player particle to use based on tweak context.
+     *
+     * @param particle The original {@link Particle} instance.
+     * @param type     The {@link ParticleType} of the given particle.
+     * @param x        The x-coordinate of the particle.
+     * @param y        The y-coordinate of the particle.
+     * @param z        The z-coordinate of the particle.
+     * @return A {@code nullable} {@link Particle} to use.
+     */
+    @Nullable
+    private static Particle getPlayerParticle(Particle particle, ParticleType<?> type, double x, double y, double z)
+    {
+        boolean isEffectParticle = typeEqualTo(type, ParticleTypes.AMBIENT_ENTITY_EFFECT, ParticleTypes.ENTITY_EFFECT);
+
+        if (!CandyTweak.HIDE_FIRST_PERSON_MAGIC_PARTICLES.get() || !CameraUtil.isFirstPerson() || !isEffectParticle)
+            return particle;
+
+        LocalPlayer player = Minecraft.getInstance().player;
+
+        if (player != null)
+        {
+            double playerX = player.getX();
+            double playerY = player.getY();
+            double playerZ = player.getZ();
+
+            boolean isNearX = MathUtil.tolerance(x, playerX, 2.0D);
+            boolean isNearY = MathUtil.tolerance(y, playerY, 2.0D);
+            boolean isNearZ = MathUtil.tolerance(z, playerZ, 2.0D);
+
+            if (isNearX && isNearY && isNearZ)
+                return null;
+        }
 
         return particle;
     }
