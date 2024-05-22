@@ -20,6 +20,14 @@ public abstract class CameraUtil
     }
 
     /**
+     * @return Whether the camera is in first-person mode.
+     */
+    public static boolean isFirstPerson()
+    {
+        return Minecraft.getInstance().options.getCameraType().isFirstPerson();
+    }
+
+    /**
      * Check if the camera is in a fluid.
      *
      * @param camera The {@link Camera} instance.
