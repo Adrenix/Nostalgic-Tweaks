@@ -21,6 +21,7 @@
   "mixins": [
     "EntityAccess",
     "LivingEntityAccess",
+    "MobAccess",
     "PlayerAccess"
   ]
 }

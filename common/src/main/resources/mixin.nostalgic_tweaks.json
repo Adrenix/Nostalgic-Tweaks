@@ -120,6 +120,10 @@
     "candy.item_merge.ItemEntityMixin",
     "candy.item_merge.LivingEntityMixin",
     "candy.square_border.ChunkTrackingViewMixin",
+    "gameplay.animal_spawn.AnimalMixin",
+    "gameplay.animal_spawn.ChickenMixin",
+    "gameplay.animal_spawn.MobCategoryMixin",
+    "gameplay.animal_spawn.SpawnStateMixin",
     "gameplay.bugs.LivingEntityMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
     "gameplay.mob_ai.FleeSunGoalMixin",
@@ -128,6 +132,7 @@
     "gameplay.mob_ai.SquidFleeGoalMixin",
     "gameplay.mob_ai.SquidMixin",
     "gameplay.monster_rule.MobMixin",
+    "gameplay.monster_spawn.MobCategoryMixin",
     "gameplay.monster_spawn.MobMixin",
     "gameplay.monster_spawn.PiglinMixin",
     "gameplay.monster_spawn.ZombieMixin"

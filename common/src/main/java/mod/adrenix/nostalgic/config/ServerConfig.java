@@ -84,6 +84,7 @@ public class ServerConfig implements ConfigMeta
         public boolean disableMonsterArmorSpawn = GameplayTweak.DISABLE_MONSTER_ARMOR_SPAWN.register("disableMonsterArmorSpawn");
         public boolean disableMonsterEnchantSpawn = GameplayTweak.DISABLE_MONSTER_ENCHANT_SPAWN.register("disableMonsterEnchantSpawn");
         public boolean piglinOnlyGoldSwordSpawn = GameplayTweak.PIGLIN_ONLY_GOLD_SWORD_SPAWN.register("piglinOnlyGoldSwordSpawn");
+        public int monsterSpawnCap = GameplayTweak.MONSTER_SPAWN_CAP.register("monsterSpawnCap");
 
         // Animals
 

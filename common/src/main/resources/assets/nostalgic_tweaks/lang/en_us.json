@@ -1355,6 +1355,8 @@
   "gui.nostalgic_tweaks.config.gameplay.disableMonsterEnchantSpawn.info": "Prevent monsters from spawning with enchanted items or armor.",
   "gui.nostalgic_tweaks.config.gameplay.piglinOnlyGoldSwordSpawn": "Piglins Only Spawn with Gold Sword",
   "gui.nostalgic_tweaks.config.gameplay.piglinOnlyGoldSwordSpawn.info": "Removes the chance that Piglins can spawn with crossbows. They will only spawn with a golden sword equipped.",
+  "gui.nostalgic_tweaks.config.gameplay.monsterSpawnCap": "Monster Spawn Cap",
+  "gui.nostalgic_tweaks.config.gameplay.monsterSpawnCap.info": "Controls how many§e groups§r of monsters can spawn around a player. A§a higher cap§r yields§a more§r monsters. The vanilla monster cap is§d 70§r.",
 
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass": "Disable Grass Consumption",
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass.info": "Prevents sheep from eating grass blocks and regenerating their wool.",
@@ -1363,6 +1365,7 @@
   "gui.nostalgic_tweaks.config.gameplay.animalSpawnCap.search": "Passive, Chunk, Group",
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning": "Old Animal Spawning",
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.info": "Bring back the old animal spawning and removal logic. This will§c not§r remove saddled, leashed, tagged, or tamed animal entities.",
+  "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.warn": "This will§c permanently remove§r spawned animals from unloaded chunks that are not saddled, leashed, tagged, or tamed.",
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.search": "Passive, Chunk, Group",
   "gui.nostalgic_tweaks.config.gameplay.oldSheepPunching": "Old Sheep Punching",
   "gui.nostalgic_tweaks.config.gameplay.oldSheepPunching.info": "Punching a sheep will drop the animal's wool as if it were sheared.",

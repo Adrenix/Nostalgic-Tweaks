@@ -36,16 +36,20 @@ public interface GameplayTweak
     TweakFlag DISABLE_MONSTER_ARMOR_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
     TweakFlag DISABLE_MONSTER_ENCHANT_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
     TweakFlag PIGLIN_ONLY_GOLD_SWORD_SPAWN = TweakFlag.server(false, GameplayGroup.MOB_MONSTER_SPAWN).newForUpdate().build();
+    TweakNumber<Integer> MONSTER_SPAWN_CAP = TweakNumber.server(90, GameplayGroup.MOB_MONSTER_SPAWN)
+        .slider(Lang.Slider.CAP, 0, 100)
+        .whenDisabled(MobCategory.MONSTER.getMaxInstancesPerChunk())
+        .newForUpdate()
+        .build();
 
     // Animal Spawning
 
+    TweakFlag OLD_ANIMAL_SPAWNING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SPAWN).newForUpdate().warningTag().build();
     TweakNumber<Integer> ANIMAL_SPAWN_CAP = TweakNumber.server(25, GameplayGroup.MOB_ANIMAL_SPAWN)
         .slider(Lang.Slider.CAP, 0, 100)
         .whenDisabled(MobCategory.CREATURE.getMaxInstancesPerChunk())
         .newForUpdate()
         .build();
-
-    TweakFlag OLD_ANIMAL_SPAWNING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SPAWN).newForUpdate().build();
 
     // Sheep
 
