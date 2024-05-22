@@ -98,4 +98,13 @@ public class RecursionAvoidance
     {
         return this.processing;
     }
+
+    /**
+     * @return Whether the avoidance mechanism is waiting for further instructions.
+     */
+    @PublicAPI
+    public boolean isParked()
+    {
+        return !this.isProcessing();
+    }
 }
