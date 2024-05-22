@@ -7,9 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class GameUtil
 {
@@ -109,6 +111,21 @@ public abstract class GameUtil
     public static boolean isNotSurvivalMode()
     {
         return !isSurvivalMode();
+    }
+
+    /**
+     * Get the client's integrated server level instance.
+     *
+     * @return The current {@link ServerLevel} instance for the overworld, if it exists.
+     */
+    @Nullable
+    @PublicAPI
+    public static ServerLevel getServerLevel()
+    {
+        if (Minecraft.getInstance().getSingleplayerServer() == null)
+            return null;
+
+        return Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD);
     }
 
     /**
