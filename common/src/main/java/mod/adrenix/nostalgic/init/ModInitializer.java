@@ -6,6 +6,7 @@ import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.init.listener.common.ServerPlayerListener;
+import mod.adrenix.nostalgic.mixin.util.gameplay.MobLootMixinHelper;
 import mod.adrenix.nostalgic.network.PacketRegistry;
 import mod.adrenix.nostalgic.util.server.ServerTimer;
 
@@ -23,5 +24,7 @@ public abstract class ModInitializer
         TickEvent.SERVER_PRE.register(server -> ServerTimer.getInstance().onTick());
 
         EnvExecutor.runInEnv(Env.CLIENT, () -> ClientInitializer::register);
+
+        MobLootMixinHelper.init();
     }
 }

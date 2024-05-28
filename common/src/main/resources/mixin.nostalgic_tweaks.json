@@ -133,6 +133,8 @@
     "gameplay.mob_ai.PanicGoalMixin",
     "gameplay.mob_ai.SquidFleeGoalMixin",
     "gameplay.mob_ai.SquidMixin",
+    "gameplay.mob_drops.LivingEntityMixin",
+    "gameplay.mob_drops.MobMixin",
     "gameplay.monster_rule.MobMixin",
     "gameplay.monster_spawn.MobCategoryMixin",
     "gameplay.monster_spawn.MobMixin",
