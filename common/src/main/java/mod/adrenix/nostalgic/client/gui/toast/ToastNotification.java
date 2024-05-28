@@ -23,6 +23,9 @@ public abstract class ToastNotification
      */
     public static void add(ToastId id, long time)
     {
+        if (!id.isActive())
+            return;
+
         boolean isRejection = ToastId.LAN_REJECTION.equals(id) && ModToast.getInstance(id).isClosed();
 
         if (TIMER.hasElapsed() || isRejection)
