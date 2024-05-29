@@ -81,21 +81,21 @@ public interface GameplayTweak
 
     // Combat
 
-    TweakFlag OLD_DAMAGE_VALUES = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
-    TweakFlag DISABLE_COOLDOWN = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
-    TweakFlag DISABLE_MISS_TIMER = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
-    TweakFlag DISABLE_CRITICAL_HIT = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
-    TweakFlag DISABLE_SWEEP = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag OLD_DAMAGE_VALUES = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag DISABLE_COOLDOWN = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag DISABLE_MISS_TIMER = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag DISABLE_CRITICAL_HIT = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag DISABLE_SWEEP = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
 
     // Combat Bow
 
     TweakNumber<Integer> ARROW_SPEED = TweakNumber.server(70, GameplayGroup.COMBAT_BOW).newForUpdate().slider(0, 100, SliderType.INTENSITY).build();
-    TweakFlag INSTANT_BOW = TweakFlag.server(true, GameplayGroup.COMBAT_BOW).newForUpdate().build();
-    TweakFlag INVINCIBLE_BOW = TweakFlag.server(true, GameplayGroup.COMBAT_BOW).newForUpdate().build();
+    TweakFlag INSTANT_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
+    TweakFlag INVINCIBLE_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
 
     // Experience Bar
 
-    TweakFlag DISABLE_EXPERIENCE_BAR = TweakFlag.client(true, GameplayGroup.EXPERIENCE_BAR).newForUpdate().build();
+    TweakFlag DISABLE_EXPERIENCE_BAR = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR).newForUpdate().build();
 
     // Alternative Experience Text
 
@@ -114,7 +114,7 @@ public interface GameplayTweak
 
     // Experience Orb
 
-    TweakFlag DISABLE_ORB_SPAWN = TweakFlag.server(true, GameplayGroup.EXPERIENCE_ORB).newForUpdate().build();
+    TweakFlag DISABLE_ORB_SPAWN = TweakFlag.server(false, GameplayGroup.EXPERIENCE_ORB).newForUpdate().build();
     TweakFlag DISABLE_ORB_RENDERING = TweakFlag.client(false, GameplayGroup.EXPERIENCE_ORB).newForUpdate().build();
 
     // Experience Blocks
@@ -124,8 +124,8 @@ public interface GameplayTweak
 
     // Player Mechanics
 
-    TweakFlag DISABLE_SPRINT = TweakFlag.dynamic(true, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
-    TweakFlag LEFT_CLICK_DOOR = TweakFlag.server(true, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
+    TweakFlag DISABLE_SPRINT = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
+    TweakFlag LEFT_CLICK_DOOR = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
     TweakFlag LEFT_CLICK_LEVER = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
     TweakFlag LEFT_CLICK_BUTTON = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
 
@@ -142,7 +142,7 @@ public interface GameplayTweak
     // Swimming Mechanics
 
     TweakFlag INSTANT_AIR = TweakFlag.server(true, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
-    TweakFlag DISABLE_SWIM = TweakFlag.dynamic(true, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
+    TweakFlag DISABLE_SWIM = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
 
     // Minecart Mechanics
 
@@ -155,7 +155,7 @@ public interface GameplayTweak
 
     // Hunger Bar
 
-    TweakFlag DISABLE_HUNGER_BAR = TweakFlag.client(true, GameplayGroup.HUNGER_BAR).newForUpdate().build();
+    TweakFlag DISABLE_HUNGER_BAR = TweakFlag.client(false, GameplayGroup.HUNGER_BAR).newForUpdate().build();
 
     // Alternative Food Text
 
@@ -173,8 +173,8 @@ public interface GameplayTweak
 
     // Food Health
 
-    TweakFlag INSTANT_EAT = TweakFlag.server(true, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
-    TweakFlag DISABLE_HUNGER = TweakFlag.server(true, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
+    TweakFlag INSTANT_EAT = TweakFlag.server(false, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
+    TweakFlag DISABLE_HUNGER = TweakFlag.server(false, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
     TweakItemMap<Integer> CUSTOM_FOOD_HEALTH = TweakItemMap.server(DefaultListing.foodHealth(), GameplayGroup.HUNGER_FOOD).newForUpdate().icon(Icons.HEART).slider(0, 20, SliderType.HEARTS).alert(TweakAlert.FOOD_HEALTH_CONFLICT).load().build();
 
     // Food Stacking
