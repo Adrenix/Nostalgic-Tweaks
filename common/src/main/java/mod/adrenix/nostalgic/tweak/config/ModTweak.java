@@ -25,7 +25,7 @@ public interface ModTweak
     /**
      * A special mod state flag that controls whether the server requires players having the mod installed.
      */
-    TweakFlag SERVER_SIDE_ONLY = TweakFlag.server(false, Category.ROOT).load().ignore().build();
+    TweakFlag SERVER_SIDE_ONLY = TweakFlag.server(true, Category.ROOT).load().ignore().build();
 
     /**
      * A server flag that controls whether logging statements are sent to the console window.
