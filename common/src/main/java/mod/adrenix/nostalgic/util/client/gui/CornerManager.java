@@ -81,13 +81,13 @@ public class CornerManager
         int x = (corner.isLeft() ? 2 : this.getRightOffset(text)) + xOffset;
         int y = (int) this.getAndAdd(corner) + yOffset;
 
-        if (corner == Corner.TOP_RIGHT && y < 26)
+        if (corner == Corner.TOP_RIGHT)
         {
             LocalPlayer player = Minecraft.getInstance().player;
             Collection<MobEffectInstance> effects = NullableResult.getOrElse(player, new HashSet<>(), LocalPlayer::getActiveEffects);
 
             if (!effects.isEmpty())
-                y += 26 - y;
+                y += 24;
         }
 
         x = Mth.clamp(x, 0, GuiUtil.getGuiWidth() - GuiUtil.font().width(text));
