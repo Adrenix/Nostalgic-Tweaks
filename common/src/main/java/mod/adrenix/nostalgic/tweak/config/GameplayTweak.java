@@ -93,10 +93,6 @@ public interface GameplayTweak
     TweakFlag INSTANT_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
     TweakFlag INVINCIBLE_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
 
-    // Experience Bar
-
-    TweakFlag DISABLE_EXPERIENCE_BAR = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR).newForUpdate().build();
-
     // Alternative Experience Text
 
     TweakFlag SHOW_XP_LEVEL_TEXT = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR_ALT_LEVEL).newForUpdate().build();
@@ -152,10 +148,6 @@ public interface GameplayTweak
 
     TweakFlag DISABLE_BED_BOUNCE = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_BED).newForUpdate().build();
     TweakFlag ALWAYS_OPEN_CHEST = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_CHEST).newForUpdate().build();
-
-    // Hunger Bar
-
-    TweakFlag DISABLE_HUNGER_BAR = TweakFlag.client(false, GameplayGroup.HUNGER_BAR).newForUpdate().build();
 
     // Alternative Food Text
 

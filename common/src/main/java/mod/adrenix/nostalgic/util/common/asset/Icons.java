@@ -103,6 +103,7 @@ public interface Icons
     TextureIcon XP_LEVEL = TextureIcon.fromSprite("xp_level", 12);
     TextureIcon IMPORT_FLOPPY = TextureIcon.fromSprite("import_floppy", 12);
     TextureIcon EXPORT_FLOPPY = TextureIcon.fromSprite("export_floppy", 12);
+    TextureIcon HUD = TextureIcon.fromSprite("hud", 19);
     TextureIcon HEART = TextureIcon.fromSprite("heart", 9);
     TextureIcon HEART_EMPTY = TextureIcon.fromSprite("heart_empty", 9);
     TextureIcon HEART_OUTLINE = TextureIcon.fromSprite("heart_outline", 9);

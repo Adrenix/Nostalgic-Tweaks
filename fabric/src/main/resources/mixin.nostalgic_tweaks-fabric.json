@@ -9,6 +9,7 @@
     "candy.debug_screen.DebugScreenOverlayMixin",
     "candy.item_display.GuiMixin",
     "candy.model_gap_fix.ItemModelGeneratorMixin",
+    "candy.old_hud.GuiMixin",
     "candy.tooltip_background.TooltipRenderUtilMixin",
     "candy.torch_block.TerrainRenderContextMixin",
     "candy.world_fog.FogRendererMixin"

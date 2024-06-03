@@ -25,7 +25,8 @@ public interface CandyGroup
     // Interface
 
     Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.BUTTON).build();
-    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0x72C9FC).icon(Icons.CLIENT).build();
+    Container INTERFACE_HUD = Container.group(INTERFACE, "interface_hud").color(0x0094FF).icon(Icons.HUD).build();
+    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0x559C34).icon(Icons.CLIENT).build();
     Container INTERFACE_CHAT = Container.group(INTERFACE, "interface_chat").color(0xE0E0E0).icon(Icons.CHAT).build();
     Container INTERFACE_ANVIL = Container.group(INTERFACE, "interface_anvil").color(0x969696).icon(Blocks.ANVIL).build();
     Container INTERFACE_DEATH = Container.group(INTERFACE, "interface_death").color(0xC7C7C7).icon(Blocks.SKELETON_SKULL).build();

@@ -531,6 +531,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox_overlay_animation": "Overlay Animation",
   "gui.nostalgic_tweaks.container.eyeCandy.interface": "Interface Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_chat": "Chat Screen",
+  "gui.nostalgic_tweaks.container.eyeCandy.interface_hud": "Heads-up Display",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_gui": "Screen Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_anvil": "Anvil Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_crafting": "Crafting Screen",
@@ -837,6 +838,13 @@
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed": "Hide Player When Sleeping",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.info": "Hide the player's model when the player is sleeping in a bed in first-person view.",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.search": "Bed",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar": "Hide Experience Bar",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar.info": "Removes the experience bar from the heads-up display.",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar.search": "HUD",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideHungerBar": "Hide Hunger Bar",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideHungerBar.info": "Removes the hunger bar from the heads-up display.",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideHungerBar.search": "HUD",
 
   "gui.nostalgic_tweaks.config.eyeCandy.overrideTitleScreen": "Override Title Screen",
   "gui.nostalgic_tweaks.config.eyeCandy.overrideTitleScreen.info": "This option will apply the tweaks listed in this category to the title screen.",
@@ -1432,9 +1440,6 @@
   "gui.nostalgic_tweaks.config.gameplay.oldDamageValues": "Old Damage Values",
   "gui.nostalgic_tweaks.config.gameplay.oldDamageValues.info": "Bring back the old damage values for tool items.",
 
-  "gui.nostalgic_tweaks.config.gameplay.disableExperienceBar": "Disable Experience Bar",
-  "gui.nostalgic_tweaks.config.gameplay.disableExperienceBar.info": "Removes the experience bar from the HUD.",
-  "gui.nostalgic_tweaks.config.gameplay.disableExperienceBar.search": "HUD",
   "gui.nostalgic_tweaks.config.gameplay.showXpLevelText": "Show Text",
   "gui.nostalgic_tweaks.config.gameplay.showXpLevelText.info": "Show the provided alternative experience level text.",
   "gui.nostalgic_tweaks.config.gameplay.showXpLevelText.search": "HUD",
@@ -1511,9 +1516,6 @@
   "gui.nostalgic_tweaks.config.gameplay.tilledGrassSeeds.info": "Adds a chance for wheat seeds to pop out from tilled grass blocks.",
   "gui.nostalgic_tweaks.config.gameplay.tilledGrassSeeds.search": "Hoe, Wheat",
 
-  "gui.nostalgic_tweaks.config.gameplay.disableHungerBar": "Disable Hunger Bar",
-  "gui.nostalgic_tweaks.config.gameplay.disableHungerBar.info": "Removes the hunger bar from the HUD.",
-  "gui.nostalgic_tweaks.config.gameplay.disableHungerBar.search": "HUD",
   "gui.nostalgic_tweaks.config.gameplay.showHungerFoodText": "Show Text",
   "gui.nostalgic_tweaks.config.gameplay.showHungerFoodText.info": "Show the provided alternative hunger food text.",
   "gui.nostalgic_tweaks.config.gameplay.showHungerFoodText.search": "HUD",

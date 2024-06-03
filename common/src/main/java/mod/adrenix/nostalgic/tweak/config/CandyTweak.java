@@ -68,6 +68,11 @@ public interface CandyTweak
 
     TweakFlag HIDE_PLAYER_IN_BED = TweakFlag.client(true, CandyGroup.BLOCK_BED).newForUpdate().build();
 
+    // Heads-up Display
+
+    TweakFlag HIDE_EXPERIENCE_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD).newForUpdate().build();
+    TweakFlag HIDE_HUNGER_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD).newForUpdate().build();
+
     // Window Title
 
     TweakFlag ENABLE_WINDOW_TITLE = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).newForUpdate().whenDisabled(false).build();
@@ -116,7 +121,7 @@ public interface CandyTweak
     TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE_INVENTORY).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
 
-    // Gui
+    // Generic Screen
 
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
     TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI).newForUpdate().build();

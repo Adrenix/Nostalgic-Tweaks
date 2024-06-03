@@ -227,10 +227,10 @@ public class ClientConfig implements ConfigMeta
 
         public boolean hidePlayerInBed = CandyTweak.HIDE_PLAYER_IN_BED.register("hidePlayerInBed");
 
-        // Interface
+        // Heads-up Display
 
-        public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
-        public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
+        public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
+        public boolean hideHungerBar = CandyTweak.HIDE_HUNGER_BAR.register("hideHungerBar");
 
         // Window Title
 
@@ -278,9 +278,11 @@ public class ClientConfig implements ConfigMeta
         public boolean disableEmptyArmorTexture = CandyTweak.DISABLE_EMPTY_ARMOR_TEXTURE.register("disableEmptyArmorTexture");
         public boolean disableEmptyShieldTexture = CandyTweak.DISABLE_EMPTY_SHIELD_TEXTURE.register("disableEmptyShieldTexture");
         public boolean invertedPlayerLighting = CandyTweak.INVERTED_PLAYER_LIGHTING.register("invertedPlayerLighting");
+        public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
 
-        // GUI
+        // Generic Screen
 
+        public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
         public GuiBackground oldGuiBackground = CandyTweak.OLD_GUI_BACKGROUND.register("oldGuiBackground");
         public boolean customGuiBackground = CandyTweak.CUSTOM_GUI_BACKGROUND.register("customGuiBackground");
         public String customGuiTopGradient = CandyTweak.CUSTOM_GUI_TOP_GRADIENT.register("customGuiTopGradient");
@@ -644,10 +646,6 @@ public class ClientConfig implements ConfigMeta
         public boolean instantBow = GameplayTweak.INSTANT_BOW.register("instantBow");
         public boolean invincibleBow = GameplayTweak.INVINCIBLE_BOW.register("invincibleBow");
 
-        // Experience Bar
-
-        public boolean disableExperienceBar = GameplayTweak.DISABLE_EXPERIENCE_BAR.register("disableExperienceBar");
-
         // Alternative Experience Text
 
         public boolean showXpLevelText = GameplayTweak.SHOW_XP_LEVEL_TEXT.register("showXpLevelText");
@@ -703,10 +701,6 @@ public class ClientConfig implements ConfigMeta
 
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
         public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");
-
-        // Hunger Bar
-
-        public boolean disableHungerBar = GameplayTweak.DISABLE_HUNGER_BAR.register("disableHungerBar");
 
         // Alternative Food Text
 

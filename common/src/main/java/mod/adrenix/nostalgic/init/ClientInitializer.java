@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.init.listener.client.GuiListener;
 import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.MipmapMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightmapMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;
@@ -49,6 +50,7 @@ abstract class ClientInitializer
         AfterConfigSave.addInstruction(ChestMixinHelper::runAfterSave);
         AfterConfigSave.addInstruction(LightingMixinHelper::runAfterSave);
         AfterConfigSave.addInstruction(MipmapMixinHelper::runAfterSave);
+        AfterConfigSave.addInstruction(HudMixinHelper::runAfterSave);
 
         MipmapMixinHelper.init();
     }
