@@ -2,8 +2,9 @@ package mod.adrenix.nostalgic.tweak.config;
 
 import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.container.group.GameplayGroup;
-import mod.adrenix.nostalgic.tweak.enums.Corner;
-import mod.adrenix.nostalgic.tweak.factory.*;
+import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
+import mod.adrenix.nostalgic.tweak.factory.TweakItemMap;
+import mod.adrenix.nostalgic.tweak.factory.TweakNumber;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
@@ -93,21 +94,6 @@ public interface GameplayTweak
     TweakFlag INSTANT_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
     TweakFlag INVINCIBLE_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
 
-    // Alternative Experience Text
-
-    TweakFlag SHOW_XP_LEVEL_TEXT = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR_ALT_LEVEL).newForUpdate().build();
-    TweakFlag SHOW_XP_LEVEL_IN_CREATIVE = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR_ALT_LEVEL).newForUpdate().build();
-    TweakEnum<Corner> ALT_XP_LEVEL_CORNER = TweakEnum.client(Corner.TOP_LEFT, GameplayGroup.EXPERIENCE_BAR_ALT_LEVEL).newForUpdate().load().build();
-    TweakText ALT_XP_LEVEL_TEXT = TweakText.client("Level: %a%v", GameplayGroup.EXPERIENCE_BAR_ALT_LEVEL).newForUpdate().load().build();
-
-    // Alternative Progress Text
-
-    TweakFlag SHOW_XP_PROGRESS_TEXT = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR_ALT_PROGRESS).newForUpdate().build();
-    TweakFlag SHOW_XP_PROGRESS_IN_CREATIVE = TweakFlag.client(false, GameplayGroup.EXPERIENCE_BAR_ALT_PROGRESS).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_PROGRESS_COLOR = TweakFlag.client(true, GameplayGroup.EXPERIENCE_BAR_ALT_PROGRESS).newForUpdate().load().build();
-    TweakEnum<Corner> ALT_XP_PROGRESS_CORNER = TweakEnum.client(Corner.TOP_LEFT, GameplayGroup.EXPERIENCE_BAR_ALT_PROGRESS).newForUpdate().load().build();
-    TweakText ALT_XP_PROGRESS_TEXT = TweakText.client("Experience: %v%", GameplayGroup.EXPERIENCE_BAR_ALT_PROGRESS).newForUpdate().load().build();
-
     // Experience Orb
 
     TweakFlag DISABLE_ORB_SPAWN = TweakFlag.server(false, GameplayGroup.EXPERIENCE_ORB).newForUpdate().build();
@@ -148,20 +134,6 @@ public interface GameplayTweak
 
     TweakFlag DISABLE_BED_BOUNCE = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_BED).newForUpdate().build();
     TweakFlag ALWAYS_OPEN_CHEST = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_CHEST).newForUpdate().build();
-
-    // Alternative Food Text
-
-    TweakFlag SHOW_HUNGER_FOOD_TEXT = TweakFlag.client(false, GameplayGroup.HUNGER_BAR_ALT_FOOD).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_FOOD_COLOR = TweakFlag.client(true, GameplayGroup.HUNGER_BAR_ALT_FOOD).newForUpdate().load().build();
-    TweakEnum<Corner> ALT_HUNGER_FOOD_CORNER = TweakEnum.client(Corner.TOP_LEFT, GameplayGroup.HUNGER_BAR_ALT_FOOD).newForUpdate().load().build();
-    TweakText ALT_HUNGER_FOOD_TEXT = TweakText.client("Food: %v", GameplayGroup.HUNGER_BAR_ALT_FOOD).newForUpdate().load().build();
-
-    // Alternative Saturation Text
-
-    TweakFlag SHOW_HUNGER_SATURATION_TEXT = TweakFlag.client(false, GameplayGroup.HUNGER_BAR_ALT_SATURATION).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_SATURATION_COLOR = TweakFlag.client(true, GameplayGroup.HUNGER_BAR_ALT_SATURATION).newForUpdate().load().build();
-    TweakEnum<Corner> ALT_HUNGER_SATURATION_CORNER = TweakEnum.client(Corner.TOP_LEFT, GameplayGroup.HUNGER_BAR_ALT_SATURATION).newForUpdate().load().build();
-    TweakText ALT_HUNGER_SATURATION_TEXT = TweakText.client("Saturation: %v%", GameplayGroup.HUNGER_BAR_ALT_SATURATION).newForUpdate().load().build();
 
     // Food Health
 

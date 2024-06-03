@@ -26,8 +26,14 @@ public interface CandyGroup
 
     Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.BUTTON).build();
     Container INTERFACE_HUD = Container.group(INTERFACE, "interface_hud").color(0x0094FF).icon(Icons.HUD).build();
-    Container INTERFACE_HUD_VERSION = Container.group(INTERFACE, "interface_hud_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
-    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0x559C34).icon(Icons.CLIENT).build();
+    Container INTERFACE_HUD_VERSION = Container.group(INTERFACE_HUD, "interface_hud_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
+    Container INTERFACE_HUD_EXP_BAR = Container.group(INTERFACE_HUD, "interface_hud_exp_bar").color(0x86C457).icon(Icons.XP_BAR).build();
+    Container INTERFACE_HUD_EXP_BAR_ALT_PROGRESS = Container.group(INTERFACE_HUD_EXP_BAR, "interface_hud_exp_bar_alt_progress").color(0x8FB7A3).icon(Icons.XP_HALF_BAR).build();
+    Container INTERFACE_HUD_EXP_BAR_ALT_LEVEL = Container.group(INTERFACE_HUD_EXP_BAR, "interface_hud_exp_bar_alt_level").color(0x7EFC20).icon(Icons.XP_LEVEL).build();
+    Container INTERFACE_HUD_HUNGER_BAR = Container.group(INTERFACE_HUD, "interface_hud_hunger_bar").color(0xD42A2A).icon(Icons.HUNGER).build();
+    Container INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION = Container.group(INTERFACE_HUD_HUNGER_BAR, "interface_hud_hunger_bar_alt_saturation").color(0xE56B7E).icon(Icons.HUNGER_PARTIAL).build();
+    Container INTERFACE_HUD_HUNGER_BAR_ALT_FOOD = Container.group(INTERFACE_HUD_HUNGER_BAR, "interface_hud_hunger_bar_alt_food").color(0xB79859).icon(Items.OAK_SIGN).build();
+    Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0x72C9fC).icon(Icons.CLIENT).build();
     Container INTERFACE_CHAT = Container.group(INTERFACE, "interface_chat").color(0xE0E0E0).icon(Icons.CHAT).build();
     Container INTERFACE_ANVIL = Container.group(INTERFACE, "interface_anvil").color(0x969696).icon(Blocks.ANVIL).build();
     Container INTERFACE_DEATH = Container.group(INTERFACE, "interface_death").color(0xC7C7C7).icon(Blocks.SKELETON_SKULL).build();
