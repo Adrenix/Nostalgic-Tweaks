@@ -237,6 +237,8 @@ public class ClientConfig implements ConfigMeta
         public boolean showExpLevelText = CandyTweak.SHOW_EXP_LEVEL_TEXT.register("showExpLevelText");
         public boolean showExpLevelInCreative = CandyTweak.SHOW_EXP_LEVEL_IN_CREATIVE.register("showExpLevelInCreative");
         public Corner altExpLevelCorner = CandyTweak.ALT_EXP_LEVEL_CORNER.register("altExpLevelCorner");
+        public int altExpLevelOffsetX = CandyTweak.ALT_EXP_LEVEL_OFFSET_X.register("altExpLevelOffsetX");
+        public int altExpLevelOffsetY = CandyTweak.ALT_EXP_LEVEL_OFFSET_Y.register("altExpLevelOffsetY");
         public String altExpLevelText = CandyTweak.ALT_EXP_LEVEL_TEXT.register("altExpLevelText");
 
         // Alternative Progress Text
@@ -245,6 +247,8 @@ public class ClientConfig implements ConfigMeta
         public boolean showExpProgressInCreative = CandyTweak.SHOW_EXP_PROGRESS_IN_CREATIVE.register("showExpProgressInCreative");
         public boolean useDynamicProgressColor = CandyTweak.USE_DYNAMIC_PROGRESS_COLOR.register("useDynamicProgressColor");
         public Corner altExpProgressCorner = CandyTweak.ALT_EXP_PROGRESS_CORNER.register("altExpProgressCorner");
+        public int altExpProgressOffsetX = CandyTweak.ALT_EXP_PROGRESS_OFFSET_X.register("altExpProgressOffsetX");
+        public int altExpProgressOffsetY = CandyTweak.ALT_EXP_PROGRESS_OFFSET_Y.register("altExpProgressOffsetY");
         public String altExpProgressText = CandyTweak.ALT_EXP_PROGRESS_TEXT.register("altExpProgressText");
 
         // Alternative Food Text
@@ -252,6 +256,8 @@ public class ClientConfig implements ConfigMeta
         public boolean showHungerFoodText = CandyTweak.SHOW_HUNGER_FOOD_TEXT.register("showHungerFoodText");
         public boolean useDynamicFoodColor = CandyTweak.USE_DYNAMIC_FOOD_COLOR.register("useDynamicFoodColor");
         public Corner altHungerFoodCorner = CandyTweak.ALT_HUNGER_FOOD_CORNER.register("altHungerFoodCorner");
+        public int altHungerFoodOffsetX = CandyTweak.ALT_HUNGER_FOOD_OFFSET_X.register("altHungerFoodOffsetX");
+        public int altHungerFoodOffsetY = CandyTweak.ALT_HUNGER_FOOD_OFFSET_Y.register("altHungerFoodOffsetY");
         public String altHungerFoodText = CandyTweak.ALT_HUNGER_FOOD_TEXT.register("altHungerFoodText");
 
         // Alternative Saturation Text
@@ -259,12 +265,16 @@ public class ClientConfig implements ConfigMeta
         public boolean showHungerSaturationText = CandyTweak.SHOW_HUNGER_SATURATION_TEXT.register("showHungerSaturationText");
         public boolean useDynamicSaturationColor = CandyTweak.USE_DYNAMIC_SATURATION_COLOR.register("useDynamicSaturationColor");
         public Corner altHungerSaturationCorner = CandyTweak.ALT_HUNGER_SATURATION_CORNER.register("altHungerSaturationCorner");
+        public int altHungerSaturationOffsetX = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_X.register("altHungerSaturationOffsetX");
+        public int altHungerSaturationOffsetY = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_Y.register("altHungerSaturationOffsetY");
         public String altHungerSaturationText = CandyTweak.ALT_HUNGER_SATURATION_TEXT.register("altHungerSaturationText");
 
         // Game Version Overlay
 
         public boolean oldVersionOverlay = CandyTweak.OLD_VERSION_OVERLAY.register("oldVersionOverlay");
         public Corner oldOverlayCorner = CandyTweak.OLD_OVERLAY_CORNER.register("oldOverlayCorner");
+        public int oldOverlayOffsetX = CandyTweak.OLD_OVERLAY_OFFSET_X.register("oldOverlayOffsetX");
+        public int oldOverlayOffsetY = CandyTweak.OLD_OVERLAY_OFFSET_Y.register("oldOverlayOffsetY");
         public String oldOverlayText = CandyTweak.OLD_OVERLAY_TEXT.register("oldOverlayText");
 
         // Window Title

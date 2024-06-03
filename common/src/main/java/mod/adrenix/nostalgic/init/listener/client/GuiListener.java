@@ -240,37 +240,49 @@ public abstract class GuiListener
         if (CandyTweak.OLD_VERSION_OVERLAY.get())
         {
             String text = CandyTweak.OLD_OVERLAY_TEXT.parse(GameUtil.getVersion());
-            corner.drawText(graphics, text, CandyTweak.OLD_OVERLAY_CORNER.get());
+            int xOffset = CandyTweak.OLD_OVERLAY_OFFSET_X.get();
+            int yOffset = CandyTweak.OLD_OVERLAY_OFFSET_Y.get();
+
+            corner.drawText(graphics, text, CandyTweak.OLD_OVERLAY_CORNER.get(), xOffset, yOffset);
         }
 
         if (CandyTweak.SHOW_EXP_LEVEL_TEXT.get() && (!isCreative || isExperienceLevelCreative))
         {
             String text = CandyTweak.ALT_EXP_LEVEL_TEXT.parse(Integer.toString(player.experienceLevel));
-            corner.drawText(graphics, text, CandyTweak.ALT_EXP_LEVEL_CORNER.get());
+            int xOffset = CandyTweak.ALT_EXP_LEVEL_OFFSET_X.get();
+            int yOffset = CandyTweak.ALT_EXP_LEVEL_OFFSET_Y.get();
+
+            corner.drawText(graphics, text, CandyTweak.ALT_EXP_LEVEL_CORNER.get(), xOffset, yOffset);
         }
 
         if (CandyTweak.SHOW_EXP_PROGRESS_TEXT.get() && (!isCreative || isExperienceProgressCreative))
         {
             String percent = CandyTweak.USE_DYNAMIC_PROGRESS_COLOR.get() ? TextUtil.getPercentColorLow(experiencePercent) : Integer.toString(experiencePercent);
             String text = CandyTweak.ALT_EXP_PROGRESS_TEXT.parse(percent);
+            int xOffset = CandyTweak.ALT_EXP_PROGRESS_OFFSET_X.get();
+            int yOffset = CandyTweak.ALT_EXP_PROGRESS_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_EXP_PROGRESS_CORNER.get());
+            corner.drawText(graphics, text, CandyTweak.ALT_EXP_PROGRESS_CORNER.get(), xOffset, yOffset);
         }
 
         if (CandyTweak.SHOW_HUNGER_FOOD_TEXT.get() && isHungerEnabled && !isCreative)
         {
             String food = CandyTweak.USE_DYNAMIC_FOOD_COLOR.get() ? getFoodColor(foodLevel) : Integer.toString(foodLevel);
             String text = CandyTweak.ALT_HUNGER_FOOD_TEXT.parse(food);
+            int xOffset = CandyTweak.ALT_HUNGER_FOOD_OFFSET_X.get();
+            int yOffset = CandyTweak.ALT_HUNGER_FOOD_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_FOOD_CORNER.get());
+            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_FOOD_CORNER.get(), xOffset, yOffset);
         }
 
         if (CandyTweak.SHOW_HUNGER_SATURATION_TEXT.get() && isHungerEnabled && !isCreative)
         {
             String saturation = CandyTweak.USE_DYNAMIC_SATURATION_COLOR.get() ? TextUtil.getPercentColorLow(saturationPercent) : Integer.toString(saturationPercent);
             String text = CandyTweak.ALT_HUNGER_SATURATION_TEXT.parse(saturation);
+            int xOffset = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_X.get();
+            int yOffset = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_SATURATION_CORNER.get());
+            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_SATURATION_CORNER.get(), xOffset, yOffset);
         }
 
         RenderUtil.endBatching();
