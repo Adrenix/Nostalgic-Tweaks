@@ -33,7 +33,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
         method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
         at = @At("HEAD")
     )
-    private void nt_forge_armor_damage$onRenderHead(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
+    private void nt_neoforge_armor_damage$onRenderHead(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
         this.nt$entity = entity;
     }
@@ -45,7 +45,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
         method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
         at = @At("RETURN")
     )
-    private void nt_forge_armor_damage$onRenderReturn(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
+    private void nt_neoforge_armor_damage$onRenderReturn(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
         this.nt$entity = null;
     }
@@ -61,7 +61,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
             target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
-    private VertexConsumer nt_forge_armor_damage$setRenderTypeConsumer(VertexConsumer original, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ArmorItem armorItem, Model model, boolean withGlint, float red, float green, float blue, ResourceLocation armorLocation)
+    private VertexConsumer nt_neoforge_armor_damage$setRenderTypeConsumer(VertexConsumer original, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ArmorItem armorItem, Model model, boolean withGlint, float red, float green, float blue, ResourceLocation armorLocation)
     {
         return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, original, bufferSource, armorLocation);
     }
@@ -78,7 +78,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
             target = "Lnet/minecraft/client/model/Model;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"
         )
     )
-    private int nt_forge_armor_damage$setOverlayTexture(int packedOverlay)
+    private int nt_neoforge_armor_damage$setOverlayTexture(int packedOverlay)
     {
         return ArmorMixinHelper.getDamagedPackedOverlay(this.nt$entity, packedOverlay);
     }

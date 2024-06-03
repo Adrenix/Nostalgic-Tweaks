@@ -30,7 +30,7 @@ public abstract class BlockRenderDispatcherMixin
             target = "Lnet/minecraft/client/renderer/block/ModelBlockRenderer;tesselateBlock(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;JILnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V"
         )
     )
-    private void nt_forge_torch_block$writeVertices(ModelBlockRenderer renderer, BlockAndTintGetter blockAndTintGetter, BakedModel model, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean checkSides, RandomSource random, long seed, int packedOverlay, ModelData modelData, RenderType renderType, Operation<Void> tesselateBlock)
+    private void nt_neoforge_torch_block$writeVertices(ModelBlockRenderer renderer, BlockAndTintGetter blockAndTintGetter, BakedModel model, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean checkSides, RandomSource random, long seed, int packedOverlay, ModelData modelData, RenderType renderType, Operation<Void> tesselateBlock)
     {
         if (TorchMixinHelper.isLikeTorch(blockState))
             TorchMixinHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, random);

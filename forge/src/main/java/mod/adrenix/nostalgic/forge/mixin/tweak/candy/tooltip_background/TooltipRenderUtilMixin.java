@@ -18,7 +18,7 @@ public abstract class TooltipRenderUtilMixin
         method = "renderTooltipBackground(Lnet/minecraft/client/gui/GuiGraphics;IIIIIIIII)V",
         at = @At("HEAD")
     )
-    private static void nt_forge_tooltip_background$onRender(GuiGraphics graphics, int x, int y, int width, int height, int z, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, CallbackInfo callback)
+    private static void nt_neoforge_tooltip_background$onRender(GuiGraphics graphics, int x, int y, int width, int height, int z, int backgroundTop, int backgroundBottom, int borderTop, int borderBottom, CallbackInfo callback)
     {
         TooltipListener.render(graphics, x, y, width, height, z);
     }

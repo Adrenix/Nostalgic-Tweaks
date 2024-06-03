@@ -26,7 +26,7 @@ public abstract class DebugScreenOverlayMixin
             target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;drawGameInformation(Lnet/minecraft/client/gui/GuiGraphics;Ljava/util/List;)V"
         )
     )
-    private void nt_forge_debug_screen$wrapGameInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
+    private void nt_neoforge_debug_screen$wrapGameInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
     {
         if (CandyTweak.OLD_DEBUG.get() == Generic.MODERN)
         {
@@ -48,7 +48,7 @@ public abstract class DebugScreenOverlayMixin
             target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;drawSystemInformation(Lnet/minecraft/client/gui/GuiGraphics;Ljava/util/List;)V"
         )
     )
-    private void nt_forge_debug_screen$wrapSystemInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
+    private void nt_neoforge_debug_screen$wrapSystemInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
     {
         if (CandyTweak.OLD_DEBUG.get() == Generic.MODERN)
             operation.call(overlay, graphics, list);

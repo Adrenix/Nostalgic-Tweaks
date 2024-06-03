@@ -23,7 +23,7 @@ public abstract class GuiMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"
         )
     )
-    private int nt_item_display$modifySelectedItemNameBackground(int color)
+    private int nt_neoforge_item_display$modifySelectedItemNameBackground(int color)
     {
         if (!CandyTweak.OLD_NO_SELECTED_ITEM_NAME.get())
             return color;
@@ -41,7 +41,7 @@ public abstract class GuiMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I"
         )
     )
-    private Component nt_item_display$modifySelectedItemNameComponent(Component text)
+    private Component nt_neoforge_item_display$modifySelectedItemNameComponent(Component text)
     {
         if (CandyTweak.OLD_NO_SELECTED_ITEM_NAME.get())
             return Component.empty();

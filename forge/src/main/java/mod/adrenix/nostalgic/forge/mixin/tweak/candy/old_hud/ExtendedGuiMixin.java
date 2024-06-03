@@ -35,7 +35,7 @@ public abstract class ExtendedGuiMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
-    private boolean nt_forge_old_hud$shouldRenderModernArmor(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    private boolean nt_neoforge_old_hud$shouldRenderModernArmor(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
     {
         return !CandyTweak.HIDE_HUNGER_BAR.get();
     }
@@ -51,7 +51,7 @@ public abstract class ExtendedGuiMixin
             target = "Lcom/mojang/blaze3d/systems/RenderSystem;enableBlend()V"
         )
     )
-    private void nt_forge_old_hud$renderOldArmor(GuiGraphics graphics, int width, int height, CallbackInfo callback)
+    private void nt_neoforge_old_hud$renderOldArmor(GuiGraphics graphics, int width, int height, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
             HudMixinHelper.renderArmor(graphics, this.rightHeight);
@@ -68,7 +68,7 @@ public abstract class ExtendedGuiMixin
             target = "Lcom/mojang/blaze3d/systems/RenderSystem;disableBlend()V"
         )
     )
-    private void nt_forge_old_hud$modifyArmorHeightOffsets(CallbackInfo callback)
+    private void nt_neoforge_old_hud$modifyArmorHeightOffsets(CallbackInfo callback)
     {
         if (!CandyTweak.HIDE_HUNGER_BAR.get())
             return;
@@ -90,7 +90,7 @@ public abstract class ExtendedGuiMixin
             target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
-    private boolean nt_forge_old_hud$shouldRenderModernAir(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    private boolean nt_neoforge_old_hud$shouldRenderModernAir(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
     {
         return !CandyTweak.HIDE_HUNGER_BAR.get();
     }
@@ -107,7 +107,7 @@ public abstract class ExtendedGuiMixin
             target = "Lnet/minecraft/util/Mth;ceil(D)I"
         )
     )
-    private void nt_forge_old_hud$renderOldAir(int width, int height, GuiGraphics graphics, CallbackInfo callback)
+    private void nt_neoforge_old_hud$renderOldAir(int width, int height, GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
             HudMixinHelper.renderAir(graphics, this.leftHeight);
@@ -125,7 +125,7 @@ public abstract class ExtendedGuiMixin
             target = "Lnet/neoforged/neoforge/client/gui/overlay/ExtendedGui;rightHeight:I"
         )
     )
-    private void nt_forge_old_hud$modifyAirHeightOffsets(CallbackInfo callback)
+    private void nt_neoforge_old_hud$modifyAirHeightOffsets(CallbackInfo callback)
     {
         if (!CandyTweak.HIDE_HUNGER_BAR.get())
             return;
