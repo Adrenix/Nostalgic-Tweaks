@@ -26,6 +26,7 @@ public interface CandyGroup
 
     Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.BUTTON).build();
     Container INTERFACE_HUD = Container.group(INTERFACE, "interface_hud").color(0x0094FF).icon(Icons.HUD).build();
+    Container INTERFACE_HUD_VERSION = Container.group(INTERFACE, "interface_hud_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
     Container INTERFACE_GUI = Container.group(INTERFACE, "interface_gui").color(0x559C34).icon(Icons.CLIENT).build();
     Container INTERFACE_CHAT = Container.group(INTERFACE, "interface_chat").color(0xE0E0E0).icon(Icons.CHAT).build();
     Container INTERFACE_ANVIL = Container.group(INTERFACE, "interface_anvil").color(0x969696).icon(Blocks.ANVIL).build();
@@ -51,7 +52,6 @@ public interface CandyGroup
     Container INTERFACE_TOOLTIP = Container.group(INTERFACE, "interface_tooltip").color(0x98D0E7).icon(Icons.TOOLTIP).build();
     Container INTERFACE_TOOLTIP_PARTS = Container.group(INTERFACE_TOOLTIP, "interface_tooltip_parts").color(0xFFDB5C).icon(Icons.SCREWDRIVER).build();
     Container INTERFACE_TOOLTIP_COLOR = Container.group(INTERFACE_TOOLTIP, "interface_tooltip_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
-    Container INTERFACE_VERSION = Container.group(INTERFACE, "interface_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
     Container INTERFACE_WINDOW = Container.group(INTERFACE, "interface_window").color(0xFFFFFF).icon(Blocks.GLASS_PANE).build();
 
     // Item

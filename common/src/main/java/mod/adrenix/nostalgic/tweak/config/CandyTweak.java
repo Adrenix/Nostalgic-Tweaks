@@ -73,6 +73,12 @@ public interface CandyTweak
     TweakFlag HIDE_EXPERIENCE_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD).newForUpdate().build();
     TweakFlag HIDE_HUNGER_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD).newForUpdate().build();
 
+    // Game Version Overlay
+
+    TweakFlag OLD_VERSION_OVERLAY = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_VERSION).build();
+    TweakEnum<Corner> OLD_OVERLAY_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_VERSION).newForUpdate().load().build();
+    TweakText OLD_OVERLAY_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_HUD_VERSION).load().build();
+
     // Window Title
 
     TweakFlag ENABLE_WINDOW_TITLE = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).newForUpdate().whenDisabled(false).build();
@@ -138,12 +144,6 @@ public interface CandyTweak
     TweakFlag CUSTOM_LOADING_PROGRESS_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
     TweakColor PROGRESS_BAR_OUTLINE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
     TweakColor PROGRESS_BAR_INSIDE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
-
-    // Version Overlay
-
-    TweakFlag OLD_VERSION_OVERLAY = TweakFlag.client(true, CandyGroup.INTERFACE_VERSION).build();
-    TweakEnum<Corner> OLD_OVERLAY_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_VERSION).newForUpdate().load().build();
-    TweakText OLD_OVERLAY_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_VERSION).load().build();
 
     // Progress Screen
 

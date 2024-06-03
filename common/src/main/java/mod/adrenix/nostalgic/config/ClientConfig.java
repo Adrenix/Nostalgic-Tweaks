@@ -232,6 +232,12 @@ public class ClientConfig implements ConfigMeta
         public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
         public boolean hideHungerBar = CandyTweak.HIDE_HUNGER_BAR.register("hideHungerBar");
 
+        // Game Version Overlay
+
+        public boolean oldVersionOverlay = CandyTweak.OLD_VERSION_OVERLAY.register("oldVersionOverlay");
+        public Corner oldOverlayCorner = CandyTweak.OLD_OVERLAY_CORNER.register("oldOverlayCorner");
+        public String oldOverlayText = CandyTweak.OLD_OVERLAY_TEXT.register("oldOverlayText");
+
         // Window Title
 
         public boolean enableWindowTitle = CandyTweak.ENABLE_WINDOW_TITLE.register("enableWindowTitle");
@@ -297,12 +303,6 @@ public class ClientConfig implements ConfigMeta
         public boolean customLoadingProgressBar = CandyTweak.CUSTOM_LOADING_PROGRESS_BAR.register("customLoadingProgressBar");
         public String progressBarOutlineColor = CandyTweak.PROGRESS_BAR_OUTLINE_COLOR.register("progressBarOutlineColor");
         public String progressBarInsideColor = CandyTweak.PROGRESS_BAR_INSIDE_COLOR.register("progressBarInsideColor");
-
-        // Version Overlay
-
-        public boolean oldVersionOverlay = CandyTweak.OLD_VERSION_OVERLAY.register("oldVersionOverlay");
-        public Corner oldOverlayCorner = CandyTweak.OLD_OVERLAY_CORNER.register("oldOverlayCorner");
-        public String oldOverlayText = CandyTweak.OLD_OVERLAY_TEXT.register("oldOverlayText");
 
         // Progress Screen
 
