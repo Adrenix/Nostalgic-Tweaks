@@ -1,22 +1,11 @@
 package mod.adrenix.nostalgic.init.listener.common;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Squid;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,7 +18,6 @@ public abstract class ServerPlayerListener
     public static void register()
     {
         PlayerEvent.PLAYER_JOIN.register(ServerPlayerListener::onPlayerJoin);
-        InteractionEvent.INTERACT_ENTITY.register(ServerPlayerListener::milkSquid);
     }
 
     /**
@@ -48,27 +36,6 @@ public abstract class ServerPlayerListener
         NostalgicTweaks.NETWORK.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
 
         setCreativeHotbar(player);
-    }
-
-    /**
-     * Allows squids to be milked by players with an empty bucket in their hand.
-     *
-     * @param player The {@link Player} instance.
-     * @param entity The {@link Entity} that player is interacting with.
-     * @param hand   The current {@link InteractionHand}.
-     * @return A {@link InteractionResult} based on the entity interaction result.
-     */
-    private static EventResult milkSquid(Player player, Entity entity, InteractionHand hand)
-    {
-        ItemStack holding = player.getItemInHand(hand);
-
-        if (GameplayTweak.OLD_SQUID_MILKING.get() && holding.is(Items.BUCKET) && entity instanceof Squid)
-        {
-            player.setItemInHand(hand, ItemUtils.createFilledResult(holding, player, Items.MILK_BUCKET.getDefaultInstance()));
-            return EventResult.interruptTrue();
-        }
-
-        return EventResult.pass();
     }
 
     /**
