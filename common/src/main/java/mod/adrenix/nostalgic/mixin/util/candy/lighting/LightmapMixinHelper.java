@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
@@ -189,14 +190,17 @@ public abstract class LightmapMixinHelper
         {
             for (int x = 0; x < 16; x++)
             {
-                float fromBlockLight = getLightmapBrightness(x, false);
-                float fromSkyLight = getLightmapBrightness(Math.max(y - skyLightSubtracted, 0), true);
+                float fromBlockAmbient = LightTexture.getBrightness(level.dimensionType(), x);
+                float fromSkyAmbient = LightTexture.getBrightness(level.dimensionType(), y);
+
+                float fromBlockLight = Math.max(getLightmapBrightness(x, false), fromBlockAmbient);
+                float fromSkyLight = Math.max(getLightmapBrightness(Math.max(y - skyLightSubtracted, 0), true), fromSkyAmbient);
 
                 if (level.dimension() == Level.END)
                     fromSkyLight = 0.22F + fromSkyLight * 0.75F;
 
                 if (level.dimension() == Level.NETHER)
-                    fromSkyLight = 0.06F + fromSkyLight * 0.75F;
+                    fromSkyLight = 0.05F + fromSkyLight * 0.75F;
 
                 if (potionEffect > 0.0F)
                 {
