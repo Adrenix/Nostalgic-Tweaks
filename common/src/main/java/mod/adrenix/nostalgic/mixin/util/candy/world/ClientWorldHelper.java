@@ -8,7 +8,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 
 /**
@@ -38,16 +37,7 @@ public abstract class ClientWorldHelper
         if (player == null)
             return 0.0F;
 
-        float temperature;
-
-        try (Level level = player.level())
-        {
-            temperature = level.getBiome(camera.getBlockPosition()).value().getBaseTemperature();
-        }
-        catch (Exception exception)
-        {
-            temperature = 1.0F;
-        }
+        float temperature = player.level().getBiome(camera.getBlockPosition()).value().getBaseTemperature();
 
         if (Float.isNaN(BIOME_TEMPERATURE.get()))
             BIOME_TEMPERATURE.set(temperature);
@@ -94,14 +84,7 @@ public abstract class ClientWorldHelper
      */
     public static int getSkyLight(Entity entity)
     {
-        try (Level level = entity.level())
-        {
-            return level.getBrightness(LightLayer.SKY, entity.blockPosition().above());
-        }
-        catch (Exception exception)
-        {
-            return 15;
-        }
+        return entity.level().getBrightness(LightLayer.SKY, entity.blockPosition().above());
     }
 
     /**
@@ -112,17 +95,6 @@ public abstract class ClientWorldHelper
      */
     public static int getMaxLight(Entity entity)
     {
-        int brightness;
-
-        try (Level level = entity.level())
-        {
-            brightness = level.getMaxLocalRawBrightness(entity.blockPosition().above());
-        }
-        catch (Exception exception)
-        {
-            brightness = getSkyLight(entity);
-        }
-
-        return Mth.clamp(brightness, 0, 15);
+        return Mth.clamp(entity.level().getMaxLocalRawBrightness(entity.blockPosition().above()), 0, 15);
     }
 }

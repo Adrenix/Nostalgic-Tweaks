@@ -6,7 +6,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FogType;
 
 public abstract class CameraUtil
@@ -60,14 +59,7 @@ public abstract class CameraUtil
      */
     public static boolean canSeeSky(Camera camera)
     {
-        try (Level level = camera.getEntity().level())
-        {
-            return level.canSeeSky(camera.getBlockPosition());
-        }
-        catch (Exception exception)
-        {
-            return true;
-        }
+        return camera.getEntity().level().canSeeSky(camera.getBlockPosition());
     }
 
     /**

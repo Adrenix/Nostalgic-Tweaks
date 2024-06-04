@@ -22,7 +22,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
@@ -280,14 +279,7 @@ public abstract class VoidFogRenderer
      */
     private static int getMinBuildHeight(Entity entity)
     {
-        try (Level level = entity.level())
-        {
-            return level.getMinBuildHeight();
-        }
-        catch (Exception exception)
-        {
-            return -64;
-        }
+        return entity.level().getMinBuildHeight();
     }
 
     /**
@@ -338,16 +330,7 @@ public abstract class VoidFogRenderer
         int light;
 
         if (CandyTweak.LIGHT_REMOVES_VOID_FOG.get())
-        {
-            try (Level level = entity.level())
-            {
-                light = level.getMaxLocalRawBrightness(entity.blockPosition());
-            }
-            catch (Exception exception)
-            {
-                light = ClientWorldHelper.getSkyLight(entity);
-            }
-        }
+            light = entity.level().getMaxLocalRawBrightness(entity.blockPosition());
         else
             light = ClientWorldHelper.getSkyLight(entity);
 
