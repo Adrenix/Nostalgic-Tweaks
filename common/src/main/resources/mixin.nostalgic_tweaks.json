@@ -132,6 +132,7 @@
     "gameplay.combat_bow.ServerGamePacketListenerImplMixin",
     "gameplay.experience_orb.ServerLevelMixin",
     "gameplay.mechanics_player.LivingEntityMixin",
+    "gameplay.mechanics_swim.LivingEntityMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
     "gameplay.mob_ai.FleeSunGoalMixin",
     "gameplay.mob_ai.GroundPathNavigationMixin",
