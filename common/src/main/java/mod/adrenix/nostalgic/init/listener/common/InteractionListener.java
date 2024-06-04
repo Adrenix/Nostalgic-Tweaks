@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.init.listener.common;
 
+import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
@@ -10,9 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,8 +22,33 @@ public abstract class InteractionListener
      */
     public static void register()
     {
+        InteractionEvent.RIGHT_CLICK_ITEM.register(InteractionListener::onRightClickItem);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(InteractionListener::onRightClickBlock);
         InteractionEvent.INTERACT_ENTITY.register(InteractionListener::onInteractEntity);
+    }
+
+    /**
+     * Handles right-click item interaction for tweaks that control this behavior.
+     *
+     * @param player The {@link Player} instance.
+     * @param hand   The {@link InteractionHand} that right-clicked the item.
+     * @return A {@link CompoundEventResult} instance.
+     */
+    private static CompoundEventResult<ItemStack> onRightClickItem(Player player, InteractionHand hand)
+    {
+        ItemStack itemStackInHand = player.getItemInHand(hand);
+        Item itemInHand = itemStackInHand.getItem();
+
+        if (GameplayTweak.INSTANT_BOW.get() && itemInHand.equals(Items.BOW) && itemInHand instanceof BowItem bow)
+        {
+            int timeCharged = 72000 - (int) (((float) GameplayTweak.ARROW_SPEED.get() / 100.0F) * 20.0F);
+
+            bow.releaseUsing(itemStackInHand, player.level(), player, timeCharged);
+
+            return CompoundEventResult.interruptTrue(itemStackInHand);
+        }
+
+        return CompoundEventResult.pass();
     }
 
     /**
