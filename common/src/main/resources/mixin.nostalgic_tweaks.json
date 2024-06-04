@@ -130,6 +130,7 @@
     "gameplay.bugs.LivingEntityMixin",
     "gameplay.combat_bow.BowItemMixin",
     "gameplay.combat_bow.ServerGamePacketListenerImplMixin",
+    "gameplay.experience_orb.ServerLevelMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
     "gameplay.mob_ai.FleeSunGoalMixin",
     "gameplay.mob_ai.GroundPathNavigationMixin",
