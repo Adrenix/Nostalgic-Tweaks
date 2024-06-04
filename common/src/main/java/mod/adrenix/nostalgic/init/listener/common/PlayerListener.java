@@ -10,14 +10,14 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public abstract class ServerPlayerListener
+public abstract class PlayerListener
 {
     /**
      * Registers common server player events.
      */
     public static void register()
     {
-        PlayerEvent.PLAYER_JOIN.register(ServerPlayerListener::onPlayerJoin);
+        PlayerEvent.PLAYER_JOIN.register(PlayerListener::onPlayerJoin);
     }
 
     /**
