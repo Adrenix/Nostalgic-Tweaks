@@ -123,8 +123,8 @@ public interface GameplayTweak
 
     // Swimming Mechanics
 
-    TweakFlag INSTANT_AIR = TweakFlag.server(true, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
     TweakFlag DISABLE_SWIM = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
+    TweakFlag INSTANT_AIR = TweakFlag.server(true, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
 
     // Minecart Mechanics
 
