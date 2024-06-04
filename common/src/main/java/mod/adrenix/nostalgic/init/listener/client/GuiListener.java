@@ -228,6 +228,7 @@ public abstract class GuiListener
         CornerManager corner = new CornerManager();
         boolean isCreative = PlayerUtil.isCreativeOrSpectator(player);
         boolean isHungerEnabled = !GameplayTweak.DISABLE_HUNGER.get();
+        boolean isExperienceEnabled = !GameplayTweak.DISABLE_ORB_SPAWN.get();
         boolean isExperienceLevelCreative = isCreative && CandyTweak.SHOW_EXP_LEVEL_IN_CREATIVE.get();
         boolean isExperienceProgressCreative = isCreative && CandyTweak.SHOW_EXP_PROGRESS_IN_CREATIVE.get();
 
@@ -246,7 +247,7 @@ public abstract class GuiListener
             corner.drawText(graphics, text, CandyTweak.OLD_OVERLAY_CORNER.get(), xOffset, yOffset);
         }
 
-        if (CandyTweak.SHOW_EXP_LEVEL_TEXT.get() && (!isCreative || isExperienceLevelCreative))
+        if (CandyTweak.SHOW_EXP_LEVEL_TEXT.get() && isExperienceEnabled && (!isCreative || isExperienceLevelCreative))
         {
             String text = CandyTweak.ALT_EXP_LEVEL_TEXT.parse(Integer.toString(player.experienceLevel));
             int xOffset = CandyTweak.ALT_EXP_LEVEL_OFFSET_X.get();
@@ -255,7 +256,7 @@ public abstract class GuiListener
             corner.drawText(graphics, text, CandyTweak.ALT_EXP_LEVEL_CORNER.get(), xOffset, yOffset);
         }
 
-        if (CandyTweak.SHOW_EXP_PROGRESS_TEXT.get() && (!isCreative || isExperienceProgressCreative))
+        if (CandyTweak.SHOW_EXP_PROGRESS_TEXT.get() && isExperienceEnabled && (!isCreative || isExperienceProgressCreative))
         {
             String percent = CandyTweak.USE_DYNAMIC_PROGRESS_COLOR.get() ? TextUtil.getPercentColorLow(experiencePercent) : Integer.toString(experiencePercent);
             String text = CandyTweak.ALT_EXP_PROGRESS_TEXT.parse(percent);
