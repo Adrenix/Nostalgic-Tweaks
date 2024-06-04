@@ -6,6 +6,7 @@ import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.init.listener.common.CombatListener;
+import mod.adrenix.nostalgic.init.listener.common.InteractionListener;
 import mod.adrenix.nostalgic.init.listener.common.ServerPlayerListener;
 import mod.adrenix.nostalgic.mixin.util.gameplay.MobLootMixinHelper;
 import mod.adrenix.nostalgic.network.PacketRegistry;
@@ -20,6 +21,7 @@ public abstract class ModInitializer
     {
         PacketRegistry.register();
         CombatListener.register();
+        InteractionListener.register();
         ServerPlayerListener.register();
 
         LifecycleEvent.SERVER_BEFORE_START.register(NostalgicTweaks::setServer);
