@@ -21,6 +21,7 @@
   ],
   "mixins": [
     "EntityAccess",
+    "FireBlockAccess",
     "LivingEntityAccess",
     "MobAccess",
     "PlayerAccess",
