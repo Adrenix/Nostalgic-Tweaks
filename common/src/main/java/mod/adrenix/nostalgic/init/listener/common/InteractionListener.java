@@ -4,6 +4,7 @@ import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -12,8 +13,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class InteractionListener
 {
@@ -24,6 +28,7 @@ public abstract class InteractionListener
     {
         InteractionEvent.RIGHT_CLICK_ITEM.register(InteractionListener::onRightClickItem);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(InteractionListener::onRightClickBlock);
+        InteractionEvent.LEFT_CLICK_BLOCK.register(InteractionListener::onLeftClickBlock);
         InteractionEvent.INTERACT_ENTITY.register(InteractionListener::onInteractEntity);
     }
 
@@ -69,6 +74,46 @@ public abstract class InteractionListener
 
         if (GameplayTweak.DISABLE_ENCHANT_TABLE.get() && blockState.is(Blocks.ENCHANTING_TABLE))
             return EventResult.interruptTrue();
+
+        return EventResult.pass();
+    }
+
+    /**
+     * Handles left-click block interaction for tweaks that control this behavior.
+     *
+     * @param player   The {@link Player} instance.
+     * @param hand     The {@link InteractionHand} that left-clicked the block.
+     * @param blockPos The {@link BlockPos} of the left-click.
+     * @param face     The {@link Direction} face that was left-clicked.
+     * @return The {@link EventResult} instance.
+     */
+    private static EventResult onLeftClickBlock(Player player, InteractionHand hand, BlockPos blockPos, Direction face)
+    {
+        if (player.swinging)
+            return EventResult.pass();
+
+        Level level = player.getCommandSenderWorld();
+        BlockHitResult blockHitResult = new BlockHitResult(Vec3.atCenterOf(blockPos), face, blockPos, false);
+        BlockState blockState = level.getBlockState(blockPos);
+        Block block = blockState.getBlock();
+
+        if (GameplayTweak.LEFT_CLICK_DOOR.get() && PlayerUtil.isSurvival(player))
+        {
+            if (block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FenceGateBlock)
+                blockState.use(level, player, hand, blockHitResult);
+        }
+
+        if (GameplayTweak.LEFT_CLICK_LEVER.get() && PlayerUtil.isSurvival(player))
+        {
+            if (block instanceof LeverBlock)
+                blockState.use(level, player, hand, blockHitResult);
+        }
+
+        if (GameplayTweak.LEFT_CLICK_BUTTON.get() && PlayerUtil.isSurvival(player))
+        {
+            if (block instanceof ButtonBlock)
+                blockState.use(level, player, hand, blockHitResult);
+        }
 
         return EventResult.pass();
     }
