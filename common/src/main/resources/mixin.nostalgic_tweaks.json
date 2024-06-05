@@ -131,6 +131,7 @@
     "gameplay.combat_bow.BowItemMixin",
     "gameplay.combat_bow.ServerGamePacketListenerImplMixin",
     "gameplay.experience_orb.ServerLevelMixin",
+    "gameplay.mechanics_block.BedBlockMixin",
     "gameplay.mechanics_farming.BeetrootBlockMixin",
     "gameplay.mechanics_farming.CocoaBlockMixin",
     "gameplay.mechanics_farming.CropBlockMixin",
