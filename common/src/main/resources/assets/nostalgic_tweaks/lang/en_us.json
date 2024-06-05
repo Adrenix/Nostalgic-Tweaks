@@ -1543,7 +1543,7 @@
   "gui.nostalgic_tweaks.config.gameplay.instantAir.info": "Immediately refill the player's air bubbles once the player is above water.",
   "gui.nostalgic_tweaks.config.gameplay.instantAir.search": "Bubble, Water",
   "gui.nostalgic_tweaks.config.gameplay.instantBonemeal": "Instant Bone Meal",
-  "gui.nostalgic_tweaks.config.gameplay.instantBonemeal.info": "§aImmediately§r grow any block that accepts bone meal. This can§e only§r be applied to§d vanilla§r blocks.",
+  "gui.nostalgic_tweaks.config.gameplay.instantBonemeal.info": "§aImmediately§r grow any block that accepts bone meal. This§e only§r applies to§d vanilla§r blocks and§6 some§r mod blocks.",
   "gui.nostalgic_tweaks.config.gameplay.instantBonemeal.search": "Farming, Plant, Grow",
   "gui.nostalgic_tweaks.config.gameplay.oldFire": "Old Fire",
   "gui.nostalgic_tweaks.config.gameplay.oldFire.info": "Bring back the old fire spread and tick updates.",
