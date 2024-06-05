@@ -8,9 +8,12 @@ import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -67,13 +70,35 @@ public abstract class InteractionListener
      */
     private static EventResult onRightClickBlock(Player player, InteractionHand hand, BlockPos blockPos, Direction face)
     {
-        BlockState blockState = player.level().getBlockState(blockPos);
+        Level level = player.level();
+        RandomSource randomSource = level.getRandom();
+        BlockState blockState = level.getBlockState(blockPos);
+        Item itemInHand = player.getItemInHand(hand).getItem();
 
         if (GameplayTweak.DISABLE_ANVIL.get() && blockState.is(BlockTags.ANVIL))
             return EventResult.interruptTrue();
 
         if (GameplayTweak.DISABLE_ENCHANT_TABLE.get() && blockState.is(Blocks.ENCHANTING_TABLE))
             return EventResult.interruptTrue();
+
+        if (GameplayTweak.TILLED_GRASS_SEEDS.get() && blockState.is(Blocks.GRASS_BLOCK) && itemInHand instanceof HoeItem)
+        {
+            if (randomSource.nextInt(10) != 0)
+                return EventResult.pass();
+
+            double x = (double) blockPos.getX() + 0.5D + Mth.nextDouble(randomSource, -0.05D, 0.05D);
+            double y = (double) blockPos.getY() + 1.0D;
+            double z = (double) blockPos.getZ() + 0.5D + Mth.nextDouble(randomSource, -0.05D, 0.05D);
+
+            double dx = Mth.nextDouble(randomSource, -0.1D, 0.1D);
+            double dy = Mth.nextDouble(randomSource, 0.18D, 0.2D);
+            double dz = Mth.nextDouble(randomSource, -0.1D, 0.1D);
+
+            ItemEntity seedEntity = new ItemEntity(level, x, y, z, new ItemStack(Items.WHEAT_SEEDS), dx, dy, dz);
+
+            seedEntity.setDefaultPickUpDelay();
+            level.addFreshEntity(seedEntity);
+        }
 
         return EventResult.pass();
     }
