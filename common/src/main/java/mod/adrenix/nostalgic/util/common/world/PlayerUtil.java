@@ -14,4 +14,15 @@ public abstract class PlayerUtil
     {
         return player.isCreative() || player.isSpectator();
     }
+
+    /**
+     * Check if the given player is in survival mode.
+     *
+     * @param player The {@link Player} to check.
+     * @return Whether the player is in survival.
+     */
+    public static boolean isSurvival(Player player)
+    {
+        return !isCreativeOrSpectator(player);
+    }
 }
