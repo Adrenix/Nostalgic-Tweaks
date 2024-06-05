@@ -139,6 +139,7 @@
     "gameplay.mechanics_farming.StemBlockMixin",
     "gameplay.mechanics_farming.SweetBerryBushBlockMixin",
     "gameplay.mechanics_fire.FireBlockMixin",
+    "gameplay.mechanics_minecart.AbstractMinecartMixin",
     "gameplay.mechanics_player.LivingEntityMixin",
     "gameplay.mechanics_swim.LivingEntityMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
