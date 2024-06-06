@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
@@ -99,6 +100,18 @@ public class ItemMap<V> extends ItemListing<V, ItemMap<V>> implements DeletableM
             return this.defaultValue;
 
         return this.items.getOrDefault(ItemUtil.getResourceKey(parent.get()), this.defaultValue);
+    }
+
+    /**
+     * Get a value using the given item stack.
+     *
+     * @param itemStack The {@link ItemStack} to check.
+     * @return A value associated with the given item stack or the default value.
+     */
+    @PublicAPI
+    public V valueFrom(ItemStack itemStack)
+    {
+        return this.valueFrom(itemStack.getItem());
     }
 
     /**
