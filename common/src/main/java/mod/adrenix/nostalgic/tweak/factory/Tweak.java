@@ -30,7 +30,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
 {
     /* Fields */
 
-    private final TweakBuilder<?> builder;
+    protected final TweakBuilder<?> builder;
     private final Supplier<Boolean> conflict;
     private final CacheHolder<TweakStatus> statusHolder;
     private CacheMode cacheMode;
@@ -542,7 +542,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     /**
      * Get the status of this tweak that is based on the given cache mode.
      *
-     * @param cacheMode The {@link CacheMode} to obtain data from.
+     * @param cacheMode The {@link CacheMode} to collect data from.
      * @return A {@link TweakStatus} based on the given cache mode.
      * @see #getStatus()
      * @see #getEnvStatus()

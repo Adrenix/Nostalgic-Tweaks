@@ -5,7 +5,10 @@ import mod.adrenix.nostalgic.network.packet.tweak.ServerboundTweakFlag;
 import mod.adrenix.nostalgic.network.packet.tweak.TweakPacket;
 import mod.adrenix.nostalgic.tweak.TweakEnv;
 import mod.adrenix.nostalgic.tweak.container.Container;
+import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
 
 public class TweakFlag extends TweakValue<Boolean>
 {
@@ -62,6 +65,20 @@ public class TweakFlag extends TweakValue<Boolean>
 
     /* Methods */
 
+    /**
+     * @return The {@link TweakFlag.Builder} for this {@link TweakFlag} instance.
+     */
+    private TweakFlag.Builder getBuilder()
+    {
+        return (Builder) this.builder;
+    }
+
+    @Override
+    public Boolean get()
+    {
+        return super.get() || this.getBuilder().orIf.stream().anyMatch(BooleanSupplier::getAsBoolean);
+    }
+
     @Override
     public @Nullable TweakPacket getClientboundPacket()
     {
@@ -78,6 +95,10 @@ public class TweakFlag extends TweakValue<Boolean>
 
     public static class Builder extends TweakValue.Builder<Boolean, Builder>
     {
+        /* Fields */
+
+        Set<BooleanSupplier> orIf = Set.of(BooleanSupplier.NEVER);
+
         /* Constructor */
 
         Builder(Boolean defaultValue, TweakEnv env, Container container)
@@ -91,6 +112,20 @@ public class TweakFlag extends TweakValue<Boolean>
         Builder self()
         {
             return this;
+        }
+
+        /**
+         * A supplier that indicates if this flag should be considered enabled. This is useful if an additional "or"
+         * check should be made in the mod config when it gets the value of a flag tweak. If both the tweak and the
+         * given supplier yield {@code false}, then the disabled tweak value will be used.
+         *
+         * @param conditions A varargs of {@link BooleanSupplier} that provides whether a tweak flag should be
+         *                   considered enabled.
+         */
+        public Builder orIf(BooleanSupplier... conditions)
+        {
+            this.orIf = Set.of(conditions);
+            return this.self();
         }
 
         /**
