@@ -10,7 +10,9 @@
     "candy.item_display.GuiMixin",
     "candy.old_hud.ExtendedGuiMixin",
     "candy.tooltip_background.TooltipRenderUtilMixin",
-    "candy.torch_block.BlockRenderDispatcherMixin",
+    "candy.torch_block.BlockRenderDispatcherMixin"
+  ],
+  "mixins": [
     "gameplay.mechanics_farming.BoneMealItemMixin"
   ]
 }
