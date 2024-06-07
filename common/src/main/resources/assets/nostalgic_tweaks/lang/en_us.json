@@ -1564,8 +1564,10 @@
   "gui.nostalgic_tweaks.config.gameplay.tilledGrassSeeds.search": "Hoe, Wheat",
 
   "gui.nostalgic_tweaks.config.gameplay.disableHunger": "Disable Hunger",
-  "gui.nostalgic_tweaks.config.gameplay.disableHunger.info": "All consumed food will refill hearts instead of hunger. Foods that give effects will§c no longer do so§r.\n\nTo change the amount of health restored by foods, edit the §7@decode{tweak=gameplay.customFoodHealth}§r list.",
+  "gui.nostalgic_tweaks.config.gameplay.disableHunger.info": "All consumed food will give§c hearts§r instead of§6 hunger§r. The§6 hunger bar§r will be§c hidden§r when this tweak's effects are§a active§r.\n\nTo change the amount of health restored by foods, edit the §7@decode{tweak=gameplay.customFoodHealth}§r list.",
   "gui.nostalgic_tweaks.config.gameplay.disableHunger.search": "Food, Consume, Heart",
+  "gui.nostalgic_tweaks.config.gameplay.preventHungerEffect": "Prevent Hunger Effect",
+  "gui.nostalgic_tweaks.config.gameplay.preventHungerEffect.info": "Disable the hunger effect being applied to the player after consuming foods that apply it, such as rotten flesh.",
   "gui.nostalgic_tweaks.config.gameplay.customFoodHealth": "Custom Food Health",
   "gui.nostalgic_tweaks.config.gameplay.customFoodHealth.info": "Add, edit, and/or remove custom health values for food items.",
   "gui.nostalgic_tweaks.config.gameplay.instantEat": "Instant Eat",

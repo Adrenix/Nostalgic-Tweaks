@@ -137,8 +137,9 @@ public interface GameplayTweak
 
     // Food Health
 
+    TweakFlag DISABLE_HUNGER = TweakFlag.server(false, GameplayGroup.HUNGER).newForUpdate().build();
     TweakFlag INSTANT_EAT = TweakFlag.server(false, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
-    TweakFlag DISABLE_HUNGER = TweakFlag.server(false, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
+    TweakFlag PREVENT_HUNGER_EFFECT = TweakFlag.server(false, GameplayGroup.HUNGER_FOOD).newForUpdate().build();
     TweakItemMap<Integer> CUSTOM_FOOD_HEALTH = TweakItemMap.server(DefaultListing.foodHealth(), GameplayGroup.HUNGER_FOOD).newForUpdate().icon(Icons.HEART).slider(0, 20, SliderType.HEARTS).alert(TweakAlert.FOOD_HEALTH_CONFLICT).load().build();
 
     // Food Stacking

@@ -728,10 +728,12 @@ public class ClientConfig implements ConfigMeta
 
         // Food
 
-        public boolean instantEat = GameplayTweak.INSTANT_EAT.register("instantEat");
         public boolean disableHunger = GameplayTweak.DISABLE_HUNGER.register("disableHunger");
-        public ItemMap<Integer> customFoodHealth = GameplayTweak.CUSTOM_FOOD_HEALTH.register("customFoodHealth");
+        public boolean instantEat = GameplayTweak.INSTANT_EAT.register("instantEat");
         public boolean oldFoodStacking = GameplayTweak.OLD_FOOD_STACKING.register("oldFoodStacking");
+        public boolean preventHungerEffect = GameplayTweak.PREVENT_HUNGER_EFFECT.register("preventHungerEffect");
+
+        public ItemMap<Integer> customFoodHealth = GameplayTweak.CUSTOM_FOOD_HEALTH.register("customFoodHealth");
         public ItemMap<Integer> customFoodStacking = GameplayTweak.CUSTOM_FOOD_STACKING.register("customFoodStacking");
         public ItemMap<Integer> customItemStacking = GameplayTweak.CUSTOM_ITEM_STACKING.register("customItemStacking");
     }

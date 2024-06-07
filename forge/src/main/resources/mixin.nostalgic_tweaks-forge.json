@@ -13,6 +13,7 @@
     "candy.torch_block.BlockRenderDispatcherMixin"
   ],
   "mixins": [
+    "gameplay.food_health.PlayerMixin",
     "gameplay.mechanics_farming.BoneMealItemMixin"
   ]
 }
