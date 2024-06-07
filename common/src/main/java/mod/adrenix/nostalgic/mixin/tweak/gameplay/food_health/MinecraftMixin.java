@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin
@@ -25,6 +26,12 @@ public abstract class MinecraftMixin
      */
     @WrapWithCondition(
         method = "startUseItem",
+        slice = @Slice(
+            from = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/world/item/ItemStack;isItemEnabled(Lnet/minecraft/world/flag/FeatureFlagSet;)Z"
+            )
+        ),
         at = @At(
             ordinal = 1,
             value = "INVOKE",
