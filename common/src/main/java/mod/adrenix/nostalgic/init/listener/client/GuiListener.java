@@ -244,7 +244,7 @@ public abstract class GuiListener
             int xOffset = CandyTweak.OLD_OVERLAY_OFFSET_X.get();
             int yOffset = CandyTweak.OLD_OVERLAY_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.OLD_OVERLAY_CORNER.get(), xOffset, yOffset);
+            corner.drawText(graphics, text, CandyTweak.OLD_OVERLAY_CORNER.get(), xOffset, yOffset, CandyTweak.OLD_OVERLAY_SHADOW.get());
         }
 
         if (CandyTweak.SHOW_EXP_LEVEL_TEXT.get() && isExperienceEnabled && (!isCreative || isExperienceLevelCreative))
@@ -253,7 +253,7 @@ public abstract class GuiListener
             int xOffset = CandyTweak.ALT_EXP_LEVEL_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_EXP_LEVEL_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_EXP_LEVEL_CORNER.get(), xOffset, yOffset);
+            corner.drawText(graphics, text, CandyTweak.ALT_EXP_LEVEL_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_EXP_LEVEL_SHADOW.get());
         }
 
         if (CandyTweak.SHOW_EXP_PROGRESS_TEXT.get() && isExperienceEnabled && (!isCreative || isExperienceProgressCreative))
@@ -263,7 +263,7 @@ public abstract class GuiListener
             int xOffset = CandyTweak.ALT_EXP_PROGRESS_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_EXP_PROGRESS_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_EXP_PROGRESS_CORNER.get(), xOffset, yOffset);
+            corner.drawText(graphics, text, CandyTweak.ALT_EXP_PROGRESS_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_EXP_PROGRESS_SHADOW.get());
         }
 
         if (CandyTweak.SHOW_HUNGER_FOOD_TEXT.get() && isHungerEnabled && !isCreative)
@@ -273,7 +273,7 @@ public abstract class GuiListener
             int xOffset = CandyTweak.ALT_HUNGER_FOOD_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_HUNGER_FOOD_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_FOOD_CORNER.get(), xOffset, yOffset);
+            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_FOOD_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_HUNGER_FOOD_SHADOW.get());
         }
 
         if (CandyTweak.SHOW_HUNGER_SATURATION_TEXT.get() && isHungerEnabled && !isCreative)
@@ -283,7 +283,7 @@ public abstract class GuiListener
             int xOffset = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_Y.get();
 
-            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_SATURATION_CORNER.get(), xOffset, yOffset);
+            corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_SATURATION_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_HUNGER_SATURATION_SHADOW.get());
         }
 
         RenderUtil.endBatching();

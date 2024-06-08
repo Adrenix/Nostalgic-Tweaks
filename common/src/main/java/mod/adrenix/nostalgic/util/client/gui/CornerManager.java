@@ -64,20 +64,21 @@ public class CornerManager
     @PublicAPI
     public void drawText(GuiGraphics graphics, String text, Corner corner)
     {
-        this.drawText(graphics, text, corner, 0, 0);
+        this.drawText(graphics, text, corner, 0, 0, true);
     }
 
     /**
      * Draws the given text to the screen using the given text, corner, and x/y offsets.
      *
-     * @param graphics The {@link GuiGraphics} instance.
-     * @param text     The text to draw.
-     * @param corner   The {@link Corner} to draw to.
-     * @param xOffset  The x-coordinate offset.
-     * @param yOffset  The y-coordinate offset.
+     * @param graphics   The {@link GuiGraphics} instance.
+     * @param text       The text to draw.
+     * @param corner     The {@link Corner} to draw to.
+     * @param xOffset    The x-coordinate offset.
+     * @param yOffset    The y-coordinate offset.
+     * @param dropShadow Whether the text should have a shadow.
      */
     @PublicAPI
-    public void drawText(GuiGraphics graphics, String text, Corner corner, int xOffset, int yOffset)
+    public void drawText(GuiGraphics graphics, String text, Corner corner, int xOffset, int yOffset, boolean dropShadow)
     {
         int x = (corner.isLeft() ? 2 : this.getRightOffset(text)) + xOffset;
         int y = (int) this.getAndAdd(corner) + yOffset;
@@ -101,6 +102,6 @@ public class CornerManager
         x = Mth.clamp(x, 0, GuiUtil.getGuiWidth() - GuiUtil.font().width(text));
         y = Mth.clamp(y, 0, GuiUtil.getGuiHeight() - GuiUtil.textHeight());
 
-        DrawText.begin(graphics, text).pos(x, y).draw();
+        DrawText.begin(graphics, text).pos(x, y).setShadow(dropShadow).draw();
     }
 }
