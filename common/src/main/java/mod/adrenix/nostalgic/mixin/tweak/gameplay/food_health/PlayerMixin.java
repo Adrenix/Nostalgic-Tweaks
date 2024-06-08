@@ -57,12 +57,12 @@ public abstract class PlayerMixin extends LivingEntity
         method = "canEat",
         at = @At("RETURN")
     )
-    private boolean nt_food_health$canPlayerEat(boolean canEat)
+    private boolean nt_food_health$canPlayerEat(boolean playerCanEat, boolean canAlwaysEat)
     {
-        if (GameplayTweak.DISABLE_HUNGER.get() && !canEat)
+        if (GameplayTweak.DISABLE_HUNGER.get() && !canAlwaysEat)
             return this.getHealth() < this.getMaxHealth();
 
-        return canEat;
+        return playerCanEat;
     }
 
     /**
