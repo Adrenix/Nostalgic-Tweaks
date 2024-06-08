@@ -18,4 +18,7 @@ public interface LivingEntityAccess
 
     @Accessor("animStepO")
     float nt$getOldAnimStep();
+
+    @Accessor("attackStrengthTicker")
+    void nt$setAttackStrengthTicker(int attackStrengthTicker);
 }

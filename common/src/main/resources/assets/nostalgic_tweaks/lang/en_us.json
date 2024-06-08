@@ -1510,7 +1510,7 @@
   "gui.nostalgic_tweaks.config.gameplay.invincibleBow.info": "Disable bows from taking damage when firing an arrow. Any bow that received damage previously will be restored to full durability when an arrow is fired.",
   "gui.nostalgic_tweaks.config.gameplay.invincibleBow.search": "Instant, Damage, Unbreakable",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown": "Disable Cooldown",
-  "gui.nostalgic_tweaks.config.gameplay.disableCooldown.info": "Remove attack power cooldown.",
+  "gui.nostalgic_tweaks.config.gameplay.disableCooldown.info": "Remove attack power cooldown. When§a enabled§r, this will also hide attack status indicators on the heads-up display.",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown.search": "Attack, Power",
   "gui.nostalgic_tweaks.config.gameplay.disableMissTimer": "Disable Miss Timer",
   "gui.nostalgic_tweaks.config.gameplay.disableMissTimer.info": "Removes the timer that prevents continual left-clicking.",
