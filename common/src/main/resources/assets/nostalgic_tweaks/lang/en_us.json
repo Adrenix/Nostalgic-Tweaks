@@ -1522,7 +1522,7 @@
   "gui.nostalgic_tweaks.config.gameplay.disableSweep.info": "Disable sweep attacks.",
   "gui.nostalgic_tweaks.config.gameplay.disableSweep.search": "Sword, Attack",
   "gui.nostalgic_tweaks.config.gameplay.oldDamageValues": "Old Damage Values",
-  "gui.nostalgic_tweaks.config.gameplay.oldDamageValues.info": "Bring back the old damage values for tool items.",
+  "gui.nostalgic_tweaks.config.gameplay.oldDamageValues.info": "Bring back the old damage values for swords and tool items.",
 
   "gui.nostalgic_tweaks.config.gameplay.disableOrbSpawn": "Disable Orb Spawning",
   "gui.nostalgic_tweaks.config.gameplay.disableOrbSpawn.info": "Disables the spawning of experience orbs.",

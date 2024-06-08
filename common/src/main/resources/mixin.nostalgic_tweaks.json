@@ -128,6 +128,8 @@
     "gameplay.bugs.LivingEntityMixin",
     "gameplay.combat_bow.BowItemMixin",
     "gameplay.combat_bow.ServerGamePacketListenerImplMixin",
+    "gameplay.combat_item.DiggerItemMixin",
+    "gameplay.combat_item.SwordItemMixin",
     "gameplay.experience_orb.ServerLevelMixin",
     "gameplay.food_health.FoodDataMixin",
     "gameplay.food_health.ItemMixin",
