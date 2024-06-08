@@ -1513,7 +1513,7 @@
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown.info": "Remove attack power cooldown. When§a enabled§r, this will also hide attack status indicators on the heads-up display.",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown.search": "Attack, Power",
   "gui.nostalgic_tweaks.config.gameplay.disableMissTimer": "Disable Miss Timer",
-  "gui.nostalgic_tweaks.config.gameplay.disableMissTimer.info": "Removes the timer that prevents continual left-clicking.",
+  "gui.nostalgic_tweaks.config.gameplay.disableMissTimer.info": "Prevents the usage of the game's \"miss timer\" which prevents continual attacking. This will also apply to the breaking of blocks.",
   "gui.nostalgic_tweaks.config.gameplay.disableMissTimer.search": "Continue, Left Click",
   "gui.nostalgic_tweaks.config.gameplay.disableCriticalHit": "Disable Critical Hit",
   "gui.nostalgic_tweaks.config.gameplay.disableCriticalHit.info": "Removes the ability for players to perform critical hit attacks.",

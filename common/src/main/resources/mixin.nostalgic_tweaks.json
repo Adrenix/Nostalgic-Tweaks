@@ -98,6 +98,7 @@
     "candy.world_sky.LevelRendererMixin",
     "gameplay.combat_bow.MinecraftMixin",
     "gameplay.combat_player.GuiMixin",
+    "gameplay.combat_player.MinecraftMixin",
     "sound.cave_ambience.BiomeAmbientSoundsHandlerMixin",
     "sound.damage_sound.LivingEntityMixin",
     "sound.damage_sound.PlayerMixin",
