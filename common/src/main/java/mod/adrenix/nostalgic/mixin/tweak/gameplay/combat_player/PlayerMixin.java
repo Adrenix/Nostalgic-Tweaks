@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.mixin.access.LivingEntityAccess;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
@@ -46,5 +47,21 @@ public abstract class PlayerMixin
     private float nt_combat_player$modifyAttackStrengthScale(float attackStrengthScale)
     {
         return GameplayTweak.DISABLE_COOLDOWN.get() ? 1.0F : attackStrengthScale;
+    }
+
+    /**
+     * Prevents the application of critical hits by tricking the critical hit flag into thinking the player is
+     * climbing.
+     */
+    @ModifyExpressionValue(
+        method = "attack",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/player/Player;onClimbable()Z"
+        )
+    )
+    private boolean nt_combat_player$modifyCriticalHitAttack(boolean isOnClimbable)
+    {
+        return GameplayTweak.DISABLE_CRITICAL_HIT.get() || isOnClimbable;
     }
 }
