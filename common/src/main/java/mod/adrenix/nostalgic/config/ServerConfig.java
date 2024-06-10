@@ -117,16 +117,24 @@ public class ServerConfig implements ConfigMeta
         public boolean oldStyleStrayDrops = GameplayTweak.OLD_STYLE_STRAY_DROPS.register("oldStyleStrayDrops");
         public boolean oldStyleHuskDrops = GameplayTweak.OLD_STYLE_HUSK_DROPS.register("oldStyleHuskDrops");
 
+        // Sword Blocking
+
+        public boolean oldSwordBlocking = GameplayTweak.OLD_SWORD_BLOCKING.register("oldSwordBlocking");
+        public int swordBlockDamageReduction = GameplayTweak.SWORD_BLOCK_DAMAGE_REDUCTION.register("swordBlockDamageReduction");
+
         // Combat
 
-        public int arrowSpeed = GameplayTweak.ARROW_SPEED.register("arrowSpeed");
-        public boolean instantBow = GameplayTweak.INSTANT_BOW.register("instantBow");
-        public boolean invincibleBow = GameplayTweak.INVINCIBLE_BOW.register("invincibleBow");
+        public boolean oldDamageValues = GameplayTweak.OLD_DAMAGE_VALUES.register("oldDamageValues");
         public boolean disableCooldown = GameplayTweak.DISABLE_COOLDOWN.register("disableCooldown");
         public boolean disableMissTimer = GameplayTweak.DISABLE_MISS_TIMER.register("disableMissTimer");
         public boolean disableCriticalHit = GameplayTweak.DISABLE_CRITICAL_HIT.register("disableCriticalHit");
         public boolean disableSweep = GameplayTweak.DISABLE_SWEEP.register("disableSweep");
-        public boolean oldDamageValues = GameplayTweak.OLD_DAMAGE_VALUES.register("oldDamageValues");
+
+        // Combat Bow
+
+        public int arrowSpeed = GameplayTweak.ARROW_SPEED.register("arrowSpeed");
+        public boolean instantBow = GameplayTweak.INSTANT_BOW.register("instantBow");
+        public boolean invincibleBow = GameplayTweak.INVINCIBLE_BOW.register("invincibleBow");
 
         // Experience
 

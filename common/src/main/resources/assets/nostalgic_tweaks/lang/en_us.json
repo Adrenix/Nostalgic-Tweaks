@@ -1509,6 +1509,13 @@
   "gui.nostalgic_tweaks.config.gameplay.invincibleBow": "Invincible Bow",
   "gui.nostalgic_tweaks.config.gameplay.invincibleBow.info": "Disable bows from taking damage when firing an arrow. Any bow that received damage previously will be restored to full durability when an arrow is fired.",
   "gui.nostalgic_tweaks.config.gameplay.invincibleBow.search": "Instant, Damage, Unbreakable",
+
+  "gui.nostalgic_tweaks.config.gameplay.blockWithSwordOnShield": "Block with Sword When Shielding",
+  "gui.nostalgic_tweaks.config.gameplay.blockWithSwordOnShield.info": "If a shield is in the off-hand and a sword is in the main hand, then the shield will be hidden and the sword block animation will play when shielding.",
+  "gui.nostalgic_tweaks.config.gameplay.oldSwordBlocking": "Old Sword Blocking",
+  "gui.nostalgic_tweaks.config.gameplay.oldSwordBlocking.info": "Bring back the old sword blocking combat mechanics and animation. The sword will lose durability when it successfully blocks damage.",
+  "gui.nostalgic_tweaks.config.gameplay.swordBlockDamageReduction": "Sword Block Damage Reduction",
+  "gui.nostalgic_tweaks.config.gameplay.swordBlockDamageReduction.info": "Define how much of the original damage amount is reduced by when an attack blocked by a player with a sword.",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown": "Disable Cooldown",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown.info": "Remove attack power cooldown. When§a enabled§r, this will also hide attack status indicators on the heads-up display.",
   "gui.nostalgic_tweaks.config.gameplay.disableCooldown.search": "Attack, Power",

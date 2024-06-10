@@ -80,6 +80,12 @@ public interface GameplayTweak
     TweakFlag OLD_STYLE_STRAY_DROPS = TweakFlag.server(false, GameplayGroup.MOB_DROPS_MODERN).newForUpdate().build();
     TweakFlag OLD_STYLE_HUSK_DROPS = TweakFlag.server(false, GameplayGroup.MOB_DROPS_MODERN).newForUpdate().build();
 
+    // Sword Blocking
+
+    TweakFlag BLOCK_WITH_SWORD_ON_SHIELD = TweakFlag.client(true, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakFlag OLD_SWORD_BLOCKING = TweakFlag.server(true, GameplayGroup.COMBAT).newForUpdate().build();
+    TweakNumber<Integer> SWORD_BLOCK_DAMAGE_REDUCTION = TweakNumber.server(50, GameplayGroup.COMBAT).newForUpdate().slider(Lang.Slider.PERCENTAGE, 0, 100, "%").build();
+
     // Combat
 
     TweakFlag OLD_DAMAGE_VALUES = TweakFlag.server(false, GameplayGroup.COMBAT).newForUpdate().build();
