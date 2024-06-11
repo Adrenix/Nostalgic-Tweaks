@@ -122,13 +122,24 @@ public abstract class InteractionListener
      */
     private static EventResult onLeftClickBlock(Player player, InteractionHand hand, BlockPos blockPos, Direction face)
     {
-        if (player.swinging)
-            return EventResult.pass();
-
         Level level = player.getCommandSenderWorld();
         BlockHitResult blockHitResult = new BlockHitResult(Vec3.atCenterOf(blockPos), face, blockPos, false);
         BlockState blockState = level.getBlockState(blockPos);
         Block block = blockState.getBlock();
+
+        if (GameplayTweak.PUNCH_TNT_IGNITION.get() && !player.isCrouching())
+        {
+            if (block instanceof TntBlock)
+            {
+                TntBlock.explode(level, blockPos);
+                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+
+                return EventResult.interruptTrue();
+            }
+        }
+
+        if (player.swinging)
+            return EventResult.pass();
 
         if (GameplayTweak.LEFT_CLICK_DOOR.get() && PlayerUtil.isSurvival(player))
         {

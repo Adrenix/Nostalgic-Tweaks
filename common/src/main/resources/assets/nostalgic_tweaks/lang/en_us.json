@@ -617,6 +617,7 @@
   "gui.nostalgic_tweaks.container.gameplay.mechanics_cart": "Cart",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block": "Block",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block_bed": "Bed",
+  "gui.nostalgic_tweaks.container.gameplay.mechanics_block_tnt": "TNT",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block_chest": "Chest",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_player": "Player",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_farming": "Farming",
@@ -1546,6 +1547,9 @@
 
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting": "Cart Boosting",
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting.info": "Bring back the old cart boosting mechanics. To perform this old mechanic, place§e two parallel rail tracks§r so that minecarts can§6 touch each other§r. When the minecarts§a connect§r, this old mechanic will cause the minecarts to start moving together and boosting each other at a§b high rate of speed§r.",
+  "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition": "Punch TNT Ignition",
+  "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.info": "Ignite a TNT block by punching it. If the player is sneaking when punching, then the block will break instead of igniting.",
+  "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.search": "Dynamite",
   "gui.nostalgic_tweaks.config.gameplay.alwaysOpenChest": "Always Open Chests",
   "gui.nostalgic_tweaks.config.gameplay.alwaysOpenChest.info": "Chest blocks can be opened regardless of whether there is a block above the chest or a cat sitting on top.",
   "gui.nostalgic_tweaks.config.gameplay.disableBedBounce": "Disable Bed Bounce",

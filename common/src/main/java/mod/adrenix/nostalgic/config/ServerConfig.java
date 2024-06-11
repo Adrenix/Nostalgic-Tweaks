@@ -142,21 +142,37 @@ public class ServerConfig implements ConfigMeta
         public boolean disableAnvil = GameplayTweak.DISABLE_ANVIL.register("disableAnvil");
         public boolean disableEnchantTable = GameplayTweak.DISABLE_ENCHANT_TABLE.register("disableEnchantTable");
 
-        // Mechanics
+        // Player Mechanics
 
-        public boolean oldFire = GameplayTweak.OLD_FIRE.register("oldFire");
-        public boolean instantAir = GameplayTweak.INSTANT_AIR.register("instantAir");
-        public boolean infiniteBurn = GameplayTweak.INFINITE_BURN.register("infiniteBurn");
+        public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.register("disableSprint");
         public boolean leftClickDoor = GameplayTweak.LEFT_CLICK_DOOR.register("leftClickDoor");
         public boolean leftClickLever = GameplayTweak.LEFT_CLICK_LEVER.register("leftClickLever");
         public boolean leftClickButton = GameplayTweak.LEFT_CLICK_BUTTON.register("leftClickButton");
+
+        // Farming Mechanics
+
         public boolean instantBonemeal = GameplayTweak.INSTANT_BONEMEAL.register("instantBonemeal");
         public boolean tilledGrassSeeds = GameplayTweak.TILLED_GRASS_SEEDS.register("tilledGrassSeeds");
+
+        // Fire Mechanics
+
+        public boolean oldFire = GameplayTweak.OLD_FIRE.register("oldFire");
+        public boolean infiniteBurn = GameplayTweak.INFINITE_BURN.register("infiniteBurn");
+
+        // Swimming Mechanics
+
+        public boolean instantAir = GameplayTweak.INSTANT_AIR.register("instantAir");
+        public boolean disableSwim = GameplayTweak.DISABLE_SWIM.register("disableSwim");
+
+        // Minecart Mechanics
+
+        public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");
+
+        // Block Mechanics
+
+        public boolean punchTntIgnition = GameplayTweak.PUNCH_TNT_IGNITION.register("punchTntIgnition");
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
         public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");
-        public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.register("disableSprint");
-        public boolean disableSwim = GameplayTweak.DISABLE_SWIM.register("disableSwim");
-        public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");
 
         // Food
 

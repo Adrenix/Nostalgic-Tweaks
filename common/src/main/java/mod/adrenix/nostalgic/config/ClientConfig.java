@@ -734,6 +734,7 @@ public class ClientConfig implements ConfigMeta
 
         // Block Mechanics
 
+        public boolean punchTntIgnition = GameplayTweak.PUNCH_TNT_IGNITION.register("punchTntIgnition");
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
         public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");
 

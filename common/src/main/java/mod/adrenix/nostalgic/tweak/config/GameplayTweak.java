@@ -138,6 +138,7 @@ public interface GameplayTweak
 
     // Block Mechanics
 
+    TweakFlag PUNCH_TNT_IGNITION = TweakFlag.server(false, GameplayGroup.MECHANICS_BLOCK_TNT).newForUpdate().build();
     TweakFlag DISABLE_BED_BOUNCE = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_BED).newForUpdate().build();
     TweakFlag ALWAYS_OPEN_CHEST = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_CHEST).newForUpdate().build();
 
