@@ -223,7 +223,10 @@ public abstract class SoundMixinHelper
     private static boolean isBedHandled(PositionSoundHandler handler)
     {
         if (SoundTweak.DISABLE_BED_PLACE.get() && handler.blockState.getBlock() instanceof BedBlock)
-            return handler.mute();
+        {
+            if (handler.sound == handler.blockState.getSoundType().getPlaceSound())
+                return handler.mute();
+        }
 
         return false;
     }
