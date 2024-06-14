@@ -71,7 +71,7 @@ public abstract class AnimalMixin extends Mob
         if (!GameplayTweak.OLD_ANIMAL_SPAWNING.get())
             return isBrightEnoughToSpawn;
 
-        Level level = LevelUtil.getLevel();
+        Level level = LevelUtil.getOverworld();
 
         if (level == null)
             return isBrightEnoughToSpawn;

@@ -120,7 +120,7 @@ public abstract class GameUtil
      */
     @Nullable
     @PublicAPI
-    public static ServerLevel getServerLevel()
+    public static ServerLevel getOverworldLevel()
     {
         if (Minecraft.getInstance().getSingleplayerServer() == null)
             return null;

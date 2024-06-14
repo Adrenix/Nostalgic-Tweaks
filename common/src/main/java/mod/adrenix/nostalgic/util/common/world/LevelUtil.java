@@ -16,8 +16,8 @@ public abstract class LevelUtil
      */
     @Nullable
     @PublicAPI
-    public static Level getLevel()
+    public static Level getOverworld()
     {
-        return EnvExecutor.getEnvSpecific(() -> GameUtil::getServerLevel, () -> ServerUtil::getLevel);
+        return EnvExecutor.getEnvSpecific(() -> GameUtil::getOverworldLevel, () -> ServerUtil::getOverworldLevel);
     }
 }

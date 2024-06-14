@@ -15,7 +15,7 @@ public abstract class ServerUtil
      */
     @Nullable
     @PublicAPI
-    public static ServerLevel getLevel()
+    public static ServerLevel getOverworldLevel()
     {
         if (NostalgicTweaks.isServer() && NostalgicTweaks.getServer() != null)
             return NostalgicTweaks.getServer().getLevel(Level.OVERWORLD);
