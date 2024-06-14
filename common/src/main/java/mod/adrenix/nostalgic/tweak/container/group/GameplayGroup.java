@@ -42,6 +42,7 @@ public interface GameplayGroup
 
     Container COMBAT = Container.group(Category.GAMEPLAY, "combat").color(0x2BC7AC).icon(Items.DIAMOND_SWORD).build();
     Container COMBAT_BOW = Container.group(COMBAT, "combat_bow").color(0x896727).icon(Items.BOW).build();
+    Container COMBAT_BLOCKING = Container.group(COMBAT, "combat_blocking").color(0x9B9B9B).icon(Items.SHIELD).build();
 
     // Mob
 

@@ -117,9 +117,10 @@ public class ServerConfig implements ConfigMeta
         public boolean oldStyleStrayDrops = GameplayTweak.OLD_STYLE_STRAY_DROPS.register("oldStyleStrayDrops");
         public boolean oldStyleHuskDrops = GameplayTweak.OLD_STYLE_HUSK_DROPS.register("oldStyleHuskDrops");
 
-        // Sword Blocking
+        // Combat Blocking
 
         public boolean oldSwordBlocking = GameplayTweak.OLD_SWORD_BLOCKING.register("oldSwordBlocking");
+        public boolean attackWhileSwordBlocking = GameplayTweak.ATTACK_WHILE_SWORD_BLOCKING.register("attackWhileSwordBlocking");
         public int swordBlockDamageReduction = GameplayTweak.SWORD_BLOCK_DAMAGE_REDUCTION.register("swordBlockDamageReduction");
 
         // Combat
