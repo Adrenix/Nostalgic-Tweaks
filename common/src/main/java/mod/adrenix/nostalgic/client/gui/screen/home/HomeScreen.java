@@ -143,6 +143,7 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         GearSpinner.getInstance().render(graphics, gearScale, gearX, gearY);
 
         RenderUtil.beginBatching();
+
         graphics.pose().pushPose();
         graphics.pose().translate(versionX, versionY, 0.0D);
         graphics.pose().mulPose(Axis.ZP.rotationDegrees(-20.0F));
@@ -164,7 +165,10 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         graphics.pose().popPose();
 
         if (BETA_VERSION.isEmpty())
+        {
+            RenderUtil.endBatching();
             return;
+        }
 
         graphics.pose().pushPose();
         graphics.pose().translate(betaX, betaY, 0.0D);
