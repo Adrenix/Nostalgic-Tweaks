@@ -173,8 +173,10 @@ public abstract class MobLootMixinHelper
         {
             Sheep sheep = (Sheep) entityType.tryCast(entity);
 
-            if (sheep != null)
+            if (sheep != null && !sheep.isSheared())
                 return WOOL_TABLE.apply(SheepAccess.NT$ITEM_BY_DYE().get(sheep.getColor()));
+            else
+                return LootTable.EMPTY;
         }
 
         return vanilla;
