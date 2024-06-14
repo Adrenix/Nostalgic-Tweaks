@@ -708,6 +708,7 @@ public class ClientConfig implements ConfigMeta
 
         // Player Mechanics
 
+        public boolean oldNightmares = GameplayTweak.OLD_NIGHTMARES.register("oldNightmares");
         public boolean disableSprint = GameplayTweak.DISABLE_SPRINT.register("disableSprint");
         public boolean leftClickDoor = GameplayTweak.LEFT_CLICK_DOOR.register("leftClickDoor");
         public boolean leftClickLever = GameplayTweak.LEFT_CLICK_LEVER.register("leftClickLever");
