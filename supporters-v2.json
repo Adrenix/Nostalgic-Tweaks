@@ -33,13 +33,13 @@
       "twitch": null,
       "links": []
     },
-    "Dahomey": {
+    "texticks": {
       "member": false,
-      "uuid": "7deb4e29e30e4b6081b673ca3bd921e2",
+      "uuid": null,
       "color": "#9B59AA",
       "description": null,
       "twitter": null,
-      "youtube": "https://www.youtube.com/@dahomeyian",
+      "youtube": null,
       "twitch": null,
       "links": []
     },
@@ -50,6 +50,16 @@
       "description": null,
       "twitter": "https://twitter.com/NSS_Captain",
       "youtube": null,
+      "twitch": null,
+      "links": []
+    },
+    "Dahomey": {
+      "member": false,
+      "uuid": "7deb4e29e30e4b6081b673ca3bd921e2",
+      "color": "#9B59AA",
+      "description": null,
+      "twitter": null,
+      "youtube": "https://www.youtube.com/@dahomeyian",
       "twitch": null,
       "links": []
     },
