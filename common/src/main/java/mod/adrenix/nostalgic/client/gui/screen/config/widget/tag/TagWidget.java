@@ -18,7 +18,7 @@ public class TagWidget extends DynamicWidget<TagBuilder, TagWidget>
     /**
      * Start the creation process for a new {@link TagWidget} instance.
      *
-     * @param tweak The {@link Tweak} for this tag to obtain data from.
+     * @param tweak The {@link Tweak} for this tag to collect data from.
      * @return A {@link TagBuilder} instance.
      */
     public static TagBuilder create(Tweak<?> tweak)
@@ -63,6 +63,9 @@ public class TagWidget extends DynamicWidget<TagBuilder, TagWidget>
 
         if (this.tweak.isAlertTag())
             this.addTag(TagType.ALERT);
+
+        if (this.tweak.isNotSSO())
+            this.addTag(TagType.NO_SSO);
 
         this.setSize();
     }

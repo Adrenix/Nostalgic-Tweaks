@@ -15,6 +15,7 @@ import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
+import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.network.chat.Component;
 
 import java.util.Collections;
@@ -393,7 +394,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     /**
      * Lang keys follow the format: {@code gui.nostalgic_tweaks.config.{category}.{tweak}.warning}.
      *
-     * @return When {@code true}, a "Warning" tag appears next to this tweak's name in the configuration menu row.
+     * @return When {@code true}, a "Warning" tag in the configuration menu row.
      */
     public boolean isWarningTag()
     {
@@ -405,11 +406,22 @@ public abstract class Tweak<T> implements TweakMeta<T>
      * condition is met.  When met, an "Alert" tag will appear next to the tweak's name in the configuration menu row
      * belonging to this tweak.
      *
-     * @return When {@code true}, an "Alert" tag appears next to this tweak's name in the configuration menu row.
+     * @return When {@code true}, an "Alert" tag in the configuration menu row.
      */
     public boolean isAlertTag()
     {
         return this.builder.alert.getCondition().get();
+    }
+
+    /**
+     * Indicates if the server tweak does not work in server-side-only mode. Lang keys follow the format:
+     * {@code gui.nostalgic_tweaks.config.{category}.{tweak}.no_sso}.
+     *
+     * @return When {@code true}, a "No SSO" tag appears in the configuration menu row.
+     */
+    public boolean isNotSSO()
+    {
+        return this.builder.noSSO;
     }
 
     /**
@@ -607,16 +619,15 @@ public abstract class Tweak<T> implements TweakMeta<T>
 
     /**
      * The config file groups <b color=#4CC143>tweaks</b> by <b color=#0094FF>category</b>. The format for tweaks in the
-     * lang file follows:<br><br>
+     * lang file follows:<p>
      *
      * <code color=#C19E43>gui.nostalgic_tweaks.config.<b color=#0094FF>{$1}</b>.<b color=#4CC143>{$2}</b></code>
-     * <br><br>
      * <p>
      * Where <code><b color=#0094FF>{$1}</b></code> is the tweak's category identifier and
      * <code><b color=#4CC143>{$2}</b></code> is the tweak's identifier.
-     * <br><br>
+     * <p>
      * Group containers are only used by the user interface to help with organizing tweaks.
-     * <br><br>
+     * <p>
      * The config file doesn't acknowledge groups within categories, so it is not possible for two tweaks with the same
      * identifier to be within the same category.
      *
@@ -694,6 +705,23 @@ public abstract class Tweak<T> implements TweakMeta<T>
     public Component getAlertMessage()
     {
         return DecodeLang.findAndReplace(this.builder.alert.getMessage());
+    }
+
+    /**
+     * To assign a custom No SSO label to a tweak, append the tweak's lang key with {@code .no_sso}, or the default
+     * tooltip message will appear.
+     *
+     * @return Get the translation No SSO message for this tweak.
+     */
+    public Component getNoSSOMessage()
+    {
+        String langKey = this.getLangKey() + ".no_sso";
+        Component message = DecodeLang.findAndReplace(Component.translatable(langKey));
+
+        if (message.getString().equals(langKey))
+            return Lang.Tag.NO_SSO_TOOLTIP.get();
+
+        return message;
     }
 
     @Override

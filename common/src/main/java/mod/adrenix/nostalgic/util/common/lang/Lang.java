@@ -505,6 +505,9 @@ public interface Lang
         Translation WARNING = from("warning");
         Translation SYNC = from("sync");
         Translation SYNC_TOOLTIP = from("sync.info");
+        Translation NO_SSO = from("no_sso");
+        Translation NO_SSO_HEADER = from("no_sso.header");
+        Translation NO_SSO_TOOLTIP = from("no_sso.info");
 
         private static Translation from(String name)
         {

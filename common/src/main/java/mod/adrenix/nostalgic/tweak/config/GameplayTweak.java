@@ -17,7 +17,7 @@ public interface GameplayTweak
 {
     // Bugs
 
-    TweakFlag OLD_LADDER_GAP = TweakFlag.server(true, GameplayGroup.BUGS).newForUpdate().build();
+    TweakFlag OLD_LADDER_GAP = TweakFlag.server(true, GameplayGroup.BUGS).newForUpdate().noSSO().build();
     TweakFlag OLD_SQUID_MILKING = TweakFlag.server(true, GameplayGroup.BUGS).newForUpdate().build();
 
     // Mob AI
@@ -83,7 +83,7 @@ public interface GameplayTweak
     // Combat Blocking
 
     TweakFlag BLOCK_WITH_SWORD_ON_SHIELD = TweakFlag.client(true, GameplayGroup.COMBAT_BLOCKING).newForUpdate().build();
-    TweakFlag OLD_SWORD_BLOCKING = TweakFlag.server(true, GameplayGroup.COMBAT_BLOCKING).newForUpdate().build();
+    TweakFlag OLD_SWORD_BLOCKING = TweakFlag.server(true, GameplayGroup.COMBAT_BLOCKING).noSSO().newForUpdate().build();
     TweakFlag ATTACK_WHILE_SWORD_BLOCKING = TweakFlag.server(true, GameplayGroup.COMBAT_BLOCKING).newForUpdate().build();
     TweakNumber<Integer> SWORD_BLOCK_DAMAGE_REDUCTION = TweakNumber.server(50, GameplayGroup.COMBAT_BLOCKING).newForUpdate().slider(Lang.Slider.PERCENTAGE, 0, 100, "%").build();
 
@@ -98,7 +98,7 @@ public interface GameplayTweak
     // Combat Bow
 
     TweakNumber<Integer> ARROW_SPEED = TweakNumber.server(70, GameplayGroup.COMBAT_BOW).newForUpdate().slider(0, 100, SliderType.INTENSITY).build();
-    TweakFlag INSTANT_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
+    TweakFlag INSTANT_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().noSSO().build();
     TweakFlag INVINCIBLE_BOW = TweakFlag.server(false, GameplayGroup.COMBAT_BOW).newForUpdate().build();
 
     // Experience Orb
@@ -114,7 +114,7 @@ public interface GameplayTweak
     // Player Mechanics
 
     TweakFlag OLD_NIGHTMARES = TweakFlag.server(true, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
-    TweakFlag DISABLE_SPRINT = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
+    TweakFlag DISABLE_SPRINT = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().noSSO().build();
     TweakFlag LEFT_CLICK_DOOR = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
     TweakFlag LEFT_CLICK_LEVER = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
     TweakFlag LEFT_CLICK_BUTTON = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
@@ -131,7 +131,7 @@ public interface GameplayTweak
 
     // Swimming Mechanics
 
-    TweakFlag DISABLE_SWIM = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
+    TweakFlag DISABLE_SWIM = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().noSSO().build();
     TweakFlag INSTANT_AIR = TweakFlag.server(true, GameplayGroup.MECHANICS_SWIMMING).newForUpdate().build();
 
     // Minecart Mechanics

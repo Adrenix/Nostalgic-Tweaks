@@ -134,6 +134,7 @@ class Tag
             case SYNC -> Lang.Tag.SYNC_TOOLTIP.get();
             case ALERT -> this.widget.getTweak().getAlertMessage();
             case WARNING -> this.widget.getTweak().getWarningMessage();
+            case NO_SSO -> this.widget.getTweak().getNoSSOMessage();
         };
 
         Tooltip.setListTooltip(TextWrap.tooltip(tooltip, 40));

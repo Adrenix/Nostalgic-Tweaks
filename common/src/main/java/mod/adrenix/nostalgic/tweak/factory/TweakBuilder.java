@@ -31,6 +31,7 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
     boolean hasWarningTag = false;
     boolean doesChunkReload = false;
     boolean doesResourceReload = false;
+    boolean noSSO = false;
     boolean top = false;
 
     /* Constructor */
@@ -201,6 +202,17 @@ public abstract class TweakBuilder<B extends TweakBuilder<B>>
     public B warningTag()
     {
         this.hasWarningTag = true;
+        return this.self();
+    }
+
+    /**
+     * Reference {@code see also}.
+     *
+     * @see Tweak#isNotSSO()
+     */
+    public B noSSO()
+    {
+        this.noSSO = true;
         return this.self();
     }
 

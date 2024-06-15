@@ -26,6 +26,7 @@ class TweakDescription
         new TweakDescription(layout).create(Lang.Tag.ALERT, layout.tweak.getAlertMessage(), Icons.ALERT, Color.fromFormatting(ChatFormatting.RED), layout.tweak::isAlertTag);
         new TweakDescription(layout).create(Lang.Tag.WARNING, layout.tweak.getWarningMessage(), Icons.WARNING, Color.fromFormatting(ChatFormatting.YELLOW), layout.tweak::isWarningTag);
         new TweakDescription(layout).create(Lang.Tag.CONFLICT, layout.tweak.getConflictMessage(), Icons.WARNING, Color.fromFormatting(ChatFormatting.RED), layout.tweak::isModConflict);
+        new TweakDescription(layout).create(Lang.Tag.NO_SSO_HEADER, layout.tweak.getNoSSOMessage(), Icons.WARNING, Color.fromFormatting(ChatFormatting.YELLOW), layout.tweak::isNotSSO);
 
         layout.tweak.getModIssues()
             .forEach(issue -> new TweakDescription(layout).create(issue.getTitle(), issue.getDescription(layout.tweak), issue.getIcon(), issue.getColor(), issue.isActive()));
