@@ -22,18 +22,21 @@ configurations {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    
+
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
-    
+
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${rootProject.fabric_modmenu_version}"
-    
+
     // Sodium Support
     modCompileOnly "maven.modrinth:sodium:${rootProject.fabric_sodium_version}"
+
+    // Apple Skin Support
+    modCompileOnly "maven.modrinth:appleskin:${rootProject.fabric_appleskin_version}"
 }
 
 processResources {
@@ -41,20 +44,20 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
-            "mod_author": rootProject.mod_author,
-            "mod_id": rootProject.mod_id,
-            "mod_name": rootProject.mod_name,
-            "mod_source": rootProject.mod_source,
-            "mod_issues": rootProject.mod_issues,
-            "mod_license": rootProject.mod_license,
-            "mod_credits": rootProject.mod_credits,
-            "mod_curse": rootProject.mod_curse,
-            "mod_modrinth": rootProject.mod_modrinth,
-            "mod_donate": rootProject.mod_donate,
-            "mod_discord": rootProject.mod_discord,
-            "mod_description": rootProject.mod_description,
-            "fabric_api_version": rootProject.fabric_api_version,
-            "architectury_version": rootProject.architectury_version
+                "mod_author": rootProject.mod_author,
+                "mod_id": rootProject.mod_id,
+                "mod_name": rootProject.mod_name,
+                "mod_source": rootProject.mod_source,
+                "mod_issues": rootProject.mod_issues,
+                "mod_license": rootProject.mod_license,
+                "mod_credits": rootProject.mod_credits,
+                "mod_curse": rootProject.mod_curse,
+                "mod_modrinth": rootProject.mod_modrinth,
+                "mod_donate": rootProject.mod_donate,
+                "mod_discord": rootProject.mod_discord,
+                "mod_description": rootProject.mod_description,
+                "fabric_api_version": rootProject.fabric_api_version,
+                "architectury_version": rootProject.architectury_version
     }
 }
 
