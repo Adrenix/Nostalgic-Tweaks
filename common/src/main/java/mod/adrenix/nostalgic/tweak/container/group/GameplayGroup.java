@@ -18,6 +18,7 @@ public interface GameplayGroup
     Container MECHANICS = Container.group(Category.GAMEPLAY, "mechanics").color(0xFFDB5C).icon(Icons.MECHANICAL_TOOLS).build();
     Container MECHANICS_FIRE = Container.group(MECHANICS, "mechanics_fire").color(0xCE7806).icon(Icons.FIRE).build();
     Container MECHANICS_CART = Container.group(MECHANICS, "mechanics_cart").color(0x8D8E93).icon(Items.MINECART).build();
+    Container MECHANICS_BOAT = Container.group(MECHANICS, "mechanics_boat").color(0x896727).icon(Items.OAK_BOAT).build();
     Container MECHANICS_BLOCK = Container.group(MECHANICS, "mechanics_block").color(0x98C767).icon(Blocks.GRASS_BLOCK).build();
     Container MECHANICS_BLOCK_BED = Container.group(MECHANICS_BLOCK, "mechanics_block_bed").color(0xC25654).icon(Blocks.RED_BED).build();
     Container MECHANICS_BLOCK_TNT = Container.group(MECHANICS_BLOCK, "mechanics_block_tnt").color(0xE63D14).icon(Blocks.TNT).build();

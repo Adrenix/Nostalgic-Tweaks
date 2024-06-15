@@ -33,6 +33,10 @@ public interface AnimationTweak
     TweakFlag OLD_SKELETON_ARMS = TweakFlag.client(true, AnimationGroup.MOB).build();
     TweakFlag OLD_GHAST_CHARGING = TweakFlag.client(true, AnimationGroup.MOB).build();
 
+    // Boat
+
+    TweakFlag HIDE_BOAT_ROWING = TweakFlag.client(true, AnimationGroup.BOAT).newForUpdate().build();
+
     // Player
 
     TweakFlag OLD_CLASSIC_WALK_BOBBING = TweakFlag.client(false, AnimationGroup.PLAYER).newForUpdate().build();

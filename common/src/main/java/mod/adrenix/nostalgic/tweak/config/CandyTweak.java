@@ -367,6 +367,10 @@ public interface CandyTweak
     TweakFlag DISABLE_SPRINTING_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_PLAYER).newForUpdate().build();
     TweakFlag HIDE_FIRST_PERSON_MAGIC_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_PLAYER).newForUpdate().build();
 
+    // Boat Particles
+
+    TweakFlag OLD_BOAT_MOVEMENT_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BOAT).newForUpdate().build();
+
     // Attack Particles
 
     TweakFlag OLD_SWEEP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_ATTACK).build();

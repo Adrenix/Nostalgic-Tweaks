@@ -138,6 +138,11 @@ public interface GameplayTweak
 
     TweakFlag CART_BOOSTING = TweakFlag.server(false, GameplayGroup.MECHANICS_CART).newForUpdate().build();
 
+    // Boat Mechanics
+
+    TweakFlag OLD_BOAT_WATER_LIFT = TweakFlag.server(true, GameplayGroup.MECHANICS_BOAT).newForUpdate().build();
+    TweakFlag OLD_BOAT_DROPS = TweakFlag.server(false, GameplayGroup.MECHANICS_BOAT).newForUpdate().build();
+
     // Block Mechanics
 
     TweakFlag PUNCH_TNT_IGNITION = TweakFlag.server(false, GameplayGroup.MECHANICS_BLOCK_TNT).newForUpdate().build();

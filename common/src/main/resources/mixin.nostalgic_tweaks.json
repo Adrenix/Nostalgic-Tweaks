@@ -6,6 +6,9 @@
   "priority": 1001,
   "client": [
     "animation.arm_sway.ItemInHandRendererMixin",
+    "animation.boat.BoatMixin",
+    "animation.boat.BoatModelMixin",
+    "animation.boat.ItemInHandRendererMixin",
     "animation.ghast_charge.GhastRendererMixin",
     "animation.held_item.ItemInHandRendererMixin",
     "animation.held_item.LivingEntityMixin",
@@ -148,6 +151,7 @@
     "gameplay.mechanics_block.BedBlockMixin",
     "gameplay.mechanics_block.ChestBlockMixin",
     "gameplay.mechanics_block.EnderChestBlockMixin",
+    "gameplay.mechanics_boat.BoatMixin",
     "gameplay.mechanics_farming.BeetrootBlockMixin",
     "gameplay.mechanics_farming.CocoaBlockMixin",
     "gameplay.mechanics_farming.CropBlockMixin",

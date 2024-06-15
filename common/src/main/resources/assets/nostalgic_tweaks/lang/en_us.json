@@ -515,6 +515,7 @@
   "gui.nostalgic_tweaks.container.animation.arm_sway": "Arm Sway",
   "gui.nostalgic_tweaks.container.animation.arm_swing": "Arm Swing",
   "gui.nostalgic_tweaks.container.animation.mob": "Mob Animations",
+  "gui.nostalgic_tweaks.container.animation.boat": "Boat Animations",
   "gui.nostalgic_tweaks.container.animation.player": "Player Animations",
   "gui.nostalgic_tweaks.container.animation.item": "Item Animations",
 
@@ -576,6 +577,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.lighting_world_texture": "Light Texture",
   "gui.nostalgic_tweaks.container.eyeCandy.lighting_world_shader": "Shaders",
   "gui.nostalgic_tweaks.container.eyeCandy.particle": "Particle Candy",
+  "gui.nostalgic_tweaks.container.eyeCandy.particle_boat": "Boat Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_block": "Block Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_disabled": "Disabled Particles",
   "gui.nostalgic_tweaks.container.eyeCandy.particle_experience": "Experience Particles",
@@ -616,6 +618,7 @@
   "gui.nostalgic_tweaks.container.gameplay.mechanics": "Game Mechanics",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_fire": "Fire",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_cart": "Cart",
+  "gui.nostalgic_tweaks.container.gameplay.mechanics_boat": "Boat",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block": "Block",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block_bed": "Bed",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_block_tnt": "TNT",
@@ -1205,6 +1208,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.supporterTags": "Show Supporter Name Tags",
   "gui.nostalgic_tweaks.config.eyeCandy.supporterTags.info": "Display custom visual effects on name tags for player's who have supported this mod.",
 
+  "gui.nostalgic_tweaks.config.eyeCandy.oldBoatMovementParticles": "Old Boat Movement Particles",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldBoatMovementParticles.info": "Bring back the old splash particles that appear under boats when a boat moves fast enough.",
   "gui.nostalgic_tweaks.config.eyeCandy.disabledParticles": "Disabled Particles",
   "gui.nostalgic_tweaks.config.eyeCandy.disabledParticles.info": "Define a custom list of particles to§c disable§r from appearing within the world. The entries used in this list are particle resource locations. For example,§b minecraft:cherry_leaves§r is a§a valid§r particle resource location.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldExplosionParticles": "Old Explosion Particles",
@@ -1550,6 +1555,13 @@
 
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting": "Cart Boosting",
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting.info": "Bring back the old cart boosting mechanics. To perform this old mechanic, place§e two parallel rail tracks§r so that minecarts can§6 touch each other§r. When the minecarts§a connect§r, this old mechanic will cause the minecarts to start moving together and boosting each other at a§b high rate of speed§r.",
+
+  "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift": "Old Boat Water Lift",
+  "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift.info": "Bring back the old water lift bug where a boat will continue to float upwards as long as there is water above the boat. This mechanic can be used to create boat elevators.",
+  "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift.search": "Elevator",
+  "gui.nostalgic_tweaks.config.gameplay.oldBoatDrops": "Old Boat Drops",
+  "gui.nostalgic_tweaks.config.gameplay.oldBoatDrops.info": "Bring back the old item drops for boats. This will§c not§r drop a boat item, but will instead drop wood planks and sticks.",
+
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition": "Punch TNT Ignition",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.info": "Ignite a TNT block by punching it. If the player is sneaking when punching, then the block will break instead of igniting.",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.search": "Dynamite",
@@ -1643,6 +1655,9 @@
   "gui.nostalgic_tweaks.config.animation.oldSkeletonArms.info": "Disable the neutral skeleton arm positions and the animation that occurs when the skeleton becomes aggressive.",
   "gui.nostalgic_tweaks.config.animation.oldGhastCharging": "Old Ghast Charging",
   "gui.nostalgic_tweaks.config.animation.oldGhastCharging.info": "Bring back the old 'squishy' ghast charging animation.",
+
+  "gui.nostalgic_tweaks.config.animation.hideBoatRowing": "Hide Boat Paddles",
+  "gui.nostalgic_tweaks.config.animation.hideBoatRowing.info": "Prevent boat paddles from rendering when rowing a boat. This will keep the player's hands visible and prevent paddle sounds from playing.",
 
   "gui.nostalgic_tweaks.config.animation.oldClassicWalkBobbing": "Old Classic Walk Bobbing",
   "gui.nostalgic_tweaks.config.animation.oldClassicWalkBobbing.info": "Bring back the old classic walking animation where the player bobs up and down when the player walks or runs.",

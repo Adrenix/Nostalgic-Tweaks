@@ -170,6 +170,11 @@ public class ServerConfig implements ConfigMeta
 
         public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");
 
+        // Boat Mechanics
+
+        public boolean oldBoatWaterLift = GameplayTweak.OLD_BOAT_WATER_LIFT.register("oldBoatWaterLift");
+        public boolean oldBoatDrops = GameplayTweak.OLD_BOAT_DROPS.register("oldBoatDrops");
+
         // Block Mechanics
 
         public boolean punchTntIgnition = GameplayTweak.PUNCH_TNT_IGNITION.register("punchTntIgnition");

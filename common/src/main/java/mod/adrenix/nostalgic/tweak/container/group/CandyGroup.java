@@ -88,6 +88,7 @@ public interface CandyGroup
     Container PARTICLE_EXPERIENCE = Container.group(PARTICLE, "particle_experience").color(0xF5FF8F).icon(Items.EXPERIENCE_BOTTLE).build();
     Container PARTICLE_ATTACK = Container.group(PARTICLE, "particle_attack").color(0xE0E0E0).icon(Items.IRON_SWORD).build();
     Container PARTICLE_PLAYER = Container.group(PARTICLE, "particle_player").color(0xB6896C).icon(Items.PLAYER_HEAD).build();
+    Container PARTICLE_BOAT = Container.group(PARTICLE, "particle_boat").color(0x896727).icon(Items.OAK_BOAT).build();
     Container PARTICLE_BLOCK = Container.group(PARTICLE, "particle_block").color(0x98C767).icon(Blocks.GRASS_BLOCK).build();
     Container PARTICLE_EXPLOSION = Container.group(PARTICLE, "particle_explosion").color(0xE63D14).icon(Blocks.TNT).build();
 
