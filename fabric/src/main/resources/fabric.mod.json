@@ -29,6 +29,9 @@
     ],
     "modmenu": [
       "mod.adrenix.nostalgic.fabric.client.ModMenuIntegration"
+    ],
+    "appleskin": [
+      "mod.adrenix.nostalgic.fabric.event.AppleSkinListener"
     ]
   },
   "mixins": [
