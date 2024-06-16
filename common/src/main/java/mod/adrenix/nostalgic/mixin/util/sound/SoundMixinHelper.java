@@ -211,8 +211,11 @@ public abstract class SoundMixinHelper
      */
     private static boolean isDoorHandled(PositionSoundHandler handler)
     {
-        if (SoundTweak.DISABLE_DOOR_PLACE.get())
-            return handler.blockState.getBlock() instanceof DoorBlock && handler.mute(SoundEvents.WOOD_PLACE, SoundEvents.METAL_PLACE);
+        if (SoundTweak.DISABLE_DOOR_PLACE.get() && handler.blockState.getBlock() instanceof DoorBlock)
+        {
+            if (handler.sound == handler.blockState.getSoundType().getPlaceSound())
+                return handler.mute();
+        }
 
         return false;
     }
