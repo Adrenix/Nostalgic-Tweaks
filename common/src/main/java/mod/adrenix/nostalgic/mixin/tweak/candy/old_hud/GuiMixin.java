@@ -62,7 +62,10 @@ public class GuiMixin
     )
     private int nt_old_hud$modifyLeftOffhandHorizontal(int x)
     {
-        return CandyTweak.ADVENTURE_CRAFT_OFFHAND.get() ? x - 1 + CandyTweak.LEFT_OFFHAND_OFFSET.get() : x;
+        if (CandyTweak.ADVENTURE_CRAFT_OFFHAND.get())
+            return x - 1 + CandyTweak.LEFT_OFFHAND_OFFSET.get();
+
+        return x + CandyTweak.LEFT_OFFHAND_OFFSET.get();
     }
 
     /**
@@ -115,7 +118,10 @@ public class GuiMixin
     )
     private int nt_old_hud$modifyRightOffhandHorizontal(int x)
     {
-        return CandyTweak.ADVENTURE_CRAFT_OFFHAND.get() ? x + 1 + CandyTweak.RIGHT_OFFHAND_OFFSET.get() : x;
+        if (CandyTweak.ADVENTURE_CRAFT_OFFHAND.get())
+            return x + 1 + CandyTweak.RIGHT_OFFHAND_OFFSET.get();
+
+        return x + CandyTweak.RIGHT_OFFHAND_OFFSET.get();
     }
 
     /**
