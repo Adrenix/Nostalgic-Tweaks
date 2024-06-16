@@ -232,6 +232,12 @@ public class ClientConfig implements ConfigMeta
         public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
         public boolean hideHungerBar = CandyTweak.HIDE_HUNGER_BAR.register("hideHungerBar");
 
+        // Offhand Slot
+
+        public boolean adventureCraftOffhand = CandyTweak.ADVENTURE_CRAFT_OFFHAND.register("adventureCraftOffhand");
+        public int leftOffhandOffset = CandyTweak.LEFT_OFFHAND_OFFSET.register("leftOffhandOffset");
+        public int rightOffhandOffset = CandyTweak.RIGHT_OFFHAND_OFFSET.register("rightOffhandOffset");
+
         // Alternative Experience Text
 
         public boolean showExpLevelText = CandyTweak.SHOW_EXP_LEVEL_TEXT.register("showExpLevelText");

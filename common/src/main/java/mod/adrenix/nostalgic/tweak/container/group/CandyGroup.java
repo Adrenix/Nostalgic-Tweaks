@@ -26,6 +26,7 @@ public interface CandyGroup
 
     Container INTERFACE = Container.group(Category.EYE_CANDY, "interface").color(0xFFFFFF).icon(Icons.BUTTON).build();
     Container INTERFACE_HUD = Container.group(INTERFACE, "interface_hud").color(0x0094FF).icon(Icons.HUD).build();
+    Container INTERFACE_HUD_OFFHAND = Container.group(INTERFACE_HUD, "interface_hud_offhand").color(0xFFBC9B).icon(Icons.ARM_SWAY).build();
     Container INTERFACE_HUD_VERSION = Container.group(INTERFACE_HUD, "interface_hud_version").color(0xB7603E).icon(Items.WRITABLE_BOOK).build();
     Container INTERFACE_HUD_EXP_BAR = Container.group(INTERFACE_HUD, "interface_hud_exp_bar").color(0x86C457).icon(Icons.XP_BAR).build();
     Container INTERFACE_HUD_EXP_BAR_ALT_PROGRESS = Container.group(INTERFACE_HUD_EXP_BAR, "interface_hud_exp_bar_alt_progress").color(0x8FB7A3).icon(Icons.XP_HALF_BAR).build();

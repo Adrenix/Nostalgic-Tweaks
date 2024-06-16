@@ -73,6 +73,12 @@ public interface CandyTweak
     TweakFlag HIDE_EXPERIENCE_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_ORB_SPAWN::get).build();
     TweakFlag HIDE_HUNGER_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_HUNGER::get).build();
 
+    // Offhand Slot
+
+    TweakFlag ADVENTURE_CRAFT_OFFHAND = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().build();
+    TweakNumber<Integer> LEFT_OFFHAND_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().slider(Lang.Slider.OFFSET, -14, 7).build();
+    TweakNumber<Integer> RIGHT_OFFHAND_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().slider(Lang.Slider.OFFSET, -7, 14).build();
+
     // Game Version Overlay
 
     TweakFlag OLD_VERSION_OVERLAY = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_VERSION).build();

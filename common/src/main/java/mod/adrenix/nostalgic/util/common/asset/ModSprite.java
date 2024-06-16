@@ -9,6 +9,8 @@ public interface ModSprite
     ResourceLocation RECIPE_BUTTON_LARGE = ModAsset.sprite("recipe_book/button_large");
     ResourceLocation RECIPE_BUTTON_SMALL_HIGHLIGHTED = ModAsset.sprite("recipe_book/button_small_highlighted");
     ResourceLocation RECIPE_BUTTON_LARGE_HIGHLIGHTED = ModAsset.sprite("recipe_book/button_large_highlighted");
+    ResourceLocation ADVENTURE_CRAFT_OFFHAND_LEFT_SLOT = ModAsset.sprite("hud/ac_offhand_left_slot");
+    ResourceLocation ADVENTURE_CRAFT_OFFHAND_RIGHT_SLOT = ModAsset.sprite("hud/ac_offhand_right_slot");
 
     static ResourceLocation icon(String path)
     {

@@ -537,6 +537,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.interface": "Interface Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_chat": "Chat Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud": "Heads-up Display",
+  "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_offhand": "Offhand Slot",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_version": "Game Version Overlay",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_exp_bar": "Experience Bar",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_exp_bar_alt_level": "Alternative Level Text",
@@ -867,6 +868,13 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldOverlayOffsetY.info": "Shift the vertical position (y-axis) of the text.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldOverlayCorner": "Old Version Corner",
   "gui.nostalgic_tweaks.config.eyeCandy.oldOverlayCorner.info": "Change the corner of the old version overlay text.",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.adventureCraftOffhand": "Adventure Craft Offhand Style",
+  "gui.nostalgic_tweaks.config.eyeCandy.adventureCraftOffhand.info": "Use an Adventure Craft styled offhand slot texture.",
+  "gui.nostalgic_tweaks.config.eyeCandy.leftOffhandOffset": "Left Offhand Slot Offset",
+  "gui.nostalgic_tweaks.config.eyeCandy.leftOffhandOffset.info": "Change how far to the left or right the left-hand-side offhand slot should be offset from its normal position.",
+  "gui.nostalgic_tweaks.config.eyeCandy.rightOffhandOffset": "Right Offhand Slot Offset",
+  "gui.nostalgic_tweaks.config.eyeCandy.rightOffhandOffset.info": "Change how far to the left or right the right-hand-side offhand slot should be offset from its normal position.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.showExpLevelText": "Show Text",
   "gui.nostalgic_tweaks.config.eyeCandy.showExpLevelText.info": "Show the provided alternative experience level text.",
