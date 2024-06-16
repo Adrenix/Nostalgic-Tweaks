@@ -33,16 +33,6 @@
       "twitch": null,
       "links": []
     },
-    "texticks": {
-      "member": false,
-      "uuid": null,
-      "color": "#9B59AA",
-      "description": null,
-      "twitter": null,
-      "youtube": null,
-      "twitch": null,
-      "links": []
-    },
     "Captain_3": {
       "member": true,
       "uuid": "9ef05a6d51974e33897e8c46b365b2d1",
@@ -60,6 +50,16 @@
       "description": null,
       "twitter": null,
       "youtube": "https://www.youtube.com/@dahomeyian",
+      "twitch": null,
+      "links": []
+    },
+    "texticks": {
+      "member": false,
+      "uuid": null,
+      "color": "#9B59AA",
+      "description": null,
+      "twitter": null,
+      "youtube": null,
       "twitch": null,
       "links": []
     },
