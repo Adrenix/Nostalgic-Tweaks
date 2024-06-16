@@ -57,7 +57,7 @@ public abstract class InteractionListener
             return CompoundEventResult.interruptTrue(itemStackInHand);
         }
 
-        if (SwordBlockMixinHelper.canBlock(player))
+        if (SwordBlockMixinHelper.canBlock(player) && !player.isUsingItem())
         {
             player.startUsingItem(hand);
 

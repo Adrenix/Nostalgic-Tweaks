@@ -50,7 +50,7 @@ public abstract class SwordBlockMixinHelper
      */
     public static boolean canBlock(Player player)
     {
-        if (player.getOffhandItem().getItem() instanceof ShieldItem)
+        if (!player.getOffhandItem().isEmpty())
             return false;
 
         return GameplayTweak.OLD_SWORD_BLOCKING.get() && player.getMainHandItem().is(ItemTags.SWORDS);
