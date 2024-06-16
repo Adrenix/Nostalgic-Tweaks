@@ -413,6 +413,7 @@
 
   "gui.nostalgic_tweaks.issue.sodium": "This tweak will§c not§r work when§a Sodium§r is installed.",
   "gui.nostalgic_tweaks.issue.optifine": "This tweak will§c not§r work when§6 Optifine§r is installed.",
+  "gui.nostalgic_tweaks.issue.polytone": "This tweak will§c not§r work when§e Polytone§r is installed.",
 
   "gui.nostalgic_tweaks.enum.generic.disabled": "§cDisabled",
   "gui.nostalgic_tweaks.enum.generic.classic": "§aClassic",
@@ -1285,6 +1286,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight": "Round Robin Chunk Relighting",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.info": "When skylight changes due to the time of day, this will cause§6 round robin chunk updates§r. This will have a slight§c impact§r on performance when relighting occurs.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.conflict": "This tweak will not work when§e Starlight§r is installed.",
+  "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.polytone": "Incorrect lighting patterns may result if using a resource pack that modifies the light texture map with§b Polytone§r installed, such as§e Golden Days§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.optifine": "This tweak may§4 break§r some shaders. §6Decrease§r the block light slider in the shader subcategory if the world is too§e bright§r. §cDisable§r this tweak if you encounter further visual issues.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.sodium": "This tweak may§4 break§r some shaders. §6Decrease§r the block light slider in the shader subcategory if the world is too§e bright§r. §cDisable§r this tweak if you encounter further visual issues.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldSmoothLighting": "Old Smooth Lighting",
@@ -1300,6 +1302,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.disableBrightness.info": "§cDisable§r the vanilla§e brightness§r settings from§6 impacting§r the lightmap texture.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLightColor": "Old Light Color",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLightColor.info": "Bring back the old light colors from alpha/beta. If this tweak is§c disabled§r and the §7@decode{tweak=eyeCandy.roundRobinRelight}§r tweak is§a enabled§r then night light colors will be§6 inaccurate§r.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldLightColor.issue.polytone": "Incorrect lighting may result if using a resource pack that modifies the light texture map with§b Polytone§r installed, such as§e Golden Days§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight": "Max Block Light",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.info": "A §6shader§r control that determines how much§e block light§r is applied to the world. §cDecrease§r this number if the§b @decode{tweak=eyeCandy.roundRobinRelight}§r tweak is§a enabled§r and the world is too§e bright§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.maxBlockLight.search": "Shader, Bright",

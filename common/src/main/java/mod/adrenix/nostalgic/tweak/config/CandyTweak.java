@@ -323,7 +323,7 @@ public interface CandyTweak
 
     // Light Engine
 
-    TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE).conflictMods(ModTracker.STARLIGHT).build();
+    TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE, TweakIssue.POLYTONE).conflictMods(ModTracker.STARLIGHT).build();
     TweakFlag OLD_SMOOTH_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_NETHER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_CLASSIC_ENGINE = TweakFlag.server(false, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().warningTag().build();
@@ -332,7 +332,7 @@ public interface CandyTweak
 
     TweakFlag SMOOTH_LIGHT_TRANSITION = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().build();
     TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
-    TweakFlag OLD_LIGHT_COLOR = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().build();
+    TweakFlag OLD_LIGHT_COLOR = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().modIssues(TweakIssue.POLYTONE).build();
 
     // Shader Support
 

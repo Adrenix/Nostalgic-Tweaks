@@ -14,6 +14,7 @@ public enum ModTracker
     APPLE_SKIN("appleskin"),
     SODIUM("sodium", "embeddium"),
     STARLIGHT("starlight"),
+    POLYTONE("polytone"),
     EXORDIUM("exordium"),
     OPTIFINE("optifine"),
     FLYWHEEL("flywheel");

@@ -767,6 +767,7 @@ public interface Lang
     {
         Translation SODIUM = from("sodium");
         Translation OPTIFINE = from("optifine");
+        Translation POLYTONE = from("polytone");
 
         private static Translation from(String name)
         {

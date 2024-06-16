@@ -7,8 +7,8 @@ import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +31,8 @@ import java.util.Locale;
 public enum TweakIssue
 {
     SODIUM(Lang.literal("Sodium"), Lang.Issue.SODIUM, Icons.SODIUM, Color.AZURE_WHITE, ModTracker.SODIUM::isInstalled),
-    OPTIFINE(Lang.literal("Optifine"), Lang.Issue.OPTIFINE, Icons.OPTIFINE, Color.MUSTARD, ModTracker.OPTIFINE::isInstalled);
+    OPTIFINE(Lang.literal("Optifine"), Lang.Issue.OPTIFINE, Icons.OPTIFINE, Color.MUSTARD, ModTracker.OPTIFINE::isInstalled),
+    POLYTONE(Lang.literal("Polytone"), Lang.Issue.POLYTONE, Icons.PAINTBRUSH, Color.LIGHT_BLUE, ModTracker.POLYTONE::isInstalled);
 
     /* Fields */
 
