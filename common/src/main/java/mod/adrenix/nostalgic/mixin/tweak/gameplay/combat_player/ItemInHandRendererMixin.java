@@ -1,6 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockRenderer;
@@ -71,5 +73,24 @@ public abstract class ItemInHandRendererMixin
     private boolean nt_combat_player$shouldRenderShieldInOffHand(ItemInHandRenderer renderer, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack stack, float equippedProgress, PoseStack poseStack, MultiBufferSource buffer, int combinedLight)
     {
         return !SwordBlockMixinHelper.shouldBlockOnShield(player);
+    }
+
+    /**
+     * Allows the item renderer to swing the sword if it is currently blocking.
+     */
+    @ModifyExpressionValue(
+        method = "renderArmWithItem",
+        at = @At(
+            ordinal = 1,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/player/AbstractClientPlayer;isUsingItem()Z"
+        )
+    )
+    private boolean nt_combat_player$shouldIndicateItemUse(boolean isUsingItem, @Local(argsOnly = true) AbstractClientPlayer player)
+    {
+        if (SwordBlockMixinHelper.isBlocking(player))
+            return false;
+
+        return isUsingItem;
     }
 }
