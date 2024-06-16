@@ -75,7 +75,7 @@ public interface CandyTweak
 
     // Offhand Slot
 
-    TweakFlag ADVENTURE_CRAFT_OFFHAND = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().build();
+    TweakFlag ADVENTURE_CRAFT_OFFHAND = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().build();
     TweakNumber<Integer> LEFT_OFFHAND_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().slider(Lang.Slider.OFFSET, -14, 7).build();
     TweakNumber<Integer> RIGHT_OFFHAND_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_OFFHAND).newForUpdate().slider(Lang.Slider.OFFSET, -7, 14).build();
 
