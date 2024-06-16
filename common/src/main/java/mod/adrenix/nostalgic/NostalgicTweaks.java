@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.init.ModInitializer;
 import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
@@ -294,12 +295,7 @@ public abstract class NostalgicTweaks
         ModInitializer.register();
 
         if (isServer())
-        {
             ConfigCache.initServer();
-
-            LOGGER.warn("Nostalgic Tweaks server support is still in-development");
-            LOGGER.warn("Please report any problems you encounter");
-        }
         else
         {
             ConfigCache.initClient();
@@ -344,6 +340,7 @@ public abstract class NostalgicTweaks
     /**
      * @return Whether the mod should register event tests.
      */
+    @PublicAPI
     public static boolean isEventTesting()
     {
         return Platform.isDevelopmentEnvironment() && isEventTesting;
