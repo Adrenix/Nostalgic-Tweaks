@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.sound.disabled_sound;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundEngine;
@@ -13,12 +13,9 @@ public abstract class SoundEngineMixin
     /**
      * Mutes any sound contained within the list of disabled sounds.
      */
-    @ModifyExpressionValue(
-        method = "play",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/resources/sounds/SoundInstance;getVolume()F"
-        )
+    @ModifyReturnValue(
+        method = "calculateVolume(Lnet/minecraft/client/resources/sounds/SoundInstance;)F",
+        at = @At("RETURN")
     )
     private float nt_disabled_sound$modifyPlayVolume(float volume, SoundInstance sound)
     {
