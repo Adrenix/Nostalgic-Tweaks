@@ -16,7 +16,7 @@ Discord: ${mod_discord}
 '''
 credits = "${mod_credits}"
 displayURL = "${mod_curse}"
-logoFile = "nt_forge_logo.png"
+logoFile = "nt_neoforge_logo.png"
 displayTest = "NONE"
 
 [[mixins]]
@@ -29,7 +29,7 @@ config = "mixin.nostalgic_tweaks-access.json"
 config = "mixin.nostalgic_tweaks-duck.json"
 
 [[mixins]]
-config = "mixin.nostalgic_tweaks-forge.json"
+config = "mixin.nostalgic_tweaks-neoforge.json"
 
 [[mixins]]
 config = "mixin.nostalgic_tweaks-required.json"
@@ -40,14 +40,14 @@ config = "mixin.nostalgic_tweaks-embeddium.json"
 [[dependencies.nostalgic_tweaks]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.4,)"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.nostalgic_tweaks]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.3,1.20.4]"
+versionRange = "[1.20.5,1.20.6]"
 ordering = "NONE"
 side = "BOTH"
 
