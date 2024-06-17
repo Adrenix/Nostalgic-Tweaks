@@ -562,4 +562,72 @@ public abstract class CollectionUtil
     {
         return !collection.isEmpty();
     }
+
+    /**
+     * Check if the given collection is unmodifiable.
+     *
+     * @param collection The {@link Collection} to check.
+     * @return Yields {@code true} if the given {@link Collection} throws an {@link UnsupportedOperationException},
+     * {@code false} otherwise.
+     */
+    @PublicAPI
+    public static boolean isUnmodifiable(Collection<?> collection)
+    {
+        try
+        {
+            collection.addAll(Collections.emptyList());
+
+            return false;
+        }
+        catch (UnsupportedOperationException exception)
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Check if the given collection is modifiable.
+     *
+     * @param collection The {@link Collection} to check.
+     * @return Yields {@code true} if the given {@link Collection} can be modified, {@code false} otherwise.
+     */
+    @PublicAPI
+    public static boolean isModifiable(Collection<?> collection)
+    {
+        return !isUnmodifiable(collection);
+    }
+
+    /**
+     * Check if the given map is unmodifiable.
+     *
+     * @param map The {@link Map} to check.
+     * @return Yields {@code true} if the given {@link Map} throws an {@link UnsupportedOperationException},
+     * {@code false} otherwise.
+     */
+    @PublicAPI
+    public static boolean isUnmodifiable(Map<?, ?> map)
+    {
+        try
+        {
+            map.putAll(Map.of());
+
+            return false;
+        }
+        catch (UnsupportedOperationException exception)
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Check if the given map is modifiable.
+     *
+     * @param map The {@link Map} to check.
+     * @return Yields {@code true} if the given {@link Map} can be modified, {@code false} otherwise.
+     */
+    @PublicAPI
+    public static boolean isModifiable(Map<?, ?> map)
+    {
+        return !isUnmodifiable(map);
+    }
 }
