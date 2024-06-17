@@ -11,7 +11,7 @@ public abstract class ManageGroup
      * This method defines the widgets that are present within this group. Use the widget register method
      * (package-private) to register a widget to this group.
      *
-     * @param manager A {@link ManageOverlay} instance to obtain overlay information.
+     * @param manager A {@link ManageOverlay} instance to collect overlay information.
      */
     abstract void define(ManageOverlay manager);
 

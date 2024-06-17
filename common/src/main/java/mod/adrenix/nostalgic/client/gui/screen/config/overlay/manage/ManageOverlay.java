@@ -54,7 +54,7 @@ public class ManageOverlay
 
         this.separator = SeparatorWidget.create(Color.WHITE)
             .width(1)
-            .rightOf(this.sections.get(0), this.padding)
+            .rightOf(this.sections.getFirst(), this.padding)
             .height(() -> this.overlay.getInsideHeight() - this.padding * 2)
             .build();
 

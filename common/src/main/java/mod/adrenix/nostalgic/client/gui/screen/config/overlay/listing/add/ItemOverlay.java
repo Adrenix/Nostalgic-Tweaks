@@ -27,12 +27,13 @@ import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import mod.adrenix.nostalgic.util.common.text.TextWrap;
 import mod.adrenix.nostalgic.util.common.world.ItemFilter;
 import mod.adrenix.nostalgic.util.common.world.ItemUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -272,7 +273,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
         else if (this.rules.contains(ItemRule.ONLY_CHESTS))
             this.items.addAll(items.filter(ItemFilter::isChestLike).map(Item::getDefaultInstance).toList());
         else if (this.rules.contains(ItemRule.ONLY_EDIBLES))
-            this.items.addAll(items.filter(Item::isEdible).map(Item::getDefaultInstance).toList());
+            this.items.addAll(items.filter(ItemUtil::isEdible).map(Item::getDefaultInstance).toList());
         else
         {
             items.forEach(item -> {
@@ -281,7 +282,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
                 boolean areToolsFiltered = ItemFilter.isToolLike(item) && this.rules.contains(ItemRule.NO_TOOLS);
                 boolean areItemsFiltered = ItemFilter.isItemLike(item) && this.rules.contains(ItemRule.NO_ITEMS);
                 boolean areBlocksFiltered = ItemFilter.isBlockLike(item) && this.rules.contains(ItemRule.NO_BLOCKS);
-                boolean areEdiblesFiltered = item.isEdible() && this.rules.contains(ItemRule.NO_EDIBLES);
+                boolean areEdiblesFiltered = ItemUtil.isEdible(item) && this.rules.contains(ItemRule.NO_EDIBLES);
                 boolean isFiltered = areToolsFiltered || areItemsFiltered || areBlocksFiltered || areEdiblesFiltered;
 
                 if (!isFiltered)
@@ -365,7 +366,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
                 return TextWrap.tooltip(tooltip, 40);
             }
 
-            return this.getItemStack().getTooltipLines(null, TooltipFlag.Default.NORMAL);
+            return Screen.getTooltipFromItem(Minecraft.getInstance(), this.getItemStack());
         }
 
         /**
