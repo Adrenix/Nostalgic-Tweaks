@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.fabric.mixin.tweak.candy.old_hud;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import mod.adrenix.nostalgic.mixin.util.candy.hud.HudElement;
 import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,11 +24,11 @@ public abstract class GuiMixin
      * Shifts all heads-up display elements if the experience bar is hidden.
      */
     @Inject(
-        method = "render",
+        method = "renderHotbarAndDecorations",
         at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/components/BossHealthOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
+            target = "Lnet/minecraft/client/gui/Gui;renderItemHotbar(Lnet/minecraft/client/gui/GuiGraphics;F)V"
         )
     )
     private void nt_fabric_old_hud$shiftHudElements(GuiGraphics graphics, float partialTick, CallbackInfo callback)
@@ -43,7 +44,7 @@ public abstract class GuiMixin
      * Prevents rendering of the experience bar on the heads-up display.
      */
     @ModifyExpressionValue(
-        method = "render",
+        method = "isExperienceBarVisible",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasExperience()Z"
@@ -79,22 +80,12 @@ public abstract class GuiMixin
      */
     @WrapWithCondition(
         method = "renderPlayerHealth",
-        slice = @Slice(
-            from = @At(
-                value = "CONSTANT",
-                args = "stringValue=armor"
-            ),
-            to = @At(
-                value = "CONSTANT",
-                args = "stringValue=health"
-            )
-        ),
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/Gui;renderArmor(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIII)V"
         )
     )
-    private boolean nt_fabric_old_hud$shouldArmorSpriteRender(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    private boolean nt_fabric_old_hud$shouldArmorSpriteRender(GuiGraphics graphics, Player player, int y, int heartRows, int height, int x)
     {
         return !CandyTweak.HIDE_HUNGER_BAR.get();
     }
@@ -138,22 +129,12 @@ public abstract class GuiMixin
      */
     @WrapWithCondition(
         method = "renderPlayerHealth",
-        slice = @Slice(
-            from = @At(
-                value = "CONSTANT",
-                args = "stringValue=food"
-            ),
-            to = @At(
-                value = "CONSTANT",
-                args = "stringValue=air"
-            )
-        ),
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/Gui;renderFood(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;II)V"
         )
     )
-    private boolean nt_fabric_old_hud$shouldFoodSpriteRender(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    private boolean nt_fabric_old_hud$shouldFoodSpriteRender(Gui gui, GuiGraphics graphics, Player player, int y, int x)
     {
         return !CandyTweak.HIDE_HUNGER_BAR.get();
     }
@@ -247,7 +228,7 @@ public abstract class GuiMixin
      * display.
      */
     @Inject(
-        method = "render",
+        method = "renderHotbarAndDecorations",
         at = @At(
             shift = At.Shift.BEFORE,
             value = "INVOKE",
@@ -265,7 +246,7 @@ public abstract class GuiMixin
      * after this point will not receive previous offsets defined by the mod.
      */
     @Inject(
-        method = "render",
+        method = "renderHotbarAndDecorations",
         at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
