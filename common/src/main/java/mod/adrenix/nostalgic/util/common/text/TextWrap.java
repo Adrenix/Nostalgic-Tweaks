@@ -51,7 +51,7 @@ public abstract class TextWrap
             for (String line : row.split(Pattern.quote("\n")))
             {
                 lines.add(getCodes(last) + line.trim());
-                last = lines.get(lines.size() - 1);
+                last = lines.getLast();
             }
         }
 

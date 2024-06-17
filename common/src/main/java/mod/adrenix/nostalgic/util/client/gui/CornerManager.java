@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 
@@ -91,10 +92,15 @@ public class CornerManager
 
             if (!effects.isEmpty() && !areEffectsHidden)
             {
+                boolean hasBeneficial = effects.stream()
+                    .map(MobEffectInstance::getEffect)
+                    .map(Holder::value)
+                    .anyMatch(mobEffect -> !mobEffect.isBeneficial());
+
                 if (effects.stream().anyMatch(MobEffectInstance::showIcon))
                     y += 24;
 
-                if (effects.stream().map(MobEffectInstance::getEffect).anyMatch(mobEffect -> !mobEffect.isBeneficial()))
+                if (hasBeneficial)
                     y += 26;
             }
         }

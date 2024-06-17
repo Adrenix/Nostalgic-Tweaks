@@ -48,7 +48,7 @@ public abstract class RenderUtil
 
         Some user interfaces may have many fills, lines, and texture rendering calls during each render pass. Drawing
         each of these elements one at a time is expensive and will result in a significant drop of FPS. To get around
-        this issue, batching can be utilized at different points throughout a render pass to reduce the number of draw
+        this issue, batching can be used at different points throughout a render pass to reduce the number of draw
         calls. For example, the opacity slider in the color picker overlay calls the fill method 160+ times to draw the
         opacity background. Without batching, the FPS hit is significant, but with batching enabled, there is no
         reduction in FPS since each fill is batched and drawn as a single piece of geometry.
@@ -713,10 +713,10 @@ public abstract class RenderUtil
                         if (!builder.building())
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                        float r = buffers.get(0).rgba[0];
-                        float g = buffers.get(0).rgba[1];
-                        float b = buffers.get(0).rgba[2];
-                        float a = buffers.get(0).rgba[3];
+                        float r = buffers.getFirst().rgba[0];
+                        float g = buffers.getFirst().rgba[1];
+                        float b = buffers.getFirst().rgba[2];
+                        float a = buffers.getFirst().rgba[3];
 
                         RenderSystem.setShaderColor(r, g, b, a);
 
@@ -730,10 +730,10 @@ public abstract class RenderUtil
                         if (!builder.building())
                             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                        float r = buffers.get(0).rgba[0];
-                        float g = buffers.get(0).rgba[1];
-                        float b = buffers.get(0).rgba[2];
-                        float a = buffers.get(0).rgba[3];
+                        float r = buffers.getFirst().rgba[0];
+                        float g = buffers.getFirst().rgba[1];
+                        float b = buffers.getFirst().rgba[2];
+                        float a = buffers.getFirst().rgba[3];
 
                         RenderSystem.setShaderColor(r, g, b, a);
 
@@ -762,10 +762,10 @@ public abstract class RenderUtil
                     if (!builder.building())
                         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                    float r = buffers.get(0).rgba[0];
-                    float g = buffers.get(0).rgba[1];
-                    float b = buffers.get(0).rgba[2];
-                    float a = buffers.get(0).rgba[3];
+                    float r = buffers.getFirst().rgba[0];
+                    float g = buffers.getFirst().rgba[1];
+                    float b = buffers.getFirst().rgba[2];
+                    float a = buffers.getFirst().rgba[3];
 
                     RenderSystem.setShaderColor(r, g, b, a);
 

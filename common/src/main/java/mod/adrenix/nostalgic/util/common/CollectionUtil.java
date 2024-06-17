@@ -24,7 +24,7 @@ public abstract class CollectionUtil
             return Optional.empty();
 
         if (collection instanceof List<T> list)
-            return Optional.of(list.get(list.size() - 1));
+            return Optional.of(list.getLast());
 
         return collection.stream().skip(collection.size() - 1).findFirst();
     }
@@ -56,7 +56,7 @@ public abstract class CollectionUtil
             return Optional.empty();
 
         if (collection instanceof List<T> list)
-            return Optional.of(list.get(0));
+            return Optional.of(list.getFirst());
 
         return collection.stream().findFirst();
     }

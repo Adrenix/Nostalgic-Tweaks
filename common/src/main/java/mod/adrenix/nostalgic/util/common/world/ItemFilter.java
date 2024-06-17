@@ -28,13 +28,13 @@ public abstract class ItemFilter
         else if (list.rules().contains(ItemRule.ONLY_BLOCKS))
             return !isBlockLike(item);
         else if (list.rules().contains(ItemRule.ONLY_EDIBLES))
-            return !item.isEdible();
+            return !ItemUtil.isEdible(item);
         else
         {
             boolean isToolFiltered = ItemFilter.isToolLike(item) && list.rules().contains(ItemRule.NO_TOOLS);
             boolean isItemFiltered = ItemFilter.isItemLike(item) && list.rules().contains(ItemRule.NO_ITEMS);
             boolean isBlockFiltered = ItemFilter.isBlockLike(item) && list.rules().contains(ItemRule.NO_BLOCKS);
-            boolean isEdibleFiltered = item.isEdible() && list.rules().contains(ItemRule.NO_EDIBLES);
+            boolean isEdibleFiltered = ItemUtil.isEdible(item) && list.rules().contains(ItemRule.NO_EDIBLES);
 
             return isToolFiltered || isItemFiltered || isBlockFiltered || isEdibleFiltered;
         }
@@ -63,7 +63,7 @@ public abstract class ItemFilter
         ItemStack itemStack = item.getDefaultInstance();
         ItemStack copyStack = ItemUtil.getItemStack(ItemUtil.getResourceKey(item));
 
-        return itemStack.getTag() != null && !itemStack.getTag().equals(copyStack.getTag());
+        return !itemStack.getComponents().equals(copyStack.getComponents());
     }
 
     /**

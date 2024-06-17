@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.common.asset;
 
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class GameAsset
@@ -11,6 +12,7 @@ public abstract class GameAsset
      * @return A new {@link ResourceLocation} location instance where the full-path appears as
      * {@code minecraft:textures/$path} where {@code $path} is the given {@code path} argument.
      */
+    @PublicAPI
     public static ResourceLocation texture(String path)
     {
         return new ResourceLocation("textures/" + path);
@@ -25,6 +27,7 @@ public abstract class GameAsset
      * @param path A path in the game's {@code sprites} directory.
      * @return A new {@link ResourceLocation} location instance.
      */
+    @PublicAPI
     public static ResourceLocation sprite(String path)
     {
         return new ResourceLocation(path);

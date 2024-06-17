@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.common.world;
 
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -165,5 +166,29 @@ public abstract class ItemUtil
     public static String getLocalizedItem(ItemStack itemStack)
     {
         return getLocalizedItem(getResourceKey(itemStack.getItem()));
+    }
+
+    /**
+     * Check if the given item stack is edible.
+     *
+     * @param itemStack The {@link ItemStack} to check.
+     * @return Whether the given item stack is edible.
+     */
+    @PublicAPI
+    public static boolean isEdible(ItemStack itemStack)
+    {
+        return itemStack.has(DataComponents.FOOD);
+    }
+
+    /**
+     * Check if the given item is edible.
+     *
+     * @param item The {@link Item} to check.
+     * @return Whether the given item is edible.
+     */
+    @PublicAPI
+    public static boolean isEdible(Item item)
+    {
+        return isEdible(item.getDefaultInstance());
     }
 }

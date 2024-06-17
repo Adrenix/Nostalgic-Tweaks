@@ -84,12 +84,4 @@ public abstract class ClassUtil
     {
         return isClassPresent("net.optifine.Config");
     }
-
-    /**
-     * @return Whether architectury is installed.
-     */
-    public static boolean isArchitecturyPresent()
-    {
-        return isClassPresent("dev.architectury.networking.NetworkChannel");
-    }
 }

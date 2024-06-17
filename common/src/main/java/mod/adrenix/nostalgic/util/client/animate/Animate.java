@@ -232,7 +232,7 @@ public interface Animate
     /* Ease-In-Out Functions */
 
     /**
-     * Starts slow, moves linear in the middle, and ends slow.
+     * Starts slow, moves linear in the middle, and ends slowly.
      *
      * @param duration The duration of the given time unit enumeration.
      * @param timeUnit A {@link TimeUnit} enumeration.
@@ -245,7 +245,7 @@ public interface Animate
     }
 
     /**
-     * Starts slow, moves linear in the middle, and ends slow.
+     * Starts slow, moves linear in the middle, and ends slowly.
      *
      * @return A new animator instance.
      */
@@ -256,7 +256,7 @@ public interface Animate
     }
 
     /**
-     * Begins slow, smoothly moves through the middle, and ends slow.
+     * Begins slow, smoothly moves through the middle, and ends slowly.
      *
      * @param duration The duration of the given time unit enumeration.
      * @param timeUnit A {@link TimeUnit} enumeration.
@@ -269,7 +269,7 @@ public interface Animate
     }
 
     /**
-     * Begins slow, smoothly moves through the middle, and ends slow.
+     * Begins slow, smoothly moves through the middle, and ends slowly.
      *
      * @return A new animator instance.
      */
@@ -330,7 +330,7 @@ public interface Animate
     }
 
     /**
-     * Starts slow, accelerates quickly in the middle, and ends slowly.
+     * Starts slow, speeds up quickly in the middle, and ends slowly.
      *
      * @param duration The duration of the given time unit enumeration.
      * @param timeUnit A {@link TimeUnit} enumeration.
@@ -343,7 +343,7 @@ public interface Animate
     }
 
     /**
-     * Starts slow, accelerates quickly in the middle, and ends slowly.
+     * Starts slow, speeds up quickly in the middle, and ends slowly.
      *
      * @return A new animator instance that lasts for one second.
      */

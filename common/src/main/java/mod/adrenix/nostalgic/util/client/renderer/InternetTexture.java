@@ -17,7 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.Proxy;
+import java.net.URI;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +26,7 @@ public class InternetTexture extends SimpleTexture
 {
     /* Fields */
 
-    private final String url;
+    private final String address;
     private final ResourceLocation resourceLocation;
     @Nullable private final Runnable onDownloaded;
     @Nullable private TextureLocation textureLocation = null;
@@ -36,15 +37,15 @@ public class InternetTexture extends SimpleTexture
     /**
      * Create a new internet texture with a download callback.
      *
-     * @param url              A valid URL to download the image from.
+     * @param address          A valid URL address to download the image from.
      * @param resourceLocation The resource location that identifies this image (does not need to be on filesystem).
      * @param onDownloaded     A {@link Runnable} to run when the image is downloaded.
      */
-    public InternetTexture(String url, ResourceLocation resourceLocation, @Nullable Runnable onDownloaded)
+    public InternetTexture(String address, ResourceLocation resourceLocation, @Nullable Runnable onDownloaded)
     {
         super(resourceLocation);
 
-        this.url = url;
+        this.address = address;
         this.resourceLocation = resourceLocation;
         this.onDownloaded = onDownloaded;
     }
@@ -52,12 +53,12 @@ public class InternetTexture extends SimpleTexture
     /**
      * Create a new internet texture.
      *
-     * @param url              A valid URL to download the image from.
+     * @param address          A valid URL address to download the image from.
      * @param resourceLocation The resource location that identifies this image (does not need to be on filesystem).
      */
-    public InternetTexture(String url, ResourceLocation resourceLocation)
+    public InternetTexture(String address, ResourceLocation resourceLocation)
     {
-        this(url, resourceLocation, null);
+        this(address, resourceLocation, null);
     }
 
     /* Methods */
@@ -138,13 +139,14 @@ public class InternetTexture extends SimpleTexture
             return;
 
         this.future = CompletableFuture.runAsync(() -> {
+            Proxy proxy = Minecraft.getInstance().getProxy();
             HttpURLConnection connection = null;
 
-            NostalgicTweaks.LOGGER.debug("Downloading internet texture from: %s", this.url);
+            NostalgicTweaks.LOGGER.debug("Downloading internet texture from: %s", this.address);
 
             try
             {
-                connection = (HttpURLConnection) new URL(this.url).openConnection(Minecraft.getInstance().getProxy());
+                connection = (HttpURLConnection) new URI(this.address).toURL().openConnection(proxy);
                 connection.connect();
 
                 if (connection.getResponseCode() / 100 != 2)

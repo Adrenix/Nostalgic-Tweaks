@@ -1,13 +1,9 @@
 package mod.adrenix.nostalgic.util.client.gui;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public abstract class LinkUtil
 {
@@ -39,22 +35,13 @@ public abstract class LinkUtil
      * parent screen.
      *
      * @param parent   The parent screen to return to.
-     * @param url      The URL to jump to and display.
+     * @param address  The URL address to jump to and display.
      * @param accepted Whether the URL should be opened.
      */
-    private static void jump(Screen parent, String url, boolean accepted)
+    private static void jump(Screen parent, String address, boolean accepted)
     {
         if (accepted)
-        {
-            try
-            {
-                Util.getPlatform().openUrl(new URL(url));
-            }
-            catch (MalformedURLException exception)
-            {
-                NostalgicTweaks.LOGGER.error("[URL Exception] Could not open URL (%s)\n%s", url, exception);
-            }
-        }
+            Util.getPlatform().openUri(address);
 
         Minecraft.getInstance().setScreen(parent);
     }

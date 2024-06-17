@@ -47,7 +47,7 @@ public abstract class TextUtil
     @PublicAPI
     public static String extract(String from, String regex)
     {
-        return extractAll(from, regex).get(0);
+        return extractAll(from, regex).getFirst();
     }
 
     /**

@@ -245,7 +245,7 @@ public abstract class GuiUtil
 
     /**
      * Check if the given {@link List} of {@link Component} instances is empty. The list will be considered empty if it
-     * has only one component and that component is empty using {@link #isComponentEmpty(Component)}.
+     * has only one {@link Component} and that component is empty using {@link #isComponentEmpty(Component)}.
      *
      * @param components A {@link List} of {@link Component} instances.
      * @return Whether the list of components is empty.
@@ -256,7 +256,7 @@ public abstract class GuiUtil
         if (components.size() > 1)
             return false;
 
-        return isComponentEmpty(components.get(0));
+        return isComponentEmpty(components.getFirst());
     }
 
     /**
@@ -274,8 +274,8 @@ public abstract class GuiUtil
 
     /**
      * Check if the given {@link List} of {@link Component} instances is present. The list will be considered present if
-     * it has more than one component. Or if there is only one component, then that component will be considered present
-     * if it passes {@link #isComponentPresent(Component)}.
+     * it has more than one {@link Component}. Or if there is only one {@link Component}, then that component will be
+     * considered present if it passes {@link #isComponentPresent(Component)}.
      *
      * @param components A {@link List} of {@link Component} instances.
      * @return Whether the list of components is considered non-empty.

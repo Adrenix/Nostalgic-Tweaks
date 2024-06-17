@@ -17,7 +17,7 @@ public abstract class FileDialog
     /**
      * Get the filepath location from the client's operating system to open or save a file to.
      *
-     * <br><p>
+     * <p>
      * <h3 color=red>Warning</h3>
      * Do not allow for user input to be included in <i>any</i> of the {@link TinyFileDialogs} boxes. This is for
      * security reasons since there are known exploits when allowing for custom input. All strings must be hard-coded

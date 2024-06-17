@@ -15,7 +15,6 @@ public class TextureLocation extends ResourceLocation
     public static final ResourceLocation MOJANG_RELEASE_ORANGE = ModAsset.texture("gui/mojang_release_orange.png");
     public static final ResourceLocation MOJANG_RELEASE_BLACK = ModAsset.texture("gui/mojang_release_black.png");
     public static final ResourceLocation PANORAMA_OVERLAY = ModAsset.texture("panorama/overlay.png");
-    public static final ResourceLocation MINECRAFT_LOGO = GameAsset.texture("gui/title/minecraft.png");
 
     public static final TextureLocation NT_LOGO_64 = new TextureLocation(ModAsset.icon("nt_logo_64.png"), 64);
     public static final TextureLocation NT_SUPPORTER_64 = new TextureLocation(ModAsset.icon("nt_supporter_64.png"), 64);

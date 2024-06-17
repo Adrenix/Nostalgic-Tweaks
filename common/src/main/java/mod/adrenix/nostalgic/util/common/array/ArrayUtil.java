@@ -98,12 +98,12 @@ public abstract class ArrayUtil
     @PublicAPI
     public static <T> void popPush(ArrayList<T> list, T push, int maxSize)
     {
-        list.add(0, push);
+        list.addFirst(push);
 
         if (list.size() > maxSize)
         {
             while (list.size() > maxSize)
-                list.remove(list.size() - 1);
+                list.removeLast();
         }
     }
 }
