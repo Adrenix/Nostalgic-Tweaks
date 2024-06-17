@@ -23,7 +23,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a tooltip supplier along with a delay until the tooltip appears. To set a delay, provide a number along with
      * a time unit enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param supplier The {@link Supplier} that provides a {@link Component} to display.
@@ -43,7 +43,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a tooltip along with a delay until the tooltip appears. To set a delay, provide a number along with a time
      * unit enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param tooltip  The tooltip to display.
@@ -60,7 +60,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a tooltip along with a delay until the tooltip appears. To set a delay, provide a number along with a time
      * unit enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param langKey  The {@link Translation} instance.
@@ -113,9 +113,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a multiline supplier tooltip along with a delay until the tooltip appears. To set a delay, provide a number
      * along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param supplier The {@link Supplier} that provides a {@link Component} to display.
@@ -136,9 +136,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a multiline tooltip along with a delay until the tooltip appears. To set a delay, provide a number along with
      * a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param tooltip  The multiline tooltip to display.
@@ -156,9 +156,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a multiline tooltip along with a delay until the tooltip appears. To set a delay, provide a number along with
      * a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param langKey  The {@link Translation} instance.
@@ -215,9 +215,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a multiline supplier tooltip along with a delay until the tooltip appears. To set a delay, provide a number
      * along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param supplier The {@link Supplier} that provides a {@link List} of {@link Component}s to display.
@@ -237,9 +237,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * Set a multiline tooltip along with a delay until the tooltip appears. To set a delay, provide a number along with
      * a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.tooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param tooltipLines A {@link List} of {@link Component}s to show in a multiline tooltip.
@@ -280,7 +280,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a tooltip supplier along with a delay until the tooltip appears. To set a
      * delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param supplier The {@link Supplier} that provides a {@link Component} to display when disabled.
@@ -300,7 +300,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a tooltip along with a delay until the tooltip appears. To set a delay, provide
      * a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param tooltip  The tooltip to display.
@@ -317,7 +317,7 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a tooltip along with a delay until the tooltip appears. To set a delay, provide
      * a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 1L, TimeUnit.SECONDS)</code>
      *
      * @param langKey  The {@link Translation} instance.
@@ -371,9 +371,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * set a delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1
      * second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param supplier The {@link Supplier} that provides a {@link Component} to display when disabled.
@@ -394,9 +394,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a multiline tooltip along with a delay until the tooltip appears. To set a
      * delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param tooltip  The multiline tooltip to display when this widget is disabled.
@@ -414,9 +414,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a multiline tooltip along with a delay until the tooltip appears. To set a
      * delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param langKey  The {@link Translation} instance.
@@ -474,9 +474,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * set a delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1
      * second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param supplier The {@link Supplier} that provides a {@link List} of {@link Component}s to display when
@@ -497,9 +497,9 @@ public interface TooltipBuilder<Builder extends DynamicBuilder<Builder, Widget>,
      * When this widget is disabled, set a multiline tooltip along with a delay until the tooltip appears. To set a
      * delay, provide a number along with a {@link TimeUnit} enumeration. For example, to set a delay of 1 second:
      *
-     * <p><br>
+     * <p>
      * <code>Builder.disabledTooltip(tooltip, 50, 1L, TimeUnit.SECONDS)</code>
-     * <p><br>
+     * <p>
      * Where 50 is the maximum width of the tooltip and 1L represents one second.
      *
      * @param tooltipLines A {@link List} of {@link Component}s to show in a multiline tooltip.

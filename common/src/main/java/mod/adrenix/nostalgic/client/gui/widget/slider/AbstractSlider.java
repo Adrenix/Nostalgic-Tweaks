@@ -152,18 +152,15 @@ public abstract class AbstractSlider<Builder extends AbstractSliderMaker<Builder
                 .doubleValue();
         }
 
-        if (numberValue instanceof Byte)
-            this.builder.valueConsumer.accept((byte) Math.round(sliderValue));
-        else if (numberValue instanceof Short)
-            this.builder.valueConsumer.accept((short) Math.round(sliderValue));
-        else if (numberValue instanceof Integer)
-            this.builder.valueConsumer.accept((int) Math.round(sliderValue));
-        else if (numberValue instanceof Long)
-            this.builder.valueConsumer.accept(Math.round(sliderValue));
-        else if (numberValue instanceof Float)
-            this.builder.valueConsumer.accept((float) sliderValue);
-        else
-            this.builder.valueConsumer.accept(sliderValue);
+        switch (numberValue)
+        {
+            case Byte ignored -> this.builder.valueConsumer.accept((byte) Math.round(sliderValue));
+            case Short ignored -> this.builder.valueConsumer.accept((short) Math.round(sliderValue));
+            case Integer ignored -> this.builder.valueConsumer.accept((int) Math.round(sliderValue));
+            case Long ignored -> this.builder.valueConsumer.accept(Math.round(sliderValue));
+            case Float ignored -> this.builder.valueConsumer.accept((float) sliderValue);
+            case null, default -> this.builder.valueConsumer.accept(sliderValue);
+        }
     }
 
     /**

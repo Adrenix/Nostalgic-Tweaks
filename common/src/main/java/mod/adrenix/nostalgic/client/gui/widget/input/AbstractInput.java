@@ -18,7 +18,6 @@ import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
-import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -28,6 +27,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
@@ -394,7 +394,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         int max = Math.max(this.cursorPos, this.highlightPos);
         int start = this.getMaxLength() - this.input.length() - (min - max);
 
-        String filtered = SharedConstants.filterText(text);
+        String filtered = StringUtil.filterText(text);
         String insert = new StringBuilder(this.input).replace(min, max, filtered).toString();
 
         int end = filtered.length();
@@ -871,7 +871,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         if (this.isUnfocused())
             return false;
 
-        if (SharedConstants.isAllowedChatCharacter(codePoint))
+        if (StringUtil.isAllowedChatCharacter(codePoint))
         {
             if (this.editable)
                 this.insertText(Character.toString(codePoint));

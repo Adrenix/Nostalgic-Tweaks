@@ -117,7 +117,12 @@ public class ModToast implements Toast
         this.width = 24 + this.lines.stream().mapToInt(GuiUtil.font()::width).max().orElse(182);
 
         if (this.lines.size() == 1)
-            this.width = Math.max(42 + GuiUtil.font().width(this.title), 24 + GuiUtil.font().width(this.lines.get(0)));
+        {
+            int titleWidth = 42 + GuiUtil.font().width(this.title);
+            int messageWidth = 24 + GuiUtil.font().width(this.lines.getFirst());
+
+            this.width = Math.max(titleWidth, messageWidth);
+        }
     }
 
     /**

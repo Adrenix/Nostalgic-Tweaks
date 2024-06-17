@@ -48,6 +48,6 @@ public abstract class InputSuggester<Input extends AbstractInput<?, Input>>
         if (values.isEmpty())
             this.suggestion = "";
         else
-            this.suggestion = values.get(0);
+            this.suggestion = values.getFirst();
     }
 }

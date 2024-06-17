@@ -15,6 +15,7 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
+import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
@@ -26,7 +27,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -428,7 +428,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         if (this.visibleRows.isEmpty())
             return Optional.empty();
 
-        return Optional.of(this.visibleRows.get(this.visibleRows.size() - 1));
+        return Optional.ofNullable(this.visibleRows.getLast());
     }
 
     /**
@@ -467,11 +467,11 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
     @PublicAPI
     public void addTopRow(AbstractRow<?, ?> row)
     {
-        this.rows.add(0, row);
+        this.rows.addFirst(row);
 
         if (row.isVisible())
         {
-            this.visibleRows.add(0, row);
+            this.visibleRows.addFirst(row);
             this.children.addAll(row.widgets);
         }
     }
@@ -991,7 +991,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
         {
             if (Minecraft.getInstance().level == null && this.getBuilder().renderBackgroundDirt)
             {
-                BufferBuilder builder = RenderUtil.getAndBeginTexture(Screen.BACKGROUND_LOCATION);
+                BufferBuilder builder = RenderUtil.getAndBeginTexture(TextureLocation.DIRT_BACKGROUND);
 
                 if (!this.getBuilder().renderBackgroundOpacity)
                     RenderSystem.setShaderColor(0.125F, 0.125F, 0.125F, 1.0F);
@@ -1029,7 +1029,7 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
 
         if (this.getBuilder().renderTopAndBottomDirt)
         {
-            BufferBuilder builder = RenderUtil.getAndBeginTexture(Screen.BACKGROUND_LOCATION);
+            BufferBuilder builder = RenderUtil.getAndBeginTexture(TextureLocation.DIRT_BACKGROUND);
 
             float shadow = 127 / 255.0F;
             int screenWidth = GuiUtil.getScreenWidth();

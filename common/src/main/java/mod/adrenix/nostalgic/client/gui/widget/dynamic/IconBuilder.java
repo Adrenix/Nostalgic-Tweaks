@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * that different icons can appear in; visible, hovered, and disabled. It is up to the widget using this interface on
  * how and when these icons are displayed.
  *
- * <p><br>
+ * <p>
  * <b color=red>Note:</b> Widget builders should use the {@link IconManager} utility class to manage a widget's icons.
  * The manager will create and cache icon widgets based on a widget builder's icon properties and render the right icon
  * based on a widget's current state.

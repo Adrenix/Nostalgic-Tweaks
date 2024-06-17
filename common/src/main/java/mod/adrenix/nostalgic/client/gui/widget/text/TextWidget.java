@@ -512,7 +512,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
 
             if (!this.text.getLines().isEmpty())
             {
-                int firstLineX = (int) this.getCenteredLine(this.text.getLines().get(0), 0);
+                int firstLineX = (int) this.getCenteredLine(this.text.getLines().getFirst(), 0);
 
                 this.iconManager.pos(firstLineX - Math.round(this.getIconWidth() / this.getSquareScale()), 0);
                 this.iconManager.render(graphics, mouseX, mouseY, partialTick);

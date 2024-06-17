@@ -173,7 +173,7 @@ public abstract class AbstractRow<Builder extends AbstractRowMaker<Builder, Row>
             this.addWidget(widget);
 
         this.widgets.remove(widget);
-        this.widgets.add(0, widget);
+        this.widgets.addFirst(widget);
     }
 
     /**

@@ -153,7 +153,7 @@ public abstract class Tooltip
         {
             if (Screen.hasShiftDown())
             {
-                tooltip.remove(tooltip.size() - 1);
+                tooltip.removeLast();
                 tooltip.addAll(Tooltip.info);
             }
             else

@@ -345,7 +345,7 @@ public class IconWidget extends DynamicWidget<IconFactory, IconWidget>
 
             graphics.pose().pushPose();
             graphics.pose().setIdentity();
-            graphics.pose().mulPoseMatrix(position);
+            graphics.pose().mulPose(position);
             graphics.pose().translate(0.0D, 0.0D, 1.0D);
 
             RenderUtil.beginBatching();
