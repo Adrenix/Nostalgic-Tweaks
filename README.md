@@ -16,8 +16,9 @@ N/a
 ### Related Development Branches
 
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
+- [1.20.6 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6)
 
-## Nostalgic Tweaks API For Developers (Fabric)
+## Nostalgic Tweaks API For Developers
 
 Mod API is not available for 1.20.4 (beta 9). If you have suggestions for what the mod API should look like, then please
 share your ideas!
