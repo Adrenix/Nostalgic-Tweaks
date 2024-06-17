@@ -112,7 +112,7 @@ public abstract class GuiListener
                 return CompoundEventResult.interruptTrue(progressScreen);
             }
 
-            if (screen instanceof GenericDirtMessageScreen)
+            if (screen instanceof GenericMessageScreen)
             {
                 NostalgicProgressScreen progressScreen = getProgressScreen(screen.getTitle().getString());
 

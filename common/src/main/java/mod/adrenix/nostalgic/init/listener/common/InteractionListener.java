@@ -144,19 +144,19 @@ public abstract class InteractionListener
         if (GameplayTweak.LEFT_CLICK_DOOR.get() && PlayerUtil.isSurvival(player))
         {
             if (block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FenceGateBlock)
-                blockState.use(level, player, hand, blockHitResult);
+                blockState.useWithoutItem(level, player, blockHitResult);
         }
 
         if (GameplayTweak.LEFT_CLICK_LEVER.get() && PlayerUtil.isSurvival(player))
         {
             if (block instanceof LeverBlock)
-                blockState.use(level, player, hand, blockHitResult);
+                blockState.useWithoutItem(level, player, blockHitResult);
         }
 
         if (GameplayTweak.LEFT_CLICK_BUTTON.get() && PlayerUtil.isSurvival(player))
         {
             if (block instanceof ButtonBlock)
-                blockState.use(level, player, hand, blockHitResult);
+                blockState.useWithoutItem(level, player, blockHitResult);
         }
 
         return EventResult.pass();
