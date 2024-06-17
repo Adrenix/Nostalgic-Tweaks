@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.MatrixUtil;
-import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
 
 import java.util.List;
 
@@ -92,11 +92,15 @@ class NostalgicLogoRenderer
         RenderSystem.setProjectionMatrix(new Matrix4f().perspective(70.341F, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F), VertexSorting.DISTANCE_TO_ORIGIN);
         RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
 
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
+        PoseStack poseStack = new PoseStack();
+        Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
         float zOffset = MatrixUtil.getZ(modelViewStack);
 
+        modelViewStack.pushMatrix();
         modelViewStack.translate(-0.05F, 0.78F, (-1.0F * zOffset) - 10.0F);
         modelViewStack.scale(1.32F, 1.32F, 1.32F);
+
+        poseStack.mulPose(modelViewStack);
 
         RenderSystem.applyModelViewMatrix();
         RenderSystem.enableDepthTest();
@@ -108,7 +112,7 @@ class NostalgicLogoRenderer
             BufferBuilder builder = Tesselator.getInstance().getBuilder();
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 
-            modelViewStack.pushPose();
+            poseStack.pushPose();
 
             if (pass == 0)
             {
@@ -116,8 +120,8 @@ class NostalgicLogoRenderer
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
 
-                modelViewStack.translate(0.0F, -0.4F, 0.0F);
-                modelViewStack.scale(0.98F, 1.0F, 1.0F);
+                poseStack.translate(0.0F, -0.4F, 0.0F);
+                poseStack.scale(0.98F, 1.0F, 1.0F);
             }
 
             if (pass == 1)
@@ -132,10 +136,10 @@ class NostalgicLogoRenderer
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
             }
 
-            modelViewStack.scale(1.0F, -1.0F, 1.0F);
-            modelViewStack.mulPose(Axis.XP.rotationDegrees(15.0F));
-            modelViewStack.scale(0.89F, 1.0F, 0.4F);
-            modelViewStack.translate((float) (-this.width) * 0.5F, (float) (-this.height) * 0.5F, 0.0F);
+            poseStack.scale(1.0F, -1.0F, 1.0F);
+            poseStack.mulPose(Axis.XP.rotationDegrees(15.0F));
+            poseStack.scale(0.89F, 1.0F, 0.4F);
+            poseStack.translate((float) (-this.width) * 0.5F, (float) (-this.height) * 0.5F, 0.0F);
 
             if (pass == 0)
             {
@@ -155,7 +159,7 @@ class NostalgicLogoRenderer
                     if (this.logo.get(y).charAt(x) == ' ')
                         continue;
 
-                    modelViewStack.pushPose();
+                    poseStack.pushPose();
 
                     float z = this.logoEffects[x][y].position;
                     float scale = 1.0F;
@@ -168,25 +172,27 @@ class NostalgicLogoRenderer
                         z = 0.0F;
                     }
 
-                    modelViewStack.translate(x, y, z);
-                    modelViewStack.scale(scale, scale, scale);
+                    poseStack.translate(x, y, z);
+                    poseStack.scale(scale, scale, scale);
 
-                    this.renderBlock(modelViewStack, builder, blockModel, pass, alpha);
+                    this.renderBlock(poseStack, builder, blockModel, alpha);
 
-                    modelViewStack.popPose();
+                    poseStack.popPose();
                 }
             }
 
             Tesselator.getInstance().end();
-            modelViewStack.popPose();
+            poseStack.popPose();
         }
 
         RenderSystem.disableBlend();
         RenderSystem.restoreProjectionMatrix();
         RenderSystem.viewport(0, 0, window.getWidth(), window.getHeight());
 
-        modelViewStack.setIdentity();
-        modelViewStack.translate(0.0F, 0.0F, zOffset);
+        poseStack.setIdentity();
+        poseStack.translate(0.0F, 0.0F, zOffset);
+
+        modelViewStack.popMatrix();
 
         RenderSystem.applyModelViewMatrix();
         RenderSystem.enableCull();
@@ -195,13 +201,12 @@ class NostalgicLogoRenderer
     /**
      * Renders a block for the title logo.
      *
-     * @param modelViewStack The model view {@link PoseStack} instance.
+     * @param poseStack      The {@link PoseStack} instance.
      * @param vertexConsumer The {@link VertexConsumer} to write vertices to.
      * @param blockModel     The {@link BakedModel} to get quad data from.
-     * @param pass           The render pass index.
      * @param alpha          The alpha transparency for the quad.
      */
-    private void renderBlock(PoseStack modelViewStack, VertexConsumer vertexConsumer, BakedModel blockModel, int pass, float alpha)
+    private void renderBlock(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel blockModel, float alpha)
     {
         for (Direction direction : Direction.values())
         {
@@ -215,12 +220,7 @@ class NostalgicLogoRenderer
             };
 
             for (BakedQuad quad : blockModel.getQuads(null, direction, RandomSource.create()))
-            {
-                if (pass == 0)
-                    RenderUtil.putTransparentBulkData(modelViewStack.last(), vertexConsumer, quad, brightness, alpha);
-                else
-                    vertexConsumer.putBulkData(modelViewStack.last(), quad, brightness, brightness, brightness, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-            }
+                vertexConsumer.putBulkData(poseStack.last(), quad, brightness, brightness, brightness, alpha, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         }
     }
 
