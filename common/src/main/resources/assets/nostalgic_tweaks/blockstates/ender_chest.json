@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "nostalgic_tweaks:block/ender_chest"
+    },
+
+    "facing=south": {
+      "model": "nostalgic_tweaks:block/ender_chest",
+      "y": 180
+    },
+
+    "facing=east": {
+      "model": "nostalgic_tweaks:block/ender_chest",
+      "y": 90
+    },
+
+    "facing=west": {
+      "model": "nostalgic_tweaks:block/ender_chest",
+      "y": 270
+    }
+  }
+}
