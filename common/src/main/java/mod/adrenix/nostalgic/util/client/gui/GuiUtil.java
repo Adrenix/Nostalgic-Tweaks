@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -119,6 +120,22 @@ public abstract class GuiUtil
     public static boolean isCurrentScreen(Screen screen)
     {
         return getScreen().isPresent() && screen == getScreen().get();
+    }
+
+    /**
+     * Render the old dirt block background for screens.
+     *
+     * @param graphics The {@link GuiGraphics} instance.
+     */
+    @PublicAPI
+    public static void renderDirtBackground(GuiGraphics graphics)
+    {
+        int width = getScreenWidth();
+        int height = getScreenHeight();
+
+        graphics.setColor(0.25F, 0.25F, 0.25F, 1.0F);
+        graphics.blit(TextureLocation.DIRT_BACKGROUND, 0, 0, 0, 0.0F, 0.0F, width, height, 32, 32);
+        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /* --- Window */
