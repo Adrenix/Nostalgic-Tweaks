@@ -23,7 +23,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,6 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
 
     private NostalgicLogoRenderer blockLogo;
     private final LogoRenderer imageLogo;
-    private final PanoramaRenderer panorama;
     private final UniqueArrayList<DynamicWidget<?, ?>> widgets;
     private final TitleWidgets titleWidgets;
     private final TitleScreenAccess titleAccess;
@@ -55,7 +53,6 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
     {
         this.widgets = new UniqueArrayList<>();
         this.titleWidgets = new TitleWidgets(this);
-        this.panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
         this.blockLogo = new NostalgicLogoRenderer();
         this.imageLogo = new LogoRenderer(false);
         this.titleAccess = (TitleScreenAccess) this;
@@ -169,10 +166,10 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
         }
 
         if (CandyTweak.OLD_TITLE_BACKGROUND.get())
-            this.renderDirtBackground(graphics);
+            GuiUtil.renderDirtBackground(graphics);
         else
         {
-            this.panorama.render(partialTick, 1.0F);
+            this.renderPanorama(graphics, partialTick);
 
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.enableBlend();
@@ -200,7 +197,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
         {
             case ALPHA -> Lang.Title.COPYRIGHT_ALPHA.get();
             case BETA -> Lang.Title.COPYRIGHT_BETA.get();
-            default -> COPYRIGHT_TEXT;
+            default -> Component.translatable("title.credits");
         };
 
         String minecraft = CandyTweak.TITLE_VERSION_TEXT.parse(GameUtil.getVersion());
