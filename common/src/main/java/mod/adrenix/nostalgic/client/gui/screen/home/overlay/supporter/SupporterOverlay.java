@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -207,7 +208,7 @@ public class SupporterOverlay
             Thread.sleep(1000L);
             NostalgicTweaks.LOGGER.info("Connecting to %s", LinkLocation.SUPPORTERS);
 
-            URL url = new URL(LinkLocation.SUPPORTERS);
+            URL url = new URI(LinkLocation.SUPPORTERS).toURL();
             InputStreamReader reader = new InputStreamReader(url.openStream());
             SupporterOverlay.cache = new Gson().fromJson(reader, GithubJson.class);
 
