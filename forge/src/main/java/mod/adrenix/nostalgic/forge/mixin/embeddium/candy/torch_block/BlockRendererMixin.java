@@ -14,6 +14,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.terrain.material.Material;
 import me.jellysquid.mods.sodium.client.render.chunk.vertex.format.ChunkVertexEncoder;
 import mod.adrenix.nostalgic.mixin.util.candy.TorchMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -40,7 +41,10 @@ public abstract class BlockRendererMixin
     private List<BakedQuad> nt_embeddium_torch_block$hideBottom(List<BakedQuad> quads, BlockRenderContext context)
     {
         if (CandyTweak.OLD_TORCH_BOTTOM.get() && TorchMixinHelper.isSheared(context.state()))
-            quads.removeIf(quad -> quad.getDirection() == Direction.DOWN);
+        {
+            if (CollectionUtil.isModifiable(quads))
+                quads.removeIf(quad -> quad.getDirection() == Direction.DOWN);
+        }
 
         return quads;
     }
