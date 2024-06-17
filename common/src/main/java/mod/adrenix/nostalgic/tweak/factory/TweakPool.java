@@ -17,7 +17,7 @@ public abstract class TweakPool
 
     /**
      * This map contains a list of all tweaks that were made from the {@link Tweak#register(String)} method. The purpose
-     * of this map is to obtain tweaks using a config json path identifier. This should only be used in situations where
+     * of this map is to get tweaks using a config json path identifier. This should only be used in situations where
      * tweaks aren't available. For example, the packet system must use this pool to determine what tweak to change by
      * using a config json path. Both the client and server have access to this map, but the server will only have
      * access to server side tweaks since it only registers server side tweaks.
