@@ -5,13 +5,13 @@ import mod.adrenix.nostalgic.network.LoginReply;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.network.event.OnGameConfigurationEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-@Mod.EventBusSubscriber(
+@EventBusSubscriber(
     modid = NostalgicTweaks.MOD_ID,
-    bus = Mod.EventBusSubscriber.Bus.MOD
+    bus = EventBusSubscriber.Bus.MOD
 )
 public abstract class NetworkSetup
 {
@@ -19,29 +19,29 @@ public abstract class NetworkSetup
      * Registers the protocol response payload for networking. This is set as optional so the server can control when to
      * allow players with or without the mod.
      *
-     * @param event The {@link RegisterPayloadHandlerEvent} instance.
+     * @param event The {@link RegisterPayloadHandlersEvent} instance.
      */
     @SubscribeEvent
-    private static void registerPayload(final RegisterPayloadHandlerEvent event)
+    private static void registerPayload(final RegisterPayloadHandlersEvent event)
     {
         event.registrar(NostalgicTweaks.MOD_ID)
             .optional()
-            .configuration(ProtocolRequest.IDENTIFIER, ProtocolRequest::new, handler -> handler.client(ClientPayloadHandler.getInstance()::handleRequest))
-            .configuration(ProtocolResponse.IDENTIFIER, ProtocolResponse::new, handler -> handler.server(ServerPayloadHandler.getInstance()::handleProtocol));
+            .configurationToClient(ProtocolRequest.TYPE, ProtocolRequest.CODEC, ClientPayloadHandler.getInstance())
+            .configurationToServer(ProtocolResponse.TYPE, ProtocolResponse.CODEC, ServerPayloadHandler.getInstance());
     }
 
     /**
      * Registers the mod network protocol configuration task.
      *
-     * @param event The {@link OnGameConfigurationEvent} instance.
+     * @param event The {@link RegisterConfigurationTasksEvent} instance.
      */
     @SubscribeEvent
-    private static void registerTask(final OnGameConfigurationEvent event)
+    private static void registerTask(final RegisterConfigurationTasksEvent event)
     {
         if (NostalgicTweaks.isServer() || NetUtil.isLocalHost())
         {
-            boolean canRequest = event.getListener().isConnected(ProtocolRequest.IDENTIFIER);
-            boolean canRespond = event.getListener().isConnected(ProtocolResponse.IDENTIFIER);
+            boolean canRequest = event.getListener().hasChannel(ProtocolRequest.IDENTIFIER);
+            boolean canRespond = event.getListener().hasChannel(ProtocolResponse.IDENTIFIER);
 
             if (canRequest && canRespond)
                 event.register(new ProtocolConfigurationTask(event.getListener()));

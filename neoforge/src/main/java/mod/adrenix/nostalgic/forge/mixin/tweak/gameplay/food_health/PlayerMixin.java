@@ -5,7 +5,6 @@ import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,10 +19,10 @@ public abstract class PlayerMixin
         method = "eat",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/food/FoodData;eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V"
+            target = "Lnet/minecraft/world/food/FoodData;eat(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V"
         )
     )
-    private boolean nt_neoforge_food_health$shouldPlayerEat(FoodData foodData, Item item, ItemStack itemStack, LivingEntity livingEntity)
+    private boolean nt_neoforge_food_health$shouldPlayerEat(FoodData foodData, ItemStack itemStack, LivingEntity livingEntity)
     {
         return !GameplayTweak.DISABLE_HUNGER.get();
     }

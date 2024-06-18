@@ -244,6 +244,8 @@ public abstract class HudMixinHelper
         int top = GuiUtil.getGuiHeight() - offsetHeight;
         int left = 0;
 
+        RenderSystem.enableBlend();
+
         for (int i = 1; armor > 0 && i < 20; i += 2)
         {
             left -= 8;
@@ -255,6 +257,8 @@ public abstract class HudMixinHelper
             else
                 graphics.blitSprite(GuiAccess.NT$ARMOR_EMPTY_SPRITE(), left, top, 9, 9);
         }
+
+        RenderSystem.disableBlend();
     }
 
     /**
@@ -272,7 +276,11 @@ public abstract class HudMixinHelper
         int full = Mth.ceil((double) (air - 2) * 10.0D / 300.0D);
         int partial = Mth.ceil((double) air * 10.0D / 300.0D) - full;
 
+        RenderSystem.enableBlend();
+
         for (int i = 0; i < full + partial; ++i)
             graphics.blitSprite(i < full ? GuiAccess.NT$AIR_SPRITE() : GuiAccess.NT$AIR_BURSTING_SPRITE(), left + i * 8 + 9, top, 9, 9);
+
+        RenderSystem.disableBlend();
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -55,15 +54,15 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
      */
     @ModifyExpressionValue(
         remap = false,
-        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/client/model/Model;ZFFFLnet/minecraft/resources/ResourceLocation;)V",
+        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
-    private VertexConsumer nt_neoforge_armor_damage$setRenderTypeConsumer(VertexConsumer original, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ArmorItem armorItem, Model model, boolean withGlint, float red, float green, float blue, ResourceLocation armorLocation)
+    private VertexConsumer nt_neoforge_armor_damage$setRenderTypeConsumer(VertexConsumer consumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Model model, float red, float green, float blue, ResourceLocation armorLocation)
     {
-        return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, original, bufferSource, armorLocation);
+        return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, consumer, bufferSource, armorLocation);
     }
 
     /**
@@ -72,7 +71,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
     @ModifyArg(
         remap = false,
         index = 3,
-        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/client/model/Model;ZFFFLnet/minecraft/resources/ResourceLocation;)V",
+        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/Model;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"

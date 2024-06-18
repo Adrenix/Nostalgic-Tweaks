@@ -2,9 +2,10 @@ package mod.adrenix.nostalgic.forge.setup.network;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.LoginReply;
-import net.neoforged.neoforge.network.handling.ConfigurationPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public class ServerPayloadHandler
+public class ServerPayloadHandler implements IPayloadHandler<ProtocolResponse>
 {
     /**
      * Payload handlers need to be singletons.
@@ -25,16 +26,17 @@ public class ServerPayloadHandler
      * Handle receiving the mod network protocol on the server.
      *
      * @param response The {@link ProtocolResponse} instance.
-     * @param context  The {@link ConfigurationPayloadContext} instance.
+     * @param context  The {@link IPayloadContext} instance.
      */
-    public void handleProtocol(final ProtocolResponse response, final ConfigurationPayloadContext context)
+    @Override
+    public void handle(ProtocolResponse response, IPayloadContext context)
     {
         final String CLIENT_PROTOCOL = response.version();
         final String SERVER_PROTOCOL = NostalgicTweaks.PROTOCOL;
 
         if (!CLIENT_PROTOCOL.equals(SERVER_PROTOCOL))
-            context.packetHandler().disconnect(LoginReply.getProtocolMismatchReason(CLIENT_PROTOCOL, SERVER_PROTOCOL));
+            context.disconnect(LoginReply.getProtocolMismatchReason(CLIENT_PROTOCOL, SERVER_PROTOCOL));
 
-        context.taskCompletedHandler().onTaskCompleted(ProtocolConfigurationTask.TYPE);
+        context.finishCurrentTask(ProtocolConfigurationTask.TYPE);
     }
 }

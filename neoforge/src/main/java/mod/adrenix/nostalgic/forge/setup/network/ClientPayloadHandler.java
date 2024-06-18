@@ -1,9 +1,10 @@
 package mod.adrenix.nostalgic.forge.setup.network;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import net.neoforged.neoforge.network.handling.ConfigurationPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public class ClientPayloadHandler
+public class ClientPayloadHandler implements IPayloadHandler<ProtocolRequest>
 {
     /**
      * Payload handlers need to be singletons.
@@ -24,10 +25,11 @@ public class ClientPayloadHandler
      * Handle receiving a network protocol request from the server.
      *
      * @param request The {@link ProtocolRequest} instance.
-     * @param context The {@link ConfigurationPayloadContext} instance.
+     * @param context The {@link IPayloadContext} instance.
      */
-    public void handleRequest(final ProtocolRequest request, final ConfigurationPayloadContext context)
+    @Override
+    public void handle(ProtocolRequest request, IPayloadContext context)
     {
-        context.replyHandler().send(new ProtocolResponse(NostalgicTweaks.PROTOCOL));
+        context.reply(new ProtocolResponse(NostalgicTweaks.PROTOCOL));
     }
 }

@@ -8,15 +8,15 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.ConfigScreenHandler;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.ModListScreen;
 import net.neoforged.neoforge.common.NeoForge;
 
-@Mod.EventBusSubscriber(
+@EventBusSubscriber(
     modid = NostalgicTweaks.MOD_ID,
-    bus = Mod.EventBusSubscriber.Bus.MOD,
+    bus = EventBusSubscriber.Bus.MOD,
     value = Dist.CLIENT
 )
 public abstract class ClientSetup
@@ -30,8 +30,7 @@ public abstract class ClientSetup
     public static void init(FMLClientSetupEvent event)
     {
         // Register config screen
-        ModLoadingContext.get()
-            .registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, ClientSetup::getScreenFactory);
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ClientSetup::getScreenFactory);
 
         // Define mod screen
         GuiUtil.modListScreen = ModListScreen::new;
@@ -45,10 +44,10 @@ public abstract class ClientSetup
     }
 
     /**
-     * @return A {@link HomeScreen} instance that represents the mod's {@link ConfigScreenHandler.ConfigScreenFactory}.
+     * @return A {@link HomeScreen} instance that represents the mod's {@link IConfigScreenFactory}.
      */
-    private static ConfigScreenHandler.ConfigScreenFactory getScreenFactory()
+    private static IConfigScreenFactory getScreenFactory()
     {
-        return new ConfigScreenHandler.ConfigScreenFactory(((minecraft, screen) -> new HomeScreen(screen, false)));
+        return ((minecraft, screen) -> new HomeScreen(screen, false));
     }
 }
