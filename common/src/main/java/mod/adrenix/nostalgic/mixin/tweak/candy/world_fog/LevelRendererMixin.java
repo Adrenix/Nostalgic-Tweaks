@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_fog;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;
 import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.mixin.util.candy.world.fog.WaterFogRenderer;
@@ -47,7 +46,7 @@ public abstract class LevelRendererMixin
             target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderColor(FFFF)V"
         )
     )
-    private void nt_world_fog$onSetSunriseColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    private void nt_world_fog$onSetSunriseColor(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         if (ModTweak.ENABLED.get())
             VoidFogRenderer.setCelestialTransparency();

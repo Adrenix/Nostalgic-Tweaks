@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_spawn;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.access.MobAccess;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
@@ -42,7 +41,7 @@ public abstract class AnimalMixin extends Mob
         FlagHolder saddled = FlagHolder.off();
         FlagHolder tamed = FlagHolder.off();
 
-        if (((MobAccess) this).nt$getCompoundTag() != null || this.isLeashed())
+        if (this.mayBeLeashed())
             leashed.enable();
 
         if (this instanceof Saddleable saddleable && saddleable.isSaddled())

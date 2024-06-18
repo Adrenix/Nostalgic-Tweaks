@@ -23,7 +23,6 @@
     "EntityAccess",
     "FireBlockAccess",
     "LivingEntityAccess",
-    "MobAccess",
     "PlayerAccess",
     "SheepAccess"
   ]

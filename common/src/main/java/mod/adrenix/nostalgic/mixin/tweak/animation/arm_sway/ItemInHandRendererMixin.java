@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.arm_sway;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;

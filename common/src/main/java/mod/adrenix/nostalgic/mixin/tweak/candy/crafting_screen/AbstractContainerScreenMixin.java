@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.crafting_screen;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;

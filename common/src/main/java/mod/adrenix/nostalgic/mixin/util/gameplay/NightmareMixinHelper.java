@@ -36,7 +36,7 @@ public abstract class NightmareMixinHelper
             player.stopSleepInBed(true, true);
 
             Monster monster = MathUtil.randomInt(0, 1) == 0 ? new Zombie(level) : new Skeleton(EntityType.SKELETON, level);
-            Entity entity = monster.getType().create(level, null, null, playerPos, MobSpawnType.TRIGGERED, true, false);
+            Entity entity = monster.getType().create(level, null, playerPos, MobSpawnType.TRIGGERED, true, false);
 
             if (entity != null)
                 level.addFreshEntity(entity);

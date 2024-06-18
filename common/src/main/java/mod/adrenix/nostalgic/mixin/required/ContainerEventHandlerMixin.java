@@ -18,8 +18,8 @@ public interface ContainerEventHandlerMixin
     )
     private boolean nt_required$onKeyPressed(boolean isKeyPressed, int keyCode, int scanCode, int modifiers)
     {
-        if (!isKeyPressed && this instanceof DynamicScreen<?> helper)
-            return helper.isKeyPressed(keyCode, scanCode, modifiers);
+        if (!isKeyPressed && this instanceof DynamicScreen<?> screen)
+            return screen.isKeyPressed(keyCode, scanCode, modifiers);
 
         return isKeyPressed;
     }
@@ -33,8 +33,8 @@ public interface ContainerEventHandlerMixin
     )
     default boolean nt_required$onMouseClicked(boolean isMouseClicked, double mouseX, double mouseY, int button)
     {
-        if (!isMouseClicked && this instanceof DynamicScreen<?> helper)
-            return helper.isMouseClicked(mouseX, mouseY, button);
+        if (!isMouseClicked && this instanceof DynamicScreen<?> screen)
+            return screen.isMouseClicked(mouseX, mouseY, button);
 
         return isMouseClicked;
     }
@@ -48,8 +48,8 @@ public interface ContainerEventHandlerMixin
     )
     default boolean nt_required$onMouseReleased(boolean isMouseReleased, double mouseX, double mouseY, int button)
     {
-        if (!isMouseReleased && this instanceof DynamicScreen<?> helper)
-            return helper.isMouseReleased(mouseX, mouseY, button);
+        if (!isMouseReleased && this instanceof DynamicScreen<?> screen)
+            return screen.isMouseReleased(mouseX, mouseY, button);
 
         return isMouseReleased;
     }
@@ -63,8 +63,8 @@ public interface ContainerEventHandlerMixin
     )
     default boolean nt_required$onMouseDragged(boolean isMouseDragged, double mouseX, double mouseY, int button, double dragX, double dragY)
     {
-        if (!isMouseDragged && this instanceof DynamicScreen<?> helper)
-            return helper.isMouseDragged(mouseX, mouseY, button, dragX, dragY);
+        if (!isMouseDragged && this instanceof DynamicScreen<?> screen)
+            return screen.isMouseDragged(mouseX, mouseY, button, dragX, dragY);
 
         return isMouseDragged;
     }

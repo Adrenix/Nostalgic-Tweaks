@@ -16,7 +16,7 @@ public abstract class LightingMixin
      * Brings back the old inverted inventory player lighting.
      */
     @WrapOperation(
-        method = "setupForEntityInInventory",
+        method = "setupForEntityInInventory()V",
         at = @At(
             value = "INVOKE",
             target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderLights(Lorg/joml/Vector3f;Lorg/joml/Vector3f;)V"

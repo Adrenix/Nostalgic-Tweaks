@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.swing;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

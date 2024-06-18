@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.explosion_particles;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import mod.adrenix.nostalgic.mixin.util.candy.ExplosionMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;

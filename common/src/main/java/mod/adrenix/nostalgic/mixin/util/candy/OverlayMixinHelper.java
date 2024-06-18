@@ -40,8 +40,8 @@ public abstract class OverlayMixinHelper
             default -> modernLocation;
         };
 
-        int x = (int) ((width / 4.0D) - (128 / 2));
-        int y = (int) ((height / 4.0D) - (128 / 2));
+        int x = (int) ((width / 4.0D) - (128 / 2.0D));
+        int y = (int) ((height / 4.0D) - (128 / 2.0D));
         int color = isDarkMode ? Color.BLACK.get() : Color.WHITE.get();
 
         if (CandyTweak.CUSTOM_LOADING_OVERLAY_BACKGROUND.get())

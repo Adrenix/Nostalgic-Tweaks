@@ -37,10 +37,10 @@ public abstract class EntityRendererMixin
         method = "render",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;renderNameTag(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/chat/Component;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
+            target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;renderNameTag(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/network/chat/Component;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IF)V"
         )
     )
-    private Component nt_debug_entity$setNameTag(Entity entity, Component displayName, PoseStack poseStack, MultiBufferSource buffer, int packedLight)
+    private Component nt_debug_entity$setNameTag(Entity entity, Component displayName, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTick)
     {
         if (DebugMixinHelper.shouldShowDebugId(entity))
             return Component.literal(Integer.toString(entity.getId()));

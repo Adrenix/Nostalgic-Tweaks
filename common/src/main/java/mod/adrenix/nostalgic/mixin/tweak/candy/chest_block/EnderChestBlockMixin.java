@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;

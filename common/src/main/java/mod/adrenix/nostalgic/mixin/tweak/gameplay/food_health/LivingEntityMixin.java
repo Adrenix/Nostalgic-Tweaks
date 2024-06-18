@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.food_health;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;

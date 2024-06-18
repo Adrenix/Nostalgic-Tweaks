@@ -71,7 +71,7 @@ public enum SlotTracker
      */
     public void move(Slot slot, int x, int y)
     {
-        if (isEqualTo(slot))
+        if (this.isEqualTo(slot))
         {
             this.x = x;
             this.y = y;
@@ -92,8 +92,8 @@ public enum SlotTracker
     public void moveOrReset(Slot slot, int x, int y)
     {
         if (CandyTweak.OLD_INVENTORY.get())
-            move(slot, x, y);
+            this.move(slot, x, y);
         else
-            reset(slot);
+            this.reset(slot);
     }
 }

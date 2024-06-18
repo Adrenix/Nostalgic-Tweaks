@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.mechanics_boat;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import mod.adrenix.nostalgic.mixin.util.gameplay.BoatMixinHelper;

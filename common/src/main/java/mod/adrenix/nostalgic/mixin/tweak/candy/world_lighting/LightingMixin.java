@@ -1,10 +1,9 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,14 +27,14 @@ public abstract class LightingMixin
         method = "setupNetherLevel",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/systems/RenderSystem;setupLevelDiffuseLighting(Lorg/joml/Vector3f;Lorg/joml/Vector3f;Lorg/joml/Matrix4f;)V"
+            target = "Lcom/mojang/blaze3d/systems/RenderSystem;setupLevelDiffuseLighting(Lorg/joml/Vector3f;Lorg/joml/Vector3f;)V"
         )
     )
-    private static boolean nt_world_lighting$modifyNetherDiffuseLighting(Vector3f dir0, Vector3f dir1, Matrix4f matrix)
+    private static boolean nt_world_lighting$modifyNetherDiffuseLighting(Vector3f dir0, Vector3f dir1)
     {
         if (CandyTweak.OLD_NETHER_LIGHTING.get())
         {
-            RenderSystem.setupLevelDiffuseLighting(DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1, matrix);
+            RenderSystem.setupLevelDiffuseLighting(DIFFUSE_LIGHT_0, DIFFUSE_LIGHT_1);
             return false;
         }
 

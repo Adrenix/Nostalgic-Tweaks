@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.mechanics_block;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.BedBlock;

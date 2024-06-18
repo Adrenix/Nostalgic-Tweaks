@@ -1,7 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.food_health;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -43,6 +44,6 @@ public abstract class MinecraftMixin
         if (this.player == null)
             return true;
 
-        return !GameplayTweak.INSTANT_EAT.get() || !this.player.getItemInHand(hand).isEdible();
+        return !GameplayTweak.INSTANT_EAT.get() || !ItemUtil.isEdible(this.player.getItemInHand(hand));
     }
 }

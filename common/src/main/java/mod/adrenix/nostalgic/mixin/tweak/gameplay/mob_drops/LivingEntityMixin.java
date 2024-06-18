@@ -18,7 +18,7 @@ public abstract class LivingEntityMixin
         method = "dropFromLootTable",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/storage/loot/LootDataManager;getLootTable(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/world/level/storage/loot/LootTable;"
+            target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"
         )
     )
     private LootTable nt_mob_drops$modifyDropLootTable(LootTable lootTable)

@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.debugchart.FpsDebugChart;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.SampleLogger;
+import net.minecraft.util.debugchart.LocalSampleLogger;
 
 import java.util.function.Function;
 
@@ -15,16 +15,16 @@ class DebugChartRenderer
 
     final int width;
     final int height;
-    final SampleLogger logger;
+    final LocalSampleLogger logger;
     final GuiGraphics graphics;
     final Function<Double, Integer> getSampleHeight;
     final Function<Long, Integer> getSampleColor;
 
     /* Constructor */
 
-    DebugChartRenderer(FpsDebugChart fpsChart, SampleLogger logger, GuiGraphics graphics)
+    DebugChartRenderer(FpsDebugChart fpsChart, LocalSampleLogger logger, GuiGraphics graphics)
     {
-        this.width = Math.min(fpsChart.getWidth(graphics.guiWidth() / 2), SampleLogger.CAPACITY);
+        this.width = Math.min(fpsChart.getWidth(graphics.guiWidth() / 2), LocalSampleLogger.CAPACITY);
         this.height = 76;
         this.logger = logger;
         this.graphics = graphics;

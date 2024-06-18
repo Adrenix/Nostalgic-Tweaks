@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.sound.game_music;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;

@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Animal.class)
 public abstract class AnimalMixin extends Mob
@@ -30,10 +30,10 @@ public abstract class AnimalMixin extends Mob
      * Shears a sheep when a player "punches" the animal.
      */
     @Inject(
-        method = "hurt",
+        method = "actuallyHurt",
         at = @At("HEAD")
     )
-    private void nt_animal_sheep$onHurt(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> callback)
+    private void nt_animal_sheep$onHurt(DamageSource damageSource, float damageAmount, CallbackInfo callback)
     {
         if (!GameplayTweak.OLD_SHEEP_PUNCHING.get())
             return;

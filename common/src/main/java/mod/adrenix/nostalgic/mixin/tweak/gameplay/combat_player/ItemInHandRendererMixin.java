@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;

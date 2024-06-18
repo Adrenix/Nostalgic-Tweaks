@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_sheep;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.mixin.util.gameplay.SheepMixinHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;

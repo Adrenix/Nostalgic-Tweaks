@@ -28,7 +28,7 @@ public abstract class ScreenMixin
         method = "renderBackground",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screens/Screen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"
+            target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"
         )
     )
     private void nt_gui_background$wrapBackgroundRenderer(Screen screen, GuiGraphics graphics, Operation<Void> operation)

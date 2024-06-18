@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.create_world_screen;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

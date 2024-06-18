@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.block_particles;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.LevelAccessor;

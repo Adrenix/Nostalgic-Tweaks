@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.gui.components.debugchart.FpsDebugChart;
 import net.minecraft.client.gui.components.debugchart.TpsDebugChart;
-import net.minecraft.util.SampleLogger;
+import net.minecraft.util.debugchart.LocalSampleLogger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,7 +31,7 @@ public abstract class DebugScreenOverlayMixin
 {
     /* Shadows */
 
-    @Shadow @Final private SampleLogger frameTimeLogger;
+    @Shadow @Final private LocalSampleLogger frameTimeLogger;
     @Shadow private boolean renderFpsCharts;
 
     @Shadow

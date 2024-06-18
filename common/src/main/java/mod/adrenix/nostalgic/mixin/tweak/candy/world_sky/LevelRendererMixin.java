@@ -1,7 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_sky;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -65,20 +66,24 @@ public abstract class LevelRendererMixin
     }
 
     /**
-     * Caches the model view matrix and the projection matrix so the stars and sky can be overlaid with the blue void
+     * Caches the model view matrix and the frustum matrix so the stars and sky can be overlaid with the blue void
      * correctly.
      */
     @Inject(
         method = "renderSky",
-        at = @At("HEAD")
+        at = @At(
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Matrix4f;)V"
+        )
     )
-    private void nt_world_sky$onRenderSky(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    private void nt_world_sky$onRenderSky(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback, @Local PoseStack poseStack)
     {
         if (!ModTweak.ENABLED.get())
             return;
 
         SkyMixinHelper.MODEL_VIEW_MATRIX.set(new Matrix4f(poseStack.last().pose()));
-        SkyMixinHelper.PROJECTION_MATRIX.set(new Matrix4f(projectionMatrix));
+        SkyMixinHelper.FRUSTUM_MATRIX.set(new Matrix4f(frustumMatrix));
     }
 
     /**
@@ -106,7 +111,7 @@ public abstract class LevelRendererMixin
         {
             SkyMixinHelper.BLUE_VOID_BUFFER.ifPresent(buffer -> {
                 buffer.bind();
-                buffer.drawWithShader(SkyMixinHelper.MODEL_VIEW_MATRIX.get(), SkyMixinHelper.PROJECTION_MATRIX.get(), shader);
+                buffer.drawWithShader(SkyMixinHelper.MODEL_VIEW_MATRIX.get(), SkyMixinHelper.FRUSTUM_MATRIX.get(), shader);
                 VertexBuffer.unbind();
             });
         }
@@ -163,7 +168,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/FogRenderer;setupNoFog()V"
         )
     )
-    private void nt_world_sky$onSetupStarColor(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
+    private void nt_world_sky$onSetupStarColor(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         Generic starsState = CandyTweak.OLD_STARS.get();
         boolean isDimmed = Generic.MODERN == starsState || Generic.BETA == starsState;

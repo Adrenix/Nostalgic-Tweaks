@@ -98,7 +98,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
         )
     )
-    private void nt_block_hitbox$renderHitboxFirst(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderHitboxFirst(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.FIRST)
             this.nt$renderOverlay.run();
@@ -116,7 +116,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
         )
     )
-    private void nt_block_hitbox$renderHitboxLast(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderHitboxLast(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.LAST)
             this.nt$renderOverlay.run();
@@ -129,7 +129,7 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("RETURN")
     )
-    private void nt_block_hitbox$clearRenderedHitbox(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$clearRenderedHitbox(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         this.nt$renderOverlay = null;
     }

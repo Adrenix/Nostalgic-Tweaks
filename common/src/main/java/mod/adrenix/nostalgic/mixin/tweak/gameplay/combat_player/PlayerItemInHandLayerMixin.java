@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
 import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockRenderer;

@@ -16,7 +16,7 @@ public class GuiMixin
      * Changes the offhand left slot texture to the Adventure Craft style.
      */
     @ModifyArg(
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
                 value = "INVOKE",
@@ -43,7 +43,7 @@ public class GuiMixin
      */
     @ModifyArg(
         index = 1,
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
                 value = "INVOKE",
@@ -72,7 +72,7 @@ public class GuiMixin
      * Changes the offhand right slot texture to the Adventure Craft style.
      */
     @ModifyArg(
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
                 value = "INVOKE",
@@ -99,7 +99,7 @@ public class GuiMixin
      */
     @ModifyArg(
         index = 1,
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
                 value = "INVOKE",
@@ -129,7 +129,7 @@ public class GuiMixin
      */
     @ModifyArg(
         index = 1,
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         at = @At(
             ordinal = 1,
             value = "INVOKE",
@@ -146,7 +146,7 @@ public class GuiMixin
      */
     @ModifyArg(
         index = 1,
-        method = "renderHotbar",
+        method = "renderItemHotbar",
         at = @At(
             ordinal = 2,
             value = "INVOKE",

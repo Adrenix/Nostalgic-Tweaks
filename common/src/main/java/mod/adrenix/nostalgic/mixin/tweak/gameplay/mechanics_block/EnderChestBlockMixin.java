@@ -13,7 +13,7 @@ public abstract class EnderChestBlockMixin
      * Always allows chest blocks to be opened regardless of whether there is a block above the ender chest.
      */
     @ModifyExpressionValue(
-        method = "use",
+        method = "useWithoutItem",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/state/BlockState;isRedstoneConductor(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"

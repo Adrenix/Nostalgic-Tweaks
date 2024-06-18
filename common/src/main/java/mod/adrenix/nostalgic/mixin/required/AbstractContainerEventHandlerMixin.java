@@ -21,7 +21,7 @@ public abstract class AbstractContainerEventHandlerMixin
     )
     private void nt_required$onSetFocused(@Nullable GuiEventListener focused, CallbackInfo callback)
     {
-        if (this instanceof DynamicScreen<?> helper)
-            helper.setDynamicFocus(focused);
+        if (this instanceof DynamicScreen<?> screen)
+            screen.setDynamicFocus(focused);
     }
 }

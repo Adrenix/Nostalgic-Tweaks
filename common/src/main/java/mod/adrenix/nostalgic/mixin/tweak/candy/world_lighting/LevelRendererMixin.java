@@ -1,7 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
@@ -51,7 +50,7 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("HEAD")
     )
-    private void nt_world_lighting$onRenderLevel(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_world_lighting$onRenderLevel(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (!ModTweak.ENABLED.get() || this.level == null)
             return;

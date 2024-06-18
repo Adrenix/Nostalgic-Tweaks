@@ -118,7 +118,7 @@ public abstract class ParticleMixinHelper
     @Nullable
     private static Particle getPlayerParticle(Particle particle, ParticleType<?> type, double x, double y, double z)
     {
-        boolean isEffectParticle = typeEqualTo(type, ParticleTypes.AMBIENT_ENTITY_EFFECT, ParticleTypes.ENTITY_EFFECT);
+        boolean isEffectParticle = typeEqualTo(type, ParticleTypes.ENTITY_EFFECT);
 
         if (!CandyTweak.HIDE_FIRST_PERSON_MAGIC_PARTICLES.get() || !CameraUtil.isFirstPerson() || !isEffectParticle)
             return particle;

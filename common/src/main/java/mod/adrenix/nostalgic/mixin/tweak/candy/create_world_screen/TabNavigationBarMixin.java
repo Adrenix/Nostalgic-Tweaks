@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.create_world_screen;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
@@ -11,21 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(TabNavigationBar.class)
 public abstract class TabNavigationBarMixin
 {
-    /**
-     * Disables the rendering of the header fill on the world creation screen if rendering the old style tabs.
-     */
-    @WrapWithCondition(
-        method = "render",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"
-        )
-    )
-    private boolean nt_create_world_screen$shouldRenderFill(GuiGraphics graphics, int minX, int minY, int maxX, int maxY, int color)
-    {
-        return !WidgetMixinHelper.isOldStyleTabs();
-    }
-
     /**
      * Disables the rendering of the header on the world creation screen if rendering the old style tabs.
      */

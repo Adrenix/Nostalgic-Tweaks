@@ -23,8 +23,8 @@ public abstract class ScreenMixin
     )
     private void nt_required$onClearWidgets(CallbackInfo callback)
     {
-        if (this instanceof DynamicScreen<?> helper)
-            helper.getWidgets().clear();
+        if (this instanceof DynamicScreen<?> screen)
+            screen.getWidgets().clear();
     }
 
     /**
@@ -36,8 +36,8 @@ public abstract class ScreenMixin
     )
     private List<? extends GuiEventListener> nt_required$modifyChildren(List<? extends GuiEventListener> children)
     {
-        if (this instanceof DynamicScreen<?> helper)
-            return helper.getWidgets();
+        if (this instanceof DynamicScreen<?> screen)
+            return screen.getWidgets();
 
         return children;
     }

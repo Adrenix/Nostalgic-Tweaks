@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.gui.components.debugchart.FpsDebugChart;
-import net.minecraft.util.SampleLogger;
+import net.minecraft.util.debugchart.LocalSampleLogger;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,10 +44,10 @@ public abstract class DebugMixinHelper
      * Render the nostalgic FPS chart.
      *
      * @param fpsChart The {@link FpsDebugChart} instance.
-     * @param logger   The {@link SampleLogger} instance.
+     * @param logger   The {@link LocalSampleLogger} instance.
      * @param graphics The {@link GuiGraphics} instance.
      */
-    public static void renderFpsChart(FpsDebugChart fpsChart, SampleLogger logger, GuiGraphics graphics)
+    public static void renderFpsChart(FpsDebugChart fpsChart, LocalSampleLogger logger, GuiGraphics graphics)
     {
         new DebugChartRenderer(fpsChart, logger, graphics).render();
     }

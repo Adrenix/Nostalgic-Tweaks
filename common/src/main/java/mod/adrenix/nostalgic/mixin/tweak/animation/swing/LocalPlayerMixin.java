@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.swing;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.mixin.duck.SwingBlocker;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;

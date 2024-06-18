@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.sound.water_ambience;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.resources.sounds.UnderwaterAmbientSoundHandler;

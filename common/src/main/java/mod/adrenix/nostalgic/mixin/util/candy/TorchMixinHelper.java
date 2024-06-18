@@ -184,7 +184,7 @@ public abstract class TorchMixinHelper
         if (!isSheared(blockState))
         {
             for (BakedQuad quad : model.getQuads(blockState, null, random))
-                vertexConsumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, brightness, OverlayTexture.NO_OVERLAY);
+                vertexConsumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, 1.0F, brightness, OverlayTexture.NO_OVERLAY);
 
             return;
         }
@@ -199,7 +199,7 @@ public abstract class TorchMixinHelper
             if (isBottomDisabled && quad.getDirection() == Direction.DOWN)
                 continue;
 
-            vertexConsumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, brightness, OverlayTexture.NO_OVERLAY);
+            vertexConsumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, 1.0F, brightness, OverlayTexture.NO_OVERLAY);
         }
 
         poseStack.popPose();

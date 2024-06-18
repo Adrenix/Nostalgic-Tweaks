@@ -43,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity
         if (!GameplayTweak.OLD_LADDER_GAP.get() || isClimbable || this.isSpectator())
             return isClimbable;
 
-        BlockState blockState = this.getFeetBlockState();
+        BlockState blockState = this.getBlockStateOn();
         BlockPos blockPos = this.blockPosition();
         boolean isGapPresent = ClimbableMixinHelper.isClimbable(this.level(), blockState, blockPos);
 

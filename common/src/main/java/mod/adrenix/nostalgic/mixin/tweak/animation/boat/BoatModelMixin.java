@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.boat;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import net.minecraft.client.model.BoatModel;

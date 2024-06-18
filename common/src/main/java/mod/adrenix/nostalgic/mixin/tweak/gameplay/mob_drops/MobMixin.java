@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.mob_drops;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
