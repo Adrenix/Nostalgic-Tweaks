@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.gui.screen.vanilla.progress;
 import mod.adrenix.nostalgic.mixin.access.ProgressScreenAccess;
 import mod.adrenix.nostalgic.mixin.access.ReceivingLevelScreenAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.client.gui.GuiGraphics;
@@ -242,13 +243,14 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
         if (this.header == null && this.stage == null)
             return;
 
-        if (!CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+        if (CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+            GuiUtil.renderDirtBackground(graphics);
+        else
         {
             this.renderPanorama(graphics, partialTick);
             this.renderBlurredBackground(partialTick);
+            this.renderMenuBackground(graphics);
         }
-
-        this.renderMenuBackground(graphics);
 
         if (this.renderProgress)
             ProgressRenderer.renderProgressWithInt(this.progress);
