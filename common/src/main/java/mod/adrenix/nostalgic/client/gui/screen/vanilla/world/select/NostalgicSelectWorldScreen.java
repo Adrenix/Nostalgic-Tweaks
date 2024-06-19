@@ -7,7 +7,6 @@ import mod.adrenix.nostalgic.mixin.access.WorldSelectionListAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -258,7 +257,7 @@ public class NostalgicSelectWorldScreen extends SelectWorldScreen implements Dyn
     {
         this.selectionList.render(graphics, mouseX, mouseY, partialTick);
 
-        GuiUtil.renderDirtBackground(graphics);
+        this.renderMenuBackground(graphics);
 
         if (this.selectionList.children().contains(this.getAccessToSelectionList().nt$getLoadingHeader()))
         {

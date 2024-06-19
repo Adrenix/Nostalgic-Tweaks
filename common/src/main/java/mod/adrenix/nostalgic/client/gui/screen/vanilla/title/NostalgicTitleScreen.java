@@ -166,7 +166,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
         }
 
         if (CandyTweak.OLD_TITLE_BACKGROUND.get())
-            GuiUtil.renderDirtBackground(graphics);
+            this.renderMenuBackground(graphics);
         else
         {
             this.renderPanorama(graphics, partialTick);

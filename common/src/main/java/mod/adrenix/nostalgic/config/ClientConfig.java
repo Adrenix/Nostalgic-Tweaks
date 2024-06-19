@@ -339,6 +339,7 @@ public class ClientConfig implements ConfigMeta
         // Generic Screen
 
         public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
+        public boolean oldDirtScreenBackground = CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.register("oldDirtScreenBackground");
         public GuiBackground oldGuiBackground = CandyTweak.OLD_GUI_BACKGROUND.register("oldGuiBackground");
         public boolean customGuiBackground = CandyTweak.CUSTOM_GUI_BACKGROUND.register("customGuiBackground");
         public String customGuiTopGradient = CandyTweak.CUSTOM_GUI_TOP_GRADIENT.register("customGuiTopGradient");

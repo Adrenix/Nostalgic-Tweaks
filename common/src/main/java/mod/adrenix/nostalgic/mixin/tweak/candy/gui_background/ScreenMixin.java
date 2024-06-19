@@ -3,13 +3,19 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.gui_background;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.GuiBackground;
+import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin
@@ -50,5 +56,57 @@ public abstract class ScreenMixin
         }
         else
             operation.call(screen, graphics);
+    }
+
+    /**
+     * Darkens the menu background if using the dirt texture.
+     */
+    @Inject(
+        method = "renderMenuBackgroundTexture",
+        at = @At(
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V"
+        )
+    )
+    private static void nt_gui_background$preRenderMenuBackgroundTexture(GuiGraphics graphics, ResourceLocation texture, int x, int y, float uOffset, float vOffset, int width, int height, CallbackInfo callback)
+    {
+        if (Screen.MENU_BACKGROUND == texture && CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+            graphics.setColor(0.25F, 0.25F, 0.25F, 1.0F);
+    }
+
+    /**
+     * Changes the background texture used by the screen.
+     */
+    @ModifyArg(
+        method = "renderMenuBackgroundTexture",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V"
+        )
+    )
+    private static ResourceLocation nt_gui_background$shouldRenderMenuBackground(ResourceLocation texture)
+    {
+        if (Screen.MENU_BACKGROUND == texture && CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+            return TextureLocation.DIRT_BACKGROUND;
+
+        return texture;
+    }
+
+    /**
+     * Brightens the menu background after drawing the background.
+     */
+    @Inject(
+        method = "renderMenuBackgroundTexture",
+        at = @At(
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V"
+        )
+    )
+    private static void nt_gui_background$postRenderMenuBackgroundTexture(GuiGraphics graphics, ResourceLocation texture, int x, int y, float uOffset, float vOffset, int width, int height, CallbackInfo callback)
+    {
+        if (ModTweak.ENABLED.get())
+            graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }
