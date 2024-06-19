@@ -25,7 +25,7 @@ public abstract class LightingMixin
     private static void nt_block_lighting$wrapSetupFor3DItems(Vector3f startDirection, Vector3f endDirection, Operation<Void> operation)
     {
         if (CandyTweak.INVERTED_BLOCK_LIGHTING.get())
-            RenderSystem.setupGui3DDiffuseLighting(new Vector3f(0.0F, 2.0F, 1.0F).normalize(), new Vector3f(-1.7F, 4.0F, 1.5F).normalize());
+            RenderSystem.setupGui3DDiffuseLighting(new Vector3f(0.0F, 2.0F, 1.0F), new Vector3f(1.7F, 4.0F, -1.0F));
         else
             operation.call(startDirection, endDirection);
     }
