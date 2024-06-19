@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.mixin.util.animation.AnimationConstant;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -51,9 +52,9 @@ public abstract class PlayerMixin
         method = "getDefaultDimensions",
         at = @At("RETURN")
     )
-    private EntityDimensions nt_player_animation$modifyStandingEyeHeight(EntityDimensions dimensions)
+    private EntityDimensions nt_player_animation$modifyStandingEyeHeight(EntityDimensions dimensions, Pose pose)
     {
-        if (NostalgicTweaks.isServer())
+        if (NostalgicTweaks.isServer() || Pose.CROUCHING != pose)
             return dimensions;
 
         if (AnimationTweak.OLD_CREATIVE_CROUCH.get() && this.abilities.flying)
