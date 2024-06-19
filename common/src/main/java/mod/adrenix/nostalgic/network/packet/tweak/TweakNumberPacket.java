@@ -40,7 +40,7 @@ abstract class TweakNumberPacket implements TweakPacket
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.poolId);
         buffer.writeDouble(this.doubleValue);

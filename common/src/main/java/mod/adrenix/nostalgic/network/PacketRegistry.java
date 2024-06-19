@@ -1,9 +1,10 @@
 package mod.adrenix.nostalgic.network;
 
-import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
+import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
-import mod.adrenix.nostalgic.network.packet.ServerboundSync;
 import mod.adrenix.nostalgic.network.packet.backup.*;
+import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSync;
 import mod.adrenix.nostalgic.network.packet.tweak.*;
 
 public abstract class PacketRegistry
@@ -11,40 +12,40 @@ public abstract class PacketRegistry
     public static void register()
     {
         // Handshake
-        ModPacket.register(ClientboundHandshake.class, ClientboundHandshake::new);
-        ModPacket.register(ServerboundSync.class, ServerboundSync::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundHandshake.TYPE, ClientboundHandshake::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundSync.TYPE, ServerboundSync::new);
 
         // Config Backups
-        ModPacket.register(ServerboundCreateBackup.class, ServerboundCreateBackup::new);
-        ModPacket.register(ClientboundMadeBackup.class, ClientboundMadeBackup::new);
-        ModPacket.register(ClientboundBackupObjects.class, ClientboundBackupObjects::new);
-        ModPacket.register(ServerboundRequestBackups.class, ServerboundRequestBackups::new);
-        ModPacket.register(ClientboundBackupDownload.class, ClientboundBackupDownload::new);
-        ModPacket.register(ServerboundDownloadRequest.class, ServerboundDownloadRequest::new);
-        ModPacket.register(ServerboundDeleteBackup.class, ServerboundDeleteBackup::new);
-        ModPacket.register(ClientboundBackupDeleted.class, ClientboundBackupDeleted::new);
-        ModPacket.register(ServerboundDeleteAllBackups.class, ServerboundDeleteAllBackups::new);
-        ModPacket.register(ClientboundDeletedAllBackups.class, ClientboundDeletedAllBackups::new);
-        ModPacket.register(ServerboundApplyBackup.class, ServerboundApplyBackup::new);
-        ModPacket.register(ClientboundAppliedBackup.class, ClientboundAppliedBackup::new);
-        ModPacket.register(ServerboundReloadConfig.class, ServerboundReloadConfig::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundAppliedBackup.TYPE, ClientboundAppliedBackup::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundBackupDeleted.TYPE, ClientboundBackupDeleted::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundBackupDownload.TYPE, ClientboundBackupDownload::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundBackupObjects.TYPE, ClientboundBackupObjects::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundDeletedAllBackups.TYPE, ClientboundDeletedAllBackups::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundMadeBackup.TYPE, ClientboundMadeBackup::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundApplyBackup.TYPE, ServerboundApplyBackup::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundCreateBackup.TYPE, ServerboundCreateBackup::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundDeleteAllBackups.TYPE, ServerboundDeleteAllBackups::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundDeleteBackup.TYPE, ServerboundDeleteBackup::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundDownloadRequest.TYPE, ServerboundDownloadRequest::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundReloadConfig.TYPE, ServerboundReloadConfig::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundRequestBackups.TYPE, ServerboundRequestBackups::new);
 
         // Tweak Packets
-        ModPacket.register(ClientboundRejection.class, ClientboundRejection::new);
-        ModPacket.register(ClientboundStatusUpdate.class, ClientboundStatusUpdate::new);
-        ModPacket.register(ServerboundTweakFlag.class, ServerboundTweakFlag::new);
-        ModPacket.register(ClientboundTweakFlag.class, ClientboundTweakFlag::new);
-        ModPacket.register(ServerboundTweakText.class, ServerboundTweakText::new);
-        ModPacket.register(ClientboundTweakText.class, ClientboundTweakText::new);
-        ModPacket.register(ServerboundTweakEnum.class, ServerboundTweakEnum::new);
-        ModPacket.register(ClientboundTweakEnum.class, ClientboundTweakEnum::new);
-        ModPacket.register(ServerboundTweakNumber.class, ServerboundTweakNumber::new);
-        ModPacket.register(ClientboundTweakNumber.class, ClientboundTweakNumber::new);
-        ModPacket.register(ServerboundTweakItemMap.class, ServerboundTweakItemMap::new);
-        ModPacket.register(ClientboundTweakItemMap.class, ClientboundTweakItemMap::new);
-        ModPacket.register(ServerboundTweakItemSet.class, ServerboundTweakItemSet::new);
-        ModPacket.register(ClientboundTweakItemSet.class, ClientboundTweakItemSet::new);
-        ModPacket.register(ServerboundTweakStringSet.class, ServerboundTweakStringSet::new);
-        ModPacket.register(ClientboundTweakStringSet.class, ClientboundTweakStringSet::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundRejection.TYPE, ClientboundRejection::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundStatusUpdate.TYPE, ClientboundStatusUpdate::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakEnum.TYPE, ClientboundTweakEnum::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakFlag.TYPE, ClientboundTweakFlag::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakItemMap.TYPE, ClientboundTweakItemMap::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakItemSet.TYPE, ClientboundTweakItemSet::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakNumber.TYPE, ClientboundTweakNumber::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakStringSet.TYPE, ClientboundTweakStringSet::new);
+        ModPacket.register(NetworkManager.Side.S2C, ClientboundTweakText.TYPE, ClientboundTweakText::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakEnum.TYPE, ServerboundTweakEnum::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakFlag.TYPE, ServerboundTweakFlag::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakItemMap.TYPE, ServerboundTweakItemMap::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakItemSet.TYPE, ServerboundTweakItemSet::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakNumber.TYPE, ServerboundTweakNumber::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakStringSet.TYPE, ServerboundTweakStringSet::new);
+        ModPacket.register(NetworkManager.Side.C2S, ServerboundTweakText.TYPE, ServerboundTweakText::new);
     }
 }

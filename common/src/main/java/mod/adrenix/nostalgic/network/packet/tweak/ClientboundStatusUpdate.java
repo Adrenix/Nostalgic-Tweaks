@@ -3,17 +3,24 @@ package mod.adrenix.nostalgic.network.packet.tweak;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
+import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.tweak.TweakStatus;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public class ClientboundStatusUpdate implements TweakPacket
+/**
+ * Prepare a tweak status update to be sent over the network.
+ *
+ * @param poolId The tweak pool json path identifier.
+ * @param status The {@link TweakStatus} value.
+ */
+public record ClientboundStatusUpdate(String poolId, TweakStatus status) implements TweakPacket
 {
-    /* Fields */
+    /* Type */
 
-    protected final String poolId;
-    protected final TweakStatus status;
+    public static final Type<ClientboundStatusUpdate> TYPE = ModPacket.createType(ClientboundStatusUpdate.class);
 
     /* Constructors */
 
@@ -24,8 +31,7 @@ public class ClientboundStatusUpdate implements TweakPacket
      */
     public ClientboundStatusUpdate(Tweak<?> tweak)
     {
-        this.poolId = tweak.getJsonPathId();
-        this.status = tweak.getEnvStatus();
+        this(tweak.getJsonPathId(), tweak.getEnvStatus());
     }
 
     /**
@@ -35,21 +41,20 @@ public class ClientboundStatusUpdate implements TweakPacket
      */
     public ClientboundStatusUpdate(FriendlyByteBuf buffer)
     {
-        this.poolId = buffer.readUtf();
-        this.status = buffer.readEnum(TweakStatus.class);
+        this(buffer.readUtf(), buffer.readEnum(TweakStatus.class));
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.poolId);
         buffer.writeEnum(this.status);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
@@ -62,5 +67,11 @@ public class ClientboundStatusUpdate implements TweakPacket
         String status = TweakStatus.toStringWithColor(this.status);
 
         NostalgicTweaks.LOGGER.debug(output, jsonId, status);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

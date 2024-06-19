@@ -1,8 +1,9 @@
 package mod.adrenix.nostalgic.init.listener.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
+import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +34,7 @@ public abstract class PlayerListener
         String version = beta.isEmpty() ? tiny : tiny + "-" + beta;
         String protocol = NostalgicTweaks.getProtocol();
 
-        NostalgicTweaks.NETWORK.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
+        NetworkManager.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
 
         setCreativeHotbar(player);
     }

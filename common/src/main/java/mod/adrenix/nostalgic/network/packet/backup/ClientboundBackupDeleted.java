@@ -3,49 +3,51 @@ package mod.adrenix.nostalgic.network.packet.backup;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public class ClientboundBackupDeleted implements ModPacket
+/**
+ * Inform the client that the requested backup file to delete was acknowledged.
+ *
+ * @param success Whether deleting the file was successful on the server.
+ */
+public record ClientboundBackupDeleted(boolean success) implements ModPacket
 {
-    /* Fields */
+    /* Type */
 
-    final boolean isError;
+    public static final Type<ClientboundBackupDeleted> TYPE = ModPacket.createType(ClientboundBackupDeleted.class);
 
-    /* Constructors */
-
-    /**
-     * Inform the client that the requested backup file to delete was acknowledged.
-     *
-     * @param success Whether deleting the file was successful on the server.
-     */
-    public ClientboundBackupDeleted(boolean success)
-    {
-        this.isError = !success;
-    }
+    /* Decoder */
 
     /**
      * Decode a packet received over the network.
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    public ClientboundBackupDeleted(FriendlyByteBuf buffer)
+    public ClientboundBackupDeleted(final FriendlyByteBuf buffer)
     {
-        this.isError = buffer.readBoolean();
+        this(buffer.readBoolean());
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
-        buffer.writeBoolean(this.isError);
+        buffer.writeBoolean(this.success);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
 
         ExecuteOnClient.handleBackupDeleted(this);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

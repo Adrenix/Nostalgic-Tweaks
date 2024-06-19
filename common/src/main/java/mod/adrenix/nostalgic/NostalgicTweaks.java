@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic;
 
-import dev.architectury.networking.NetworkChannel;
 import dev.architectury.platform.Platform;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.init.ModInitializer;
@@ -12,7 +11,6 @@ import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.log.ModLogger;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.fabricmc.api.EnvType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.Nullable;
 
@@ -163,17 +161,11 @@ public abstract class NostalgicTweaks
     /* - Networking */
 
     /**
-     * This is the mod's network channel. The Architectury mod handles any network subscriptions or registration to mod
-     * loaders.
-     */
-    public static final NetworkChannel NETWORK = NetworkChannel.create(new ResourceLocation(MOD_ID, "network"));
-
-    /**
      * This is the mod's network current protocol version. If there are any changes made to the mod's network code that
      * will cause communication issues with older versions of the mod, then this value needs bumped up. Typically,
      * changes made to network packets and/or changes in tweak data serialization will require a bump.
      */
-    public static final String PROTOCOL = "2.1";
+    public static final String PROTOCOL = "3.0";
 
     /**
      * Functional lambda shortcut method for supplying the network's protocol version.

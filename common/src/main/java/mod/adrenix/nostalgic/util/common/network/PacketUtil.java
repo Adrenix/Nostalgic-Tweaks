@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.util.common.network;
 
+import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.fabricmc.api.EnvType;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -14,15 +16,14 @@ public abstract class PacketUtil
      * <p>
      * Send a packet to a connected server player.
      *
-     * @param player   The server player to send the packet to.
-     * @param packet   The packet to send to the server player.
-     * @param <Packet> A packet class.
+     * @param player The server player to send the packet to.
+     * @param packet The packet to send to the server player.
      */
-    public static <Packet> void sendToPlayer(ServerPlayer player, Packet packet)
+    public static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet)
     {
-        if (NostalgicTweaks.NETWORK.canPlayerReceive(player, packet.getClass()))
+        if (NetworkManager.canPlayerReceive(player, packet.type()))
         {
-            NostalgicTweaks.NETWORK.sendToPlayer(player, packet);
+            NetworkManager.sendToPlayer(player, packet);
             NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to (%s)", packet, player);
         }
         else
@@ -33,22 +34,21 @@ public abstract class PacketUtil
      * <h3>S2C: Server-to-Client</h3>
      * <p>
      * This is the best method to use when sending a packet to multiple players. If a player list is unavailable use
-     * {@link #sendToAll(Object)}.
+     * {@link #sendToAll(CustomPacketPayload)}.
      *
-     * @param players  A list of players to send the packet to.
-     * @param packet   The packet to send to the list of players.
-     * @param <Packet> A packet class.
+     * @param players A list of players to send the packet to.
+     * @param packet  The packet to send to the list of players.
      */
-    public static <Packet> void sendToAll(Iterable<ServerPlayer> players, Packet packet)
+    public static void sendToAll(Iterable<ServerPlayer> players, CustomPacketPayload packet)
     {
         ArrayList<ServerPlayer> receivers = new ArrayList<>();
 
         players.forEach(player -> {
-            if (NostalgicTweaks.NETWORK.canPlayerReceive(player, packet.getClass()))
+            if (NetworkManager.canPlayerReceive(player, packet.type()))
                 receivers.add(player);
         });
 
-        NostalgicTweaks.NETWORK.sendToPlayers(receivers, packet);
+        NetworkManager.sendToPlayers(receivers, packet);
         NostalgicTweaks.LOGGER.debug("(S2C) Sent (%s) to all players", packet);
     }
 
@@ -57,14 +57,13 @@ public abstract class PacketUtil
      * <p><br>
      * This method can only be used in a dedicated server environment.
      * <p><br>
-     * The alternative {@link #sendToAll(Iterable, Object)} should be used unless there is no access to a player list,
-     * which should only happen in a dedicated server environment anyway.
+     * The alternative {@link #sendToAll(Iterable, CustomPacketPayload)} should be used unless there is no access to a
+     * player list, which should only happen in a dedicated server environment anyway.
      *
-     * @param packet   The packet to send to all players.
-     * @param <Packet> A packet class.
+     * @param packet The packet to send to all players.
      * @throws NullPointerException Will be thrown if there is no dedicated server instance.
      */
-    public static <Packet> void sendToAll(Packet packet) throws NullPointerException
+    public static void sendToAll(CustomPacketPayload packet) throws NullPointerException
     {
         MinecraftServer server = NostalgicTweaks.getServer();
 
@@ -79,16 +78,15 @@ public abstract class PacketUtil
      * <p>
      * Send a packet to the server from the client.
      *
-     * @param packet   The packet to send to the server.
-     * @param <Packet> A packet class.
+     * @param packet The packet to send to the server.
      */
-    public static <Packet> void sendToServer(Packet packet)
+    public static void sendToServer(CustomPacketPayload packet)
     {
         if (NostalgicTweaks.isNetworkVerified())
         {
-            if (NostalgicTweaks.NETWORK.canServerReceive(packet.getClass()))
+            if (NetworkManager.canServerReceive(packet.type()))
             {
-                NostalgicTweaks.NETWORK.sendToServer(packet);
+                NetworkManager.sendToServer(packet);
                 NostalgicTweaks.LOGGER.debug("(C2S) Sent (%s) to server", packet);
             }
             else

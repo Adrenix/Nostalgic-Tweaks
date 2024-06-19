@@ -10,47 +10,43 @@ import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.nio.file.Path;
 
-public class ServerboundApplyBackup implements ModPacket
+/**
+ * Apply the given backup to the server's runtime config. A new backup will be made on the server.
+ *
+ * @param backup A {@link BackupObject} instance.
+ */
+public record ServerboundApplyBackup(BackupObject backup) implements ModPacket
 {
-    /* Fields */
+    /* Type */
 
-    private final BackupObject backup;
+    public static final Type<ServerboundApplyBackup> TYPE = ModPacket.createType(ServerboundApplyBackup.class);
 
-    /* Constructors */
-
-    /**
-     * Apply the given backup to the server's runtime config. A new backup will be made on the server.
-     *
-     * @param backup A {@link BackupObject} instance.
-     */
-    public ServerboundApplyBackup(BackupObject backup)
-    {
-        this.backup = backup;
-    }
+    /* Decoder */
 
     /**
      * Decode a packet received over the network.
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    public ServerboundApplyBackup(FriendlyByteBuf buffer)
+    public ServerboundApplyBackup(final FriendlyByteBuf buffer)
     {
-        this.backup = BackupObject.decode(buffer);
+        this(BackupObject.decode(buffer));
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         BackupObject.encode(buffer, this.backup);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isNotFromOperator(context))
             return;
@@ -79,5 +75,11 @@ public class ServerboundApplyBackup implements ModPacket
             NostalgicTweaks.LOGGER.error("[Config Import] Could not import (%s) due to an invalid config format", filename);
             PacketUtil.sendToPlayer(this.getServerPlayer(context), new ClientboundAppliedBackup(false));
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

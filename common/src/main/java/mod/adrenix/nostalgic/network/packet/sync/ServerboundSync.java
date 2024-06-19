@@ -1,19 +1,21 @@
-package mod.adrenix.nostalgic.network.packet.tweak;
+package mod.adrenix.nostalgic.network.packet.sync;
 
 import dev.architectury.networking.NetworkManager;
-import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
+import mod.adrenix.nostalgic.tweak.factory.Tweak;
+import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
- * Prepare a LAN update rejection packet to be sent over the network.
+ * Send a request to the server to send its current tweak values so the client can be in sync with the server.
  */
-public record ClientboundRejection() implements TweakPacket
+public record ServerboundSync() implements ModPacket
 {
     /* Type */
 
-    public static final Type<ClientboundRejection> TYPE = ModPacket.createType(ClientboundRejection.class);
+    public static final Type<ServerboundSync> TYPE = ModPacket.createType(ServerboundSync.class);
 
     /* Decoder */
 
@@ -22,7 +24,7 @@ public record ClientboundRejection() implements TweakPacket
      *
      * @param ignored A {@link FriendlyByteBuf} instance.
      */
-    public ClientboundRejection(FriendlyByteBuf ignored)
+    public ServerboundSync(final FriendlyByteBuf ignored)
     {
         this();
     }
@@ -37,10 +39,12 @@ public record ClientboundRejection() implements TweakPacket
     @Override
     public void receiver(NetworkManager.PacketContext context)
     {
-        if (this.isServerHandling(context))
+        if (this.isClientHandling(context))
             return;
 
-        ToastNotification.hostRejectedChanges();
+        final ServerPlayer player = this.getServerPlayer(context);
+
+        TweakPool.filter(Tweak::isMultiplayerLike).forEach(tweak -> tweak.sendToPlayer(player));
     }
 
     @Override

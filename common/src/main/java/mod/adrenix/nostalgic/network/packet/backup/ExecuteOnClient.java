@@ -38,7 +38,7 @@ interface ExecuteOnClient
      */
     static void handleMadeBackup(ClientboundMadeBackup packet)
     {
-        if (packet.successful)
+        if (packet.success())
         {
             MessageOverlay.create(MessageType.SUCCESS, Lang.Info.CREATE_BACKUP_TITLE, Lang.Info.CREATE_BACKUP_MESSAGE)
                 .setResizePercentage(0.65D)
@@ -60,7 +60,7 @@ interface ExecuteOnClient
      */
     static void handleBackupObjects(ClientboundBackupObjects packet)
     {
-        if (packet.isError)
+        if (!packet.success)
             ManageSection.setReceiveFailed();
         else
             ManageSection.setServerBackups(packet.backups);
@@ -73,7 +73,7 @@ interface ExecuteOnClient
     {
         PacketUtil.sendToServer(new ServerboundRequestBackups());
 
-        if (packet.isError)
+        if (!packet.success())
         {
             MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.SERVER_TITLE, Lang.Error.DELETE_SERVER_BACKUP)
                 .setResizePercentage(0.65D)
@@ -89,7 +89,7 @@ interface ExecuteOnClient
     {
         PacketUtil.sendToServer(new ServerboundRequestBackups());
 
-        if (packet.isError)
+        if (!packet.success())
         {
             MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.SERVER_TITLE, Lang.Error.DELETE_SERVER_BACKUP)
                 .setResizePercentage(0.65D)
@@ -106,7 +106,7 @@ interface ExecuteOnClient
     {
         PacketUtil.sendToServer(new ServerboundRequestBackups());
 
-        if (packet.isError)
+        if (!packet.success())
         {
             MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.SERVER_TITLE, Lang.Error.SERVER_APPLY)
                 .setResizePercentage(0.65D)
@@ -121,7 +121,7 @@ interface ExecuteOnClient
      */
     static void handleBackupDownload(ClientboundBackupDownload packet)
     {
-        if (packet.isError)
+        if (!packet.success)
         {
             MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.SERVER_TITLE, Lang.Error.SERVER_BACKUPS)
                 .setResizePercentage(0.65D)

@@ -7,24 +7,39 @@ import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamDecoder;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.Locale;
 
-public interface ModPacket
+public interface ModPacket extends CustomPacketPayload
 {
     /**
      * Register a new packet to the mod's network channel.
      *
-     * @param classType The class of the packet. An example argument would be {@code TestPacket.class}
-     * @param decoder   A decoder function that accepts a {@link FriendlyByteBuf} and returns a packet instance. An
-     *                  example argument would be {@code TestPacket::new}.
-     * @param <T>       The class type of packet.
+     * @param decoder A {@link StreamDecoder} that accepts a {@link FriendlyByteBuf} and returns a packet instance. An
+     *                example argument would be {@code TestPacket::new}.
+     * @param <T>     The class type of packet.
      */
-    static <T extends ModPacket> void register(Class<T> classType, Function<FriendlyByteBuf, T> decoder)
+    static <T extends ModPacket> void register(NetworkManager.Side side, CustomPacketPayload.Type<T> type, StreamDecoder<FriendlyByteBuf, T> decoder)
     {
-        NostalgicTweaks.NETWORK.register(classType, ModPacket::encode, decoder, ModPacket::handle);
+        NetworkManager.registerReceiver(side, type, CustomPacketPayload.codec(ModPacket::encoder, decoder), ModPacket::receiver);
+    }
+
+    /**
+     * Get an identifier for a {@link ModPacket} based on its simple class name.
+     *
+     * @param classType The {@link ModPacket} class type.
+     * @return A {@link ResourceLocation} instance to use to identify the packet.
+     */
+    static <T extends ModPacket> CustomPacketPayload.Type<T> createType(Class<? extends ModPacket> classType)
+    {
+        String identifier = classType.getSimpleName().toLowerCase(Locale.ROOT);
+        ResourceLocation location = new ResourceLocation(NostalgicTweaks.MOD_ID, identifier);
+
+        return new CustomPacketPayload.Type<>(location);
     }
 
     /**
@@ -32,30 +47,14 @@ public interface ModPacket
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    void encode(FriendlyByteBuf buffer);
+    void encoder(FriendlyByteBuf buffer);
 
     /**
-     * Process a packet based on network context.
+     * Receive and process a packet based on network context.
      *
      * @param context The packet context.
-     * @see #handle(Supplier)
      */
-    void apply(NetworkManager.PacketContext context);
-
-    /**
-     * Handle packet data. If {@link #apply(NetworkManager.PacketContext)} is defined, then this does not to be
-     * {@code overridden} since this default method will queue the method automatically.
-     *
-     * <br><h3 color=red>Warning</h3>
-     * Although a client may handle received packet data, no client-side only classes should be imported in the packet
-     * class since the server will class load all packets.
-     *
-     * @param supplier A packet context supplier.
-     */
-    default void handle(Supplier<NetworkManager.PacketContext> supplier)
-    {
-        supplier.get().queue(() -> this.apply(supplier.get()));
-    }
+    void receiver(NetworkManager.PacketContext context);
 
     /**
      * Get the server player object from the packet context. It is the responsibility of the caller to ensure the server

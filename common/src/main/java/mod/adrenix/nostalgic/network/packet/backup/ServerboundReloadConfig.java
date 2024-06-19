@@ -2,13 +2,14 @@ package mod.adrenix.nostalgic.network.packet.backup;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.config.ServerConfig;
 import mod.adrenix.nostalgic.config.factory.ConfigBuilder;
 import mod.adrenix.nostalgic.config.factory.ConfigHandler;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
-import mod.adrenix.nostalgic.config.ServerConfig;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.nio.file.Path;
 
@@ -16,13 +17,13 @@ import java.nio.file.Path;
  * This packet instructs the server to hot swap (live reload) the config file that is saved on disk. The server will
  * check if the sender is an operator before performing the I/O reload.
  */
-public class ServerboundReloadConfig implements ModPacket
+public record ServerboundReloadConfig() implements ModPacket
 {
-    /* Constructors */
+    /* Type */
 
-    public ServerboundReloadConfig()
-    {
-    }
+    public static final Type<ServerboundReloadConfig> TYPE = ModPacket.createType(ServerboundReloadConfig.class);
+
+    /* Decoder */
 
     /**
      * Decode a packet received over the network.
@@ -31,17 +32,18 @@ public class ServerboundReloadConfig implements ModPacket
      */
     public ServerboundReloadConfig(FriendlyByteBuf ignored)
     {
+        this();
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isNotFromOperator(context))
             return;
@@ -62,5 +64,11 @@ public class ServerboundReloadConfig implements ModPacket
         }
         else
             NostalgicTweaks.LOGGER.error("[Config HotSwap] Could not reload contents saved on disk");
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

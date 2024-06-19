@@ -3,49 +3,51 @@ package mod.adrenix.nostalgic.network.packet.backup;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public class ClientboundAppliedBackup implements ModPacket
+/**
+ * Let the operator know if backup application was successful.
+ *
+ * @param success Whether the backup was successfully applied.
+ */
+public record ClientboundAppliedBackup(boolean success) implements ModPacket
 {
-    /* Fields */
+    /* Type */
 
-    final boolean isError;
+    public static final Type<ClientboundAppliedBackup> TYPE = ModPacket.createType(ClientboundAppliedBackup.class);
 
-    /* Constructors */
-
-    /**
-     * Let the operator know if backup application was successful.
-     *
-     * @param success Whether the backup was successfully applied.
-     */
-    public ClientboundAppliedBackup(boolean success)
-    {
-        this.isError = !success;
-    }
+    /* Decoder */
 
     /**
      * Decode a packet received over the network.
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    public ClientboundAppliedBackup(FriendlyByteBuf buffer)
+    public ClientboundAppliedBackup(final FriendlyByteBuf buffer)
     {
-        this.isError = buffer.readBoolean();
+        this(buffer.readBoolean());
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
-        buffer.writeBoolean(this.isError);
+        buffer.writeBoolean(this.success);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
 
         ExecuteOnClient.handleAppliedBackup(this);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

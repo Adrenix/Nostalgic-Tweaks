@@ -46,7 +46,7 @@ abstract class TweakListingPacket<T extends TweakListing<?, ?>> implements Tweak
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.poolId);
         buffer.writeBoolean(this.disabled);

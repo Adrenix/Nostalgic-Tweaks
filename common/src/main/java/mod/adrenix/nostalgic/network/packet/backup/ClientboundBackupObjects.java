@@ -5,6 +5,7 @@ import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.util.common.io.PathUtil;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,10 +15,14 @@ import java.util.Set;
 
 public class ClientboundBackupObjects implements ModPacket
 {
+    /* Type */
+
+    public static final Type<ClientboundBackupObjects> TYPE = ModPacket.createType(ClientboundBackupObjects.class);
+
     /* Fields */
 
     final Set<BackupObject> backups;
-    final boolean isError;
+    final boolean success;
 
     /* Constructors */
 
@@ -28,7 +33,7 @@ public class ClientboundBackupObjects implements ModPacket
     public ClientboundBackupObjects()
     {
         this.backups = new LinkedHashSet<>();
-        boolean isException = false;
+        boolean hasError = false;
 
         try
         {
@@ -39,10 +44,10 @@ public class ClientboundBackupObjects implements ModPacket
         }
         catch (IOException exception)
         {
-            isException = true;
+            hasError = true;
         }
 
-        this.isError = isException;
+        this.success = hasError;
     }
 
     /**
@@ -52,25 +57,31 @@ public class ClientboundBackupObjects implements ModPacket
      */
     public ClientboundBackupObjects(FriendlyByteBuf buffer)
     {
-        this.isError = buffer.readBoolean();
+        this.success = buffer.readBoolean();
         this.backups = buffer.readCollection(Sets::newLinkedHashSetWithExpectedSize, BackupObject::decode);
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
-        buffer.writeBoolean(this.isError);
+        buffer.writeBoolean(this.success);
         buffer.writeCollection(this.backups, BackupObject::encode);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
 
         ExecuteOnClient.handleBackupObjects(this);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

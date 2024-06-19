@@ -1,15 +1,21 @@
-package mod.adrenix.nostalgic.network.packet;
+package mod.adrenix.nostalgic.network.packet.sync;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.network.ModConnection;
+import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class ClientboundHandshake implements ModPacket
 {
+    /* Type */
+
+    public static final Type<ClientboundHandshake> TYPE = ModPacket.createType(ClientboundHandshake.class);
+
     /* Fields */
 
     protected final String json;
@@ -41,13 +47,13 @@ public class ClientboundHandshake implements ModPacket
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.json);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
@@ -82,5 +88,11 @@ public class ClientboundHandshake implements ModPacket
             NostalgicTweaks.LOGGER.warn(info, server, client);
             NostalgicTweaks.LOGGER.warn("Client should disconnect due to an incorrect mod network state");
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

@@ -3,50 +3,52 @@ package mod.adrenix.nostalgic.network.packet.backup;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public class ClientboundMadeBackup implements ModPacket
+/**
+ * Create a new "server made backup file" packet instance. Depending on whether the backup was successful will change
+ * the type of overlay screen seen on the client.
+ *
+ * @param success Whether the backup file was created successfully.
+ */
+public record ClientboundMadeBackup(boolean success) implements ModPacket
 {
-    /* Fields */
+    /* Type */
 
-    final boolean successful;
+    public static final Type<ClientboundMadeBackup> TYPE = ModPacket.createType(ClientboundMadeBackup.class);
 
-    /* Constructors */
-
-    /**
-     * Create a new "server made backup file" packet instance. Depending on whether the backup was successful will
-     * change the type of overlay screen seen on the client.
-     *
-     * @param successful Whether the backup file was created successfully.
-     */
-    public ClientboundMadeBackup(boolean successful)
-    {
-        this.successful = successful;
-    }
+    /* Decoder */
 
     /**
      * Decode a packet received over the network.
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    public ClientboundMadeBackup(FriendlyByteBuf buffer)
+    public ClientboundMadeBackup(final FriendlyByteBuf buffer)
     {
-        this.successful = buffer.readBoolean();
+        this(buffer.readBoolean());
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
-        buffer.writeBoolean(this.successful);
+        buffer.writeBoolean(this.success);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
 
         ExecuteOnClient.handleMadeBackup(this);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

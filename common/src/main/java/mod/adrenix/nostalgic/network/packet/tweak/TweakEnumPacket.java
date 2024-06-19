@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakEnum;
 import net.minecraft.network.FriendlyByteBuf;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
@@ -44,7 +45,7 @@ abstract class TweakEnumPacket implements TweakPacket
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.poolId);
         buffer.writeUtf(this.enumJson);
@@ -57,6 +58,7 @@ abstract class TweakEnumPacket implements TweakPacket
      * @param tweak A {@link Tweak} instance.
      * @return An {@link Object} that will represent the enum class used by the given tweak.
      */
+    @Nullable
     Object getReceivedEnum(Tweak<?> tweak)
     {
         try

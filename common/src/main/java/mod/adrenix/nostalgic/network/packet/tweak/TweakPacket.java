@@ -15,6 +15,7 @@ import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import mod.adrenix.nostalgic.util.server.ServerTimer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,7 @@ public interface TweakPacket extends ModPacket
      * @param poolId        A tweak's pool identifier.
      * @param receivedValue The value received from the server.
      */
-    default void changeOnClient(NetworkManager.PacketContext context, String poolId, Object receivedValue)
+    default void changeOnClient(NetworkManager.PacketContext context, String poolId, @Nullable Object receivedValue)
     {
         // Check that the server is not handling this
         if (this.isServerHandling(context) || receivedValue == null)
@@ -145,7 +146,7 @@ public interface TweakPacket extends ModPacket
      * @param poolId        A tweak's pool identifier.
      * @param receivedValue The value received from an operator.
      */
-    default void changeOnServer(NetworkManager.PacketContext context, String poolId, Object receivedValue)
+    default void changeOnServer(NetworkManager.PacketContext context, String poolId, @Nullable Object receivedValue)
     {
         // Don't trust data sent by a player
         if (receivedValue == null)

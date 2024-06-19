@@ -6,6 +6,7 @@ import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,12 +16,16 @@ import java.util.Set;
 
 public class ClientboundBackupDownload implements ModPacket
 {
+    /* Type */
+
+    public static final Type<ClientboundBackupDownload> TYPE = ModPacket.createType(ClientboundBackupDownload.class);
+
     /* Fields */
 
     final DownloadType downloadType;
     final Set<String> chunks;
     final String filename;
-    final boolean isError;
+    final boolean success;
 
     /* Constructors */
 
@@ -35,7 +40,7 @@ public class ClientboundBackupDownload implements ModPacket
         this.downloadType = downloadType;
 
         Path path = backup.getPath();
-        boolean isError = false;
+        boolean hasError = false;
 
         if (Files.exists(path))
         {
@@ -48,17 +53,17 @@ public class ClientboundBackupDownload implements ModPacket
             }
             catch (IOException exception)
             {
-                isError = true;
+                hasError = true;
                 NostalgicTweaks.LOGGER.error("[I/O Error] Could not read backup file (%s)\n%s", this.filename, exception);
             }
         }
         else
         {
-            isError = true;
+            hasError = true;
             NostalgicTweaks.LOGGER.error("[I/O Error] Could not found backup file (%s)", this.filename);
         }
 
-        this.isError = isError;
+        this.success = !hasError;
     }
 
     /**
@@ -70,27 +75,33 @@ public class ClientboundBackupDownload implements ModPacket
     {
         this.downloadType = buffer.readEnum(DownloadType.class);
         this.filename = buffer.readUtf();
-        this.isError = buffer.readBoolean();
+        this.success = buffer.readBoolean();
         this.chunks = buffer.readCollection(Sets::newLinkedHashSetWithExpectedSize, FriendlyByteBuf::readUtf);
     }
 
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeEnum(this.downloadType);
         buffer.writeUtf(this.filename);
-        buffer.writeBoolean(this.isError);
+        buffer.writeBoolean(this.success);
         buffer.writeCollection(this.chunks, FriendlyByteBuf::writeUtf);
     }
 
     @Override
-    public void apply(NetworkManager.PacketContext context)
+    public void receiver(NetworkManager.PacketContext context)
     {
         if (this.isServerHandling(context))
             return;
 
         ExecuteOnClient.handleBackupDownload(this);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 }

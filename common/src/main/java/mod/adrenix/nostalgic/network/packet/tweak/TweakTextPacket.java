@@ -38,7 +38,7 @@ abstract class TweakTextPacket implements TweakPacket
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(this.poolId);
         buffer.writeUtf(this.text);

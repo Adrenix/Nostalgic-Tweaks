@@ -44,9 +44,9 @@ abstract class TweakItemMapPacket extends TweakListingPacket<TweakItemMap<?>>
     /* Methods */
 
     @Override
-    public void encode(FriendlyByteBuf buffer)
+    public void encoder(FriendlyByteBuf buffer)
     {
-        super.encode(buffer);
+        super.encoder(buffer);
 
         buffer.writeMap(this.map, FriendlyByteBuf::writeUtf, this.packager::writeValue);
     }
