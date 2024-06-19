@@ -63,6 +63,22 @@ public abstract class TabButtonMixin extends AbstractWidget
     }
 
     /**
+     * Disables the rendering of the menu background behind tab buttons on the world creation screen if rendering the
+     * old style tabs.
+     */
+    @WrapWithCondition(
+        method = "renderWidget",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/components/TabButton;renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;IIII)V"
+        )
+    )
+    private boolean nt_create_world_screen$shouldRenderMenuBackground(TabButton button, GuiGraphics graphics, int minX, int minY, int maxX, int maxY)
+    {
+        return !WidgetMixinHelper.isOldStyleTabs();
+    }
+
+    /**
      * Disables the rendering of the tab button underline on the world creation screen if rendering the old style tabs.
      */
     @WrapWithCondition(
