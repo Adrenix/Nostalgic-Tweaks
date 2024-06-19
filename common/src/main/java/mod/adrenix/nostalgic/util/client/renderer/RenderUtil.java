@@ -26,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -813,6 +814,8 @@ public abstract class RenderUtil
         PoseStack poseStack = new PoseStack();
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
+        setupLightFor3D();
+
         BLOCK_MODEL_QUEUE.forEach(block -> {
             poseStack.last().pose().set(block.matrix);
 
@@ -823,6 +826,8 @@ public abstract class RenderUtil
 
         buffer.endBatch();
         BLOCK_MODEL_QUEUE.clear();
+
+        Lighting.setupFor3DItems();
     }
 
     /**
@@ -2000,6 +2005,8 @@ public abstract class RenderUtil
         {
             if (isLightingFlat)
                 Lighting.setupForFlatItems();
+            else
+                setupLightFor3D();
 
             PoseStack viewStack = new PoseStack();
             viewStack.last().pose().set(getModelViewMatrix(graphics.pose(), x, y));
@@ -2013,5 +2020,14 @@ public abstract class RenderUtil
         }
         else
             ItemBuffer.create(graphics, itemStack, model, x, y, packedLight);
+    }
+
+    /**
+     * Change the lighting system to prepare for 3D items.
+     */
+    @PublicAPI
+    public static void setupLightFor3D()
+    {
+        RenderSystem.setupGui3DDiffuseLighting(new Vector3f(0.0F, -2.0F, -1.0F), new Vector3f(1.7F, 2.0F, -1.0F));
     }
 }
