@@ -69,6 +69,9 @@ public abstract class ClientEventHandler
         if (overlay == VanillaGuiLayers.EXPERIENCE_BAR && isExperienceOff)
             event.setCanceled(true);
 
+        if (overlay == VanillaGuiLayers.EXPERIENCE_LEVEL && isExperienceOff)
+            event.setCanceled(true);
+
         if (overlay == VanillaGuiLayers.FOOD_LEVEL && isFoodOff)
             event.setCanceled(true);
 
