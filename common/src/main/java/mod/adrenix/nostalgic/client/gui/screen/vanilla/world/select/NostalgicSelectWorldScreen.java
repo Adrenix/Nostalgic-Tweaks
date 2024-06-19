@@ -17,9 +17,11 @@ import net.minecraft.client.gui.screens.LoadingDotsText;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
+import net.minecraft.world.level.storage.LevelSummary;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class NostalgicSelectWorldScreen extends SelectWorldScreen implements DynamicScreen<NostalgicSelectWorldScreen>
@@ -255,10 +257,11 @@ public class NostalgicSelectWorldScreen extends SelectWorldScreen implements Dyn
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        graphics.pose().pushPose();
-        graphics.pose().scale(0.0F, 0.0F, 0.0F);
-        this.selectionList.render(graphics, mouseX, mouseY, partialTick);
-        graphics.pose().popPose();
+        WorldSelectionListAccess worldListAccess = (WorldSelectionListAccess) this.selectionList;
+        List<LevelSummary> worldList = worldListAccess.nt$pollLevelsIgnoreErrors();
+
+        if (worldList != worldListAccess.nt$getCurrentlyDisplayedLevels())
+            worldListAccess.nt$handleNewLevels(worldList);
 
         this.renderBackground(graphics, mouseX, mouseY, partialTick);
 
