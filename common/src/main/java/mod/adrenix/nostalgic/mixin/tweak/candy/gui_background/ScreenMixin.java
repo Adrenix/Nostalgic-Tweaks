@@ -1,7 +1,9 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.gui_background;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.GuiBackground;
@@ -9,6 +11,7 @@ import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,6 +59,36 @@ public abstract class ScreenMixin
         }
         else
             operation.call(screen, graphics);
+    }
+
+    /**
+     * Prevents the processing of the screen blur effect.
+     */
+    @WrapWithCondition(
+        method = "renderBlurredBackground",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/GameRenderer;processBlurEffect(F)V"
+        )
+    )
+    private boolean nt_gui_background$shouldProcessBlurEffect(GameRenderer gameRenderer, float partialTick)
+    {
+        return !CandyTweak.REMOVE_SCREEN_BLUR.get();
+    }
+
+    /**
+     * Prevents writing the blur effect to the main render target.
+     */
+    @WrapWithCondition(
+        method = "renderBlurredBackground",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"
+        )
+    )
+    private boolean nt_gui_background$shouldBindWriteBlurEffect(RenderTarget renderTarget, boolean setViewport)
+    {
+        return !CandyTweak.REMOVE_SCREEN_BLUR.get();
     }
 
     /**

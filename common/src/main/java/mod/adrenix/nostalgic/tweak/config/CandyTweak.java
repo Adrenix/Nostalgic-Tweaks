@@ -179,6 +179,7 @@ public interface CandyTweak
 
     // Generic Screen
 
+    TweakFlag REMOVE_SCREEN_BLUR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
     TweakFlag OLD_DIRT_SCREEN_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
     TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI).newForUpdate().build();

@@ -1038,6 +1038,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldChatInput.info": "Bring back the old chat input box. Adds a > at the beginning of the box.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldChatBox": "Old Chat Box",
   "gui.nostalgic_tweaks.config.eyeCandy.oldChatBox.info": "Bring back the old chat box size, position, and fading animations.",
+  "gui.nostalgic_tweaks.config.eyeCandy.removeScreenBlur": "Remove Screen Blur",
+  "gui.nostalgic_tweaks.config.eyeCandy.removeScreenBlur.info": "Prevent the blurring effect applied to screens.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor": "Old Button Text Colors",
   "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor.info": "Bring back the old button text colors. Text on buttons will have a slight§7 gray§r color, and when hovered, the text turns§e yellow§r. To get the old§9 blue§r button background and§c removal§r of the white border around buttons, use the§e Programmer Art§r resource pack.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldDirtScreenBackground": "Old Dirt Screen Background",
