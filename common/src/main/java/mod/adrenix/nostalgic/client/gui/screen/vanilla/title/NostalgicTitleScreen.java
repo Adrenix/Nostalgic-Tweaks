@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.client.gui.screen.vanilla.title;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.client.gui.screen.DynamicScreen;
@@ -22,19 +21,13 @@ import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<NostalgicTitleScreen>
 {
-    /* Static */
-
-    private static final ResourceLocation OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
-
     /* Fields */
 
     private NostalgicLogoRenderer blockLogo;
@@ -166,18 +159,14 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
         }
 
         if (CandyTweak.OLD_TITLE_BACKGROUND.get())
-            this.renderMenuBackground(graphics);
-        else
         {
-            this.renderPanorama(graphics, partialTick);
-
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-            graphics.blit(OVERLAY, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
+            if (CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+                this.renderMenuBackground(graphics);
+            else
+                GuiUtil.renderDirtBackground(graphics);
         }
+        else
+            this.renderPanorama(graphics, partialTick);
 
         if (this.minecraft == null || this.minecraft.getOverlay() != null)
             return;

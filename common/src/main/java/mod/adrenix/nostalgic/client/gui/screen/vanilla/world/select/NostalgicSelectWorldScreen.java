@@ -255,9 +255,12 @@ public class NostalgicSelectWorldScreen extends SelectWorldScreen implements Dyn
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
+        graphics.pose().pushPose();
+        graphics.pose().scale(0.0F, 0.0F, 0.0F);
         this.selectionList.render(graphics, mouseX, mouseY, partialTick);
+        graphics.pose().popPose();
 
-        this.renderMenuBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTick);
 
         if (this.selectionList.children().contains(this.getAccessToSelectionList().nt$getLoadingHeader()))
         {
