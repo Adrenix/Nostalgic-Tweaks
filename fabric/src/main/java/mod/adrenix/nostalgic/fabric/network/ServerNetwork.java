@@ -2,7 +2,10 @@ package mod.adrenix.nostalgic.fabric.network;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.LoginReply;
+import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import net.fabricmc.fabric.api.networking.v1.LoginPacketSender;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,9 +19,9 @@ abstract class ServerNetwork
      * installed.
      */
     @SuppressWarnings("unused")
-    static void sendProtocolRequest(ServerLoginPacketListenerImpl handler, MinecraftServer server, PacketSender sender, ServerLoginNetworking.LoginSynchronizer synchronizer)
+    static void sendProtocolRequest(ServerLoginPacketListenerImpl handler, MinecraftServer server, LoginPacketSender sender, ServerLoginNetworking.LoginSynchronizer synchronizer)
     {
-        // TODO: Rewrite
+        sender.sendPacket(ModConnection.PROTOCOL_ID, PacketByteBufs.empty());
     }
 
     /**
