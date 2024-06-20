@@ -39,7 +39,7 @@ public abstract class ScreenMixin
     )
     private static boolean nt_gui_background$shouldRenderTexturedBackground(GuiGraphics graphics, ResourceLocation texture, int x, int y, int blitOffset, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
     {
-        if (ModTweak.ENABLED.get())
+        if (ModTweak.ENABLED.get() && !ScreenMixinHelper.hasDirtBackground(texture))
             return ScreenMixinHelper.renderColoredBackground(graphics, width, height);
 
         return true;
@@ -106,7 +106,7 @@ public abstract class ScreenMixin
     )
     private static void nt_gui_background$preRenderMenuBackgroundTexture(GuiGraphics graphics, ResourceLocation texture, int x, int y, float uOffset, float vOffset, int width, int height, CallbackInfo callback)
     {
-        if (Screen.MENU_BACKGROUND == texture && CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+        if (ScreenMixinHelper.hasDirtBackground(texture))
             graphics.setColor(0.25F, 0.25F, 0.25F, 1.0F);
     }
 
@@ -122,7 +122,7 @@ public abstract class ScreenMixin
     )
     private static ResourceLocation nt_gui_background$shouldRenderMenuBackground(ResourceLocation texture)
     {
-        if (Screen.MENU_BACKGROUND == texture && CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+        if (ScreenMixinHelper.hasDirtBackground(texture))
             return TextureLocation.DIRT_BACKGROUND;
 
         return texture;

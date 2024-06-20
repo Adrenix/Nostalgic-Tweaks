@@ -2,16 +2,39 @@ package mod.adrenix.nostalgic.mixin.util.candy;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
+import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.screens.ProgressScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This utility class is used only by the client.
  */
 public abstract class ScreenMixinHelper
 {
+    /**
+     * Check if the current screen should use a dirt background.
+     *
+     * @param backgroundLocation The menu {@link ResourceLocation} background.
+     * @return Whether the current screen should render a dirt background.
+     */
+    public static boolean hasDirtBackground(ResourceLocation backgroundLocation)
+    {
+        if (!CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
+            return false;
+
+        boolean hasRowList = NullableResult.getOrElse(GuiUtil.getScreenOrNull(), false, screen -> screen.children()
+            .stream()
+            .anyMatch(widget -> ClassUtil.isInstanceOf(widget, AbstractSelectionList.class)));
+
+        return Screen.MENU_BACKGROUND == backgroundLocation || hasRowList;
+    }
+
     /**
      * Render a colored background on a screen.
      *
