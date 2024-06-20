@@ -546,6 +546,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_hunger_bar_alt_food": "Alternative Food Text",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_hunger_bar_alt_saturation": "Alternative Saturation Text",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_gui": "Screen Candy",
+  "gui.nostalgic_tweaks.container.eyeCandy.interface_gui_color": "Background Color",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_anvil": "Anvil Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_crafting": "Crafting Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_debug": "Debug Screen",
