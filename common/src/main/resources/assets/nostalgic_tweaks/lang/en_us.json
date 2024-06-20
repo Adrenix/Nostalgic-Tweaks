@@ -1064,6 +1064,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.includeModsOnPause.info": "Add a§e Mods§r button to§a every§r old pause screen layout.",
   "gui.nostalgic_tweaks.config.eyeCandy.removeExtraPauseButtons": "Remove Extra Buttons",
   "gui.nostalgic_tweaks.config.eyeCandy.removeExtraPauseButtons.info": "Remove any§e extra§r buttons that are added by§6 other mods§r from the nostalgic pause screen. This will§c not§r remove extra buttons from the§c modern§r pause screen.",
+  "gui.nostalgic_tweaks.config.eyeCandy.applyGuiColorBackground": "Use Colored Screen Backgrounds",
+  "gui.nostalgic_tweaks.config.eyeCandy.applyGuiColorBackground.info": "Disable screens from using a colored texture background from a resource pack. Screens will instead use the colors defined by the mod's screen background tweaks.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldGuiBackground": "Old Screen Background",
   "gui.nostalgic_tweaks.config.eyeCandy.oldGuiBackground.info": "Change the transparent color backgrounds when opening screens, like the inventory screen.",
   "gui.nostalgic_tweaks.config.eyeCandy.customGuiBackground": "Custom Screen Background",

@@ -1,14 +1,11 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.gui_background;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import mod.adrenix.nostalgic.mixin.util.candy.ScreenMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
-import mod.adrenix.nostalgic.tweak.enums.GuiBackground;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
-import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -31,34 +28,39 @@ public abstract class ScreenMixin
     /* Injections */
 
     /**
-     * Changes the fill gradient background color for standard GUI screens.
+     * Changes the fill gradient background color for textured backgrounds.
      */
-    @WrapOperation(
-        method = "renderBackground",
+    @WrapWithCondition(
+        method = "renderMenuBackgroundTexture",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screens/Screen;renderMenuBackground(Lnet/minecraft/client/gui/GuiGraphics;)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V"
         )
     )
-    private void nt_gui_background$wrapBackgroundRenderer(Screen screen, GuiGraphics graphics, Operation<Void> operation)
+    private static boolean nt_gui_background$shouldRenderTexturedBackground(GuiGraphics graphics, ResourceLocation texture, int x, int y, int blitOffset, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
     {
-        if (CandyTweak.CUSTOM_GUI_BACKGROUND.get())
-        {
-            int top = HexUtil.parseInt(CandyTweak.CUSTOM_GUI_TOP_GRADIENT.get());
-            int bottom = HexUtil.parseInt(CandyTweak.CUSTOM_GUI_BOTTOM_GRADIENT.get());
+        if (ModTweak.ENABLED.get())
+            return ScreenMixinHelper.renderColoredBackground(graphics, width, height);
 
-            graphics.fillGradient(0, 0, this.width, this.height, top, bottom);
-        }
-        else if (CandyTweak.OLD_GUI_BACKGROUND.get() != GuiBackground.SOLID_BLACK)
-        {
-            switch (CandyTweak.OLD_GUI_BACKGROUND.get())
-            {
-                case SOLID_BLUE -> graphics.fillGradient(0, 0, this.width, this.height, 0xA0303060, 0xA0303060);
-                case GRADIENT_BLUE -> graphics.fillGradient(0, 0, this.width, this.height, 0x60050500, 0xA0303060);
-            }
-        }
-        else
-            operation.call(screen, graphics);
+        return true;
+    }
+
+    /**
+     * Change the fill gradient background color for the transparent background.
+     */
+    @WrapWithCondition(
+        method = "renderTransparentBackground",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIII)V"
+        )
+    )
+    private boolean nt_gui_background$shouldRenderTransparentBackground(GuiGraphics graphics, int x1, int y1, int x2, int y2, int colorFrom, int colorTo)
+    {
+        if (ModTweak.ENABLED.get())
+            return ScreenMixinHelper.renderColoredBackground(graphics, x2, y2);
+
+        return true;
     }
 
     /**

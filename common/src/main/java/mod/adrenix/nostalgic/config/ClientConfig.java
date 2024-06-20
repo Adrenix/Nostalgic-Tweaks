@@ -341,6 +341,7 @@ public class ClientConfig implements ConfigMeta
         public boolean removeScreenBlur = CandyTweak.REMOVE_SCREEN_BLUR.register("removeScreenBlur");
         public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
         public boolean oldDirtScreenBackground = CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.register("oldDirtScreenBackground");
+        public boolean applyGuiColorBackground = CandyTweak.APPLY_GUI_COLOR_BACKGROUND.register("applyGuiColorBackground");
         public GuiBackground oldGuiBackground = CandyTweak.OLD_GUI_BACKGROUND.register("oldGuiBackground");
         public boolean customGuiBackground = CandyTweak.CUSTOM_GUI_BACKGROUND.register("customGuiBackground");
         public String customGuiTopGradient = CandyTweak.CUSTOM_GUI_TOP_GRADIENT.register("customGuiTopGradient");
