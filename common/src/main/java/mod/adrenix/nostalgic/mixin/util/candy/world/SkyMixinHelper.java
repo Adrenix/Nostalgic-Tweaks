@@ -45,9 +45,9 @@ public abstract class SkyMixinHelper
     public static final Holder<Matrix4f> MODEL_VIEW_MATRIX = Holder.create(new Matrix4f());
 
     /**
-     * Holds a copy of the sky's current frustum matrix.
+     * Holds a copy of the sky's current projection matrix.
      */
-    public static final Holder<Matrix4f> FRUSTUM_MATRIX = Holder.create(new Matrix4f());
+    public static final Holder<Matrix4f> PROJECTION_MATRIX = Holder.create(new Matrix4f());
 
     /**
      * Holds the sky's blue void buffer. This will be setup and torn down by the level renderer.

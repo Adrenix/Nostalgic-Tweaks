@@ -83,7 +83,7 @@ public abstract class LevelRendererMixin
             return;
 
         SkyMixinHelper.MODEL_VIEW_MATRIX.set(new Matrix4f(poseStack.last().pose()));
-        SkyMixinHelper.FRUSTUM_MATRIX.set(new Matrix4f(frustumMatrix));
+        SkyMixinHelper.PROJECTION_MATRIX.set(new Matrix4f(projectionMatrix));
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class LevelRendererMixin
         {
             SkyMixinHelper.BLUE_VOID_BUFFER.ifPresent(buffer -> {
                 buffer.bind();
-                buffer.drawWithShader(SkyMixinHelper.MODEL_VIEW_MATRIX.get(), SkyMixinHelper.FRUSTUM_MATRIX.get(), shader);
+                buffer.drawWithShader(SkyMixinHelper.MODEL_VIEW_MATRIX.get(), SkyMixinHelper.PROJECTION_MATRIX.get(), shader);
                 VertexBuffer.unbind();
             });
         }
