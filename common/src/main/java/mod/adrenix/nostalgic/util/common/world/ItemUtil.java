@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.common.world;
 
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -7,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -190,5 +192,23 @@ public abstract class ItemUtil
     public static boolean isEdible(Item item)
     {
         return isEdible(item.getDefaultInstance());
+    }
+
+    /**
+     * Cast an item stack to a specific item class type.
+     *
+     * @param itemStack The {@link ItemStack} to get an {@link Item} instance from.
+     * @param classType The {@link Item} class type to attempt a cast to.
+     * @param <T>       The item class value.
+     * @return The given item stack cast to the given class type, {@code null} if cast failed.
+     */
+    @PublicAPI
+    @Nullable
+    public static <T extends Item> T cast(@Nullable ItemStack itemStack, Class<T> classType)
+    {
+        if (itemStack == null)
+            return null;
+
+        return ClassUtil.cast(itemStack.getItem(), classType).orElse(null);
     }
 }
