@@ -27,7 +27,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
@@ -989,7 +991,9 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
             this.getBuilder().backgroundRenderer.accept(this, graphics, mouseX, mouseY, partialTick);
         else
         {
-            if (Minecraft.getInstance().level == null && this.getBuilder().renderBackgroundDirt)
+            boolean isLevelAbsent = Minecraft.getInstance().level == null;
+
+            if (isLevelAbsent && this.getBuilder().renderBackgroundDirt)
             {
                 BufferBuilder builder = RenderUtil.getAndBeginTexture(TextureLocation.DIRT_BACKGROUND);
 
@@ -1008,6 +1012,21 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
                     color = new Color(Color.BLACK, this.getBuilder().backgroundOpacity.getAsFloat()).get();
 
                 RenderUtil.fill(graphics, x0, y0, x1, y1, color);
+            }
+
+            if (this.getBuilder().useMenuBackground)
+            {
+                ResourceLocation background = isLevelAbsent ? TextureLocation.MENU_LIST_BACKGROUND : TextureLocation.LEVEL_MENU_LIST_BACKGROUND;
+                ResourceLocation header = isLevelAbsent ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
+                ResourceLocation footer = isLevelAbsent ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
+
+                RenderSystem.enableBlend();
+
+                graphics.blit(background, x0, y0, x1, y1 + scrollAmount, width, height, 32, 32);
+                graphics.blit(header, x0, y0 - 2, 0.0F, 0.0F, width, 2, 32, 2);
+                graphics.blit(footer, x0, y1, 0.0F, 0.0F, width, 2, 32, 2);
+
+                RenderSystem.disableBlend();
             }
         }
 

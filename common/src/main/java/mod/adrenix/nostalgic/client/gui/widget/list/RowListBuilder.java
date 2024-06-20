@@ -40,6 +40,7 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     boolean centerRows = false;
     boolean renderBatched = true;
     boolean useSeparators = false;
+    boolean useMenuBackground = false;
     boolean useScissorRendering = true;
     boolean showSelectionBorder = false;
     boolean renderBackgroundDirt = false;
@@ -127,10 +128,25 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     @PublicAPI
     public RowListBuilder useSeparators(Color color, int height, int padding)
     {
+        this.useMenuBackground = false;
         this.useSeparators = true;
         this.separatorColor = color;
         this.separatorHeight = height;
         this.separatorPadding = padding;
+
+        return this;
+    }
+
+    /**
+     * Use the game's row list background and separator textures.
+     */
+    @PublicAPI
+    public RowListBuilder useMenuBackground()
+    {
+        this.useMenuBackground = true;
+        this.useSeparators = false;
+        this.renderBackgroundDirt = false;
+        this.renderBackgroundOpacity = false;
 
         return this;
     }
@@ -401,6 +417,7 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     public RowListBuilder renderBackgroundDirt()
     {
         this.renderBackgroundDirt = true;
+        this.useMenuBackground = false;
 
         return this;
     }
@@ -482,6 +499,7 @@ public class RowListBuilder extends DynamicBuilder<RowListBuilder, RowList>
     {
         this.backgroundOpacity = () -> Mth.clamp(opacity.getAsInt() / 100.0F, 0.0F, 1.0F);
         this.renderBackgroundOpacity = true;
+        this.useMenuBackground = false;
 
         return this;
     }
