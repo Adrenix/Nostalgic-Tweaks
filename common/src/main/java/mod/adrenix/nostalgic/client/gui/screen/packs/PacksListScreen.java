@@ -55,6 +55,8 @@ public class PacksListScreen extends EnhancedScreen<PacksListScreen, PacksListWi
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
+        this.renderBlurredBackground(partialTick);
+
         if (this.minecraft.level == null)
             Panorama.render(graphics, partialTick);
         else
