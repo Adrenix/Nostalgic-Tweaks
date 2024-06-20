@@ -345,17 +345,15 @@ class SelectWorldWidgets implements WidgetManager
             .verticalMargin(0)
             .topMargin(2)
             .centerRows()
-            .renderTopAndBottomShadow()
             .extendWidthToScreenEnd(0)
             .leftAlignedScrollbar(14)
             .scrollbarBackground(Color.BLACK)
             .build(this.selectWorldScreen::addWidget);
 
         if (CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.get())
-        {
-            rowList.getBuilder().renderBackgroundDirt();
-            rowList.getBuilder().renderBackgroundOpacity();
-        }
+            rowList.getBuilder().renderTopAndBottomDirt().renderBackgroundDirt().renderBackgroundOpacity();
+        else
+            rowList.getBuilder().useMenuBackground();
 
         for (WorldSelectionList.WorldListEntry world : worlds)
         {
