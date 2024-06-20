@@ -93,6 +93,18 @@ public abstract class GuiUtil
     }
 
     /**
+     * Get the game's current screen.
+     *
+     * @return The current screen, or {@code null} if the game does not have one.
+     */
+    @PublicAPI
+    @Nullable
+    public static Screen getScreenOrNull()
+    {
+        return getScreen().orElse(null);
+    }
+
+    /**
      * @return Get the current game screen's width.
      */
     @PublicAPI
