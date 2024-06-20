@@ -62,6 +62,7 @@
     "candy.grass_texture.ModelBakeryMixin",
     "candy.grass_texture.ScreenMixin",
     "candy.gui_background.AbstractSelectionListMixin",
+    "candy.gui_background.GenericMessageScreenMixin",
     "candy.gui_background.ScreenMixin",
     "candy.inventory_screen.InventoryArmorSlotMixin",
     "candy.inventory_screen.InventoryScreenMixin",
