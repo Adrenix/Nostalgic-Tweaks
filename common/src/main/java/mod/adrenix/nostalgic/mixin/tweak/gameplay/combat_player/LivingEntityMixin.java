@@ -35,7 +35,7 @@ public abstract class LivingEntityMixin
 
         if (SwordBlockMixinHelper.isBlocking(player))
         {
-            if (hurtAmount >= 3.0F)
+            if (hurtAmount > 1.0F)
             {
                 player.getUseItem().hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
