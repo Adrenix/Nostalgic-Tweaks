@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.network.packet.backup;
 
 import com.google.common.collect.Sets;
 import dev.architectury.networking.NetworkManager;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.util.common.io.PathUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,9 +46,11 @@ public class ClientboundBackupObjects implements ModPacket
         catch (IOException exception)
         {
             hasError = true;
+
+            NostalgicTweaks.LOGGER.error("An error occurred when preparing the server's backup files\n%s", exception);
         }
 
-        this.success = hasError;
+        this.success = !hasError;
     }
 
     /**
