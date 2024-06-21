@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.food_health;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.sounds.SoundEvent;
@@ -31,17 +32,17 @@ public abstract class LivingEntityMixin
     }
 
     /**
-     * Prevents the addition of food effects to the player after consuming food.
+     * Prevents the hunger effect from being applied to entities if it is disabled.
      */
-    @WrapWithCondition(
-        method = "addEatEffect",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z"
-        )
+    @ModifyReturnValue(
+        method = "canBeAffected",
+        at = @At("RETURN")
     )
-    private boolean nt_food_health$shouldAddFoodEffect(LivingEntity livingEntity, MobEffectInstance effectInstance)
+    private boolean nt_food_health$shouldAddFoodEffect(boolean canBeAffected, MobEffectInstance effectInstance)
     {
-        return !GameplayTweak.PREVENT_HUNGER_EFFECT.get() || effectInstance.getEffect() != MobEffects.HUNGER;
+        if (GameplayTweak.PREVENT_HUNGER_EFFECT.get() && effectInstance.getEffect() == MobEffects.HUNGER)
+            return false;
+
+        return canBeAffected;
     }
 }
