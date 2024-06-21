@@ -12,6 +12,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -19,10 +20,13 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 /**
  * This utility class is used only by the client.
@@ -321,6 +325,40 @@ public abstract class LightingMixinHelper
     }
 
     /**
+     * Find block states within a given chunk that match the given predicate and perform an operation and the found
+     * block states and their block position.
+     *
+     * @param chunk     The {@link LevelChunk} to search.
+     * @param predicate The {@link Predicate} that accepts a {@link BlockState}.
+     * @param output    A {@link BiConsumer} that accepts a {@link BlockPos} and {@link BlockState} that matched the
+     *                  given predicate.
+     */
+    public static void findBlocks(LevelChunk chunk, Predicate<BlockState> predicate, BiConsumer<BlockPos, BlockState> output)
+    {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+        for (int i = chunk.getMinSection(); i < chunk.getMaxSection(); ++i)
+        {
+            LevelChunkSection section = chunk.getSection(chunk.getSectionIndexFromSectionY(i));
+            BlockPos blockPos = SectionPos.of(chunk.getPos(), i).origin();
+
+            for (int y = 0; y < 16; ++y)
+            {
+                for (int z = 0; z < 16; ++z)
+                {
+                    for (int x = 0; x < 16; ++x)
+                    {
+                        BlockState blockState = section.getBlockState(x, y, z);
+
+                        if (predicate.test(blockState))
+                            output.accept(mutablePos.setWithOffset(blockPos, x, y, z), blockState);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Applies relighting to the given chunk based on tweak context.
      *
      * @param chunk      The {@link LevelChunk} to relight.
@@ -338,7 +376,7 @@ public abstract class LightingMixinHelper
         if (!isChestLightBlocked && !isWaterDarker)
             return;
 
-        CompletableFuture.runAsync(() -> chunk.findBlocks(blockState -> {
+        CompletableFuture.runAsync(() -> findBlocks(chunk, blockState -> {
             if (allChanged == 1)
                 return BlockUtil.isWaterLike(blockState) || BlockUtil.isChestLike(blockState);
 
