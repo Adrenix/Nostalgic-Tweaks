@@ -1641,8 +1641,10 @@
   "gui.nostalgic_tweaks.config.gameplay.oldFoodStacking.info": "§aEnable§r to change the stack size of food items defined in the §7@decode{tweak=gameplay.customFoodStacking}§r list.",
   "gui.nostalgic_tweaks.config.gameplay.customFoodStacking": "Custom Food Stacking",
   "gui.nostalgic_tweaks.config.gameplay.customFoodStacking.info": "Add, edit, and/or remove stack sizes for food items.",
+  "gui.nostalgic_tweaks.config.gameplay.customFoodStacking.warn": "Changing an item's maximum stack size can cause§c undesirable§r side effects. Please use this tweak with§e caution§r.",
   "gui.nostalgic_tweaks.config.gameplay.customItemStacking": "Custom Item Stacking",
   "gui.nostalgic_tweaks.config.gameplay.customItemStacking.info": "Add, edit, and/or remove stack sizes for items. The §7@decode{tweak=gameplay.oldFoodStacking}§r tweak will§c override§r items in this list.",
+  "gui.nostalgic_tweaks.config.gameplay.customItemStacking.warn": "Changing an item's maximum stack size can cause§c undesirable§r side effects. Please use this tweak with§e caution§r.",
 
   "gui.nostalgic_tweaks.config.animation.preventArmSway": "Prevent Arm Sway",
   "gui.nostalgic_tweaks.config.animation.preventArmSway.info": "Removes the subtle animation that is applied to the arm when you look around.",
