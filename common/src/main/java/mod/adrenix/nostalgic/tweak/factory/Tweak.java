@@ -280,7 +280,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
             case NETWORK -> this.sendIfPossible();
         }
 
-        if (NetUtil.isLocalHost())
+        if (NetUtil.isLocalHost() && this.isMultiplayerLike())
             this.sendToAll();
     }
 
@@ -294,7 +294,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
         this.setDisk(this.fromLocal());
         this.sendIfPossible();
 
-        if (NetUtil.isLocalHost())
+        if (NetUtil.isLocalHost() && this.isMultiplayerLike())
             this.sendToAll();
     }
 
