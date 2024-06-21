@@ -148,7 +148,7 @@
     "gameplay.food_health.LivingEntityMixin",
     "gameplay.food_health.MinecraftMixin",
     "gameplay.food_health.PlayerMixin",
-    "gameplay.item_stacking.ItemStackMixin",
+    "gameplay.item_stacking.ItemMixin",
     "gameplay.mechanics_block.BedBlockMixin",
     "gameplay.mechanics_block.ChestBlockMixin",
     "gameplay.mechanics_block.EnderChestBlockMixin",

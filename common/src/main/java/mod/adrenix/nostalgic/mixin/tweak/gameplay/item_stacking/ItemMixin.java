@@ -3,21 +3,12 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.item_stacking;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ItemStack.class)
-public abstract class ItemStackMixin
+@Mixin(Item.class)
+public abstract class ItemMixin
 {
-    /* Shadows */
-
-    @Shadow
-    public abstract Item getItem();
-
-    /* Injections */
-
     /**
      * Dynamically changes the max item stack size.
      */
@@ -27,7 +18,7 @@ public abstract class ItemStackMixin
     )
     private int nt_item_stacking$modifyMaxStackSize(int maxStackSize)
     {
-        Item item = this.getItem();
+        Item item = (Item) (Object) this;
 
         if (maxStackSize == 1)
             return maxStackSize;
