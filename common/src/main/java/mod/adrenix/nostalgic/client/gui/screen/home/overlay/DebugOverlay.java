@@ -119,7 +119,7 @@ public class DebugOverlay
             .width(details::getInsideWidth)
             .build(details::addWidget));
 
-        debug.accept(String.format("Loader: §d%s", NostalgicTweaks.isForge() ? "Forge" : "Fabric"));
+        debug.accept(String.format("Loader: §d%s", NostalgicTweaks.getLoader()));
         debug.accept(String.format("Version: §e%s", NostalgicTweaks.getShortVersion()));
         debug.accept(String.format("Protocol: §b%s", NostalgicTweaks.PROTOCOL));
 
