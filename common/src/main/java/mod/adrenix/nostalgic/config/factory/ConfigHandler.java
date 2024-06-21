@@ -214,6 +214,8 @@ public class ConfigHandler<T extends ConfigMeta>
             if (this.permissions == ConfigPermissions.READ_WRITE)
             {
                 this.reset();
+                this.onLoad.run();
+
                 NostalgicTweaks.LOGGER.error("[Config Handler] Config file was reset - see backup file to retrieve deleted data");
             }
 
