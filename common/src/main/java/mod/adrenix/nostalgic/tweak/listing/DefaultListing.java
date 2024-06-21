@@ -83,7 +83,7 @@ public interface DefaultListing
         map.put(ItemUtil.getResourceKey(Items.BEETROOT), 8);
         map.put(ItemUtil.getResourceKey(Items.CARROT), 8);
         map.put(ItemUtil.getResourceKey(Items.CHORUS_FRUIT), 8);
-        map.put(ItemUtil.getResourceKey(Items.DRIED_KELP), 8);
+        map.put(ItemUtil.getResourceKey(Items.DRIED_KELP), 9);
         map.put(ItemUtil.getResourceKey(Items.MELON_SLICE), 8);
         map.put(ItemUtil.getResourceKey(Items.POTATO), 8);
         map.put(ItemUtil.getResourceKey(Items.POISONOUS_POTATO), 8);
@@ -106,7 +106,7 @@ public interface DefaultListing
         map.put(ItemUtil.getResourceKey(Items.ENCHANTED_GOLDEN_APPLE), 1);
         map.put(ItemUtil.getResourceKey(Items.GOLDEN_APPLE), 1);
         map.put(ItemUtil.getResourceKey(Items.GOLDEN_CARROT), 1);
-        map.put(ItemUtil.getResourceKey(Items.HONEY_BOTTLE), 1);
+        map.put(ItemUtil.getResourceKey(Items.HONEY_BOTTLE), 4);
         map.put(ItemUtil.getResourceKey(Items.MUSHROOM_STEW), 1);
         map.put(ItemUtil.getResourceKey(Items.MUTTON), 1);
         map.put(ItemUtil.getResourceKey(Items.PORKCHOP), 1);
