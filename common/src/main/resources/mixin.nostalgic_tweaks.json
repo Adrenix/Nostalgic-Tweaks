@@ -87,6 +87,7 @@
     "candy.world_fog.ClientLevelMixin",
     "candy.world_fog.FogRendererMixin",
     "candy.world_fog.LevelRendererMixin",
+    "candy.world_lighting.BlockAndTintGetterMixin",
     "candy.world_lighting.BlockBehaviourMixin",
     "candy.world_lighting.BlockStateBaseMixin",
     "candy.world_lighting.ClientChunkCacheMixin",
