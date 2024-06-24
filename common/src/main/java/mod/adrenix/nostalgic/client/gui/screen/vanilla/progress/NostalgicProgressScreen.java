@@ -227,6 +227,9 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
+        if (this.levelScreen != null && this.levelScreen.nt$getLevelReceived().getAsBoolean())
+            this.stop = true;
+
         if (this.minecraft == null)
             return;
 
