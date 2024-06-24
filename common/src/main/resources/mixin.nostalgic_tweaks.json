@@ -29,6 +29,7 @@
     "candy.anvil_screen.AnvilScreenMixin",
     "candy.block_bed.LivingEntityRendererMixin",
     "candy.block_hitbox.LevelRendererMixin",
+    "candy.block_hitbox.LineStateShardMixin",
     "candy.block_lighting.LightingMixin",
     "candy.block_offsets.BlockStateBaseMixin",
     "candy.block_particles.BoneMealItemMixin",
