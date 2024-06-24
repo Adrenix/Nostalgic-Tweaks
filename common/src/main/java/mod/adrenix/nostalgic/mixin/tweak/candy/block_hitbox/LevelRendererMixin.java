@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.block_hitbox;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.mixin.util.candy.HitboxMixinHelper;
@@ -16,6 +16,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,6 +28,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
@@ -38,6 +40,30 @@ public abstract class LevelRendererMixin
     @Unique @Nullable private Runnable nt$renderOverlay;
 
     /* Injected Methods */
+
+    /**
+     * Changes the render type used by the level renderer's hitbox outline.
+     */
+    @ModifyExpressionValue(
+        method = "renderLevel",
+        slice = @Slice(
+            from = @At(
+                value = "INVOKE",
+                target = "Lnet/minecraft/world/level/border/WorldBorder;isWithinBounds(Lnet/minecraft/core/BlockPos;)Z"
+            )
+        ),
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/RenderType;lines()Lnet/minecraft/client/renderer/RenderType;"
+        )
+    )
+    private RenderType nt_block_hitbox$modifyHitboxOutlineRenderType(RenderType renderType)
+    {
+        if (ModTweak.ENABLED.get())
+            return HitboxMixinHelper.OUTLINE_RENDER_TYPE;
+
+        return renderType;
+    }
 
     /**
      * Applies changes to the voxel shape, hitbox color, and/or prepares an overlay buffer used by the hitbox outline
@@ -79,10 +105,8 @@ public abstract class LevelRendererMixin
                 this.nt$renderOverlay = () -> HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
         }
 
-        BufferBuilder buffer = HitboxMixinHelper.getAndSetupOutline();
-
-        renderShape.call(poseStack, buffer, hitbox, x, y, z, r, g, b, a);
-        HitboxMixinHelper.endOutline(buffer);
+        HitboxMixinHelper.CUSTOM_HITBOX_OUTLINE.enable();
+        renderShape.call(poseStack, vertexConsumer, hitbox, x, y, z, r, g, b, a);
     }
 
     /**

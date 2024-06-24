@@ -1,6 +1,5 @@
 package mod.adrenix.nostalgic.mixin.util.candy;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -13,6 +12,7 @@ import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
+import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import net.minecraft.client.Minecraft;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Matrix4f;
 
+import java.util.OptionalDouble;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,6 +33,11 @@ import java.util.concurrent.TimeUnit;
 public abstract class HitboxMixinHelper
 {
     /* Fields */
+
+    /**
+     * Tracks if the level renderer is rendering a hitbox outline.
+     */
+    public static final FlagHolder CUSTOM_HITBOX_OUTLINE = FlagHolder.off();
 
     /**
      * Global animation instance for pulsating a hitbox overlay color.
@@ -45,7 +51,21 @@ public abstract class HitboxMixinHelper
         .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
         .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-        .setOutputState(RenderStateShard.WEATHER_TARGET)
+        .setOutputState(RenderStateShard.ITEM_ENTITY_TARGET)
+        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+        .setCullState(RenderStateShard.NO_CULL)
+        .createCompositeState(false));
+
+    /**
+     * An outline render type used to override the vanilla hitbox lines.
+     */
+    public static final RenderType OUTLINE_RENDER_TYPE = RenderType.create("nt_hitbox_outline", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 1536, RenderType.CompositeState.builder()
+        .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
+        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
+        .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+        .setOutputState(RenderStateShard.ITEM_ENTITY_TARGET)
+        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
         .setCullState(RenderStateShard.NO_CULL)
         .createCompositeState(false));
 
@@ -64,47 +84,6 @@ public abstract class HitboxMixinHelper
             return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
         return original;
-    }
-
-    /**
-     * Prepares a {@link BufferBuilder} and sets up the render state for rendering a hitbox outline.
-     *
-     * @return The {@link BufferBuilder} for the outline vertices.
-     */
-    public static BufferBuilder getAndSetupOutline()
-    {
-        BufferBuilder builder = RenderUtil.getAndBeginLine(CandyTweak.BLOCK_OUTLINE_THICKNESS.get());
-
-        RenderTarget mainTarget = Minecraft.getInstance().getMainRenderTarget();
-        RenderTarget weatherTarget = Minecraft.getInstance().levelRenderer.getWeatherTarget();
-
-        RenderSystem.disableCull();
-        RenderSystem.enableDepthTest();
-
-        if (Minecraft.useShaderTransparency() && weatherTarget != null)
-        {
-            weatherTarget.copyDepthFrom(mainTarget);
-            weatherTarget.bindWrite(false);
-        }
-
-        RenderStateShard.VIEW_OFFSET_Z_LAYERING.setupRenderState();
-
-        return builder;
-    }
-
-    /**
-     * Render and end a hitbox outline.
-     *
-     * @param buffer The {@link BufferBuilder} with the outline vertices.
-     */
-    public static void endOutline(BufferBuilder buffer)
-    {
-        RenderUtil.endLine(buffer);
-
-        RenderSystem.enableCull();
-        RenderSystem.disableDepthTest();
-        RenderSystem.defaultBlendFunc();
-        RenderStateShard.VIEW_OFFSET_Z_LAYERING.clearRenderState();
     }
 
     /**
@@ -207,6 +186,12 @@ public abstract class HitboxMixinHelper
             buffer.vertex(matrix, rx1, ry0, rz1 - dz).color(argbBottom).endVertex();
             buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
         });
+
+        if (Minecraft.useShaderTransparency())
+        {
+            Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(OUTLINE_RENDER_TYPE);
+        }
 
         if (builder == null)
             return;
