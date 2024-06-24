@@ -218,11 +218,6 @@ public class GroupViewBackups extends ManageGroup
     {
         IconWidget book = IconTemplate.text(Icons.BOOK_OPEN).pos(this.padding, this.padding).build(row::addWidget);
 
-        IconWidget floppy = IconTemplate.text(Icons.SAVE_FLOPPY)
-            .alignFlushTo(book)
-            .below(book, this.padding)
-            .build(row::addWidget);
-
         TextWidget filename = TextWidget.create(Lang.Manage.VIEW_BACKUPS_FILENAME)
             .color(Color.fromFormatting(ChatFormatting.GRAY))
             .extendWidthToEnd(row, this.padding)
@@ -235,6 +230,11 @@ public class GroupViewBackups extends ManageGroup
             .below(filename, this.padding)
             .build(row::addWidget);
 
+        IconWidget floppy = IconTemplate.text(Icons.SAVE_FLOPPY)
+            .alignFlushTo(book)
+            .below(json, this.padding * 2)
+            .build(row::addWidget);
+
         TextWidget created = TextWidget.create(Lang.Manage.VIEW_BACKUPS_LAST_MODIFIED)
             .color(Color.fromFormatting(ChatFormatting.GRAY))
             .extendWidthToEnd(row, this.padding)
@@ -242,15 +242,11 @@ public class GroupViewBackups extends ManageGroup
             .below(json, this.padding * 2)
             .build(row::addWidget);
 
-        TextWidget timestamp = TextWidget.create(PathUtil.parseEpochTime(backup.getTimestamp()))
+        return TextWidget.create(PathUtil.parseEpochTime(backup.getTimestamp()))
             .extendWidthToEnd(row, this.padding)
             .alignFlushTo(created)
             .below(created, this.padding)
             .build(row::addWidget);
-
-        floppy.getBuilder().below(json, this.padding * 2);
-
-        return timestamp;
     }
 
     /**
