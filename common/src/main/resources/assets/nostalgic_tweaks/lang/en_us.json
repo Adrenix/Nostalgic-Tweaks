@@ -153,6 +153,7 @@
   "gui.nostalgic_tweaks.button.filter": "Filter",
   "gui.nostalgic_tweaks.button.export": "Export",
   "gui.nostalgic_tweaks.button.import": "Import",
+  "gui.nostalgic_tweaks.button.modern": "Modern",
   "gui.nostalgic_tweaks.button.local": "Local",
   "gui.nostalgic_tweaks.button.quick": "Quick",
   "gui.nostalgic_tweaks.button.reset": "Reset",
@@ -243,6 +244,8 @@
   "gui.nostalgic_tweaks.row.tweak.reset": "Click to reset this tweak back to its§e original§r value.",
   "gui.nostalgic_tweaks.row.tweak.reset_off": "This tweak is already using its§e default§r value.",
   "gui.nostalgic_tweaks.row.tweak.status": "Click to open an informative screen about the current status of this tweak.",
+  "gui.nostalgic_tweaks.row.tweak.modern": "Click to change this tweak to its modern value.",
+  "gui.nostalgic_tweaks.row.tweak.modern_off": "This tweak is already using its§c modern§r value.",
   "gui.nostalgic_tweaks.row.tweak.no_impl": "This tweak does§c not§r have a§e controller implementation§r. This is a §4bug§r and should be reported.",
 
   "gui.nostalgic_tweaks.tag.new": "New",

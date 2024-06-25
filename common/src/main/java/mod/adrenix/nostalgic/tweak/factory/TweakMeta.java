@@ -34,7 +34,7 @@ public interface TweakMeta<T>
      * The value that is returned will be a value that relates to the current game context. For example, if this is a
      * server side tweak, then this method will return its disabled value if the player is not connected to a server
      * with Nostalgic Tweaks installed.
-     * <p><br>
+     * <p>
      * This should be used <b color=red>at all times</b> when getting a tweak value within mod logic. Avoid using other
      * tweak value getters unless you understand what is being returned by those methods.
      *
@@ -204,6 +204,22 @@ public interface TweakMeta<T>
     }
 
     /**
+     * @return Whether the cache value matches the disabled value.
+     */
+    default boolean isCacheDisabled()
+    {
+        return this.fromCache().equals(this.getDisabled());
+    }
+
+    /**
+     * Set the current cache value to its disabled value.
+     */
+    default void setCacheDisabled()
+    {
+        this.setCacheValue(this.getDisabled());
+    }
+
+    /**
      * Check if the given values can be saved to disk or sent to a server.
      *
      * @param cacheValue The cache value to check.
@@ -305,7 +321,7 @@ public interface TweakMeta<T>
      * Applies the cache based on the current {@link CacheMode}. If the tweak is in {@code NETWORK} mode, then the
      * applied changes will also be sent to the server if the player is connected to a server with the mod installed and
      * the player is an operator.
-     * <br><br>
+     * <p>
      * This does <b color=red>not</b> save changes to disk. To save to disk, use {@link ConfigCache#save()}.
      *
      * @throws RuntimeException If the server tried to invoke this method.
@@ -316,7 +332,7 @@ public interface TweakMeta<T>
      * Puts the local cache value into {@link #setDisk(Object)}. If the tweak is controlled by the server, and the
      * client is connected to a server with the mod (and is an operator), then the changes are also sent to the server.
      * The server does not use this, only the client will invoke this method.
-     * <br><br>
+     * <p>
      * This does <b color=red>not</b> save changes to disk. To save to disk, use {@link ConfigCache#save()}.
      *
      * @throws RuntimeException If the server tried to invoke this method.

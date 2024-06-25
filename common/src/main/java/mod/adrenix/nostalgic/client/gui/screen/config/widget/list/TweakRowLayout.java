@@ -40,6 +40,7 @@ public class TweakRowLayout
     final CrumbWidget breadcrumbs;
     final TagWidget tags;
     final TextWidget title;
+    final ButtonWidget modern;
     final ButtonWidget reset;
     final ButtonWidget undo;
     final ButtonWidget save;
@@ -75,14 +76,24 @@ public class TweakRowLayout
             .italicsWhen(this.tweak::isCurrentCacheSavable)
             .build(this.row::addWidget);
 
-        this.reset = ButtonWidget.create()
+        this.modern = ButtonWidget.create()
             .below(this.tags, 1)
+            .icon(Icons.RED_X)
+            .tooltip(Lang.Button.MODERN, 40, 700L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.TweakRow.MODERN, 40)
+            .disabledInfoTooltip(Lang.TweakRow.MODERN_OFF, 45)
+            .disableIf(CollectionUtil.areAnyTrue(this.tweak::isCacheDisabled, this.tweak::isNetworkLocked))
+            .fromWidgetEndX(this.row, this.padding)
+            .onPress(this.tweak::setCacheDisabled)
+            .build(this.row::addWidget);
+
+        this.reset = ButtonWidget.create()
+            .leftOf(this.modern, 1)
             .icon(Icons.RED_REDO)
             .tooltip(Lang.Button.RESET, 40, 700L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.TweakRow.RESET, 40)
             .disabledInfoTooltip(Lang.TweakRow.RESET_OFF, 45)
             .disableIf(CollectionUtil.areAnyTrue(this.tweak::isCacheDefault, this.tweak::isNetworkLocked))
-            .fromWidgetEndX(this.row, this.padding)
             .onPress(this.tweak::setCacheToDefault)
             .build(this.row::addWidget);
 
@@ -203,6 +214,14 @@ public class TweakRowLayout
     }
 
     /**
+     * @return The modern {@link ButtonWidget}.
+     */
+    public ButtonWidget getModern()
+    {
+        return this.modern;
+    }
+
+    /**
      * @return A {@link Component} to display for the sided tweak-cache context.
      */
     private Component getCacheTooltip()
@@ -245,6 +264,7 @@ public class TweakRowLayout
         setOrder.accept(this.save);
         setOrder.accept(this.undo);
         setOrder.accept(this.reset);
+        setOrder.accept(this.modern);
     }
 
     /**
@@ -265,6 +285,7 @@ public class TweakRowLayout
         this.row.moveToFront(this.save);
         this.row.moveToFront(this.undo);
         this.row.moveToFront(this.reset);
+        this.row.moveToFront(this.modern);
         this.row.moveToFront(this.tags);
         this.row.moveToFront(this.breadcrumbs);
     }
