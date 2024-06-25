@@ -362,6 +362,7 @@ public interface Lang
         Translation FILTER = from("filter");
         Translation EXPORT = from("export");
         Translation IMPORT = from("import");
+        Translation MODERN = from("modern");
         Translation LOCAL = from("local");
         Translation QUICK = from("quick");
         Translation RESET = from("reset");
@@ -476,6 +477,8 @@ public interface Lang
         Translation RESET = from("reset");
         Translation RESET_OFF = from("reset_off");
         Translation STATUS = from("status");
+        Translation MODERN = from("modern");
+        Translation MODERN_OFF = from("modern_off");
         Translation DESCRIPTION = from("description");
         Translation NO_IMPL = from("no_impl");
 
