@@ -233,8 +233,8 @@
   "gui.nostalgic_tweaks.listing.item_rule.no_edibles": "No Edibles",
   "gui.nostalgic_tweaks.listing.item_rule.no_edibles.info": "Filter out any items that are edible.",
 
-  "gui.nostalgic_tweaks.row.tweak.enabled": "Enabled",
-  "gui.nostalgic_tweaks.row.tweak.disabled": "Disabled",
+  "gui.nostalgic_tweaks.row.tweak.enabled": "Yes",
+  "gui.nostalgic_tweaks.row.tweak.disabled": "No",
   "gui.nostalgic_tweaks.row.tweak.description": "Description",
   "gui.nostalgic_tweaks.row.tweak.cache": "Click to change the §e%s§r side tweak value.",
   "gui.nostalgic_tweaks.row.tweak.cache_client": "This tweak §6only§r has a§b client§r side value.",
