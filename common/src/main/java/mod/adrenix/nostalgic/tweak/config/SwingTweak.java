@@ -75,7 +75,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -85,7 +84,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -95,7 +93,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -105,7 +102,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -115,7 +111,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -125,7 +120,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -135,7 +129,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -145,7 +138,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::enable)
         .load()
         .build();
@@ -157,7 +149,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
         .load()
         .build();
@@ -167,7 +158,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
         .load()
         .build();
@@ -177,7 +167,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> ATTACK_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
         .load()
         .build();
@@ -187,7 +176,6 @@ public interface SwingTweak
      */
     TweakNumber<Integer> USE_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
-        .whenDisabled(NEW_SPEED)
         .apply(SwingTweak::disable)
         .load()
         .build();
