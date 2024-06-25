@@ -38,6 +38,7 @@ public class KeybindingController
             .width(Controller.BUTTON_WIDTH)
             .build();
 
+        this.controller.getLayout().getModern().getBuilder().disableIf(BooleanSupplier.ALWAYS);
         this.controller.getLayout().getSave().getBuilder().disableIf(BooleanSupplier.ALWAYS);
         this.controller.getLayout().getUndo().getBuilder().disableIf(BooleanSupplier.ALWAYS);
         this.controller.getLayout().getReset().getBuilder().onPress(widget::reset);
