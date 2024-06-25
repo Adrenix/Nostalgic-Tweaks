@@ -56,7 +56,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     /**
@@ -65,7 +64,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     // Item Speeds
@@ -76,7 +74,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -85,7 +82,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -94,7 +90,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -103,7 +98,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -112,7 +106,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -121,7 +114,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -130,7 +122,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     /**
@@ -139,7 +130,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
         .newForUpdate()
         .apply(SwingTweak::enable)
-        .load()
         .build();
 
     // Potion Speeds
@@ -150,7 +140,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     /**
@@ -159,7 +148,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     /**
@@ -168,7 +156,6 @@ public interface SwingTweak
     TweakNumber<Integer> ATTACK_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     /**
@@ -177,7 +164,6 @@ public interface SwingTweak
     TweakNumber<Integer> USE_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
         .newForUpdate()
         .apply(SwingTweak::disable)
-        .load()
         .build();
 
     // Custom Speeds
@@ -188,7 +174,6 @@ public interface SwingTweak
     TweakItemMap<Integer> ATTACK_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
         .slider(MIN_SPEED, MAX_SPEED, SliderType.SWING)
         .icon(Icons.BREAK_WOOD)
-        .load()
         .build();
 
     /**
@@ -197,6 +182,5 @@ public interface SwingTweak
     TweakItemMap<Integer> USE_SWING_SPEEDS = TweakItemMap.client(new ItemMap<>(OLD_SPEED), SwingGroup.CUSTOM)
         .slider(MIN_SPEED, MAX_SPEED, SliderType.SWING)
         .icon(Icons.BREAK_WOOD)
-        .load()
         .build();
 }
