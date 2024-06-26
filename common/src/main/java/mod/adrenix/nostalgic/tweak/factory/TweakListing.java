@@ -95,6 +95,18 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
     }
 
     @Override
+    public void setCacheDisabled()
+    {
+        this.fromCache().setDisabled(true);
+    }
+
+    @Override
+    public boolean isCacheDisabled()
+    {
+        return this.isIgnored() || this.fromCache().isDisabled();
+    }
+
+    @Override
     public void applyCurrentCache()
     {
         switch (this.getCacheMode())
