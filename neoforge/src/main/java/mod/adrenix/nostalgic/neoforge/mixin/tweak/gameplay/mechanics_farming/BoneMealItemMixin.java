@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.gameplay.mechanics_farming;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.gameplay.mechanics_farming;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;

@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.candy.debug_screen;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.debug_screen;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

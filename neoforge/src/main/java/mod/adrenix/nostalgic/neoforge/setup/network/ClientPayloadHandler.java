@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.setup.network;
+package mod.adrenix.nostalgic.neoforge.setup.network;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import net.neoforged.neoforge.network.handling.IPayloadContext;

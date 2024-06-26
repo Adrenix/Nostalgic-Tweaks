@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin;
+package mod.adrenix.nostalgic.neoforge.mixin;
 
 import net.neoforged.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;

@@ -1,23 +1,23 @@
-package mod.adrenix.nostalgic.forge.mixin.embeddium.candy.world_lighting;
+package mod.adrenix.nostalgic.neoforge.mixin.embeddium.candy.world_lighting;
 
-import me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer;
-import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
-import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTracker;
-import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
-import me.jellysquid.mods.sodium.client.render.viewport.Viewport;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import org.embeddedt.embeddium.impl.render.EmbeddiumWorldRenderer;
+import org.embeddedt.embeddium.impl.render.chunk.RenderSectionManager;
+import org.embeddedt.embeddium.impl.render.chunk.map.ChunkTracker;
+import org.embeddedt.embeddium.impl.render.chunk.map.ChunkTrackerHolder;
+import org.embeddedt.embeddium.impl.render.viewport.Viewport;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SodiumWorldRenderer.class)
-public abstract class SodiumWorldRendererMixin
+@Mixin(EmbeddiumWorldRenderer.class)
+public abstract class EmbeddiumWorldRendererMixin
 {
     /* Shadows */
 

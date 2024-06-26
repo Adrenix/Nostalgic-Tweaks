@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.event;
+package mod.adrenix.nostalgic.neoforge.event;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;

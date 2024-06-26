@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.event;
+package mod.adrenix.nostalgic.neoforge.event;
 
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.neoforged.bus.api.SubscribeEvent;

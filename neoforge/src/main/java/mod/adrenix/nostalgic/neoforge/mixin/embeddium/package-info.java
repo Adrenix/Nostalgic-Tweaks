@@ -1,5 +1,5 @@
 @MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
-package mod.adrenix.nostalgic.forge.mixin.embeddium;
+package mod.adrenix.nostalgic.neoforge.mixin.embeddium;
 
 import mod.adrenix.nostalgic.annotation.MethodsReturnNonnullByDefault;
 import mod.adrenix.nostalgic.annotation.ParametersAreNonnullByDefault;

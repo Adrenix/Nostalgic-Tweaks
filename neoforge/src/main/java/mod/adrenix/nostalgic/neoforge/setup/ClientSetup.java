@@ -1,8 +1,8 @@
-package mod.adrenix.nostalgic.forge.setup;
+package mod.adrenix.nostalgic.neoforge.setup;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeScreen;
-import mod.adrenix.nostalgic.forge.event.AppleSkinHandler;
+import mod.adrenix.nostalgic.neoforge.event.AppleSkinHandler;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.neoforged.api.distmarker.Dist;

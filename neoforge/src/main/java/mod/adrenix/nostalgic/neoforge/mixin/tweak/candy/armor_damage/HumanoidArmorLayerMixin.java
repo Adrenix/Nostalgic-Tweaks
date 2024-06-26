@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.candy.armor_damage;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.armor_damage;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -54,13 +54,13 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
      */
     @ModifyExpressionValue(
         remap = false,
-        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V",
+        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;ILnet/minecraft/resources/ResourceLocation;)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
-    private VertexConsumer nt_neoforge_armor_damage$setRenderTypeConsumer(VertexConsumer consumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Model model, float red, float green, float blue, ResourceLocation armorLocation)
+    private VertexConsumer nt_neoforge_armor_damage$setRenderTypeConsumer(VertexConsumer consumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Model model, int dyeColor, ResourceLocation armorLocation)
     {
         return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, consumer, bufferSource, armorLocation);
     }
@@ -71,10 +71,10 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity>
     @ModifyArg(
         remap = false,
         index = 3,
-        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;FFFLnet/minecraft/resources/ResourceLocation;)V",
+        method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;ILnet/minecraft/resources/ResourceLocation;)V",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/model/Model;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"
+            target = "Lnet/minecraft/client/model/Model;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"
         )
     )
     private int nt_neoforge_armor_damage$setOverlayTexture(int packedOverlay)

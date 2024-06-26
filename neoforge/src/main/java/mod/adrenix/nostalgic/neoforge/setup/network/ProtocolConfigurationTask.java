@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.setup.network;
+package mod.adrenix.nostalgic.neoforge.setup.network;
 
 import mod.adrenix.nostalgic.network.ModConnection;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

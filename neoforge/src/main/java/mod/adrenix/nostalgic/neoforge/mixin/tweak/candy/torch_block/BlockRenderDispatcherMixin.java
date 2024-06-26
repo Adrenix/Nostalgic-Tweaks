@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.candy.torch_block;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.torch_block;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

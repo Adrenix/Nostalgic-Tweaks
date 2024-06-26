@@ -1,14 +1,14 @@
-package mod.adrenix.nostalgic.forge.mixin.embeddium.candy.world_lighting;
+package mod.adrenix.nostalgic.neoforge.mixin.embeddium.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import me.jellysquid.mods.sodium.client.world.WorldSlice;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LightLayer;
+import org.embeddedt.embeddium.impl.world.WorldSlice;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

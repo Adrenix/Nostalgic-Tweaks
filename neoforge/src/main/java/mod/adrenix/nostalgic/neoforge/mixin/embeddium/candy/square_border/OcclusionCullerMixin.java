@@ -1,11 +1,11 @@
-package mod.adrenix.nostalgic.forge.mixin.embeddium.candy.square_border;
+package mod.adrenix.nostalgic.neoforge.mixin.embeddium.candy.square_border;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
-import me.jellysquid.mods.sodium.client.render.chunk.occlusion.OcclusionCuller;
-import me.jellysquid.mods.sodium.client.render.viewport.CameraTransform;
 import mod.adrenix.nostalgic.mixin.util.candy.world.ServerWorldHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import org.embeddedt.embeddium.impl.render.chunk.RenderSection;
+import org.embeddedt.embeddium.impl.render.chunk.occlusion.OcclusionCuller;
+import org.embeddedt.embeddium.impl.render.viewport.CameraTransform;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

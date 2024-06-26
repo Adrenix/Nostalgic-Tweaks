@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.candy.old_hud;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.old_hud;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;

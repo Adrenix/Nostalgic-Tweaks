@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.forge.mixin.tweak.candy.tooltip_background;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.tooltip_background;
 
 import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
 import net.minecraft.client.gui.GuiGraphics;
