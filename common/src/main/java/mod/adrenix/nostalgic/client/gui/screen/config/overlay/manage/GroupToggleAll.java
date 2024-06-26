@@ -12,10 +12,7 @@ import mod.adrenix.nostalgic.client.gui.widget.group.Group;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.container.Category;
-import mod.adrenix.nostalgic.tweak.factory.Tweak;
-import mod.adrenix.nostalgic.tweak.factory.TweakBinding;
-import mod.adrenix.nostalgic.tweak.factory.TweakMeta;
-import mod.adrenix.nostalgic.tweak.factory.TweakPool;
+import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.client.search.SearchTag;
@@ -232,7 +229,16 @@ public class GroupToggleAll extends ManageGroup
                 .map(TweakMeta::wildcard);
 
             BiConsumer<Tweak<Object>, Object> consumer = (tweak, value) -> {
-                if (isLocal.get())
+                TweakListing<?, ?> listing = ClassUtil.cast(tweak, TweakListing.class).orElse(null);
+
+                if (listing != null)
+                {
+                    if (isLocal.get())
+                        listing.fromLocal().setDisabled(isDisabled.get());
+                    else if (isNetwork.get())
+                        listing.fromNetwork().setDisabled(isDisabled.get());
+                }
+                else if (isLocal.get())
                     tweak.setLocal(value);
                 else if (isNetwork.get())
                     tweak.setNetwork(value);
