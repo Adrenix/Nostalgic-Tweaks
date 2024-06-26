@@ -32,7 +32,8 @@ public enum TweakIssue
 {
     SODIUM(Lang.literal("Sodium"), Lang.Issue.SODIUM, Icons.SODIUM, Color.AZURE_WHITE, ModTracker.SODIUM::isInstalled),
     OPTIFINE(Lang.literal("Optifine"), Lang.Issue.OPTIFINE, Icons.OPTIFINE, Color.MUSTARD, ModTracker.OPTIFINE::isInstalled),
-    POLYTONE(Lang.literal("Polytone"), Lang.Issue.POLYTONE, Icons.PAINTBRUSH, Color.LIGHT_BLUE, ModTracker.POLYTONE::isInstalled);
+    POLYTONE(Lang.literal("Polytone"), Lang.Issue.POLYTONE, Icons.PAINTBRUSH, Color.LIGHT_BLUE, ModTracker.POLYTONE::isInstalled),
+    IRIS(Lang.literal("Iris"), Lang.Issue.IRIS, Icons.COLOR_WHEEL, Color.IRIS_BLUE, ModTracker.IRIS::isInstalled);
 
     /* Fields */
 
