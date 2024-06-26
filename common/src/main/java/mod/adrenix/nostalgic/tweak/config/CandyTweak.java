@@ -33,6 +33,8 @@ public interface CandyTweak
     // Custom Hitbox
 
     TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(DefaultListing.blockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
+    TweakItemSet FULL_BLOCK_OUTLINE_VOXELS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_BLOCKS), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
+    TweakFlag APPLY_BLOCK_OUTLINE_VOXELS = TweakFlag.server(true, CandyGroup.BLOCK_HITBOX_OUTLINE).newForUpdate().build();
     TweakColor BLOCK_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().whenDisabled("#00000066").build();
     TweakNumber<Float> BLOCK_OUTLINE_THICKNESS = TweakNumber.client(2.5F, CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).build();
     TweakFlag OLD_BLOCK_OVERLAY = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OVERLAY).whenDisabled(false).newForUpdate().build();
