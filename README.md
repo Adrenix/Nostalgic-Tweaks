@@ -1,4 +1,5 @@
 # Development Branches
+- [1.21 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.21) **In-Development**
 - [1.20.6 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6) **In-Development**
 - [1.20.4 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.4) **In-Development**
 - ~~[1.20 (Beta 8.4.1)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20)~~ **Discontinued**
