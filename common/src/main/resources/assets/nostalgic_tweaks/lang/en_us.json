@@ -1575,6 +1575,8 @@
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting": "Cart Boosting",
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting.info": "Bring back the old cart boosting mechanics. To perform this old mechanic, place§e two parallel rail tracks§r so that minecarts can§6 touch each other§r. When the minecarts§a connect§r, this old mechanic will cause the minecarts to start moving together and boosting each other at a§b high rate of speed§r.",
 
+  "gui.nostalgic_tweaks.config.gameplay.disableBoatBusyHands": "Disable Boat Busy Hands",
+  "gui.nostalgic_tweaks.config.gameplay.disableBoatBusyHands.info": "Allow the player to use their hands, such as attacking or using an item, while moving a boat.",
   "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift": "Old Boat Water Lift",
   "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift.info": "Bring back the old water lift bug where a boat will continue to float upwards as long as there is water above the boat. This mechanic can be used to create boat elevators.",
   "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift.search": "Elevator",
