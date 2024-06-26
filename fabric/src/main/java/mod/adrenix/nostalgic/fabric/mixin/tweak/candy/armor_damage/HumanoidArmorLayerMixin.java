@@ -59,9 +59,9 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
             target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
-    private VertexConsumer nt_fabric_armor_damage$setRenderTypeConsumer(VertexConsumer consumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, A model, float red, float green, float blue, ResourceLocation armorLocation)
+    private VertexConsumer nt_fabric_armor_damage$setRenderTypeConsumer(VertexConsumer vertexConsumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, A model, int dyeColor, ResourceLocation armorLocation)
     {
-        return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, consumer, bufferSource, armorLocation);
+        return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, vertexConsumer, bufferSource, armorLocation);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
         method = "renderModel",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/model/HumanoidModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"
+            target = "Lnet/minecraft/client/model/HumanoidModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"
         )
     )
     private int nt_fabric_armor_damage$setOverlayTexture(int packedOverlay)

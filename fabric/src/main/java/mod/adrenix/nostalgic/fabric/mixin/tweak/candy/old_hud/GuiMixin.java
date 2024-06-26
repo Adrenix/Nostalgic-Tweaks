@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.mixin.util.candy.hud.HudElement;
 import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -28,10 +29,10 @@ public abstract class GuiMixin
         at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/Gui;renderItemHotbar(Lnet/minecraft/client/gui/GuiGraphics;F)V"
+            target = "Lnet/minecraft/client/gui/Gui;renderItemHotbar(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V"
         )
     )
-    private void nt_fabric_old_hud$shiftHudElements(GuiGraphics graphics, float partialTick, CallbackInfo callback)
+    private void nt_fabric_old_hud$shiftHudElements(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callback)
     {
         if (ModTweak.ENABLED.get())
             HudMixinHelper.begin(graphics);
@@ -235,7 +236,7 @@ public abstract class GuiMixin
             target = "Lnet/minecraft/client/gui/Gui;renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"
         )
     )
-    private void nt_fabric_old_hud$shiftVehicleHealth(GuiGraphics graphics, float partialTick, CallbackInfo callback)
+    private void nt_fabric_old_hud$shiftVehicleHealth(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
             HudMixinHelper.apply(graphics, HudElement.VEHICLE_HEALTH);
@@ -253,7 +254,7 @@ public abstract class GuiMixin
             target = "Lnet/minecraft/client/gui/Gui;renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"
         )
     )
-    private void nt_fabric_old_hud$endHudShift(GuiGraphics graphics, float partialTick, CallbackInfo callback)
+    private void nt_fabric_old_hud$endHudShift(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo callback)
     {
         if (ModTweak.ENABLED.get())
             HudMixinHelper.end(graphics);

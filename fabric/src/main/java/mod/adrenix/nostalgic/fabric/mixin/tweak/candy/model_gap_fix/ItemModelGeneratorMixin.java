@@ -58,7 +58,7 @@ public abstract class ItemModelGeneratorMixin
         for (BlockElement element : blockElements)
         {
             for (BlockElementFace face : element.faces.values())
-                FabricModelGapFix.apply(face.uv.uvs, this.nt$sprite.uvShrinkRatio());
+                FabricModelGapFix.apply(face.uv().uvs, this.nt$sprite.uvShrinkRatio());
         }
 
         this.nt$sprite = null;

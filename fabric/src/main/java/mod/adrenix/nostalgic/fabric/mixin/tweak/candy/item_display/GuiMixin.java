@@ -16,11 +16,11 @@ public abstract class GuiMixin
      * Makes the selected item name background transparent.
      */
     @ModifyArg(
-        index = 4,
+        index = 5,
         method = "renderSelectedItemName(Lnet/minecraft/client/gui/GuiGraphics;)V",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;drawStringWithBackdrop(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIII)I"
         )
     )
     private int nt_item_display$modifySelectedItemNameBackground(int color)
@@ -38,7 +38,7 @@ public abstract class GuiMixin
         method = "renderSelectedItemName(Lnet/minecraft/client/gui/GuiGraphics;)V",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;drawStringWithBackdrop(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIII)I"
         )
     )
     private Component nt_item_display$modifySelectedItemNameComponent(Component text)
