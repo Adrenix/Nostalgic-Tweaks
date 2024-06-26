@@ -1,0 +1,6 @@
+{
+  "parent": "nostalgic_tweaks:item/vanilla_chest",
+  "textures": {
+    "particle": "block/obsidian"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "#top",
+    "up": "#top",
+    "down": "nostalgic_tweaks:block/christmas_chest_bottom",
+    "north": "nostalgic_tweaks:block/christmas_chest_front_single",
+    "south": "#side",
+    "east": "#side",
+    "west": "#side",
+    "top": "nostalgic_tweaks:block/christmas_chest_top",
+    "side": "nostalgic_tweaks:block/christmas_chest_side"
+  }
+}

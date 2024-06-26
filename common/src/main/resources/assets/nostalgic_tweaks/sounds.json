@@ -1,0 +1,155 @@
+{
+  "blank": {
+    "sounds": [
+      "nostalgic_tweaks:blank"
+    ]
+  },
+  "cave": {
+    "sounds": [
+      "minecraft:ambient/cave/cave1",
+      "minecraft:ambient/cave/cave2",
+      "minecraft:ambient/cave/cave3",
+      "minecraft:ambient/cave/cave4",
+      "minecraft:ambient/cave/cave5",
+      "minecraft:ambient/cave/cave6",
+      "minecraft:ambient/cave/cave7",
+      "minecraft:ambient/cave/cave8",
+      "minecraft:ambient/cave/cave9",
+      "minecraft:ambient/cave/cave10",
+      "minecraft:ambient/cave/cave11",
+      "minecraft:ambient/cave/cave12",
+      "minecraft:ambient/cave/cave13"
+    ]
+  },
+  "entity.player.hurt": {
+    "sounds": [
+      "nostalgic_tweaks:damage/hit1",
+      "nostalgic_tweaks:damage/hit2",
+      "nostalgic_tweaks:damage/hit3"
+    ]
+  },
+  "music.gameplay.alpha": {
+    "sounds": [
+      {
+        "name": "minecraft:music/game/minecraft",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/sweden",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/clark",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/subwoofer_lullaby",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/living_mice",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/haggstrom",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/danny",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/key",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/oxygene",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/dry_hands",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/wet_hands",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/mice_on_venus",
+        "stream": true
+      }
+    ]
+  },
+  "music.menu.beta": {
+    "sounds": [
+      {
+        "name": "music/menu/beginning_2",
+        "stream": true
+      },
+      {
+        "name": "music/menu/floating_trees",
+        "stream": true
+      },
+      {
+        "name": "music/menu/moog_city_2",
+        "stream": true
+      },
+      {
+        "name": "music/menu/mutation",
+        "stream": true
+      }
+    ]
+  },
+  "music.menu.blended": {
+    "sounds": [
+      {
+        "name": "nostalgic_tweaks:music.gameplay.alpha",
+        "type": "event"
+      },
+      {
+        "name": "nostalgic_tweaks:music.menu.beta",
+        "type": "event"
+      }
+    ]
+  },
+  "music.creative.beta": {
+    "sounds": [
+      {
+        "name": "minecraft:music/game/creative/aria_math",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/biome_fest",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/blind_spots",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/dreiton",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/haunt_muskie",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/taswell",
+        "stream": true
+      }
+    ]
+  },
+  "music.creative.blended": {
+    "sounds": [
+      {
+        "name": "nostalgic_tweaks:music.gameplay.alpha",
+        "type": "event"
+      },
+      {
+        "name": "nostalgic_tweaks:music.creative.beta",
+        "type": "event"
+      }
+    ]
+  }
+}
