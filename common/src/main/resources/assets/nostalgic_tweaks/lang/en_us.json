@@ -646,7 +646,7 @@
   "gui.nostalgic_tweaks.container.swing.item": "Item Speeds",
   "gui.nostalgic_tweaks.container.swing.potion": "Potion Speeds",
 
-  "gui.nostalgic_tweaks.config.modEnabled": "Mod State",
+  "gui.nostalgic_tweaks.config.modEnabled": "Mod Enabled",
   "gui.nostalgic_tweaks.config.modEnabled.info": "Change the§a global§r state of the mod. This will impact§e all§r tweaks. When§c disabled§r, the game will run as if the mod was§4 never§r installed.",
 
   "gui.nostalgic_tweaks.config.mod.defaultScreen": "Default Screen",
