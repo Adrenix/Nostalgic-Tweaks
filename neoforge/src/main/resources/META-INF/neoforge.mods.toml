@@ -1,0 +1,59 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "${mod_issues}"
+license = "${mod_license}"
+
+[[mods]]
+modId = "nostalgic_tweaks"
+version = "${version}"
+displayName = "${mod_name}"
+authors = "${mod_author}"
+description = '''
+${mod_description}
+
+Donations: ${mod_donate}
+Discord: ${mod_discord}
+'''
+credits = "${mod_credits}"
+displayURL = "${mod_curse}"
+logoFile = "nt_neoforge_logo.png"
+displayTest = "NONE"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-access.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-duck.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-neoforge.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-required.json"
+
+[[mixins]]
+config = "mixin.nostalgic_tweaks-embeddium.json"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "architectury"
+type = "required"
+versionRange = "[${architectury_version},)"
+ordering = "AFTER"
+side = "BOTH"
