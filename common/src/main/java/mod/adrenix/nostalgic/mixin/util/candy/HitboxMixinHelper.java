@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Matrix4f;
 
-import java.util.OptionalDouble;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,19 +48,6 @@ public abstract class HitboxMixinHelper
      */
     public static final RenderType OVERLAY_RENDER_TYPE = RenderType.create("nt_hitbox_overlay", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 1536, true, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
-        .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-        .setOutputState(RenderStateShard.ITEM_ENTITY_TARGET)
-        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-        .setCullState(RenderStateShard.NO_CULL)
-        .createCompositeState(false));
-
-    /**
-     * An outline render type used to override the vanilla hitbox lines.
-     */
-    public static final RenderType OUTLINE_RENDER_TYPE = RenderType.create("nt_hitbox_outline", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 1536, RenderType.CompositeState.builder()
-        .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
-        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
         .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setOutputState(RenderStateShard.ITEM_ENTITY_TARGET)
@@ -189,8 +175,8 @@ public abstract class HitboxMixinHelper
 
         if (Minecraft.useShaderTransparency())
         {
-            Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
-            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(OUTLINE_RENDER_TYPE);
+            Minecraft.getInstance().renderBuffers().bufferSource().endBatch(OVERLAY_RENDER_TYPE);
+            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
         }
 
         if (builder == null)
