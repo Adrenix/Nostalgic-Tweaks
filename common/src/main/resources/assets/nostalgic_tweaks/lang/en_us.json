@@ -417,6 +417,7 @@
   "gui.nostalgic_tweaks.issue.sodium": "This tweak will§c not§r work when§a Sodium§r is installed.",
   "gui.nostalgic_tweaks.issue.optifine": "This tweak will§c not§r work when§6 Optifine§r is installed.",
   "gui.nostalgic_tweaks.issue.polytone": "This tweak will§c not§r work when§e Polytone§r is installed.",
+  "gui.nostalgic_tweaks.issue.iris": "This tweak will§c not§r work when§9 Iris§r is installed.",
 
   "gui.nostalgic_tweaks.enum.generic.disabled": "§cDisabled",
   "gui.nostalgic_tweaks.enum.generic.classic": "§aClassic",
@@ -797,6 +798,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineColor.info": "Create a custom block hitbox outline color.",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness": "Hitbox Outline Thickness",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness.info": "Customize the line thickness of a block's hitbox outline.",
+  "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness.issue.iris": "Due to the rendering changes made by§9 Iris§r, this tweak will§c not§r work while this mod is installed.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOverlay": "Hitbox Overlay",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOverlay.info": "Renders a overlay around a block's hitbox outline similar to how it was done in§a Minecraft§e Classic§r edition.",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOverlayColorType": "Hitbox Color Type",

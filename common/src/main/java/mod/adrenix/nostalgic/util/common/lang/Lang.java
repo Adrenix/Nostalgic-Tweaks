@@ -771,6 +771,7 @@ public interface Lang
         Translation SODIUM = from("sodium");
         Translation OPTIFINE = from("optifine");
         Translation POLYTONE = from("polytone");
+        Translation IRIS = from("iris");
 
         private static Translation from(String name)
         {

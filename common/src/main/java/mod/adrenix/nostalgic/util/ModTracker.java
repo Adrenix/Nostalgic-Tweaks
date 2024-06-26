@@ -17,7 +17,8 @@ public enum ModTracker
     POLYTONE("polytone"),
     EXORDIUM("exordium"),
     OPTIFINE("optifine"),
-    FLYWHEEL("flywheel");
+    FLYWHEEL("flywheel"),
+    IRIS("iris");
 
     /* Fields */
 
