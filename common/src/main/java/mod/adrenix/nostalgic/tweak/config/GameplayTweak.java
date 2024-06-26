@@ -140,6 +140,7 @@ public interface GameplayTweak
 
     // Boat Mechanics
 
+    TweakFlag DISABLE_BOAT_BUSY_HANDS = TweakFlag.server(true, GameplayGroup.MECHANICS_BOAT).newForUpdate().build();
     TweakFlag OLD_BOAT_WATER_LIFT = TweakFlag.server(true, GameplayGroup.MECHANICS_BOAT).newForUpdate().build();
     TweakFlag OLD_BOAT_DROPS = TweakFlag.server(false, GameplayGroup.MECHANICS_BOAT).newForUpdate().build();
 

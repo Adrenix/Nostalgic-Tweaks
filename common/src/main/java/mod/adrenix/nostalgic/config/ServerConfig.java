@@ -172,6 +172,7 @@ public class ServerConfig implements ConfigMeta
 
         // Boat Mechanics
 
+        public boolean disableBoatBusyHands = GameplayTweak.DISABLE_BOAT_BUSY_HANDS.register("disableBoatBusyHands");
         public boolean oldBoatWaterLift = GameplayTweak.OLD_BOAT_WATER_LIFT.register("oldBoatWaterLift");
         public boolean oldBoatDrops = GameplayTweak.OLD_BOAT_DROPS.register("oldBoatDrops");
 
