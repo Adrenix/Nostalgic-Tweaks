@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.client.renderer;
 
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
+import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.resources.ResourceLocation;
 
@@ -35,8 +36,8 @@ public class TextureLayer
     /* Fields */
 
     final int index;
-    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureMap;
-    final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureLightMap;
+    final LinkedHashMap<TextureLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureMap;
+    final LinkedHashMap<TextureLocation, ArrayDeque<RenderUtil.TextureBuffer>> textureLightMap;
     final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> spriteMap;
     final LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.SpriteBuffer>> spriteLightMap;
 
@@ -60,12 +61,12 @@ public class TextureLayer
      * queue since colored vertices are clamped to colors in a range of 0-255. The shader color system will be used to
      * brighten textures.
      *
-     * @param texture A {@link ResourceLocation} instance.
+     * @param texture A {@link TextureLocation} instance.
      * @param buffer  A {@link RenderUtil.TextureBuffer} instance.
      */
-    void add(ResourceLocation texture, RenderUtil.TextureBuffer buffer)
+    void add(TextureLocation texture, RenderUtil.TextureBuffer buffer)
     {
-        LinkedHashMap<ResourceLocation, ArrayDeque<RenderUtil.TextureBuffer>> map;
+        LinkedHashMap<TextureLocation, ArrayDeque<RenderUtil.TextureBuffer>> map;
 
         if (MathUtil.getLargest(buffer.rgba()[0], buffer.rgba()[1], buffer.rgba()[2]) > 1.0F)
             map = this.textureLightMap;

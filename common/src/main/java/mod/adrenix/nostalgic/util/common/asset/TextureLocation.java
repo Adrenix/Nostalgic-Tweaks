@@ -1,9 +1,10 @@
 package mod.adrenix.nostalgic.util.common.asset;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import net.minecraft.resources.ResourceLocation;
 
-public class TextureLocation extends ResourceLocation
+public class TextureLocation
 {
     /* Locations */
 
@@ -35,6 +36,7 @@ public class TextureLocation extends ResourceLocation
 
     /* Fields */
 
+    private final ResourceLocation location;
     private final int width;
     private final int height;
 
@@ -49,8 +51,7 @@ public class TextureLocation extends ResourceLocation
      */
     public TextureLocation(ResourceLocation resourceLocation, int width, int height)
     {
-        super(resourceLocation.getNamespace(), resourceLocation.getPath());
-
+        this.location = resourceLocation;
         this.width = width;
         this.height = height;
     }
@@ -64,8 +65,7 @@ public class TextureLocation extends ResourceLocation
      */
     public TextureLocation(String path, int width, int height)
     {
-        super(NostalgicTweaks.MOD_ID + ":textures/" + path);
-
+        this.location = LocateResource.mod("textures/" + path);
         this.width = width;
         this.height = height;
     }
@@ -93,6 +93,11 @@ public class TextureLocation extends ResourceLocation
     }
 
     /* Methods */
+
+    public ResourceLocation getLocation()
+    {
+        return this.location;
+    }
 
     public int getWidth()
     {

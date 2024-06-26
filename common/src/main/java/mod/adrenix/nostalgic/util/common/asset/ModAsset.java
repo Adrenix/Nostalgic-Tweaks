@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.util.common.asset;
 
 import com.google.common.hash.Hashing;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class ModAsset
@@ -15,7 +16,7 @@ public abstract class ModAsset
      */
     public static ResourceLocation get(String path)
     {
-        return new ResourceLocation(NostalgicTweaks.MOD_ID + ":" + path);
+        return LocateResource.mod(path);
     }
 
     /**
@@ -54,7 +55,7 @@ public abstract class ModAsset
      */
     public static ResourceLocation sprite(String path)
     {
-        return new ResourceLocation(NostalgicTweaks.MOD_ID + "/" + path);
+        return LocateResource.game(NostalgicTweaks.MOD_ID + "/" + path);
     }
 
     /**

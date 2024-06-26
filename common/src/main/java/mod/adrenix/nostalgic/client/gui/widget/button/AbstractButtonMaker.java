@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.button;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.*;
-import mod.adrenix.nostalgic.util.client.ClientTimer;
+import mod.adrenix.nostalgic.util.client.timer.ClientTimer;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;

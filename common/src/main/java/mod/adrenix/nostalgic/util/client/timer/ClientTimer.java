@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.util.client;
+package mod.adrenix.nostalgic.util.client.timer;
 
 import mod.adrenix.nostalgic.util.common.timer.TickTimer;
 

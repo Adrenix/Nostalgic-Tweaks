@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.util.common.asset;
 
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.resources.ResourceLocation;
 
@@ -15,7 +16,7 @@ public abstract class GameAsset
     @PublicAPI
     public static ResourceLocation texture(String path)
     {
-        return new ResourceLocation("textures/" + path);
+        return LocateResource.game("textures/" + path);
     }
 
     /**
@@ -30,6 +31,6 @@ public abstract class GameAsset
     @PublicAPI
     public static ResourceLocation sprite(String path)
     {
-        return new ResourceLocation(path);
+        return LocateResource.game(path);
     }
 }

@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.util.client.animate;
 
-import net.minecraft.client.Minecraft;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import net.minecraft.util.Mth;
 
 import java.util.HashSet;
@@ -122,7 +122,7 @@ public class Animator implements Animation
     @Override
     public double getValue()
     {
-        return Mth.lerp(Minecraft.getInstance().getFrameTime(), this.lastValue, this.currentValue);
+        return Mth.lerp(PartialTick.get(), this.lastValue, this.currentValue);
     }
 
     private boolean isReverseFinished()
