@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.network.packet;
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -36,10 +37,7 @@ public interface ModPacket extends CustomPacketPayload
      */
     static <T extends ModPacket> CustomPacketPayload.Type<T> createType(Class<? extends ModPacket> classType)
     {
-        String identifier = classType.getSimpleName().toLowerCase(Locale.ROOT);
-        ResourceLocation location = new ResourceLocation(NostalgicTweaks.MOD_ID, identifier);
-
-        return new CustomPacketPayload.Type<>(location);
+        return new CustomPacketPayload.Type<>(LocateResource.mod(classType.getSimpleName().toLowerCase(Locale.ROOT)));
     }
 
     /**

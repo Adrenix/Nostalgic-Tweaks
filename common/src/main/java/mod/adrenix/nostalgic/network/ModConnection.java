@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.network;
 
 import com.google.gson.Gson;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import net.minecraft.resources.ResourceLocation;
 
 @SuppressWarnings("FieldMayBeFinal") // The GSON deserializer cannot modify fields that are final
@@ -18,7 +19,7 @@ public class ModConnection
      * Defines the protocol identifier used by each mod loader's network configuration manager. Protocol checks are
      * always made if the mod is installed by the client.
      */
-    public static final ResourceLocation PROTOCOL_ID = new ResourceLocation(NostalgicTweaks.MOD_ID, "protocol");
+    public static final ResourceLocation PROTOCOL_ID = LocateResource.mod("protocol");
 
     /**
      * @return The default {@link ModConnection} when there is no connection available.
