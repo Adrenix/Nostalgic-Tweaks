@@ -174,10 +174,7 @@ public abstract class HitboxMixinHelper
         });
 
         if (Minecraft.useShaderTransparency())
-        {
             Minecraft.getInstance().renderBuffers().bufferSource().endBatch(OVERLAY_RENDER_TYPE);
-            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
-        }
 
         if (builder == null)
             return;

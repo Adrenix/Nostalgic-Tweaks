@@ -16,6 +16,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,7 +52,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderShape(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/phys/shapes/VoxelShape;DDDFFFF)V"
         )
     )
-    private void nt_block_hitbox$wrapRenderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state)
+    private void nt_block_hitbox$wrapRenderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos blockPos, BlockState blockState)
     {
         if (!ModTweak.ENABLED.get())
         {
@@ -59,7 +60,7 @@ public abstract class LevelRendererMixin
             return;
         }
 
-        VoxelShape hitbox = HitboxMixinHelper.getShape(voxelShape, state.getBlock());
+        VoxelShape hitbox = HitboxMixinHelper.getShape(voxelShape, blockState.getBlock());
         float[] rgba = HexUtil.parseFloatRGBA(CandyTweak.BLOCK_OUTLINE_COLOR.get());
         float r = rgba[0];
         float g = rgba[1];
@@ -69,9 +70,9 @@ public abstract class LevelRendererMixin
         if (CandyTweak.OLD_BLOCK_OVERLAY.get() && this.level != null)
         {
             Matrix4f matrix = new Matrix4f(poseStack.last().pose());
-            final double rx = (double) pos.getX() - camX;
-            final double ry = (double) pos.getY() - camY;
-            final double rz = (double) pos.getZ() - camZ;
+            final double rx = (double) blockPos.getX() - camX;
+            final double ry = (double) blockPos.getY() - camY;
+            final double rz = (double) blockPos.getZ() - camZ;
 
             if (Minecraft.useShaderTransparency())
                 HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
@@ -80,7 +81,18 @@ public abstract class LevelRendererMixin
         }
 
         HitboxMixinHelper.CUSTOM_HITBOX_OUTLINE.enable();
-        renderShape.call(poseStack, vertexConsumer, hitbox, x, y, z, r, g, b, a);
+
+        if (Minecraft.useShaderTransparency())
+        {
+            VertexConsumer outline = Minecraft.getInstance()
+                .renderBuffers()
+                .bufferSource()
+                .getBuffer(RenderType.lines());
+
+            renderShape.call(poseStack, outline, hitbox, x, y, z, r, g, b, a);
+        }
+        else
+            renderShape.call(poseStack, vertexConsumer, hitbox, x, y, z, r, g, b, a);
     }
 
     /**
