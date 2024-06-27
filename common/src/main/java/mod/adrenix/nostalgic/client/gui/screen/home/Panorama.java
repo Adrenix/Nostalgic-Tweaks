@@ -2,10 +2,10 @@ package mod.adrenix.nostalgic.client.gui.screen.home;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -100,10 +99,9 @@ public enum Panorama implements PreparableReloadListener
 
     Panorama()
     {
-        String root = NostalgicTweaks.MOD_ID + ":textures/panorama/";
         String branch = this.toString().toLowerCase(Locale.ROOT);
 
-        this.cubeMap = new CubeMap(new ResourceLocation(root + branch + "/panorama"));
+        this.cubeMap = new CubeMap(LocateResource.mod("textures/panorama/" + branch + "/panorama"));
         this.panorama = new PanoramaRenderer(this.cubeMap);
     }
 

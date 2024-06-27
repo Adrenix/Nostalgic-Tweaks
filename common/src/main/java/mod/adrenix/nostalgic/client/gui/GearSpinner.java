@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -14,7 +14,6 @@ public class GearSpinner
 {
     /* Static */
 
-    private final static String GEAR_FOLDER = NostalgicTweaks.MOD_ID + ":textures/gear/";
     private final static HashMap<Integer, ResourceLocation> GEAR_IMAGES = new HashMap<>();
 
     /* Fields */
@@ -32,7 +31,7 @@ public class GearSpinner
         if (GEAR_IMAGES.isEmpty())
         {
             for (int i = 0; i < 16; i++)
-                GEAR_IMAGES.put(i, new ResourceLocation(GEAR_FOLDER + String.format("%s.png", i)));
+                GEAR_IMAGES.put(i, LocateResource.mod("textures/gear/" + String.format("%s.png", i)));
         }
     }
 

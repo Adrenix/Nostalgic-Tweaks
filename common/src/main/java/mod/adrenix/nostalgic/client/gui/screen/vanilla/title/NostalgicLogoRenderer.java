@@ -8,6 +8,7 @@ import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.MatrixUtil;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
+import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -109,8 +110,7 @@ class NostalgicLogoRenderer
 
         for (int pass = 0; pass < 3; pass++)
         {
-            BufferBuilder builder = Tesselator.getInstance().getBuilder();
-            builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+            BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
 
             poseStack.pushPose();
 
@@ -181,7 +181,7 @@ class NostalgicLogoRenderer
                 }
             }
 
-            Tesselator.getInstance().end();
+            NullableAction.attempt(builder.build(), BufferUploader::drawWithShader);
             poseStack.popPose();
         }
 

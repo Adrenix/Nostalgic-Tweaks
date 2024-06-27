@@ -5,17 +5,17 @@ import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.TitleLayout;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.LanguageSelectScreen;
-import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.options.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.PackRepository;
 
 class TitleWidgets implements WidgetManager
@@ -321,7 +321,7 @@ class TitleWidgets implements WidgetManager
         {
             ButtonWidget.create()
                 .leftOf(options, WIDGET_MARGIN)
-                .icon(TextureIcon.fromSprite(new ResourceLocation("icon/language"), 15))
+                .icon(TextureIcon.fromSprite(LocateResource.game("icon/language"), 15))
                 .iconCenterOffset(-1)
                 .onPress(this::gotoLanguage)
                 .build(this.titleScreen::addWidget);

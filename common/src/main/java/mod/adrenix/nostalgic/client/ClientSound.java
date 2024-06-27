@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -15,13 +16,13 @@ public abstract class ClientSound
 
     /* Sounds */
 
-    private static final ResourceLocation BLANK_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "blank");
-    private static final ResourceLocation PLAYER_HURT_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "entity.player.hurt");
-    private static final ResourceLocation MUSIC_ALPHA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.gameplay.alpha");
-    private static final ResourceLocation MUSIC_MENU_BETA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.menu.beta");
-    private static final ResourceLocation MUSIC_MENU_BLENDED_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.menu.blended");
-    private static final ResourceLocation MUSIC_CREATIVE_BETA_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.creative.beta");
-    private static final ResourceLocation MUSIC_CREATIVE_BLENDED_LOCATION = new ResourceLocation(NostalgicTweaks.MOD_ID, "music.creative.blended");
+    private static final ResourceLocation BLANK_LOCATION = LocateResource.mod("blank");
+    private static final ResourceLocation PLAYER_HURT_LOCATION = LocateResource.mod("entity.player.hurt");
+    private static final ResourceLocation MUSIC_ALPHA_LOCATION = LocateResource.mod("music.gameplay.alpha");
+    private static final ResourceLocation MUSIC_MENU_BETA_LOCATION = LocateResource.mod("music.menu.beta");
+    private static final ResourceLocation MUSIC_MENU_BLENDED_LOCATION = LocateResource.mod("music.menu.blended");
+    private static final ResourceLocation MUSIC_CREATIVE_BETA_LOCATION = LocateResource.mod("music.creative.beta");
+    private static final ResourceLocation MUSIC_CREATIVE_BLENDED_LOCATION = LocateResource.mod("music.creative.blended");
 
     public static final RegistrySupplier<SoundEvent> BLANK = DEFERRED_REGISTER.register(BLANK_LOCATION, () -> SoundEvent.createVariableRangeEvent(BLANK_LOCATION));
     public static final RegistrySupplier<SoundEvent> PLAYER_HURT = DEFERRED_REGISTER.register(PLAYER_HURT_LOCATION, () -> SoundEvent.createVariableRangeEvent(PLAYER_HURT_LOCATION));
