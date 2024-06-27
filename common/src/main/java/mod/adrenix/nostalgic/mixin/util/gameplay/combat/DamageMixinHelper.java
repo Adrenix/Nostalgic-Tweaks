@@ -61,7 +61,7 @@ public abstract class DamageMixinHelper
      *
      * @param tieredItem The {@link TieredItem} instance.
      * @param attributes The {@link ItemAttributeModifiers} instance.
-     * @return An old damage value, if it is a vaild item.
+     * @return An old damage value, if it is a valid item.
      */
     public static ItemAttributeModifiers get(final TieredItem tieredItem, final ItemAttributeModifiers attributes)
     {
@@ -73,10 +73,8 @@ public abstract class DamageMixinHelper
                     builder.add(entry.attribute(), entry.modifier(), entry.slot());
                 else
                 {
-                    if (tieredItem instanceof DiggerItem diggerItem)
-                        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Tool modifier", getAttackDamage(diggerItem), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-                    else if (tieredItem instanceof SwordItem swordItem)
-                        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getAttackDamage(swordItem), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    if (tieredItem instanceof DiggerItem || tieredItem instanceof SwordItem)
+                        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, getAttackDamage(tieredItem), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
                     else
                         builder.add(entry.attribute(), entry.modifier(), entry.slot());
                 }

@@ -1,13 +1,12 @@
 package mod.adrenix.nostalgic.mixin.util.sound;
 
-import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.common.LocateResource;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
@@ -77,8 +76,7 @@ public class CaveSoundManager
                 double y = this.player.getEyeY() + dy / normal * offset;
                 double z = this.player.getZ() + dz / normal * offset;
 
-                ResourceLocation soundLocation = new ResourceLocation(NostalgicTweaks.MOD_ID, "cave");
-                SimpleSoundInstance soundInstance = new SimpleSoundInstance(soundLocation, SoundSource.AMBIENT, 0.7F, 0.8F + this.randomSource.nextFloat() * 0.2F, this.randomSource, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false);
+                SimpleSoundInstance soundInstance = new SimpleSoundInstance(LocateResource.mod("cave"), SoundSource.AMBIENT, 0.7F, 0.8F + this.randomSource.nextFloat() * 0.2F, this.randomSource, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false);
 
                 this.soundManager.play(soundInstance);
                 this.tickCountdown = this.randomSource.nextInt(12000) + 6000;

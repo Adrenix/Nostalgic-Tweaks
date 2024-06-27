@@ -32,14 +32,14 @@ public abstract class SupporterRenderer
 
     private static final RenderType AUTHOR_VISIBLE_SHADER = RenderType.create("nt_author_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64, false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), false, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .createCompositeState(false));
 
     private static final RenderType AUTHOR_SEE_THROUGH_SHADER = RenderType.create("nt_author_see_through_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SEE_THROUGH_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64, false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), false, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
@@ -48,14 +48,14 @@ public abstract class SupporterRenderer
 
     private static final RenderType SUPPORTER_VISIBLE_SHADER = RenderType.create("nt_supporter_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64, false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), false, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .createCompositeState(false));
 
     private static final RenderType SUPPORTER_SEE_THROUGH_SHADER = RenderType.create("nt_supporter_see_through_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SEE_THROUGH_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64, false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), false, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
@@ -167,17 +167,17 @@ public abstract class SupporterRenderer
         Matrix4f matrix = poseStack.last().pose();
         VertexConsumer seeThrough = bufferSource.getBuffer(badge.getSeeThroughShader());
 
-        seeThrough.vertex(matrix, 0, 64, 0).color(255, 255, 255, 255).uv(0.0F, 1.0F).uv2(packedLight).endVertex();
-        seeThrough.vertex(matrix, 64, 64, 0).color(255, 255, 255, 255).uv(1.0F, 1.0F).uv2(packedLight).endVertex();
-        seeThrough.vertex(matrix, 64, 0, 0).color(255, 255, 255, 255).uv(1.0F, 0.0F).uv2(packedLight).endVertex();
-        seeThrough.vertex(matrix, 0, 0, 0).color(255, 255, 255, 255).uv(0.0F, 0.0F).uv2(packedLight).endVertex();
+        seeThrough.addVertex(matrix, 0, 64, 0).setColor(255, 255, 255, 255).setUv(0.0F, 1.0F).setLight(packedLight);
+        seeThrough.addVertex(matrix, 64, 64, 0).setColor(255, 255, 255, 255).setUv(1.0F, 1.0F).setLight(packedLight);
+        seeThrough.addVertex(matrix, 64, 0, 0).setColor(255, 255, 255, 255).setUv(1.0F, 0.0F).setLight(packedLight);
+        seeThrough.addVertex(matrix, 0, 0, 0).setColor(255, 255, 255, 255).setUv(0.0F, 0.0F).setLight(packedLight);
 
         VertexConsumer visible = bufferSource.getBuffer(badge.getVisibleShader());
 
-        visible.vertex(matrix, 0, 64, 0).color(255, 255, 255, 255).uv(0.0F, 1.0F).uv2(packedLight).endVertex();
-        visible.vertex(matrix, 64, 64, 0).color(255, 255, 255, 255).uv(1.0F, 1.0F).uv2(packedLight).endVertex();
-        visible.vertex(matrix, 64, 0, 0).color(255, 255, 255, 255).uv(1.0F, 0.0F).uv2(packedLight).endVertex();
-        visible.vertex(matrix, 0, 0, 0).color(255, 255, 255, 255).uv(0.0F, 0.0F).uv2(packedLight).endVertex();
+        visible.addVertex(matrix, 0, 64, 0).setColor(255, 255, 255, 255).setUv(0.0F, 1.0F).setLight(packedLight);
+        visible.addVertex(matrix, 64, 64, 0).setColor(255, 255, 255, 255).setUv(1.0F, 1.0F).setLight(packedLight);
+        visible.addVertex(matrix, 64, 0, 0).setColor(255, 255, 255, 255).setUv(1.0F, 0.0F).setLight(packedLight);
+        visible.addVertex(matrix, 0, 0, 0).setColor(255, 255, 255, 255).setUv(0.0F, 0.0F).setLight(packedLight);
 
         poseStack.popPose();
     }

@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.util.candy.lighting;
 
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
@@ -240,7 +241,7 @@ public abstract class LightingMixinHelper
      */
     public static int getSkyLightFromWeather(Level level)
     {
-        float partialTick = Minecraft.getInstance().getFrameTime();
+        float partialTick = PartialTick.get();
         float rain = level.getRainLevel(partialTick);
         float thunder = level.getThunderLevel(partialTick);
 

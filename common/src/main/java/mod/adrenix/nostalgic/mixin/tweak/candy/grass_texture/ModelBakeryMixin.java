@@ -39,6 +39,6 @@ public abstract class ModelBakeryMixin
         if (path.equals("block/grass_block"))
             namespace = isOldGrass ? modId : minecraft;
 
-        return new ResourceLocation(namespace, path);
+        return ResourceLocation.fromNamespaceAndPath(namespace, path);
     }
 }

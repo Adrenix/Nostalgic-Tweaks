@@ -6,6 +6,8 @@ import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
@@ -15,7 +17,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -24,7 +26,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * This utility class is used by both the client and server.
@@ -62,13 +64,14 @@ public abstract class MobLootMixinHelper
     /**
      * Add an item to a loot table builder.
      *
-     * @param builder  The {@link LootTable.Builder} instance.
-     * @param item     The {@link ItemLike} instance to add.
-     * @param max      The maximum number of items that can drop from a roll.
-     * @param canSmelt Whether the item should smelt if the entity died while on fire.
+     * @param builder    The {@link LootTable.Builder} instance.
+     * @param registries The {@link RegistryAccess} instance.
+     * @param item       The {@link ItemLike} instance to add.
+     * @param max        The maximum number of items that can drop from a roll.
+     * @param canSmelt   Whether the item should smelt if the entity died while on fire.
      * @return The given {@link LootTable.Builder} instance with the new item entry.
      */
-    private static LootTable.Builder addToTable(LootTable.Builder builder, ItemLike item, int max, boolean canSmelt)
+    private static LootTable.Builder addToTable(LootTable.Builder builder, RegistryAccess registries, ItemLike item, int max, boolean canSmelt)
     {
         if (canSmelt)
         {
@@ -76,7 +79,7 @@ public abstract class MobLootMixinHelper
                 .setRolls(ConstantValue.exactly(1.0F))
                 .add(LootItem.lootTableItem(item)
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, max)))
-                    .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                    .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F)))
                     .apply(SmeltItemFunction.smelted()
                         .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity()
                             .flags(EntityFlagsPredicate.Builder.flags().setOnFire(true)))))));
@@ -86,60 +89,70 @@ public abstract class MobLootMixinHelper
             .setRolls(ConstantValue.exactly(1.0F))
             .add(LootItem.lootTableItem(item)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, max)))
-                .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))));
+                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F)))));
     }
 
     /**
      * Make a simple loot table with a single item and a maximum amount to drop.
      *
-     * @param item The {@link ItemLike} loot.
-     * @param max  The maximum number of items that can drop.
+     * @param registries The {@link RegistryAccess} instance.
+     * @param item       The {@link ItemLike} loot.
+     * @param max        The maximum number of items that can drop.
      * @return An old {@link LootTable} instance.
      */
-    private static LootTable makeTable(ItemLike item, int max)
+    private static LootTable makeTable(RegistryAccess registries, ItemLike item, int max)
     {
-        return addToTable(LootTable.lootTable(), item, max, false).build();
+        return addToTable(LootTable.lootTable(), registries, item, max, false).build();
     }
 
     /**
+     * Make a simple pork chop loot table.
+     *
+     * @param registries The {@link RegistryAccess} instance.
      * @return A custom old {@link LootTable} instance for pork chops.
      */
-    private static LootTable makePorkTable()
+    private static LootTable makePorkTable(RegistryAccess registries)
     {
-        return addToTable(LootTable.lootTable(), Items.PORKCHOP, 2, true).build();
+        return addToTable(LootTable.lootTable(), registries, Items.PORKCHOP, 2, true).build();
     }
 
     /**
+     * Make a simple skeleton loot table.
+     *
+     * @param registries The {@link RegistryAccess} instance.
      * @return A custom old {@link LootTable} instance for skeletons.
      */
-    private static LootTable makeSkeletonTable()
+    private static LootTable makeSkeletonTable(RegistryAccess registries)
     {
         LootTable.Builder builder = LootTable.lootTable();
 
-        addToTable(builder, Items.ARROW, 2, false);
-        addToTable(builder, Items.BONE, 2, false);
+        addToTable(builder, registries, Items.ARROW, 2, false);
+        addToTable(builder, registries, Items.BONE, 2, false);
 
         return builder.build();
     }
 
-    /* Item Tables */
+    /* Tables */
 
-    private static final Function<ItemLike, LootTable> WOOL_TABLE = Util.memoize(item -> makeTable(item, 1));
-    private static final LootTable COOKED_PORK_CHOP_TABLE = makeTable(Items.COOKED_PORKCHOP, 2);
-    private static final LootTable FEATHER_TABLE = makeTable(Items.FEATHER, 2);
-    private static final LootTable STRING_TABLE = makeTable(Items.STRING, 2);
-    private static final LootTable LEATHER_TABLE = makeTable(Items.LEATHER, 2);
-    private static final LootTable RABBIT_HIDE_TABLE = makeTable(Items.RABBIT_HIDE, 1);
-    private static final LootTable PORK_CHOP_TABLE = makePorkTable();
-    private static final LootTable ARROW_BONE_TABLE = makeSkeletonTable();
+    private static final BiFunction<RegistryAccess, ItemLike, LootTable> WOOL_TABLE = Util.memoize((registries, item) -> makeTable(registries, item, 1));
 
     /* Helpers */
 
     /**
      * Initialize the old entity loot tables.
      */
-    public static void init()
+    public static void init(ServerLevel level)
     {
+        RegistryAccess registries = level.registryAccess();
+
+        final LootTable COOKED_PORK_CHOP_TABLE = makeTable(registries, Items.COOKED_PORKCHOP, 2);
+        final LootTable FEATHER_TABLE = makeTable(registries, Items.FEATHER, 2);
+        final LootTable STRING_TABLE = makeTable(registries, Items.STRING, 2);
+        final LootTable LEATHER_TABLE = makeTable(registries, Items.LEATHER, 2);
+        final LootTable RABBIT_HIDE_TABLE = makeTable(registries, Items.RABBIT_HIDE, 1);
+        final LootTable PORK_CHOP_TABLE = makePorkTable(registries);
+        final LootTable ARROW_BONE_TABLE = makeSkeletonTable(registries);
+
         new EntityLoot(EntityType.ZOMBIFIED_PIGLIN, GameplayTweak.OLD_ZOMBIE_PIGMEN_DROPS, COOKED_PORK_CHOP_TABLE);
         new EntityLoot(EntityType.ZOMBIE, GameplayTweak.OLD_ZOMBIE_DROPS, FEATHER_TABLE);
         new EntityLoot(EntityType.ZOMBIE_VILLAGER, GameplayTweak.OLD_STYLE_ZOMBIE_VILLAGER_DROPS, FEATHER_TABLE);
@@ -172,9 +185,10 @@ public abstract class MobLootMixinHelper
         if (entityType == EntityType.SHEEP && GameplayTweak.OLD_SHEEP_DROPS.get())
         {
             Sheep sheep = (Sheep) entityType.tryCast(entity);
+            RegistryAccess registries = entity.level().registryAccess();
 
             if (sheep != null && !sheep.isSheared())
-                return WOOL_TABLE.apply(SheepAccess.NT$ITEM_BY_DYE().get(sheep.getColor()));
+                return WOOL_TABLE.apply(registries, SheepAccess.NT$ITEM_BY_DYE().get(sheep.getColor()));
             else
                 return LootTable.EMPTY;
         }

@@ -27,6 +27,6 @@ public abstract class ModInitializer
 
         EnvExecutor.runInEnv(Env.CLIENT, () -> ClientInitializer::register);
 
-        MobLootMixinHelper.init();
+        LifecycleEvent.SERVER_LEVEL_LOAD.register(MobLootMixinHelper::init);
     }
 }

@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.util.candy.world;
 
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.data.NumberHolder;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.Camera;
@@ -61,7 +62,7 @@ public abstract class ClientWorldHelper
         if (level == null)
             return new float[] { 0.0F, 0.0F, 0.0F };
 
-        float partialTick = minecraft.getFrameTime();
+        float partialTick = PartialTick.get();
         float timeOfDay = level.getTimeOfDay(partialTick);
         float boundedTime = Mth.clamp(Mth.cos(timeOfDay * ((float) Math.PI * 2)) * 2.0F + 0.5F, 0.0F, 1.0F);
 

@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.mixin.access.GuiAccess;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
+import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -221,15 +222,15 @@ public abstract class HudMixinHelper
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         Matrix4f matrix = graphics.pose().last().pose();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        builder.vertex(matrix, x, y + 9, 0.0F).uv(sprite.getU1(), sprite.getV1()).endVertex();
-        builder.vertex(matrix, x + 9, y + 9, 0.0F).uv(sprite.getU0(), sprite.getV1()).endVertex();
-        builder.vertex(matrix, x + 9, y, 0.0F).uv(sprite.getU0(), sprite.getV0()).endVertex();
-        builder.vertex(matrix, x, y, 0.0F).uv(sprite.getU1(), sprite.getV0()).endVertex();
+        builder.addVertex(matrix, x, y + 9, 0.0F).setUv(sprite.getU1(), sprite.getV1());
+        builder.addVertex(matrix, x + 9, y + 9, 0.0F).setUv(sprite.getU0(), sprite.getV1());
+        builder.addVertex(matrix, x + 9, y, 0.0F).setUv(sprite.getU0(), sprite.getV0());
+        builder.addVertex(matrix, x, y, 0.0F).setUv(sprite.getU1(), sprite.getV0());
 
-        BufferUploader.drawWithShader(builder.end());
+        NullableAction.attempt(builder.build(), BufferUploader::drawWithShader);
     }
 
     /**

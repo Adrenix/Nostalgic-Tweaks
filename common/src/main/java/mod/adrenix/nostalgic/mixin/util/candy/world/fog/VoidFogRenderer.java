@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.mixin.util.candy.world.ClientWorldHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.CameraUtil;
 import mod.adrenix.nostalgic.util.client.GameUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.timer.LerpTimer;
 import mod.adrenix.nostalgic.util.common.world.BlockUtil;
@@ -232,13 +233,12 @@ public abstract class VoidFogRenderer
     public static void setCelestialTransparency()
     {
         ClientLevel level = Minecraft.getInstance().level;
-        float partialTick = Minecraft.getInstance().getFrameTime();
 
         if (level == null)
             return;
 
         float[] rgb = RenderSystem.getShaderColor();
-        float alpha = Math.min(1.0F - level.getRainLevel(partialTick), CELESTIAL_TRANSPARENCY.lerpFloat());
+        float alpha = Math.min(1.0F - level.getRainLevel(PartialTick.get()), CELESTIAL_TRANSPARENCY.lerpFloat());
 
         if (isRendering())
             RenderSystem.setShaderColor(rgb[0], rgb[1], rgb[2], alpha);
@@ -263,12 +263,11 @@ public abstract class VoidFogRenderer
     {
         LocalPlayer player = Minecraft.getInstance().player;
         ClientLevel level = Minecraft.getInstance().level;
-        float partialTick = Minecraft.getInstance().getFrameTime();
 
         if (player == null || level == null)
             return true;
 
-        return !(player.getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level) < 0.0D);
+        return !(player.getEyePosition(PartialTick.get()).y - level.getLevelData().getHorizonHeight(level) < 0.0D);
     }
 
     /**
@@ -509,7 +508,7 @@ public abstract class VoidFogRenderer
         float encroach = getDistanceDelta(entity);
 
         if (entity instanceof LivingEntity living && living.hasEffect(MobEffects.NIGHT_VISION))
-            distance *= 4 * GameRenderer.getNightVisionScale(living, Minecraft.getInstance().getFrameTime());
+            distance *= 4 * GameRenderer.getNightVisionScale(living, PartialTick.get());
 
         float celestialTarget = !isDisabled && darkness < 0.5F && ClientWorldHelper.getSkyLight(entity) == 0 ? 0.0F : 1.0F;
         float cloudsTarget = !isDisabled && darkness < 0.5F && ClientWorldHelper.getSkyLight(entity) == 0 ? 0.0F : 1.0F;

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.debug_screen;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -32,7 +32,7 @@ public abstract class MinecraftMixin
             shift = At.Shift.AFTER,
             ordinal = 0,
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;begin(Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;Lcom/mojang/blaze3d/vertex/VertexFormat;)V"
+            target = "Lcom/mojang/blaze3d/systems/RenderSystem;applyModelViewMatrix()V"
         )
     )
     private void nt_debug_screen$renderPieBackground(GuiGraphics graphics, ProfileResults results, CallbackInfo callback)
@@ -44,6 +44,9 @@ public abstract class MinecraftMixin
         int x = this.window.getWidth() - 170;
         int y = this.window.getHeight() - 320;
 
-        RenderUtil.fill(Tesselator.getInstance().getBuilder(), x - 176.0F, y - 112.0F, x + 176.0F, y + 320.0F, color);
+        BufferBuilder builder = RenderUtil.getAndBeginFill();
+
+        RenderUtil.fill(builder, x - 176.0F, y - 112.0F, x + 176.0F, y + 320.0F, color);
+        RenderUtil.endFill(builder);
     }
 }

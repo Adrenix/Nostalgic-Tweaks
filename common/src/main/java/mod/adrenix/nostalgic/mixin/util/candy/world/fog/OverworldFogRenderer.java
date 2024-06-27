@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.tweak.enums.FogColor;
 import mod.adrenix.nostalgic.tweak.enums.WorldFog;
 import mod.adrenix.nostalgic.util.client.CameraUtil;
 import mod.adrenix.nostalgic.util.client.GameUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import mod.adrenix.nostalgic.util.common.timer.LerpTimer;
@@ -321,7 +322,7 @@ public abstract class OverworldFogRenderer
 
         calculateLightInfluence(FOG_COLOR);
 
-        float partialTick = minecraft.getFrameTime();
+        float partialTick = PartialTick.get();
         float timeOfDay = level.getTimeOfDay(partialTick);
         float boundedTime = Mth.clamp(Mth.cos(timeOfDay * ((float) Math.PI * 2)) * 2.0F + 0.5F, 0.0F, 1.0F);
 

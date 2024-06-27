@@ -41,6 +41,7 @@
     "candy.chat_screen.ChatScreenMixin",
     "candy.chest_block.BlockEntityRenderDispatcherMixin",
     "candy.chest_block.BlockStateBaseMixin",
+    "candy.chest_block.BlockStateModelLoaderMixin",
     "candy.chest_block.ChestBlockMixin",
     "candy.chest_block.EnderChestBlockMixin",
     "candy.chest_block.ItemBlockRenderTypesMixin",

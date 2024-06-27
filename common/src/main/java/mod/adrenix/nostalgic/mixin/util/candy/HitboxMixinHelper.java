@@ -137,40 +137,40 @@ public abstract class HitboxMixinHelper
             float dz = (float) (z1 - z0);
 
             // South
-            buffer.vertex(matrix, rx0, ry1, rz0).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry1, rz1 - dz).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry0, rz1 - dz).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
+            buffer.addVertex(matrix, rx0, ry1, rz0).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry1, rz1 - dz).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry0, rz1 - dz).setColor(argbBottom);
+            buffer.addVertex(matrix, rx0, ry0, rz0).setColor(argbBottom);
 
             // North
-            buffer.vertex(matrix, rx0, ry1, rz0 + dz).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry1, rz1).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry0, rz1).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx0, ry0, rz0 + dz).color(argbBottom).endVertex();
+            buffer.addVertex(matrix, rx0, ry1, rz0 + dz).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry1, rz1).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry0, rz1).setColor(argbBottom);
+            buffer.addVertex(matrix, rx0, ry0, rz0 + dz).setColor(argbBottom);
 
             // East
-            buffer.vertex(matrix, rx0, ry1, rz0).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1 - dx, ry1, rz1).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1 - dx, ry0, rz1).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
+            buffer.addVertex(matrix, rx0, ry1, rz0).setColor(argbTop);
+            buffer.addVertex(matrix, rx1 - dx, ry1, rz1).setColor(argbTop);
+            buffer.addVertex(matrix, rx1 - dx, ry0, rz1).setColor(argbBottom);
+            buffer.addVertex(matrix, rx0, ry0, rz0).setColor(argbBottom);
 
             // West
-            buffer.vertex(matrix, rx0 + dx, ry1, rz0).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry1, rz1).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry0, rz1).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx0 + dx, ry0, rz0).color(argbBottom).endVertex();
+            buffer.addVertex(matrix, rx0 + dx, ry1, rz0).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry1, rz1).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry0, rz1).setColor(argbBottom);
+            buffer.addVertex(matrix, rx0 + dx, ry0, rz0).setColor(argbBottom);
 
             // Top
-            buffer.vertex(matrix, rx0, ry1, rz0).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry1, rz1 - dz).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx1, ry0 + dy, rz1).color(argbTop).endVertex();
-            buffer.vertex(matrix, rx0, ry0 + dy, rz0 + dz).color(argbTop).endVertex();
+            buffer.addVertex(matrix, rx0, ry1, rz0).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry1, rz1 - dz).setColor(argbTop);
+            buffer.addVertex(matrix, rx1, ry0 + dy, rz1).setColor(argbTop);
+            buffer.addVertex(matrix, rx0, ry0 + dy, rz0 + dz).setColor(argbTop);
 
             // Bottom
-            buffer.vertex(matrix, rx0, ry1 - dy, rz0 + dz).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx1, ry1 - dy, rz1).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx1, ry0, rz1 - dz).color(argbBottom).endVertex();
-            buffer.vertex(matrix, rx0, ry0, rz0).color(argbBottom).endVertex();
+            buffer.addVertex(matrix, rx0, ry1 - dy, rz0 + dz).setColor(argbBottom);
+            buffer.addVertex(matrix, rx1, ry1 - dy, rz1).setColor(argbBottom);
+            buffer.addVertex(matrix, rx1, ry0, rz1 - dz).setColor(argbBottom);
+            buffer.addVertex(matrix, rx0, ry0, rz0).setColor(argbBottom);
         });
 
         if (Minecraft.useShaderTransparency())
