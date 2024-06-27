@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.PrioritizeChunkUpdates;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -50,7 +51,7 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("HEAD")
     )
-    private void nt_world_lighting$onRenderLevel(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_world_lighting$onRenderLevel(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (!ModTweak.ENABLED.get() || this.level == null)
             return;

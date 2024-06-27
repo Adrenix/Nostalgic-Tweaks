@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(targets = "net/minecraft/world/inventory/InventoryMenu$2")
+@Mixin(targets = "net/minecraft/world/inventory/InventoryMenu$1")
 public abstract class InventoryShieldSlotMixin
 {
     /**

@@ -38,7 +38,7 @@ public abstract class PlayerMixin extends LivingEntity
         method = "eat",
         at = @At("HEAD")
     )
-    private void nt_food_health$onPlayerEat(Level level, ItemStack itemStack, CallbackInfoReturnable<ItemStack> callback)
+    private void nt_food_health$onPlayerEat(Level level, ItemStack itemStack, FoodProperties foodProperties, CallbackInfoReturnable<ItemStack> callback)
     {
         if (GameplayTweak.DISABLE_HUNGER.get() && ItemUtil.isEdible(itemStack))
         {

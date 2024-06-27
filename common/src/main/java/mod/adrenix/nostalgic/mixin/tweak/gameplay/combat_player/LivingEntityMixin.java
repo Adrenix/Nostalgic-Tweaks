@@ -56,7 +56,7 @@ public abstract class LivingEntityMixin
         method = "startUsingItem",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/item/ItemStack;getUseDuration()I"
+            target = "Lnet/minecraft/world/item/ItemStack;getUseDuration(Lnet/minecraft/world/entity/LivingEntity;)I"
         )
     )
     private int nt_combat_player$modifyGetUseDuration(int useDuration)

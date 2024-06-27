@@ -78,7 +78,7 @@ public abstract class ExperienceOrbRendererMixin extends EntityRenderer<Experien
         method = "vertex",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(IIII)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(IIII)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
     private static int nt_experience_particles$setOpaqueOrb(int alpha)
@@ -94,7 +94,7 @@ public abstract class ExperienceOrbRendererMixin extends EntityRenderer<Experien
         method = "vertex",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;uv2(I)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
+            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setLight(I)Lcom/mojang/blaze3d/vertex/VertexConsumer;"
         )
     )
     private static int nt_experience_particles$setFullBrightOrb(int packedLight)

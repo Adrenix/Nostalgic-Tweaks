@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.RenderOrder;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -95,7 +96,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
         )
     )
-    private void nt_block_hitbox$renderHitboxFirst(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderHitboxFirst(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.FIRST)
             this.nt$renderOverlay.run();
@@ -113,7 +114,7 @@ public abstract class LevelRendererMixin
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
         )
     )
-    private void nt_block_hitbox$renderHitboxLast(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$renderHitboxLast(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.LAST)
             this.nt$renderOverlay.run();
@@ -126,7 +127,7 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("RETURN")
     )
-    private void nt_block_hitbox$clearRenderedHitbox(float partialTick, long nanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_block_hitbox$clearRenderedHitbox(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
     {
         this.nt$renderOverlay = null;
     }

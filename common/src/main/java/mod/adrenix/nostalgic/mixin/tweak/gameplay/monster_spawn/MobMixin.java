@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +33,7 @@ public abstract class MobMixin
         method = "populateDefaultEquipmentEnchantments",
         at = @At("HEAD")
     )
-    private void nt_monster_spawn$removeEquipment(RandomSource random, DifficultyInstance difficulty, CallbackInfo callback)
+    private void nt_monster_spawn$removeEquipment(ServerLevelAccessor level, RandomSource random, DifficultyInstance difficulty, CallbackInfo callback)
     {
         if (ClassUtil.isNotInstanceOf(this, Monster.class))
             return;
@@ -51,10 +52,10 @@ public abstract class MobMixin
         method = "populateDefaultEquipmentEnchantments",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Mob;enchantSpawnedWeapon(Lnet/minecraft/util/RandomSource;F)V"
+            target = "Lnet/minecraft/world/entity/Mob;enchantSpawnedWeapon(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/DifficultyInstance;)V"
         )
     )
-    private boolean nt_monster_spawn$shouldEnchantWeapon(Mob mob, RandomSource random, float chanceMultiplier)
+    private boolean nt_monster_spawn$shouldEnchantWeapon(Mob mob, ServerLevelAccessor level, RandomSource random, DifficultyInstance difficulty)
     {
         if (mob instanceof Monster)
             return !GameplayTweak.DISABLE_MONSTER_ENCHANT_SPAWN.get();
@@ -69,10 +70,10 @@ public abstract class MobMixin
         method = "populateDefaultEquipmentEnchantments",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Mob;enchantSpawnedArmor(Lnet/minecraft/util/RandomSource;FLnet/minecraft/world/entity/EquipmentSlot;)V"
+            target = "Lnet/minecraft/world/entity/Mob;enchantSpawnedArmor(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/DifficultyInstance;)V"
         )
     )
-    private boolean nt_monster_spawn$shouldEnchantArmor(Mob mob, RandomSource random, float chanceMultiplier, EquipmentSlot slot)
+    private boolean nt_monster_spawn$shouldEnchantArmor(Mob mob, ServerLevelAccessor level, RandomSource random, EquipmentSlot slot, DifficultyInstance difficulty)
     {
         if (mob instanceof Monster)
             return !GameplayTweak.DISABLE_MONSTER_ENCHANT_SPAWN.get();
