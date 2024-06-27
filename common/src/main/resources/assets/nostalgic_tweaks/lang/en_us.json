@@ -241,7 +241,7 @@
   "gui.nostalgic_tweaks.row.tweak.network_disconnected": "The client is§c not§r connected to a server with§e Nostalgic Tweaks§r installed.",
   "gui.nostalgic_tweaks.row.tweak.star": "Click to§a add§r this tweak to the§e favorites§r list.",
   "gui.nostalgic_tweaks.row.tweak.star_off": "Click to§c remove§r this tweak from the§e favorites§r list.",
-  "gui.nostalgic_tweaks.row.tweak.reset": "Click to reset this tweak back to its§e original§r value.",
+  "gui.nostalgic_tweaks.row.tweak.reset": "Click to reset this tweak back to its§e default§r value.",
   "gui.nostalgic_tweaks.row.tweak.reset_off": "This tweak is already using its§e default§r value.",
   "gui.nostalgic_tweaks.row.tweak.status": "Click to open an informative screen about the current status of this tweak.",
   "gui.nostalgic_tweaks.row.tweak.modern": "Click to change this tweak to its modern value.",
