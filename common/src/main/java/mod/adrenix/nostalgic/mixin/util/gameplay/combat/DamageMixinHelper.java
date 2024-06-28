@@ -6,8 +6,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This utility class is used by both the client and server.
@@ -17,7 +17,7 @@ public abstract class DamageMixinHelper
     /**
      * A cache map that connects an item to its old damage value item attribute.
      */
-    private static final Map<String, ItemAttributeModifiers> DAMAGE_MODIFIERS = new HashMap<>();
+    private static final Map<String, ItemAttributeModifiers> DAMAGE_MODIFIERS = new ConcurrentHashMap<>();
 
     /**
      * Get the attack damage amount for a tiered item.
