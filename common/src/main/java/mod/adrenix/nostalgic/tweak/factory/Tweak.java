@@ -19,6 +19,7 @@ import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.network.chat.Component;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -32,6 +33,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     /* Fields */
 
     protected final TweakBuilder<?> builder;
+    protected final Set<Runnable> reflectionListeners;
     private final Supplier<Boolean> conflict;
     private final CacheHolder<TweakStatus> statusHolder;
     private CacheMode cacheMode;
@@ -45,6 +47,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
         this.cacheMode = CacheMode.LOCAL;
         this.statusHolder = CacheHolder.from(builder.status, this::getCacheMode);
         this.conflict = Suppliers.memoize(() -> builder.conflictMods.stream().anyMatch(ModTracker::isInstalled));
+        this.reflectionListeners = new HashSet<>();
 
         builder.container.addTweak(this);
     }
@@ -301,10 +304,26 @@ public abstract class Tweak<T> implements TweakMeta<T>
     @Override
     public void applyReflection(T value)
     {
+        this.reflectionListeners.forEach(listener -> {
+            NostalgicTweaks.LOGGER.debug("[Reflection Listener] Running for (%s)", this.toString());
+            listener.run();
+        });
+
         if (NostalgicTweaks.isClient())
             ConfigReflect.setClientField(this, value);
         else
             ConfigReflect.setServerField(this, value);
+    }
+
+    /**
+     * Subscribe a listener that will run when this tweak's cache value is reflected onto the config. Reflection is done
+     * after a new value has been applied to a tweak and before the runtime config is saved to disk.
+     *
+     * @param runnable A {@link Runnable} to run.
+     */
+    public void whenChanged(Runnable runnable)
+    {
+        this.reflectionListeners.add(runnable);
     }
 
     /**
