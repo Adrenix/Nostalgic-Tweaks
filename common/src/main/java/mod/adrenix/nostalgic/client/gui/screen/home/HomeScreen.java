@@ -105,7 +105,7 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         this.renderBlurredBackground(partialTick);
 
         if (this.minecraft.level == null)
-            Panorama.render(graphics, partialTick);
+            Panorama.render(graphics);
         else
             graphics.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
 

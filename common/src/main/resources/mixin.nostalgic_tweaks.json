@@ -88,6 +88,7 @@
     "candy.progress_screen.MinecraftMixin",
     "candy.select_world_screen.WorldSelectionListMixin",
     "candy.uncap_title_fps.MinecraftMixin",
+    "candy.uncap_title_fps.PanoramaRendererMixin",
     "candy.window_title.MinecraftMixin",
     "candy.world_fog.ClientLevelMixin",
     "candy.world_fog.FogRendererMixin",

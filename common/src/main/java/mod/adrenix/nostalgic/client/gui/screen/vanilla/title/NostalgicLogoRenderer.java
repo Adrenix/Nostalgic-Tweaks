@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.MatrixUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import net.minecraft.client.Minecraft;
@@ -57,10 +58,8 @@ class NostalgicLogoRenderer
 
     /**
      * Renders the old logo and its falling animation.
-     *
-     * @param partialTick The normalized progress between two ticks [0.0F, 1.0F].
      */
-    public void render(float partialTick)
+    public void render()
     {
         BakedModel blockModel = this.minecraft.getItemRenderer()
             .getItemModelShaper()
@@ -83,7 +82,7 @@ class NostalgicLogoRenderer
         for (LogoEffectRandomizer[] logoEffect : this.logoEffects)
         {
             for (LogoEffectRandomizer logoEffectRandomizer : logoEffect)
-                logoEffectRandomizer.update(partialTick);
+                logoEffectRandomizer.update();
         }
 
         Window window = GuiUtil.getWindow();
@@ -248,15 +247,13 @@ class NostalgicLogoRenderer
 
         /**
          * Update the position of this randomizer instance.
-         *
-         * @param partialTick The change in game frame time.
          */
-        public void update(float partialTick)
+        public void update()
         {
             if (this.position > 0.0F)
                 this.speed -= 0.4F;
 
-            this.position += this.speed * partialTick;
+            this.position += this.speed * PartialTick.realtime();
             this.speed *= 0.9F;
 
             if (this.position < 0.0F)

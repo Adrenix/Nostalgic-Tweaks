@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
 import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
@@ -60,18 +61,17 @@ public enum Panorama implements PreparableReloadListener
     /**
      * Render the cycled panorama.
      *
-     * @param graphics    A {@link GuiGraphics} instance.
-     * @param partialTick The normalized progress made between two ticks (0.0F-1.0F).
+     * @param graphics A {@link GuiGraphics} instance.
      */
-    public static void render(GuiGraphics graphics, float partialTick)
+    public static void render(GuiGraphics graphics)
     {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (FADE_IN_ANIMATION.isNotFinished())
-            Panorama.getLastDisplaying().draw(graphics, partialTick);
+            Panorama.getLastDisplaying().draw(graphics, PartialTick.realtime());
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, (float) FADE_IN_ANIMATION.getValue());
-        Panorama.getDisplaying().draw(graphics, partialTick);
+        Panorama.getDisplaying().draw(graphics, PartialTick.realtime());
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }

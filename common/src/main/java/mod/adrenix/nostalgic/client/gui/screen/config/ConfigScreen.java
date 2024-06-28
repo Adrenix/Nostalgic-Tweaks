@@ -272,7 +272,7 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
         if (this.minecraft.level != null && this.visible)
             graphics.fillGradient(0, 0, this.width, this.height, 0x32101010, 0x01000000);
         else if (this.minecraft.level == null)
-            Panorama.render(graphics, partialTick);
+            Panorama.render(graphics);
 
         Tooltip.setVisible(this.visible);
 

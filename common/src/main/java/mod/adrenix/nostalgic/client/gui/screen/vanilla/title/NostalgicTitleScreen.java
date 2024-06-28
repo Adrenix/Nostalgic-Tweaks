@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.TitleLayout;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
@@ -166,7 +167,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
                 GuiUtil.renderDirtBackground(graphics);
         }
         else
-            this.renderPanorama(graphics, partialTick);
+            this.renderPanorama(graphics, PartialTick.realtime());
 
         if (this.minecraft == null || this.minecraft.getOverlay() != null)
             return;
@@ -175,7 +176,7 @@ public class NostalgicTitleScreen extends TitleScreen implements DynamicScreen<N
             this.blockLogo = new NostalgicLogoRenderer();
 
         if (CandyTweak.OLD_ALPHA_LOGO.get())
-            this.blockLogo.render(partialTick);
+            this.blockLogo.render();
         else
             this.imageLogo.renderLogo(graphics, this.width, 1.0F);
 
