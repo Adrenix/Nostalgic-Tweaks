@@ -40,10 +40,11 @@ public abstract class ItemMixinHelper
     /**
      * Split up an item entity new individual entities.
      *
-     * @param level  The {@link Level} instance.
-     * @param entity The {@link ItemEntity} to split.
+     * @param level    The {@link Level} instance.
+     * @param entity   The {@link ItemEntity} to split.
+     * @param consumer A {@link Consumer} that accepts a split-off {@link ItemEntity} instance.
      */
-    public static void splitEntity(Level level, ItemEntity entity)
+    public static void splitEntity(Level level, ItemEntity entity, Consumer<ItemEntity> consumer)
     {
         int count = entity.getItem().getCount();
 
@@ -62,7 +63,7 @@ public abstract class ItemMixinHelper
             ItemEntity itemEntity = new ItemEntity(level, x, y, z, entity.getItem());
 
             itemEntity.setDefaultPickUpDelay();
-            level.addFreshEntity(itemEntity);
+            consumer.accept(itemEntity);
         }
     }
 

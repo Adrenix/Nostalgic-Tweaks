@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.candy.item_merge;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.item_merge;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
@@ -8,15 +8,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @Mixin(Block.class)
 public abstract class BlockMixin
 {
+    /* Shadows */
+
+    @Shadow private static List<ItemEntity> capturedDrops;
+
+    /* Injections */
+
     /**
      * Splits up the item stack spawned from breaking blocks.
      */
@@ -25,12 +33,12 @@ public abstract class BlockMixin
         at = @At(
             shift = At.Shift.BEFORE,
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"
+            target = "Ljava/util/List;add(Ljava/lang/Object;)Z"
         )
     )
-    private static void nt_item_merge$wrapAddFreshEntity(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback, @Local ItemEntity itemEntity)
+    private static void nt_neoforge_item_merge$wrapCapturedDrops(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback, @Local ItemEntity itemEntity)
     {
         if (ModTweak.ENABLED.get())
-            ItemMixinHelper.splitEntity(level, itemEntity, level::addFreshEntity);
+            ItemMixinHelper.splitEntity(level, itemEntity, capturedDrops::add);
     }
 }
