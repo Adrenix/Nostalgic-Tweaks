@@ -26,7 +26,7 @@ public abstract class HeldItemMixinHelper
      */
     public static ItemStack getLastHeldItem(ItemStack originalItemStack, ItemStack heldItemStack, ItemStack playerItemStack, SlotTracker slotTracker)
     {
-        boolean isUnequipped = heldItemStack.toString().equals("0 air") && playerItemStack.toString().equals("0 air");
+        boolean isUnequipped = heldItemStack.isEmpty() && playerItemStack.isEmpty();
 
         if (!AnimationTweak.OLD_ITEM_REEQUIP.get() || !isUnequipped)
             return originalItemStack;
@@ -59,7 +59,7 @@ public abstract class HeldItemMixinHelper
             slotTracker.nt$setReequip(true);
         }
 
-        boolean isUnequipped = heldItem.get().toString().equals("0 air") && mainHandItem.toString().equals("0 air");
+        boolean isUnequipped = heldItem.get().isEmpty() && mainHandItem.isEmpty();
         boolean isItemChanged = !heldItem.get().is(mainHandItem.getItem());
         boolean isSlotUpdated = selectedSlot == slotTracker.nt$getLastSlot() && isItemChanged && !slotTracker.nt$getReequip();
         boolean isHandChanged = isUnequipped && !slotTracker.nt$getLastItem().isEmpty() && !slotTracker.nt$getReequip();
