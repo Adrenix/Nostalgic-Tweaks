@@ -47,11 +47,11 @@ abstract class ClientInitializer
         ClientTickEvent.CLIENT_PRE.register(ClientInitializer::onTick);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::onPlayerQuit);
 
-        AfterConfigSave.addInstruction(ChestMixinHelper::runAfterSave);
         AfterConfigSave.addInstruction(LightingMixinHelper::runAfterSave);
         AfterConfigSave.addInstruction(MipmapMixinHelper::runAfterSave);
         AfterConfigSave.addInstruction(HudMixinHelper::runAfterSave);
 
+        ChestMixinHelper.init();
         MipmapMixinHelper.init();
     }
 

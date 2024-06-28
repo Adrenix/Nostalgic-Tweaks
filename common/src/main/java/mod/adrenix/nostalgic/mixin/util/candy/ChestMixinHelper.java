@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.util.candy;
 
+import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -25,21 +25,27 @@ public abstract class ChestMixinHelper
     private static final ConcurrentHashMap<Block, BitSet> BLOCK_CACHE = new ConcurrentHashMap<>();
 
     /**
-     * Caches the value stored by the chest light blocking tweak so a decision can be made if all the block cache needs
-     * cleared and recalculated.
+     * The chest block cache needs to be cleared and recalculated if any of these tweaks have their disk values
+     * changed.
      */
-    private static final CacheValue<Boolean> CHEST_RELIGHT_CACHE = CacheValue.create(CandyTweak.CHEST_LIGHT_BLOCK::get);
+    public static void init()
+    {
+        CandyTweak.CHEST_LIGHT_BLOCK.whenChanged(ChestMixinHelper::invalidateAndRelight);
+        CandyTweak.OLD_CHEST.whenChanged(ChestMixinHelper::invalidateAndRelight);
+        CandyTweak.OLD_ENDER_CHEST.whenChanged(ChestMixinHelper::invalidateAndRelight);
+        CandyTweak.OLD_TRAPPED_CHEST.whenChanged(ChestMixinHelper::invalidateAndRelight);
+        CandyTweak.OLD_MOD_CHESTS.whenChanged(ChestMixinHelper::invalidateAndRelight);
+        CandyTweak.TRANSLUCENT_CHESTS.whenChanged(ChestMixinHelper::invalidateAndRelight);
+    }
 
     /**
-     * Instructions to perform after the config has been saved.
+     * Invalidates the block cache and instructs the lighting engine to recalculate the lighting in chunks loaded by the
+     * client.
      */
-    public static void runAfterSave()
+    private static void invalidateAndRelight()
     {
-        if (CHEST_RELIGHT_CACHE.isExpired())
-        {
-            BLOCK_CACHE.clear();
-            CHEST_RELIGHT_CACHE.update();
-        }
+        BLOCK_CACHE.clear();
+        LightingMixinHelper.RELIGHT_ALL_CHUNKS.enable();
     }
 
     /**
