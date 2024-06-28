@@ -23,6 +23,6 @@ public abstract class MinecraftMixin
     )
     private int nt_uncap_title_fps$modifyLimit(int framerate)
     {
-        return CandyTweak.UNCAP_TITLE_FPS.get() ? this.getWindow().getFramerateLimit() : framerate;
+        return CandyTweak.UNCAP_TITLE_FPS.get() ? Math.max(this.getWindow().getFramerateLimit(), 60) : framerate;
     }
 }
