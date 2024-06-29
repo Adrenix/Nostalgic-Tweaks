@@ -45,7 +45,7 @@ public interface SoundTweak
 
     // Chest Block
 
-    TweakFlag OLD_CHEST = TweakFlag.client(true, SoundGroup.BLOCK_CHEST).newForUpdate().build();
+    TweakFlag OLD_CHEST = TweakFlag.client(false, SoundGroup.BLOCK_CHEST).newForUpdate().build();
     TweakFlag DISABLE_CHEST = TweakFlag.client(true, SoundGroup.BLOCK_CHEST).newForUpdate().build();
 
     // Lava Block
