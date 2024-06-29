@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
@@ -186,15 +185,16 @@ public abstract class LightmapMixinHelper
         else if (isWorldDarkening)
             skyLightSubtracted = Mth.clamp(skyLightSubtracted + (int) Math.ceil(3 * darkenAmount), 1, 15);
 
+        float ambientLight = level.dimensionType().ambientLight();
+        float minSkyLight = getLightmapBrightness(15, true) * ambientLight;
+        float minBlockLight = getLightmapBrightness(15, false) * ambientLight;
+
         for (int y = 0; y < 16; y++)
         {
             for (int x = 0; x < 16; x++)
             {
-                float fromBlockAmbient = LightTexture.getBrightness(level.dimensionType(), x);
-                float fromSkyAmbient = LightTexture.getBrightness(level.dimensionType(), y);
-
-                float fromBlockLight = Math.max(getLightmapBrightness(x, false), fromBlockAmbient);
-                float fromSkyLight = Math.max(getLightmapBrightness(Math.max(y - skyLightSubtracted, 0), true), fromSkyAmbient);
+                float fromBlockLight = Math.max(getLightmapBrightness(x, false), minBlockLight);
+                float fromSkyLight = Math.max(getLightmapBrightness(Math.max(y - skyLightSubtracted, 0), true), minSkyLight);
 
                 if (level.dimension() == Level.END)
                     fromSkyLight = 0.22F + fromSkyLight * 0.75F;
