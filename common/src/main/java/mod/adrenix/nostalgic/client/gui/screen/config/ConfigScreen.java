@@ -202,6 +202,18 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
+        if (KeyboardUtil.isGoingLeft(keyCode))
+        {
+            this.configWidgets.selectTabLeft();
+            return true;
+        }
+
+        if (KeyboardUtil.isGoingRight(keyCode))
+        {
+            this.configWidgets.selectTabRight();
+            return true;
+        }
+
         if (super.keyPressed(keyCode, scanCode, modifiers))
             return true;
 
@@ -216,12 +228,6 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
 
         if (Screen.hasControlDown() && keyCode == InputConstants.KEY_L)
             this.visible = !this.visible;
-
-        if (KeyboardUtil.isGoingLeft(keyCode))
-            this.configWidgets.selectTabLeft();
-
-        if (KeyboardUtil.isGoingRight(keyCode))
-            this.configWidgets.selectTabRight();
 
         return false;
     }
