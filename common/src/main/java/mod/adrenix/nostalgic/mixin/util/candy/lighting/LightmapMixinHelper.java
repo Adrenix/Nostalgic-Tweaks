@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.util.candy.lighting;
 import com.mojang.blaze3d.platform.NativeImage;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
+import mod.adrenix.nostalgic.util.common.timer.LerpTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -10,6 +11,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * This utility class is used only by the client.
@@ -23,9 +26,11 @@ public abstract class LightmapMixinHelper
     private static final FlagHolder CACHE_INITIALIZER = FlagHolder.off();
 
     /**
-     * This two-dimensional array stores the lightmap cache so that it can be used for linear interpolation.
+     * This two-dimensional array stores lightmap timers so that each lightmap pixel has its own linear interpolator.
+     * Using {@link LerpTimer} ensures interpolation is based on realtime. If another mod prevents the lightmap from
+     * updating each render pass, these timers will move the brightness values to where they need to be next pass.
      */
-    private static final float[][] LIGHTMAP_CACHE = new float[16][16];
+    private static final LerpTimer[][] LIGHTMAP_TIMERS = new LerpTimer[16][16];
 
     /**
      * Resets the cache initializer back to its default state. This should be done when the player exits the world since
@@ -193,6 +198,9 @@ public abstract class LightmapMixinHelper
         {
             for (int x = 0; x < 16; x++)
             {
+                if (LIGHTMAP_TIMERS[x][y] == null)
+                    LIGHTMAP_TIMERS[x][y] = LerpTimer.create(1L, TimeUnit.SECONDS);
+
                 float fromBlockLight = Math.max(getLightmapBrightness(x, false), minBlockLight);
                 float fromSkyLight = Math.max(getLightmapBrightness(Math.max(y - skyLightSubtracted, 0), true), minSkyLight);
 
@@ -227,9 +235,7 @@ public abstract class LightmapMixinHelper
                 float rgba = fromBlockLight > fromSkyLight ? blockLight : skyLight;
 
                 if (isSmoothTransition && isCacheInitialized)
-                    rgba = Mth.lerp(partialTick, LIGHTMAP_CACHE[x][y], rgba);
-
-                LIGHTMAP_CACHE[x][y] = rgba;
+                    rgba = LIGHTMAP_TIMERS[x][y].setAndGetTarget(rgba, LerpTimer::lerpFloat);
 
                 int light = Math.round(rgba);
                 lightPixels.setPixelRGBA(x, y, 255 << 24 | light << 16 | light << 8 | light);
