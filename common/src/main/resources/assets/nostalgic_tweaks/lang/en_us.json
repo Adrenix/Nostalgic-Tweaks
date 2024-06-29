@@ -717,7 +717,7 @@
   "gui.nostalgic_tweaks.config.sound.oldChest": "Old Chest Sounds",
   "gui.nostalgic_tweaks.config.sound.oldChest.info": "Bring back the§a beta 1.8§r chest sounds. The open and close chest sound will be§e replaced§r with a wooden door's open and close sounds.",
   "gui.nostalgic_tweaks.config.sound.disableChest": "Disable Chest Sounds",
-  "gui.nostalgic_tweaks.config.sound.disableChest.info": "Disable the open and close chest sounds.",
+  "gui.nostalgic_tweaks.config.sound.disableChest.info": "Disable the open and close chest sounds for old full-block chests.",
   "gui.nostalgic_tweaks.config.sound.disableGrowth": "Disable Growth Sounds",
   "gui.nostalgic_tweaks.config.sound.disableGrowth.info": "Disable the sound played when using a bone meal item.",
   "gui.nostalgic_tweaks.config.sound.disableDoorPlace": "Disable Door Placing Sounds",
