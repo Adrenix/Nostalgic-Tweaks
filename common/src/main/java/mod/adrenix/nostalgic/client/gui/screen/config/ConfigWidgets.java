@@ -857,7 +857,7 @@ public class ConfigWidgets implements WidgetManager
     private SeparatorWidget createTopSeparator()
     {
         return SeparatorWidget.create(Color.SILVER_CHALICE)
-            .visibleIf(() -> this.tabs.stream().noneMatch(TabButton::isSelected))
+            .visibleIf(() -> this.tabs.stream().filter(TabButton::isVisible).noneMatch(TabButton::isSelected))
             .extendWidthToScreenEnd(0)
             .height(1)
             .below(this.tabLeft, 0)
