@@ -1488,6 +1488,8 @@
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.info": "Bring back the old animal spawning and removal logic. This will§c not§r remove saddled, leashed, tagged, or tamed animal entities.",
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.warn": "This will§c permanently remove§r spawned animals from unloaded chunks that are not saddled, leashed, tagged, or tamed.",
   "gui.nostalgic_tweaks.config.gameplay.oldAnimalSpawning.search": "Passive, Chunk, Group",
+  "gui.nostalgic_tweaks.config.gameplay.disableBabyAnimalSpawning": "Disable Baby Animal Spawning",
+  "gui.nostalgic_tweaks.config.gameplay.disableBabyAnimalSpawning.info": "Prevent baby animals from spawning naturally.",
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass": "Disable Grass Consumption",
   "gui.nostalgic_tweaks.config.gameplay.disableSheepEatGrass.info": "Prevents sheep from eating grass blocks and regenerating their wool.",
   "gui.nostalgic_tweaks.config.gameplay.randomSheepWoolRegen": "Random Wool Regeneration",

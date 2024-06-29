@@ -134,6 +134,7 @@
     "candy.square_border.ChunkTrackingViewMixin",
     "gameplay.animal_sheep.AnimalMixin",
     "gameplay.animal_sheep.EatBlockGoalMixin",
+    "gameplay.animal_spawn.AgeableMobMixin",
     "gameplay.animal_spawn.AnimalMixin",
     "gameplay.animal_spawn.ChickenMixin",
     "gameplay.animal_spawn.MobCategoryMixin",
