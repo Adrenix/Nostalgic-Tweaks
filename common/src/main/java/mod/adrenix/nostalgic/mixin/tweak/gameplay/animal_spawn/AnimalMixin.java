@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_spawn;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
@@ -27,6 +28,21 @@ public abstract class AnimalMixin extends Mob
     }
 
     /* Injections */
+
+    /**
+     * Prevents mobs from consuming food items to start breeding.
+     */
+    @ModifyExpressionValue(
+        method = "mobInteract",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/animal/Animal;isFood(Lnet/minecraft/world/item/ItemStack;)Z"
+        )
+    )
+    private boolean nt_animal_spawn$modifyIsFoodOnMobInteract(boolean isFood)
+    {
+        return !GameplayTweak.DISABLE_ANIMAL_BREEDING.get() && isFood;
+    }
 
     /**
      * Changes the behavior of animal removal.
