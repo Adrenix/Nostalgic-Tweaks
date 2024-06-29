@@ -5,6 +5,7 @@ import net.minecraft.Util;
 import net.minecraft.util.Mth;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * A timer that controls linear interpolation. The delta for interpolation is controlled by the amount of real time that
@@ -98,6 +99,23 @@ public class LerpTimer
             this.targetValue = value;
             this.changedTime = time;
         }
+    }
+
+    /**
+     * Set the linear interpolation's ending target value and retrieve the next linear interpolation using the given
+     * function.
+     *
+     * @param target   A number that will be converted to a {@code double} that represents the ending target.
+     * @param function A {@link Function} that accepts this {@link LerpTimer} and yields the number type expected.
+     * @param <T>      The type of {@link Number}.
+     * @return The liner interpolation as the given {@link T}.
+     */
+    @PublicAPI
+    public <T extends Number> T setAndGetTarget(T target, Function<LerpTimer, T> function)
+    {
+        this.setTarget(target);
+
+        return function.apply(this);
     }
 
     /**
