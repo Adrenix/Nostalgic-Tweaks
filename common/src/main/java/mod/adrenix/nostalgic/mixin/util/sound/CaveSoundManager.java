@@ -43,6 +43,20 @@ public class CaveSoundManager
     /* Methods */
 
     /**
+     * Get an old style cave sound.
+     *
+     * @param randomSource A {@link RandomSource} instance.
+     * @param x            The x-coordinate of the sound.
+     * @param y            The y-coordinate of the sound.
+     * @param z            The z-coordinate of the sound.
+     * @return A new old style cave sound {@link SimpleSoundInstance} instance at the given coordinates.
+     */
+    public static SimpleSoundInstance getSound(RandomSource randomSource, double x, double y, double z)
+    {
+        return new SimpleSoundInstance(LocateResource.mod("cave"), SoundSource.AMBIENT, 0.7F, 0.8F + randomSource.nextFloat() * 0.2F, randomSource, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false);
+    }
+
+    /**
      * Tick and play a cave ambient sound near the player if the given block pos matches the required context.
      *
      * @param blockPos The random {@link BlockPos} to check for correct context.
@@ -76,9 +90,7 @@ public class CaveSoundManager
                 double y = this.player.getEyeY() + dy / normal * offset;
                 double z = this.player.getZ() + dz / normal * offset;
 
-                SimpleSoundInstance soundInstance = new SimpleSoundInstance(LocateResource.mod("cave"), SoundSource.AMBIENT, 0.7F, 0.8F + this.randomSource.nextFloat() * 0.2F, this.randomSource, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false);
-
-                this.soundManager.play(soundInstance);
+                this.soundManager.play(getSound(this.randomSource, x, y, z));
                 this.tickCountdown = this.randomSource.nextInt(12000) + 6000;
             }
         }
