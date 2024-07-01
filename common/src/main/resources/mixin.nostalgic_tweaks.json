@@ -139,6 +139,7 @@
     "gameplay.animal_spawn.ChickenMixin",
     "gameplay.animal_spawn.MobCategoryMixin",
     "gameplay.animal_spawn.SpawnStateMixin",
+    "gameplay.animal_spawn.TemptGoalMixin",
     "gameplay.bugs.LivingEntityMixin",
     "gameplay.combat_bow.BowItemMixin",
     "gameplay.combat_bow.ServerGamePacketListenerImplMixin",

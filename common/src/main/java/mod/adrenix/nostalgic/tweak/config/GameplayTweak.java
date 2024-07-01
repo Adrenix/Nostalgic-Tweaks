@@ -22,6 +22,7 @@ public interface GameplayTweak
 
     // Mob AI
 
+    TweakFlag DISABLE_ANIMAL_TEMPTING = TweakFlag.server(false, GameplayGroup.MOB_AI).newForUpdate().build();
     TweakFlag DISABLE_ANIMAL_PANIC = TweakFlag.server(true, GameplayGroup.MOB_AI).newForUpdate().build();
     TweakFlag DISABLE_MONSTER_AVOID_SUN = TweakFlag.server(true, GameplayGroup.MOB_AI).newForUpdate().build();
 
