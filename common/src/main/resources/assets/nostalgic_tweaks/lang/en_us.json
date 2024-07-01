@@ -706,6 +706,8 @@
   "gui.nostalgic_tweaks.config.sound.replaceNetherBiomeMusic.info": "Replaces the modern§4 Nether§r biome music with music created by C418.",
   "gui.nostalgic_tweaks.config.sound.replaceGameplayMusic": "Replace Gameplay Music with C418",
   "gui.nostalgic_tweaks.config.sound.replaceGameplayMusic.info": "Replaces the modern music that plays during gameplay with music created by C418.",
+  "gui.nostalgic_tweaks.config.sound.oldCaveSounds": "Old Cave Sounds",
+  "gui.nostalgic_tweaks.config.sound.oldCaveSounds.info": "Replace modern cave sounds with the old-style cave sounds with a randomized pitch.",
   "gui.nostalgic_tweaks.config.sound.oldCaveAmbience": "Old Cave Ambience",
   "gui.nostalgic_tweaks.config.sound.oldCaveAmbience.info": "Brings back the old cave sound ambience logic. The pitch of cave ambience sounds will be randomized and only the old cave sounds are played.",
   "gui.nostalgic_tweaks.config.sound.disableNetherAmbience": "Disable Nether Ambience",
