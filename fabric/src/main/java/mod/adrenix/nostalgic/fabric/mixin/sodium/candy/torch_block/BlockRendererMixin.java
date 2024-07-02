@@ -26,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @Mixin(BlockRenderer.class)
@@ -40,10 +42,27 @@ public abstract class BlockRendererMixin
     )
     private List<BakedQuad> nt_sodium_torch_block$hideBottom(List<BakedQuad> quads, BlockRenderContext context)
     {
-        if (CandyTweak.OLD_TORCH_BOTTOM.get() && TorchMixinHelper.isSheared(context.state()))
+        if (!CandyTweak.OLD_TORCH_BOTTOM.get() || !TorchMixinHelper.isSheared(context.state()))
+            return quads;
+
+        if (CollectionUtil.isModifiable(quads))
         {
-            if (CollectionUtil.isModifiable(quads))
-                quads.removeIf(quad -> quad.getDirection() == Direction.DOWN);
+            try
+            {
+                List<BakedQuad> downQuads = new ArrayList<>();
+
+                for (BakedQuad quad : quads)
+                {
+                    if (quad.getDirection() == Direction.DOWN)
+                        downQuads.add(quad);
+                }
+
+                quads.removeAll(downQuads);
+            }
+            catch (ConcurrentModificationException ignored)
+            {
+                // No need to capture this exception - the torch will still have a bottom texture
+            }
         }
 
         return quads;
