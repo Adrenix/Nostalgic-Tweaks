@@ -70,18 +70,6 @@ public abstract class LightingMixinHelper
     public static final ConcurrentLinkedDeque<Pair<Long, Long>> PACKED_CHUNK_BLOCK_QUEUE = new ConcurrentLinkedDeque<>();
 
     /**
-     * Caches the value stored by the old water lighting tweak so a decision can be made if all the chunks need
-     * relighting after the chunks are reloaded by the level renderer.
-     */
-    private static final CacheValue<Boolean> WATER_RELIGHT_CACHE = CacheValue.create(CandyTweak.OLD_WATER_LIGHTING::get);
-
-    /**
-     * Caches the value stored by the chest light blocking tweak so a decision can be made if all the chunks need
-     * relighting after the chunks are reloaded by the level renderer.
-     */
-    private static final CacheValue<Boolean> CHEST_RELIGHT_CACHE = CacheValue.create(CandyTweak.CHEST_LIGHT_BLOCK::get);
-
-    /**
      * This tracks whether the level renderer needs to relight all chunks loaded by the client player.
      */
     public static final FlagHolder RELIGHT_ALL_CHUNKS = FlagHolder.off();
@@ -374,7 +362,7 @@ public abstract class LightingMixinHelper
         final boolean isChestLightBlocked = CandyTweak.CHEST_LIGHT_BLOCK.get();
         final boolean isWaterDarker = CandyTweak.OLD_WATER_LIGHTING.get();
 
-        if (!isChestLightBlocked && !isWaterDarker)
+        if (!isChestLightBlocked && !isWaterDarker && allChanged != 1)
             return;
 
         CompletableFuture.runAsync(() -> findBlocks(chunk, blockState -> {
