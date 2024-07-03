@@ -188,6 +188,9 @@ public abstract class DebugScreenOverlayMixin
     )
     private boolean nt_debug_screen$showFpsChart(boolean renderFpsCharts)
     {
-        return CandyTweak.FPS_CHART.get() != DebugChart.DISABLED || renderFpsCharts;
+        if (CandyTweak.FPS_CHART.get() == DebugChart.DISABLED || !ModTweak.ENABLED.get())
+            return renderFpsCharts;
+
+        return true;
     }
 }
