@@ -1,6 +1,6 @@
 {
-  "package": "mod.adrenix.nostalgic.forge.mixin.embeddium",
-  "plugin": "mod.adrenix.nostalgic.forge.mixin.MixinEmbeddiumPlugin",
+  "package": "mod.adrenix.nostalgic.neoforge.mixin.embeddium",
+  "plugin": "mod.adrenix.nostalgic.neoforge.mixin.MixinEmbeddiumPlugin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "priority": 1001,
