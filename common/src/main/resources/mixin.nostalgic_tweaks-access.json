@@ -15,6 +15,7 @@
     "ReceivingLevelScreenAccess",
     "ScreenAccess",
     "SelectWorldScreenAccess",
+    "TimerAccess",
     "TitleScreenAccess",
     "WorldListEntryAccess",
     "WorldSelectionListAccess"
