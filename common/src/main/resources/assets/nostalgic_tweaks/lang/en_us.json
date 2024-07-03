@@ -1304,7 +1304,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock.conflict": "This tweak will not work when§e Starlight§r is installed.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight": "Round Robin Chunk Relighting",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.info": "When skylight changes due to the time of day, this will cause§6 round robin chunk updates§r. This will have a slight§c impact§r on performance when relighting occurs.",
-  "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.conflict": "This tweak will not work when§e Starlight§r is installed.",
+  "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.conflict": "This tweak will not work if§e Starlight§r or§b Distant Horizons§r is installed.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.polytone": "Incorrect lighting patterns may result if using a resource pack that modifies the light texture map with§b Polytone§r installed, such as§e Golden Days§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.optifine": "This tweak may§4 break§r some shaders. §6Decrease§r the block light slider in the shader subcategory if the world is too§e bright§r. §cDisable§r this tweak if you encounter further visual issues.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.issue.sodium": "This tweak may§4 break§r some shaders. §6Decrease§r the block light slider in the shader subcategory if the world is too§e bright§r. §cDisable§r this tweak if you encounter further visual issues.",
