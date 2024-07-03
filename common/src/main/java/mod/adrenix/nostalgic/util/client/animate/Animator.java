@@ -122,7 +122,7 @@ public class Animator implements Animation
     @Override
     public double getValue()
     {
-        return Mth.lerp(PartialTick.get(), this.lastValue, this.currentValue);
+        return Mth.lerp(PartialTick.legacy(), this.lastValue, this.currentValue);
     }
 
     private boolean isReverseFinished()
