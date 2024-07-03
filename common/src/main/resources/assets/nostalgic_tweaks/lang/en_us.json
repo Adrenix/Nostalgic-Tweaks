@@ -1304,7 +1304,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldLeavesLighting": "Old Leaves Lighting",
   "gui.nostalgic_tweaks.config.eyeCandy.oldLeavesLighting.info": "Bring back the old leaves lighting from§e beta§r. This will§c remove§r ambient occlusion casting on blocks that are§e next§r to leaves.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWaterLighting": "Old Water Lighting",
-  "gui.nostalgic_tweaks.config.eyeCandy.oldWaterLighting.info": "Bring back the old water lighting so that water blocks§e 3§r light levels instead of§6 1§r.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldWaterLighting.info": "Recalculate chunk lighting so that water blocks§e 3§r light levels instead of§6 1§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWaterLighting.conflict": "This tweak will not work when§e Starlight§r is installed.",
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock": "Chest Light Blocking",
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock.info": "Recalculate chunk lighting so that chests block skylight and block light.",
