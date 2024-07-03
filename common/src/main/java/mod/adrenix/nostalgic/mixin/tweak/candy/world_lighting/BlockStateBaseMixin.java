@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
+import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.world.BlockUtil;
 import net.minecraft.world.level.block.Block;
@@ -67,15 +68,17 @@ public abstract class BlockStateBaseMixin
         if (NostalgicTweaks.isMixinEarly() || !RenderSystem.isOnRenderThread())
             return lightBlock;
 
-        if (CandyTweak.OLD_WATER_LIGHTING.get() && BlockUtil.isWaterLike(this.asState()))
-            return 3;
+        return LightingMixinHelper.LIGHT_BLOCK_CACHE.computeIfAbsent(this.getBlock(), block -> {
+            if (CandyTweak.OLD_WATER_LIGHTING.get() && BlockUtil.isWaterLike(this.asState()))
+                return 3;
 
-        if (CandyTweak.CHEST_LIGHT_BLOCK.get())
-        {
-            if (ChestMixinHelper.isOld(this.getBlock()) && !ChestMixinHelper.isTranslucent(this.getBlock()))
-                return 15;
-        }
+            if (CandyTweak.CHEST_LIGHT_BLOCK.get())
+            {
+                if (ChestMixinHelper.isOld(this.getBlock()) && !ChestMixinHelper.isTranslucent(this.getBlock()))
+                    return 15;
+            }
 
-        return lightBlock;
+            return lightBlock;
+        });
     }
 }
