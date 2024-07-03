@@ -319,7 +319,7 @@
   "gui.nostalgic_tweaks.overlay.status.wait": "This tweak is§e waiting§r to be§a loaded§r by a world. It is§4 impossible§r to detect if a mod conflict has occurred at this time.",
   "gui.nostalgic_tweaks.overlay.status.warn": "This tweak is still in§6 development§r. It is possible you might run into§c bugs§r when this tweak is§a enabled§r.",
   "gui.nostalgic_tweaks.overlay.status.fail": "This tweak has§c not loaded§r. A tweak will be§a loaded§r when the mod runs code that is associated with the tweak. For example, to§a load§r the§e 2D floating items§r tweak, there§6 must§r be an§e item entity§r somewhere within the world.",
-  "gui.nostalgic_tweaks.overlay.status.conflict": "This tweak has encountered a mod§4 conflict§r. Please note that it is§c impossible§r for this mod to automatically find conflicting mods. See the game's§e logs§r for potential errors related to this tweak.",
+  "gui.nostalgic_tweaks.overlay.status.conflict": "This tweak has been disabled because a§4 conflict§r mod is installed. Please see the tweak's§c conflict§r section within its description.",
   "gui.nostalgic_tweaks.overlay.status.client_only": "Client side only",
   "gui.nostalgic_tweaks.overlay.status.no_connection": "No connection established",
   "gui.nostalgic_tweaks.overlay.status.dynamic": "This tweak is§d dynamically§r controlled by both the§b client§r and§e server§r. Only servers with§a Nostalgic Tweaks§6 installed§r can§c override§r this tweak.",
