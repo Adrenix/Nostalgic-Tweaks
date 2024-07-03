@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.mixin.util.candy.lighting;
 import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.timer.PartialTick;
-import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.data.Pair;
@@ -18,6 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -25,6 +25,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -55,6 +56,12 @@ public abstract class LightingMixinHelper
     private static final FlagHolder ENQUEUE_RELIGHT = FlagHolder.off();
 
     /**
+     * This caches the light block values used by the block behavior class. Using a cache greatly speeds up processing
+     * time when a chunk is being relighted.
+     */
+    public static final ConcurrentHashMap<Block, Integer> LIGHT_BLOCK_CACHE = new ConcurrentHashMap<>();
+
+    /**
      * This tracks the chunks that need relighting. Chunks that load into view only need a chunk relight pass once. The
      * change in light data is stored in the client level lighting engine. The packed chunk pos is stored on the left
      * and a boolean-like byte (1 is on/all other values are off) that indicates if the chunk needs full relighting. A
@@ -77,16 +84,22 @@ public abstract class LightingMixinHelper
     /* Methods */
 
     /**
-     * Instructions to perform after the config has been saved.
+     * Chunks need their light recalculated if any of these tweaks have their disk values changed.
      */
-    public static void runAfterSave()
+    public static void init()
     {
-        if (WATER_RELIGHT_CACHE.isExpired() || CHEST_RELIGHT_CACHE.isExpired())
-        {
-            RELIGHT_ALL_CHUNKS.enable();
-            WATER_RELIGHT_CACHE.update();
-            CHEST_RELIGHT_CACHE.update();
-        }
+        CandyTweak.OLD_WATER_LIGHTING.whenChanged(LightingMixinHelper::invalidateAndRelight);
+        CandyTweak.CHEST_LIGHT_BLOCK.whenChanged(LightingMixinHelper::invalidateAndRelight);
+    }
+
+    /**
+     * Invalidates the light block cache and instructs the lighting engine to recalculate the lighting in chunks loaded
+     * by the client.
+     */
+    private static void invalidateAndRelight()
+    {
+        LIGHT_BLOCK_CACHE.clear();
+        RELIGHT_ALL_CHUNKS.enable();
     }
 
     /**
