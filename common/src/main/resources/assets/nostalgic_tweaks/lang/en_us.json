@@ -1097,7 +1097,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.fpsChart.info": "Change the style of the FPS chart or turn it off.",
   "gui.nostalgic_tweaks.config.eyeCandy.fpsChart.enum.modern": "The debug chart will use the modern§a green§r and§7 gray§r color scheme. The chart will be split into§7 30FPS§r and§7 60FPS§r zones with average information displayed above.",
   "gui.nostalgic_tweaks.config.eyeCandy.fpsChart.enum.classic": "The debug chart will use the§e beta§c red§r and§a green§r color scheme. There will be§c no§r FPS zones and§c no§r additional FPS information will be displayed.",
-  "gui.nostalgic_tweaks.config.eyeCandy.fpsChart.enum.disabled": "Use this option if you do§c not§r want a FPS chart visible when the debug screen is open.",
+  "gui.nostalgic_tweaks.config.eyeCandy.fpsChart.enum.disabled": "Use this option if you do§c not§r want a FPS chart visible when the debug screen is open. The§e F3 + 2§r shortcut will still bring up the game's FPS chart.",
   "gui.nostalgic_tweaks.config.eyeCandy.showDebugPieChart": "Display Pie Chart",
   "gui.nostalgic_tweaks.config.eyeCandy.showDebugPieChart.info": "Control whether the debugging pie chart appears in the old debugging screen.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldPieChartBackground": "Old Pie Chart Background",
