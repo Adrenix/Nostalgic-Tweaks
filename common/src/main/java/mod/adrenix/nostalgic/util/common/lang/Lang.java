@@ -661,6 +661,9 @@ public interface Lang
         Translation PERSISTENT_SCREEN = from("menu_options.persistent_screen");
         Translation PERSISTENT_INFO = from("menu_options.persistent_info");
         Translation PERSISTENCE = from("menu_options.persistence");
+        Translation RESET_CONFIG = from("menu_options.reset_config");
+        Translation RESET_CONFIG_INFO = from("menu_options.reset_config_info");
+        Translation RESET_CONFIG_BACKUP = from("menu_options.reset_config_backup");
         Translation IMPORT_ADVISORY_TITLE = from("import_advisory.title");
         Translation IMPORT_ADVISORY_MESSAGE = from("import_advisory.message");
         Translation IMPORT_EXPORT_HEADER = from("import_export.header");
