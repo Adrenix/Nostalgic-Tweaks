@@ -103,16 +103,6 @@ public abstract class GuiListener
                     return CompoundEventResult.interruptTrue(new NostalgicLoadingScreen(progressListener, header, stage));
             }
 
-            if (screen instanceof ReceivingLevelScreen)
-            {
-                NostalgicProgressScreen progressScreen = new NostalgicProgressScreen(new ProgressScreen(true), (ReceivingLevelScreen) screen);
-                progressScreen.setHeader(Lang.Level.LOADING.get());
-                progressScreen.setStage(Lang.Level.SIMULATE.get());
-                progressScreen.setProgressVisibility(false);
-
-                return CompoundEventResult.interruptTrue(progressScreen);
-            }
-
             if (screen instanceof GenericMessageScreen)
             {
                 NostalgicProgressScreen progressScreen = getProgressScreen(screen.getTitle().getString());

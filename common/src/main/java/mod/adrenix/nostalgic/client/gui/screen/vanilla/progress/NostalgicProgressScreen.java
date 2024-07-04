@@ -1,14 +1,12 @@
 package mod.adrenix.nostalgic.client.gui.screen.vanilla.progress;
 
 import mod.adrenix.nostalgic.mixin.access.ProgressScreenAccess;
-import mod.adrenix.nostalgic.mixin.access.ReceivingLevelScreenAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ProgressScreen;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ProgressListener;
@@ -27,10 +25,8 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Nullable private Component header;
     @Nullable private Component stage;
     private int progress = -1;
-    private boolean renderProgress = true;
     private boolean stop = false;
     private final ProgressScreenAccess progressScreen;
-    @Nullable private final ReceivingLevelScreenAccess levelScreen;
 
     /* Constructor */
 
@@ -44,21 +40,6 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
         super(((ProgressScreenAccess) progressScreen).nt$clearScreenAfterStop());
 
         this.progressScreen = (ProgressScreenAccess) progressScreen;
-        this.levelScreen = null;
-    }
-
-    /**
-     * Create a new old progress screen using a receiving level state.
-     *
-     * @param progressScreen A {@link ProgressScreen} instance.
-     * @param levelScreen    A {@link ReceivingLevelScreen} instance.
-     */
-    public NostalgicProgressScreen(ProgressScreen progressScreen, ReceivingLevelScreen levelScreen)
-    {
-        super(((ProgressScreenAccess) progressScreen).nt$clearScreenAfterStop());
-
-        this.progressScreen = (ProgressScreenAccess) progressScreen;
-        this.levelScreen = (ReceivingLevelScreenAccess) levelScreen;
     }
 
     /* Methods */
@@ -150,16 +131,6 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     }
 
     /**
-     * Set whether the progress bar is visible.
-     *
-     * @param state The progress bar visibility state.
-     */
-    public void setProgressVisibility(boolean state)
-    {
-        this.renderProgress = state;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -196,29 +167,6 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
             this.progress++;
 
         super.tick();
-
-        if (this.levelScreen != null)
-        {
-            boolean isLevelReceived = this.levelScreen.nt$getLevelReceived().getAsBoolean();
-            boolean isTimeoutFinished = System.currentTimeMillis() > this.levelScreen.nt$getCreatedAt() + 30000L;
-
-            if (isLevelReceived || isTimeoutFinished)
-                this.onClose();
-        }
-    }
-
-    /**
-     * Renders the header and stage if they are non-null.
-     *
-     * @param graphics The {@link GuiGraphics} instance.
-     */
-    private void renderText(GuiGraphics graphics)
-    {
-        if (this.header != null)
-            ProgressRenderer.drawHeaderText(graphics, this.header, this.width);
-
-        if (this.stage != null)
-            ProgressRenderer.drawStageText(graphics, this.stage, this.width);
     }
 
     /**
@@ -227,9 +175,6 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        if (this.levelScreen != null && this.levelScreen.nt$getLevelReceived().getAsBoolean())
-            this.stop = true;
-
         if (this.minecraft == null)
             return;
 
@@ -255,10 +200,13 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
             this.renderMenuBackground(graphics);
         }
 
-        if (this.renderProgress)
-            ProgressRenderer.renderProgressWithInt(this.progress);
+        ProgressRenderer.renderProgressWithInt(this.progress);
 
-        this.renderText(graphics);
+        if (this.header != null)
+            ProgressRenderer.drawHeaderText(graphics, this.header, this.width);
+
+        if (this.stage != null)
+            ProgressRenderer.drawStageText(graphics, this.stage, this.width);
     }
 
     /**

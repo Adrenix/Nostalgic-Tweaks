@@ -12,7 +12,6 @@
     "MusicManagerAccess",
     "PauseScreenAccess",
     "ProgressScreenAccess",
-    "ReceivingLevelScreenAccess",
     "ScreenAccess",
     "SelectWorldScreenAccess",
     "TimerAccess",
