@@ -85,6 +85,7 @@
     "candy.player_particles.EntityMixin",
     "candy.progress_screen.LevelLoadingScreenMixin",
     "candy.progress_screen.MinecraftMixin",
+    "candy.progress_screen.ReceivingLevelScreenMixin",
     "candy.select_world_screen.WorldSelectionListMixin",
     "candy.uncap_title_fps.MinecraftMixin",
     "candy.window_title.MinecraftMixin",

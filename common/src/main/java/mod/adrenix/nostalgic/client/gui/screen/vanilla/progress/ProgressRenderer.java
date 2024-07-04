@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 
-abstract class ProgressRenderer
+public abstract class ProgressRenderer
 {
     /**
      * Draws the header text to the top of the progress screen.
