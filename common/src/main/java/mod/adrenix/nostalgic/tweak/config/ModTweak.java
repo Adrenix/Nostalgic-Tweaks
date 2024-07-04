@@ -60,7 +60,7 @@ public interface ModTweak
     /**
      * Controls whether the handshake toast will be displayed.
      */
-    TweakFlag SHOW_HANDSHAKE_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
+    TweakFlag SHOW_HANDSHAKE_TOAST = TweakFlag.client(false, ModGroup.TOAST).load().build();
 
     /**
      * Controls whether the tweak changes on LAN toast will be displayed.
@@ -75,7 +75,7 @@ public interface ModTweak
     /**
      * Controls whether the clientbound tweak update toast will be displayed.
      */
-    TweakFlag SHOW_CLIENTBOUND_TOAST = TweakFlag.client(true, ModGroup.TOAST).load().build();
+    TweakFlag SHOW_CLIENTBOUND_TOAST = TweakFlag.client(false, ModGroup.TOAST).load().build();
 
     /**
      * Controls whether the scrollbars should perform a smooth animation while scrolling.
