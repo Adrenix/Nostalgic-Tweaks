@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.window_title;
 import mod.adrenix.nostalgic.client.AfterConfigSave;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
+import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,8 +44,8 @@ public abstract class MinecraftMixin
         final String VERSION = GameUtil.getVersion();
 
         if (CandyTweak.MATCH_VERSION_OVERLAY.get())
-            return CandyTweak.OLD_OVERLAY_TEXT.parse(VERSION).replaceAll("§.", "");
+            return TextUtil.limit(CandyTweak.OLD_OVERLAY_TEXT.parse(VERSION).replaceAll("§.", ""), 100);
         else
-            return CandyTweak.WINDOW_TITLE_TEXT.parse(VERSION).replaceAll("§.", "");
+            return TextUtil.limit(CandyTweak.WINDOW_TITLE_TEXT.parse(VERSION).replaceAll("§.", ""), 100);
     }
 }
