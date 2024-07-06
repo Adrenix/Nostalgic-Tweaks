@@ -70,6 +70,23 @@ public abstract class TextUtil
     }
 
     /**
+     * Limit the size of a string to the given amount. The string is trimmed if it exceeds the given amount, otherwise
+     * it is returned. Unicode and emojis are properly handled.
+     *
+     * @param input  The string to limit.
+     * @param amount The amount of content allowed in the string.
+     * @return A string limited to the given amount.
+     */
+    @PublicAPI
+    public static String limit(String input, int amount)
+    {
+        return input.codePoints()
+            .limit(amount)
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+    }
+
+    /**
      * Replace all content in the input within the given range.
      *
      * @param input       The input to replace.
