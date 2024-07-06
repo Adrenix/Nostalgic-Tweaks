@@ -26,6 +26,7 @@ public enum ManageSection
     IMPORT_AND_EXPORT(Icons.SAVE_FLOPPY, Lang.Button.IMPORT_AND_EXPORT, new GroupImportExport()),
     CREATE_BACKUP(Icons.ADD, Lang.Button.CREATE_BACKUP, new GroupCreateBackup()),
     VIEW_BACKUPS(Icons.BOOK_OPEN, Lang.Button.VIEW_BACKUPS, new GroupViewBackups()),
+    CONFIG_PRESETS(Icons.COPY, Lang.Button.CONFIG_PRESETS, new GroupConfigPresets()),
     SERVER_OPERATIONS(Icons.SERVER, Lang.Button.SERVER_OPERATIONS, new GroupServerOps()),
     TOGGLE_ALL_TWEAKS(Icons.LIGHTNING, Lang.Button.TOGGLE_ALL_TWEAKS, new GroupToggleAll()),
     HELP(Icons.TOOLTIP, Lang.Button.HELP, new GroupHelp());
