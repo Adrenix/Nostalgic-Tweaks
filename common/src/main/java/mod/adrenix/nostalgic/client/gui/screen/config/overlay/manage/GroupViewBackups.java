@@ -1,9 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.config.overlay.manage;
 
-import com.google.common.base.Splitter;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.AfterConfigSave;
-import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageOverlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.info.MessageType;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonTemplate;
@@ -20,27 +18,24 @@ import mod.adrenix.nostalgic.config.ClientConfig;
 import mod.adrenix.nostalgic.config.factory.ConfigBuilder;
 import mod.adrenix.nostalgic.config.factory.ConfigHandler;
 import mod.adrenix.nostalgic.network.packet.backup.*;
+import mod.adrenix.nostalgic.tweak.factory.Tweak;
+import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.animate.Animate;
-import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.Gradient;
-import mod.adrenix.nostalgic.util.common.data.Holder;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.io.PathUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
-import mod.adrenix.nostalgic.util.common.text.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +117,6 @@ public class GroupViewBackups extends ManageGroup
             .emptyMessage(Lang.Manage.VIEW_BACKUPS_EMPTY)
             .highlight(0.15D, Animate.linear(150L, TimeUnit.MILLISECONDS))
             .invisibleIf(CollectionUtil.areAnyTrue(this::isViewingServer, this::isGroupInvisible))
-            .backgroundRenderer(this::renderBackground)
             .heightOverflowMargin(this.padding)
             .showSelectionBorder()
             .useSeparators()
@@ -136,7 +130,6 @@ public class GroupViewBackups extends ManageGroup
             .emptyMessage(Lang.Manage.VIEW_BACKUPS_EMPTY)
             .highlight(0.15D, Animate.linear(150L, TimeUnit.MILLISECONDS))
             .invisibleIf(CollectionUtil.areAnyTrue(this::isViewingClient, this::isGroupInvisible))
-            .backgroundRenderer(this::renderBackground)
             .heightOverflowMargin(this.padding)
             .showSelectionBorder()
             .useSeparators()
@@ -445,7 +438,9 @@ public class GroupViewBackups extends ManageGroup
             handler.setLoaded(imported.getLoaded());
             handler.save();
 
+            TweakPool.values().forEach(Tweak::sync);
             AfterConfigSave.reloadAndRun();
+
             NostalgicTweaks.LOGGER.info("[Config Import] Imported a new client config using backup (%s)", backup.getFilename());
 
             this.setClientView();
@@ -549,96 +544,7 @@ public class GroupViewBackups extends ManageGroup
      */
     private void inspectBackup(BackupObject backup)
     {
-        Holder<String> content = Holder.create("");
-
-        if (Files.exists(backup.getPath()))
-        {
-            try
-            {
-                content.set(new String(Files.readAllBytes(backup.getPath())));
-            }
-            catch (IOException exception)
-            {
-                NostalgicTweaks.LOGGER.error("[I/O Error] Could not read backup file (%s)\n%s", backup.getFilename(), exception);
-
-                MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.IO_TITLE, Lang.Error.INSPECT_BACKUP)
-                    .addButton(ButtonTemplate.openFolder(PathUtil.getLogsPath()))
-                    .setResizePercentage(0.65D)
-                    .build()
-                    .open();
-            }
-        }
-        else
-        {
-            NostalgicTweaks.LOGGER.error("[I/O Error] File does not exist (%s)\n%s", backup.getFilename());
-
-            MessageOverlay.create(MessageType.RED_WARNING, Lang.Error.IO_TITLE, Lang.Error.BACKUP_NONEXISTENT)
-                .addButton(ButtonTemplate.openFolder(PathUtil.getLogsPath()))
-                .setResizePercentage(0.65D)
-                .build()
-                .open();
-        }
-
-        Overlay overlay = Overlay.create(Lang.literal(backup.getFilename()))
-            .resizeHeightUsingPercentage(0.95D)
-            .resizeWidthUsingPercentage(0.75D)
-            .build();
-
-        Grid grid = Grid.create(overlay, 2)
-            .extendWidthToScreenEnd(1)
-            .fromScreenEndY(1)
-            .columnSpacing(1)
-            .build(overlay::addWidget);
-
-        SeparatorWidget separator = SeparatorWidget.create(Color.WHITE)
-            .extendWidthToScreenEnd(1)
-            .above(grid, 1)
-            .height(1)
-            .build(overlay::addWidget);
-
-        RowList rowList = RowList.create()
-            .defaultRowHeight(GuiUtil.textHeight())
-            .extendHeightTo(separator, 0)
-            .extendWidthToScreenEnd(0)
-            .verticalMargin(2)
-            .build(overlay::addWidget);
-
-        for (String line : Splitter.onPattern("\n").splitToList(TextUtil.colorJson(content.get())))
-        {
-            Row row = Row.create(rowList).build();
-
-            TextWidget.create(line).extendWidthToEnd(row, 0).build(row::addWidget);
-            rowList.addBottomRow(row);
-        }
-
-        ButtonWidget.create(Lang.Button.COPY)
-            .icon(Icons.COPY)
-            .tooltip(Lang.Button.COPY, 40, 700L, TimeUnit.MILLISECONDS)
-            .infoTooltip(Lang.Tooltip.COPY, 40)
-            .onPress(() -> Minecraft.getInstance().keyboardHandler.setClipboard(content.get()))
-            .below(separator, 1)
-            .build(grid::addCell);
-
-        ButtonWidget.create(Lang.Vanilla.GUI_DONE)
-            .icon(Icons.GREEN_CHECK)
-            .onPress(() -> GuiUtil.getScreenAs(Overlay.class).ifPresent(Overlay::close))
-            .build(grid::addCell);
-
-        overlay.open();
-    }
-
-    /**
-     * Handler for rendering the row lists background.
-     *
-     * @param rowList     The {@link RowList} instance being rendered.
-     * @param graphics    The current pose stack.
-     * @param mouseX      The x-position of the mouse.
-     * @param mouseY      The y-position of the mouse.
-     * @param partialTick The normalized progress made between two ticks [0.0F, 1.0F].
-     */
-    private void renderBackground(RowList rowList, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
-    {
-        RenderUtil.fill(graphics, rowList.getX(), rowList.getY(), rowList.getEndX(), rowList.getEndY(), Color.SONIC_SILVER.fromAlpha(0.2F));
+        FileInspector.open(backup::getPath, backup::getFilename);
     }
 
     /**
