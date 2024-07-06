@@ -121,6 +121,7 @@ public enum ManageThreadMessage
             clientHandler.setLoaded(this.client.getLoaded());
             clientHandler.save();
 
+            TweakPool.values().forEach(Tweak::sync);
             AfterConfigSave.reloadAndRun();
         }
 
