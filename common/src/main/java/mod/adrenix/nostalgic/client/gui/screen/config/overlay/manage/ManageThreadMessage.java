@@ -137,14 +137,14 @@ public enum ManageThreadMessage
 
                 if (fieldValue != null)
                 {
-                    if (!tweak.applySafely(fieldValue, tweak::setReceived))
+                    if (tweak.applySafely(fieldValue, tweak::setReceived))
+                        tweak.sendToServer();
+                    else
                         NostalgicTweaks.LOGGER.warn("[Server Import] %s did not match class type (%s)", tweak, className);
                 }
                 else
                     NostalgicTweaks.LOGGER.warn("[Server Import] %s is not a known server tweak", tweak);
             });
-
-            TweakPool.filter(Tweak::isMultiplayerLike).forEach(Tweak::sendToServer);
         }
 
         if (this.equals(EXPORT_SERVER_SUCCESS) && this.path != null)
