@@ -476,4 +476,13 @@ public abstract class PathUtil
     {
         return getOrCreatePath(NostalgicTweaks.MOD_ID + "/packs");
     }
+
+    /**
+     * @return The mod's presets config directory.
+     */
+    @PublicAPI
+    public static Path getPresetsPath()
+    {
+        return getOrCreatePath(NostalgicTweaks.MOD_ID + "/presets");
+    }
 }

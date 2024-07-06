@@ -333,7 +333,10 @@ public interface Lang
         Translation IMPORT_AND_EXPORT = from("import_and_export");
         Translation SERVER_OPERATIONS = from("server_operations");
         Translation TOGGLE_ALL_TWEAKS = from("toggle_all_tweaks");
+        Translation SEND_TO_SERVER = from("send_to_server");
         Translation REVIEW_CHANGES = from("review_changes");
+        Translation CONFIG_PRESETS = from("config_presets");
+        Translation CREATE_PRESET = from("create_preset");
         Translation LOGICAL_SIDE = from("logical_side");
         Translation CREATE_BACKUP = from("create_backup");
         Translation CLIENT_BACKUP = from("client_backup");
@@ -415,12 +418,19 @@ public interface Lang
         Translation DELETE_BACKUP = from("delete_backup");
         Translation INSPECT_BACKUP = from("inspect_backup");
         Translation DOWNLOAD_BACKUP = from("download_backup");
+        Translation DELETE_PRESET = from("delete_preset");
+        Translation INSPECT_PRESET = from("inspect_preset");
+        Translation APPLY_PRESET = from("apply_preset");
         Translation APPLY_CLIENT_BACKUP = from("apply_client_backup");
         Translation APPLY_SERVER_BACKUP = from("apply_server_backup");
         Translation OPEN_BACKUP_FOLDER = from("open_backup_folder");
+        Translation OPEN_PRESETS_FOLDER = from("open_presets_folder");
+        Translation SEND_PRESET_TO_SERVER = from("send_preset_to_server");
         Translation REFRESH_VIEW = from("refresh_view");
         Translation REVIEW_CHANGES = from("review_changes");
         Translation DELETE_ALL_BACKUPS = from("delete_all_backups");
+        Translation DELETE_ALL_PRESETS = from("delete_all_presets");
+        Translation CREATE_PRESET = from("create_preset");
         Translation OPEN_DISCORD = from("open_discord");
         Translation SEARCHING = from("searching");
         Translation EVERYWHERE = from("everywhere");
@@ -558,21 +568,24 @@ public interface Lang
         Translation SERVER_TITLE = from("server_title");
         Translation JAVA_TITLE = from("java.title");
         Translation JAVA_MESSAGE = from("java.message");
-        Translation APPLY_TITLE = from("apply_backup.title");
-        Translation APPLY_MESSAGE = from("apply_backup.message");
+        Translation APPLY_TITLE = from("apply.title");
+        Translation APPLY_MESSAGE = from("apply.message");
         Translation IMPORT_TITLE = from("import.title");
         Translation IMPORT_MESSAGE = from("import.message");
         Translation CREATE_BACKUP_TITLE = from("create_backup.title");
         Translation CREATE_BACKUP_MESSAGE = from("create_backup.message");
         Translation VIEW_CLIENT_BACKUPS = from("view_client_backups");
+        Translation DELETE_CONFIG_PRESET = from("delete_config_preset");
         Translation DELETE_CLIENT_BACKUP = from("delete_client_backup");
         Translation DELETE_SERVER_BACKUP = from("delete_server_backup");
         Translation DELETE_ALL_BACKUPS = from("delete_all_backups");
-        Translation INSPECT_BACKUP = from("inspect_backup");
-        Translation BACKUP_NONEXISTENT = from("backup_nonexistent");
+        Translation DELETE_ALL_PRESETS = from("delete_all_presets");
+        Translation INSPECT_FILE = from("inspect_file");
+        Translation NONEXISTENT_FILE = from("nonexistent_file");
         Translation SERVER_APPLY = from("server_apply");
         Translation SERVER_BACKUPS = from("server_backups");
         Translation DOWNLOAD_WRITER = from("download_writer");
+        Translation VIEW_CONFIG_PRESETS = from("view_config_presets");
 
         private static Translation from(String name)
         {
@@ -595,6 +608,10 @@ public interface Lang
         Translation EXPORT_SERVER_MESSAGE = from("export_server.message");
         Translation CREATE_BACKUP_TITLE = from("create_backup.title");
         Translation CREATE_BACKUP_MESSAGE = from("create_backup.message");
+        Translation CREATE_PRESET_TITLE = from("create_preset.title");
+        Translation CREATE_PRESET_MESSAGE = from("create_preset.message");
+        Translation SENT_PRESET_TITLE = from("sent_preset.title");
+        Translation SENT_PRESET_MESSAGE = from("sent_preset.message");
 
         private static Translation from(String name)
         {
@@ -680,6 +697,9 @@ public interface Lang
         Translation VIEW_BACKUPS_LAST_MODIFIED = from("view_backups.last_modified");
         Translation VIEW_BACKUPS_FILENAME = from("view_backups.filename");
         Translation VIEW_BACKUPS_EMPTY = from("view_backups.empty");
+        Translation CONFIG_PRESETS_EMPTY = from("config_presets.empty");
+        Translation CONFIG_PRESETS_FILENAME = from("config_presets.filename");
+        Translation CONFIG_PRESETS_LAST_MODIFIED = from("config_presets.last_modified");
         Translation OPERATIONS_WIP = from("operations.wip");
         Translation OPERATIONS_WIP_MESSAGE = from("operations.wip.message");
         Translation OPERATIONS_LAN = from("operations.lan");
