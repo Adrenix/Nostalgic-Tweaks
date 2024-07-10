@@ -21,18 +21,18 @@ public interface CandyTweak
 {
     // Block
 
-    TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
+    TweakEnum<MissingTexture> OLD_MISSING_TEXTURE = TweakEnum.client(MissingTexture.MODERN, CandyGroup.BLOCK).reloadResources().build();
     TweakFlag OLD_GRASS_SIDE_TEXTURE = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag OLD_FAST_GRASS_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag REMOVE_MIPMAP_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
-    TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().ignoreIf(ModTracker.SODIUM::isNotInstalled).build();
+    TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).reloadChunks().ignoreIf(ModTracker.SODIUM::isNotInstalled).build();
     TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(DefaultListing.ambientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
-    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(DefaultListing.disabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).newForUpdate().reloadChunks().build();
-    TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
+    TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(DefaultListing.disabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).reloadChunks().build();
+    TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).reloadChunks().build();
 
     // Custom Hitbox
 
-    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(DefaultListing.blockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
+    TweakItemSet OLD_BLOCK_OUTLINES = TweakItemSet.client(DefaultListing.blockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).build();
     TweakItemSet FULL_BLOCK_OUTLINE_VOXELS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_BLOCKS), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
     TweakFlag APPLY_BLOCK_OUTLINE_VOXELS = TweakFlag.server(true, CandyGroup.BLOCK_HITBOX_OUTLINE).newForUpdate().build();
     TweakColor BLOCK_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().whenDisabled("#00000066").build();
@@ -60,11 +60,11 @@ public interface CandyTweak
 
     // Torch
 
-    TweakFlag OLD_TORCH_BRIGHTNESS = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
-    TweakFlag OLD_TORCH_BOTTOM = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
-    TweakFlag OLD_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
-    TweakFlag OLD_REDSTONE_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
-    TweakFlag OLD_SOUL_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).newForUpdate().reloadChunks().build();
+    TweakFlag OLD_TORCH_BRIGHTNESS = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).reloadChunks().build();
+    TweakFlag OLD_TORCH_BOTTOM = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).reloadChunks().build();
+    TweakFlag OLD_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).reloadChunks().build();
+    TweakFlag OLD_REDSTONE_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).reloadChunks().build();
+    TweakFlag OLD_SOUL_TORCH_MODEL = TweakFlag.client(true, CandyGroup.BLOCK_TORCH).reloadChunks().build();
 
     // Bed
 
@@ -84,7 +84,7 @@ public interface CandyTweak
     // Game Version Overlay
 
     TweakFlag OLD_VERSION_OVERLAY = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_VERSION).build();
-    TweakEnum<Corner> OLD_OVERLAY_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_VERSION).newForUpdate().build();
+    TweakEnum<Corner> OLD_OVERLAY_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_VERSION).build();
     TweakNumber<Integer> OLD_OVERLAY_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_VERSION).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakNumber<Integer> OLD_OVERLAY_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_VERSION).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag OLD_OVERLAY_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_VERSION).newForUpdate().whenDisabled(true).build();
@@ -92,110 +92,110 @@ public interface CandyTweak
 
     // Alternative Experience Text
 
-    TweakFlag SHOW_EXP_LEVEL_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().build();
-    TweakFlag SHOW_EXP_LEVEL_IN_CREATIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().build();
-    TweakEnum<Corner> ALT_EXP_LEVEL_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().build();
+    TweakFlag SHOW_EXP_LEVEL_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).build();
+    TweakFlag SHOW_EXP_LEVEL_IN_CREATIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).build();
+    TweakEnum<Corner> ALT_EXP_LEVEL_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).build();
     TweakNumber<Integer> ALT_EXP_LEVEL_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakNumber<Integer> ALT_EXP_LEVEL_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag ALT_EXP_LEVEL_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().whenDisabled(true).build();
-    TweakText ALT_EXP_LEVEL_TEXT = TweakText.client("Level: %a%v", CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).newForUpdate().build();
+    TweakText ALT_EXP_LEVEL_TEXT = TweakText.client("Level: %a%v", CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_LEVEL).build();
 
     // Alternative Progress Text
 
-    TweakFlag SHOW_EXP_PROGRESS_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().build();
-    TweakFlag SHOW_EXP_PROGRESS_IN_CREATIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_PROGRESS_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().whenDisabled(true).build();
-    TweakEnum<Corner> ALT_EXP_PROGRESS_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().build();
+    TweakFlag SHOW_EXP_PROGRESS_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).build();
+    TweakFlag SHOW_EXP_PROGRESS_IN_CREATIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).build();
+    TweakFlag USE_DYNAMIC_PROGRESS_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).whenDisabled(true).build();
+    TweakEnum<Corner> ALT_EXP_PROGRESS_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).build();
     TweakNumber<Integer> ALT_EXP_PROGRESS_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakNumber<Integer> ALT_EXP_PROGRESS_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag ALT_EXP_PROGRESS_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().whenDisabled(true).build();
-    TweakText ALT_EXP_PROGRESS_TEXT = TweakText.client("Experience: %v%", CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).newForUpdate().build();
+    TweakText ALT_EXP_PROGRESS_TEXT = TweakText.client("Experience: %v%", CandyGroup.INTERFACE_HUD_EXP_BAR_ALT_PROGRESS).build();
 
     // Alternative Food Text
 
-    TweakFlag SHOW_HUNGER_FOOD_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_FOOD_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().whenDisabled(true).build();
-    TweakEnum<Corner> ALT_HUNGER_FOOD_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().build();
+    TweakFlag SHOW_HUNGER_FOOD_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).build();
+    TweakFlag USE_DYNAMIC_FOOD_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).whenDisabled(true).build();
+    TweakEnum<Corner> ALT_HUNGER_FOOD_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).build();
     TweakNumber<Integer> ALT_HUNGER_FOOD_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakNumber<Integer> ALT_HUNGER_FOOD_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag ALT_HUNGER_FOOD_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().whenDisabled(true).build();
-    TweakText ALT_HUNGER_FOOD_TEXT = TweakText.client("Food: %v", CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).newForUpdate().build();
+    TweakText ALT_HUNGER_FOOD_TEXT = TweakText.client("Food: %v", CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_FOOD).build();
 
     // Alternative Saturation Text
 
-    TweakFlag SHOW_HUNGER_SATURATION_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().build();
-    TweakFlag USE_DYNAMIC_SATURATION_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().whenDisabled(true).build();
-    TweakEnum<Corner> ALT_HUNGER_SATURATION_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().build();
+    TweakFlag SHOW_HUNGER_SATURATION_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).build();
+    TweakFlag USE_DYNAMIC_SATURATION_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).whenDisabled(true).build();
+    TweakEnum<Corner> ALT_HUNGER_SATURATION_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).build();
     TweakNumber<Integer> ALT_HUNGER_SATURATION_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakNumber<Integer> ALT_HUNGER_SATURATION_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag ALT_HUNGER_SATURATION_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().whenDisabled(true).build();
-    TweakText ALT_HUNGER_SATURATION_TEXT = TweakText.client("Saturation: %v%", CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().build();
+    TweakText ALT_HUNGER_SATURATION_TEXT = TweakText.client("Saturation: %v%", CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).build();
 
     // Window Title
 
-    TweakFlag ENABLE_WINDOW_TITLE = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).newForUpdate().whenDisabled(false).build();
-    TweakFlag MATCH_VERSION_OVERLAY = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).newForUpdate().alert(TweakAlert.WINDOW_TITLE_DISABLED).build();
-    TweakText WINDOW_TITLE_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_WINDOW).newForUpdate().alert(TweakAlert.WINDOW_TITLE_DISABLED).build();
+    TweakFlag ENABLE_WINDOW_TITLE = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).whenDisabled(false).build();
+    TweakFlag MATCH_VERSION_OVERLAY = TweakFlag.client(false, CandyGroup.INTERFACE_WINDOW).alert(TweakAlert.WINDOW_TITLE_DISABLED).build();
+    TweakText WINDOW_TITLE_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_WINDOW).alert(TweakAlert.WINDOW_TITLE_DISABLED).build();
 
     // Debug Screen
 
-    TweakEnum<Generic> OLD_DEBUG = TweakEnum.client(Generic.BETA, CandyGroup.INTERFACE_DEBUG).newForUpdate().whenDisabled(Generic.MODERN).build();
-    TweakFlag DEBUG_ENTITY_ID = TweakFlag.server(true, CandyGroup.INTERFACE_DEBUG).newForUpdate().build();
+    TweakEnum<Generic> OLD_DEBUG = TweakEnum.client(Generic.BETA, CandyGroup.INTERFACE_DEBUG).whenDisabled(Generic.MODERN).build();
+    TweakFlag DEBUG_ENTITY_ID = TweakFlag.server(true, CandyGroup.INTERFACE_DEBUG).build();
 
     // Debug Chart
 
-    TweakEnum<DebugChart> FPS_CHART = TweakEnum.client(DebugChart.CLASSIC, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().whenDisabled(DebugChart.DISABLED).build();
-    TweakFlag SHOW_DEBUG_PIE_CHART = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().build();
-    TweakFlag OLD_PIE_CHART_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).newForUpdate().build();
+    TweakEnum<DebugChart> FPS_CHART = TweakEnum.client(DebugChart.CLASSIC, CandyGroup.INTERFACE_DEBUG_CHART).whenDisabled(DebugChart.DISABLED).build();
+    TweakFlag SHOW_DEBUG_PIE_CHART = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).build();
+    TweakFlag OLD_PIE_CHART_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_CHART).build();
 
     // Debug Color
 
-    TweakFlag SHOW_DEBUG_LEFT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_RIGHT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_LEFT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(true).build();
-    TweakFlag SHOW_DEBUG_RIGHT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled(true).build();
-    TweakColor DEBUG_LEFT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#50505090").build();
-    TweakColor DEBUG_RIGHT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#50505090").build();
-    TweakFlag SHOW_DEBUG_LEFT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_RIGHT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().build();
-    TweakColor DEBUG_LEFT_TEXT_COLOR = TweakColor.client("#FFFFFFFF", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#FFFFFFFF").build();
-    TweakColor DEBUG_RIGHT_TEXT_COLOR = TweakColor.client("#E0E0E0FF", CandyGroup.INTERFACE_DEBUG_COLOR).newForUpdate().whenDisabled("#FFFFFFFF").build();
+    TweakFlag SHOW_DEBUG_LEFT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).build();
+    TweakFlag SHOW_DEBUG_RIGHT_TEXT_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).build();
+    TweakFlag SHOW_DEBUG_LEFT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled(true).build();
+    TweakFlag SHOW_DEBUG_RIGHT_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled(true).build();
+    TweakColor DEBUG_LEFT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled("#50505090").build();
+    TweakColor DEBUG_RIGHT_BACKGROUND_COLOR = TweakColor.client("#50505090", CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled("#50505090").build();
+    TweakFlag SHOW_DEBUG_LEFT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).build();
+    TweakFlag SHOW_DEBUG_RIGHT_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_DEBUG_COLOR).build();
+    TweakColor DEBUG_LEFT_TEXT_COLOR = TweakColor.client("#FFFFFFFF", CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled("#FFFFFFFF").build();
+    TweakColor DEBUG_RIGHT_TEXT_COLOR = TweakColor.client("#E0E0E0FF", CandyGroup.INTERFACE_DEBUG_COLOR).whenDisabled("#FFFFFFFF").build();
 
     // Debug Extra
 
-    TweakFlag SHOW_DEBUG_GPU_USAGE = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_LIGHT_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_FACING_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_TARGET_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).newForUpdate().build();
-    TweakFlag SHOW_DEBUG_BIOME_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).newForUpdate().build();
+    TweakFlag SHOW_DEBUG_GPU_USAGE = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).build();
+    TweakFlag SHOW_DEBUG_LIGHT_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).build();
+    TweakFlag SHOW_DEBUG_FACING_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).build();
+    TweakFlag SHOW_DEBUG_TARGET_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).build();
+    TweakFlag SHOW_DEBUG_BIOME_DATA = TweakFlag.client(false, CandyGroup.INTERFACE_DEBUG_EXTRA).build();
 
     // Inventory Screen
 
-    TweakFlag OLD_INVENTORY = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
-    TweakEnum<RecipeBook> INVENTORY_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(RecipeBook.MODERN).build();
-    TweakEnum<InventoryShield> INVENTORY_SHIELD = TweakEnum.client(InventoryShield.MODERN, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(InventoryShield.MODERN).alert(TweakAlert.SHIELD_CONFLICT).build();
-    TweakFlag DISABLE_EMPTY_ARMOR_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
-    TweakFlag DISABLE_EMPTY_SHIELD_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
-    TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
+    TweakFlag OLD_INVENTORY = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).build();
+    TweakEnum<RecipeBook> INVENTORY_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_INVENTORY).whenDisabled(RecipeBook.MODERN).build();
+    TweakEnum<InventoryShield> INVENTORY_SHIELD = TweakEnum.client(InventoryShield.MODERN, CandyGroup.INTERFACE_INVENTORY).whenDisabled(InventoryShield.MODERN).alert(TweakAlert.SHIELD_CONFLICT).build();
+    TweakFlag DISABLE_EMPTY_ARMOR_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).build();
+    TweakFlag DISABLE_EMPTY_SHIELD_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).build();
+    TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).build();
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE_INVENTORY).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
 
     // Generic Screen
 
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
-    TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI).newForUpdate().build();
-    TweakFlag CUSTOM_GUI_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_GUI).newForUpdate().build();
-    TweakColor CUSTOM_GUI_TOP_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).build();
-    TweakColor CUSTOM_GUI_BOTTOM_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).newForUpdate().alert(TweakAlert.CUSTOM_GUI_DISABLED).build();
+    TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI).build();
+    TweakFlag CUSTOM_GUI_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_GUI).build();
+    TweakColor CUSTOM_GUI_TOP_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).alert(TweakAlert.CUSTOM_GUI_DISABLED).build();
+    TweakColor CUSTOM_GUI_BOTTOM_GRADIENT = TweakColor.client("#00000000", CandyGroup.INTERFACE_GUI).alert(TweakAlert.CUSTOM_GUI_DISABLED).build();
 
     // Loading Overlay
 
     TweakEnum<Overlay> OLD_LOADING_OVERLAY = TweakEnum.client(Overlay.ALPHA, CandyGroup.INTERFACE_LOADING).whenDisabled(Overlay.MODERN).build();
     TweakFlag REMOVE_LOADING_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING).modIssues(TweakIssue.OPTIFINE).build();
-    TweakFlag CUSTOM_LOADING_OVERLAY_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
-    TweakColor LOADING_OVERLAY_BACKGROUND_COLOR = TweakColor.client("#000000", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
-    TweakFlag CUSTOM_LOADING_PROGRESS_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
-    TweakColor PROGRESS_BAR_OUTLINE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
-    TweakColor PROGRESS_BAR_INSIDE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).newForUpdate().build();
+    TweakFlag CUSTOM_LOADING_OVERLAY_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).build();
+    TweakColor LOADING_OVERLAY_BACKGROUND_COLOR = TweakColor.client("#000000", CandyGroup.INTERFACE_LOADING_COLOR).build();
+    TweakFlag CUSTOM_LOADING_PROGRESS_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_LOADING_COLOR).build();
+    TweakColor PROGRESS_BAR_OUTLINE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).build();
+    TweakColor PROGRESS_BAR_INSIDE_COLOR = TweakColor.client("#FFFFFF", CandyGroup.INTERFACE_LOADING_COLOR).build();
 
     // Progress Screen
 
@@ -203,30 +203,30 @@ public interface CandyTweak
 
     // Pause Screen
 
-    TweakEnum<PauseLayout> OLD_PAUSE_MENU = TweakEnum.client(PauseLayout.MODERN, CandyGroup.INTERFACE_PAUSE).newForUpdate().build();
-    TweakFlag INCLUDE_MODS_ON_PAUSE = TweakFlag.client(true, CandyGroup.INTERFACE_PAUSE).newForUpdate().build();
-    TweakFlag REMOVE_EXTRA_PAUSE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_PAUSE).newForUpdate().build();
+    TweakEnum<PauseLayout> OLD_PAUSE_MENU = TweakEnum.client(PauseLayout.MODERN, CandyGroup.INTERFACE_PAUSE).build();
+    TweakFlag INCLUDE_MODS_ON_PAUSE = TweakFlag.client(true, CandyGroup.INTERFACE_PAUSE).build();
+    TweakFlag REMOVE_EXTRA_PAUSE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_PAUSE).build();
 
     // Anvil Screen
 
-    TweakFlag OLD_ANVIL_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_ANVIL).newForUpdate().build();
+    TweakFlag OLD_ANVIL_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_ANVIL).build();
 
     // Crafting Screen
 
-    TweakFlag OLD_CRAFTING_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_CRAFTING).newForUpdate().build();
-    TweakEnum<RecipeBook> CRAFTING_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_CRAFTING).newForUpdate().whenDisabled(RecipeBook.MODERN).build();
+    TweakFlag OLD_CRAFTING_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_CRAFTING).build();
+    TweakEnum<RecipeBook> CRAFTING_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_CRAFTING).whenDisabled(RecipeBook.MODERN).build();
 
     // Furnace Screen
 
-    TweakFlag OLD_FURNACE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_FURNACE).newForUpdate().build();
-    TweakEnum<RecipeBook> FURNACE_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_FURNACE).newForUpdate().whenDisabled(RecipeBook.MODERN).build();
+    TweakFlag OLD_FURNACE_SCREEN = TweakFlag.client(true, CandyGroup.INTERFACE_FURNACE).build();
+    TweakEnum<RecipeBook> FURNACE_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_FURNACE).whenDisabled(RecipeBook.MODERN).build();
 
     // Chat Screen
 
     TweakFlag OLD_CHAT_INPUT = TweakFlag.client(true, CandyGroup.INTERFACE_CHAT).build();
     TweakFlag OLD_CHAT_BOX = TweakFlag.client(true, CandyGroup.INTERFACE_CHAT).build();
-    TweakFlag DISABLE_SIGNATURE_BOXES = TweakFlag.client(false, CandyGroup.INTERFACE_CHAT).newForUpdate().build();
-    TweakNumber<Integer> CHAT_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_CHAT).newForUpdate().slider(Lang.Slider.OFFSET, 0, 32).build();
+    TweakFlag DISABLE_SIGNATURE_BOXES = TweakFlag.client(false, CandyGroup.INTERFACE_CHAT).build();
+    TweakNumber<Integer> CHAT_OFFSET = TweakNumber.client(0, CandyGroup.INTERFACE_CHAT).slider(Lang.Slider.OFFSET, 0, 32).build();
 
     // Death Screen
 
@@ -259,18 +259,18 @@ public interface CandyTweak
     // Title Screen Buttons
 
     TweakEnum<TitleLayout> TITLE_BUTTON_LAYOUT = TweakEnum.client(TitleLayout.MODERN, CandyGroup.INTERFACE_TITLE_BUTTON).build();
-    TweakFlag INCLUDE_MODS_ON_TITLE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().build();
-    TweakFlag REMOVE_TITLE_REALMS_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().build();
+    TweakFlag INCLUDE_MODS_ON_TITLE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).build();
+    TweakFlag REMOVE_TITLE_REALMS_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_TITLE_ACCESSIBILITY_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_TITLE_LANGUAGE_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
-    TweakFlag REMOVE_EXTRA_TITLE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().build();
-    TweakFlag ADD_QUIT_BUTTON = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().whenDisabled(true).build();
+    TweakFlag REMOVE_EXTRA_TITLE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
+    TweakFlag ADD_QUIT_BUTTON = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).whenDisabled(true).build();
 
     // Title Screen Text
 
     TweakText TITLE_VERSION_TEXT = TweakText.client("Minecraft %v", CandyGroup.INTERFACE_TITLE_TEXT).build();
     TweakFlag TITLE_BOTTOM_LEFT_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).build();
-    TweakFlag TITLE_TOP_RIGHT_DEBUG_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).newForUpdate().build();
+    TweakFlag TITLE_TOP_RIGHT_DEBUG_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_TEXT).build();
     TweakFlag REMOVE_TITLE_MOD_LOADER_TEXT = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_TEXT).build();
 
     // Tooltips
@@ -280,9 +280,9 @@ public interface CandyTweak
 
     // Tooltip Parts
 
-    TweakFlag SHOW_ENCHANTMENT_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).build();
-    TweakFlag SHOW_MODIFIER_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).build();
-    TweakFlag SHOW_DYE_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).newForUpdate().whenDisabled(true).build();
+    TweakFlag SHOW_ENCHANTMENT_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).whenDisabled(true).build();
+    TweakFlag SHOW_MODIFIER_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).whenDisabled(true).build();
+    TweakFlag SHOW_DYE_TIP = TweakFlag.client(true, CandyGroup.INTERFACE_TOOLTIP_PARTS).whenDisabled(true).build();
 
     // Tooltip Color
 
@@ -294,19 +294,19 @@ public interface CandyTweak
     // Items
 
     TweakFlag FIX_ITEM_MODEL_GAP = TweakFlag.client(true, CandyGroup.ITEM).reloadResources().ignoreIf(NostalgicTweaks::isForge).build();
-    TweakFlag OLD_DAMAGE_ARMOR_TINT = TweakFlag.client(true, CandyGroup.ITEM).newForUpdate().modIssues(TweakIssue.OPTIFINE).build();
+    TweakFlag OLD_DAMAGE_ARMOR_TINT = TweakFlag.client(true, CandyGroup.ITEM).modIssues(TweakIssue.OPTIFINE).build();
     TweakFlag OLD_ITEM_HOLDING = TweakFlag.client(true, CandyGroup.ITEM).build();
-    TweakItemSet IGNORED_HOLDING_ITEMS = TweakItemSet.client(DefaultListing.ignoredHoldingItems(), CandyGroup.ITEM).newForUpdate().build();
+    TweakItemSet IGNORED_HOLDING_ITEMS = TweakItemSet.client(DefaultListing.ignoredHoldingItems(), CandyGroup.ITEM).build();
 
     // Item Merging
 
     TweakFlag OLD_ITEM_MERGING = TweakFlag.server(true, CandyGroup.ITEM_MERGING).build();
-    TweakNumber<Integer> ITEM_MERGE_LIMIT = TweakNumber.server(16, CandyGroup.ITEM_MERGING).newForUpdate().slider(Lang.Slider.LIMIT, 1, 64).build();
+    TweakNumber<Integer> ITEM_MERGE_LIMIT = TweakNumber.server(16, CandyGroup.ITEM_MERGING).slider(Lang.Slider.LIMIT, 1, 64).build();
 
     // 2D Items
 
     TweakFlag OLD_2D_ITEMS = TweakFlag.client(true, CandyGroup.ITEM_FLAT).build();
-    TweakFlag OLD_2D_RENDERING = TweakFlag.client(true, CandyGroup.ITEM_FLAT).newForUpdate().modIssues(TweakIssue.OPTIFINE).build();
+    TweakFlag OLD_2D_RENDERING = TweakFlag.client(true, CandyGroup.ITEM_FLAT).modIssues(TweakIssue.OPTIFINE).build();
     TweakFlag DISABLE_ENCHANTED_GROUND_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
     TweakFlag DISABLE_ENCHANTED_STATIC_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
 
@@ -318,13 +318,13 @@ public interface CandyTweak
 
     // Name Tag
 
-    TweakFlag OLD_NAME_TAGS = TweakFlag.client(false, CandyGroup.NAME_TAG).newForUpdate().build();
+    TweakFlag OLD_NAME_TAGS = TweakFlag.client(false, CandyGroup.NAME_TAG).build();
     TweakFlag SUPPORTER_TAGS = TweakFlag.client(true, CandyGroup.NAME_TAG).newForUpdate().whenDisabled(true).build();
 
     // Block Lighting
 
     TweakFlag DISABLE_LIGHT_FLICKER = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).build();
-    TweakFlag INVERTED_BLOCK_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).newForUpdate().build();
+    TweakFlag INVERTED_BLOCK_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).build();
     TweakFlag OLD_LEAVES_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().build();
     TweakFlag OLD_WATER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().conflictMods(ModTracker.STARLIGHT).build();
     TweakFlag CHEST_LIGHT_BLOCK = TweakFlag.client(true, CandyGroup.LIGHTING_BLOCK).reloadChunks().conflictMods(ModTracker.STARLIGHT).build();
@@ -334,17 +334,17 @@ public interface CandyTweak
     TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE, TweakIssue.POLYTONE).conflictMods(ModTracker.DISTANT_HORIZONS, ModTracker.STARLIGHT).build();
     TweakFlag OLD_SMOOTH_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_NETHER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
-    TweakFlag OLD_CLASSIC_ENGINE = TweakFlag.server(false, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().warningTag().build();
+    TweakFlag OLD_CLASSIC_ENGINE = TweakFlag.server(false, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().warningTag().build();
 
     // Lightmap Texture
 
     TweakFlag SMOOTH_LIGHT_TRANSITION = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().whenDisabled(true).build();
-    TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
-    TweakFlag OLD_LIGHT_COLOR = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().modIssues(TweakIssue.POLYTONE).build();
+    TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
+    TweakFlag OLD_LIGHT_COLOR = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).modIssues(TweakIssue.POLYTONE).build();
 
     // Shader Support
 
-    TweakNumber<Integer> MAX_BLOCK_LIGHT = TweakNumber.client(15, CandyGroup.LIGHTING_WORLD_SHADER).slider(Lang.Slider.BLOCK_LIGHT, 0, 15).newForUpdate().reloadChunks().build();
+    TweakNumber<Integer> MAX_BLOCK_LIGHT = TweakNumber.client(15, CandyGroup.LIGHTING_WORLD_SHADER).slider(Lang.Slider.BLOCK_LIGHT, 0, 15).reloadChunks().build();
 
     // Disabled Particles
 
@@ -356,23 +356,23 @@ public interface CandyTweak
 
     // Biome Particles
 
-    TweakFlag DISABLE_NETHER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).newForUpdate().build();
-    TweakFlag DISABLE_UNDERWATER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).newForUpdate().build();
+    TweakFlag DISABLE_NETHER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).build();
+    TweakFlag DISABLE_UNDERWATER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BIOME).build();
 
     // Block Particles
 
-    TweakFlag DISABLE_LAVA_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_LAVA_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_WATER_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_LEVER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_GROWTH_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
-    TweakFlag DISABLE_MODEL_DESTRUCTION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).newForUpdate().build();
+    TweakFlag DISABLE_LAVA_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_BLOCK).build();
+    TweakFlag DISABLE_LAVA_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).build();
+    TweakFlag DISABLE_WATER_DRIP_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).build();
+    TweakFlag DISABLE_LEVER_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).build();
+    TweakFlag DISABLE_GROWTH_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).build();
+    TweakFlag DISABLE_MODEL_DESTRUCTION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_BLOCK).build();
     TweakFlag DISABLE_ENDER_CHEST_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_BLOCK).build();
 
     // Player Particles
 
-    TweakFlag DISABLE_FALLING_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_PLAYER).newForUpdate().build();
-    TweakFlag DISABLE_SPRINTING_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_PLAYER).newForUpdate().build();
+    TweakFlag DISABLE_FALLING_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_PLAYER).build();
+    TweakFlag DISABLE_SPRINTING_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_PLAYER).build();
     TweakFlag HIDE_FIRST_PERSON_MAGIC_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_PLAYER).newForUpdate().build();
 
     // Boat Particles
@@ -390,7 +390,7 @@ public interface CandyTweak
 
     TweakFlag OLD_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).build();
     TweakFlag OLD_MIXED_EXPLOSION_PARTICLES = TweakFlag.client(false, CandyGroup.PARTICLE_EXPLOSION).build();
-    TweakFlag UNOPTIMIZED_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).newForUpdate().build();
+    TweakFlag UNOPTIMIZED_EXPLOSION_PARTICLES = TweakFlag.client(true, CandyGroup.PARTICLE_EXPLOSION).build();
 
     // World
 
@@ -398,12 +398,12 @@ public interface CandyTweak
 
     // World Fog
 
-    TweakEnum<WorldFog> OLD_WORLD_FOG = TweakEnum.client(WorldFog.ALPHA_R164, CandyGroup.WORLD_FOG).newForUpdate().build();
+    TweakEnum<WorldFog> OLD_WORLD_FOG = TweakEnum.client(WorldFog.ALPHA_R164, CandyGroup.WORLD_FOG).build();
     TweakBinding FOG_BINDING = TweakBinding.client(-1, CandyGroup.WORLD_FOG, KeybindingId.FOG).build();
     TweakFlag OLD_SUNRISE_SUNSET_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
-    TweakFlag OLD_DARK_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().build();
-    TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).newForUpdate().alert(TweakAlert.DYNAMIC_FOG).build();
-    TweakEnum<FogColor> UNIVERSAL_FOG_COLOR = TweakEnum.client(FogColor.DISABLED, CandyGroup.WORLD_FOG).newForUpdate().alert(TweakAlert.UNIVERSAL_FOG).build();
+    TweakFlag OLD_DARK_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
+    TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).alert(TweakAlert.DYNAMIC_FOG).build();
+    TweakEnum<FogColor> UNIVERSAL_FOG_COLOR = TweakEnum.client(FogColor.DISABLED, CandyGroup.WORLD_FOG).alert(TweakAlert.UNIVERSAL_FOG).build();
     TweakFlag OLD_NETHER_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
 
     // Custom World Fog
@@ -427,43 +427,43 @@ public interface CandyTweak
 
     // Water Fog
 
-    TweakFlag OLD_WATER_FOG_DENSITY = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).newForUpdate().build();
-    TweakFlag OLD_WATER_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).newForUpdate().build();
-    TweakFlag SMOOTH_WATER_DENSITY = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).newForUpdate().whenDisabled(true).build();
-    TweakFlag SMOOTH_WATER_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).newForUpdate().whenDisabled(true).build();
+    TweakFlag OLD_WATER_FOG_DENSITY = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).build();
+    TweakFlag OLD_WATER_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).build();
+    TweakFlag SMOOTH_WATER_DENSITY = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).whenDisabled(true).build();
+    TweakFlag SMOOTH_WATER_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG_WATER).whenDisabled(true).build();
 
     // World Sky
 
     TweakNumber<Integer> OLD_CLOUD_HEIGHT = TweakNumber.client(128, CandyGroup.WORLD_SKY).range(108, 192).type(SliderType.CLOUD).whenDisabled(192).build();
-    TweakFlag RENDER_SUNRISE_SUNSET_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).whenDisabled(true).newForUpdate().build();
+    TweakFlag RENDER_SUNRISE_SUNSET_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).whenDisabled(true).build();
     TweakFlag OLD_SUNRISE_AT_NORTH = TweakFlag.client(true, CandyGroup.WORLD_SKY).build();
     TweakEnum<Generic> OLD_STARS = TweakEnum.client(Generic.ALPHA, CandyGroup.WORLD_SKY).whenDisabled(Generic.MODERN).build();
-    TweakEnum<SkyColor> UNIVERSAL_SKY_COLOR = TweakEnum.client(SkyColor.DISABLED, CandyGroup.WORLD_SKY).newForUpdate().alert(TweakAlert.UNIVERSAL_SKY).build();
-    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).newForUpdate().alert(TweakAlert.DYNAMIC_SKY).build();
-    TweakFlag OLD_NETHER_SKY = TweakFlag.client(true, CandyGroup.WORLD_SKY).newForUpdate().build();
+    TweakEnum<SkyColor> UNIVERSAL_SKY_COLOR = TweakEnum.client(SkyColor.DISABLED, CandyGroup.WORLD_SKY).alert(TweakAlert.UNIVERSAL_SKY).build();
+    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).alert(TweakAlert.DYNAMIC_SKY).build();
+    TweakFlag OLD_NETHER_SKY = TweakFlag.client(true, CandyGroup.WORLD_SKY).build();
 
     // Custom Sky
 
-    TweakFlag CUSTOM_OVERWORLD_SKY = TweakFlag.client(false, CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
-    TweakColor CUSTOM_OVERWORLD_SKY_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_SKY_CUSTOM).newForUpdate().build();
+    TweakFlag CUSTOM_OVERWORLD_SKY = TweakFlag.client(false, CandyGroup.WORLD_SKY_CUSTOM).build();
+    TweakColor CUSTOM_OVERWORLD_SKY_COLOR = TweakColor.client("#FFFFFF", CandyGroup.WORLD_SKY_CUSTOM).build();
 
     // Void Sky
 
     TweakEnum<Generic> OLD_BLUE_VOID = TweakEnum.client(Generic.ALPHA, CandyGroup.WORLD_VOID_SKY).whenDisabled(Generic.MODERN).build();
     TweakFlag OLD_BLUE_VOID_OVERRIDE = TweakFlag.client(true, CandyGroup.WORLD_VOID_SKY).build();
     TweakFlag OLD_DARK_VOID_HEIGHT = TweakFlag.client(false, CandyGroup.WORLD_VOID_SKY).alert(TweakAlert.VOID_CONFLICT).build();
-    TweakFlag CUSTOM_VOID_SKY = TweakFlag.client(false, CandyGroup.WORLD_VOID_SKY).newForUpdate().build();
-    TweakColor CUSTOM_VOID_SKY_COLOR = TweakColor.client("#0000FF", CandyGroup.WORLD_VOID_SKY).newForUpdate().build();
+    TweakFlag CUSTOM_VOID_SKY = TweakFlag.client(false, CandyGroup.WORLD_VOID_SKY).build();
+    TweakColor CUSTOM_VOID_SKY_COLOR = TweakColor.client("#0000FF", CandyGroup.WORLD_VOID_SKY).build();
 
     // Void Fog
 
-    TweakFlag RENDER_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
-    TweakFlag CREATIVE_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().whenDisabled(true).build();
-    TweakFlag CREATIVE_VOID_PARTICLES = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).newForUpdate().whenDisabled(true).build();
-    TweakFlag LIGHT_REMOVES_VOID_FOG = TweakFlag.client(false, CandyGroup.WORLD_VOID_FOG).newForUpdate().build();
-    TweakNumber<Integer> VOID_FOG_ENCROACH = TweakNumber.client(70, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.ENCROACH, 0, 100, "%").build();
-    TweakNumber<Integer> VOID_FOG_START = TweakNumber.client(50, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.Y_LEVEL, -64, 320).build();
-    TweakNumber<Integer> VOID_PARTICLE_START = TweakNumber.client(-47, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.Y_LEVEL, -64, 320).build();
-    TweakNumber<Integer> VOID_PARTICLE_RADIUS = TweakNumber.client(16, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.RADIUS, 0, 32).build();
-    TweakNumber<Integer> VOID_PARTICLE_DENSITY = TweakNumber.client(20, CandyGroup.WORLD_VOID_FOG).newForUpdate().slider(Lang.Slider.DENSITY, 0, 100, "%").build();
+    TweakFlag RENDER_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).build();
+    TweakFlag CREATIVE_VOID_FOG = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).whenDisabled(true).build();
+    TweakFlag CREATIVE_VOID_PARTICLES = TweakFlag.client(true, CandyGroup.WORLD_VOID_FOG).whenDisabled(true).build();
+    TweakFlag LIGHT_REMOVES_VOID_FOG = TweakFlag.client(false, CandyGroup.WORLD_VOID_FOG).build();
+    TweakNumber<Integer> VOID_FOG_ENCROACH = TweakNumber.client(70, CandyGroup.WORLD_VOID_FOG).slider(Lang.Slider.ENCROACH, 0, 100, "%").build();
+    TweakNumber<Integer> VOID_FOG_START = TweakNumber.client(50, CandyGroup.WORLD_VOID_FOG).slider(Lang.Slider.Y_LEVEL, -64, 320).build();
+    TweakNumber<Integer> VOID_PARTICLE_START = TweakNumber.client(-47, CandyGroup.WORLD_VOID_FOG).slider(Lang.Slider.Y_LEVEL, -64, 320).build();
+    TweakNumber<Integer> VOID_PARTICLE_RADIUS = TweakNumber.client(16, CandyGroup.WORLD_VOID_FOG).slider(Lang.Slider.RADIUS, 0, 32).build();
+    TweakNumber<Integer> VOID_PARTICLE_DENSITY = TweakNumber.client(20, CandyGroup.WORLD_VOID_FOG).slider(Lang.Slider.DENSITY, 0, 100, "%").build();
 }

@@ -16,7 +16,7 @@ public interface AnimationTweak
     TweakNumber<Integer> ARM_SWAY_INTENSITY = TweakNumber.client(100, AnimationGroup.ARM_SWAY).alert(TweakAlert.ARM_SWAY_CONFLICT).slider(0, 300, 10, SliderType.INTENSITY).build();
 
     TweakFlag OLD_SWING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
-    TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM_SWING).newForUpdate().build();
+    TweakFlag OLD_SWING_INTERRUPT = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
     TweakFlag OLD_SWING_DROPPING = TweakFlag.client(true, AnimationGroup.ARM_SWING).build();
     TweakFlag OLD_CLASSIC_ATTACK_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
     TweakFlag OLD_CLASSIC_USE_SWING = TweakFlag.client(false, AnimationGroup.ARM_SWING).newForUpdate().build();
@@ -41,10 +41,10 @@ public interface AnimationTweak
 
     TweakFlag OLD_CLASSIC_WALK_BOBBING = TweakFlag.client(false, AnimationGroup.PLAYER).newForUpdate().build();
     TweakFlag OLD_CLASSIC_WALK_ARMS = TweakFlag.client(false, AnimationGroup.PLAYER).newForUpdate().build();
-    TweakFlag OLD_BACKWARD_WALKING = TweakFlag.client(true, AnimationGroup.PLAYER).newForUpdate().build();
+    TweakFlag OLD_BACKWARD_WALKING = TweakFlag.client(true, AnimationGroup.PLAYER).build();
     TweakFlag OLD_VERTICAL_BOBBING = TweakFlag.client(true, AnimationGroup.PLAYER).build();
-    TweakFlag OLD_CREATIVE_CROUCH = TweakFlag.dynamic(true, AnimationGroup.PLAYER).newForUpdate().build();
+    TweakFlag OLD_CREATIVE_CROUCH = TweakFlag.dynamic(true, AnimationGroup.PLAYER).build();
     TweakFlag OLD_SNEAKING = TweakFlag.client(true, AnimationGroup.PLAYER).build();
-    TweakFlag OLD_RANDOM_DAMAGE = TweakFlag.client(true, AnimationGroup.PLAYER).newForUpdate().build();
-    TweakFlag PREVENT_DEATH_TOPPLE = TweakFlag.client(true, AnimationGroup.PLAYER).newForUpdate().build();
+    TweakFlag OLD_RANDOM_DAMAGE = TweakFlag.client(true, AnimationGroup.PLAYER).build();
+    TweakFlag PREVENT_DEATH_TOPPLE = TweakFlag.client(true, AnimationGroup.PLAYER).build();
 }
