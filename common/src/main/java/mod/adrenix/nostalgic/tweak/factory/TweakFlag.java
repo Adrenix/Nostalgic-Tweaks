@@ -115,6 +115,19 @@ public class TweakFlag extends TweakValue<Boolean>
         }
 
         /**
+         * Any tweak flag that does not set its disabled value will automatically be set to {@code false} when the mod
+         * or tweak is put into a disabled state. {@inheritDoc}
+         *
+         * @param value The boolean to use when the tweak is set into a "disabled" state.
+         * @see TweakValue#getDisabled()
+         */
+        @Override
+        public Builder whenDisabled(Boolean value)
+        {
+            return super.whenDisabled(value);
+        }
+
+        /**
          * A supplier that indicates if this flag should be considered enabled. This is useful if an additional "or"
          * check should be made in the mod config when it gets the value of a flag tweak. If both the tweak and the
          * given supplier yield {@code false}, then the disabled tweak value will be used.
