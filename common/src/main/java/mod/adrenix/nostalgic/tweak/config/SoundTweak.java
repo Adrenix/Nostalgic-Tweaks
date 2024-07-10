@@ -22,8 +22,8 @@ public interface SoundTweak
 
     TweakFlag OLD_CAVE_SOUNDS = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
     TweakFlag OLD_CAVE_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
-    TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
-    TweakFlag DISABLE_WATER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
+    TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).build();
+    TweakFlag DISABLE_WATER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).build();
 
     // Music
 
@@ -36,32 +36,32 @@ public interface SoundTweak
 
     // Music Controls
 
-    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.STOP_SONG).build();
-    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.NEXT_SONG).build();
+    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.STOP_SONG).newForUpdate().build();
+    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.NEXT_SONG).newForUpdate().build();
 
     // Bed Block
 
-    TweakFlag OLD_BED = TweakFlag.client(true, SoundGroup.BLOCK_BED).newForUpdate().build();
-    TweakFlag DISABLE_BED_PLACE = TweakFlag.client(true, SoundGroup.BLOCK_BED).newForUpdate().build();
+    TweakFlag OLD_BED = TweakFlag.client(true, SoundGroup.BLOCK_BED).build();
+    TweakFlag DISABLE_BED_PLACE = TweakFlag.client(true, SoundGroup.BLOCK_BED).build();
 
     // Chest Block
 
-    TweakFlag OLD_CHEST = TweakFlag.client(false, SoundGroup.BLOCK_CHEST).newForUpdate().build();
-    TweakFlag DISABLE_CHEST = TweakFlag.client(true, SoundGroup.BLOCK_CHEST).newForUpdate().build();
+    TweakFlag OLD_CHEST = TweakFlag.client(false, SoundGroup.BLOCK_CHEST).build();
+    TweakFlag DISABLE_CHEST = TweakFlag.client(true, SoundGroup.BLOCK_CHEST).build();
 
     // Lava Block
 
-    TweakFlag DISABLE_LAVA_AMBIENCE = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).newForUpdate().build();
-    TweakFlag DISABLE_LAVA_POP = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).newForUpdate().build();
+    TweakFlag DISABLE_LAVA_AMBIENCE = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).build();
+    TweakFlag DISABLE_LAVA_POP = TweakFlag.client(true, SoundGroup.BLOCK_LAVA).build();
 
     // Furnace Block
 
-    TweakFlag DISABLE_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).newForUpdate().build();
-    TweakFlag DISABLE_BLAST_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).newForUpdate().build();
+    TweakFlag DISABLE_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).build();
+    TweakFlag DISABLE_BLAST_FURNACE = TweakFlag.client(true, SoundGroup.BLOCK_FURNACE).build();
 
     // Blocks
 
-    TweakFlag DISABLE_GROWTH = TweakFlag.client(true, SoundGroup.BLOCK).newForUpdate().build();
+    TweakFlag DISABLE_GROWTH = TweakFlag.client(true, SoundGroup.BLOCK).build();
     TweakFlag DISABLE_DOOR_PLACE = TweakFlag.client(true, SoundGroup.BLOCK).build();
 
     // Damage
@@ -73,18 +73,18 @@ public interface SoundTweak
     // Experience
 
     TweakFlag OLD_XP = TweakFlag.client(false, SoundGroup.EXPERIENCE).build();
-    TweakFlag DISABLE_XP_PICKUP = TweakFlag.client(false, SoundGroup.EXPERIENCE).newForUpdate().build();
-    TweakFlag DISABLE_XP_LEVEL = TweakFlag.client(false, SoundGroup.EXPERIENCE).newForUpdate().build();
+    TweakFlag DISABLE_XP_PICKUP = TweakFlag.client(false, SoundGroup.EXPERIENCE).build();
+    TweakFlag DISABLE_XP_LEVEL = TweakFlag.client(false, SoundGroup.EXPERIENCE).build();
 
     // Mobs
 
-    TweakFlag DISABLE_GENERIC_SWIM = TweakFlag.client(true, SoundGroup.MOB_GENERIC).newForUpdate().build();
-    TweakFlag DISABLE_FISH_SWIM = TweakFlag.client(true, SoundGroup.MOB_FISH).newForUpdate().build();
-    TweakFlag DISABLE_FISH_HURT = TweakFlag.client(true, SoundGroup.MOB_FISH).newForUpdate().build();
-    TweakFlag DISABLE_FISH_DEATH = TweakFlag.client(true, SoundGroup.MOB_FISH).newForUpdate().build();
-    TweakFlag DISABLE_SQUID = TweakFlag.client(true, SoundGroup.MOB_SQUID).newForUpdate().build();
-    TweakFlag DISABLE_GLOW_SQUID_OTHER = TweakFlag.client(true, SoundGroup.MOB_SQUID).newForUpdate().build();
-    TweakFlag DISABLE_GLOW_SQUID_AMBIENCE = TweakFlag.client(false, SoundGroup.MOB_SQUID).newForUpdate().build();
+    TweakFlag DISABLE_GENERIC_SWIM = TweakFlag.client(true, SoundGroup.MOB_GENERIC).build();
+    TweakFlag DISABLE_FISH_SWIM = TweakFlag.client(true, SoundGroup.MOB_FISH).build();
+    TweakFlag DISABLE_FISH_HURT = TweakFlag.client(true, SoundGroup.MOB_FISH).build();
+    TweakFlag DISABLE_FISH_DEATH = TweakFlag.client(true, SoundGroup.MOB_FISH).build();
+    TweakFlag DISABLE_SQUID = TweakFlag.client(true, SoundGroup.MOB_SQUID).build();
+    TweakFlag DISABLE_GLOW_SQUID_OTHER = TweakFlag.client(true, SoundGroup.MOB_SQUID).build();
+    TweakFlag DISABLE_GLOW_SQUID_AMBIENCE = TweakFlag.client(false, SoundGroup.MOB_SQUID).build();
     TweakFlag OLD_STEP = TweakFlag.client(true, SoundGroup.MOB).build();
-    TweakFlag IGNORE_MODDED_STEP = TweakFlag.client(false, SoundGroup.MOB).newForUpdate().build();
+    TweakFlag IGNORE_MODDED_STEP = TweakFlag.client(false, SoundGroup.MOB).build();
 }
