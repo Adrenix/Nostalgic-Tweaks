@@ -54,7 +54,6 @@ public interface SwingTweak
      * Assigns a global swing speed for attacking. This will override everything.
      */
     TweakNumber<Integer> ATTACK_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
@@ -62,7 +61,6 @@ public interface SwingTweak
      * Assigns a global swing speed for using an item or block. This will override everything.
      */
     TweakNumber<Integer> USE_GLOBAL_SPEED = TweakNumber.client(DISABLED, SwingGroup.GLOBAL)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
@@ -72,7 +70,6 @@ public interface SwingTweak
      * Assigns the global attacking swing speed for any item that is a block, tool, or sword.
      */
     TweakNumber<Integer> ATTACK_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -80,7 +77,6 @@ public interface SwingTweak
      * Assigns the global using item swing speed for any item that is a block, tool, or sword.
      */
     TweakNumber<Integer> USE_ITEM_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -88,7 +84,6 @@ public interface SwingTweak
      * Assigns the global attack swing speed for tool items.
      */
     TweakNumber<Integer> ATTACK_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -96,7 +91,6 @@ public interface SwingTweak
      * Assigns the global using swing speed for tool items.
      */
     TweakNumber<Integer> USE_TOOL_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -104,7 +98,6 @@ public interface SwingTweak
      * Assigns the global attack swing speed for block items.
      */
     TweakNumber<Integer> ATTACK_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -112,7 +105,6 @@ public interface SwingTweak
      * Assigns the global using swing speed for block items.
      */
     TweakNumber<Integer> USE_BLOCK_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -120,7 +112,6 @@ public interface SwingTweak
      * Assigns the global attack swing speed for sword items.
      */
     TweakNumber<Integer> ATTACK_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -128,7 +119,6 @@ public interface SwingTweak
      * Assigns the global using swing speed for sword items.
      */
     TweakNumber<Integer> USE_SWORD_SPEED = TweakNumber.client(OLD_SPEED, SwingGroup.ITEM)
-        .newForUpdate()
         .apply(SwingTweak::enable)
         .build();
 
@@ -138,7 +128,6 @@ public interface SwingTweak
      * Assigns a global attack swing speed when the player has the haste potion effect.
      */
     TweakNumber<Integer> ATTACK_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
@@ -146,7 +135,6 @@ public interface SwingTweak
      * Assigns a global use swing speed when the player as the haste potion effect.
      */
     TweakNumber<Integer> USE_HASTE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
@@ -154,7 +142,6 @@ public interface SwingTweak
      * Assigns a global attack swing speed when the player has the fatigue potion effect.
      */
     TweakNumber<Integer> ATTACK_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
@@ -162,7 +149,6 @@ public interface SwingTweak
      * Assigns a global use swing speed when the player has the fatigue potion effect.
      */
     TweakNumber<Integer> USE_FATIGUE_SPEED = TweakNumber.client(DISABLED, SwingGroup.POTION)
-        .newForUpdate()
         .apply(SwingTweak::disable)
         .build();
 
