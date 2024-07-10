@@ -171,9 +171,9 @@ public interface CandyTweak
 
     // Inventory Screen
 
-    TweakFlag OLD_INVENTORY = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
+    TweakFlag OLD_INVENTORY = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakEnum<RecipeBook> INVENTORY_BOOK = TweakEnum.client(RecipeBook.SMALL, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(RecipeBook.MODERN).build();
-    TweakEnum<InventoryShield> INVENTORY_SHIELD = TweakEnum.client(InventoryShield.MIDDLE_RIGHT, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(InventoryShield.MODERN).alert(TweakAlert.SHIELD_CONFLICT).build();
+    TweakEnum<InventoryShield> INVENTORY_SHIELD = TweakEnum.client(InventoryShield.MODERN, CandyGroup.INTERFACE_INVENTORY).newForUpdate().whenDisabled(InventoryShield.MODERN).alert(TweakAlert.SHIELD_CONFLICT).build();
     TweakFlag DISABLE_EMPTY_ARMOR_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakFlag DISABLE_EMPTY_SHIELD_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
     TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).newForUpdate().build();
