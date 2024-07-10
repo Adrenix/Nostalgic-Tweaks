@@ -35,6 +35,9 @@ public abstract class KeyboardUtil
     @PublicAPI
     public static boolean isGoingRight(int key)
     {
+        if (Screen.hasShiftDown())
+            return false;
+
         return (Screen.hasControlDown() || Screen.hasAltDown()) && key == InputConstants.KEY_RIGHT;
     }
 
@@ -47,6 +50,9 @@ public abstract class KeyboardUtil
     @PublicAPI
     public static boolean isGoingLeft(int key)
     {
+        if (Screen.hasShiftDown())
+            return false;
+
         return (Screen.hasControlDown() || Screen.hasAltDown()) && key == InputConstants.KEY_LEFT;
     }
 
@@ -59,6 +65,9 @@ public abstract class KeyboardUtil
     @PublicAPI
     public static boolean isSearching(int key)
     {
+        if (Screen.hasShiftDown())
+            return false;
+
         return Screen.hasControlDown() && key == InputConstants.KEY_F;
     }
 
@@ -71,6 +80,9 @@ public abstract class KeyboardUtil
     @PublicAPI
     public static boolean isSaving(int key)
     {
+        if (Screen.hasShiftDown())
+            return false;
+
         return Screen.hasControlDown() && key == InputConstants.KEY_S;
     }
 
@@ -83,6 +95,9 @@ public abstract class KeyboardUtil
     @PublicAPI
     public static boolean isSelectAll(int key)
     {
+        if (Screen.hasShiftDown())
+            return false;
+
         return Screen.hasControlDown() && key == InputConstants.KEY_A;
     }
 
