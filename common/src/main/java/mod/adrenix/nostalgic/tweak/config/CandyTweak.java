@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.tweak.gui.KeybindingId;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.*;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -25,7 +26,7 @@ public interface CandyTweak
     TweakFlag OLD_GRASS_SIDE_TEXTURE = TweakFlag.client(false, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag OLD_FAST_GRASS_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
     TweakFlag REMOVE_MIPMAP_TEXTURE = TweakFlag.client(true, CandyGroup.BLOCK).newForUpdate().reloadResources().build();
-    TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).reloadChunks().ignoreIf(ModTracker.SODIUM::isNotInstalled).build();
+    TweakFlag SODIUM_WATER_AO = TweakFlag.client(false, CandyGroup.BLOCK).reloadChunks().ignoreIf(CollectionUtil.areAnyTrue(ModTracker.SODIUM::isNotInstalled, ModTracker.EMBEDDIUM::isInstalled)).build();
     TweakItemSet AMBIENT_OCCLUSION_BLOCKS = TweakItemSet.client(DefaultListing.ambientOcclusion(), CandyGroup.BLOCK).newForUpdate().reloadChunks().build();
     TweakItemSet DISABLE_BLOCK_OFFSETS = TweakItemSet.client(DefaultListing.disabledOffsets(), CandyGroup.BLOCK).icon(TextureIcon.fromItem(Items.POPPY)).reloadChunks().build();
     TweakFlag DISABLE_ALL_OFFSET = TweakFlag.client(false, CandyGroup.BLOCK).reloadChunks().build();

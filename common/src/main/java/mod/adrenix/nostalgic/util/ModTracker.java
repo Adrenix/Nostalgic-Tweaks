@@ -13,6 +13,7 @@ public enum ModTracker
     DISTANT_HORIZONS("distanthorizons"),
     APPLE_SKIN("appleskin"),
     SODIUM("sodium", "embeddium"),
+    EMBEDDIUM("embeddium"),
     STARLIGHT("starlight"),
     POLYTONE("polytone"),
     EXORDIUM("exordium"),

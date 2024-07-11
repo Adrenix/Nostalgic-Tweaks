@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.neoforge.setup;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeScreen;
 import mod.adrenix.nostalgic.neoforge.event.AppleSkinHandler;
+import mod.adrenix.nostalgic.neoforge.event.EmbeddiumHandler;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.neoforged.api.distmarker.Dist;
@@ -39,7 +40,16 @@ public abstract class ClientSetup
         if (ModTracker.APPLE_SKIN.isInstalled())
         {
             NeoForge.EVENT_BUS.register(AppleSkinHandler.class);
-            NostalgicTweaks.LOGGER.info("Registered NeoForge AppleSkin Listener");
+            NostalgicTweaks.LOGGER.info("Registered AppleSkin Listener");
+        }
+
+        // Listen for Embeddium
+        if (ModTracker.EMBEDDIUM.isInstalled())
+        {
+            NeoForge.EVENT_BUS.register(EmbeddiumHandler.class);
+            EmbeddiumHandler.init();
+
+            NostalgicTweaks.LOGGER.info("Registered Embeddium Listener");
         }
     }
 
