@@ -50,6 +50,9 @@
       "=1.21"
     ]
   },
+  "breaks": {
+    "sodium": ">=0.6-alpha"
+  },
   "custom": {
     "modmenu": {
       "links": {
