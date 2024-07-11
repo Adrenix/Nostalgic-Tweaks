@@ -78,7 +78,7 @@ sourcesJar {
 }
 
 jar {
-    archivesBaseName = "${rootProject.archives_base_name}-${rootProject.minecraft_max_version}-NeoForge"
+    archivesBaseName = "${rootProject.archives_base_name}-mc${rootProject.minecraft_max_version}-NeoForge"
     archiveClassifier = "dev"
 }
 
