@@ -1,51 +1,54 @@
 package mod.adrenix.nostalgic.fabric.mixin.sodium.candy.world_lighting;
 
 import me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer;
-import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
 import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTracker;
 import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
-import me.jellysquid.mods.sodium.client.render.viewport.Viewport;
 import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.Pair;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SodiumWorldRenderer.class)
-public abstract class SodiumWorldRendererMixin
+@Mixin(LevelRenderer.class)
+public abstract class LevelRendererMixin
 {
     /* Shadows */
 
-    @Shadow private ClientLevel world;
-    @Shadow private RenderSectionManager renderSectionManager;
+    @Shadow @Nullable private ClientLevel level;
 
     /* Injections */
 
     /**
-     * Schedules rebuilding tasks for all chunks in Sodium's render section manager when world relighting is needed.
+     * Schedules relighting for all chunks when needed.
      */
     @Inject(
-        method = "setupTerrain",
+        method = "renderLevel",
         at = @At("HEAD")
     )
-    private void nt_sodium_world_lighting$onSetupTerrain(Camera camera, Viewport viewport, int frame, boolean spectator, boolean updateChunksImmediately, CallbackInfo callback)
+    private void nt_sodium_world_lighting$onRenderLevel(CallbackInfo callback)
     {
         if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingMixinHelper.isRelightCheckEnqueued())
         {
-            ChunkTracker.forEachChunk(ChunkTrackerHolder.get(this.world).getReadyChunks(), (x, z) -> {
-                for (int y = this.world.getMinSection(); y < this.world.getMaxSection(); y++)
-                    this.renderSectionManager.scheduleRebuild(x, y, z, false);
+            SodiumWorldRenderer worldRenderer = SodiumWorldRenderer.instanceNullable();
+
+            if (worldRenderer == null || this.level == null)
+                return;
+
+            ChunkTracker.forEachChunk(ChunkTrackerHolder.get(this.level).getReadyChunks(), (x, z) -> {
+                for (int y = this.level.getMinSection(); y < this.level.getMaxSection(); y++)
+                    worldRenderer.scheduleRebuildForChunk(x, y, z, false);
             });
         }
 
-        if (LightingMixinHelper.RELIGHT_ALL_CHUNKS.get())
+        if (LightingMixinHelper.RELIGHT_ALL_CHUNKS.get() && this.level != null)
         {
-            ChunkTrackerHolder.get(this.world).getReadyChunks().forEach(packedPos -> {
+            ChunkTrackerHolder.get(this.level).getReadyChunks().forEach(packedPos -> {
                 Pair<Long, Byte> packedRelight = new Pair<>(packedPos, (byte) 1);
                 LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
             });
@@ -55,13 +58,13 @@ public abstract class SodiumWorldRendererMixin
     }
 
     /**
-     * Marks the Sodium world relighting as finished.
+     * Marks world relighting as finished.
      */
     @Inject(
-        method = "setupTerrain",
+        method = "renderLevel",
         at = @At("RETURN")
     )
-    private void nt_sodium_world_lighting$onFinishSetupTerrain(Camera camera, Viewport viewport, int frame, boolean spectator, boolean updateChunksImmediately, CallbackInfo callback)
+    private void nt_sodium_world_lighting$onFinishRenderLevel(CallbackInfo callback)
     {
         if (LightingMixinHelper.isRelightCheckEnqueued())
             LightingMixinHelper.setRelightingAsFinished();

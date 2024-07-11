@@ -1,14 +1,14 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
-import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.mixin.util.candy.lighting.NostalgicDataLayer;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LightChunkGetter;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.lighting.SkyLightEngine;
@@ -27,7 +27,7 @@ public abstract class LightEngineMixin
     /* Injections */
 
     /**
-     * Modifies returned light values from the light engines to help simulate old light rendering.
+     * Modifies returned light values from the client light engine to help simulate old light rendering.
      */
     @ModifyReturnValue(
         method = "getLightValue",
@@ -41,24 +41,28 @@ public abstract class LightEngineMixin
         boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
 
         if (this.chunkSource.getLevel() instanceof ClientLevel level)
-        {
-            if (CandyTweak.OLD_CLASSIC_ENGINE.get())
-            {
-                if (!isSkyEngine)
-                    return 0;
-
-                return LightingMixinHelper.getClassicLight(lightValue, level, blockPos);
-            }
-
-            if (CandyTweak.ROUND_ROBIN_RELIGHT.get())
-            {
-                if (!isSkyEngine)
-                    return lightValue;
-
-                return LightingMixinHelper.getCombinedLight(lightValue, level.getBrightness(LightLayer.BLOCK, blockPos));
-            }
-        }
+            return NostalgicDataLayer.getLightValue(isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK, level, blockPos, lightValue);
 
         return lightValue;
+    }
+
+    /**
+     * Returns a wrapped data layer with custom mod data to help simulate old light rendering.
+     */
+    @ModifyReturnValue(
+        method = "getDataLayerData",
+        at = @At("RETURN")
+    )
+    private DataLayer nt_world_lighting$getLightValue(DataLayer original)
+    {
+        if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class))
+            return original;
+
+        boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
+
+        if (this.chunkSource.getLevel() instanceof ClientLevel level)
+            return new NostalgicDataLayer(original, level, isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK);
+
+        return original;
     }
 }

@@ -8,7 +8,7 @@
     "candy.square_border.OcclusionCullerMixin",
     "candy.torch_block.BlockRendererMixin",
     "candy.world_lighting.FluidRendererMixin",
-    "candy.world_lighting.EmbeddiumWorldRendererMixin",
+    "candy.world_lighting.LevelRendererMixin",
     "candy.world_lighting.WorldSliceMixin"
   ]
 }
