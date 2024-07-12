@@ -137,7 +137,7 @@ public abstract class NostalgicTweaks
      */
     public static String getBetaVersion()
     {
-        return BETA_VERSION.computeIfAbsent(() -> TextUtil.extract(getRawVersion(), "Beta-\\d+(?:\\.\\d+)?"));
+        return BETA_VERSION.computeIfAbsent(() -> TextUtil.extract(getRawVersion(), "beta\\.\\d+"));
     }
 
     /**
