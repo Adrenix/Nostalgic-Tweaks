@@ -26,7 +26,15 @@ public interface ModPacket extends CustomPacketPayload
      */
     static <T extends ModPacket> void register(NetworkManager.Side side, CustomPacketPayload.Type<T> type, StreamDecoder<FriendlyByteBuf, T> decoder)
     {
-        NetworkManager.registerReceiver(side, type, CustomPacketPayload.codec(ModPacket::encoder, decoder), ModPacket::receiver);
+        if (NetworkManager.Side.C2S == side)
+            NetworkManager.registerReceiver(side, type, CustomPacketPayload.codec(ModPacket::encoder, decoder), ModPacket::receiver);
+        else
+        {
+            if (NostalgicTweaks.isClient())
+                NetworkManager.registerReceiver(side, type, CustomPacketPayload.codec(ModPacket::encoder, decoder), ModPacket::receiver);
+            else
+                NetworkManager.registerS2CPayloadType(type, CustomPacketPayload.codec(ModPacket::encoder, decoder));
+        }
     }
 
     /**
