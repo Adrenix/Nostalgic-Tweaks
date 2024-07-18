@@ -12,6 +12,7 @@ import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LightChunkGetter;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.lighting.SkyLightEngine;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,9 +54,9 @@ public abstract class LightEngineMixin
         method = "getDataLayerData",
         at = @At("RETURN")
     )
-    private DataLayer nt_world_lighting$getLightValue(DataLayer original)
+    private DataLayer nt_world_lighting$getLightValue(@Nullable DataLayer original)
     {
-        if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class))
+        if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class) || original == null)
             return original;
 
         boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
