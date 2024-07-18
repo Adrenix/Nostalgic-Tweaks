@@ -175,11 +175,13 @@ public abstract class OverworldFogRenderer
      * @param fogShape A {@link Consumer} that accepts a {@link FogShape} value.
      * @param fogStart A {@link Consumer} that accepts a float where the fog starts.
      * @param fogEnd   A {@link Consumer} that accepts a float where the fog ends.
+     * @return Whether the mod has modified the fog state.
      */
-    private static void setState(FogRenderer.FogMode fogMode, Consumer<FogShape> fogShape, Consumer<Float> fogStart, Consumer<Float> fogEnd)
+    private static boolean setState(FogRenderer.FogMode fogMode, Consumer<FogShape> fogShape, Consumer<Float> fogStart, Consumer<Float> fogEnd)
     {
         WorldFog worldFog = CandyTweak.OLD_WORLD_FOG.get();
         int farPlaneDistance = getFarPlaneDistance(worldFog);
+        boolean isModified = false;
 
         if (worldFog != WorldFog.MODERN)
         {
@@ -206,6 +208,8 @@ public abstract class OverworldFogRenderer
                 fogStart.accept(0.0F);
 
             fogShape.accept(FogShape.SPHERE);
+
+            isModified = true;
         }
 
         if (GameUtil.isInOverworld() && CandyTweak.USE_CUSTOM_OVERWORLD_FOG_DENSITY.get())
@@ -215,6 +219,8 @@ public abstract class OverworldFogRenderer
 
             fogStart.accept(farPlaneDistance * customFogStart);
             fogEnd.accept(farPlaneDistance * customFogEnd);
+
+            isModified = true;
         }
 
         if (GameUtil.isInNether() && CandyTweak.USE_CUSTOM_NETHER_FOG_DENSITY.get())
@@ -224,7 +230,11 @@ public abstract class OverworldFogRenderer
 
             fogStart.accept(farPlaneDistance * customFogStart);
             fogEnd.accept(farPlaneDistance * customFogEnd);
+
+            isModified = true;
         }
+
+        return isModified;
     }
 
     /**
@@ -473,14 +483,10 @@ public abstract class OverworldFogRenderer
         float currentFogStart = fogStart.get();
         float currentFogEnd = fogEnd.get();
         boolean isFogOverride = isGameOverride(camera);
-        boolean isSetup = false;
+        boolean isModified = false;
 
         if (GameUtil.isInOverworld() || GameUtil.isInNether())
-        {
-            setState(fogMode, fogShapeSetter, fogStartSetter, fogEndSetter);
-
-            isSetup = true;
-        }
+            isModified = setState(fogMode, fogShapeSetter, fogStartSetter, fogEndSetter);
 
         float modFogStart = isFogOverride ? currentFogStart : fogStart.get();
         float modFogEnd = isFogOverride ? currentFogEnd : fogEnd.get();
@@ -502,6 +508,6 @@ public abstract class OverworldFogRenderer
             fogEndSetter.accept(SKY_END.lerpFloat());
         }
 
-        return isSetup;
+        return isModified;
     }
 }
