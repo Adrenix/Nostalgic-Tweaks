@@ -526,6 +526,6 @@ public abstract class VoidFogRenderer
         fogStartSetter.accept(FOG_START.lerpFloat());
         fogEndSetter.accept(FOG_END.lerpFloat());
 
-        return true;
+        return !isDisabled || !FOG_START.isFinished() || !FOG_END.isFinished();
     }
 }
