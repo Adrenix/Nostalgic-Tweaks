@@ -10,15 +10,11 @@ of [forkiesassds](https://github.com/forkiesassds/Nostalgic-Tweaks/tree/1.21).
 
 v2.0.0
 
-### Current Released Version
-
-N/a
-
 ### Related Development Branches
 
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
-- [1.20.4 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.4)
-- [1.20.6 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6)
+- [1.20.4 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.4)
+- [1.20.6 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6)
 
 ## Nostalgic Tweaks API For Developers
 
