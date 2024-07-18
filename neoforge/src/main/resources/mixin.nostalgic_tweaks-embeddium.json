@@ -1,4 +1,5 @@
 {
+  "required": false,
   "package": "mod.adrenix.nostalgic.neoforge.mixin.embeddium",
   "plugin": "mod.adrenix.nostalgic.neoforge.mixin.MixinEmbeddiumPlugin",
   "compatibilityLevel": "JAVA_17",
