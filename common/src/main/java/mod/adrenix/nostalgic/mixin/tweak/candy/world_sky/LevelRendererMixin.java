@@ -172,21 +172,21 @@ public abstract class LevelRendererMixin
     private void nt_world_sky$onSetupStarColor(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo callback)
     {
         Generic starsState = CandyTweak.OLD_STARS.get();
-        boolean isDimmed = Generic.MODERN == starsState || Generic.BETA == starsState;
 
         if (!ModTweak.ENABLED.get() || this.level == null)
             return;
 
         float rain = 1.0F - this.level.getRainLevel(partialTick);
         float transparency = this.level.getStarBrightness(partialTick) * rain;
-        float color = isDimmed ? transparency : transparency / 0.5F;
+        float color = Generic.BETA == starsState ? transparency : transparency / 0.5F;
 
         VoidFogRenderer.setStarsTransparency(transparency);
 
         if (VoidFogRenderer.isRendering())
             transparency = VoidFogRenderer.getStarsTransparency();
 
-        RenderSystem.setShaderColor(color, color, color, transparency);
+        if (Generic.MODERN != starsState)
+            RenderSystem.setShaderColor(color, color, color, transparency);
 
         if (CandyTweak.OLD_WORLD_FOG.get() == WorldFog.ALPHA_R164 && GameUtil.getRenderDistance() <= 4)
             RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.0F);
