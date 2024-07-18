@@ -43,7 +43,7 @@ public abstract class EntityRendererMixin
             double distance = this.entityRenderDispatcher.distanceToSqr(entity);
             float scale = (float) ((double) 0.0267F * (Math.sqrt(Math.sqrt(distance)) / 2.0D));
 
-            x = -scale;
+            x = scale;
             y = -scale;
             z = -scale;
         }
