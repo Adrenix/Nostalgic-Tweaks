@@ -121,7 +121,7 @@ public abstract class BoatMixin extends VehicleEntity
     )
     private void nt_mechanics_boat$addSpeedParticles(CallbackInfo callback)
     {
-        if (CandyTweak.OLD_BOAT_MOVEMENT_PARTICLES.get() && this.level().isClientSide())
+        if (this.level().isClientSide() && CandyTweak.OLD_BOAT_MOVEMENT_PARTICLES.get())
             BoatMixinHelper.applyParticles((Boat) (Object) this);
     }
 
