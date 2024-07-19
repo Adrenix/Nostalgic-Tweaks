@@ -48,7 +48,7 @@ public interface GameplayTweak
     TweakFlag DISABLE_ANIMAL_BREEDING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SPAWN).newForUpdate().build();
     TweakFlag DISABLE_BABY_ANIMAL_SPAWNING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SPAWN).newForUpdate().build();
     TweakFlag OLD_ANIMAL_SPAWNING = TweakFlag.server(false, GameplayGroup.MOB_ANIMAL_SPAWN).warningTag().build();
-    TweakNumber<Integer> ANIMAL_SPAWN_CAP = TweakNumber.server(25, GameplayGroup.MOB_ANIMAL_SPAWN)
+    TweakNumber<Integer> ANIMAL_SPAWN_CAP = TweakNumber.server(10, GameplayGroup.MOB_ANIMAL_SPAWN)
         .slider(Lang.Slider.CAP, 0, 100)
         .whenDisabled(MobCategory.CREATURE.getMaxInstancesPerChunk())
         .build();
