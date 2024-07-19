@@ -189,9 +189,9 @@ public class ClientConfig implements ConfigMeta
 
         // Hitbox Outline
 
-        public ItemSet fullBlockOutlines = CandyTweak.FULL_BLOCK_OUTLINES.register("fullBlockOutlines");
-        public ItemSet fullBlockCollisions = CandyTweak.FULL_BLOCK_COLLISIONS.register("fullBlockCollisions");
         public boolean applyFullBlockCollisions = CandyTweak.APPLY_FULL_BLOCK_COLLISIONS.register("applyFullBlockCollisions");
+        public ItemSet fullBlockCollisions = CandyTweak.FULL_BLOCK_COLLISIONS.register("fullBlockCollisions");
+        public ItemSet fullBlockOutlines = CandyTweak.FULL_BLOCK_OUTLINES.register("fullBlockOutlines");
         public String blockOutlineColor = CandyTweak.BLOCK_OUTLINE_COLOR.register("blockOutlineColor");
         public float blockOutlineThickness = CandyTweak.BLOCK_OUTLINE_THICKNESS.register("blockOutlineThickness");
 
