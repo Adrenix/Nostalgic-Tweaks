@@ -49,7 +49,7 @@ public class ServerConfig implements ConfigMeta
 
     public static class EyeCandy
     {
-        public boolean applyBlockOutlineVoxels = CandyTweak.APPLY_BLOCK_OUTLINE_VOXELS.register("applyBlockOutlineVoxels");
+        public boolean applyFullBlockCollisions = CandyTweak.APPLY_FULL_BLOCK_COLLISIONS.register("applyFullBlockCollisions");
         public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
         public int itemMergeLimit = CandyTweak.ITEM_MERGE_LIMIT.register("itemMergeLimit");
         public boolean oldItemMerging = CandyTweak.OLD_ITEM_MERGING.register("oldItemMerging");
