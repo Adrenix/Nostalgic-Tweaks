@@ -66,7 +66,11 @@ public abstract class HitboxMixinHelper
      */
     public static VoxelShape getShape(VoxelShape original, Block block)
     {
-        if (CandyTweak.OLD_BLOCK_OUTLINES.get().containsBlock(block) || ChestMixinHelper.isOld(block))
+        boolean isFullChest = ChestMixinHelper.isOld(block);
+        boolean isFullOutline = CandyTweak.FULL_BLOCK_OUTLINES.get().containsBlock(block);
+        boolean isFullCollision = CandyTweak.FULL_BLOCK_COLLISIONS.get().containsBlock(block);
+
+        if (isFullChest || isFullOutline || isFullCollision)
             return Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
         return original;
