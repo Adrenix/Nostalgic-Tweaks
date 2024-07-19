@@ -34,6 +34,7 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
         this.emptyList = builder.defaultList.create();
         this.cacheHolder = CacheHolder.with(this.defaultList.create(), this.defaultList.create(), this::getCacheMode);
 
+        this.reflectionListeners.add(this.diskList::resetTransientCache);
         this.emptyList.clear();
     }
 
@@ -178,6 +179,7 @@ public abstract class TweakListing<V, T extends Listing<V, T>> extends Tweak<T>
     {
         this.receivedList.clear();
         this.receivedList.copy(value);
+        this.receivedList.resetTransientCache();
 
         this.fromNetwork().clear();
         this.fromNetwork().copy(value);

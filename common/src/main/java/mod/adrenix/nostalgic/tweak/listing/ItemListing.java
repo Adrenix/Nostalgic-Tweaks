@@ -1,5 +1,8 @@
 package mod.adrenix.nostalgic.tweak.listing;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMaps;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.item.Item;
@@ -31,6 +34,8 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
     /* Fields */
 
     protected final transient HashSet<ItemRule> rules = new HashSet<>();
+    protected final transient Object2BooleanMap<Item> itemCache = Object2BooleanMaps.synchronize(new Object2BooleanOpenHashMap<>());
+    protected final transient Object2BooleanMap<Block> blockCache = Object2BooleanMaps.synchronize(new Object2BooleanOpenHashMap<>());
     protected boolean disabled = false;
 
     /* Methods */
@@ -51,6 +56,18 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
     public boolean isDisabled()
     {
         return this.disabled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetTransientCache()
+    {
+        this.itemCache.clear();
+        this.blockCache.clear();
+
+        Listing.super.resetTransientCache();
     }
 
     /**
@@ -211,6 +228,17 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean containsBlock(Block block)
     {
+        return this.blockCache.computeIfAbsent(block, this::lookupBlock);
+    }
+
+    /**
+     * Checks if the listing contains the block's explicit resource key or if the block matches a wildcard.
+     *
+     * @param block A {@link Block} instance to check.
+     * @return Whether this listing accepts the given block.
+     */
+    private boolean lookupBlock(Block block)
+    {
         if (this.containsKey(ItemUtil.getResourceKey(block)))
             return true;
 
@@ -225,10 +253,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      */
     public boolean containsItem(Item item)
     {
-        if (this.containsKey(ItemUtil.getResourceKey(item)))
-            return true;
-
-        return this.isItemWildcard(item);
+        return this.itemCache.computeIfAbsent(item, this::lookupItem);
     }
 
     /**
@@ -240,5 +265,19 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
     public boolean containsItem(ItemStack itemStack)
     {
         return this.containsItem(itemStack.getItem());
+    }
+
+    /**
+     * Checks if the listing contains the item's explicit resource key or if the item matches a wildcard.
+     *
+     * @param item An {@link Item} instance to check.
+     * @return Whether this listing accepts the given item.
+     */
+    private boolean lookupItem(Item item)
+    {
+        if (this.containsKey(ItemUtil.getResourceKey(item)))
+            return true;
+
+        return this.isItemWildcard(item);
     }
 }
