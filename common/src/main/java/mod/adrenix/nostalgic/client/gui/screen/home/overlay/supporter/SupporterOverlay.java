@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +46,7 @@ public class SupporterOverlay
     private static boolean isVersionWrong = false;
 
     static final AtomicInteger THREAD_ID = new AtomicInteger(0);
+    static final HashSet<String> NAME_KEYS = new HashSet<>();
     static final HashMap<String, Color> NAMES = new HashMap<>();
     static final HashMap<String, PlayerFace> FACES = new HashMap<>();
 
@@ -89,9 +91,9 @@ public class SupporterOverlay
     /* Methods */
 
     /**
-     * @return A {@link HashMap} of supporter names and their respective color.
+     * Check if the name cache needs built.
      */
-    public static HashMap<String, Color> getNames()
+    private static void checkIfNamesNeedBuilt()
     {
         if (cache == null && !isConnecting)
         {
@@ -101,10 +103,31 @@ public class SupporterOverlay
         else if (cache != null && NAMES.isEmpty())
         {
             for (Map.Entry<String, GithubJson.Supporter> entry : cache.supporters.entrySet())
+            {
+                NAME_KEYS.add(entry.getKey());
                 NAMES.put(entry.getKey(), new Color(entry.getValue().color));
+            }
         }
+    }
+
+    /**
+     * @return A {@link HashMap} of supporter names and their respective color.
+     */
+    public static HashMap<String, Color> getNames()
+    {
+        checkIfNamesNeedBuilt();
 
         return NAMES;
+    }
+
+    /**
+     * @return A {@link HashSet} of supporter name keys used in the supporter names map.
+     */
+    public static HashSet<String> getNameKeys()
+    {
+        checkIfNamesNeedBuilt();
+
+        return NAME_KEYS;
     }
 
     /**
