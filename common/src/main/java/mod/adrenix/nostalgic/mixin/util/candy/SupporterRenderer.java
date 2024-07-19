@@ -106,7 +106,7 @@ public abstract class SupporterRenderer
         if (!CandyTweak.SUPPORTER_TAGS.get())
             return false;
 
-        for (String name : SupporterOverlay.getNames().keySet())
+        for (String name : SupporterOverlay.getNameKeys())
         {
             if (name.equals(displayName.getString()))
                 return true;
