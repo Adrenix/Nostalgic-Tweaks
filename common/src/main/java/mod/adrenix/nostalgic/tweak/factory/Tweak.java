@@ -304,10 +304,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     @Override
     public void applyReflection(T value)
     {
-        this.reflectionListeners.forEach(listener -> {
-            NostalgicTweaks.LOGGER.debug("[Reflection Listener] Running for (%s)", this.toString());
-            listener.run();
-        });
+        this.runReflectionListeners();
 
         if (NostalgicTweaks.isClient())
             ConfigReflect.setClientField(this, value);
@@ -324,6 +321,18 @@ public abstract class Tweak<T> implements TweakMeta<T>
     public void whenChanged(Runnable runnable)
     {
         this.reflectionListeners.add(runnable);
+    }
+
+    /**
+     * Run all reflection listeners assigned to this tweak. Use this when a tweak's stored value has changed. This
+     * should <b color=red>not</b> be used when a tweak's cache value changes.
+     */
+    protected void runReflectionListeners()
+    {
+        this.reflectionListeners.forEach(listener -> {
+            NostalgicTweaks.LOGGER.debug("[Reflection Listener] Running for (%s)", this.toString());
+            listener.run();
+        });
     }
 
     /**
