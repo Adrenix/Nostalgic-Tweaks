@@ -100,7 +100,9 @@ public abstract class TweakValue<T> extends Tweak<T>
     public void setReceived(T value)
     {
         this.receivedValue = value;
+
         this.setNetwork(value);
+        this.runReflectionListeners();
     }
 
     @Override
