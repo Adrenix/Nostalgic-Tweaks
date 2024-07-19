@@ -28,6 +28,13 @@ public interface Listing<V, L extends Listing<V, L>>
     void clear();
 
     /**
+     * Resets any internal listing caches that a listing may have for performant reading.
+     */
+    default void resetTransientCache()
+    {
+    }
+
+    /**
      * Perform operations when the cache is being applied to local lists or network lists.
      */
     default void applyCache()
