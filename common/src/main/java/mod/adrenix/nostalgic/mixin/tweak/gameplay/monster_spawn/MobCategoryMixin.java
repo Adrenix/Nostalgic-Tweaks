@@ -33,7 +33,7 @@ public abstract class MobCategoryMixin
         if (NostalgicTweaks.isMixinEarly())
             return maxInstancesPerChunk;
 
-        if (this.nt$monsterProcessor.isParked() && this.name.equals(MobCategory.CREATURE.getName()))
+        if (this.nt$monsterProcessor.isParked() && this.name.equals(MobCategory.MONSTER.getName()))
             return this.nt$monsterProcessor.process(GameplayTweak.MONSTER_SPAWN_CAP::get, maxInstancesPerChunk);
 
         return maxInstancesPerChunk;
