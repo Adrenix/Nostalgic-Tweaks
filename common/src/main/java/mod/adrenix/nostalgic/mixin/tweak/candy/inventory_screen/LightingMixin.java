@@ -25,7 +25,7 @@ public abstract class LightingMixin
     private static void nt_inventory_screen$wrapSetupForEntityInInventory(Vector3f startDirection, Vector3f endDirection, Operation<Void> operation)
     {
         if (CandyTweak.INVERTED_PLAYER_LIGHTING.get())
-            RenderSystem.setShaderLights(new Vector3f(-2.0F, -3.0F, -1.0F), new Vector3f(-0.8F, -5.0F, -1.5F));
+            RenderSystem.setShaderLights(new Vector3f(-1.0F, -1.0F, 0.2F).normalize(), new Vector3f(0.0F, -1.0F, 0.8F).normalize());
         else
             operation.call(startDirection, endDirection);
     }
