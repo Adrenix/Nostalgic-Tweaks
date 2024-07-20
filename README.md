@@ -2,22 +2,17 @@
 
 ### NeoForge & Fabric
 
-This is the 1.20.4 development branch for Nostalgic Tweaks. Beta 9 is a complete rewrite for the mod and is in the
-final phase of development.
+This is the 1.20.4 development branch for Nostalgic Tweaks. Beta 9 is a complete rewrite for the mod.
 
 ### Current In-Development Version
 
 v2.0.0
 
-### Current Released Version
-
-N/a
-
 ### Related Development Branches
 
 - [Home](https://github.com/Adrenix/Nostalgic-Tweaks)
-- [1.20.6 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6)
-- [1.21 (Beta 9.0)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.21)
+- [1.20.6 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6)
+- [1.21 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.21)
 
 ## Nostalgic Tweaks API For Developers
 
