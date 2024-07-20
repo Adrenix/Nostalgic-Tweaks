@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.init.listener.common;
+package mod.adrenix.nostalgic.listener.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
