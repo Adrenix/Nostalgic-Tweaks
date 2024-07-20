@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.init.listener.common;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.core.BlockPos;
@@ -57,7 +57,7 @@ public abstract class InteractionListener
             return CompoundEventResult.interruptTrue(itemStackInHand);
         }
 
-        if (SwordBlockMixinHelper.canBlock(player) && !player.isUsingItem())
+        if (SwordBlockingHelper.canBlock(player) && !player.isUsingItem())
         {
             player.startUsingItem(hand);
 

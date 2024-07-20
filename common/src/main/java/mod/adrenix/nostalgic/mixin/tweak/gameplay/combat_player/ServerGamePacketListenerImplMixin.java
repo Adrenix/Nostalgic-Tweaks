@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +23,6 @@ public abstract class ServerGamePacketListenerImplMixin
     )
     private boolean nt_combat_player$shouldSwingOnSwordBlockUse(ServerPlayer player, InteractionHand hand, boolean shouldSwing)
     {
-        return !SwordBlockMixinHelper.isBlocking(player);
+        return !SwordBlockingHelper.isBlocking(player);
     }
 }

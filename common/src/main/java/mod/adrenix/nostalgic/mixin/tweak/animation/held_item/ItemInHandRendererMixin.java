@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.held_item;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.mixin.duck.SlotTracker;
-import mod.adrenix.nostalgic.mixin.util.animation.HeldItemMixinHelper;
+import mod.adrenix.nostalgic.helper.animation.HeldItemHelper;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.common.data.Holder;
@@ -66,7 +66,7 @@ public abstract class ItemInHandRendererMixin
         Holder<ItemStack> handItem = Holder.create(this.mainHandItem);
         NumberHolder<Float> handHeight = NumberHolder.create(this.mainHandHeight);
 
-        HeldItemMixinHelper.oldReequipLogic(handItem, handHeight);
+        HeldItemHelper.oldReequipLogic(handItem, handHeight);
 
         this.mainHandItem = handItem.get();
         this.mainHandHeight = handHeight.get();
@@ -85,7 +85,7 @@ public abstract class ItemInHandRendererMixin
         if (hand != InteractionHand.MAIN_HAND)
             return itemStack;
 
-        return HeldItemMixinHelper.getLastHeldItem(itemStack, this.mainHandItem, player.getMainHandItem(), (SlotTracker) player);
+        return HeldItemHelper.getLastHeldItem(itemStack, this.mainHandItem, player.getMainHandItem(), (SlotTracker) player);
     }
 
     /**

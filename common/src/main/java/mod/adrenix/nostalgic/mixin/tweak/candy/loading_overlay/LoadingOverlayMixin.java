@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.loading_overlay;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.candy.OverlayMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.OverlayHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.Overlay;
@@ -62,7 +62,7 @@ public abstract class LoadingOverlayMixin
         if (CandyTweak.OLD_LOADING_OVERLAY.get() == Overlay.MODERN)
             return;
 
-        OverlayMixinHelper.render(graphics, MOJANG_STUDIOS_LOGO_LOCATION);
+        OverlayHelper.render(graphics, MOJANG_STUDIOS_LOGO_LOCATION);
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setProgressBarMinY(int minY)
     {
-        return CandyTweak.OLD_LOADING_OVERLAY.get() != Overlay.MODERN ? OverlayMixinHelper.getProgressBarOffset() - 5 : minY;
+        return CandyTweak.OLD_LOADING_OVERLAY.get() != Overlay.MODERN ? OverlayHelper.getProgressBarOffset() - 5 : minY;
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setProgressBarMaxY(int maxY)
     {
-        return CandyTweak.OLD_LOADING_OVERLAY.get() != Overlay.MODERN ? OverlayMixinHelper.getProgressBarOffset() + 5 : maxY;
+        return CandyTweak.OLD_LOADING_OVERLAY.get() != Overlay.MODERN ? OverlayHelper.getProgressBarOffset() + 5 : maxY;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setOutlineProgressBarColor(int color)
     {
-        return ModTweak.ENABLED.get() ? OverlayMixinHelper.getOutlineProgressBarColor() : color;
+        return ModTweak.ENABLED.get() ? OverlayHelper.getOutlineProgressBarColor() : color;
     }
 
     /**
@@ -164,6 +164,6 @@ public abstract class LoadingOverlayMixin
     )
     private int nt_loading_overlay$setInsideProgressBarColor(int color)
     {
-        return ModTweak.ENABLED.get() ? OverlayMixinHelper.getInsideProgressBarColor() : color;
+        return ModTweak.ENABLED.get() ? OverlayHelper.getInsideProgressBarColor() : color;
     }
 }

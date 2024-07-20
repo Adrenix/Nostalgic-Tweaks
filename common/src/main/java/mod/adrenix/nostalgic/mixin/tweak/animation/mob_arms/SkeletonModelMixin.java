@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.mob_arms;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.animation.MobArmMixinHelper;
+import mod.adrenix.nostalgic.helper.animation.MobArmHelper;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
@@ -56,7 +56,7 @@ public abstract class SkeletonModelMixin<T extends Mob> extends HumanoidModel<T>
         if (!AnimationTweak.OLD_SKELETON_ARMS.get())
             return isAggressive;
 
-        MobArmMixinHelper.applyStaticArms(this.rightArm, this.leftArm);
+        MobArmHelper.applyStaticArms(this.rightArm, this.leftArm);
         AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
 
         return false;

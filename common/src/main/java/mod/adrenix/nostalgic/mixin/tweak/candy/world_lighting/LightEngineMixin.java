@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.NostalgicDataLayer;
+import mod.adrenix.nostalgic.helper.candy.light.NostalgicDataLayer;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.multiplayer.ClientChunkCache;

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.create_world_screen;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.WidgetHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +23,6 @@ public abstract class TabNavigationBarMixin
     )
     private boolean nt_create_world_screen$shouldRenderHeader(GuiGraphics graphics, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
     {
-        return !WidgetMixinHelper.isOldStyleTabs();
+        return !WidgetHelper.isOldStyleTabs();
     }
 }

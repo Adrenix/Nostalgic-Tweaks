@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.item_merge;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ItemHelper;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +39,6 @@ public abstract class BlockMixin
     private static void nt_neoforge_item_merge$wrapCapturedDrops(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback, @Local ItemEntity itemEntity)
     {
         if (ModTweak.ENABLED.get())
-            ItemMixinHelper.splitEntity(level, itemEntity, capturedDrops::add);
+            ItemHelper.splitEntity(level, itemEntity, capturedDrops::add);
     }
 }

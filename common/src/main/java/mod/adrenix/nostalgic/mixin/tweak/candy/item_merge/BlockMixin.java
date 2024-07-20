@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.item_merge;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ItemHelper;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -31,6 +31,6 @@ public abstract class BlockMixin
     private static void nt_item_merge$wrapAddFreshEntity(Level level, Supplier<ItemEntity> supplier, ItemStack itemStack, CallbackInfo callback, @Local ItemEntity itemEntity)
     {
         if (ModTweak.ENABLED.get())
-            ItemMixinHelper.splitEntity(level, itemEntity, level::addFreshEntity);
+            ItemHelper.splitEntity(level, itemEntity, level::addFreshEntity);
     }
 }

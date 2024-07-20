@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.mixin.tweak.swing;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.animation.PlayerArmMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.swing.SwingMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.swing.SwingType;
+import mod.adrenix.nostalgic.helper.animation.PlayerArmHelper;
+import mod.adrenix.nostalgic.helper.swing.SwingHelper;
+import mod.adrenix.nostalgic.helper.swing.SwingType;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.SwingTweak;
 import net.minecraft.client.Minecraft;
@@ -52,20 +52,20 @@ public abstract class LivingEntityMixin extends Entity
                 return currentSwingDuration;
         }
 
-        int speed = SwingMixinHelper.getSwingSpeed(player);
+        int speed = SwingHelper.getSwingSpeed(player);
 
-        if (AnimationTweak.OLD_CLASSIC_ATTACK_SWING.get() && PlayerArmMixinHelper.SWING_TYPE.get() == SwingType.ATTACK)
-            return SwingMixinHelper.isSpeedGlobal() ? speed : 7;
+        if (AnimationTweak.OLD_CLASSIC_ATTACK_SWING.get() && PlayerArmHelper.SWING_TYPE.get() == SwingType.ATTACK)
+            return SwingHelper.isSpeedGlobal() ? speed : 7;
 
-        if (AnimationTweak.OLD_CLASSIC_USE_SWING.get() && PlayerArmMixinHelper.SWING_TYPE.get() == SwingType.USE)
-            return SwingMixinHelper.isSpeedGlobal() ? speed : 3;
+        if (AnimationTweak.OLD_CLASSIC_USE_SWING.get() && PlayerArmHelper.SWING_TYPE.get() == SwingType.USE)
+            return SwingHelper.isSpeedGlobal() ? speed : 3;
 
-        if (SwingMixinHelper.isSpeedGlobal())
+        if (SwingHelper.isSpeedGlobal())
             return speed;
-        else if (SwingMixinHelper.isHasteOverride() && player.hasEffect(MobEffects.DIG_SPEED))
-            return SwingMixinHelper.getHasteSpeed();
-        else if (SwingMixinHelper.isFatigueOverride() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
-            return SwingMixinHelper.getFatigueSpeed();
+        else if (SwingHelper.isHasteOverride() && player.hasEffect(MobEffects.DIG_SPEED))
+            return SwingHelper.getHasteSpeed();
+        else if (SwingHelper.isFatigueOverride() && player.hasEffect(MobEffects.DIG_SLOWDOWN))
+            return SwingHelper.getFatigueSpeed();
         else if (MobEffectUtil.hasDigSpeed(player))
             return speed - (1 + MobEffectUtil.getDigSpeedAmplification(player));
         else

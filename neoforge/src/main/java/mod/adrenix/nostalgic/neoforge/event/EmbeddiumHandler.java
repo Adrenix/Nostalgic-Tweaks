@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.neoforge.event;
 
-import mod.adrenix.nostalgic.mixin.util.candy.TorchMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.embeddedt.embeddium.api.BlockRendererRegistry;
@@ -34,13 +34,13 @@ public abstract class EmbeddiumHandler
     public static void init()
     {
         BlockRendererRegistry.instance().registerRenderPopulator((resultList, context) -> {
-            if (TorchMixinHelper.isNotLikeTorch(context.state()))
+            if (TorchHelper.isNotLikeTorch(context.state()))
                 return;
 
             resultList.add((ctx, random, consumer) -> {
-                if (TorchMixinHelper.isLikeTorch(ctx.state()))
+                if (TorchHelper.isLikeTorch(ctx.state()))
                 {
-                    TorchMixinHelper.writeVertices(ctx.stack(), ctx.world(), consumer, ctx.model(), ctx.state(), ctx.pos(), random);
+                    TorchHelper.writeVertices(ctx.stack(), ctx.world(), consumer, ctx.model(), ctx.state(), ctx.pos(), random);
 
                     return BlockRendererRegistry.RenderResult.OVERRIDE;
                 }

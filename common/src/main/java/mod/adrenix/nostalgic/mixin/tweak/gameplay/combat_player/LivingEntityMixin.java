@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -33,7 +33,7 @@ public abstract class LivingEntityMixin
 
         Player player = optionalPlayer.get();
 
-        if (SwordBlockMixinHelper.isBlocking(player))
+        if (SwordBlockingHelper.isBlocking(player))
         {
             if (hurtAmount > 1.0F)
             {
@@ -62,7 +62,7 @@ public abstract class LivingEntityMixin
     private int nt_combat_player$modifyGetUseDuration(int useDuration)
     {
         return ClassUtil.cast(this, Player.class)
-            .filter(SwordBlockMixinHelper::canBlock)
+            .filter(SwordBlockingHelper::canBlock)
             .map(player -> 72000)
             .orElse(useDuration);
     }

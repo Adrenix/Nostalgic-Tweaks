@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.world.BlockUtil;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
@@ -23,7 +23,7 @@ public abstract class LiquidBlockRendererMixin
     private int nt_world_lighting$modifyLightColor(int color, BlockAndTintGetter level, BlockPos blockPos)
     {
         if (CandyTweak.OLD_WATER_LIGHTING.get() && BlockUtil.isWaterLike(level.getBlockState(blockPos)))
-            return LightingMixinHelper.getWaterLight(level, blockPos);
+            return LightingHelper.getWaterLight(level, blockPos);
 
         return color;
     }

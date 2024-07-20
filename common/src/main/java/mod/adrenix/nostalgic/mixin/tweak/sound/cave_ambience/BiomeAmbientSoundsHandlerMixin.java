@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.sound.cave_ambience;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import mod.adrenix.nostalgic.mixin.util.sound.CaveSoundManager;
+import mod.adrenix.nostalgic.helper.sound.CaveSoundManager;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.BiomeAmbientSoundsHandler;

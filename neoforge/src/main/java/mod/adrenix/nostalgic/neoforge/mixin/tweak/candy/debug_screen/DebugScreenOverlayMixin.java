@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.debug_screen;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mod.adrenix.nostalgic.mixin.util.candy.debug.DebugMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.debug.DebugOverlayHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,7 +34,7 @@ public abstract class DebugScreenOverlayMixin
             return;
         }
 
-        DebugMixinHelper.renderDebugText(overlay, graphics);
+        DebugOverlayHelper.renderDebugText(overlay, graphics);
     }
 
     /**

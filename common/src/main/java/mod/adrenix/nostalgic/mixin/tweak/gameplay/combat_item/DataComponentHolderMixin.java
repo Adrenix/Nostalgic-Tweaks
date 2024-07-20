@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_item;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.DamageMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.DamageHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
@@ -37,8 +37,8 @@ public interface DataComponentHolderMixin
         {
             TieredItem tieredItem = NullableResult.get(itemStack, result -> ItemUtil.cast(result, TieredItem.class));
 
-            if (tieredItem != null && DamageMixinHelper.isApplicable(tieredItem))
-                return (T) DamageMixinHelper.get(tieredItem, modifiers);
+            if (tieredItem != null && DamageHelper.isApplicable(tieredItem))
+                return (T) DamageHelper.get(tieredItem, modifiers);
         }
 
         return value;

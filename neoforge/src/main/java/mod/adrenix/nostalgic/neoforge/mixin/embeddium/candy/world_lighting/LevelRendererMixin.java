@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.neoforge.mixin.embeddium.candy.world_lighting;
 
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -33,7 +33,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_embeddium_world_lighting$onRenderLevel(CallbackInfo callback)
     {
-        if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingMixinHelper.isRelightCheckEnqueued())
+        if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingHelper.isRelightCheckEnqueued())
         {
             EmbeddiumWorldRenderer worldRenderer = EmbeddiumWorldRenderer.instanceNullable();
 
@@ -46,14 +46,14 @@ public abstract class LevelRendererMixin
             });
         }
 
-        if (LightingMixinHelper.RELIGHT_ALL_CHUNKS.get() && this.level != null)
+        if (LightingHelper.RELIGHT_ALL_CHUNKS.get() && this.level != null)
         {
             ChunkTrackerHolder.get(this.level).getReadyChunks().forEach(packedPos -> {
                 Pair<Long, Byte> packedRelight = new Pair<>(packedPos, (byte) 1);
-                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
+                LightingHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
             });
 
-            LightingMixinHelper.RELIGHT_ALL_CHUNKS.disable();
+            LightingHelper.RELIGHT_ALL_CHUNKS.disable();
         }
     }
 
@@ -66,7 +66,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_embeddium_world_lighting$onFinishRenderLevel(CallbackInfo callback)
     {
-        if (LightingMixinHelper.isRelightCheckEnqueued())
-            LightingMixinHelper.setRelightingAsFinished();
+        if (LightingHelper.isRelightCheckEnqueued())
+            LightingHelper.setRelightingAsFinished();
     }
 }

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.candy.TorchMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
@@ -32,8 +32,8 @@ public abstract class BlockRenderDispatcherMixin
     )
     private void nt_neoforge_torch_block$writeVertices(ModelBlockRenderer renderer, BlockAndTintGetter blockAndTintGetter, BakedModel model, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean checkSides, RandomSource random, long seed, int packedOverlay, ModelData modelData, RenderType renderType, Operation<Void> tesselateBlock)
     {
-        if (TorchMixinHelper.isLikeTorch(blockState))
-            TorchMixinHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, random);
+        if (TorchHelper.isLikeTorch(blockState))
+            TorchHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, random);
         else
             tesselateBlock.call(renderer, blockAndTintGetter, model, blockState, blockPos, poseStack, vertexConsumer, checkSides, random, seed, packedOverlay, modelData, renderType);
     }

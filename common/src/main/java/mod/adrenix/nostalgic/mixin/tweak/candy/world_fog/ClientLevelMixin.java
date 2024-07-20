@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_fog;
 
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.platform.NativeImage;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightmapMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -92,7 +92,7 @@ public abstract class LightTextureMixin
     {
         if (CandyTweak.OLD_CLASSIC_ENGINE.get())
         {
-            LightmapMixinHelper.setClassicTexture(this.lightPixels);
+            LightTextureHelper.setClassicTexture(this.lightPixels);
             return;
         }
 
@@ -102,7 +102,7 @@ public abstract class LightTextureMixin
             float darknessGamma = this.getDarknessGamma(partialTick) * darknessScale;
             float darknessEffect = this.calculateDarknessScale(this.minecraft.player, darknessGamma, partialTick) * darknessScale;
 
-            LightmapMixinHelper.setGrayscaleTexture(this.lightPixels, darknessEffect, partialTick);
+            LightTextureHelper.setGrayscaleTexture(this.lightPixels, darknessEffect, partialTick);
         }
     }
 

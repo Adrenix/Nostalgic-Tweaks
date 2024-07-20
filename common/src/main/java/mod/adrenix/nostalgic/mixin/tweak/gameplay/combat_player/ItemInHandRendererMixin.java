@@ -4,8 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockRenderer;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingRenderer;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -37,8 +37,8 @@ public abstract class ItemInHandRendererMixin
         if (ModTweak.ENABLED.get())
             poseStack.pushPose();
 
-        if (SwordBlockMixinHelper.isBlocking(player) || SwordBlockMixinHelper.shouldBlockOnShield(player))
-            SwordBlockRenderer.applyFirstPerson(poseStack, player, hand);
+        if (SwordBlockingHelper.isBlocking(player) || SwordBlockingHelper.shouldBlockOnShield(player))
+            SwordBlockingRenderer.applyFirstPerson(poseStack, player, hand);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class ItemInHandRendererMixin
     )
     private boolean nt_combat_player$shouldRenderShieldInOffHand(ItemInHandRenderer renderer, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack stack, float equippedProgress, PoseStack poseStack, MultiBufferSource buffer, int combinedLight)
     {
-        return !SwordBlockMixinHelper.shouldBlockOnShield(player);
+        return !SwordBlockingHelper.shouldBlockOnShield(player);
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class ItemInHandRendererMixin
     )
     private boolean nt_combat_player$shouldIndicateItemUse(boolean isUsingItem, @Local(argsOnly = true) AbstractClientPlayer player)
     {
-        if (SwordBlockMixinHelper.isBlocking(player))
+        if (SwordBlockingHelper.isBlocking(player))
             return false;
 
         return isUsingItem;

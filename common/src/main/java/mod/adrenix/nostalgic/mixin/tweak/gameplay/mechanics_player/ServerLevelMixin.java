@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.mechanics_player;
 
-import mod.adrenix.nostalgic.mixin.util.gameplay.NightmareMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.NightmareHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,6 +37,6 @@ public abstract class ServerLevelMixin
     private void nt_mechanics_player$onUpdateIsSleepingCheck(BooleanSupplier hasTimeLeft, CallbackInfo callback)
     {
         if (GameplayTweak.OLD_NIGHTMARES.get())
-            this.players.forEach(NightmareMixinHelper::tick);
+            this.players.forEach(NightmareHelper::tick);
     }
 }

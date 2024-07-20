@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ItemHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +75,6 @@ public abstract class ItemEntityMixin
         if (!isMergable)
             return false;
 
-        return ItemMixinHelper.canMergeWithNeighbors(this.getItem(), neighbors.get());
+        return ItemHelper.canMergeWithNeighbors(this.getItem(), neighbors.get());
     }
 }

@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import net.minecraft.core.BlockPos;
@@ -35,6 +35,6 @@ public interface BlockAndTintGetterMixin extends BlockGetter
         if (GameUtil.isOnIntegratedSeverThread() || !CandyTweak.ROUND_ROBIN_RELIGHT.get())
             return canSeeSky;
 
-        return this.getBrightness(LightLayer.SKY, blockPos) >= LightingMixinHelper.getCombinedLight(this.getMaxLightLevel(), 0);
+        return this.getBrightness(LightLayer.SKY, blockPos) >= LightingHelper.getCombinedLight(this.getMaxLightLevel(), 0);
     }
 }
