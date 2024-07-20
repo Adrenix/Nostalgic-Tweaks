@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.inventory_screen;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
 import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
+import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +41,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
 
     /* Unique & Shadows */
 
-    @Unique private Slot nt$offHand;
+    @Unique @Nullable private Slot nt$offHand;
     @Shadow @Final private RecipeBookComponent recipeBookComponent;
 
     /* Injections */
@@ -54,7 +55,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onConstruct(Player player, CallbackInfo callback)
     {
-        this.nt$offHand = InventoryScreenHelper.setInventorySlots(this.menu.slots, this.recipeBookComponent);
+        this.nt$offHand = InventoryScreenHelper.setPositionsForSlots(this.menu.slots, this.recipeBookComponent);
     }
 
     /**

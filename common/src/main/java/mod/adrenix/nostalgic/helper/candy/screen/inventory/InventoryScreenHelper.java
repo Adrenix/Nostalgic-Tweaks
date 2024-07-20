@@ -38,7 +38,7 @@ public abstract class InventoryScreenHelper
      * @return The offhand {@link Slot} instance to use, or {@code null}.
      */
     @Nullable
-    public static Slot setInventorySlots(NonNullList<Slot> slots, RecipeBookComponent recipes)
+    public static Slot setPositionsForSlots(NonNullList<Slot> slots, RecipeBookComponent recipes)
     {
         InventoryShield shield = CandyTweak.INVENTORY_SHIELD.get();
         Slot offHand = null;
