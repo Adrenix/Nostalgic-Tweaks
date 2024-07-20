@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
@@ -55,24 +55,24 @@ public abstract class LevelRendererMixin
         if (!ModTweak.ENABLED.get() || this.level == null)
             return;
 
-        if (!LightingMixinHelper.PACKED_RELIGHT_QUEUE.isEmpty())
+        if (!LightingHelper.PACKED_RELIGHT_QUEUE.isEmpty())
         {
-            Pair<Long, Byte> packedRelight = LightingMixinHelper.PACKED_RELIGHT_QUEUE.pop();
+            Pair<Long, Byte> packedRelight = LightingHelper.PACKED_RELIGHT_QUEUE.pop();
             ChunkPos chunkPos = new ChunkPos(packedRelight.left());
             LevelChunk chunk = this.level.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
 
             if (chunk != null)
-                LightingMixinHelper.relightChunk(chunk, packedRelight.right());
+                LightingHelper.relightChunk(chunk, packedRelight.right());
             else if (this.isSectionCompiled(chunkPos.getWorldPosition()))
-                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
+                LightingHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
         }
 
         for (int i = 0; i < 4096; i++)
         {
-            if (LightingMixinHelper.PACKED_CHUNK_BLOCK_QUEUE.isEmpty())
+            if (LightingHelper.PACKED_CHUNK_BLOCK_QUEUE.isEmpty())
                 break;
 
-            Pair<Long, Long> packedQueue = LightingMixinHelper.PACKED_CHUNK_BLOCK_QUEUE.pop();
+            Pair<Long, Long> packedQueue = LightingHelper.PACKED_CHUNK_BLOCK_QUEUE.pop();
             ChunkPos chunkPos = new ChunkPos(packedQueue.left());
             LevelChunk chunk = this.level.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
 
@@ -88,7 +88,7 @@ public abstract class LevelRendererMixin
                 chunk.getLevel().getLightEngine().checkBlock(blockPos);
             }
             else if (this.isSectionCompiled(chunkPos.getWorldPosition()))
-                LightingMixinHelper.PACKED_CHUNK_BLOCK_QUEUE.add(packedQueue);
+                LightingHelper.PACKED_CHUNK_BLOCK_QUEUE.add(packedQueue);
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_world_lighting$onAllChanged(CallbackInfo callback)
     {
-        if (!LightingMixinHelper.RELIGHT_ALL_CHUNKS.get() || ModTracker.SODIUM.isInstalled() || this.level == null || this.viewArea == null)
+        if (!LightingHelper.RELIGHT_ALL_CHUNKS.get() || ModTracker.SODIUM.isInstalled() || this.level == null || this.viewArea == null)
             return;
 
         for (SectionRenderDispatcher.RenderSection renderSection : this.viewArea.sections)
@@ -110,10 +110,10 @@ public abstract class LevelRendererMixin
                 continue;
 
             long packedPos = SectionPos.of(renderSection.getOrigin()).chunk().toLong();
-            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(packedPos, (byte) 1));
+            LightingHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(packedPos, (byte) 1));
         }
 
-        LightingMixinHelper.RELIGHT_ALL_CHUNKS.disable();
+        LightingHelper.RELIGHT_ALL_CHUNKS.disable();
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_world_lighting$onCompileSections(Camera camera, CallbackInfo callback)
     {
-        boolean isRelightNeeded = CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingMixinHelper.isRelightCheckEnqueued();
+        boolean isRelightNeeded = CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingHelper.isRelightCheckEnqueued();
 
         if (!isRelightNeeded || this.viewArea == null || ModTracker.SODIUM.isInstalled())
             return;
@@ -153,7 +153,7 @@ public abstract class LevelRendererMixin
         if (ModTracker.SODIUM.isInstalled())
             return chunkPriority;
 
-        return CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingMixinHelper.isRelightCheckEnqueued() ? (T) PrioritizeChunkUpdates.NONE : chunkPriority;
+        return CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingHelper.isRelightCheckEnqueued() ? (T) PrioritizeChunkUpdates.NONE : chunkPriority;
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class LevelRendererMixin
     )
     private void nt_world_lighting$onFinishCompileSections(Camera camera, CallbackInfo callback)
     {
-        if (LightingMixinHelper.isRelightCheckEnqueued() && !ModTracker.SODIUM.isInstalled())
-            LightingMixinHelper.setRelightingAsFinished();
+        if (LightingHelper.isRelightCheckEnqueued() && !ModTracker.SODIUM.isInstalled())
+            LightingHelper.setRelightingAsFinished();
     }
 }

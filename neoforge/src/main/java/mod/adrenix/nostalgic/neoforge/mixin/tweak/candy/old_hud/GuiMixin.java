@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.neoforge.mixin.tweak.candy.old_hud;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.hud.HudHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import net.minecraft.client.Minecraft;
@@ -56,7 +56,7 @@ public abstract class GuiMixin
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
         {
-            HudMixinHelper.renderArmor(graphics, this.rightHeight);
+            HudHelper.renderArmor(graphics, this.rightHeight);
 
             if (NullableResult.getOrElse(Minecraft.getInstance().player, 0, LocalPlayer::getArmorValue) > 0)
             {
@@ -97,7 +97,7 @@ public abstract class GuiMixin
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
         {
-            HudMixinHelper.renderAir(graphics, this.leftHeight);
+            HudHelper.renderAir(graphics, this.leftHeight);
 
             this.leftHeight += 10;
             this.rightHeight -= 10;

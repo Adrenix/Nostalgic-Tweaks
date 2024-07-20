@@ -7,7 +7,7 @@ import me.jellysquid.mods.sodium.client.model.light.data.QuadLightData;
 import me.jellysquid.mods.sodium.client.model.quad.ModelQuadView;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.FluidRenderer;
 import me.jellysquid.mods.sodium.client.world.WorldSlice;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,7 +55,7 @@ public abstract class FluidRendererMixin
         if (!CandyTweak.OLD_WATER_LIGHTING.get())
             return;
 
-        int light = LightingMixinHelper.getWaterLight(world, blockPos);
+        int light = LightingHelper.getWaterLight(world, blockPos);
 
         for (int i = 0; i < 4; i++)
             this.quadLightData.lm[i] = light;

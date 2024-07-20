@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.ambient_occlusion;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +24,7 @@ public abstract class BlockBehaviourMixin
     )
     private boolean nt_ambient_occlusion$modifyCollisionShape(boolean isCollisionShapeFullBlock, BlockState state)
     {
-        if (CandyTweak.AMBIENT_OCCLUSION_BLOCKS.get().containsBlock(state.getBlock()) || ChestMixinHelper.isOld(state))
+        if (CandyTweak.AMBIENT_OCCLUSION_BLOCKS.get().containsBlock(state.getBlock()) || ChestHelper.isOld(state))
             return true;
 
         return isCollisionShapeFullBlock;

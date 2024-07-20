@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.animation.ClassicWalkMixinHelper;
+import mod.adrenix.nostalgic.helper.animation.ClassicWalkHelper;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -46,6 +46,6 @@ public abstract class LivingEntityRendererMixin
     private <T extends LivingEntity> void nt_player_animation$applyClassicWalkBobbing(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
         if (AnimationTweak.OLD_CLASSIC_WALK_BOBBING.get() && entity instanceof Player)
-            ClassicWalkMixinHelper.applyBobbing(entity, poseStack, partialTick);
+            ClassicWalkHelper.applyBobbing(entity, poseStack, partialTick);
     }
 }

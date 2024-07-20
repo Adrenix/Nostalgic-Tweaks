@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.swing;
 
+import mod.adrenix.nostalgic.helper.animation.PlayerArmHelper;
+import mod.adrenix.nostalgic.helper.swing.SwingType;
 import mod.adrenix.nostalgic.mixin.duck.SwingBlocker;
-import mod.adrenix.nostalgic.mixin.util.animation.PlayerArmMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.swing.SwingType;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -32,7 +32,7 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartAttack(CallbackInfoReturnable<Boolean> callback)
     {
-        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.ATTACK);
+        PlayerArmHelper.SWING_TYPE.set(SwingType.ATTACK);
 
         if (AnimationTweak.OLD_SWING_INTERRUPT.get() && this.player != null)
         {
@@ -50,7 +50,7 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartUseItem(CallbackInfo callback)
     {
-        PlayerArmMixinHelper.SWING_TYPE.set(SwingType.USE);
+        PlayerArmHelper.SWING_TYPE.set(SwingType.USE);
     }
 
     /**

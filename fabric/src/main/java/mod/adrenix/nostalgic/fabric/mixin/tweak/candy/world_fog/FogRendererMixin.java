@@ -1,9 +1,9 @@
 package mod.adrenix.nostalgic.fabric.mixin.tweak.candy.world_fog;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.WaterFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.OverworldFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.WaterFogRenderer;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
 import mod.adrenix.nostalgic.util.common.data.NumberHolder;

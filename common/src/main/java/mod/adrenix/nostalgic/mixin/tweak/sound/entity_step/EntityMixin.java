@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.sound.entity_step;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mod.adrenix.nostalgic.mixin.util.sound.SoundMixinHelper;
+import mod.adrenix.nostalgic.helper.sound.SoundHelper;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -46,8 +46,8 @@ public abstract class EntityMixin
             return;
         }
 
-        boolean isEntityIgnored = SoundMixinHelper.isEntityStepIgnored(entity);
-        boolean isModdedIgnored = SoundMixinHelper.isModdedStepIgnored(entity);
+        boolean isEntityIgnored = SoundHelper.isEntityStepIgnored(entity);
+        boolean isModdedIgnored = SoundHelper.isModdedStepIgnored(entity);
         boolean isInsideFluid = !blockState.getFluidState().isEmpty();
 
         if (isEntityIgnored || isModdedIgnored || isInsideFluid)

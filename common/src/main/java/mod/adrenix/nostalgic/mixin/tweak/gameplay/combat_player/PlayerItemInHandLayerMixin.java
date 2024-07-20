@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockRenderer;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingRenderer;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -45,9 +45,9 @@ public abstract class PlayerItemInHandLayerMixin<T extends Player, M extends Ent
     )
     private boolean nt_combat_player$modifyRenderArmWithSwordBlocking(ItemInHandLayer<?, ?> layer, LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffer, int packedLight)
     {
-        if (entity instanceof Player player && player.getUseItem() == itemStack && SwordBlockMixinHelper.isBlocking(player))
+        if (entity instanceof Player player && player.getUseItem() == itemStack && SwordBlockingHelper.isBlocking(player))
         {
-            SwordBlockRenderer.renderModelBlockingInHand(poseStack, itemStack, displayContext, player, arm, this.getParentModel(), buffer, packedLight);
+            SwordBlockingRenderer.renderModelBlockingInHand(poseStack, itemStack, displayContext, player, arm, this.getParentModel(), buffer, packedLight);
 
             return false;
         }

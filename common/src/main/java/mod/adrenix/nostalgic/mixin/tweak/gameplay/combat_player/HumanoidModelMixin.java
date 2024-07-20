@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockRenderer;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,7 +35,7 @@ public abstract class HumanoidModelMixin
     )
     private <T extends LivingEntity> void nt_combat_player$onSetupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo callback)
     {
-        if (entity instanceof Player player && SwordBlockMixinHelper.isBlocking(player))
-            SwordBlockRenderer.applyThirdPerson(player, this.leftArm, this.rightArm);
+        if (entity instanceof Player player && SwordBlockingHelper.isBlocking(player))
+            SwordBlockingRenderer.applyThirdPerson(player, this.leftArm, this.rightArm);
     }
 }

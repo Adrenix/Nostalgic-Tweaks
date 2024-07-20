@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.mob_drops;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.gameplay.MobLootMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.MobLootHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -23,6 +23,6 @@ public abstract class LivingEntityMixin
     )
     private LootTable nt_mob_drops$modifyDropLootTable(LootTable lootTable)
     {
-        return MobLootMixinHelper.getTable((Entity) (Object) this, lootTable);
+        return MobLootHelper.getTable((Entity) (Object) this, lootTable);
     }
 }

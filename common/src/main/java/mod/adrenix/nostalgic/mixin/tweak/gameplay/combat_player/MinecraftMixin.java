@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.SwordBlockMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -77,7 +77,7 @@ public abstract class MinecraftMixin
     )
     private boolean nt_combat_player$shouldSwingOnSwordBlock(LocalPlayer player, InteractionHand hand)
     {
-        return !SwordBlockMixinHelper.isBlocking(player);
+        return !SwordBlockingHelper.isBlocking(player);
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class MinecraftMixin
         if (this.player == null)
             return true;
 
-        return !SwordBlockMixinHelper.isBlocking(this.player);
+        return !SwordBlockingHelper.isBlocking(this.player);
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class MinecraftMixin
         if (this.player == null || this.gameMode == null)
             return isUsingItem;
 
-        if (GameplayTweak.ATTACK_WHILE_SWORD_BLOCKING.get() && SwordBlockMixinHelper.isBlocking(this.player))
+        if (GameplayTweak.ATTACK_WHILE_SWORD_BLOCKING.get() && SwordBlockingHelper.isBlocking(this.player))
         {
             if (!this.options.keyUse.isDown())
                 this.gameMode.releaseUsingItem(this.player);
@@ -153,7 +153,7 @@ public abstract class MinecraftMixin
         if (this.player == null)
             return isUsingItem;
 
-        if (GameplayTweak.ATTACK_WHILE_SWORD_BLOCKING.get() && SwordBlockMixinHelper.isBlocking(this.player))
+        if (GameplayTweak.ATTACK_WHILE_SWORD_BLOCKING.get() && SwordBlockingHelper.isBlocking(this.player))
             return false;
 
         return isUsingItem;

@@ -5,7 +5,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
 import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTracker;
 import me.jellysquid.mods.sodium.client.render.chunk.map.ChunkTrackerHolder;
 import me.jellysquid.mods.sodium.client.render.viewport.Viewport;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.Camera;
@@ -35,7 +35,7 @@ public abstract class SodiumWorldRendererMixin
     )
     private void nt_sodium_world_lighting$onSetupTerrain(Camera camera, Viewport viewport, int frame, boolean spectator, boolean updateChunksImmediately, CallbackInfo callback)
     {
-        if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingMixinHelper.isRelightCheckEnqueued())
+        if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingHelper.isRelightCheckEnqueued())
         {
             ChunkTracker.forEachChunk(ChunkTrackerHolder.get(this.world).getReadyChunks(), (x, z) -> {
                 for (int y = this.world.getMinSection(); y < this.world.getMaxSection(); y++)
@@ -43,14 +43,14 @@ public abstract class SodiumWorldRendererMixin
             });
         }
 
-        if (LightingMixinHelper.RELIGHT_ALL_CHUNKS.get())
+        if (LightingHelper.RELIGHT_ALL_CHUNKS.get())
         {
             ChunkTrackerHolder.get(this.world).getReadyChunks().forEach(packedPos -> {
                 Pair<Long, Byte> packedRelight = new Pair<>(packedPos, (byte) 1);
-                LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
+                LightingHelper.PACKED_RELIGHT_QUEUE.add(packedRelight);
             });
 
-            LightingMixinHelper.RELIGHT_ALL_CHUNKS.disable();
+            LightingHelper.RELIGHT_ALL_CHUNKS.disable();
         }
     }
 
@@ -63,7 +63,7 @@ public abstract class SodiumWorldRendererMixin
     )
     private void nt_sodium_world_lighting$onFinishSetupTerrain(Camera camera, Viewport viewport, int frame, boolean spectator, boolean updateChunksImmediately, CallbackInfo callback)
     {
-        if (LightingMixinHelper.isRelightCheckEnqueued())
-            LightingMixinHelper.setRelightingAsFinished();
+        if (LightingHelper.isRelightCheckEnqueued())
+            LightingHelper.setRelightingAsFinished();
     }
 }

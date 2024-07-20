@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.player;
 
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
-import mod.adrenix.nostalgic.mixin.util.animation.AnimationConstant;
+import mod.adrenix.nostalgic.helper.animation.AnimationConstant;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;

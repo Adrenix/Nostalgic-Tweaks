@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.candy.TorchMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractBlockRenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
@@ -45,11 +45,11 @@ public abstract class TerrainRenderContextMixin extends AbstractBlockRenderConte
     )
     private void nt_fabric_torch_block$wrapEmitBlockQuads(BakedModel model, BlockAndTintGetter blockAndTintGetter, BlockState blockState, BlockPos blockPos, Supplier<RandomSource> randomSource, RenderContext renderContext, Operation<Void> emitBlockQuads, BlockState arg1, BlockPos arg2, final BakedModel arg3, PoseStack poseStack)
     {
-        if (TorchMixinHelper.isLikeTorch(blockState))
+        if (TorchHelper.isLikeTorch(blockState))
         {
             RenderType renderType = ItemBlockRenderTypes.getChunkRenderType(blockState);
             VertexConsumer vertexConsumer = this.chunkInfo.getInitializedBuffer(renderType);
-            TorchMixinHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, randomSource.get());
+            TorchHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, randomSource.get());
         }
         else
             emitBlockQuads.call(model, blockAndTintGetter, blockState, blockPos, randomSource, renderContext);

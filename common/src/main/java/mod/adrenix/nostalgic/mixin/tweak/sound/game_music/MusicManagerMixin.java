@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.sound.game_music;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.sound.MusicMixinHelper;
+import mod.adrenix.nostalgic.helper.sound.MusicHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.MusicManager;
@@ -27,13 +27,13 @@ public abstract class MusicManagerMixin
     )
     private boolean nt_game_music$shouldStopCurrentMusic(boolean isMusicActive)
     {
-        if (MusicMixinHelper.CURRENT_SONG.isEmpty())
+        if (MusicHelper.CURRENT_SONG.isEmpty())
             return isMusicActive;
 
-        if (Minecraft.getInstance().getSoundManager().isActive(MusicMixinHelper.CURRENT_SONG.getOrThrow()))
+        if (Minecraft.getInstance().getSoundManager().isActive(MusicHelper.CURRENT_SONG.getOrThrow()))
             return true;
         else
-            MusicMixinHelper.CURRENT_SONG.clear();
+            MusicHelper.CURRENT_SONG.clear();
 
         return isMusicActive;
     }
@@ -53,7 +53,7 @@ public abstract class MusicManagerMixin
         ResourceLocation soundLocation = sound.getLocation();
 
         if (soundLocation.getNamespace().equals("minecraft"))
-            return MusicMixinHelper.apply(sound);
+            return MusicHelper.apply(sound);
 
         return sound;
     }
@@ -70,7 +70,7 @@ public abstract class MusicManagerMixin
     )
     private void nt_game_music$stopC418Music(CallbackInfo callback)
     {
-        MusicMixinHelper.CURRENT_SONG.ifPresent(song -> Minecraft.getInstance().getSoundManager().stop(song));
-        MusicMixinHelper.CURRENT_SONG.clear();
+        MusicHelper.CURRENT_SONG.ifPresent(song -> Minecraft.getInstance().getSoundManager().stop(song));
+        MusicHelper.CURRENT_SONG.clear();
     }
 }

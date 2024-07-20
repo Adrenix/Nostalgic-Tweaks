@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.create_world_screen;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.WidgetHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -43,7 +43,7 @@ public abstract class TabButtonMixin extends AbstractWidget
     )
     private boolean nt_create_world_screen$shouldRenderSprite(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
     {
-        return !WidgetMixinHelper.isOldStyleTabs();
+        return !WidgetHelper.isOldStyleTabs();
     }
 
     /**
@@ -59,7 +59,7 @@ public abstract class TabButtonMixin extends AbstractWidget
     )
     private boolean nt_create_world_screen$shouldRenderString(TabButton button, GuiGraphics graphics, Font font, int color)
     {
-        return !WidgetMixinHelper.isOldStyleTabs();
+        return !WidgetHelper.isOldStyleTabs();
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class TabButtonMixin extends AbstractWidget
     )
     private boolean nt_create_world_screen$shouldRenderMenuBackground(TabButton button, GuiGraphics graphics, int minX, int minY, int maxX, int maxY)
     {
-        return !WidgetMixinHelper.isOldStyleTabs();
+        return !WidgetHelper.isOldStyleTabs();
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class TabButtonMixin extends AbstractWidget
     )
     private boolean nt_create_world_screen$shouldRenderUnderline(TabButton button, GuiGraphics graphics, Font font, int color)
     {
-        return !WidgetMixinHelper.isOldStyleTabs();
+        return !WidgetHelper.isOldStyleTabs();
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class TabButtonMixin extends AbstractWidget
     )
     private void nt_create_world_screen$onRenderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
-        if (WidgetMixinHelper.isOldStyleTabs())
-            WidgetMixinHelper.renderOldStyleTabs(this, graphics, this.isSelected());
+        if (WidgetHelper.isOldStyleTabs())
+            WidgetHelper.renderOldStyleTabs(this, graphics, this.isSelected());
     }
 }

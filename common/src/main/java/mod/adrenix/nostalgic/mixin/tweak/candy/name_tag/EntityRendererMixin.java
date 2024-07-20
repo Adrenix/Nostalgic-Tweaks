@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.name_tag;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.candy.SupporterRenderer;
+import mod.adrenix.nostalgic.helper.candy.SupporterRenderer;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;

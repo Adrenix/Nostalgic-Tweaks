@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.fabric.mixin.sodium.candy.world_lighting;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.jellysquid.mods.sodium.client.world.WorldSlice;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -42,10 +42,10 @@ public abstract class WorldSliceMixin
         }
 
         if (CandyTweak.OLD_CLASSIC_ENGINE.get())
-            return LightingMixinHelper.getClassicLight(lightValue, this.world, blockPos);
+            return LightingHelper.getClassicLight(lightValue, this.world, blockPos);
 
         if (CandyTweak.ROUND_ROBIN_RELIGHT.get())
-            return LightingMixinHelper.getCombinedLight(lightValue, this.world.getBrightness(LightLayer.SKY, blockPos));
+            return LightingHelper.getCombinedLight(lightValue, this.world.getBrightness(LightLayer.SKY, blockPos));
 
         return lightValue;
     }

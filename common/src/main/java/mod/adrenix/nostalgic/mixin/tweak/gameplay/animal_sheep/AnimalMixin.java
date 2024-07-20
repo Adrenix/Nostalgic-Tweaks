@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_sheep;
 
-import mod.adrenix.nostalgic.mixin.util.gameplay.SheepMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.SheepHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.world.damagesource.DamageSource;
@@ -43,6 +43,6 @@ public abstract class AnimalMixin extends Mob
         if (sheep == null)
             return;
 
-        SheepMixinHelper.punch(sheep, this.level(), damageSource, this.random);
+        SheepHelper.punch(sheep, this.level(), damageSource, this.random);
     }
 }

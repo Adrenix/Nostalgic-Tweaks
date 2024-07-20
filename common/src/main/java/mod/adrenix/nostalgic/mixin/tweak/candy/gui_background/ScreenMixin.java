@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.gui_background;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import mod.adrenix.nostalgic.mixin.util.candy.ScreenMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.ScreenHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
@@ -39,8 +39,8 @@ public abstract class ScreenMixin
     )
     private static boolean nt_gui_background$shouldRenderTexturedBackground(GuiGraphics graphics, ResourceLocation texture, int x, int y, int blitOffset, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
     {
-        if (ModTweak.ENABLED.get() && !ScreenMixinHelper.hasDirtBackground(texture))
-            return ScreenMixinHelper.renderColoredBackground(graphics, width, height);
+        if (ModTweak.ENABLED.get() && !ScreenHelper.hasDirtBackground(texture))
+            return ScreenHelper.renderColoredBackground(graphics, width, height);
 
         return true;
     }
@@ -58,7 +58,7 @@ public abstract class ScreenMixin
     private boolean nt_gui_background$shouldRenderTransparentBackground(GuiGraphics graphics, int x1, int y1, int x2, int y2, int colorFrom, int colorTo)
     {
         if (ModTweak.ENABLED.get())
-            return ScreenMixinHelper.renderColoredBackground(graphics, x2, y2);
+            return ScreenHelper.renderColoredBackground(graphics, x2, y2);
 
         return true;
     }
@@ -106,7 +106,7 @@ public abstract class ScreenMixin
     )
     private static void nt_gui_background$preRenderMenuBackgroundTexture(GuiGraphics graphics, ResourceLocation texture, int x, int y, float uOffset, float vOffset, int width, int height, CallbackInfo callback)
     {
-        if (ScreenMixinHelper.hasDirtBackground(texture))
+        if (ScreenHelper.hasDirtBackground(texture))
             graphics.setColor(0.25F, 0.25F, 0.25F, 1.0F);
     }
 
@@ -122,7 +122,7 @@ public abstract class ScreenMixin
     )
     private static ResourceLocation nt_gui_background$shouldRenderMenuBackground(ResourceLocation texture)
     {
-        if (ScreenMixinHelper.hasDirtBackground(texture))
+        if (ScreenHelper.hasDirtBackground(texture))
             return TextureLocation.DIRT_BACKGROUND;
 
         return texture;

@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.flat_items;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.candy.flatten.FlatItemMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.flatten.FlatModel;
+import mod.adrenix.nostalgic.helper.candy.flatten.FlatItemHelper;
+import mod.adrenix.nostalgic.helper.candy.flatten.FlatModel;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.MixinPriority;
@@ -44,8 +44,8 @@ public abstract class ItemRendererMixin
         if (!CandyTweak.OLD_2D_ITEMS.get() || !GameUtil.isModelFlat(model) || !isValidContext)
             return;
 
-        FlatItemMixinHelper.enableFlatRendering();
-        FlatItemMixinHelper.flattenScaling(poseStack);
+        FlatItemHelper.enableFlatRendering();
+        FlatItemHelper.flattenScaling(poseStack);
     }
 
     /**
@@ -57,8 +57,8 @@ public abstract class ItemRendererMixin
     )
     private void nt_flat_items$onFinishRender(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo callback)
     {
-        if (FlatItemMixinHelper.isRendering2D())
-            FlatItemMixinHelper.disableFlatRendering();
+        if (FlatItemHelper.isRendering2D())
+            FlatItemHelper.disableFlatRendering();
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class ItemRendererMixin
     )
     private BakedModel nt_flat_items$setRenderedModel(BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer)
     {
-        if (!FlatItemMixinHelper.isRendering2D())
+        if (!FlatItemHelper.isRendering2D())
             return model;
 
         return new FlatModel(model, poseStack);

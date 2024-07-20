@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import mod.adrenix.nostalgic.client.AfterConfigSave;
-import mod.adrenix.nostalgic.mixin.util.candy.world.SkyMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.SkyHelper;
+import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
@@ -56,13 +56,13 @@ public abstract class LevelRendererMixin
     )
     private void nt_world_sky$onCreateLevelRenderer(CallbackInfo callback)
     {
-        SkyMixinHelper.createBlueVoid(LevelRendererMixin::buildSkyDisc);
+        SkyHelper.createBlueVoid(LevelRendererMixin::buildSkyDisc);
 
-        if (SkyMixinHelper.STARS_RUNNABLE_SAVED.ifDisabledThenEnable())
+        if (SkyHelper.STARS_RUNNABLE_SAVED.ifDisabledThenEnable())
             AfterConfigSave.addInstruction(this::createStars);
 
-        if (SkyMixinHelper.BLUE_RUNNABLE_SAVED.ifDisabledThenEnable())
-            AfterConfigSave.addInstruction(() -> SkyMixinHelper.createBlueVoid(LevelRendererMixin::buildSkyDisc));
+        if (SkyHelper.BLUE_RUNNABLE_SAVED.ifDisabledThenEnable())
+            AfterConfigSave.addInstruction(() -> SkyHelper.createBlueVoid(LevelRendererMixin::buildSkyDisc));
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class LevelRendererMixin
         if (!ModTweak.ENABLED.get())
             return;
 
-        SkyMixinHelper.MODEL_VIEW_MATRIX.set(new Matrix4f(poseStack.last().pose()));
-        SkyMixinHelper.PROJECTION_MATRIX.set(new Matrix4f(projectionMatrix));
+        SkyHelper.MODEL_VIEW_MATRIX.set(new Matrix4f(poseStack.last().pose()));
+        SkyHelper.PROJECTION_MATRIX.set(new Matrix4f(projectionMatrix));
     }
 
     /**
@@ -104,14 +104,14 @@ public abstract class LevelRendererMixin
         if (CandyTweak.OLD_BLUE_VOID.get() == Generic.MODERN)
             return;
 
-        SkyMixinHelper.setBlueColor();
+        SkyHelper.setBlueColor();
         ShaderInstance shader = RenderSystem.getShader();
 
         if (shader != null)
         {
-            SkyMixinHelper.BLUE_VOID_BUFFER.ifPresent(buffer -> {
+            SkyHelper.BLUE_VOID_BUFFER.ifPresent(buffer -> {
                 buffer.bind();
-                buffer.drawWithShader(SkyMixinHelper.MODEL_VIEW_MATRIX.get(), SkyMixinHelper.PROJECTION_MATRIX.get(), shader);
+                buffer.drawWithShader(SkyHelper.MODEL_VIEW_MATRIX.get(), SkyHelper.PROJECTION_MATRIX.get(), shader);
                 VertexBuffer.unbind();
             });
         }

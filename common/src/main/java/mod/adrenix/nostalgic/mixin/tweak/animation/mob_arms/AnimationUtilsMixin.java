@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.animation.mob_arms;
 
-import mod.adrenix.nostalgic.mixin.util.animation.MobArmMixinHelper;
+import mod.adrenix.nostalgic.helper.animation.MobArmHelper;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.geom.ModelPart;
@@ -26,6 +26,6 @@ public abstract class AnimationUtilsMixin
     private static void nt_mob_arms$onBobZombieArms(ModelPart leftArm, ModelPart rightArm, boolean isAggressive, float attackTime, float ageInTicks, CallbackInfo callback)
     {
         if (AnimationTweak.OLD_ZOMBIE_ARMS.get())
-            MobArmMixinHelper.applyStaticArms(rightArm, leftArm);
+            MobArmHelper.applyStaticArms(rightArm, leftArm);
     }
 }

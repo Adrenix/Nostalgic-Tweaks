@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
@@ -47,7 +47,7 @@ public abstract class LightEngineMixin
                 if (!isSkyEngine)
                     return 0;
 
-                return LightingMixinHelper.getClassicLight(lightValue, level, blockPos);
+                return LightingHelper.getClassicLight(lightValue, level, blockPos);
             }
 
             if (CandyTweak.ROUND_ROBIN_RELIGHT.get())
@@ -55,7 +55,7 @@ public abstract class LightEngineMixin
                 if (!isSkyEngine)
                     return lightValue;
 
-                return LightingMixinHelper.getCombinedLight(lightValue, level.getBrightness(LightLayer.BLOCK, blockPos));
+                return LightingHelper.getCombinedLight(lightValue, level.getBrightness(LightLayer.BLOCK, blockPos));
             }
         }
 

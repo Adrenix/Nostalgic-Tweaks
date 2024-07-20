@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.furnace_screen;
 
+import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
 import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
-import mod.adrenix.nostalgic.mixin.util.candy.inventory.InventoryMixinHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
@@ -34,6 +34,6 @@ public abstract class AbstractFurnaceScreenMixin extends AbstractContainerScreen
     )
     private void nt_furnace_screen$onScreenInit(CallbackInfo callback)
     {
-        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.FURNACE_BOOK.get());
+        InventoryScreenHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.FURNACE_BOOK.get());
     }
 }

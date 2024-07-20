@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.bugs;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.gameplay.ClimbableMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.ClimbableHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity
 
         BlockState blockState = this.getBlockStateOn();
         BlockPos blockPos = this.blockPosition();
-        boolean isGapPresent = ClimbableMixinHelper.isClimbable(this.level(), blockState, blockPos);
+        boolean isGapPresent = ClimbableHelper.isClimbable(this.level(), blockState, blockPos);
 
         if (isGapPresent)
             this.lastClimbablePos = Optional.of(blockPos);

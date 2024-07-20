@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.chest_block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +20,7 @@ public abstract class ItemBlockRenderTypesMixin
     )
     private static RenderType nt_chest_block$modifyChunkRenderType(RenderType renderType, BlockState blockState)
     {
-        if (ChestMixinHelper.isTranslucent(blockState))
+        if (ChestHelper.isTranslucent(blockState))
             return RenderType.translucent();
 
         return renderType;

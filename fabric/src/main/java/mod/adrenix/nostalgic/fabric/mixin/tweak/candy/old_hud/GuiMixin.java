@@ -3,8 +3,8 @@ package mod.adrenix.nostalgic.fabric.mixin.tweak.candy.old_hud;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import mod.adrenix.nostalgic.mixin.util.candy.hud.HudElement;
-import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.hud.HudElement;
+import mod.adrenix.nostalgic.helper.candy.hud.HudHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.gui.Gui;
@@ -34,10 +34,10 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$shiftHudElements(GuiGraphics graphics, float partialTick, CallbackInfo callback)
     {
         if (ModTweak.ENABLED.get())
-            HudMixinHelper.begin(graphics);
+            HudHelper.begin(graphics);
 
         if (CandyTweak.HIDE_EXPERIENCE_BAR.get())
-            HudMixinHelper.apply(graphics, HudElement.EXPERIENCE_BAR);
+            HudHelper.apply(graphics, HudElement.EXPERIENCE_BAR);
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$modifyArmorElement(GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.apply(graphics, HudElement.ARMOR);
+            HudHelper.apply(graphics, HudElement.ARMOR);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$popPushArmorOffsets(GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.pop(graphics);
+            HudHelper.pop(graphics);
     }
 
     /**
@@ -121,7 +121,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$preHideFoodRelatedElements(GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.apply(graphics, HudElement.FOOD);
+            HudHelper.apply(graphics, HudElement.FOOD);
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$postHideFoodRelatedElements(GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.pop(graphics);
+            HudHelper.pop(graphics);
     }
 
     /**
@@ -176,7 +176,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$modifyAirElement(GuiGraphics graphics, CallbackInfo callback, @Local(ordinal = 0) int offsetHeight)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.apply(graphics, HudElement.AIR);
+            HudHelper.apply(graphics, HudElement.AIR);
     }
 
     /**
@@ -220,7 +220,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$popPushAirOffsets(GuiGraphics graphics, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.pop(graphics);
+            HudHelper.pop(graphics);
     }
 
     /**
@@ -238,7 +238,7 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$shiftVehicleHealth(GuiGraphics graphics, float partialTick, CallbackInfo callback)
     {
         if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudMixinHelper.apply(graphics, HudElement.VEHICLE_HEALTH);
+            HudHelper.apply(graphics, HudElement.VEHICLE_HEALTH);
     }
 
     /**
@@ -256,6 +256,6 @@ public abstract class GuiMixin
     private void nt_fabric_old_hud$endHudShift(GuiGraphics graphics, float partialTick, CallbackInfo callback)
     {
         if (ModTweak.ENABLED.get())
-            HudMixinHelper.end(graphics);
+            HudHelper.end(graphics);
     }
 }
