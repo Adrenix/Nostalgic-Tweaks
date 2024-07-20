@@ -23,6 +23,17 @@ public abstract class ArmorMixinHelper
     }
 
     /**
+     * Check if the current tweak and entity context allows for the old damage armor tint.
+     *
+     * @param entity The {@link LivingEntity} to check.
+     * @return Whether to use the old damage armor tint effect.
+     */
+    public static boolean useOldTint(@Nullable LivingEntity entity)
+    {
+        return CandyTweak.OLD_DAMAGE_ARMOR_TINT.get() && isEntityHurt(entity);
+    }
+
+    /**
      * Get the vertex consumer to use when an entity is hurt.
      *
      * @param entity        The {@link LivingEntity} to check.
@@ -33,7 +44,7 @@ public abstract class ArmorMixinHelper
      */
     public static VertexConsumer getDamagedConsumer(@Nullable LivingEntity entity, VertexConsumer armorConsumer, MultiBufferSource bufferSource, ResourceLocation armorLocation)
     {
-        if (CandyTweak.OLD_DAMAGE_ARMOR_TINT.get() && isEntityHurt(entity))
+        if (useOldTint(entity))
             return bufferSource.getBuffer(RenderType.entityCutoutNoCullZOffset(armorLocation));
 
         return armorConsumer;
@@ -48,7 +59,7 @@ public abstract class ArmorMixinHelper
      */
     public static int getDamagedPackedOverlay(@Nullable LivingEntity entity, int packedOverlay)
     {
-        if (CandyTweak.OLD_DAMAGE_ARMOR_TINT.get() && isEntityHurt(entity))
+        if (useOldTint(entity))
             return OverlayTexture.pack(OverlayTexture.u(0.0F), OverlayTexture.v(true));
 
         return packedOverlay;
