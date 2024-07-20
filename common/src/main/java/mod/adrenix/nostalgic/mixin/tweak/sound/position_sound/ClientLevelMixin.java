@@ -1,8 +1,8 @@
 package mod.adrenix.nostalgic.mixin.tweak.sound.position_sound;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.sound.PositionSoundHandler;
-import mod.adrenix.nostalgic.mixin.util.sound.SoundMixinHelper;
+import mod.adrenix.nostalgic.helper.sound.PositionSoundHandler;
+import mod.adrenix.nostalgic.helper.sound.SoundHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvent;
@@ -26,7 +26,7 @@ public abstract class ClientLevelMixin
     )
     private SimpleSoundInstance nt_position_sound$modifyPlaySound(SimpleSoundInstance original, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, boolean distanceDelay, long seed)
     {
-        PositionSoundHandler handler = SoundMixinHelper.getHandlerAt((ClientLevel) (Object) this, x, y, z, sound, source, volume, pitch);
+        PositionSoundHandler handler = SoundHelper.getHandlerAt((ClientLevel) (Object) this, x, y, z, sound, source, volume, pitch);
 
         if (handler == null)
             return original;

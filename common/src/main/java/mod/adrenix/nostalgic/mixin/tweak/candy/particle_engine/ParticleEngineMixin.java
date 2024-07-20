@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.particle_engine;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.candy.ParticleMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ParticleHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -42,7 +42,7 @@ public abstract class ParticleEngineMixin
     private Particle nt_particle_engine$modifyMakeParticle(Particle particle, ParticleOptions options, double x, double y, double z)
     {
         if (ModTweak.ENABLED.get() && particle != null)
-            return ParticleMixinHelper.getParticle(particle, options.getType(), x, y, z);
+            return ParticleHelper.getParticle(particle, options.getType(), x, y, z);
 
         return particle;
     }
@@ -62,7 +62,7 @@ public abstract class ParticleEngineMixin
         if (!CandyTweak.DISABLE_MODEL_DESTRUCTION_PARTICLES.get())
             return true;
 
-        ParticleMixinHelper.destroy(this::add, this.level, blockPos, blockState);
+        ParticleHelper.destroy(this::add, this.level, blockPos, blockState);
 
         return false;
     }

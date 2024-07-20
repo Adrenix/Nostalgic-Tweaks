@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_sky;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.world.SkyMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.level.SkyHelper;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -28,6 +28,6 @@ public abstract class BiomeMixin
     )
     private int nt_world_sky$setSkyColor(int color)
     {
-        return ModTweak.ENABLED.get() ? SkyMixinHelper.getOldColor(this.specialEffects, color) : color;
+        return ModTweak.ENABLED.get() ? SkyHelper.getOldColor(this.specialEffects, color) : color;
     }
 }

@@ -12,14 +12,14 @@ import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicLogoText;
 import mod.adrenix.nostalgic.init.listener.client.GuiListener;
 import mod.adrenix.nostalgic.init.listener.client.TooltipListener;
-import mod.adrenix.nostalgic.mixin.util.candy.ChestMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.MipmapMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.hud.HudMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightmapMixinHelper;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.OverworldFogRenderer;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.VoidFogRenderer;
-import mod.adrenix.nostalgic.mixin.util.candy.world.fog.WaterFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
+import mod.adrenix.nostalgic.helper.candy.MipmapHelper;
+import mod.adrenix.nostalgic.helper.candy.hud.HudHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
+import mod.adrenix.nostalgic.helper.candy.level.fog.OverworldFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
+import mod.adrenix.nostalgic.helper.candy.level.fog.WaterFogRenderer;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import net.minecraft.client.Minecraft;
@@ -47,12 +47,12 @@ abstract class ClientInitializer
         ClientTickEvent.CLIENT_PRE.register(ClientInitializer::onTick);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::onPlayerQuit);
 
-        AfterConfigSave.addInstruction(MipmapMixinHelper::runAfterSave);
-        AfterConfigSave.addInstruction(HudMixinHelper::runAfterSave);
+        AfterConfigSave.addInstruction(MipmapHelper::runAfterSave);
+        AfterConfigSave.addInstruction(HudHelper::runAfterSave);
 
-        ChestMixinHelper.init();
-        MipmapMixinHelper.init();
-        LightingMixinHelper.init();
+        ChestHelper.init();
+        MipmapHelper.init();
+        LightingHelper.init();
     }
 
     /**
@@ -66,8 +66,8 @@ abstract class ClientInitializer
         NostalgicTweaks.setNetworkVerification(false);
         NostalgicTweaks.setConnection(null);
 
-        LightingMixinHelper.resetLightingCache();
-        LightmapMixinHelper.resetLightingCache();
+        LightingHelper.resetLightingCache();
+        LightTextureHelper.resetLightingCache();
 
         OverworldFogRenderer.reset();
         WaterFogRenderer.reset();
@@ -85,6 +85,6 @@ abstract class ClientInitializer
         Animator.onTick();
         Panorama.onTick();
 
-        LightingMixinHelper.onTick();
+        LightingHelper.onTick();
     }
 }

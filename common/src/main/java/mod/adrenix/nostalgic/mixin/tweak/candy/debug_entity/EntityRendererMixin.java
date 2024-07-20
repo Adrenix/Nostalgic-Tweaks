@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.debug_entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.candy.debug.DebugMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.debug.DebugOverlayHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.network.chat.Component;
@@ -26,7 +26,7 @@ public abstract class EntityRendererMixin
     )
     private boolean nt_debug_entity$shouldShowId(boolean shouldShowName, Entity entity)
     {
-        return DebugMixinHelper.shouldShowDebugId(entity) || shouldShowName;
+        return DebugOverlayHelper.shouldShowDebugId(entity) || shouldShowName;
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class EntityRendererMixin
     )
     private Component nt_debug_entity$setNameTag(Entity entity, Component displayName, PoseStack poseStack, MultiBufferSource buffer, int packedLight)
     {
-        if (DebugMixinHelper.shouldShowDebugId(entity))
+        if (DebugOverlayHelper.shouldShowDebugId(entity))
             return Component.literal(Integer.toString(entity.getId()));
 
         return displayName;

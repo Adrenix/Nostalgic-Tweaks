@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.button_hover;
 
-import mod.adrenix.nostalgic.mixin.util.candy.WidgetMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.WidgetHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -37,6 +37,6 @@ public abstract class AbstractButtonMixin extends AbstractWidget
         if (!CandyTweak.OLD_BUTTON_TEXT_COLOR.get())
             return color;
 
-        return WidgetMixinHelper.getTextColor(this, this.alpha);
+        return WidgetHelper.getTextColor(this, this.alpha);
     }
 }

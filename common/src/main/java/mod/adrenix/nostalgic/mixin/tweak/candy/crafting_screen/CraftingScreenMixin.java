@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.crafting_screen;
 
 import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
-import mod.adrenix.nostalgic.mixin.util.candy.inventory.InventoryMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
@@ -34,6 +34,6 @@ public abstract class CraftingScreenMixin extends AbstractContainerScreen<Crafti
     )
     private void nt_crafting_screen$onScreenInit(CallbackInfo callback)
     {
-        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.CRAFTING_BOOK.get());
+        InventoryScreenHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.CRAFTING_BOOK.get());
     }
 }

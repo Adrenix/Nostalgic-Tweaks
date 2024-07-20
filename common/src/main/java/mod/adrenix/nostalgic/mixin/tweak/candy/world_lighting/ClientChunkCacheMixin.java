@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import mod.adrenix.nostalgic.mixin.util.candy.lighting.LightingMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -25,7 +25,7 @@ public abstract class ClientChunkCacheMixin
     private LevelChunk nt_world_lighting$onCreateLevelChunk(LevelChunk chunk)
     {
         if (CandyTweak.OLD_WATER_LIGHTING.get() || CandyTweak.CHEST_LIGHT_BLOCK.get())
-            LightingMixinHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(chunk.getPos().toLong(), (byte) 0));
+            LightingHelper.PACKED_RELIGHT_QUEUE.add(new Pair<>(chunk.getPos().toLong(), (byte) 0));
 
         return chunk;
     }

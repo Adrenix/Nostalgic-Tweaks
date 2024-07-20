@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.mechanics_fire;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.mixin.access.FireBlockAccess;
-import mod.adrenix.nostalgic.mixin.util.gameplay.FireMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.FireBlockHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -45,6 +45,6 @@ public abstract class FireBlockMixin
     private void nt_mechanics_fire$onTick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource randomSource, CallbackInfo callback)
     {
         if (GameplayTweak.OLD_FIRE.get())
-            FireMixinHelper.tick((FireBlockAccess) this, level, blockPos, blockState, randomSource, callback);
+            FireBlockHelper.tick((FireBlockAccess) this, level, blockPos, blockState, randomSource, callback);
     }
 }

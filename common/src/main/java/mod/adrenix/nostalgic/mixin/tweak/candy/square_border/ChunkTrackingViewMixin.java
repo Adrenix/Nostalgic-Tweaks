@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.square_border;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.candy.world.ServerWorldHelper;
+import mod.adrenix.nostalgic.helper.candy.level.ServerLevelHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.server.level.ChunkTrackingView;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,6 +22,6 @@ public interface ChunkTrackingViewMixin
         if (isWithinRange)
             return true;
 
-        return CandyTweak.OLD_SQUARE_BORDER.get() && ServerWorldHelper.isChunkInRange(chunkX, chunkZ, centerX, centerZ, viewDistance);
+        return CandyTweak.OLD_SQUARE_BORDER.get() && ServerLevelHelper.isChunkInRange(chunkX, chunkZ, centerX, centerZ, viewDistance);
     }
 }

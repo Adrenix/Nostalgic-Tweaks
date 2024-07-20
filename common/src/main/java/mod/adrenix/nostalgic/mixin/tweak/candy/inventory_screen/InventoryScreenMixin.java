@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import mod.adrenix.nostalgic.mixin.access.AbstractContainerScreenAccess;
-import mod.adrenix.nostalgic.mixin.util.candy.inventory.InventoryMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.InventoryShield;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
@@ -54,7 +54,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onConstruct(Player player, CallbackInfo callback)
     {
-        this.nt$offHand = InventoryMixinHelper.setInventorySlots(this.menu.slots, this.recipeBookComponent);
+        this.nt$offHand = InventoryScreenHelper.setInventorySlots(this.menu.slots, this.recipeBookComponent);
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onInit(CallbackInfo callback)
     {
-        InventoryMixinHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.INVENTORY_BOOK.get());
+        InventoryScreenHelper.setRecipeButton((AbstractContainerScreenAccess) this, CandyTweak.INVENTORY_BOOK.get());
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
     )
     private void nt_inventory_screen$onFinishBackgroundRendering(GuiGraphics graphics, float partialTick, int mouseX, int mouseY, CallbackInfo callback)
     {
-        InventoryMixinHelper.renderOffHandSlot(graphics, this.recipeBookComponent, this.nt$offHand, this.leftPos, this.height);
+        InventoryScreenHelper.renderOffHandSlot(graphics, this.recipeBookComponent, this.nt$offHand, this.leftPos, this.height);
     }
 
     /**

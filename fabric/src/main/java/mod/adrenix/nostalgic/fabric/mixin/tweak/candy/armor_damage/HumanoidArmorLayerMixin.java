@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.candy.ArmorMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ArmorHelper;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -72,7 +72,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     )
     private VertexConsumer nt_fabric_armor_damage$setRenderTypeConsumerForModel(VertexConsumer vertexConsumer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, ArmorItem armorItem, A model, boolean withGlint, float red, float green, float blue, @Nullable String armorSuffix)
     {
-        return ArmorMixinHelper.getDamagedConsumer(this.nt$entity, vertexConsumer, bufferSource, this.getArmorLocation(armorItem, withGlint, armorSuffix));
+        return ArmorHelper.getDamagedConsumer(this.nt$entity, vertexConsumer, bufferSource, this.getArmorLocation(armorItem, withGlint, armorSuffix));
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     )
     private int nt_fabric_armor_damage$setOverlayTextureForModel(int packedOverlay)
     {
-        return ArmorMixinHelper.getDamagedPackedOverlay(this.nt$entity, packedOverlay);
+        return ArmorHelper.getDamagedPackedOverlay(this.nt$entity, packedOverlay);
     }
 
     /**
@@ -103,8 +103,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     )
     private VertexConsumer nt_fabric_armor_damage$setRenderTypeConsumerForTrim(VertexConsumer vertexConsumer, ArmorMaterial armorMaterial, PoseStack poseStack, MultiBufferSource bufferSource, @Local TextureAtlasSprite trim)
     {
-        if (ArmorMixinHelper.useOldTint(this.nt$entity))
-            return trim.wrap(ArmorMixinHelper.getDamagedConsumer(this.nt$entity, vertexConsumer, bufferSource, trim.atlasLocation()));
+        if (ArmorHelper.useOldTint(this.nt$entity))
+            return trim.wrap(ArmorHelper.getDamagedConsumer(this.nt$entity, vertexConsumer, bufferSource, trim.atlasLocation()));
 
         return vertexConsumer;
     }
@@ -122,6 +122,6 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     )
     private int nt_fabric_armor_damage$setOverlayTextureForTrim(int packedOverlay)
     {
-        return ArmorMixinHelper.getDamagedPackedOverlay(this.nt$entity, packedOverlay);
+        return ArmorHelper.getDamagedPackedOverlay(this.nt$entity, packedOverlay);
     }
 }

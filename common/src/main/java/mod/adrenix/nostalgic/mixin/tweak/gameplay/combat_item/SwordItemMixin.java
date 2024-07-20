@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.combat_item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.mixin.util.gameplay.combat.DamageMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.combat.DamageHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -54,10 +54,10 @@ public abstract class SwordItemMixin extends TieredItem
                 builder.put(entry.getKey(), entry.getValue());
         }
 
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", DamageMixinHelper.get(this), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", DamageHelper.get(this), AttributeModifier.Operation.ADDITION));
 
         this.nt$defaultModifiers = builder;
-        this.nt$isModifierAllowed = DamageMixinHelper.isApplicable(this);
+        this.nt$isModifierAllowed = DamageHelper.isApplicable(this);
     }
 
     /**

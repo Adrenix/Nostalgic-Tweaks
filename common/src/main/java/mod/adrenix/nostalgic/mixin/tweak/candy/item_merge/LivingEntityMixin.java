@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.item_merge;
 
-import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ItemHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin
     private Consumer<ItemStack> nt_item_merge$modifyDropConsumer(Consumer<ItemStack> consumer)
     {
         if (CandyTweak.OLD_ITEM_MERGING.get())
-            return itemStack -> ItemMixinHelper.splitStack(itemStack, consumer);
+            return itemStack -> ItemHelper.splitStack(itemStack, consumer);
 
         return consumer;
     }

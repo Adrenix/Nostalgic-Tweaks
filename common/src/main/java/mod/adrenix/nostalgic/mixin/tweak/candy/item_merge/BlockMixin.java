@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.item_merge;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import mod.adrenix.nostalgic.mixin.util.candy.ItemMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ItemHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
@@ -26,7 +26,7 @@ public abstract class BlockMixin
     private static boolean nt_item_merge$wrapAddFreshEntity(Level level, Entity entity, Operation<Boolean> operation)
     {
         if (entity instanceof ItemEntity itemEntity)
-            ItemMixinHelper.splitEntity(level, itemEntity);
+            ItemHelper.splitEntity(level, itemEntity);
 
         return operation.call(level, entity);
     }

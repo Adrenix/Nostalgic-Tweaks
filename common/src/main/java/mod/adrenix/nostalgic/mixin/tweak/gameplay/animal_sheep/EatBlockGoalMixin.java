@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_sheep;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import mod.adrenix.nostalgic.mixin.util.gameplay.SheepMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.SheepHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.EatBlockGoal;
@@ -33,7 +33,7 @@ public abstract class EatBlockGoalMixin
     )
     private boolean nt_animal_sheep$modifyCanEatGrass(boolean canEatGrass)
     {
-        if (SheepMixinHelper.isEatGrassDisabled(this.mob))
+        if (SheepHelper.isEatGrassDisabled(this.mob))
             return false;
 
         return canEatGrass;
@@ -51,7 +51,7 @@ public abstract class EatBlockGoalMixin
     )
     private boolean nt_animal_sheep$canBroadcastEatEvent(Level level, Entity entity, byte state)
     {
-        return !SheepMixinHelper.isRandomWoolRegen(this.mob);
+        return !SheepHelper.isRandomWoolRegen(this.mob);
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class EatBlockGoalMixin
     )
     private boolean nt_animal_sheep$canEatStopNavigation(PathNavigation navigation)
     {
-        return !SheepMixinHelper.isRandomWoolRegen(this.mob);
+        return !SheepHelper.isRandomWoolRegen(this.mob);
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class EatBlockGoalMixin
     )
     private int nt_animal_sheep$modifyGetEatAnimationTick(int eatAnimationTick)
     {
-        if (SheepMixinHelper.isRandomWoolRegen(this.mob))
+        if (SheepHelper.isRandomWoolRegen(this.mob))
             return 0;
 
         return eatAnimationTick;
@@ -96,7 +96,7 @@ public abstract class EatBlockGoalMixin
     )
     private int nt_animal_sheep$modifyActionOnFinishEatGoal(int adjustedTickDelay)
     {
-        if (SheepMixinHelper.isRandomWoolRegen(this.mob) && this.eatAnimationTick == adjustedTickDelay)
+        if (SheepHelper.isRandomWoolRegen(this.mob) && this.eatAnimationTick == adjustedTickDelay)
         {
             this.mob.ate();
 

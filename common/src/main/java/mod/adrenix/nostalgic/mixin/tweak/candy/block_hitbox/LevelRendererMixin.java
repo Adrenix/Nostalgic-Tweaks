@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mod.adrenix.nostalgic.mixin.util.candy.HitboxMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.HitboxHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.RenderOrder;
@@ -58,7 +58,7 @@ public abstract class LevelRendererMixin
             return;
         }
 
-        VoxelShape hitbox = HitboxMixinHelper.getShape(voxelShape, state.getBlock());
+        VoxelShape hitbox = HitboxHelper.getShape(voxelShape, state.getBlock());
         float[] rgba = HexUtil.parseFloatRGBA(CandyTweak.BLOCK_OUTLINE_COLOR.get());
         float r = rgba[0];
         float g = rgba[1];
@@ -73,12 +73,12 @@ public abstract class LevelRendererMixin
             final double rz = (double) pos.getZ() - camZ;
 
             if (Minecraft.useShaderTransparency())
-                HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
+                HitboxHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
             else
-                this.nt$renderOverlay = () -> HitboxMixinHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
+                this.nt$renderOverlay = () -> HitboxHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
         }
 
-        HitboxMixinHelper.CUSTOM_HITBOX_OUTLINE.enable();
+        HitboxHelper.CUSTOM_HITBOX_OUTLINE.enable();
         renderShape.call(poseStack, vertexConsumer, hitbox, x, y, z, r, g, b, a);
     }
 

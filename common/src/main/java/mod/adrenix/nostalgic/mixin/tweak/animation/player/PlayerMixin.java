@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.mixin.util.animation.AnimationConstant;
+import mod.adrenix.nostalgic.helper.animation.AnimationConstant;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;

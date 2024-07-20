@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.swing;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mod.adrenix.nostalgic.mixin.util.animation.PlayerArmMixinHelper;
+import mod.adrenix.nostalgic.helper.animation.PlayerArmHelper;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -27,7 +27,7 @@ public abstract class ItemInHandRendererMixin
     private void nt_animation_swing$onApplyItemArmAttackTransform(PoseStack poseStack, HumanoidArm hand, float swingProgress, CallbackInfo callback)
     {
         if (AnimationTweak.OLD_SWING.get())
-            PlayerArmMixinHelper.oldSwing(poseStack, swingProgress);
+            PlayerArmHelper.oldSwing(poseStack, swingProgress);
     }
 
     /**
@@ -43,6 +43,6 @@ public abstract class ItemInHandRendererMixin
     )
     private boolean nt_animation_swing$onRenderArmWithItem(ItemInHandRenderer handRenderer, PoseStack poseStack, HumanoidArm arm, float swingProgress, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float copyOfSwingProgress, ItemStack itemStack, float equippedProgress)
     {
-        return !PlayerArmMixinHelper.oldClassicSwing(poseStack, arm, swingProgress, equippedProgress);
+        return !PlayerArmHelper.oldClassicSwing(poseStack, arm, swingProgress, equippedProgress);
     }
 }

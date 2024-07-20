@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.block_hitbox;
 
-import mod.adrenix.nostalgic.mixin.util.candy.HitboxMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.block.HitboxHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -24,7 +24,7 @@ public abstract class LineStateShardMixin
     )
     private static float nt_block_hitbox$modifyLineWidth(float lineWidth)
     {
-        if (HitboxMixinHelper.CUSTOM_HITBOX_OUTLINE.ifEnabledThenDisable())
+        if (HitboxHelper.CUSTOM_HITBOX_OUTLINE.ifEnabledThenDisable())
             return Minecraft.getInstance().getWindow().getWidth() / 1920.0F * CandyTweak.BLOCK_OUTLINE_THICKNESS.get();
 
         return lineWidth;

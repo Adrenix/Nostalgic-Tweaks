@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.explosion_particles;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import mod.adrenix.nostalgic.mixin.util.candy.ExplosionMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.ExplosionHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -57,7 +57,7 @@ public abstract class ExplosionMixin
         if (!CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES.get())
             return;
 
-        ExplosionMixinHelper.addUnoptimizedExplosionParticles(this.level, this.radius, this.x, this.y, this.z);
+        ExplosionHelper.addUnoptimizedExplosionParticles(this.level, this.radius, this.x, this.y, this.z);
     }
 
     /**
@@ -85,6 +85,6 @@ public abstract class ExplosionMixin
         if (CandyTweak.UNOPTIMIZED_EXPLOSION_PARTICLES.get() || !CandyTweak.OLD_EXPLOSION_PARTICLES.get() || !spawnParticles)
             return;
 
-        ExplosionMixinHelper.addExplosionParticles(this.level, blockPos, this.radius, this.x, this.y, this.z);
+        ExplosionHelper.addExplosionParticles(this.level, blockPos, this.radius, this.x, this.y, this.z);
     }
 }

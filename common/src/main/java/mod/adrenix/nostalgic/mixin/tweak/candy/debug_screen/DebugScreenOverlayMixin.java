@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
-import mod.adrenix.nostalgic.mixin.util.candy.debug.DebugMixinHelper;
+import mod.adrenix.nostalgic.helper.candy.debug.DebugOverlayHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.DebugChart;
@@ -152,7 +152,7 @@ public abstract class DebugScreenOverlayMixin
     private void nt_debug_screen$wrapFpsChartDraw(FpsDebugChart fpsChart, GuiGraphics graphics, int x, int width, Operation<Void> operation)
     {
         if (CandyTweak.FPS_CHART.get() == DebugChart.CLASSIC && !this.renderFpsCharts)
-            DebugMixinHelper.renderFpsChart(fpsChart, this.frameTimeLogger, graphics);
+            DebugOverlayHelper.renderFpsChart(fpsChart, this.frameTimeLogger, graphics);
         else
             operation.call(fpsChart, graphics, x, width);
     }

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
 import me.jellysquid.mods.sodium.client.render.chunk.occlusion.OcclusionCuller;
 import me.jellysquid.mods.sodium.client.render.viewport.CameraTransform;
-import mod.adrenix.nostalgic.mixin.util.candy.world.ServerWorldHelper;
+import mod.adrenix.nostalgic.helper.candy.level.ServerLevelHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,6 +41,6 @@ public abstract class OcclusionCullerMixin
         int chunkX = nearestToZero(secX, secX + 16) - (int) camera.fracX;
         int chunkZ = nearestToZero(secZ, secZ + 16) - (int) camera.fracZ;
 
-        return ServerWorldHelper.isChunkInRange(chunkX, chunkZ, secX, secZ, (int) maxDistance);
+        return ServerLevelHelper.isChunkInRange(chunkX, chunkZ, secX, secZ, (int) maxDistance);
     }
 }

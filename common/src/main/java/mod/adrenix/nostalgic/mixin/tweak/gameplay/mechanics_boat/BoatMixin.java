@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
-import mod.adrenix.nostalgic.mixin.util.gameplay.BoatMixinHelper;
+import mod.adrenix.nostalgic.helper.gameplay.BoatHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.EntityType;
@@ -70,7 +70,7 @@ public abstract class BoatMixin extends VehicleEntity
     )
     private void nt_mechanics_boat$setWaterLiftFriction(CallbackInfo callback)
     {
-        if (GameplayTweak.OLD_BOAT_WATER_LIFT.get() && BoatMixinHelper.isWaterLift(this.status))
+        if (GameplayTweak.OLD_BOAT_WATER_LIFT.get() && BoatHelper.isWaterLift(this.status))
             this.invFriction = 0.9F;
     }
 
@@ -88,7 +88,7 @@ public abstract class BoatMixin extends VehicleEntity
     )
     private double nt_mechanics_boat$modifyGravity(double y, @Share("deltaY") LocalDoubleRef deltaY)
     {
-        deltaY.set(GameplayTweak.OLD_BOAT_WATER_LIFT.get() ? BoatMixinHelper.getGravityAmount((Boat) (Object) this, this.status) : y);
+        deltaY.set(GameplayTweak.OLD_BOAT_WATER_LIFT.get() ? BoatHelper.getGravityAmount((Boat) (Object) this, this.status) : y);
 
         return deltaY.get();
     }
@@ -102,10 +102,10 @@ public abstract class BoatMixin extends VehicleEntity
     )
     private void nt_mechanics_boat$setWaterLiftVerticalMovement(CallbackInfo callback, @Share("deltaY") LocalDoubleRef deltaY)
     {
-        if (GameplayTweak.OLD_BOAT_WATER_LIFT.get() && BoatMixinHelper.isWaterLift(this.status))
+        if (GameplayTweak.OLD_BOAT_WATER_LIFT.get() && BoatHelper.isWaterLift(this.status))
         {
             double dx = this.getDeltaMovement().x;
-            double dy = BoatMixinHelper.getLiftAmount(deltaY.get());
+            double dy = BoatHelper.getLiftAmount(deltaY.get());
             double dz = this.getDeltaMovement().z;
 
             this.setDeltaMovement(dx, dy, dz);
@@ -122,7 +122,7 @@ public abstract class BoatMixin extends VehicleEntity
     private void nt_mechanics_boat$addSpeedParticles(CallbackInfo callback)
     {
         if (this.level().isClientSide() && CandyTweak.OLD_BOAT_MOVEMENT_PARTICLES.get())
-            BoatMixinHelper.applyParticles((Boat) (Object) this);
+            BoatHelper.applyParticles((Boat) (Object) this);
     }
 
     /**
