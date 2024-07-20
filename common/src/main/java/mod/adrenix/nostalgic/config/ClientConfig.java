@@ -752,6 +752,8 @@ public class ClientConfig implements ConfigMeta
         // Minecart Mechanics
 
         public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");
+        public boolean cartRiderTurning = GameplayTweak.CART_RIDER_TURNING.register("cartRiderTurning");
+        public boolean cartSafeRiderTurning = GameplayTweak.CART_SAFE_RIDER_TURNING.register("cartSafeRiderTurning");
 
         // Boat Mechanics
 
