@@ -1828,6 +1828,7 @@ public abstract class RenderUtil
 
         RenderSystem.setShaderTexture(0, atlasLocation);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.enableBlend();
 
         float[] rgba = RenderSystem.getShaderColor();
         int color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]).get();
@@ -1842,6 +1843,7 @@ public abstract class RenderUtil
         builder.vertex(matrix, x2, y1, 0.0F).uv(maxU, minV).color(color).endVertex();
 
         BufferUploader.drawWithShader(builder.end());
+        RenderSystem.disableBlend();
     }
 
     /**
