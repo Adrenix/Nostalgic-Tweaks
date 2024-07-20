@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.init.listener.client;
+package mod.adrenix.nostalgic.listener.client;
 
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
