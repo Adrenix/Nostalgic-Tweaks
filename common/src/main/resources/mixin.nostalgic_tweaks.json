@@ -113,6 +113,7 @@
     "gameplay.combat_player.MinecraftMixin",
     "gameplay.combat_player.PlayerItemInHandLayerMixin",
     "gameplay.mechanics_boat.LocalPlayerMixin",
+    "gameplay.mechanics_minecart.EntityMixin",
     "sound.cave_ambience.BiomeAmbientSoundsHandlerMixin",
     "sound.damage_sound.LivingEntityMixin",
     "sound.damage_sound.PlayerMixin",
