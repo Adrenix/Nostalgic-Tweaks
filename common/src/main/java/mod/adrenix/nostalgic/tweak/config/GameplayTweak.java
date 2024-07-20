@@ -138,6 +138,8 @@ public interface GameplayTweak
     // Minecart Mechanics
 
     TweakFlag CART_BOOSTING = TweakFlag.server(false, GameplayGroup.MECHANICS_CART).newForUpdate().build();
+    TweakFlag CART_RIDER_TURNING = TweakFlag.client(true, GameplayGroup.MECHANICS_CART).newForUpdate().build();
+    TweakFlag CART_SAFE_RIDER_TURNING = TweakFlag.client(true, GameplayGroup.MECHANICS_CART).newForUpdate().warningTag().whenDisabled(true).build();
 
     // Boat Mechanics
 
