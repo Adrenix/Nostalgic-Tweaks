@@ -17,7 +17,7 @@ import net.minecraft.util.FastColor;
 /**
  * This utility class is used only by the client.
  */
-public abstract class OverlayHelper
+public abstract class LoadingOverlayHelper
 {
     /**
      * Render a modded game loading overlay.
