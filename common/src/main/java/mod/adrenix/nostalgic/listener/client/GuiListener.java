@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.init.listener.client;
+package mod.adrenix.nostalgic.listener.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.event.CompoundEventResult;
