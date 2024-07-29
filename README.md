@@ -2,6 +2,7 @@
 - [1.21 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.21) **LTS**
 - [1.20.6 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.6) **Supported**
 - [1.20.4 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.4) **Supported**
+- [1.20.1 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20.1) **LTS**
 - ~~[1.20 (Beta 8.4.1)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.20)~~ **Discontinued**
 - ~~[1.19.4 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.4)~~ **Discontinued**
 - ~~[1.19.3 (Beta 8.4)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.19.3)~~ **Discontinued**
