@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "package": "mod.adrenix.nostalgic.forge.mixin.flywheel",
+  "plugin": "mod.adrenix.nostalgic.forge.mixin.MixinFlywheelPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [
+    "candy.chest_block.ChestInstanceMixin",
+    "candy.world_lighting.LevelRendererMixin",
+    "candy.world_lighting.LightUpdaterAccess"
+  ]
+}

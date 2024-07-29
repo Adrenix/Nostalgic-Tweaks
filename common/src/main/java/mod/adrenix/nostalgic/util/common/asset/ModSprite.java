@@ -1,0 +1,21 @@
+package mod.adrenix.nostalgic.util.common.asset;
+
+import mod.adrenix.nostalgic.util.common.sprite.GuiSprite;
+import mod.adrenix.nostalgic.util.common.sprite.SpriteAtlas;
+import net.minecraft.resources.ResourceLocation;
+
+public interface ModSprite
+{
+    GuiSprite OVERLAY = GuiSprite.nineSlice(SpriteAtlas.fromSprite("overlay/border", 256, 256), 8, 15, 8, 8);
+    GuiSprite RECIPE_BUTTON_SMALL = GuiSprite.stretch(SpriteAtlas.fromSprite("recipe_book/button_small", 9, 10));
+    GuiSprite RECIPE_BUTTON_LARGE = GuiSprite.stretch(SpriteAtlas.fromSprite("recipe_book/button_large", 18, 18));
+    GuiSprite RECIPE_BUTTON_SMALL_HIGHLIGHTED = GuiSprite.stretch(SpriteAtlas.fromSprite("recipe_book/button_small_highlighted", 9, 10));
+    GuiSprite RECIPE_BUTTON_LARGE_HIGHLIGHTED = GuiSprite.stretch(SpriteAtlas.fromSprite("recipe_book/button_large_highlighted", 18, 18));
+    GuiSprite ADVENTURE_CRAFT_OFFHAND_LEFT_SLOT = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/ac_offhand_left_slot", 29, 24));
+    GuiSprite ADVENTURE_CRAFT_OFFHAND_RIGHT_SLOT = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/ac_offhand_right_slot", 29, 24));
+
+    static ResourceLocation icon(String path)
+    {
+        return ModAsset.sprite("icon/" + path);
+    }
+}

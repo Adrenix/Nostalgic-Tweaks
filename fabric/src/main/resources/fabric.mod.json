@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "nostalgic_tweaks",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contributors": [
+    {
+      "name": "See source contributors",
+      "contact": {
+        "homepage": "${mod_credits}"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "${mod_curse}",
+    "sources": "${mod_source}",
+    "issues": "${mod_issues}"
+  },
+  "license": "${mod_license}",
+  "icon": "assets/nostalgic_tweaks/nt_fabric_logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "mod.adrenix.nostalgic.fabric.NostalgicFabric"
+    ],
+    "modmenu": [
+      "mod.adrenix.nostalgic.fabric.client.ModMenuIntegration"
+    ],
+    "appleskin": [
+      "mod.adrenix.nostalgic.fabric.event.AppleSkinListener"
+    ]
+  },
+  "mixins": [
+    "mixin.nostalgic_tweaks.json",
+    "mixin.nostalgic_tweaks-access.json",
+    "mixin.nostalgic_tweaks-duck.json",
+    "mixin.nostalgic_tweaks-required.json",
+    "mixin.nostalgic_tweaks-dynamic.json",
+    "mixin.nostalgic_tweaks-fabric.json",
+    "mixin.nostalgic_tweaks-sodium.json",
+    "mixin.nostalgic_tweaks-flywheel.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "fabric-api": ">=${fabric_api_version}",
+    "architectury": ">=${architectury_version}",
+    "minecraft": [
+      "=1.20",
+      "=1.20.1"
+    ]
+  },
+  "breaks": {
+    "sodium": ">=0.6-alpha"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "${mod_discord}",
+        "gui.nostalgic_tweaks.support": "${mod_donate}"
+      }
+    },
+    "sodium:options": {
+      "mixin.features.render.world.clouds": false
+    }
+  }
+}

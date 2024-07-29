@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "mod.adrenix.nostalgic.fabric.mixin.dynamic",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "ContainerEventHandlerMixin"
+  ],
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

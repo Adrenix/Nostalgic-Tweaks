@@ -1,0 +1,16 @@
+{
+  "required": false,
+  "package": "mod.adrenix.nostalgic.forge.mixin.embeddium",
+  "plugin": "mod.adrenix.nostalgic.forge.mixin.MixinEmbeddiumPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [
+    "candy.flat_items.ItemColorsMixin",
+    "candy.square_border.OcclusionCullerMixin",
+    "candy.torch_block.BlockRendererMixin",
+    "candy.world_lighting.FluidRendererMixin",
+    "candy.world_lighting.SodiumWorldRendererMixin",
+    "candy.world_lighting.WorldSliceMixin"
+  ]
+}

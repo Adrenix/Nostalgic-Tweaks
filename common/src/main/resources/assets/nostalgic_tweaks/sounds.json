@@ -1,0 +1,155 @@
+{
+  "blank": {
+    "sounds": [
+      "nostalgic_tweaks:blank"
+    ]
+  },
+  "cave": {
+    "sounds": [
+      "minecraft:ambient/cave/cave1",
+      "minecraft:ambient/cave/cave2",
+      "minecraft:ambient/cave/cave3",
+      "minecraft:ambient/cave/cave4",
+      "minecraft:ambient/cave/cave5",
+      "minecraft:ambient/cave/cave6",
+      "minecraft:ambient/cave/cave7",
+      "minecraft:ambient/cave/cave8",
+      "minecraft:ambient/cave/cave9",
+      "minecraft:ambient/cave/cave10",
+      "minecraft:ambient/cave/cave11",
+      "minecraft:ambient/cave/cave12",
+      "minecraft:ambient/cave/cave13"
+    ]
+  },
+  "entity.player.hurt": {
+    "sounds": [
+      "nostalgic_tweaks:damage/hit1",
+      "nostalgic_tweaks:damage/hit2",
+      "nostalgic_tweaks:damage/hit3"
+    ]
+  },
+  "music.gameplay.alpha": {
+    "sounds": [
+      {
+        "name": "minecraft:music/game/calm1",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/calm2",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/calm3",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/hal1",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/hal2",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/hal3",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/hal4",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/nuance1",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/nuance2",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/piano1",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/piano2",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/piano3",
+        "stream": true
+      }
+    ]
+  },
+  "music.menu.beta": {
+    "sounds": [
+      {
+        "name": "music/menu/menu1",
+        "stream": true
+      },
+      {
+        "name": "music/menu/menu2",
+        "stream": true
+      },
+      {
+        "name": "music/menu/menu3",
+        "stream": true
+      },
+      {
+        "name": "music/menu/menu4",
+        "stream": true
+      }
+    ]
+  },
+  "music.menu.blended": {
+    "sounds": [
+      {
+        "name": "nostalgic_tweaks:music.gameplay.alpha",
+        "type": "event"
+      },
+      {
+        "name": "nostalgic_tweaks:music.menu.beta",
+        "type": "event"
+      }
+    ]
+  },
+  "music.creative.beta": {
+    "sounds": [
+      {
+        "name": "minecraft:music/game/creative/creative1",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/creative2",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/creative3",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/creative4",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/creative5",
+        "stream": true
+      },
+      {
+        "name": "minecraft:music/game/creative/creative6",
+        "stream": true
+      }
+    ]
+  },
+  "music.creative.blended": {
+    "sounds": [
+      {
+        "name": "nostalgic_tweaks:music.gameplay.alpha",
+        "type": "event"
+      },
+      {
+        "name": "nostalgic_tweaks:music.creative.beta",
+        "type": "event"
+      }
+    ]
+  }
+}
