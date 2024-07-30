@@ -10,7 +10,6 @@ import mod.adrenix.nostalgic.client.ClientSound;
 import mod.adrenix.nostalgic.client.gui.screen.home.HomeSplash;
 import mod.adrenix.nostalgic.client.gui.screen.home.Panorama;
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicLogoText;
-import mod.adrenix.nostalgic.helper.candy.MipmapHelper;
 import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
 import mod.adrenix.nostalgic.helper.candy.hud.HudHelper;
 import mod.adrenix.nostalgic.helper.candy.level.fog.OverworldFogRenderer;
@@ -50,11 +49,9 @@ abstract class ClientInitializer
         ClientTickEvent.CLIENT_POST.register(ClientInitializer::onPostTick);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::onPlayerQuit);
 
-        AfterConfigSave.addInstruction(MipmapHelper::runAfterSave);
         AfterConfigSave.addInstruction(HudHelper::runAfterSave);
 
         ChestHelper.init();
-        MipmapHelper.init();
         LightingHelper.init();
     }
 
