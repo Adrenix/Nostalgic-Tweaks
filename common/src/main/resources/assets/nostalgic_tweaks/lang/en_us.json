@@ -26,6 +26,12 @@
   "gui.nostalgic_tweaks.screen.home.debug_info": "Debug Information",
   "gui.nostalgic_tweaks.screen.home.debug_switch": "Switch this toggle to the§a on§r position to activate the mod's§e debug mode§r. Extra information will be displayed in the game's console and§d debugging§r outlines will be displayed in the user interface.",
   "gui.nostalgic_tweaks.screen.home.debug_shortcut": "Debug mode can be quickly toggled with the keyboard shortcut§7 Ctrl + Shift + D§r; similarly, the framerate view shortcut is§7 Ctrl + Shift + F§r.",
+  "gui.nostalgic_tweaks.screen.home.prev_panorama": "Previous Panorama",
+  "gui.nostalgic_tweaks.screen.home.prev_panorama_info": "Go back to the last displayed panorama. This can be activated using the§e Ctrl + Left§r keyboard shortcut.",
+  "gui.nostalgic_tweaks.screen.home.cycle_panorama": "Play/Pause Panorama",
+  "gui.nostalgic_tweaks.screen.home.cycle_panorama_info": "Play or pause the panorama animation cycle. This can be toggled using the§e Ctrl + Space bar§r keyboard shortcut.",
+  "gui.nostalgic_tweaks.screen.home.next_panorama": "Next Panorama",
+  "gui.nostalgic_tweaks.screen.home.next_panorama_info": "Go to the next panorama. This can be activated using the§e Ctrl + Right§r keyboard shortcut.",
 
   "gui.nostalgic_tweaks.screen.packs.header": "§eTweak Packs §7(§dWIP§7)",
   "gui.nostalgic_tweaks.screen.packs.message": "This mod will eventually support a \"§eTweak Pack§r\" system that will behave similar to the game's resource pack system. There is currently§c nothing§r to test at this time. Please check again in a later update.",

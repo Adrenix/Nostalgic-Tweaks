@@ -28,9 +28,11 @@ import mod.adrenix.nostalgic.util.common.timer.FlagTimer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class HomeWidgets implements WidgetManager
 {
@@ -44,6 +46,8 @@ public class HomeWidgets implements WidgetManager
 
     HomeWidgets(HomeScreen homeScreen)
     {
+        Panorama.unpause();
+
         this.homeScreen = homeScreen;
         this.flashTimer = FlagTimer.create(1L, TimeUnit.SECONDS).build();
         this.heartOutline = IconWidget.create(Icons.HEART_OUTLINE).cannotFocus().renderWhen(RenderPass.LAST).size(12);
@@ -64,7 +68,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(() -> Minecraft.getInstance().setScreen(new ConfigScreen(this.homeScreen)))
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         ButtonWidget presets = ButtonWidget.create(Lang.Enum.SCREEN_PACKS)
@@ -74,7 +78,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(() -> Minecraft.getInstance().setScreen(new PacksListScreen(this.homeScreen)))
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         ButtonWidget discord = ButtonWidget.create(Lang.Home.DISCORD)
@@ -84,7 +88,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(LinkUtil.onPress(LinkLocation.DISCORD))
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         ButtonWidget kofi = ButtonWidget.create(Lang.Home.KOFI)
@@ -94,7 +98,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(LinkUtil.onPress(LinkLocation.KOFI))
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         ButtonWidget golden = ButtonWidget.create(Lang.Home.GOLDEN_DAYS)
@@ -104,7 +108,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(LinkUtil.onPress(LinkLocation.GOLDEN_DAYS))
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         SeparatorWidget separator = SeparatorWidget.create(Color.WHITE)
@@ -119,7 +123,7 @@ public class HomeWidgets implements WidgetManager
             .useTextWidth()
             .alignLeft(sectionOffset)
             .onPress(this.homeScreen::onClose)
-            .backgroundRenderer(this::renderTransparent)
+            .backgroundRenderer(this::renderLeftTransparent)
             .build(this.homeScreen::addWidget);
 
         List<DynamicWidget<?, ?>> extended = this.homeScreen.getWidgets().stream().toList();
@@ -133,6 +137,52 @@ public class HomeWidgets implements WidgetManager
             int spacing = (extended.size() - 1) * (20 + sectionMargin);
             return Math.round(MathUtil.center(spacing - sectionMargin, GuiUtil.getGuiHeight()));
         });
+
+        /* Panorama */
+
+        Supplier<Component> pauseOrUnpauseText = () -> {
+            if (Panorama.isPaused())
+                return Component.literal("▶");
+
+            return Component.literal("⏸");
+        };
+
+        ButtonWidget panoramaLast = ButtonWidget.create(Lang.literal("⏮"))
+            .size(16, 13)
+            .cannotFocus()
+            .tooltip(Lang.Home.PREV_PANORAMA, 35, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Home.PREV_PANORAMA_INFO, 35)
+            .visibleIf(() -> Minecraft.getInstance().level == null)
+            .onPress(Panorama::backward)
+            .backgroundRenderer(this::renderTopTransparent)
+            .build(this.homeScreen::addWidget);
+
+        ButtonWidget panoramaCycle = ButtonWidget.create(pauseOrUnpauseText)
+            .size(16, 13)
+            .cannotFocus()
+            .rightOf(panoramaLast, 0)
+            .tooltip(Lang.Home.CYCLE_PANORAMA, 35, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Home.CYCLE_PANORAMA_INFO, 35)
+            .visibleIf(() -> Minecraft.getInstance().level == null)
+            .onPress(() -> {
+                if (Panorama.isPaused())
+                    Panorama.unpause();
+                else
+                    Panorama.pause();
+            })
+            .backgroundRenderer(this::renderTopTransparent)
+            .build(this.homeScreen::addWidget);
+
+        ButtonWidget.create(Lang.literal("⏭"))
+            .size(16, 13)
+            .cannotFocus()
+            .rightOf(panoramaCycle, 0)
+            .tooltip(Lang.Home.NEXT_PANORAMA, 35, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Home.NEXT_PANORAMA_INFO, 35)
+            .visibleIf(() -> Minecraft.getInstance().level == null)
+            .onPress(Panorama::forward)
+            .backgroundRenderer(this::renderTopTransparent)
+            .build(this.homeScreen::addWidget);
 
         /* Extras */
 
@@ -192,7 +242,7 @@ public class HomeWidgets implements WidgetManager
      * @param mouseY      The current y-position of the mouse.
      * @param partialTick The normalized progress between two ticks [0.0F-1.0F].
      */
-    private void renderTransparent(ButtonWidget button, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+    private void renderLeftTransparent(ButtonWidget button, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
         final Color bar = Color.BLACK.fromAlpha(0.0F);
         final Color fill = Color.BLACK.fromAlpha(0.6F);
@@ -207,6 +257,33 @@ public class HomeWidgets implements WidgetManager
         }
 
         RenderUtil.fill(builder, graphics, button.getX(), button.getY(), button.getX() + 2, button.getEndY(), bar.get());
+        RenderUtil.endFill(builder);
+    }
+
+    /**
+     * Handler method for rendering a transparent top button background.
+     *
+     * @param button      A {@link ButtonWidget} instance.
+     * @param graphics    A {@link GuiGraphics} instance.
+     * @param mouseX      The current x-position of the mouse.
+     * @param mouseY      The current y-position of the mouse.
+     * @param partialTick The normalized progress between two ticks [0.0F-1.0F].
+     */
+    private void renderTopTransparent(ButtonWidget button, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+    {
+        final Color bar = Color.BLACK.fromAlpha(0.0F);
+        final Color fill = Color.BLACK.fromAlpha(0.6F);
+        final BufferBuilder builder = RenderUtil.getAndBeginFill();
+
+        if (button.isHoveredOrFocused())
+        {
+            bar.set(Color.ORANGE);
+            bar.setAlpha(1.0F);
+
+            RenderUtil.fill(builder, graphics, button.getX(), button.getY(), button.getEndX(), button.getEndY(), fill.get());
+        }
+
+        RenderUtil.fill(builder, graphics, button.getX(), button.getEndY() - 1, button.getEndX(), button.getEndY(), bar.get());
         RenderUtil.endFill(builder);
     }
 }

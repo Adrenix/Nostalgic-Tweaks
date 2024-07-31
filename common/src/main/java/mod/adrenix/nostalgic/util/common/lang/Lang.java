@@ -112,6 +112,12 @@ public interface Lang
         Translation DEBUG_INFO = from("debug_info");
         Translation DEBUG_SWITCH = from("debug_switch");
         Translation DEBUG_SHORTCUT = from("debug_shortcut");
+        Translation PREV_PANORAMA = from("prev_panorama");
+        Translation PREV_PANORAMA_INFO = from("prev_panorama_info");
+        Translation CYCLE_PANORAMA = from("cycle_panorama");
+        Translation CYCLE_PANORAMA_INFO = from("cycle_panorama_info");
+        Translation NEXT_PANORAMA = from("next_panorama");
+        Translation NEXT_PANORAMA_INFO = from("next_panorama_info");
 
         private static Translation from(String name)
         {
