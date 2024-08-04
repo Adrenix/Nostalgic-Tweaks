@@ -19,10 +19,12 @@ import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.listener.client.GuiListener;
 import mod.adrenix.nostalgic.listener.client.TooltipListener;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.ClientTimer;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
+import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.packs.PackType;
@@ -63,6 +65,8 @@ abstract class ClientInitializer
      */
     private static void onPlayerQuit(LocalPlayer player)
     {
+        TweakPool.stream().forEach(Tweak::disconnect);
+
         NostalgicTweaks.setNetworkVerification(false);
         NostalgicTweaks.setConnection(null);
 
@@ -96,5 +100,20 @@ abstract class ClientInitializer
     private static void onPostTick(Minecraft minecraft)
     {
         TweakPool.stream().forEach(Tweak::invalidate);
+
+        if (NostalgicTweaks.isNetworkVerified())
+            ClientTimer.getInstance().runAfter(3000L, ClientInitializer::syncAllTweaks);
+    }
+
+    /**
+     * Check and sync tweaks that are not currently in sync with a verified server.
+     */
+    private static void syncAllTweaks()
+    {
+        if (!NostalgicTweaks.isNetworkVerified())
+            return;
+
+        TweakPool.filter(Tweak::isNotConnected)
+            .forEach(tweak -> PacketUtil.sendToServer(new ServerboundSyncTweak(tweak)));
     }
 }
