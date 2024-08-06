@@ -63,9 +63,9 @@ public class TweakText extends TweakValue<String>
     /* Methods */
 
     @Override
-    public String get()
+    protected String result()
     {
-        return super.get().replaceAll("%([a-fA-F\\d])", "§$1");
+        return super.result().replaceAll("%([a-fA-F\\d])", "§$1");
     }
 
     @Override

@@ -7,10 +7,7 @@ import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.config.cache.CacheHolder;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
 import mod.adrenix.nostalgic.config.cache.ConfigReflect;
-import mod.adrenix.nostalgic.tweak.TweakAlert;
-import mod.adrenix.nostalgic.tweak.TweakEnv;
-import mod.adrenix.nostalgic.tweak.TweakIssue;
-import mod.adrenix.nostalgic.tweak.TweakStatus;
+import mod.adrenix.nostalgic.tweak.*;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
@@ -34,7 +31,8 @@ public abstract class Tweak<T> implements TweakMeta<T>
 
     protected final TweakBuilder<?> builder;
     protected final Set<Runnable> reflectionListeners;
-    private final Supplier<Boolean> conflict;
+    private final Supplier<Boolean> modConflict;
+    private final TweakResult<T> resultSupplier;
     private final CacheHolder<TweakStatus> statusHolder;
     private CacheMode cacheMode;
     private String jsonId = null;
@@ -45,8 +43,9 @@ public abstract class Tweak<T> implements TweakMeta<T>
     {
         this.builder = builder;
         this.cacheMode = CacheMode.LOCAL;
+        this.modConflict = Suppliers.memoize(() -> builder.conflictMods.stream().anyMatch(ModTracker::isInstalled));
         this.statusHolder = CacheHolder.from(builder.status, this::getCacheMode);
-        this.conflict = Suppliers.memoize(() -> builder.conflictMods.stream().anyMatch(ModTracker::isInstalled));
+        this.resultSupplier = new TweakResult<>(this::result);
         this.reflectionListeners = new HashSet<>();
 
         builder.container.addTweak(this);
@@ -123,10 +122,26 @@ public abstract class Tweak<T> implements TweakMeta<T>
     @Override
     public T get()
     {
+        return this.resultSupplier.get();
+    }
+
+    /**
+     * @return A result from the current tweak context and pipeline.
+     */
+    protected T result()
+    {
         if (!this.isExtraConditionMet())
             return this.getDisabled();
 
         return TweakPipeline.get(this);
+    }
+
+    /**
+     * Invalidate a tweak's result by clearing any result caches the tweak may have.
+     */
+    public void invalidate()
+    {
+        this.resultSupplier.clear();
     }
 
     /**
@@ -534,7 +549,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
      */
     public boolean isModConflict()
     {
-        return this.conflict.get();
+        return this.modConflict.get();
     }
 
     /**
