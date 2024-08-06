@@ -76,7 +76,6 @@
     "candy.item_tooltip.AbstractContainerScreenMixin",
     "candy.item_tooltip.ItemStackMixin",
     "candy.loading_overlay.LoadingOverlayMixin",
-    "candy.mip_map.MinecraftMixin",
     "candy.mip_map.ModelManagerMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.name_tag.EntityRendererMixin",
