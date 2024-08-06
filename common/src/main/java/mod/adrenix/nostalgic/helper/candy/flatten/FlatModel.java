@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +21,7 @@ public class FlatModel implements BakedModel
 
     private final BakedModel model;
     private final PoseStack poseStack;
+    private final ItemDisplayContext displayContext;
 
     /* Constructor */
 
@@ -29,10 +31,11 @@ public class FlatModel implements BakedModel
      * @param model     The {@link BakedModel} to wrap.
      * @param poseStack The current {@link PoseStack} instance.
      */
-    public FlatModel(BakedModel model, PoseStack poseStack)
+    public FlatModel(BakedModel model, PoseStack poseStack, ItemDisplayContext displayContext)
     {
         this.model = model;
         this.poseStack = poseStack;
+        this.displayContext = displayContext;
     }
 
     /* Methods */
@@ -42,7 +45,7 @@ public class FlatModel implements BakedModel
     {
         List<BakedQuad> quads = this.model.getQuads(state, direction, random);
 
-        if (CandyTweak.OLD_2D_RENDERING.get())
+        if (CandyTweak.OLD_2D_RENDERING.get() && this.displayContext != ItemDisplayContext.FIXED)
             quads = FlatItemHelper.getFrontQuad(quads);
 
         for (BakedQuad quad : quads)
