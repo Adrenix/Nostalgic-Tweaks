@@ -6,6 +6,7 @@
   "client": [
     "AbstractContainerEventHandlerMixin",
     "ContainerEventHandlerMixin",
+    "NativeImageMixin",
     "ScreenMixin"
   ],
   "mixins": [],
