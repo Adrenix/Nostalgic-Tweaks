@@ -74,9 +74,9 @@ public class TweakFlag extends TweakValue<Boolean>
     }
 
     @Override
-    public Boolean get()
+    protected Boolean result()
     {
-        return super.get() || this.getBuilder().orIf.stream().anyMatch(BooleanSupplier::getAsBoolean);
+        return super.result() || this.getBuilder().orIf.stream().anyMatch(BooleanSupplier::getAsBoolean);
     }
 
     @Override
