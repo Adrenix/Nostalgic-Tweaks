@@ -106,6 +106,13 @@ public interface Lang
         Translation INVALID_DATA = from("invalid_data");
         Translation KOFI_MEMBER = from("kofi_member");
         Translation MOD_CREATOR = from("mod_creator");
+        Translation INIT_CONFIG = from("init_config");
+        Translation SETUP = from("setup");
+        Translation SETUP_INFO = from("setup_info");
+        Translation DEFAULT = from("default");
+        Translation DEFAULT_INFO = from("default_info");
+        Translation DISABLE = from("disable");
+        Translation DISABLE_INFO = from("disable_info");
         Translation FPS_INFO = from("fps_info");
         Translation FPS_SWITCH = from("fps_switch");
         Translation DEBUG = from("debug");
@@ -400,6 +407,7 @@ public interface Lang
         Translation MANAGE = from("manage");
         Translation FILTER = from("filter");
         Translation MANAGE_LISTING = from("manage_listing");
+        Translation HOME_INIT = from("home_init");
         Translation HOME_DEBUG = from("home_debug");
         Translation HOME_SUPPORTERS = from("home_supporters");
         Translation FILTER_DISABLED = from("filter_disabled");

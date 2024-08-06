@@ -3,10 +3,13 @@ package mod.adrenix.nostalgic.tweak.factory;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.config.cache.CacheMode;
 import mod.adrenix.nostalgic.tweak.TweakStatus;
+import mod.adrenix.nostalgic.tweak.container.Category;
+import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.CollectionUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -17,12 +20,11 @@ public abstract class TweakPool
 
     /**
      * This map contains a list of all tweaks that were made from the {@link Tweak#register(String)} method. The purpose
-     * of this map is to obtain tweaks using a config json path identifier. This should only be used in situations where
+     * of this map is to get tweaks using a config json path identifier. This should only be used in situations where
      * tweaks aren't available. For example, the packet system must use this pool to determine what tweak to change by
      * using a config json path. Both the client and server have access to this map, but the server will only have
      * access to server side tweaks since it only registers server side tweaks.
-     *
-     * <p><br>
+     * <p>
      * To get a tweak's config json path, use {@link Tweak#getJsonPathId()}.
      */
     static final LinkedHashMap<String, Tweak<?>> TWEAK_MAP = new LinkedHashMap<>();
@@ -121,5 +123,36 @@ public abstract class TweakPool
             else
                 tweak.setCacheMode(CacheMode.LOCAL);
         });
+    }
+
+    /**
+     * Get a stream of tweaks that are eligible for automation. This will exclude tweak bindings, root tweaks, mod
+     * tweaks, ignored tweaks, and internal tweaks.
+     *
+     * @param predicates An additional {@link Collection} of tweak predicates to apply to the filter.
+     * @return A {@link Stream} of {@link Tweak<Object>} instances.
+     * @see #automated()
+     */
+    public static Stream<Tweak<Object>> automated(Collection<Predicate<Tweak<?>>> predicates)
+    {
+        return TweakPool.filter(predicates)
+            .filter(tweak -> ClassUtil.isNotInstanceOf(tweak, TweakBinding.class))
+            .filter(tweak -> tweak.getCategory() != Category.ROOT)
+            .filter(tweak -> tweak.getCategory() != Category.MOD)
+            .filter(Tweak::isNotIgnored)
+            .filter(Tweak::isNotInternal)
+            .map(TweakMeta::wildcard);
+    }
+
+    /**
+     * Get a stream of tweaks that are eligible for automation. This will exclude tweak bindings, root tweaks, mod
+     * tweaks, ignored tweaks, and internal tweaks.
+     *
+     * @return A {@link Stream} of {@link Tweak<Object>} instances.
+     * @see #automated(Collection)
+     */
+    public static Stream<Tweak<Object>> automated()
+    {
+        return automated(List.of());
     }
 }
