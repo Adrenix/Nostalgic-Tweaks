@@ -57,14 +57,14 @@ public class CycleIndex
     {
         this.lastIndex = this.currentIndex;
 
-        int nextIndex = movingForward ? this.currentIndex + 1 : this.currentIndex - 1;
+        int nextIndex = this.movingForward ? this.currentIndex + 1 : this.currentIndex - 1;
 
         if (nextIndex > this.maxIndex)
         {
             this.movingForward = false;
 
             if (this.resetAtEnd)
-                this.currentIndex = 0;
+                this.currentIndex = this.minIndex;
             else
                 this.currentIndex--;
 
@@ -120,6 +120,46 @@ public class CycleIndex
         this.cycle();
 
         return index;
+    }
+
+    /**
+     * Move the index forward by one. If the next index is greater than the maximum index, then the index is reset back
+     * to the minimum index.
+     */
+    @PublicAPI
+    public void forward()
+    {
+        this.lastIndex = this.currentIndex;
+
+        int nextIndex = this.currentIndex + 1;
+
+        if (nextIndex > this.maxIndex)
+        {
+            nextIndex = this.minIndex;
+            this.movingForward = false;
+        }
+
+        this.currentIndex = nextIndex;
+    }
+
+    /**
+     * Move the index backward by one. If the next index is less than the minimum index, then the index is reset back to
+     * the maximum index.
+     */
+    @PublicAPI
+    public void backward()
+    {
+        this.lastIndex = this.currentIndex;
+
+        int nextIndex = this.currentIndex - 1;
+
+        if (nextIndex < this.minIndex)
+        {
+            nextIndex = this.maxIndex;
+            this.movingForward = true;
+        }
+
+        this.currentIndex = nextIndex;
     }
 
     /**

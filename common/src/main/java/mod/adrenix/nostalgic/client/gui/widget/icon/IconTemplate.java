@@ -10,6 +10,36 @@ import java.util.function.Supplier;
 public abstract class IconTemplate
 {
     /**
+     * Create a button icon from the given textures.
+     *
+     * @param icon    The {@link TextureIcon} of the button.
+     * @param hover   The {@link TextureIcon} when the button is hovered by the mouse or when the button is focused.
+     * @param pressed The {@link TextureIcon} when the button is held down by the mouse.
+     * @return A {@link IconFactory} instance.
+     */
+    @PublicAPI
+    public static IconFactory button(TextureIcon icon, TextureIcon hover, TextureIcon pressed)
+    {
+        return IconWidget.create(icon).hoverIcon(hover).disabledIcon(pressed).pressIcon(pressed);
+    }
+
+    /**
+     * Create a button icon from the given textures.
+     *
+     * @param icon    A {@link Supplier} that provides the {@link TextureIcon} of the button.
+     * @param hover   A {@link Supplier} that provides the {@link TextureIcon} when the button is hovered by the mouse
+     *                or when the button is focused.
+     * @param pressed A {@link Supplier} that provides the {@link TextureIcon} when the button is held down by the
+     *                mouse.
+     * @return A {@link IconFactory} instance.
+     */
+    @PublicAPI
+    public static IconFactory button(Supplier<TextureIcon> icon, Supplier<TextureIcon> hover, Supplier<TextureIcon> pressed)
+    {
+        return IconWidget.create(icon).hoverIcon(hover).disabledIcon(pressed).pressIcon(pressed);
+    }
+
+    /**
      * This icon widget template is used for displaying a small "x" close icon that can act as a button.
      *
      * @return An {@link IconFactory} instance so that additional properties can be defined before building.
