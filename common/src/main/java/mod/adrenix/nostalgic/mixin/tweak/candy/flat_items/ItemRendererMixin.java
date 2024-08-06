@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.flat_items;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.helper.candy.flatten.FlatItemHelper;
@@ -94,11 +95,11 @@ public abstract class ItemRendererMixin
             target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;renderModelLists(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/item/ItemStack;IILcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"
         )
     )
-    private BakedModel nt_flat_items$setRenderedModel(BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer)
+    private BakedModel nt_flat_items$setRenderedModel(BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer consumer, @Local(argsOnly = true) ItemDisplayContext displayContext)
     {
         if (!FlatItemHelper.isRendering2D())
             return model;
 
-        return new FlatModel(model, poseStack);
+        return new FlatModel(model, poseStack, displayContext);
     }
 }
