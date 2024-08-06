@@ -1,9 +1,10 @@
-package mod.adrenix.nostalgic.network.packet;
+package mod.adrenix.nostalgic.network.packet.sync;
 
 import dev.architectury.networking.NetworkManager;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.toast.ToastNotification;
 import mod.adrenix.nostalgic.network.ModConnection;
+import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
 import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -68,7 +69,7 @@ public class ClientboundHandshake implements ModPacket
         {
             NostalgicTweaks.setNetworkVerification(true);
             ToastNotification.handshake();
-            PacketUtil.sendToServer(new ServerboundSync());
+            PacketUtil.sendToServer(new ServerboundSyncAll());
         }
         else
         {

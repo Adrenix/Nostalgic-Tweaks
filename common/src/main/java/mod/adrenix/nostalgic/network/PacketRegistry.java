@@ -1,20 +1,24 @@
 package mod.adrenix.nostalgic.network;
 
-import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
-import mod.adrenix.nostalgic.network.packet.ServerboundSync;
 import mod.adrenix.nostalgic.network.packet.backup.*;
+import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncAll;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
 import mod.adrenix.nostalgic.network.packet.tweak.*;
 
 public abstract class PacketRegistry
 {
     public static void register()
     {
-        // Handshake
+        // Tweak Sync
+
         ModPacket.register(ClientboundHandshake.class, ClientboundHandshake::new);
-        ModPacket.register(ServerboundSync.class, ServerboundSync::new);
+        ModPacket.register(ServerboundSyncAll.class, ServerboundSyncAll::new);
+        ModPacket.register(ServerboundSyncTweak.class, ServerboundSyncTweak::new);
 
         // Config Backups
+
         ModPacket.register(ServerboundCreateBackup.class, ServerboundCreateBackup::new);
         ModPacket.register(ClientboundMadeBackup.class, ClientboundMadeBackup::new);
         ModPacket.register(ClientboundBackupObjects.class, ClientboundBackupObjects::new);
@@ -29,7 +33,8 @@ public abstract class PacketRegistry
         ModPacket.register(ClientboundAppliedBackup.class, ClientboundAppliedBackup::new);
         ModPacket.register(ServerboundReloadConfig.class, ServerboundReloadConfig::new);
 
-        // Tweak Packets
+        // Tweak Data
+
         ModPacket.register(ClientboundRejection.class, ClientboundRejection::new);
         ModPacket.register(ClientboundStatusUpdate.class, ClientboundStatusUpdate::new);
         ModPacket.register(ServerboundTweakFlag.class, ServerboundTweakFlag::new);

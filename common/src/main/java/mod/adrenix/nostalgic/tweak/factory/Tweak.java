@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.tweak.*;
 import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
+import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.lang.DecodeLang;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     protected final TweakBuilder<?> builder;
     protected final Set<Runnable> reflectionListeners;
     private final Supplier<Boolean> modConflict;
+    private final FlagHolder networkSync;
     private final TweakResult<T> resultSupplier;
     private final CacheHolder<TweakStatus> statusHolder;
     private CacheMode cacheMode;
@@ -43,6 +45,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     {
         this.builder = builder;
         this.cacheMode = CacheMode.LOCAL;
+        this.networkSync = FlagHolder.off();
         this.modConflict = Suppliers.memoize(() -> builder.conflictMods.stream().anyMatch(ModTracker::isInstalled));
         this.statusHolder = CacheHolder.from(builder.status, this::getCacheMode);
         this.resultSupplier = new TweakResult<>(this::result);
@@ -348,6 +351,54 @@ public abstract class Tweak<T> implements TweakMeta<T>
             NostalgicTweaks.LOGGER.debug("[Reflection Listener] Running for (%s)", this.toString());
             listener.run();
         });
+    }
+
+    /**
+     * Set a tweak as connected. This will mark the tweak as synced with the connected server. The server cannot use
+     * this method since only the client syncs tweaks.
+     */
+    public void connect()
+    {
+        if (NostalgicTweaks.isServer())
+            throw new RuntimeException("Server tried to access client-only tweak method");
+
+        this.networkSync.enable();
+    }
+
+    /**
+     * Set a tweak as disconnected. This means the tweak is no longer in sync with a connected server. The server cannot
+     * use this method since only the client syncs tweaks.
+     */
+    public void disconnect()
+    {
+        if (NostalgicTweaks.isServer())
+            throw new RuntimeException("Server tried to access client-only tweak method");
+
+        this.networkSync.disable();
+    }
+
+    /**
+     * The server cannot use this method since only the client syncs tweaks.
+     *
+     * @return Whether a tweak is synced with the connected server.
+     */
+    public boolean isConnected()
+    {
+        if (NostalgicTweaks.isServer())
+            throw new RuntimeException("Server tried to access client-only tweak method");
+
+        if (this.isClient())
+            return true;
+
+        return this.networkSync.get();
+    }
+
+    /**
+     * @return Whether a tweak is not synced with a server running the mod.
+     */
+    public boolean isNotConnected()
+    {
+        return !this.isConnected();
     }
 
     /**

@@ -1,19 +1,20 @@
-package mod.adrenix.nostalgic.network.packet;
+package mod.adrenix.nostalgic.network.packet.sync;
 
 import dev.architectury.networking.NetworkManager;
+import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ServerboundSync implements ModPacket
+public class ServerboundSyncAll implements ModPacket
 {
     /* Constructors */
 
     /**
      * Send a request to the server to send its current tweak values so the client can be in sync with the server.
      */
-    public ServerboundSync()
+    public ServerboundSyncAll()
     {
     }
 
@@ -22,7 +23,7 @@ public class ServerboundSync implements ModPacket
      *
      * @param buffer A {@link FriendlyByteBuf} instance.
      */
-    public ServerboundSync(FriendlyByteBuf buffer)
+    public ServerboundSyncAll(FriendlyByteBuf buffer)
     {
     }
 

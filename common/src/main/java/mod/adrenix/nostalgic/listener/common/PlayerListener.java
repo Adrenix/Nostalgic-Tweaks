@@ -2,7 +2,7 @@ package mod.adrenix.nostalgic.listener.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
 import mod.adrenix.nostalgic.NostalgicTweaks;
-import mod.adrenix.nostalgic.network.packet.ClientboundHandshake;
+import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
 import net.minecraft.server.level.ServerPlayer;
