@@ -31,10 +31,8 @@ public enum Panorama implements PreparableReloadListener
     BETA,
     CAVE,
     NETHER,
-    VILLAGE,
     CLASSIC,
-    SLIDE,
-    DEEP;
+    SLIDE;
 
     /* Static */
 
