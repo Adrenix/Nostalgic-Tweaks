@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.screen.home;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.GearSpinner;
@@ -7,6 +8,7 @@ import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
@@ -94,6 +96,37 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
                 default -> this.minecraft.setScreen(this);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    {
+        if (Screen.hasControlDown() && KeyboardUtil.match(keyCode, InputConstants.KEY_SPACE))
+        {
+            if (Panorama.isPaused())
+                Panorama.unpause();
+            else
+                Panorama.pause();
+
+            return true;
+        }
+
+        if (KeyboardUtil.isGoingRight(keyCode))
+        {
+            Panorama.forward();
+            return true;
+        }
+
+        if (KeyboardUtil.isGoingLeft(keyCode))
+        {
+            Panorama.backward();
+            return true;
+        }
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     /**

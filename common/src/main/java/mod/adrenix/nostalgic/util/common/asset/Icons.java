@@ -131,5 +131,17 @@ public interface Icons
     TextureIcon SMALL_INFO_HOVER = TextureIcon.fromSprite("small_info_hover", 9);
     TextureIcon SMALL_INFO_OFF = TextureIcon.fromSprite("small_info_off", 9);
     TextureIcon SMALL_ADD = TextureIcon.fromSprite("small_add", 9);
+    TextureIcon SMALL_NEXT = TextureIcon.fromSprite("small_next", 11);
+    TextureIcon SMALL_NEXT_HOVER = TextureIcon.fromSprite("small_next_hover", 11);
+    TextureIcon SMALL_NEXT_OFF = TextureIcon.fromSprite("small_next_off", 11);
+    TextureIcon SMALL_REWIND = TextureIcon.fromSprite("small_rewind", 11);
+    TextureIcon SMALL_REWIND_HOVER = TextureIcon.fromSprite("small_rewind_hover", 11);
+    TextureIcon SMALL_REWIND_OFF = TextureIcon.fromSprite("small_rewind_off", 11);
+    TextureIcon SMALL_PAUSE = TextureIcon.fromSprite("small_pause", 11);
+    TextureIcon SMALL_PAUSE_HOVER = TextureIcon.fromSprite("small_pause_hover", 11);
+    TextureIcon SMALL_PAUSE_OFF = TextureIcon.fromSprite("small_pause_off", 11);
+    TextureIcon SMALL_PLAY = TextureIcon.fromSprite("small_play", 11);
+    TextureIcon SMALL_PLAY_HOVER = TextureIcon.fromSprite("small_play_hover", 11);
+    TextureIcon SMALL_PLAY_OFF = TextureIcon.fromSprite("small_play_off", 11);
     TextureIcon STEVE = TextureIcon.fromSprite("steve", 8);
 }

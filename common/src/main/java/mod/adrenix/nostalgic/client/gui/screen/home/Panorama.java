@@ -8,6 +8,7 @@ import mod.adrenix.nostalgic.util.client.animate.Animation;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.array.CycleIndex;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
+import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,6 +39,7 @@ public enum Panorama implements PreparableReloadListener
 
     private static final Animation FADE_IN_ANIMATION = Animate.linear(4L, TimeUnit.SECONDS);
     private static final SimpleTimer SWITCH_TIMER = SimpleTimer.create(15L, TimeUnit.SECONDS).immediate().build();
+    private static final FlagHolder PAUSE_TIMER = FlagHolder.off();
     private static final CycleIndex CYCLE_INDEX = new CycleIndex(Panorama.values(), true);
 
     /**
@@ -80,13 +82,61 @@ public enum Panorama implements PreparableReloadListener
      */
     public static void onTick()
     {
-        if (SWITCH_TIMER.hasElapsed())
+        if (SWITCH_TIMER.hasElapsed() && !PAUSE_TIMER.get())
         {
             CYCLE_INDEX.cycle();
 
             FADE_IN_ANIMATION.reset();
             FADE_IN_ANIMATION.play();
         }
+    }
+
+    /**
+     * Move the panorama cycle forward.
+     */
+    public static void forward()
+    {
+        CYCLE_INDEX.forward();
+        SWITCH_TIMER.reset();
+
+        FADE_IN_ANIMATION.reset();
+        FADE_IN_ANIMATION.play();
+    }
+
+    /**
+     * Move the panorama cycle backward.
+     */
+    public static void backward()
+    {
+        CYCLE_INDEX.backward();
+        SWITCH_TIMER.reset();
+
+        FADE_IN_ANIMATION.reset();
+        FADE_IN_ANIMATION.play();
+    }
+
+    /**
+     * Pause the panorama cycle.
+     */
+    public static void pause()
+    {
+        PAUSE_TIMER.enable();
+    }
+
+    /**
+     * Unpause the panorama cycle.
+     */
+    public static void unpause()
+    {
+        PAUSE_TIMER.disable();
+    }
+
+    /**
+     * @return Whether the panorama cycle is paused.
+     */
+    public static boolean isPaused()
+    {
+        return PAUSE_TIMER.get();
     }
 
     /* Fields */
