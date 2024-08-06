@@ -11,8 +11,9 @@ import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
 import mod.adrenix.nostalgic.client.gui.widget.group.Group;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
-import mod.adrenix.nostalgic.tweak.container.Category;
-import mod.adrenix.nostalgic.tweak.factory.*;
+import mod.adrenix.nostalgic.tweak.factory.Tweak;
+import mod.adrenix.nostalgic.tweak.factory.TweakListing;
+import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
 import mod.adrenix.nostalgic.util.client.search.SearchTag;
@@ -32,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class GroupToggleAll extends ManageGroup
 {
@@ -220,14 +220,6 @@ public class GroupToggleAll extends ManageGroup
                 .map(SearchTag::getPredicate)
                 .toList();
 
-            Stream<Tweak<Object>> tweaks = TweakPool.filter(predicates)
-                .filter(tweak -> ClassUtil.isNotInstanceOf(tweak, TweakBinding.class))
-                .filter(tweak -> tweak.getCategory() != Category.ROOT)
-                .filter(tweak -> tweak.getCategory() != Category.MOD)
-                .filter(Tweak::isNotIgnored)
-                .filter(Tweak::isNotInternal)
-                .map(TweakMeta::wildcard);
-
             BiConsumer<Tweak<Object>, Object> consumer = (tweak, value) -> {
                 TweakListing<?, ?> listing = ClassUtil.cast(tweak, TweakListing.class).orElse(null);
 
@@ -245,9 +237,10 @@ public class GroupToggleAll extends ManageGroup
             };
 
             if (isEnabled.get())
-                tweaks.forEach(tweak -> consumer.accept(tweak, tweak.getDefault()));
-            else if (isDisabled.get())
-                tweaks.forEach(tweak -> consumer.accept(tweak, tweak.getDisabled()));
+                TweakPool.automated(predicates).forEach(tweak -> consumer.accept(tweak, tweak.getDefault()));
+
+            if (isDisabled.get())
+                TweakPool.automated(predicates).forEach(tweak -> consumer.accept(tweak, tweak.getDisabled()));
         };
 
         Consumer<ConfigScreen> onReviewAll = (config) -> {

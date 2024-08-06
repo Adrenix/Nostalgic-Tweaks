@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import mod.adrenix.nostalgic.client.gui.screen.WidgetManager;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.DebugOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SetupOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.supporter.SupporterOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
@@ -192,7 +193,7 @@ public class HomeWidgets implements WidgetManager
             .infoTooltip(Lang.Tooltip.HOME_DEBUG, 35)
             .fromScreenEndX(1)
             .fromScreenEndY(1)
-            .tabOrderGroup(3)
+            .tabOrderGroup(4)
             .onPress(() -> new DebugOverlay().open())
             .build(this.homeScreen::addWidget);
 
@@ -201,12 +202,21 @@ public class HomeWidgets implements WidgetManager
             .tooltip(Lang.Home.SUPPORTERS, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.HOME_SUPPORTERS, 35)
             .leftOf(debug, 1)
-            .tabOrderGroup(2)
+            .tabOrderGroup(3)
             .onPress(() -> new SupporterOverlay().open())
             .build(this.homeScreen::addWidget);
 
         this.heartOutline.pos(heart::getIconX, heart::getIconY)
             .visibleIf(heart::isHoveredOrFocused)
+            .build(this.homeScreen::addWidget);
+
+        ButtonWidget.create()
+            .icon(Icons.MECHANICAL_TOOLS)
+            .tooltip(Lang.Home.INIT_CONFIG, 35, 500L, TimeUnit.MILLISECONDS)
+            .infoTooltip(Lang.Tooltip.HOME_INIT, 35)
+            .leftOf(heart, 1)
+            .tabOrderGroup(2)
+            .onPress(SetupOverlay::open)
             .build(this.homeScreen::addWidget);
 
         /* Copyright */

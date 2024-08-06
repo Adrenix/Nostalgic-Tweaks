@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.GearSpinner;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SetupOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
@@ -40,9 +41,6 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         super(HomeWidgets::new, parentScreen, Lang.TITLE.get());
 
         this.isRedirected = isRedirected;
-
-        if (!ModTweak.OPENED_CONFIG_SCREEN.get())
-            ModTweak.OPENED_CONFIG_SCREEN.setDiskAndSave(true);
     }
 
     /* Methods */
@@ -95,6 +93,18 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
                 case PACKS_SCREEN -> this.minecraft.setScreen(new PacksListScreen(this));
                 default -> this.minecraft.setScreen(this);
             }
+        }
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+
+        if (!ModTweak.OPENED_CONFIG_SCREEN.get())
+        {
+            ModTweak.OPENED_CONFIG_SCREEN.setDiskAndSave(true);
+            SetupOverlay.open();
         }
     }
 
