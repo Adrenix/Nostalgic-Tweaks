@@ -16,41 +16,25 @@ import java.util.List;
 public abstract class DebugScreenOverlayMixin
 {
     /**
-     * Prevents rendering of the debug overlay's game information text so that the mod's information can be displayed
-     * instead.
+     * Prevents rendering of the NeoForge's debug information text so that the mod's information can be displayed
+     * instead. The debug text event is not used because we perform special rendering on the debug screen.
      */
     @WrapOperation(
         method = "method_51746",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;drawGameInformation(Lnet/minecraft/client/gui/GuiGraphics;Ljava/util/List;)V"
+            target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;renderLines(Lnet/minecraft/client/gui/GuiGraphics;Ljava/util/List;Z)V"
         )
     )
-    private void nt_neoforge_debug_screen$wrapGameInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
+    private void nt_neoforge_debug_screen$wrapGameInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> lines, boolean leftSide, Operation<Void> operation)
     {
         if (CandyTweak.OLD_DEBUG.get() == Generic.MODERN)
         {
-            operation.call(overlay, graphics, list);
+            operation.call(overlay, graphics, lines, leftSide);
             return;
         }
 
-        DebugOverlayHelper.renderDebugText(overlay, graphics);
-    }
-
-    /**
-     * Prevents rendering of the debug overlay's system information text so that the mod's information can be displayed
-     * instead.
-     */
-    @WrapOperation(
-        method = "method_51746",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;drawSystemInformation(Lnet/minecraft/client/gui/GuiGraphics;Ljava/util/List;)V"
-        )
-    )
-    private void nt_neoforge_debug_screen$wrapSystemInformation(DebugScreenOverlay overlay, GuiGraphics graphics, List<String> list, Operation<Void> operation)
-    {
-        if (CandyTweak.OLD_DEBUG.get() == Generic.MODERN)
-            operation.call(overlay, graphics, list);
+        if (leftSide)
+            DebugOverlayHelper.renderDebugText(overlay, graphics);
     }
 }
