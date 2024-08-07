@@ -1,11 +1,14 @@
 package mod.adrenix.nostalgic.listener.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.TickEvent;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,6 +21,19 @@ public abstract class PlayerListener
     public static void register()
     {
         PlayerEvent.PLAYER_JOIN.register(PlayerListener::onPlayerJoin);
+        TickEvent.PLAYER_POST.register(PlayerListener::onTick);
+    }
+
+    /**
+     * Enforces disabled sprinting and/or swimming when required by a level running the mod.
+     */
+    public static void onTick(Player player)
+    {
+        if (GameplayTweak.DISABLE_SPRINT.get() && player.isSprinting())
+            player.setSprinting(false);
+
+        if (GameplayTweak.DISABLE_SWIM.get() && player.isSwimming())
+            player.setSwimming(false);
     }
 
     /**
