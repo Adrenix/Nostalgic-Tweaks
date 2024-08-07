@@ -27,6 +27,8 @@ public abstract class ItemFilter
             return !isItemLike(item);
         else if (list.rules().contains(ItemRule.ONLY_BLOCKS))
             return !isBlockLike(item);
+        else if (list.rules().contains(ItemRule.ONLY_CHESTS))
+            return !isChestLike(item);
         else if (list.rules().contains(ItemRule.ONLY_EDIBLES))
             return !item.isEdible();
         else
