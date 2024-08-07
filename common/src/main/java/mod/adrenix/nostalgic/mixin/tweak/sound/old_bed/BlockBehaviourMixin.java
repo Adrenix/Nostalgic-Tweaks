@@ -21,6 +21,9 @@ public abstract class BlockBehaviourMixin
     )
     private SoundType nt_old_bed$modifyBedSoundType(SoundType soundType, BlockState state)
     {
+        if (state == null)
+            return soundType;
+
         if (SoundTweak.OLD_BED.get() && state.getBlock() instanceof BedBlock)
             return SoundType.STONE;
 
