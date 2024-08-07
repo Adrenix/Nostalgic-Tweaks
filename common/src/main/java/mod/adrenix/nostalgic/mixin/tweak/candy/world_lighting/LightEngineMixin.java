@@ -7,6 +7,7 @@ import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LightChunkGetter;
@@ -41,8 +42,8 @@ public abstract class LightEngineMixin
 
         boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
 
-        if (this.chunkSource.getLevel() instanceof ClientLevel level)
-            return NostalgicDataLayer.getLightValue(isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK, level, blockPos, lightValue);
+        if (this.chunkSource.getLevel() instanceof ClientLevel)
+            return NostalgicDataLayer.getLightValue(isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK, blockPos, lightValue);
 
         return lightValue;
     }
@@ -54,15 +55,15 @@ public abstract class LightEngineMixin
         method = "getDataLayerData",
         at = @At("RETURN")
     )
-    private DataLayer nt_world_lighting$getLightValue(@Nullable DataLayer original)
+    private DataLayer nt_world_lighting$getLightValue(@Nullable DataLayer original, SectionPos sectionPos)
     {
         if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class) || original == null)
             return original;
 
         boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
 
-        if (this.chunkSource.getLevel() instanceof ClientLevel level)
-            return new NostalgicDataLayer(original, level, isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK);
+        if (this.chunkSource.getLevel() instanceof ClientLevel)
+            return new NostalgicDataLayer(original, isSkyEngine ? LightLayer.SKY : LightLayer.BLOCK, sectionPos.asLong());
 
         return original;
     }
