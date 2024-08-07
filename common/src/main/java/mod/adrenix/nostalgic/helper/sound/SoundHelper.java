@@ -1,7 +1,8 @@
 package mod.adrenix.nostalgic.helper.sound;
 
-import mod.adrenix.nostalgic.mixin.access.EntityAccess;
 import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
+import mod.adrenix.nostalgic.mixin.access.EntityAccess;
+import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.Minecraft;
@@ -14,9 +15,13 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * This helper class is used only by the client.
@@ -70,6 +75,7 @@ public abstract class SoundHelper
         handler.apply(SoundHelper::isFurnaceHandled);
         handler.apply(SoundHelper::isAttackHandled);
         handler.apply(SoundHelper::isGrowthHandled);
+        handler.apply(SoundHelper::isRowingHandled);
         handler.apply(SoundHelper::isSquidHandled);
         handler.apply(SoundHelper::isChestHandled);
         handler.apply(SoundHelper::isLavaHandled);
@@ -136,6 +142,24 @@ public abstract class SoundHelper
     private static boolean isGrowthHandled(PositionSoundHandler handler)
     {
         return SoundTweak.DISABLE_GROWTH.get() && handler.mute(SoundEvents.BONE_MEAL_USE);
+    }
+
+    /**
+     * Mutes boat rowing sounds emitted by boats if the paddles are hidden.
+     */
+    private static boolean isRowingHandled(PositionSoundHandler handler)
+    {
+        if (!AnimationTweak.HIDE_BOAT_ROWING.get() || !handler.compare(SoundEvents.BOAT_PADDLE_WATER, SoundEvents.BOAT_PADDLE_LAND))
+            return false;
+
+        List<Boat> boats = handler.level.getEntitiesOfClass(Boat.class, new AABB(handler.blockPos).inflate(3.0D));
+
+        if (boats.isEmpty())
+            return false;
+
+        handler.mute(SoundEvents.BOAT_PADDLE_WATER, SoundEvents.BOAT_PADDLE_LAND);
+
+        return true;
     }
 
     /**
