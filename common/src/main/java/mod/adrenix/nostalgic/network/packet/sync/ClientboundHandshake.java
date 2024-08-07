@@ -74,7 +74,7 @@ public class ClientboundHandshake implements ModPacket
         {
             NostalgicTweaks.setNetworkVerification(true);
             ToastNotification.handshake();
-            PacketUtil.sendToServer(new ServerboundSync());
+            PacketUtil.sendToServer(new ServerboundSyncAll());
         }
         else
         {

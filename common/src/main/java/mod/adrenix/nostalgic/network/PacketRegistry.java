@@ -4,7 +4,8 @@ import dev.architectury.networking.NetworkManager.Side;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.network.packet.backup.*;
 import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
-import mod.adrenix.nostalgic.network.packet.sync.ServerboundSync;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncAll;
+import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
 import mod.adrenix.nostalgic.network.packet.tweak.*;
 
 public abstract class PacketRegistry
@@ -14,7 +15,8 @@ public abstract class PacketRegistry
         // Handshake
 
         ModPacket.register(Side.S2C, ClientboundHandshake.TYPE, ClientboundHandshake::new);
-        ModPacket.register(Side.C2S, ServerboundSync.TYPE, ServerboundSync::new);
+        ModPacket.register(Side.C2S, ServerboundSyncAll.TYPE, ServerboundSyncAll::new);
+        ModPacket.register(Side.C2S, ServerboundSyncTweak.TYPE, ServerboundSyncTweak::new);
 
         // Config Backups
 
