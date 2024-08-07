@@ -137,8 +137,9 @@ public abstract class HudHelper
     {
         if (HUD_MANAGED.ifEnabledThenDisable())
         {
-            while (PUSHED_ELEMENTS.stream().anyMatch(FlagHolder::ifEnabledThenDisable))
-                graphics.pose().popPose();
+            PUSHED_ELEMENTS.stream()
+                .filter(FlagHolder::ifEnabledThenDisable)
+                .forEach(holder -> graphics.pose().popPose());
 
             graphics.pose().popPose();
         }
