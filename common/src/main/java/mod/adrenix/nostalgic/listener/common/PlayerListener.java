@@ -30,6 +30,9 @@ public abstract class PlayerListener
      */
     public static void onTick(Player player)
     {
+        if (player.isCreative() || player.isSpectator())
+            return;
+
         if (GameplayTweak.DISABLE_SPRINT.get() && player.isSprinting())
             player.setSprinting(false);
 
