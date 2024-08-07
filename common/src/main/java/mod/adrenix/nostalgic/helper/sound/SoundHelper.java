@@ -4,15 +4,14 @@ import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
 import mod.adrenix.nostalgic.mixin.access.EntityAccess;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.tweak.config.SoundTweak;
-import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -318,31 +317,16 @@ public abstract class SoundHelper
         if (!SoundTweak.OLD_STEP.get() || !isEntityStep || isSingleplayer)
             return false;
 
-        Entity entity = null;
+        List<LivingEntity> entities = handler.level.getEntitiesOfClass(LivingEntity.class, new AABB(handler.blockPos).inflate(3.0D));
 
-        for (Entity next : handler.level.entitiesForRendering())
-        {
-            if (next instanceof ItemEntity)
-                continue;
-
-            boolean isX = MathUtil.tolerance((int) next.getX(), (int) handler.x);
-            boolean isY = MathUtil.tolerance((int) next.getY(), (int) handler.y);
-            boolean isZ = MathUtil.tolerance((int) next.getZ(), (int) handler.z);
-
-            if (isX && isY && isZ)
-            {
-                entity = next;
-                break;
-            }
-        }
-
-        if (entity == null)
+        if (entities.isEmpty())
             return false;
 
         BlockState standingOn = handler.level.getBlockState(handler.blockPos.below());
+        LivingEntity entity = entities.get(0);
 
         if (isEntityStepIgnored(entity) || standingOn.isAir())
-            return true;
+            return handler.mute();
 
         if (isModdedStepIgnored(entity) || !standingOn.getFluidState().isEmpty())
             return false;
