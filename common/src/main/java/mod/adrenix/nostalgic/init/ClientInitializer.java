@@ -19,6 +19,8 @@ import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.listener.client.GuiListener;
 import mod.adrenix.nostalgic.listener.client.TooltipListener;
+import mod.adrenix.nostalgic.tweak.factory.Tweak;
+import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.animate.Animator;
 import mod.adrenix.nostalgic.util.client.timer.ClientTimer;
 import net.minecraft.client.Minecraft;
@@ -43,7 +45,8 @@ abstract class ClientInitializer
         for (Panorama panorama : Panorama.values())
             ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, panorama);
 
-        ClientTickEvent.CLIENT_PRE.register(ClientInitializer::onTick);
+        ClientTickEvent.CLIENT_PRE.register(ClientInitializer::onPreTick);
+        ClientTickEvent.CLIENT_POST.register(ClientInitializer::onPostTick);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientInitializer::onPlayerQuit);
 
         AfterConfigSave.addInstruction(HudHelper::runAfterSave);
@@ -72,16 +75,26 @@ abstract class ClientInitializer
     }
 
     /**
-     * Instructions to perform every tick.
+     * Instructions to perform at the start of every tick.
      *
      * @param minecraft The {@link Minecraft} singleton instance.
      */
-    private static void onTick(Minecraft minecraft)
+    private static void onPreTick(Minecraft minecraft)
     {
         ClientTimer.getInstance().onTick();
         Animator.onTick();
         Panorama.onTick();
 
         LightingHelper.onTick();
+    }
+
+    /**
+     * Instructions to perform at the end of every tick.
+     *
+     * @param minecraft The {@link Minecraft} singleton instance.
+     */
+    private static void onPostTick(Minecraft minecraft)
+    {
+        TweakPool.stream().forEach(Tweak::invalidate);
     }
 }
