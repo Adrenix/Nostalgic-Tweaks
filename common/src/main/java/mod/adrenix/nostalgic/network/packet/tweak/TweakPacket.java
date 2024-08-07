@@ -106,6 +106,8 @@ public interface TweakPacket extends ModPacket
 
             return;
         }
+        else
+            tweak.connect();
 
         // Notify the client of sent changes
         if (NostalgicTweaks.isNetworkVerified())
