@@ -1294,6 +1294,9 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
      */
     public void resizeIfNeeded()
     {
+        if (this.isMoving)
+            return;
+
         boolean isResized = false;
 
         if (this.builder.resizeWidthForWidgets || this.builder.resizeForWidgets)
