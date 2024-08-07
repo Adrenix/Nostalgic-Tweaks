@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -210,5 +211,21 @@ public abstract class ItemUtil
             return null;
 
         return ClassUtil.cast(itemStack.getItem(), classType).orElse(null);
+    }
+
+    /**
+     * Check if an item is using a custom durability bar color.
+     *
+     * @param itemStack The {@link ItemStack} instance to check.
+     * @return Whether the given item is using a custom durability bar color.
+     */
+    @PublicAPI
+    public static boolean hasCustomBarColor(ItemStack itemStack)
+    {
+        float maxDamage = (float) itemStack.getMaxDamage();
+        float damageValue = (float) itemStack.getDamageValue();
+        int color = Mth.hsvToRgb((Math.max(0.0F, (maxDamage - damageValue) / maxDamage)) / 3.0F, 1.0F, 1.0F);
+
+        return itemStack.getBarColor() != color;
     }
 }
