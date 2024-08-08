@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractBlockRenderContext;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.ChunkRenderInfo;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -16,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,12 +27,14 @@ public abstract class TerrainRenderContextMixin extends AbstractBlockRenderConte
 {
     /* Shadows */
 
-    @Shadow @Final private ChunkRenderInfo chunkInfo;
+    @Shadow
+    protected abstract VertexConsumer getVertexConsumer(RenderType layer);
 
     /* Injections */
 
     /**
-     * Changes the quad vertices data of torch blocks.
+     * Modifies the quad vertices of torch blocks. This is not a long-term solution and will fail when Fabric API
+     * changes the target. A better solution that does not involve mixing into the API internals is needed.
      */
     @WrapOperation(
         method = "tessellateBlock",
@@ -48,7 +48,7 @@ public abstract class TerrainRenderContextMixin extends AbstractBlockRenderConte
         if (TorchHelper.isLikeTorch(blockState))
         {
             RenderType renderType = ItemBlockRenderTypes.getChunkRenderType(blockState);
-            VertexConsumer vertexConsumer = this.chunkInfo.getInitializedBuffer(renderType);
+            VertexConsumer vertexConsumer = this.getVertexConsumer(renderType);
             TorchHelper.writeVertices(poseStack, blockAndTintGetter, vertexConsumer, model, blockState, blockPos, randomSource.get());
         }
         else
