@@ -1,5 +1,10 @@
 # Nostalgic Tweaks 1.21 (NeoForge/Fabric) Changelog
 
+## 2.0.0-beta.904
+
+This update is a hotfix for a crash that occurs when using the latest version of the Fabric API. All users will need to
+update to at least Fabric API version 102.0.
+
 ## 2.0.0-beta.903
 
 This update focuses on performance, optimizations, and bug fixes. The network protocol has changed in this version.
