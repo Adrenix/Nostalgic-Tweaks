@@ -46,9 +46,7 @@ public class NostalgicDataLayer extends DataLayer
     @Override
     public @NotNull DataLayer copy()
     {
-        DataLayer parent = super.copy();
-
-        return new NostalgicDataLayer(parent, this.layer, this.sectionPos);
+        return new NostalgicDataLayer(this.parent.copy(), this.layer, this.sectionPos);
     }
 
     /**
@@ -97,5 +95,39 @@ public class NostalgicDataLayer extends DataLayer
         }
 
         return lightValue;
+    }
+
+    /**
+     * Implement other defaults, for mod compatibility reasons.
+     * */
+
+    @Override
+    public void set(int x, int y, int z, int value) {
+        parent.set(x, y, z, value);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return parent.isEmpty();
+    }
+
+    @Override
+    public void fill(int defaultValue) {
+        parent.fill(defaultValue);
+    }
+
+    @Override
+    public byte[] getData() {
+        return parent.getData();
+    }
+
+    @Override
+    public boolean isDefinitelyHomogenous() {
+        return parent.isDefinitelyHomogenous();
+    }
+
+    @Override
+    public boolean isDefinitelyFilledWith(int value) {
+        return parent.isDefinitelyFilledWith(value);
     }
 }
