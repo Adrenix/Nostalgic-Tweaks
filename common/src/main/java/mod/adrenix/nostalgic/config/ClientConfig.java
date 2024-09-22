@@ -498,6 +498,7 @@ public class ClientConfig implements ConfigMeta
         public boolean oldSmoothLighting = CandyTweak.OLD_SMOOTH_LIGHTING.register("oldSmoothLighting");
         public boolean oldNetherLighting = CandyTweak.OLD_NETHER_LIGHTING.register("oldNetherLighting");
         public boolean oldClassicEngine = CandyTweak.OLD_CLASSIC_ENGINE.register("oldClassicEngine");
+        public boolean disableSmoothLighting = CandyTweak.DISABLE_SMOOTH_LIGHTING.register("disableSmoothLighting");
 
         // Lightmap Texture
 

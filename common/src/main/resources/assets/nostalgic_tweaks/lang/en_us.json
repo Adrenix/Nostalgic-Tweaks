@@ -1346,6 +1346,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock": "Chest Light Blocking",
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock.info": "Recalculate chunk lighting so that chests block skylight and block light.",
   "gui.nostalgic_tweaks.config.eyeCandy.chestLightBlock.conflict": "This tweak will not work when§e Starlight§r is installed.",
+  "gui.nostalgic_tweaks.config.eyeCandy.disableSmoothLighting": "Disable Smooth Lighting",
+  "gui.nostalgic_tweaks.config.eyeCandy.disableSmoothLighting.info": "Override the game's smooth lighting setting",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight": "Round Robin Chunk Relighting",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.info": "When skylight changes due to the time of day, this will cause§6 round robin chunk updates§r. This will have a slight§c impact§r on performance when relighting occurs.",
   "gui.nostalgic_tweaks.config.eyeCandy.roundRobinRelight.conflict": "This tweak will not work if§e Starlight§r or§b Distant Horizons§r is installed.",
