@@ -194,6 +194,6 @@ public abstract class ClientKeyMapping
     {
         boolean newValue = !ModTweak.ENABLED.get();
         ModTweak.ENABLED.setCacheAndDiskThenSave(newValue);
-        AfterConfigSave.run();
+        AfterConfigSave.reloadAndRun();
     }
 }
