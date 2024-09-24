@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.inventory_screen;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import mod.adrenix.nostalgic.helper.candy.screen.inventory.ClassicCreativeModeInventoryScreen;
 import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -39,11 +40,14 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
     }
 
 
-    @ModifyReturnValue(
-            method = "getDisplayItems",
-            at = @At("RETURN")
+    @Inject(
+            method = "containerTick",
+            at = @At("HEAD")
     )
-    public Collection<ItemStack>  nt_creative_inventory_screen$GetItems(Collection<ItemStack> original, CallbackInfo callback) {
+    public void nt_creative_inventory$containerTick(CallbackInfo callback) {
+        this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));
+    }
+    public Collection<ItemStack>  GetItems() {
         var items = new ArrayList<ItemStack>();
 
         items.add(new ItemStack(Items.COBBLESTONE));
