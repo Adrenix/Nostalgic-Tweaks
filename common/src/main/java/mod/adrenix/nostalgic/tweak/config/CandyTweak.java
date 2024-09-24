@@ -179,6 +179,7 @@ public interface CandyTweak
     TweakFlag DISABLE_EMPTY_SHIELD_TEXTURE = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY).build();
     TweakFlag INVERTED_PLAYER_LIGHTING = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY).build();
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE_INVENTORY).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
+    TweakFlag OLD_CREATIVE_INVENTORY= TweakFlag.server(false, CandyGroup.INTERFACE_INVENTORY).ignoreNetworkCheck().build();
 
     // Generic Screen
 
