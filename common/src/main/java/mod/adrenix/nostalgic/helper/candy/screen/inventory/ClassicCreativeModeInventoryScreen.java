@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.helper.candy.screen.inventory;
 
+import com.google.common.reflect.Reflection;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,10 +12,15 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.SessionSearchTrees;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.searchtree.SearchTree;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,12 +29,8 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,9 +92,9 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
 
             ItemStack itemStack3;
             if (type == ClickType.CLONE) {
-                if (((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried().isEmpty() && slot.hasItem()) {
+                if (this.menu.getCarried().isEmpty() && slot.hasItem()) {
                     itemStack3 = slot.getItem();
-                    ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).setCarried(itemStack3.copyWithCount(itemStack3.getMaxStackSize()));
+                    this.menu.setCarried(itemStack3.copyWithCount(itemStack3.getMaxStackSize()));
                 }
 
                 return;
@@ -120,27 +122,27 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
                 }
             } else if (!itemStack2.isEmpty() && itemStack.isEmpty()) {
                 j = bl ? itemStack2.getMaxStackSize() : itemStack2.getCount();
-                ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).setCarried(itemStack2.copyWithCount(j));
+                this.menu.setCarried(itemStack2.copyWithCount(j));
             } else if (mouseButton == 0) {
-                ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).setCarried(ItemStack.EMPTY);
-            } else if (!((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried().isEmpty()) {
-                ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried().shrink(1);
+                this.menu.setCarried(ItemStack.EMPTY);
+            } else if (!this.menu.getCarried().isEmpty()) {
+                this.menu.getCarried().shrink(1);
             }
         } else if (this.menu != null) {
             var ff = CONTAINER_SIZE;
             var ts = CONTAINER_SIZE - 9;
-            itemStack = slot == null ? ItemStack.EMPTY : ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getSlot(slot.index).getItem();
-            ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).clicked(slot == null ? slotId : slot.index, mouseButton, type, this.minecraft.player);
+            itemStack = slot == null ? ItemStack.EMPTY : this.menu.getSlot(slot.index).getItem();
+            this.menu.clicked(slot == null ? slotId : slot.index, mouseButton, type, this.minecraft.player);
             if (AbstractContainerMenu.getQuickcraftHeader(mouseButton) == 2) {
                 for(int k = 0; k < 9; ++k) {
-                    this.minecraft.gameMode.handleCreativeModeItemAdd(((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getSlot(CONTAINER_SIZE + k).getItem(), ts + k);
+                    this.minecraft.gameMode.handleCreativeModeItemAdd(this.menu.getSlot(CONTAINER_SIZE + k).getItem(), ts + k);
                 }
             } else if (slot != null) {
-                itemStack2 = ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getSlot(slot.index).getItem();
-                this.minecraft.gameMode.handleCreativeModeItemAdd(itemStack2, slot.index - ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).slots.size() + 9 + ts);
+                itemStack2 = this.menu.getSlot(slot.index).getItem();
+                this.minecraft.gameMode.handleCreativeModeItemAdd(itemStack2, slot.index - this.menu.slots.size() + 9 + ts);
                 j = ff + mouseButton;
                 if (type == ClickType.SWAP) {
-                    this.minecraft.gameMode.handleCreativeModeItemAdd(itemStack, j - ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).slots.size() + 9 + ts);
+                    this.minecraft.gameMode.handleCreativeModeItemAdd(itemStack, j - this.menu.slots.size() + 9 + ts);
                 } else if (type == ClickType.THROW && !itemStack.isEmpty()) {
                     ItemStack itemStack4 = itemStack.copyWithCount(mouseButton == 0 ? 1 : itemStack.getMaxStackSize());
                     this.minecraft.player.drop(itemStack4, true);
@@ -152,6 +154,64 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         }
     }
 
+    private boolean scrolling;
+    private float scrollOffs;
+
+    private boolean canScroll() {
+        return this.menu.canScroll();
+    }
+
+    protected boolean insideScrollbar(double mouseX, double mouseY) {
+        int i = this.leftPos;
+        int j = this.topPos;
+        int k = i + 155;
+        int l = j + 17;
+        int m = k + 14;
+        int n = l + 160 + 2;
+        return mouseX >= (double)k && mouseY >= (double)l && mouseX < (double)m && mouseY < (double)n;
+    }
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (!this.canScroll()) {
+            return false;
+        } else {
+            this.scrollOffs = this.menu.subtractInputFromScroll(this.scrollOffs, scrollY);
+            ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).scrollTo(this.scrollOffs);
+            return true;
+        }
+    }
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (this.scrolling) {
+            int i = this.topPos + 16;
+            int j = i + 160 + 2;
+            this.scrollOffs = ((float)mouseY - (float)i - 7.5F) / ((float)(j - i) - 15.0F);
+            this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
+            ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).scrollTo(this.scrollOffs);
+            return true;
+        } else {
+            return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            if ( this.insideScrollbar(mouseX, mouseY)) {
+                this.scrolling = this.canScroll();
+                return true;
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            this.scrolling = false;
+        }
+
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(this.font, "Item Selection", this.titleLabelX, this.titleLabelY, 4210752, false);
@@ -159,7 +219,18 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(TextureLocation.ALL_ITEMS, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+
+        int left = this.leftPos;
+        int top = this.topPos;
+
+        guiGraphics.blit(TextureLocation.ALL_ITEMS, left, top, 0, 0, this.imageWidth, this.imageHeight);
+
+        int scrollLeft = left + 154;
+        int l = scrollLeft + 17;
+        int n = l + 160 + 2;
+        int scrollTop = top + 17 + (int)((float)(n - l - 17) * this.scrollOffs);
+
+        guiGraphics.blit(TextureLocation.ALL_ITEMS, scrollLeft, scrollTop, 0, 208, 16, 16);
     }
     @Environment(EnvType.CLIENT)
     private static class CustomCreativeSlot extends Slot {
@@ -184,46 +255,14 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         Minecraft minecraft;
         public float currentScroll = 0.0f;
 
-        public Collection<ItemStack> GetItems() {
-            var items = new ArrayList<ItemStack>();
-
-            items.add(new ItemStack(Items.COBBLESTONE));
-            items.add(new ItemStack(Items.STONE));
-            items.add(new ItemStack(Items.DIAMOND_ORE));
-            items.add(new ItemStack(Items.GOLD_ORE));
-            items.add(new ItemStack(Items.IRON_ORE));
-            items.add(new ItemStack(Items.COAL_ORE));
-            items.add(new ItemStack(Items.LAPIS_ORE));
-            items.add(new ItemStack(Items.REDSTONE_ORE));
-            items.add(new ItemStack(Items.STONE_BRICKS));
-            items.add(new ItemStack(Items.MOSSY_STONE_BRICKS));
-            items.add(new ItemStack(Items.CRACKED_STONE_BRICKS));
-            items.add(new ItemStack(Items.CHISELED_STONE_BRICKS));
-            items.add(new ItemStack(Items.CLAY));
-            items.add(new ItemStack(Items.DIAMOND_BLOCK));
-            items.add(new ItemStack(Items.GOLD_BLOCK));
-            items.add(new ItemStack(Items.IRON_BLOCK));
-            items.add(new ItemStack(Items.LAPIS_BLOCK));
-            items.add(new ItemStack(Items.BRICKS));
-            items.add(new ItemStack(Items.MOSSY_COBBLESTONE));
-            items.add(new ItemStack(Items.SMOOTH_STONE_SLAB));
-            items.add(new ItemStack(Items.SANDSTONE_SLAB));
-            items.add(new ItemStack(Items.OAK_SLAB));
-            items.add(new ItemStack(Items.COBBLESTONE_SLAB));
-            items.add(new ItemStack(Items.STONE_BRICK_SLAB));
-
-            if (this.minecraft != null) {
-                ClientPacketListener clientPacketListener = this.minecraft.getConnection();
-                SessionSearchTrees sessionSearchTrees = clientPacketListener.searchTrees();
-                SearchTree searchTree;
-                searchTree = sessionSearchTrees.creativeTagSearch();
-                String string = "";
-                items.addAll(searchTree.search(string.toLowerCase(Locale.ROOT)));
-            }
-
-            System.out.println("hi");
-            return items;
+        protected int calculateItemRowCount() {
+            return Mth.positiveCeilDiv(this.items.size(), NUM_COLS) - NUM_ROWS;
         }
+
+        protected float subtractInputFromScroll(float scrollOffs, double input) {
+            return Mth.clamp(scrollOffs - (float)(input / (double)this.calculateItemRowCount()), 0.0F, 1.0F);
+        }
+
         public ClassicItemPickerMenu(Player player) {
             super(player);
             this.localPlayer = player;
@@ -246,12 +285,11 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         }
         public void refreshItems() {
             this.items.clear();
-            this.items.addAll(GetItems());
+            this.items.addAll(ClassicCreativeModeItemHelper.GetItems());
         }
 
         @Override
         public void scrollTo(float pos) {
-            System.out.println("hi2");
             int i = this.getRowIndexForScroll(pos);
             this.currentScroll = pos;
             for(int j = 0; j < NUM_ROWS; ++j) {
