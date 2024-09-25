@@ -44,7 +44,18 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
             method = "<INIT>",
             at = @At("HEAD")
     )
-    public void nt_creative_inventory$OverriteInv(CallbackInfo callback) {
+    public void nt_creative_inventory$OverrideInv(CallbackInfo callback) {
+
+        if (CandyTweak.OLD_CREATIVE_INVENTORY.get())
+            this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));
+    }
+
+
+    @Inject(
+            method = "init",
+            at = @At("HEAD")
+    )
+    public void nt_creative_inventory$OverrideInit(CallbackInfo callback) {
 
         if (CandyTweak.OLD_CREATIVE_INVENTORY.get())
             this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));

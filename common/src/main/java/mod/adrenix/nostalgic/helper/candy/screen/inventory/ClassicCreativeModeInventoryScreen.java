@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.helper.candy.screen.inventory;
 
 import com.google.common.reflect.Reflection;
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -76,11 +77,24 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         if (slot != null && !slot.mayPickup(this.minecraft.player)) {
             return;
         }
-        if (slot == null) return;
-        ItemStack itemStack = ((CreativeModeInventoryScreen.ItemPickerMenu) this.menu).getCarried();
-        ItemStack itemStack2 = slot.getItem();
         int j;
-        if (slot.container == CONTAINER) {
+        ItemStack itemStack;
+        ItemStack itemStack2;
+        if (!this.menu.getCarried().isEmpty() && this.hasClickedOutside) {
+            if (mouseButton == 0) {
+                this.minecraft.player.drop(((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried(), true);
+                this.minecraft.gameMode.handleCreativeModeItemDrop(((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried());
+                this.menu.setCarried(ItemStack.EMPTY);
+            }
+
+            if (mouseButton == 1) {
+                itemStack = ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).getCarried().split(1);
+                this.minecraft.player.drop(itemStack, true);
+                this.minecraft.gameMode.handleCreativeModeItemDrop(itemStack);
+            }
+        } else if (slot != null && slot.container == CONTAINER) {
+            itemStack = ((CreativeModeInventoryScreen.ItemPickerMenu) this.menu).getCarried();
+            itemStack2 = slot.getItem();
             if (type == ClickType.SWAP) {
                 if (!itemStack2.isEmpty()) {
                     this.minecraft.player.getInventory().setItem(mouseButton, itemStack2.copyWithCount(itemStack2.getMaxStackSize()));
@@ -154,6 +168,10 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         }
     }
 
+    protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeft, int guiTop, int mouseButton) {
+        return mouseX < (double)guiLeft || mouseY < (double)guiTop || mouseX >= (double)(guiLeft + this.imageWidth) || mouseY >= (double)(guiTop + this.imageHeight);
+    }
+
     private boolean scrolling;
     private float scrollOffs;
 
@@ -200,7 +218,7 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
                 return true;
             }
         }
-
+        this.hasClickedOutside = hasClickedOutside(mouseX, mouseY, this.leftPos, this.topPos, button);
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
@@ -257,6 +275,14 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
 
     }
 
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+
+        if (!CandyTweak.OLD_CREATIVE_INVENTORY.get())
+            this.minecraft.setScreen(new CreativeModeInventoryScreen( this.minecraft.player, minecraft.level.enabledFeatures(), false));
+    }
+
     public static class ClassicItemPickerMenu extends CreativeModeInventoryScreen.ItemPickerMenu {
 
         Player localPlayer;
@@ -294,6 +320,14 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
         public void refreshItems() {
             this.items.clear();
             this.items.addAll(ClassicCreativeModeItemHelper.GetItems());
+        }
+
+        public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+            return slot.container != ClassicCreativeModeInventoryScreen.CONTAINER;
+        }
+
+        public boolean canDragTo(Slot slot) {
+            return slot.container != ClassicCreativeModeInventoryScreen.CONTAINER;
         }
 
         @Override
