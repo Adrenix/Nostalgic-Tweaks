@@ -175,7 +175,7 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
             return false;
         } else {
             this.scrollOffs = this.menu.subtractInputFromScroll(this.scrollOffs, scrollY);
-            ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).scrollTo(this.scrollOffs);
+            this.menu.scrollTo(this.scrollOffs);
             return true;
         }
     }
@@ -185,7 +185,7 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
             int j = i + 160 + 2;
             this.scrollOffs = ((float)mouseY - (float)i - 7.5F) / ((float)(j - i) - 15.0F);
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
-            ((CreativeModeInventoryScreen.ItemPickerMenu)this.menu).scrollTo(this.scrollOffs);
+            this.menu.scrollTo(this.scrollOffs);
             return true;
         } else {
             return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -232,6 +232,14 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
 
         guiGraphics.blit(TextureLocation.ALL_ITEMS, scrollLeft, scrollTop, 0, 208, 16, 16);
     }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
     @Environment(EnvType.CLIENT)
     private static class CustomCreativeSlot extends Slot {
         public CustomCreativeSlot(Container container, int slot, int x, int y) {

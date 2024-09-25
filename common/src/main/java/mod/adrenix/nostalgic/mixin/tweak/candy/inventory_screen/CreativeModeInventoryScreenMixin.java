@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.inventory_screen;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.helper.candy.screen.inventory.ClassicCreativeModeInventoryScreen;
 import mod.adrenix.nostalgic.helper.candy.screen.inventory.InventoryScreenHelper;
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -39,13 +40,23 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
         super(menu, playerInventory, title);
     }
 
+    @Inject(
+            method = "<INIT>",
+            at = @At("HEAD")
+    )
+    public void nt_creative_inventory$OverriteInv(CallbackInfo callback) {
+
+        if (CandyTweak.OLD_CREATIVE_INVENTORY.get())
+            this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));
+    }
 
     @Inject(
             method = "containerTick",
             at = @At("HEAD")
     )
     public void nt_creative_inventory$containerTick(CallbackInfo callback) {
-        this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));
+        if (CandyTweak.OLD_CREATIVE_INVENTORY.get())
+            this.minecraft.setScreen(new ClassicCreativeModeInventoryScreen(this.minecraft.player ));
     }
 
 

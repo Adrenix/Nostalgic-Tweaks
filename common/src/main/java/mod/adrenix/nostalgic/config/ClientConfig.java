@@ -337,8 +337,12 @@ public class ClientConfig implements ConfigMeta
         public boolean disableEmptyArmorTexture = CandyTweak.DISABLE_EMPTY_ARMOR_TEXTURE.register("disableEmptyArmorTexture");
         public boolean disableEmptyShieldTexture = CandyTweak.DISABLE_EMPTY_SHIELD_TEXTURE.register("disableEmptyShieldTexture");
         public boolean invertedPlayerLighting = CandyTweak.INVERTED_PLAYER_LIGHTING.register("invertedPlayerLighting");
+
+        // Creative Inventory Screen
         public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
         public boolean oldCreativeInventory = CandyTweak.OLD_CREATIVE_INVENTORY.register("oldCreativeInventory");
+        public String oldCreativeInventoryVersion = CandyTweak.OLD_CREATIVE_INVENTORY_VERSION.register("oldCreativeInventoryVersion");
+        public boolean oldCreativeInventoryAlwaysShowModernItems = CandyTweak.OLD_CREATIVE_INVENTORY_ALWAYS_SHOW_MODERN_ITEMS.register("oldCreativeInventoryAlwaysShowModernItems");
 
         // Generic Screen
 

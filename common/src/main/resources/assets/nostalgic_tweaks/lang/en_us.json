@@ -596,6 +596,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.interface_debug_chart": "Chart Data",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_furnace": "Furnace Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_inventory": "Inventory Screen",
+  "gui.nostalgic_tweaks.container.eyeCandy.interface_inventory_creative": "Creative Inventory Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_death": "Death Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_title": "Title Screen",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_title_logo": "Logo",
@@ -1216,6 +1217,13 @@
   "gui.nostalgic_tweaks.config.eyeCandy.furnaceBook.enum.disabled": "No recipe book button will be displayed on the furnace screen.",
   "gui.nostalgic_tweaks.config.eyeCandy.furnaceBook.enum.large": "The recipe book button will look similar to the modern button but will have an§a old school§r appearance. It will be located at the top right corner of the furnace screen.",
   "gui.nostalgic_tweaks.config.eyeCandy.furnaceBook.enum.small": "The recipe book button will be a small unobtrusive button with a question mark. It will be located at the top right corner of the furnace screen.",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventory": "Old Creative Inventory Screen",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventory.info": "The pre 1.3 inventory screen",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventoryVersion": "Creative Inventory Version",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventoryVersion.info": "The minimum version requirement for the set of the top inventory items.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventoryAlwaysShowModernItems": "Always show all items",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeInventoryAlwaysShowModernItems.info": "Always show the rest of the items at the bottom of the creative inventory, even if they don't match the specified inventory version",
 
   "gui.nostalgic_tweaks.config.eyeCandy.oldInventory": "Old Inventory Screen",
   "gui.nostalgic_tweaks.config.eyeCandy.oldInventory.info": "Bring back the old inventory screen texture. This will widen the player box background and change where the crafting grid is located. Other inventory tweaks can be used even if this tweak is§c disabled§r.",
