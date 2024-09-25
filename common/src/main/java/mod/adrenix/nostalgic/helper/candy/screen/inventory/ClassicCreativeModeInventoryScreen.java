@@ -232,7 +232,7 @@ public class ClassicCreativeModeInventoryScreen extends EffectRenderingInventory
     }
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, "Item Selection", this.titleLabelX, this.titleLabelY, 4210752, false);
+        guiGraphics.drawString(this.font, "Item selection", this.titleLabelX, this.titleLabelY, 4210752, false);
     }
 
     @Override
