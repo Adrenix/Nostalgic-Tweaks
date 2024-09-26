@@ -340,7 +340,7 @@ public class ClientConfig implements ConfigMeta
 
         // Creative Inventory Screen
         public Hotbar oldCreativeHotbar = CandyTweak.OLD_CREATIVE_HOTBAR.register("oldCreativeHotbar");
-        public boolean oldCreativeInventory = CandyTweak.OLD_CREATIVE_INVENTORY.register("oldCreativeInventory");
+        public OldCreativeInventory oldCreativeInventory = CandyTweak.OLD_CREATIVE_INVENTORY.register("oldCreativeInventory");
         public String oldCreativeInventoryVersion = CandyTweak.OLD_CREATIVE_INVENTORY_VERSION.register("oldCreativeInventoryVersion");
         public boolean oldCreativeInventoryAlwaysShowModernItems = CandyTweak.OLD_CREATIVE_INVENTORY_ALWAYS_SHOW_MODERN_ITEMS.register("oldCreativeInventoryAlwaysShowModernItems");
 

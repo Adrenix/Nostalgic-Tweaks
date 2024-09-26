@@ -182,7 +182,7 @@ public interface CandyTweak
     // Creative Inventory Screen
 
     TweakEnum<Hotbar> OLD_CREATIVE_HOTBAR = TweakEnum.server(Hotbar.CLASSIC, CandyGroup.INTERFACE_INVENTORY_CREATIVE).ignoreNetworkCheck().whenDisabled(Hotbar.MODERN).build();
-    TweakFlag OLD_CREATIVE_INVENTORY = TweakFlag.client(false, CandyGroup.INTERFACE_INVENTORY_CREATIVE).build();
+    TweakEnum<OldCreativeInventory> OLD_CREATIVE_INVENTORY = TweakEnum.client(OldCreativeInventory.MODERN, CandyGroup.INTERFACE_INVENTORY_CREATIVE).build();
     TweakText OLD_CREATIVE_INVENTORY_VERSION = TweakText.client("r1.2.5", CandyGroup.INTERFACE_INVENTORY_CREATIVE).build();
     TweakFlag OLD_CREATIVE_INVENTORY_ALWAYS_SHOW_MODERN_ITEMS = TweakFlag.client(true, CandyGroup.INTERFACE_INVENTORY_CREATIVE).build();
 

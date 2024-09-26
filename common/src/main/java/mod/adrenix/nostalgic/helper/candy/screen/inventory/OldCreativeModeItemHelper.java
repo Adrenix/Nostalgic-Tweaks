@@ -1,20 +1,80 @@
 package mod.adrenix.nostalgic.helper.candy.screen.inventory;
 
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import net.fabricmc.loader.impl.util.log.Log;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ClassicCreativeModeItemHelper {
+public class OldCreativeModeItemHelper {
 
 
     public static Collection<ItemStack> GetItems() {
         var ver = VersionInt(CandyTweak.OLD_CREATIVE_INVENTORY_VERSION.get());
         return GetItemsFromVersion(ver);
     }
+
+
+    public static Collection<ItemStack> GetClassicItems() {
+        var items = new ArrayList<Item>();
+        int ver = 99999999;
+
+        if (ver >= VersionInt("p0.0")) items.add(Items.STONE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.COBBLESTONE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.BRICKS);
+        if (ver >= VersionInt("p0.0")) items.add(Items.DIRT);
+        if (ver >= VersionInt("p0.0")) items.add(Items.OAK_PLANKS);
+        if (ver >= VersionInt("p0.0")) items.add(Items.OAK_LOG);
+        if (ver >= VersionInt("p0.0")) items.add(Items.OAK_LEAVES);
+        if (ver >= VersionInt("p0.0")) items.add(Items.GLASS);
+        if (ver >= VersionInt("p0.0")) items.add(Items.SMOOTH_STONE_SLAB);
+        if (ver >= VersionInt("p0.0")) items.add(Items.MOSSY_COBBLESTONE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.OAK_SAPLING);
+        if (ver >= VersionInt("p0.0")) items.add(Items.DANDELION);
+        if (ver >= VersionInt("p0.0")) items.add(Items.POPPY);
+        if (ver >= VersionInt("p0.0")) items.add(Items.BROWN_MUSHROOM);
+        if (ver >= VersionInt("p0.0")) items.add(Items.RED_MUSHROOM);
+        if (ver >= VersionInt("p0.0")) items.add(Items.SAND);
+        if (ver >= VersionInt("p0.0")) items.add(Items.GRAVEL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.SPONGE);
+
+        if (ver >= VersionInt("p0.0")) items.add(Items.RED_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.ORANGE_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.YELLOW_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.LIME_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.GREEN_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.CYAN_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.LIGHT_BLUE_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.BLUE_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.BLUE_WOOL); // dunno what to use here since this wool colour doesn't exist anymore
+        if (ver >= VersionInt("p0.0")) items.add(Items.PURPLE_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.MAGENTA_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.PINK_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.PINK_WOOL); // dunno what to use here since this wool colour doesn't exist anymore
+        //if (ver >= VersionInt("p0.0")) items.add(Items.BLACK_WOOL); // Black wool didn't exist
+        if (ver >= VersionInt("p0.0")) items.add(Items.GRAY_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.LIGHT_GRAY_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.WHITE_WOOL);
+        if (ver >= VersionInt("p0.0")) items.add(Items.COAL_ORE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.IRON_ORE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.GOLD_ORE);
+        if (ver >= VersionInt("p0.0")) items.add(Items.IRON_BLOCK);
+        if (ver >= VersionInt("p0.0")) items.add(Items.GOLD_BLOCK);
+        if (ver >= VersionInt("p0.0")) items.add(Items.BOOKSHELF);
+        if (ver >= VersionInt("p0.0")) items.add(Items.TNT);
+        if (ver >= VersionInt("p0.0")) items.add(Items.OBSIDIAN);
+
+
+        var itemstacks = new ArrayList<ItemStack>();
+
+        for (Item item : items) {
+            itemstacks.add(new ItemStack(item));
+        }
+
+        return itemstacks;
+    }
+
 
     // ABCDEFG
     // A = Release State: 0 (Pre-Classic), 1 (Classic/Indev), 2 (Alpha), 3 (Beta), 4 (Release). 4 by default (Release 1.2.5)
