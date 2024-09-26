@@ -80,6 +80,7 @@
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
     "candy.name_tag.EntityRendererMixin",
     "candy.old_hud.GuiMixin",
+    "candy.inventory_screen.CreativeModeInventoryScreenMixin",
     "candy.particle_engine.ParticleEngineMixin",
     "candy.player_particles.ClientLevelMixin",
     "candy.player_particles.EntityMixin",
