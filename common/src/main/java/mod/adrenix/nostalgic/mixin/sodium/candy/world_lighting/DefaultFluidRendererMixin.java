@@ -1,12 +1,13 @@
-package mod.adrenix.nostalgic.fabric.mixin.sodium.candy.world_lighting;
+package mod.adrenix.nostalgic.mixin.sodium.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import me.jellysquid.mods.sodium.client.model.color.ColorProvider;
-import me.jellysquid.mods.sodium.client.model.light.LightPipeline;
-import me.jellysquid.mods.sodium.client.model.light.data.QuadLightData;
-import me.jellysquid.mods.sodium.client.model.quad.ModelQuadView;
-import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.FluidRenderer;
-import me.jellysquid.mods.sodium.client.world.WorldSlice;
+import net.caffeinemc.mods.sodium.client.model.color.ColorProvider;
+import net.caffeinemc.mods.sodium.client.model.light.LightPipeline;
+import net.caffeinemc.mods.sodium.client.model.light.data.QuadLightData;
+import net.caffeinemc.mods.sodium.client.model.quad.ModelQuadViewMutable;
+import net.caffeinemc.mods.sodium.client.model.quad.properties.ModelQuadFacing;
+import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.DefaultFluidRenderer;
+import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.BlockPos;
@@ -19,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(FluidRenderer.class)
-public abstract class FluidRendererMixin
+@Mixin(DefaultFluidRenderer.class)
+public abstract class DefaultFluidRendererMixin
 {
     /* Shadows */
 
@@ -50,12 +51,12 @@ public abstract class FluidRendererMixin
         method = "updateQuad",
         at = @At("RETURN")
     )
-    private void nt_sodium_world_lighting$modifyWaterLight(ModelQuadView quad, WorldSlice world, BlockPos blockPos, LightPipeline lighter, Direction direction, float brightness, ColorProvider<FluidState> colorProvider, FluidState fluidState, CallbackInfo callback)
+    private void nt_sodium_world_lighting$modifyWaterLight(ModelQuadViewMutable quad, LevelSlice level, BlockPos pos, LightPipeline lighter, Direction dir, ModelQuadFacing facing, float brightness, ColorProvider<FluidState> colorProvider, FluidState fluidState, CallbackInfo ci)
     {
         if (!CandyTweak.OLD_WATER_LIGHTING.get())
             return;
 
-        int light = LightingHelper.getWaterLight(world, blockPos);
+        int light = LightingHelper.getWaterLight(level, pos);
 
         for (int i = 0; i < 4; i++)
             this.quadLightData.lm[i] = light;

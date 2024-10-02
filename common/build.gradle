@@ -13,6 +13,11 @@ dependencies {
     
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // Sodium Support
+    modCompileOnly "maven.modrinth:sodium:${rootProject.fabric_sodium_version}"
+    modCompileOnlyApi fabricApi.module("fabric-api-base", rootProject.fabric_api_version)
+    modCompileOnlyApi fabricApi.module("fabric-renderer-api-v1", rootProject.fabric_api_version)
 }
 
 publishing {

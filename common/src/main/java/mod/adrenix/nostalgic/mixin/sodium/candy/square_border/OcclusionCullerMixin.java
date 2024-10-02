@@ -1,9 +1,9 @@
-package mod.adrenix.nostalgic.fabric.mixin.sodium.candy.square_border;
+package mod.adrenix.nostalgic.mixin.sodium.candy.square_border;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import me.jellysquid.mods.sodium.client.render.chunk.RenderSection;
-import me.jellysquid.mods.sodium.client.render.chunk.occlusion.OcclusionCuller;
-import me.jellysquid.mods.sodium.client.render.viewport.CameraTransform;
+import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
+import net.caffeinemc.mods.sodium.client.render.chunk.occlusion.OcclusionCuller;
+import net.caffeinemc.mods.sodium.client.render.viewport.CameraTransform;
 import mod.adrenix.nostalgic.helper.candy.level.ServerLevelHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import org.spongepowered.asm.mixin.Mixin;

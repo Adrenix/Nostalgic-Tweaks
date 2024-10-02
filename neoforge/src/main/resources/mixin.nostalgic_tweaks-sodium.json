@@ -1,7 +1,7 @@
 {
   "required": false,
   "package": "mod.adrenix.nostalgic.mixin.sodium",
-  "plugin": "mod.adrenix.nostalgic.fabric.mixin.MixinSodiumPlugin",
+  "plugin": "mod.adrenix.nostalgic.neoforge.mixin.MixinSodiumPlugin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "priority": 1001,

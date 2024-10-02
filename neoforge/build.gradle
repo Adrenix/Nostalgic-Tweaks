@@ -31,6 +31,9 @@ dependencies {
     // Embeddium Support
     modCompileOnly "maven.modrinth:embeddium:${rootProject.neoforge_embeddium_version}"
 
+    // Sodium Support
+    modCompileOnly "maven.modrinth:sodium:${rootProject.neoforge_sodium_version}"
+
     // Apple Skin Support
     modCompileOnly "maven.modrinth:appleskin:${rootProject.neoforge_appleskin_version}"
 }
