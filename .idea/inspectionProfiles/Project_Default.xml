@@ -1,0 +1,14 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredTypes" value="java.util.stream.Stream,java.util.stream.IntStream,java.util.stream.LongStream,java.util.stream.DoubleStream,java.io.ByteArrayOutputStream,java.io.ByteArrayInputStream,java.io.StringBufferInputStream,java.io.CharArrayWriter,java.io.CharArrayReader,java.io.StringWriter,java.io.StringReader,java.util.Formatter,java.util.Scanner,org.springframework.context.ConfigurableApplicationContext,io.micronaut.context.ApplicationContext,net.minecraft.world.level.Level,com.mojang.blaze3d.vertex.MeshData" />
+    </inspection_tool>
+    <inspection_tool class="IfCanBeSwitch" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="minimumBranches" value="5" />
+      <option name="suggestIntSwitches" value="false" />
+      <option name="suggestEnumSwitches" value="false" />
+    </inspection_tool>
+    <inspection_tool class="StructuralWrap" enabled="false" level="TYPO" enabled_by_default="false" />
+  </profile>
+</component>
