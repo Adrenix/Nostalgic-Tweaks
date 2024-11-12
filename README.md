@@ -1,5 +1,5 @@
 # Mod Relicense
-As of August 15th, 2024, Nostalgic Tweaks is now under the LGPLv3 license. I can no longer provide continuous updates to the mod and I will be stepping away from development. All versions starting at `v2.0.0-beta.905` and later will use this license. Any mod developer(s) that would like to continue my work on this project may fork it and distribute their changes under a new mod name.
+As of August 15th, 2024, Nostalgic Tweaks is now under the LGPLv3 license. All versions starting at `v2.0.0-beta.905` and later will use this license. Mod developers are allowed to fork this project and distribute their changes under a new mod name. However, if you would rather join the development team, then please reach out to us at the mod's [Discord](https://discord.gg/jWdfVh3) server.
 
 # Development Branches
 - [1.21 (Beta 9)](https://github.com/Adrenix/Nostalgic-Tweaks/tree/1.21) **LTS**
