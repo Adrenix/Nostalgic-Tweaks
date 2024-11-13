@@ -40,6 +40,7 @@ public interface CandyGroup
     Container INTERFACE_ANVIL = Container.group(INTERFACE, "interface_anvil").color(0x969696).icon(Blocks.ANVIL).build();
     Container INTERFACE_DEATH = Container.group(INTERFACE, "interface_death").color(0xC7C7C7).icon(Blocks.SKELETON_SKULL).build();
     Container INTERFACE_INVENTORY = Container.group(INTERFACE, "interface_inventory").color(0xB6896C).icon(Blocks.PLAYER_HEAD).build();
+    Container INTERFACE_INVENTORY_CREATIVE = Container.group(INTERFACE, "interface_inventory_creative").color(0x2ABEEB).icon(Blocks.DIAMOND_BLOCK).build();
     Container INTERFACE_CRAFTING = Container.group(INTERFACE, "interface_crafting").color(0xF38A47).icon(Blocks.CRAFTING_TABLE).build();
     Container INTERFACE_FURNACE = Container.group(INTERFACE, "interface_furnace").color(0x8F8F90).icon(Blocks.FURNACE).build();
     Container INTERFACE_DEBUG = Container.group(INTERFACE, "interface_debug").color(0xFB4A4C).icon(Icons.BUG).build();
