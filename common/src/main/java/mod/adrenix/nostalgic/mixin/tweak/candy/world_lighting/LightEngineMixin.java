@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.helper.candy.light.NostalgicDataLayer;
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -57,7 +58,9 @@ public abstract class LightEngineMixin
     )
     private DataLayer nt_world_lighting$getLightValue(@Nullable DataLayer original, SectionPos sectionPos)
     {
-        if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class) || original == null)
+        // This breaks the functionality of some mods (Voxy, for example) so if we don't need the custom data layer, don't return it.
+        // TODO: Properly look into why this breaks these mods, instead of this stopgap fix.
+        if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class) || original == null || !(CandyTweak.ROUND_ROBIN_RELIGHT.get() || CandyTweak.OLD_CLASSIC_ENGINE.get()))
             return original;
 
         boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
