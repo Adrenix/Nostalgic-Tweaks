@@ -7,8 +7,10 @@ import mod.adrenix.nostalgic.client.gui.GearSpinner;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SetupOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SodiumOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -96,15 +98,24 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void tick()
     {
         super.tick();
 
-        if (!ModTweak.OPENED_CONFIG_SCREEN.get())
+        if (!ModTweak.OPENED_CONFIG_SCREEN.get() && !SodiumOverlay.OPENED.get())
         {
             ModTweak.OPENED_CONFIG_SCREEN.setDiskAndSave(true);
             SetupOverlay.open();
+        }
+
+        if (!ModTweak.OPENED_SODIUM_SCREEN.get() && !SetupOverlay.OPENED.get() && ModTracker.SODIUM.isInstalled())
+        {
+            ModTweak.OPENED_SODIUM_SCREEN.setDiskAndSave(true);
+            SodiumOverlay.open();
         }
     }
 
