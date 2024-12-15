@@ -59,9 +59,6 @@
         "modmenu.discord": "${mod_discord}",
         "gui.nostalgic_tweaks.support": "${mod_donate}"
       }
-    },
-    "sodium:options": {
-      "mixin.features.render.world.clouds": false
     }
   }
 }
