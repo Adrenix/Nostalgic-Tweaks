@@ -150,6 +150,12 @@ public interface ModTweak
     TweakFlag OPENED_CONFIG_SCREEN = TweakFlag.client(false, Category.MOD).ignore().load().build();
 
     /**
+     * Control flag that determines if the user has successfully interacted with the Sodium information overlay. If so,
+     * then the Sodium overlay screen will not open when the config screen is opened.
+     */
+    TweakFlag OPENED_SODIUM_SCREEN = TweakFlag.client(false, Category.MOD).ignore().load().build();
+
+    /**
      * Control flag that determines if the screen has been displayed to the user. This field is saved when the supporter
      * button is clicked on the home screen.
      */
