@@ -97,37 +97,41 @@ public class NostalgicDataLayer extends DataLayer
         return lightValue;
     }
 
-    /**
-     * Implement other defaults, for mod compatibility reasons.
-     * */
+    /* Overrides for Mod Compatibility */
 
     @Override
-    public void set(int x, int y, int z, int value) {
-        parent.set(x, y, z, value);
+    public void set(int x, int y, int z, int value)
+    {
+        this.parent.set(x, y, z, value);
     }
 
     @Override
-    public boolean isEmpty() {
-        return parent.isEmpty();
+    public boolean isEmpty()
+    {
+        return this.parent.isEmpty();
     }
 
     @Override
-    public void fill(int defaultValue) {
-        parent.fill(defaultValue);
+    public void fill(int defaultValue)
+    {
+        this.parent.fill(defaultValue);
     }
 
     @Override
-    public byte[] getData() {
-        return parent.getData();
+    public byte @NotNull [] getData()
+    {
+        return this.parent.getData();
     }
 
     @Override
-    public boolean isDefinitelyHomogenous() {
-        return parent.isDefinitelyHomogenous();
+    public boolean isDefinitelyHomogenous()
+    {
+        return this.parent.isDefinitelyHomogenous();
     }
 
     @Override
-    public boolean isDefinitelyFilledWith(int value) {
-        return parent.isDefinitelyFilledWith(value);
+    public boolean isDefinitelyFilledWith(int value)
+    {
+        return this.parent.isDefinitelyFilledWith(value);
     }
 }
