@@ -49,6 +49,7 @@ public class ClientConfig implements ConfigMeta
 
         public StringSet favoriteTweaks = ModTweak.FAVORITE_TWEAKS.register("favoriteTweaks");
         public boolean openedConfigScreen = ModTweak.OPENED_CONFIG_SCREEN.register("openedConfigScreen");
+        public boolean openedSodiumScreen = ModTweak.OPENED_SODIUM_SCREEN.register("openedSodiumScreen");
         public boolean openedSupporterScreen = ModTweak.OPENED_SUPPORTER_SCREEN.register("openedSupporterScreen");
         public boolean persistentConfigScreen = ModTweak.PERSISTENT_CONFIG_SCREEN.register("persistentConfigScreen");
 

@@ -1,6 +1,6 @@
-package mod.adrenix.nostalgic.fabric.mixin;
+package mod.adrenix.nostalgic.mixin.plugin;
 
-import net.fabricmc.loader.api.FabricLoader;
+import mod.adrenix.nostalgic.ModFinderPlatform;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -37,7 +37,7 @@ public class MixinSodiumPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return FabricLoader.getInstance().getModContainer("sodium").isPresent();
+        return ModFinderPlatform.isInstalled("sodium");
     }
 
     /**

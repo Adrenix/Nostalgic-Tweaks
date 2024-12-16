@@ -37,4 +37,18 @@ public class IntegerHolder extends Holder<Integer>
 
         return previousValue;
     }
+
+    /**
+     * Get the current value and then decrement the held value by one.
+     *
+     * @return The held value before it is decremented.
+     */
+    public int getAndDecrement()
+    {
+        int previousValue = this.value;
+
+        this.set(this.value - 1);
+
+        return previousValue;
+    }
 }

@@ -165,6 +165,41 @@ public abstract class TorchHelper
     }
 
     /**
+     * Apply shearing to the given {@link Matrix4f}.
+     *
+     * @param matrix     The {@link Matrix4f} to shear.
+     * @param blockState The {@link BlockState} to get direction data from.
+     */
+    public static void applyShear(Matrix4f matrix, BlockState blockState)
+    {
+        Direction direction = blockState.getValue(WallTorchBlock.FACING);
+
+        switch (direction)
+        {
+            case NORTH ->
+            {
+                matrix.m12(-SHEAR);
+                matrix.translate(0.0F, Y_SHIFT, XZ_SHIFT);
+            }
+            case SOUTH ->
+            {
+                matrix.m12(SHEAR);
+                matrix.translate(0.0F, Y_SHIFT, -XZ_SHIFT);
+            }
+            case EAST ->
+            {
+                matrix.m10(SHEAR);
+                matrix.translate(-XZ_SHIFT, Y_SHIFT, 0.0F);
+            }
+            case WEST ->
+            {
+                matrix.m10(-SHEAR);
+                matrix.translate(XZ_SHIFT, Y_SHIFT, 0.0F);
+            }
+        }
+    }
+
+    /**
      * Write sheared torch model data to a vertex consumer.
      *
      * @param poseStack          The current {@link PoseStack}.

@@ -35,6 +35,9 @@ config = "mixin.nostalgic_tweaks-neoforge.json"
 config = "mixin.nostalgic_tweaks-required.json"
 
 [[mixins]]
+config = "mixin.nostalgic_tweaks-sodium.json"
+
+[[mixins]]
 config = "mixin.nostalgic_tweaks-embeddium.json"
 
 [[dependencies.nostalgic_tweaks]]
@@ -47,7 +50,7 @@ side = "BOTH"
 [[dependencies.nostalgic_tweaks]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21]"
+versionRange = "[1.21,1.21.1]"
 ordering = "NONE"
 side = "BOTH"
 

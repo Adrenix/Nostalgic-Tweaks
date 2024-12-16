@@ -125,6 +125,15 @@ public interface Lang
         Translation CYCLE_PANORAMA_INFO = from("cycle_panorama_info");
         Translation NEXT_PANORAMA = from("next_panorama");
         Translation NEXT_PANORAMA_INFO = from("next_panorama_info");
+        Translation SODIUM_TITLE = from("sodium_title");
+        Translation SODIUM_CLOUDS_TITLE = from("sodium_clouds_title");
+        Translation SODIUM_CLOUDS_INFO = from("sodium_clouds_info");
+        Translation SODIUM_CLOUDS_OVERRIDE = from("sodium_clouds_override");
+        Translation SODIUM_CLOUDS_RESTART = from("sodium_clouds_restart");
+        Translation SODIUM_OPEN_PROPERTIES = from("sodium_open_properties");
+        Translation SODIUM_COPY_CLOUDS = from("sodium_copy_clouds");
+        Translation SODIUM_MISSING_FILE_HEADER = from("sodium_missing_file_header");
+        Translation SODIUM_MISSING_FILE_BODY = from("sodium_missing_file_body");
 
         private static Translation from(String name)
         {
@@ -409,7 +418,10 @@ public interface Lang
         Translation MANAGE_LISTING = from("manage_listing");
         Translation HOME_INIT = from("home_init");
         Translation HOME_DEBUG = from("home_debug");
+        Translation HOME_SODIUM = from("home_sodium");
         Translation HOME_SUPPORTERS = from("home_supporters");
+        Translation SODIUM_PROPERTIES = from("sodium_properties");
+        Translation SODIUM_COPY_PROPERTY = from("sodium_copy_property");
         Translation FILTER_DISABLED = from("filter_disabled");
         Translation FAVORITE_DISABLED = from("favorite_disabled");
         Translation FAVORITE = from("favorite");

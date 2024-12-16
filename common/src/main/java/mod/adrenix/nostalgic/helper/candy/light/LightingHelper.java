@@ -24,6 +24,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -77,6 +78,13 @@ public abstract class LightingHelper
     public static final ConcurrentLinkedDeque<Pair<Long, Long>> PACKED_CHUNK_BLOCK_QUEUE = new ConcurrentLinkedDeque<>();
 
     /**
+     * This is a queue of non-built packed section coordinates that will later be scheduled for rebuilding in Sodium's
+     * render section manager. A queue is used to ensure all sections receive relighting during terrain rendering. Once
+     * Sodium's render section manager has finished terrain rendering, this queue is emptied.
+     */
+    public static final HashSet<Long> SODIUM_REBUILD_QUEUE = new HashSet<>();
+
+    /**
      * This tracks whether the level renderer needs to relight all chunks loaded by the client player.
      */
     public static final FlagHolder RELIGHT_ALL_CHUNKS = FlagHolder.off();
@@ -111,6 +119,7 @@ public abstract class LightingHelper
         TIME_SKYLIGHT.set(-1);
         WEATHER_SKYLIGHT.set(-1);
         ENQUEUE_RELIGHT.disable();
+        SODIUM_REBUILD_QUEUE.clear();
         PACKED_RELIGHT_QUEUE.clear();
         PACKED_CHUNK_BLOCK_QUEUE.clear();
     }

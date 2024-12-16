@@ -1,14 +1,14 @@
 {
   "required": false,
-  "package": "mod.adrenix.nostalgic.fabric.mixin.sodium",
-  "plugin": "mod.adrenix.nostalgic.fabric.mixin.MixinSodiumPlugin",
+  "package": "mod.adrenix.nostalgic.mixin.sodium",
+  "plugin": "mod.adrenix.nostalgic.mixin.plugin.MixinSodiumPlugin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
     "candy.square_border.OcclusionCullerMixin",
     "candy.torch_block.BlockRendererMixin",
-    "candy.world_lighting.FluidRendererMixin",
+    "candy.world_lighting.DefaultFluidRendererMixin",
     "candy.world_lighting.LevelRendererMixin"
   ]
 }

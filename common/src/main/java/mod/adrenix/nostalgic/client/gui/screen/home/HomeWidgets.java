@@ -5,6 +5,7 @@ import mod.adrenix.nostalgic.client.gui.screen.WidgetManager;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.DebugOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SetupOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SodiumOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.supporter.SupporterOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
@@ -16,6 +17,7 @@ import mod.adrenix.nostalgic.client.gui.widget.icon.IconWidget;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
+import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.gui.LinkUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderPass;
@@ -24,6 +26,7 @@ import mod.adrenix.nostalgic.util.common.LinkLocation;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.asset.TextureIcon;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.timer.FlagTimer;
@@ -177,13 +180,18 @@ public class HomeWidgets implements WidgetManager
 
         /* Extras */
 
+        IntegerHolder tabOrder = IntegerHolder.create(4);
+
+        if (ModTracker.SODIUM.isInstalled())
+            tabOrder.getAndIncrement();
+
         ButtonWidget debug = ButtonWidget.create()
             .icon(Icons.BUG)
             .tooltip(Lang.Home.DEBUG, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.HOME_DEBUG, 35)
             .fromScreenEndX(1)
             .fromScreenEndY(1)
-            .tabOrderGroup(4)
+            .tabOrderGroup(tabOrder.getAndDecrement())
             .onPress(() -> new DebugOverlay().open())
             .build(this.homeScreen::addWidget);
 
@@ -192,7 +200,7 @@ public class HomeWidgets implements WidgetManager
             .tooltip(Lang.Home.SUPPORTERS, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.HOME_SUPPORTERS, 35)
             .leftOf(debug, 1)
-            .tabOrderGroup(3)
+            .tabOrderGroup(tabOrder.getAndDecrement())
             .onPress(() -> new SupporterOverlay().open())
             .build(this.homeScreen::addWidget);
 
@@ -200,14 +208,26 @@ public class HomeWidgets implements WidgetManager
             .visibleIf(heart::isHoveredOrFocused)
             .build(this.homeScreen::addWidget);
 
-        ButtonWidget.create()
+        ButtonWidget tools = ButtonWidget.create()
             .icon(Icons.MECHANICAL_TOOLS)
             .tooltip(Lang.Home.INIT_CONFIG, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.HOME_INIT, 35)
             .leftOf(heart, 1)
-            .tabOrderGroup(2)
+            .tabOrderGroup(tabOrder.getAndDecrement())
             .onPress(SetupOverlay::open)
             .build(this.homeScreen::addWidget);
+
+        if (ModTracker.SODIUM.isInstalled())
+        {
+            ButtonWidget.create()
+                .icon(Icons.SODIUM)
+                .tooltip(Lang.Home.SODIUM_TITLE, 35, 500L, TimeUnit.MILLISECONDS)
+                .infoTooltip(Lang.Tooltip.HOME_SODIUM, 35)
+                .leftOf(tools, 1)
+                .tabOrderGroup(tabOrder.getAndDecrement())
+                .onPress(SodiumOverlay::open)
+                .build(this.homeScreen::addWidget);
+        }
 
         /* Copyright */
 
@@ -218,7 +238,7 @@ public class HomeWidgets implements WidgetManager
             .centerAligned()
             .centerInScreenX()
             .fromScreenEndY(1)
-            .tabOrderGroup(1)
+            .tabOrderGroup(tabOrder.getAndDecrement())
             .build(this.homeScreen::addWidget);
     }
 

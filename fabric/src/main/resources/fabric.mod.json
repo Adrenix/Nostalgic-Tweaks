@@ -47,11 +47,11 @@
     "fabric-api": ">=${fabric_api_version}",
     "architectury": ">=${architectury_version}",
     "minecraft": [
-      "=1.21"
+      ">=1.21 <=1.21.1"
     ]
   },
   "breaks": {
-    "sodium": ">=0.6-alpha"
+    "sodium": "<0.6-alpha >0.7-alpha"
   },
   "custom": {
     "modmenu": {
@@ -59,9 +59,6 @@
         "modmenu.discord": "${mod_discord}",
         "gui.nostalgic_tweaks.support": "${mod_donate}"
       }
-    },
-    "sodium:options": {
-      "mixin.features.render.world.clouds": false
     }
   }
 }
