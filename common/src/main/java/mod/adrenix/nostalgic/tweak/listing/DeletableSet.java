@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.tweak.listing;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -146,7 +147,15 @@ public interface DeletableSet<E, L extends Listing<E, L>> extends ListingSet<E, 
      */
     default void applyDeletedElements()
     {
-        this.getDeleted().forEach(this::remove);
+        Iterator<E> iterator = this.getDeleted().iterator();
+        Set<E> set = this.getSet();
+
+        while (iterator.hasNext())
+        {
+            set.remove(iterator.next());
+            iterator.remove();
+        }
+
         this.resetDeletedElements();
     }
 
