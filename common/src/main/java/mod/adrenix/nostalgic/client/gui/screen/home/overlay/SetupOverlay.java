@@ -50,7 +50,7 @@ public abstract class SetupOverlay
         int padding = 2;
 
         final Overlay overlay = Overlay.create(Lang.Home.INIT_CONFIG)
-            .icon(Icons.MECHANICAL_TOOLS)
+            .icon(Icons.SAVE_FLOPPY)
             .padding(padding)
             .resizeUsingPercentage(0.6D)
             .resizeHeightForWidgets()

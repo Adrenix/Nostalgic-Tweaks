@@ -19,7 +19,8 @@ pls new old swing
 My zombie dropped a feather...
 Stackable food not included!
 Is the fog getting thicker?
-The work of a one man band!
+Was the work of a one man band!
+Join our development team!
 :iApprove:
 From the fog...
 Made by Adrenix!
@@ -29,7 +30,7 @@ Old swing!
 Have some candy for your eyes!
 Now with multiplayer support!
 Tweak it your way!
-Made with Architectury!
+Uses Architectury API!
 12x12 icons!
 Those days were golden!
 This took a lot of work!
@@ -40,7 +41,8 @@ Ahhh! A bug!
 Try the A-10 Bowhog!
 Milk the squid!
 So basically, I'm using [REDACTED] and...
-Do not distribute!
+Your game has soul again!
+Simply immersive!
 My diamond sword you cannot afford!
 Light weight.... YEAH BUDDY!!!
 Removed Herobrine...
@@ -70,3 +72,4 @@ Instant bone meal!
 Help! I can't swim!
 Super clean animations!
 can i haz full bright?
+The ultimate config experience!
