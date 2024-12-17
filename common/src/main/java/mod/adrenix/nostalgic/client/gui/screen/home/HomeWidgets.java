@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.screen.home;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.screen.WidgetManager;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.DebugOverlay;
@@ -143,7 +144,8 @@ public class HomeWidgets implements WidgetManager
         /* Panorama */
 
         IconWidget panoramaLast = IconTemplate.button(Icons.SMALL_REWIND, Icons.SMALL_REWIND_HOVER, Icons.SMALL_REWIND_OFF)
-            .pos(1, 1)
+            .posX(38)
+            .fromScreenEndY(3)
             .cannotFocus()
             .tooltip(Lang.Home.PREV_PANORAMA, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Home.PREV_PANORAMA_INFO, 35)
@@ -208,8 +210,8 @@ public class HomeWidgets implements WidgetManager
             .visibleIf(heart::isHoveredOrFocused)
             .build(this.homeScreen::addWidget);
 
-        ButtonWidget tools = ButtonWidget.create()
-            .icon(Icons.MECHANICAL_TOOLS)
+        ButtonWidget init = ButtonWidget.create()
+            .icon(Icons.SAVE_FLOPPY)
             .tooltip(Lang.Home.INIT_CONFIG, 35, 500L, TimeUnit.MILLISECONDS)
             .infoTooltip(Lang.Tooltip.HOME_INIT, 35)
             .leftOf(heart, 1)
@@ -223,15 +225,18 @@ public class HomeWidgets implements WidgetManager
                 .icon(Icons.SODIUM)
                 .tooltip(Lang.Home.SODIUM_TITLE, 35, 500L, TimeUnit.MILLISECONDS)
                 .infoTooltip(Lang.Tooltip.HOME_SODIUM, 35)
-                .leftOf(tools, 1)
+                .leftOf(init, 1)
                 .tabOrderGroup(tabOrder.getAndDecrement())
                 .onPress(SodiumOverlay::open)
                 .build(this.homeScreen::addWidget);
         }
 
-        /* Copyright */
+        /* Mod Information */
 
-        TextWidget.create("Made by Adrenix\nMMPL - 2.0.3-Modified © 2024")
+        String version = NostalgicTweaks.getTinyVersion();
+        String beta = NostalgicTweaks.getBetaVersion();
+
+        TextWidget.create("Made by Adrenix\n" + "Version: v" + version + (beta.isEmpty() ? "" : "-" + beta))
             .onPress(LinkUtil.onPress(LinkLocation.LICENSE))
             .color(Color.fromFormatting(ChatFormatting.GRAY))
             .useTextWidth()

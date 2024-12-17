@@ -2,7 +2,6 @@ package mod.adrenix.nostalgic.client.gui.screen.home;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.math.Axis;
-import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.client.gui.GearSpinner;
 import mod.adrenix.nostalgic.client.gui.screen.EnhancedScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
@@ -30,8 +29,7 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
     /* Fields */
 
     private static final TextureLocation TITLE_LOCATION = TextureLocation.NOSTALGIC_TWEAKS;
-    private static final String BETA_VERSION = NostalgicTweaks.getBetaVersion();
-    private static final String MOD_VERSION = NostalgicTweaks.getTinyVersion();
+
     private boolean isRedirected;
     private HomeWidgets homeWidgets;
     private String splash;
@@ -175,9 +173,8 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
      */
     private void renderTextures(GuiGraphics graphics)
     {
-        float betaScale = (int) GuiUtil.getGuiScale() % 2 == 0 ? 0.5F : 0.7F;
         float pulseScale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
-        float versionScale = pulseScale * 17.0F / (float) (this.font.width(MOD_VERSION));
+        float modScale = pulseScale * 12.0F / (float) (this.font.width("N.T"));
         float splashScale = pulseScale * 100.0f / (float) (this.font.width(this.splash) + 32);
         float titleScale = 0.15F;
         float gearScale = 0.07F;
@@ -191,21 +188,19 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
 
         float splashX = titleX + titleW - 20.0F;
         float splashY = titleY + titleH - 2.0F;
-        float versionX = gearX + (gearScale * 512.0F) - 3.0F;
-        float versionY = gearY + (gearScale * 512.0F) - 9.0F;
-        float betaX = gearX + (gearScale * 512.0F) + 11.0F;
-        float betaY = gearY + (gearScale * 512.0F) - 9.0F;
+        float modX = gearX + (gearScale * 512.0F) - 12.0F;
+        float modY = gearY + (gearScale * 512.0F) - 9.0F;
 
         GearSpinner.getInstance().render(graphics, gearScale, gearX, gearY);
 
         RenderUtil.beginBatching();
 
         graphics.pose().pushPose();
-        graphics.pose().translate(versionX, versionY, 0.0D);
+        graphics.pose().translate(modX, modY, 0.0D);
         graphics.pose().mulPose(Axis.ZP.rotationDegrees(-20.0F));
-        graphics.pose().scale(versionScale, versionScale, versionScale);
+        graphics.pose().scale(modScale, modScale, modScale);
 
-        DrawText.begin(graphics, MOD_VERSION).pos(1, -6).color(Color.YELLOW).center().draw();
+        DrawText.begin(graphics, "N.T").pos(1, -6).color(Color.YELLOW).center().draw();
 
         graphics.pose().popPose();
 
@@ -217,20 +212,6 @@ public class HomeScreen extends EnhancedScreen<HomeScreen, HomeWidgets>
         graphics.pose().scale(splashScale, splashScale, splashScale);
 
         DrawText.begin(graphics, this.splash).pos(0, -8).color(Color.YELLOW).center().draw();
-
-        graphics.pose().popPose();
-
-        if (BETA_VERSION.isEmpty())
-        {
-            RenderUtil.endBatching();
-            return;
-        }
-
-        graphics.pose().pushPose();
-        graphics.pose().translate(betaX, betaY, 0.0D);
-        graphics.pose().scale(betaScale, betaScale, betaScale);
-
-        DrawText.begin(graphics, BETA_VERSION).color(Color.YELLOW).draw();
 
         graphics.pose().popPose();
 
