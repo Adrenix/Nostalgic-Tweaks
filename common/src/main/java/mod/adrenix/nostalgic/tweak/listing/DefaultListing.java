@@ -52,6 +52,11 @@ public interface DefaultListing
         return new ItemSet(ItemRule.NO_BLOCKS).startWith(ItemUtil.getKeysFromItems(Items.CROSSBOW));
     }
 
+    static ItemSet old2dExceptions()
+    {
+        return new ItemSet().startWith(ItemUtil.getKeysFromItems(Items.DECORATED_POT));
+    }
+
     // Gameplay Listings
 
     static ItemMap<Integer> foodHealth()
