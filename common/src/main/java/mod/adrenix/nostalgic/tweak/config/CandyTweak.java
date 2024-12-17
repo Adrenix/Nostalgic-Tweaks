@@ -311,6 +311,7 @@ public interface CandyTweak
 
     TweakFlag OLD_2D_ITEMS = TweakFlag.client(true, CandyGroup.ITEM_FLAT).build();
     TweakFlag OLD_2D_RENDERING = TweakFlag.client(true, CandyGroup.ITEM_FLAT).modIssues(TweakIssue.OPTIFINE).build();
+    TweakItemSet OLD_2D_EXCEPTIONS = TweakItemSet.client(DefaultListing.old2dExceptions(), CandyGroup.ITEM_FLAT).newForUpdate().build();
     TweakFlag DISABLE_ENCHANTED_GROUND_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
     TweakFlag DISABLE_ENCHANTED_STATIC_ITEMS = TweakFlag.client(false, CandyGroup.ITEM_FLAT).andIf(TweakCondition::areItemsFlat).build();
 

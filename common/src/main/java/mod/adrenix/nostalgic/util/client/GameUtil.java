@@ -1,11 +1,11 @@
 package mod.adrenix.nostalgic.util.client;
 
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
@@ -168,18 +168,6 @@ public abstract class GameUtil
     }
 
     /**
-     * Used to check if a model should be rendered in 2D.
-     *
-     * @param model The {@link BakedModel} to check.
-     * @return Whether the given model uses block light.
-     */
-    @PublicAPI
-    public static boolean isModelFlat(BakedModel model)
-    {
-        return !model.usesBlockLight();
-    }
-
-    /**
      * Shortcut for checking if a model is flat based on the given item stack.
      *
      * @param itemStack The {@link ItemStack} to get model data from.
@@ -188,7 +176,14 @@ public abstract class GameUtil
     @PublicAPI
     public static boolean isModelFlat(ItemStack itemStack)
     {
-        return isModelFlat(Minecraft.getInstance().getItemRenderer().getModel(itemStack, null, null, 0));
+        boolean usesBlockLight = Minecraft.getInstance()
+            .getItemRenderer()
+            .getModel(itemStack, null, null, 0)
+            .usesBlockLight();
+
+        boolean isException = CandyTweak.OLD_2D_EXCEPTIONS.get().containsItem(itemStack);
+
+        return !usesBlockLight && !isException;
     }
 
     /**

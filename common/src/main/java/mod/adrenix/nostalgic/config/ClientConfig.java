@@ -471,6 +471,7 @@ public class ClientConfig implements ConfigMeta
 
         public boolean old2dItems = CandyTweak.OLD_2D_ITEMS.register("old2dItems");
         public boolean old2dRendering = CandyTweak.OLD_2D_RENDERING.register("old2dRendering");
+        public ItemSet old2dExceptions = CandyTweak.OLD_2D_EXCEPTIONS.register("old2dExceptions");
         public boolean disableEnchantedGroundItems = CandyTweak.DISABLE_ENCHANTED_GROUND_ITEMS.register("disableEnchantedGroundItems");
         public boolean disableEnchantedStaticItems = CandyTweak.DISABLE_ENCHANTED_STATIC_ITEMS.register("disableEnchantedStaticItems");
 

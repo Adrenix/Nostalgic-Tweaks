@@ -6,21 +6,14 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.joml.Quaternionf;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ItemEntityRenderer.class)
 public abstract class ItemEntityRendererMixin
 {
-    /* Shadows */
-
-    @Shadow @Final private ItemRenderer itemRenderer;
-
     /* Injections */
 
     /**
@@ -38,7 +31,7 @@ public abstract class ItemEntityRendererMixin
         if (!CandyTweak.OLD_2D_ITEMS.get())
             return quaternion;
 
-        boolean isModelFlat = GameUtil.isModelFlat(this.itemRenderer.getModel(entity.getItem(), null, null, 0));
+        boolean isModelFlat = GameUtil.isModelFlat(entity.getItem());
 
         if (isModelFlat)
             return Axis.YP.rotationDegrees(180.0F - Minecraft.getInstance().gameRenderer.getMainCamera().getYRot());

@@ -42,7 +42,7 @@ public abstract class ItemRendererMixin
     {
         boolean isValidContext = displayContext == ItemDisplayContext.GROUND || displayContext == ItemDisplayContext.FIXED;
 
-        if (!CandyTweak.OLD_2D_ITEMS.get() || !GameUtil.isModelFlat(model) || !isValidContext)
+        if (!CandyTweak.OLD_2D_ITEMS.get() || !GameUtil.isModelFlat(itemStack) || !isValidContext)
             return;
 
         FlatItemHelper.enableFlatRendering();
