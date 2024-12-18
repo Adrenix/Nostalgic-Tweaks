@@ -66,11 +66,14 @@ class ScreenCache
 
         this.pushed = false;
 
+        if (!this.search.isEmpty())
+            screen.getWidgetManager().getSearch().setNonReactiveInput(this.search);
+
         screen.setCategory(this.category);
         this.rowProvider.useAndThen(() -> screen.getWidgetManager().populateFromProvider());
 
-        if (!this.search.isEmpty())
-            screen.getWidgetManager().setQuery(this.search);
+        if (!this.search.isEmpty() && this.rowProvider == RowProvider.ALL)
+            screen.getWidgetManager().populateFromQuery();
 
         this.openSavedGroups(screen);
 
