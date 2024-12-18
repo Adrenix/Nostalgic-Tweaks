@@ -313,11 +313,9 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
      */
     public void setInput(String text)
     {
-        if (!this.getBuilder().filter.test(text))
-            return;
-
         String lastInput = this.input;
-        this.input = text.length() > this.getMaxLength() ? text.substring(0, this.getMaxLength()) : text;
+
+        this.setNonReactiveInput(text);
 
         if (this.changingInput.isProcessing())
             return;
@@ -329,6 +327,27 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
             if (this.suggester != null)
                 this.suggester.generate();
+        }
+    }
+
+    /**
+     * Set the text of the input widget without triggering a response from the defined {@code onInput} responder. This
+     * will move the cursor to the end if the given text does not match the old text.
+     *
+     * @param text The new text for this widget.
+     */
+    public void setNonReactiveInput(String text)
+    {
+        if (!this.getBuilder().filter.test(text))
+            return;
+
+        String lastInput = this.input;
+        this.input = text.length() > this.getMaxLength() ? text.substring(0, this.getMaxLength()) : text;
+
+        if (!lastInput.equals(this.input))
+        {
+            this.setCursorPosition(this.input.length());
+            this.setHighlightPos(this.cursorPos);
         }
     }
 
