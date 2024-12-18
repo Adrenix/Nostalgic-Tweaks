@@ -26,7 +26,6 @@ import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.function.ForEachWithPrevious;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 
@@ -253,10 +252,7 @@ public class ConfigWidgets implements WidgetManager
     public void populateRowList()
     {
         if (!this.lastQuery.isEmpty())
-        {
-            RowProvider.DEFAULT.useAndThen(this::updateSearchResults);
             return;
-        }
 
         RowProvider.DEFAULT.useAndThen(this.rowList::clear);
 
@@ -360,7 +356,10 @@ public class ConfigWidgets implements WidgetManager
             if (ConfigScreen.SCREEN_CACHE.isPushed())
                 ConfigScreen.SCREEN_CACHE.pop(this.configScreen);
             else
-                this.populateFromProvider();
+            {
+                if (this.getQuery().isEmpty() && RowProvider.get() != RowProvider.DEFAULT)
+                    this.populateFromProvider();
+            }
 
             this.lastQuery = query;
 
@@ -384,10 +383,17 @@ public class ConfigWidgets implements WidgetManager
         if (SearchTag.isInvalid(query))
             return;
 
-        this.findAndPopulateList(query);
+        RowProvider.ALL.use();
 
-        if (this.rowList.getVisibleRows().isEmpty() && !RowProvider.ALL.isProviding() && query.length() > 1)
-            RowProvider.ALL.useAndThen(() -> this.findAndPopulateList(query));
+        this.findAndPopulateList(query);
+    }
+
+    /**
+     * Create tweak rows from the current search input without doing previous cache checks.
+     */
+    public void populateFromQuery()
+    {
+        this.populateFromSearch(this.getQuery());
     }
 
     /**
@@ -806,26 +812,6 @@ public class ConfigWidgets implements WidgetManager
     }
 
     /**
-     * Get an informative tooltip to add to the search button using current list context.
-     *
-     * @return A {@link Component} tooltip instance.
-     */
-    private Component getSearchTooltip()
-    {
-        if (!this.search.isHoveredOrFocused())
-            return Component.empty();
-
-        String searchingIn = ChatFormatting.YELLOW + switch (RowProvider.get())
-        {
-            case DEFAULT -> this.configScreen.getCategory().toString();
-            case FAVORITE -> Lang.Button.FAVORITE.getString();
-            case ALL -> Lang.Tooltip.EVERYWHERE.getString();
-        };
-
-        return Lang.Tooltip.SEARCHING.get().append(": ").append(searchingIn);
-    }
-
-    /**
      * The config search bar will filter config results using the options set by the user.
      *
      * @return An input widget instance.
@@ -841,9 +827,8 @@ public class ConfigWidgets implements WidgetManager
             .searchShortcut()
             .rightOf(this.all, 1)
             .extendWidthTo(this.finish, 1)
-            .tooltip(this::getSearchTooltip, 45)
             .afterSync(this::resizeSearch)
-            .whenFocused(this::updateSearchResults)
+            .whenFocused(this::populateFromQuery)
             .onInput(this::populateFromSearch)
             .build(this.configScreen::addWidget);
     }
