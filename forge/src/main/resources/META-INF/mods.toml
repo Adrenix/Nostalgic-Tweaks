@@ -19,9 +19,6 @@ displayURL = "${mod_curse}"
 logoFile = "nt_forge_logo.png"
 displayTest = "MATCH_VERSION"
 
-[mods."sodium:options"]
-"mixin.features.render.world.clouds" = false
-
 [[dependencies.nostalgic_tweaks]]
 modId = "forge"
 mandatory = true
