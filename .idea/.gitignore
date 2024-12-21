@@ -1,0 +1,11 @@
+# Intellij Shared Project Settings
+/shelf/
+/modules/
+/runConfigurations/
+/codeStyles/codeStyleConfig.xml
+/workspace.xml
+/gradle.xml
+/modules.xml
+/uiDesigner.xml
+/jarRepositories.xml
+/vcs.xml
