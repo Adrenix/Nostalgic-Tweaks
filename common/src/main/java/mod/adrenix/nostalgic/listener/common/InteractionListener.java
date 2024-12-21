@@ -81,6 +81,7 @@ public abstract class InteractionListener
         Level level = player.level();
         RandomSource randomSource = level.getRandom();
         BlockState blockState = level.getBlockState(blockPos);
+        BlockState aboveState = level.getBlockState(blockPos.above());
         Item itemInHand = player.getItemInHand(hand).getItem();
 
         if (GameplayTweak.DISABLE_ANVIL.get() && blockState.is(BlockTags.ANVIL))
@@ -91,7 +92,7 @@ public abstract class InteractionListener
 
         if (GameplayTweak.TILLED_GRASS_SEEDS.get() && blockState.is(Blocks.GRASS_BLOCK) && itemInHand instanceof HoeItem)
         {
-            if (randomSource.nextInt(10) != 0)
+            if (!aboveState.isAir() || randomSource.nextInt(10) != 0)
                 return EventResult.pass();
 
             double x = (double) blockPos.getX() + 0.5D + Mth.nextDouble(randomSource, -0.05D, 0.05D);
