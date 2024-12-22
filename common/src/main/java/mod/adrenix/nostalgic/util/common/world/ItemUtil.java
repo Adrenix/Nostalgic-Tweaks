@@ -153,7 +153,14 @@ public abstract class ItemUtil
     @PublicAPI
     public static String getLocalizedItem(String resourceKey)
     {
-        return getItem(resourceKey).getDefaultInstance().getHoverName().getString();
+        try
+        {
+            return getItem(resourceKey).getDefaultInstance().getHoverName().getString();
+        }
+        catch (Throwable throwable)
+        {
+            return resourceKey;
+        }
     }
 
     /**
