@@ -26,6 +26,17 @@ public abstract class GuiUtil
     /* --- Sound */
 
     /**
+     * A mod list screen supplier (defined in mod loaders).
+     */
+    public static @Nullable Function<Screen, Screen> modListScreen = null;
+
+    /* --- Font */
+    /**
+     * Framerate viewing flag.
+     */
+    private static boolean showFps = Platform.isDevelopmentEnvironment();
+
+    /**
      * Plays a button click sound to the client.
      */
     @PublicAPI
@@ -34,7 +45,7 @@ public abstract class GuiUtil
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
-    /* --- Font */
+    /* --- Screen */
 
     /**
      * @return Get the game's current font instance.
@@ -53,13 +64,6 @@ public abstract class GuiUtil
     {
         return font().lineHeight;
     }
-
-    /* --- Screen */
-
-    /**
-     * A mod list screen supplier (defined in mod loaders).
-     */
-    public static @Nullable Function<Screen, Screen> modListScreen = null;
 
     /**
      * @return Get the game's current screen.
@@ -109,6 +113,8 @@ public abstract class GuiUtil
         return getScreen().stream().mapToInt(screen -> screen.height).max().orElse(0);
     }
 
+    /* --- Window */
+
     /**
      * Check if the given screen is the screen being shown to the user.
      *
@@ -120,8 +126,6 @@ public abstract class GuiUtil
     {
         return getScreen().isPresent() && screen == getScreen().get();
     }
-
-    /* --- Window */
 
     /**
      * @return The game's window instance.
@@ -180,6 +184,8 @@ public abstract class GuiUtil
         return (int) (scaledWidth / (double) minecraft.getWindow().getScreenWidth());
     }
 
+    /* --- Scissoring */
+
     /**
      * @return The y-coordinate of the game mouse.
      */
@@ -191,8 +197,6 @@ public abstract class GuiUtil
 
         return (int) (scaledHeight / (double) minecraft.getWindow().getScreenHeight());
     }
-
-    /* --- Scissoring */
 
     /**
      * Alternative to using instanced graphics scissoring. The given dimensions will be scaled relative to the current
@@ -218,6 +222,8 @@ public abstract class GuiUtil
         RenderSystem.enableScissor((int) x0, (int) y0, Math.max(0, (int) x1), Math.max(0, (int) y1));
     }
 
+    /* --- Components */
+
     /**
      * Disable the render system's scissoring.
      */
@@ -226,8 +232,6 @@ public abstract class GuiUtil
     {
         RenderSystem.disableScissor();
     }
-
-    /* --- Components */
 
     /**
      * Check if the given {@link Component} is considered empty. A {@link Component} is empty if it equals
@@ -253,6 +257,9 @@ public abstract class GuiUtil
     @PublicAPI
     public static boolean isComponentEmpty(List<Component> components)
     {
+        if (components.isEmpty())
+            return true;
+
         if (components.size() > 1)
             return false;
 
@@ -272,6 +279,8 @@ public abstract class GuiUtil
         return !isComponentEmpty(component);
     }
 
+    /* --- Debug Framerate */
+
     /**
      * Check if the given {@link List} of {@link Component} instances is present. The list will be considered present if
      * it has more than one {@link Component}. Or if there is only one {@link Component}, then that component will be
@@ -285,13 +294,6 @@ public abstract class GuiUtil
     {
         return !isComponentEmpty(components);
     }
-
-    /* --- Debug Framerate */
-
-    /**
-     * Framerate viewing flag.
-     */
-    private static boolean showFps = Platform.isDevelopmentEnvironment();
 
     /**
      * @return Whether the framerate viewing window is visible.
