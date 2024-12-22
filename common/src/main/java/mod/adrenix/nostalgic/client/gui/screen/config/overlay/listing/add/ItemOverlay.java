@@ -53,6 +53,7 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
     final SeparatorWidget top;
     final SeparatorWidget bottom;
     final IntegerHolder tabOrder;
+
     private final ItemListing<V, L> listing;
     private final HashSet<ItemRule> rules;
     private final Overlay overlay;
