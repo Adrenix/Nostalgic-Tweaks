@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.adrenix.nostalgic.helper.candy.block.HitboxHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
-import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.RenderOrder;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.Camera;
@@ -54,9 +53,15 @@ public abstract class LevelRendererMixin
     )
     private void nt_block_hitbox$wrapRenderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos blockPos, BlockState blockState)
     {
-        if (!ModTweak.ENABLED.get())
+        boolean isHitboxOverrideOff = CandyTweak.DISABLE_HITBOX_OVERRIDE.get();
+
+        if (isHitboxOverrideOff || red > 0.0F || green > 0.0F || blue > 0.0F)
         {
+            if (!isHitboxOverrideOff)
+                HitboxHelper.CUSTOM_HITBOX_OUTLINE.enable();
+
             renderShape.call(poseStack, vertexConsumer, voxelShape, x, y, z, red, green, blue, alpha);
+
             return;
         }
 
