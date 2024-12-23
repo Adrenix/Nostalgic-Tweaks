@@ -34,6 +34,7 @@ public interface CandyTweak
     TweakFlag APPLY_FULL_BLOCK_COLLISIONS = TweakFlag.server(true, CandyGroup.BLOCK_HITBOX).newForUpdate().build();
     TweakItemSet FULL_BLOCK_COLLISIONS = TweakItemSet.client(new ItemSet(ItemRule.ONLY_BLOCKS), CandyGroup.BLOCK_HITBOX).icon(Icons.HITBOX_OUTLINE).newForUpdate().build();
     TweakItemSet FULL_BLOCK_OUTLINES = TweakItemSet.client(DefaultListing.blockOutlines(), CandyGroup.BLOCK_HITBOX_OUTLINE).icon(Icons.HITBOX_OUTLINE).build();
+    TweakFlag DISABLE_HITBOX_OVERRIDE = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).whenDisabled(true).newForUpdate().build();
     TweakColor BLOCK_OUTLINE_COLOR = TweakColor.client("#00000066", CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().whenDisabled("#00000066").build();
     TweakNumber<Float> BLOCK_OUTLINE_THICKNESS = TweakNumber.client(2.5F, CandyGroup.BLOCK_HITBOX_OUTLINE_AESTHETIC).newForUpdate().modIssues(TweakIssue.IRIS).slider(Lang.Slider.THICKNESS, 0.0F, 10.0F).interval(0.25F).roundTo(2).build();
     TweakFlag OLD_BLOCK_OVERLAY = TweakFlag.client(false, CandyGroup.BLOCK_HITBOX_OVERLAY).whenDisabled(false).newForUpdate().build();

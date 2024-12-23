@@ -850,6 +850,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness": "Hitbox Outline Thickness",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness.info": "Customize the line thickness of a block's hitbox outline.",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOutlineThickness.issue.iris": "Due to the rendering changes made by§9 Iris§r, this tweak will§c not§r work while this mod is installed.",
+  "gui.nostalgic_tweaks.config.eyeCandy.disableHitboxOverride": "Disable Hitbox Outline Override",
+  "gui.nostalgic_tweaks.config.eyeCandy.disableHitboxOverride.info": "Prevents the mod from§c overriding§r the vanilla hitbox outline code. §aEnable§r this tweak if you are experiencing§c issues§r with other mods that also§6 override§r the vanilla hitbox outline code.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOverlay": "Hitbox Overlay",
   "gui.nostalgic_tweaks.config.eyeCandy.oldBlockOverlay.info": "Renders a overlay around a block's hitbox outline similar to how it was done in§a Minecraft§e Classic§r edition.",
   "gui.nostalgic_tweaks.config.eyeCandy.blockOverlayColorType": "Hitbox Color Type",

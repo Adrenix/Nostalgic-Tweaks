@@ -195,6 +195,7 @@ public class ClientConfig implements ConfigMeta
         public ItemSet fullBlockOutlines = CandyTweak.FULL_BLOCK_OUTLINES.register("fullBlockOutlines");
         public String blockOutlineColor = CandyTweak.BLOCK_OUTLINE_COLOR.register("blockOutlineColor");
         public float blockOutlineThickness = CandyTweak.BLOCK_OUTLINE_THICKNESS.register("blockOutlineThickness");
+        public boolean disableHitboxOverride = CandyTweak.DISABLE_HITBOX_OVERRIDE.register("disableHitboxOverride");
 
         // Hitbox Overlay
 
