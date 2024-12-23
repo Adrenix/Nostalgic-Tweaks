@@ -65,6 +65,14 @@ public class PositionSoundHandler
     /* Methods */
 
     /**
+     * @return Whether this handler modified the sound in some way.
+     */
+    public boolean isHandled()
+    {
+        return this.handled;
+    }
+
+    /**
      * @return The {@link SoundEvent} managed by this handler.
      */
     public SoundEvent getSound()
