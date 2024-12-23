@@ -5,8 +5,10 @@ import mod.adrenix.nostalgic.helper.swing.SwingType;
 import mod.adrenix.nostalgic.mixin.duck.SwingBlocker;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +22,7 @@ public abstract class MinecraftMixin
     /* Shadows */
 
     @Shadow @Nullable public LocalPlayer player;
+    @Shadow @Final public Options options;
 
     /* Injections */
 
@@ -50,6 +53,9 @@ public abstract class MinecraftMixin
     )
     private void nt_animation_swing$onStartUseItem(CallbackInfo callback)
     {
+        if (PlayerArmHelper.SWING_TYPE.get() == SwingType.ATTACK && this.options.keyAttack.isDown())
+            return;
+
         PlayerArmHelper.SWING_TYPE.set(SwingType.USE);
     }
 
