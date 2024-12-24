@@ -5,7 +5,7 @@ package mod.adrenix.nostalgic.util.common;
  */
 public interface LinkLocation
 {
-    String LICENSE = "https://github.com/Adrenix/Nostalgic-Tweaks/blob/main/LICENSE";
+    String GITHUB = "https://github.com/Adrenix/Nostalgic-Tweaks/";
     String DISCORD = "https://discord.gg/jWdfVh3";
     String KOFI = "https://ko-fi.com/adrenix";
     String GOLDEN_DAYS = "https://github.com/PoeticRainbow/golden-days/releases";

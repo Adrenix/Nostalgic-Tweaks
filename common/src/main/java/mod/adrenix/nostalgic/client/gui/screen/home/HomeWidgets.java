@@ -237,7 +237,7 @@ public class HomeWidgets implements WidgetManager
         String beta = NostalgicTweaks.getBetaVersion();
 
         TextWidget.create("Made by Adrenix\n" + "Version: v" + version + (beta.isEmpty() ? "" : "-" + beta))
-            .onPress(LinkUtil.onPress(LinkLocation.LICENSE))
+            .onPress(LinkUtil.onPress(LinkLocation.GITHUB))
             .color(Color.fromFormatting(ChatFormatting.GRAY))
             .useTextWidth()
             .centerAligned()
