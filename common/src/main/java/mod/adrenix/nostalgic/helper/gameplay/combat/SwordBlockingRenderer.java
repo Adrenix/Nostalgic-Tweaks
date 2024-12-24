@@ -48,7 +48,7 @@ public abstract class SwordBlockingRenderer
      */
     public static void applyThirdPerson(Player player, ModelPart leftArm, ModelPart rightArm)
     {
-        if (player.getUsedItemHand() == InteractionHand.OFF_HAND)
+        if (player.getMainArm() == HumanoidArm.LEFT)
             leftArm.xRot -= ((float) Math.PI * 2.0F) / 10.0F;
         else
             rightArm.xRot -= ((float) Math.PI * 2.0F) / 10.0F;
