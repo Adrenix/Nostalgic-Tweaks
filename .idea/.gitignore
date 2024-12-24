@@ -3,6 +3,7 @@
 /modules/
 /runConfigurations/
 /workspace.xml
+/compiler.xml
 /gradle.xml
 /modules.xml
 /uiDesigner.xml
