@@ -43,6 +43,6 @@ public abstract class ItemInHandRendererMixin
     )
     private boolean nt_animation_swing$onRenderArmWithItem(ItemInHandRenderer handRenderer, PoseStack poseStack, HumanoidArm arm, float swingProgress, AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float copyOfSwingProgress, ItemStack itemStack, float equippedProgress)
     {
-        return !PlayerArmHelper.oldClassicSwing(poseStack, arm, swingProgress, equippedProgress);
+        return !PlayerArmHelper.oldClassicSwing(poseStack, arm, itemStack, swingProgress, equippedProgress);
     }
 }

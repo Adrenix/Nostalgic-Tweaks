@@ -1,11 +1,14 @@
 package mod.adrenix.nostalgic.helper.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import mod.adrenix.nostalgic.helper.swing.SwingType;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.data.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This utility class is used only by the client.
@@ -42,11 +45,12 @@ public abstract class PlayerArmHelper
      *
      * @param poseStack        The current {@link PoseStack}.
      * @param arm              The {@link HumanoidArm} value.
+     * @param holding          The {@link ItemStack} the current arm is holding.
      * @param swingProgress    The current arm swing progress.
      * @param equippedProgress The current item equipping progress.
      * @return Whether a classic swing animation was applied.
      */
-    public static boolean oldClassicSwing(PoseStack poseStack, HumanoidArm arm, float swingProgress, float equippedProgress)
+    public static boolean oldClassicSwing(PoseStack poseStack, HumanoidArm arm, ItemStack holding, float swingProgress, float equippedProgress)
     {
         boolean isAttack = AnimationTweak.OLD_CLASSIC_ATTACK_SWING.get();
         boolean isUseItem = AnimationTweak.OLD_CLASSIC_USE_SWING.get();
@@ -65,8 +69,15 @@ public abstract class PlayerArmHelper
 
             poseStack.popPose();
             poseStack.pushPose();
+
             poseStack.translate(flip * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
             poseStack.translate(flip * x, y, z);
+
+            if (!GameUtil.isModelFlat(holding))
+            {
+                poseStack.mulPose(Axis.YP.rotationDegrees(flip * Mth.sin(Mth.sqrt(swingProgress) * (float) Math.PI) * 80.0F));
+                poseStack.mulPose(Axis.XP.rotationDegrees(flip * -Mth.sin(swingProgress * swingProgress * (float) Math.PI) * 20.0F));
+            }
 
             return true;
         }
@@ -76,6 +87,7 @@ public abstract class PlayerArmHelper
 
             poseStack.popPose();
             poseStack.pushPose();
+
             poseStack.translate(flip * 0.56F, -0.52F + equippedProgress * -0.6F, -0.72F);
             poseStack.translate(0.0F, rotateProgress * -0.15F, 0.0F);
 
