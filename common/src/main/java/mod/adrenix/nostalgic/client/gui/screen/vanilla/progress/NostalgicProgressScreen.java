@@ -176,7 +176,7 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
         if (this.minecraft == null)
             return;
 
-        if (this.stop)
+        if (this.stop || this.progressScreen.nt$stop())
         {
             if (this.progressScreen.nt$clearScreenAfterStop())
                 this.minecraft.setScreen(null);
@@ -206,6 +206,7 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Override
     public void progressStartNoAbort(Component component)
     {
+        this.progressStart(component);
     }
 
     /**
@@ -214,6 +215,8 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Override
     public void progressStart(Component header)
     {
+        this.setHeader(header);
+        this.progressStage(Component.translatable("progress.working"));
     }
 
     /**
@@ -222,6 +225,8 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
     @Override
     public void progressStage(Component stage)
     {
+        this.setStage(stage);
+        this.progressStagePercentage(0);
     }
 
     /**

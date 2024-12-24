@@ -9,4 +9,7 @@ public interface ProgressScreenAccess
 {
     @Accessor("clearScreenAfterStop")
     boolean nt$clearScreenAfterStop();
+
+    @Accessor("stop")
+    boolean nt$stop();
 }
