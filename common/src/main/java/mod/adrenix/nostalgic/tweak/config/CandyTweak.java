@@ -73,6 +73,7 @@ public interface CandyTweak
     // Heads-up Toasts
 
     TweakFlag HIDE_RECIPE_TOASTS = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().build();
+    TweakFlag HIDE_TUTORIAL_TOASTS = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().build();
 
     // Heads-up Display
 

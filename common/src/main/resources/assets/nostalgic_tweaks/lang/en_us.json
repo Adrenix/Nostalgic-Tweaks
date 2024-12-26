@@ -914,6 +914,8 @@
 
   "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts": "Hide Recipe Toasts",
   "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts.info": "Prevent the pop-up toasts that appear when unlocking a new recipe.",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideTutorialToasts": "Hide Tutorial Toasts",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideTutorialToasts.info": "Prevent the pop-up tutorial toasts that appear when starting a new game instance for the first time.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar": "Hide Experience Bar",
   "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar.info": "Removes the experience bar from the heads-up display. Hotbar elements, such as the hearts, will be shifted down.",
