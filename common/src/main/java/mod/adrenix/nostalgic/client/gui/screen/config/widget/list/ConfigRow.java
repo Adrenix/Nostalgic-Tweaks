@@ -94,7 +94,7 @@ public abstract class ConfigRow<Builder extends AbstractRowMaker<Builder, Row>, 
                 .mapToInt(ConfigRow::getEndY)
                 .sum();
 
-            float lastChildY = CollectionUtil.fromCast(groupRow.getChildren(), GroupRow.class)
+            float lastChildY = CollectionUtil.fromCast(groupRow.getDeepChildren(), GroupRow.class)
                 .filter(GroupRow::isExpanded)
                 .mapToInt(child -> CollectionUtil.last(child.getChildren()).stream().mapToInt(ConfigRow::getEndY).sum())
                 .max()
