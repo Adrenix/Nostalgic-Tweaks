@@ -592,6 +592,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud": "Heads-up Display",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_offhand": "Offhand Slot",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_version": "Game Version Overlay",
+  "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_toast": "Pop-up Toasts",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_exp_bar": "Experience Bar",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_exp_bar_alt_level": "Alternative Level Text",
   "gui.nostalgic_tweaks.container.eyeCandy.interface_hud_exp_bar_alt_progress": "Alternative Progress Text",
@@ -910,6 +911,9 @@
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed": "Hide Player When Sleeping",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.info": "Hide the player's model when the player is sleeping in a bed in first-person view.",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.search": "Bed",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts": "Hide Recipe Toasts",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts.info": "Prevent the pop-up toasts that appear when unlocking a new recipe.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar": "Hide Experience Bar",
   "gui.nostalgic_tweaks.config.eyeCandy.hideExperienceBar.info": "Removes the experience bar from the heads-up display. Hotbar elements, such as the hearts, will be shifted down.",

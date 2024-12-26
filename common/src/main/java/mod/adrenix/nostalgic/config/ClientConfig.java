@@ -232,6 +232,10 @@ public class ClientConfig implements ConfigMeta
 
         public boolean hidePlayerInBed = CandyTweak.HIDE_PLAYER_IN_BED.register("hidePlayerInBed");
 
+        // Heads-up Toasts
+
+        public boolean hideRecipeToasts = CandyTweak.HIDE_RECIPE_TOASTS.register("hideRecipeToasts");
+
         // Heads-up Display
 
         public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
