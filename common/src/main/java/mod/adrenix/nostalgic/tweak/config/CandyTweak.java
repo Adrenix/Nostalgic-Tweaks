@@ -345,8 +345,9 @@ public interface CandyTweak
     // Light Engine
 
     TweakFlag ROUND_ROBIN_RELIGHT = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().modIssues(TweakIssue.SODIUM, TweakIssue.OPTIFINE, TweakIssue.POLYTONE).conflictMods(ModTracker.DISTANT_HORIZONS, ModTracker.STARLIGHT).build();
-    TweakFlag OLD_SMOOTH_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
     TweakFlag OLD_NETHER_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
+    TweakFlag OLD_SMOOTH_LIGHTING = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().build();
+    TweakFlag DISABLE_SMOOTH_LIGHTING = TweakFlag.client(false, CandyGroup.LIGHTING_WORLD_ENGINE).newForUpdate().reloadChunks().build();
     TweakFlag OLD_CLASSIC_ENGINE = TweakFlag.server(false, CandyGroup.LIGHTING_WORLD_ENGINE).reloadChunks().warningTag().build();
 
     // Lightmap Texture
