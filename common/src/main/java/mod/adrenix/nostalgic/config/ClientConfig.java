@@ -236,6 +236,7 @@ public class ClientConfig implements ConfigMeta
 
         public boolean hideRecipeToasts = CandyTweak.HIDE_RECIPE_TOASTS.register("hideRecipeToasts");
         public boolean hideTutorialToasts = CandyTweak.HIDE_TUTORIAL_TOASTS.register("hideTutorialToasts");
+        public boolean hideAdvancementToasts = CandyTweak.HIDE_ADVANCEMENT_TOASTS.register("hideAdvancementToasts");
 
         // Heads-up Display
 
