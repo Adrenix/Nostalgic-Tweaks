@@ -348,7 +348,7 @@ public interface CandyTweak
     // Lightmap Texture
 
     TweakFlag SMOOTH_LIGHT_TRANSITION = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).newForUpdate().whenDisabled(true).build();
-    TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
+    TweakFlag DISABLE_BRIGHTNESS = TweakFlag.client(false, CandyGroup.LIGHTING_WORLD_TEXTURE).whenDisabled(false).alert(TweakAlert.BRIGHTNESS_CONFLICT).build();
     TweakFlag OLD_LIGHT_COLOR = TweakFlag.client(true, CandyGroup.LIGHTING_WORLD_TEXTURE).modIssues(TweakIssue.POLYTONE).build();
 
     // Shader Support
