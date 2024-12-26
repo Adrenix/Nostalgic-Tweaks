@@ -190,13 +190,7 @@ public class GroupRow extends ConfigRow<GroupRowMaker, GroupRow>
      */
     private void addGroupRow(Container group)
     {
-        boolean isGroupAbsent = group.getChildren()
-            .stream()
-            .allMatch(child -> child.getTweaks().stream().noneMatch(RowProvider.get()::test));
-
-        boolean isTweakAbsent = group.getTweaks().stream().noneMatch(RowProvider.get()::test);
-
-        if (isTweakAbsent && isGroupAbsent)
+        if (group.getDeepTweaks().stream().noneMatch(RowProvider.get()::test))
             return;
 
         this.addRow(create(group, this).build());

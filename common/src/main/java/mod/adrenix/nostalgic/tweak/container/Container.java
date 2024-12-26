@@ -229,6 +229,22 @@ public class Container
     }
 
     /**
+     * To get only the tweaks associated with this group, use {@link #getTweaks()}.
+     *
+     * @return A linked hash set of all inherited tweaks and all non-ignored tweaks stored in this container <b>and</b>
+     * its children.
+     */
+    public LinkedHashSet<Tweak<?>> getDeepTweaks()
+    {
+        LinkedHashSet<Tweak<?>> tweaks = this.getTweaks();
+
+        if (!this.getChildren().isEmpty())
+            this.getChildren().stream().map(Container::getDeepTweaks).forEach(tweaks::addAll);
+
+        return tweaks;
+    }
+
+    /**
      * Each container needs to be unique. This ensures there are duplicated containers by checking both the categories
      * and group cache sets for duplicated identifiers.
      *
