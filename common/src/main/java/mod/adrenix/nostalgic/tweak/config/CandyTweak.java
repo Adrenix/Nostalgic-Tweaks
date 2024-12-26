@@ -72,6 +72,10 @@ public interface CandyTweak
 
     TweakFlag HIDE_PLAYER_IN_BED = TweakFlag.client(true, CandyGroup.BLOCK_BED).newForUpdate().build();
 
+    // Heads-up Toasts
+
+    TweakFlag HIDE_RECIPE_TOASTS = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().build();
+
     // Heads-up Display
 
     TweakFlag HIDE_EXPERIENCE_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_ORB_SPAWN::get).build();
