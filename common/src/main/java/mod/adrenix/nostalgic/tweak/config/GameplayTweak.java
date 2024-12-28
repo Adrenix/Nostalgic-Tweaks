@@ -161,6 +161,11 @@ public interface GameplayTweak
         .slider(Lang.Slider.STACK, 1, 64)
         .build();
 
+    // Tool Mechanics
+
+    TweakFlag DISABLE_AXE_STRIPPING = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_TOOLS).newForUpdate().build();
+    TweakFlag DISABLE_SHOVEL_PATHING = TweakFlag.dynamic(false, GameplayGroup.MECHANICS_TOOLS).newForUpdate().build();
+
     // Food Health
 
     TweakFlag DISABLE_HUNGER = TweakFlag.server(false, GameplayGroup.HUNGER).build();

@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.listener.common;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
+import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
@@ -107,6 +108,15 @@ public abstract class InteractionListener
 
             seedEntity.setDefaultPickUpDelay();
             level.addFreshEntity(seedEntity);
+        }
+
+        if (NostalgicTweaks.isServer())
+        {
+            if (GameplayTweak.DISABLE_SHOVEL_PATHING.get() && itemInHand instanceof ShovelItem)
+                return EventResult.interruptTrue();
+
+            if (GameplayTweak.DISABLE_AXE_STRIPPING.get() && itemInHand instanceof AxeItem)
+                return EventResult.interruptTrue();
         }
 
         return EventResult.pass();

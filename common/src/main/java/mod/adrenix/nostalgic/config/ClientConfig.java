@@ -776,6 +776,11 @@ public class ClientConfig implements ConfigMeta
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
         public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");
 
+        // Tool Mechanics
+
+        public boolean disableShovelPathing = GameplayTweak.DISABLE_SHOVEL_PATHING.register("disableShovelPathing");
+        public boolean disableAxeStripping = GameplayTweak.DISABLE_AXE_STRIPPING.register("disableAxeStripping");
+
         // Food
 
         public boolean disableHunger = GameplayTweak.DISABLE_HUNGER.register("disableHunger");
