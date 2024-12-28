@@ -59,6 +59,23 @@ public interface DefaultListing
 
     // Gameplay Listings
 
+    static ItemSet selfBlockDrops()
+    {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
+
+        set.add(ItemUtil.getResourceKey(Blocks.IRON_ORE));
+        set.add(ItemUtil.getResourceKey(Blocks.GOLD_ORE));
+        set.add(ItemUtil.getResourceKey(Blocks.COPPER_ORE));
+        set.add(ItemUtil.getResourceKey(Blocks.DEEPSLATE_IRON_ORE));
+        set.add(ItemUtil.getResourceKey(Blocks.DEEPSLATE_GOLD_ORE));
+        set.add(ItemUtil.getResourceKey(Blocks.DEEPSLATE_COPPER_ORE));
+
+        ItemSet itemSet = new ItemSet(ItemRule.ONLY_BLOCKS).startWith(set);
+        itemSet.setDisabled(true);
+
+        return itemSet;
+    }
+
     static ItemMap<Integer> foodHealth()
     {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();

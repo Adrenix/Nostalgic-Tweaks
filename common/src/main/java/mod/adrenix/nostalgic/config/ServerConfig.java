@@ -11,6 +11,7 @@ import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
+import mod.adrenix.nostalgic.tweak.listing.ItemSet;
 
 /**
  * <b color=red>IMPORTANT</b>
@@ -183,6 +184,7 @@ public class ServerConfig implements ConfigMeta
 
         // Block Mechanics
 
+        public ItemSet selfBlockDrops = GameplayTweak.SELF_BLOCK_DROPS.register("selfBlockDrops");
         public boolean punchTntIgnition = GameplayTweak.PUNCH_TNT_IGNITION.register("punchTntIgnition");
         public boolean disableBedBounce = GameplayTweak.DISABLE_BED_BOUNCE.register("disableBedBounce");
         public boolean alwaysOpenChest = GameplayTweak.ALWAYS_OPEN_CHEST.register("alwaysOpenChest");

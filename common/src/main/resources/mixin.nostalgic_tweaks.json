@@ -163,6 +163,7 @@
     "gameplay.food_health.PlayerMixin",
     "gameplay.item_stacking.ItemMixin",
     "gameplay.mechanics_block.BedBlockMixin",
+    "gameplay.mechanics_block.BlockBehaviourMixin",
     "gameplay.mechanics_block.ChestBlockMixin",
     "gameplay.mechanics_block.EnderChestBlockMixin",
     "gameplay.mechanics_boat.BoatMixin",

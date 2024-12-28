@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.container.group.GameplayGroup;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import mod.adrenix.nostalgic.tweak.factory.TweakItemMap;
+import mod.adrenix.nostalgic.tweak.factory.TweakItemSet;
 import mod.adrenix.nostalgic.tweak.factory.TweakNumber;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
@@ -152,6 +153,7 @@ public interface GameplayTweak
     TweakFlag PUNCH_TNT_IGNITION = TweakFlag.server(false, GameplayGroup.MECHANICS_BLOCK_TNT).newForUpdate().build();
     TweakFlag DISABLE_BED_BOUNCE = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_BED).build();
     TweakFlag ALWAYS_OPEN_CHEST = TweakFlag.server(true, GameplayGroup.MECHANICS_BLOCK_CHEST).newForUpdate().build();
+    TweakItemSet SELF_BLOCK_DROPS = TweakItemSet.server(DefaultListing.selfBlockDrops(), GameplayGroup.MECHANICS_BLOCK).newForUpdate().ignoreNetworkCheck().warningTag().build();
 
     // Item Mechanics
 
