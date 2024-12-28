@@ -1686,6 +1686,9 @@
   "gui.nostalgic_tweaks.config.gameplay.disableAxeStripping": "Disable Axe Stripping",
   "gui.nostalgic_tweaks.config.gameplay.disableAxeStripping.info": "Prevent converting wood-like blocks into their stripped counterparts when using an axe-like item on the block.",
 
+  "gui.nostalgic_tweaks.config.gameplay.selfBlockDrops": "Self Block Drops",
+  "gui.nostalgic_tweaks.config.gameplay.selfBlockDrops.info": "Define which blocks will drop themself after being mined.",
+  "gui.nostalgic_tweaks.config.gameplay.selfBlockDrops.warn": "This tweak will§6 override§r any loot tables defined for the blocks included in this list. This is§c not§r a permanent change and can be reverted by§c disabling§r this tweak.",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition": "Punch TNT Ignition",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.info": "Ignite a TNT block by punching it. If the player is sneaking when punching, then the block will break instead of igniting.",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.search": "Dynamite",
