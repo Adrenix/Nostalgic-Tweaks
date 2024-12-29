@@ -121,6 +121,12 @@ public interface GameplayTweak
     TweakFlag LEFT_CLICK_LEVER = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).build();
     TweakFlag LEFT_CLICK_BUTTON = TweakFlag.server(false, GameplayGroup.MECHANICS_PLAYER).build();
 
+    // Fishing Mechanics
+
+    TweakFlag OLD_FISHING_LOOT = TweakFlag.server(false, GameplayGroup.MECHANICS_FISHING).newForUpdate().build();
+    TweakFlag OLD_FISHING_LURING = TweakFlag.server(true, GameplayGroup.MECHANICS_FISHING).newForUpdate().build();
+    TweakFlag OLD_FISHING_CASTING = TweakFlag.dynamic(true, GameplayGroup.MECHANICS_FISHING).newForUpdate().build();
+
     // Farming Mechanics
 
     TweakFlag INSTANT_BONEMEAL = TweakFlag.server(true, GameplayGroup.MECHANICS_FARMING).build();
