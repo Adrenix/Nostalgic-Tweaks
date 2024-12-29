@@ -157,6 +157,12 @@ public class ServerConfig implements ConfigMeta
         public boolean leftClickLever = GameplayTweak.LEFT_CLICK_LEVER.register("leftClickLever");
         public boolean leftClickButton = GameplayTweak.LEFT_CLICK_BUTTON.register("leftClickButton");
 
+        // Fishing Mechanics
+
+        public boolean oldFishingLoot = GameplayTweak.OLD_FISHING_LOOT.register("oldFishingLoot");
+        public boolean oldFishingLuring = GameplayTweak.OLD_FISHING_LURING.register("oldFishingLuring");
+        public boolean oldFishingCasting = GameplayTweak.OLD_FISHING_CASTING.register("oldFishingCasting");
+
         // Farming Mechanics
 
         public boolean instantBonemeal = GameplayTweak.INSTANT_BONEMEAL.register("instantBonemeal");
