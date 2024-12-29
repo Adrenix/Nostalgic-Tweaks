@@ -103,6 +103,7 @@
     "candy.world_lighting.LightingMixin",
     "candy.world_lighting.LightTextureMixin",
     "candy.world_lighting.LiquidBlockRendererMixin",
+    "candy.world_lighting.MinecraftMixin",
     "candy.world_sky.BiomeMixin",
     "candy.world_sky.ClientLevelMixin",
     "candy.world_sky.DimensionSpecialEffectsMixin",
