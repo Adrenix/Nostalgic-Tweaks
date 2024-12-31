@@ -41,7 +41,7 @@ The config menu comes with searching capabilities. Search queries that are typed
 ![Config Search](https://github.com/user-attachments/assets/3f57502a-1f58-4773-a7e6-76a1e01fb06a)
 
 ### Config Management
-The config menu also comes with a config management overlay. TO open the overlay, click the `Manage` button in the bottom-left corner of the screen. In this overlay you can create and manage config backup files, create and manage config presets, import and export (_client and server_) config files, perform server operations on servers with Nostalgic Tweaks installed, and quickly toggle a lot of tweaks all at once. Each section of the overlay comes with a uniquely crafted user interface to assit with tweak and config management. 
+The config menu also comes with a config management overlay. To open the overlay, click the `Manage` button in the bottom-left corner of the screen. In this overlay you can create and manage config backup files, create and manage config presets, import and export (_client and server_) config files, perform server operations on servers with Nostalgic Tweaks installed, and quickly toggle a lot of tweaks all at once. Each section of the overlay comes with a uniquely crafted user interface to assit with tweak and config management. 
 
 ![config_manage](https://github.com/user-attachments/assets/304f63ba-5941-450f-8faf-2169337e7d95)
 
