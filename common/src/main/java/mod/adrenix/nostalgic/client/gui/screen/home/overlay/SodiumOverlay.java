@@ -118,7 +118,12 @@ public abstract class SodiumOverlay
      */
     private static void openSodiumMixinConfig()
     {
-        Path properties = Platform.getConfigFolder().resolve("sodium-mixins.properties");
+        String filePath = "sodium-mixins.properties";
+
+        if (Platform.isModLoaded("embeddium"))
+            filePath = "embeddium-mixins.properties";
+
+        Path properties = Platform.getConfigFolder().resolve(filePath);
 
         if (Files.exists(properties))
             Util.getPlatform().openFile(properties.toFile());
