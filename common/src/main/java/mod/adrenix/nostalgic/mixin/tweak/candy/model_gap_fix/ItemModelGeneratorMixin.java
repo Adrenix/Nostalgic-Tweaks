@@ -1,8 +1,8 @@
-package mod.adrenix.nostalgic.fabric.mixin.tweak.candy.model_gap_fix;
+package mod.adrenix.nostalgic.mixin.tweak.candy.model_gap_fix;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.fabric.mixin.util.FabricModelGapFix;
+import mod.adrenix.nostalgic.helper.candy.ModelGapFix;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.BlockElementFace;
@@ -36,7 +36,7 @@ public abstract class ItemModelGeneratorMixin
             target = "Lnet/minecraft/client/renderer/block/model/BlockModel;getMaterial(Ljava/lang/String;)Lnet/minecraft/client/resources/model/Material;"
         )
     )
-    private Material nt_fabric_model_gap_fix$onGenerateBlockModel(Material material, Function<Material, TextureAtlasSprite> spriteGetter)
+    private Material nt_model_gap_fix$onGenerateBlockModel(Material material, Function<Material, TextureAtlasSprite> spriteGetter)
     {
         this.nt$sprite = spriteGetter.apply(material);
 
@@ -50,7 +50,7 @@ public abstract class ItemModelGeneratorMixin
         method = "processFrames",
         at = @At("RETURN")
     )
-    private List<BlockElement> nt_fabric_model_gap_fix$onProcessFrames(List<BlockElement> blockElements)
+    private List<BlockElement> nt_model_gap_fix$onProcessFrames(List<BlockElement> blockElements)
     {
         if (!CandyTweak.FIX_ITEM_MODEL_GAP.get() || this.nt$sprite == null)
             return blockElements;
@@ -58,7 +58,7 @@ public abstract class ItemModelGeneratorMixin
         for (BlockElement element : blockElements)
         {
             for (BlockElementFace face : element.faces.values())
-                FabricModelGapFix.apply(face.uv.uvs, this.nt$sprite.uvShrinkRatio());
+                ModelGapFix.apply(face.uv.uvs, this.nt$sprite.uvShrinkRatio());
         }
 
         this.nt$sprite = null;

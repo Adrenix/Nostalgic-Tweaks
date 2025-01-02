@@ -77,6 +77,7 @@
     "candy.loading_overlay.LoadingOverlayMixin",
     "candy.mip_map.ModelManagerMixin",
     "candy.missing_texture.MissingTextureAtlasSpriteMixin",
+    "candy.model_gap_fix.ItemModelGeneratorMixin",
     "candy.name_tag.EntityRendererMixin",
     "candy.old_hud.ClientAdvancementsMixin",
     "candy.old_hud.ClientPacketListenerMixin",

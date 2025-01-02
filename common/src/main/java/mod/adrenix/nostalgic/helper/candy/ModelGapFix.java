@@ -1,9 +1,12 @@
-package mod.adrenix.nostalgic.fabric.mixin.util;
+package mod.adrenix.nostalgic.helper.candy;
+
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.util.ModTracker;
 
 /**
  * This utility class is used only by the client.
  */
-public abstract class FabricModelGapFix
+public abstract class ModelGapFix
 {
     /**
      * Apply model gap fix to the given uvs.
@@ -13,6 +16,9 @@ public abstract class FabricModelGapFix
      */
     public static void apply(float[] uvs, float uvShrinkRatio)
     {
+        if (NostalgicTweaks.isForge() && !ModTracker.OPTIFINE.isInstalled() && !ModTracker.SODIUM.isInstalled())
+            uvShrinkRatio += 0.00195F;
+
         float centerU = (uvs[0] + uvs[2]) / 2.0F;
         float centerV = (uvs[1] + uvs[3]) / 2.0F;
 
