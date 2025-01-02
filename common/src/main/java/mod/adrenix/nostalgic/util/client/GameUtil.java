@@ -7,6 +7,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -111,6 +112,18 @@ public abstract class GameUtil
     public static boolean isNotSurvivalMode()
     {
         return !isSurvivalMode();
+    }
+
+    /**
+     * Gets the singleplayer server if it exists.
+     *
+     * @return A {@code nullable} {@link MinecraftServer} instance.
+     */
+    @Nullable
+    @PublicAPI
+    public static MinecraftServer getIntegratedServer()
+    {
+        return Minecraft.getInstance().getSingleplayerServer();
     }
 
     /**
