@@ -74,8 +74,8 @@ public interface CandyTweak
 
     TweakFlag HIDE_RECIPE_TOASTS = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().build();
     TweakFlag HIDE_TUTORIAL_TOASTS = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().build();
-    TweakFlag HIDE_ADVANCEMENT_TOASTS = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_TOAST).whenDisabled(false).newForUpdate().build();
-    TweakFlag HIDE_ADVANCEMENT_CHATS = TweakFlag.server(false, CandyGroup.INTERFACE_HUD_TOAST).whenDisabled(false).newForUpdate().build();
+    TweakFlag HIDE_ADVANCEMENT_TOASTS = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().whenDisabled(false).build();
+    TweakFlag HIDE_ADVANCEMENT_CHATS = TweakFlag.server(false, CandyGroup.INTERFACE_HUD_TOAST).newForUpdate().whenDisabled(false).ignoreNetworkCheck().build();
 
     // Heads-up Display
 
