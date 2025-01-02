@@ -58,7 +58,7 @@ public abstract class SodiumOverlay
         final Overlay overlay = Overlay.create(Lang.Home.SODIUM_TITLE)
             .icon(Icons.SODIUM)
             .padding(padding)
-            .resizeWidthUsingPercentage(0.6D)
+            .resizeWidthUsingPercentage(0.65D)
             .resizeHeightUsingPercentage(0.8D)
             .resizeHeightForWidgets()
             .build();
