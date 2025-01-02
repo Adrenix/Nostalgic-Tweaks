@@ -1,10 +1,12 @@
 package mod.adrenix.nostalgic;
 
 import dev.architectury.platform.Platform;
+import dev.architectury.utils.EnvExecutor;
 import mod.adrenix.nostalgic.config.cache.ConfigCache;
 import mod.adrenix.nostalgic.init.ModInitializer;
 import mod.adrenix.nostalgic.network.ModConnection;
 import mod.adrenix.nostalgic.util.ModTracker;
+import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.log.LogColor;
@@ -241,6 +243,18 @@ public abstract class NostalgicTweaks
     public static MinecraftServer getServer()
     {
         return server;
+    }
+
+    /**
+     * Gets the integrated server for singleplayer environments or the dedicated server for multiplayer environments.
+     *
+     * @return A {@code nullable} {@link MinecraftServer} instance.
+     */
+    @PublicAPI
+    @Nullable
+    public static MinecraftServer getIntegratedOrDedicatedServer()
+    {
+        return EnvExecutor.getEnvSpecific(() -> GameUtil::getIntegratedServer, () -> NostalgicTweaks::getServer);
     }
 
     /**
