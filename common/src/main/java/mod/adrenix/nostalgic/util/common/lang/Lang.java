@@ -458,8 +458,6 @@ public interface Lang
         Translation DELETE_ALL_PRESETS = from("delete_all_presets");
         Translation CREATE_PRESET = from("create_preset");
         Translation OPEN_DISCORD = from("open_discord");
-        Translation SEARCHING = from("searching");
-        Translation EVERYWHERE = from("everywhere");
         Translation KEYBOARD_SHORTCUT = from("keyboard_shortcut");
 
         private static Translation from(String name)
