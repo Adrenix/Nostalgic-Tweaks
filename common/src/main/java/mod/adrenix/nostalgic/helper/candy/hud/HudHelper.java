@@ -2,7 +2,9 @@ package mod.adrenix.nostalgic.helper.candy.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaRenderer;
 import mod.adrenix.nostalgic.mixin.access.GuiAccess;
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.ModTracker;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
@@ -117,6 +119,26 @@ public abstract class HudHelper
     }
 
     /**
+     * @return The height offset to use for the stamina bar.
+     */
+    private static int getHeightOffsetForStamina()
+    {
+        int heightOffset = 49;
+        boolean isFoodOff = CandyTweak.HIDE_HUNGER_BAR.get();
+        LocalPlayer player = Minecraft.getInstance().player;
+
+        if (isFoodOff)
+        {
+            int armorValue = NullableResult.getOrElse(player, 0, LocalPlayer::getArmorValue);
+
+            if (armorValue == 0)
+                heightOffset -= 10;
+        }
+
+        return heightOffset;
+    }
+
+    /**
      * Begin managing the heads-up display.
      *
      * @param graphics The {@link GuiGraphics} instance.
@@ -198,12 +220,29 @@ public abstract class HudHelper
             }
             case AIR ->
             {
-                AIR_LEVEL_PUSHED.enable();
+                if (CandyTweak.HIDE_HUNGER_BAR.get())
+                {
+                    AIR_LEVEL_PUSHED.enable();
 
-                graphics.pose().pushPose();
-                graphics.pose().translate((float) (GuiUtil.getGuiWidth() / 2 - 100), 0.0F, 0.0F);
+                    graphics.pose().pushPose();
+                    graphics.pose().translate((float) (GuiUtil.getGuiWidth() / 2 - 100), 0.0F, 0.0F);
 
-                renderAir(graphics, getHeightOffsetFromHearts());
+                    renderAir(graphics, getHeightOffsetFromHearts());
+                }
+                else if (StaminaRenderer.isVisible())
+                {
+                    AIR_LEVEL_PUSHED.enable();
+
+                    graphics.pose().pushPose();
+                    graphics.pose().translate(0.0F, -10.0F, 0.0F);
+                }
+            }
+            case STAMINA ->
+            {
+                if (AIR_LEVEL_PUSHED.ifEnabledThenDisable())
+                    graphics.pose().popPose();
+
+                StaminaRenderer.render(graphics, getHeightOffsetForStamina());
             }
         }
     }
@@ -266,7 +305,7 @@ public abstract class HudHelper
     public static void renderAir(GuiGraphics graphics, int offsetHeight)
     {
         int air = NullableResult.getOrElse(getPlayer(), 0, Player::getAirSupply);
-        int top = GuiUtil.getGuiHeight() - offsetHeight + 1;
+        int top = GuiUtil.getGuiHeight() - offsetHeight;
         int left = 0;
 
         int full = Mth.ceil((double) (air - 2) * 10.0D / 300.0D);

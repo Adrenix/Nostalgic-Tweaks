@@ -20,6 +20,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GuiMixin
 {
     /**
+     * Renders the stamina bar to the heads-up display.
+     */
+    @Inject(
+        method = "renderPlayerHealth",
+        at = @At(
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"
+        )
+    )
+    private void nt_fabric_stamina_hud$renderStaminaBar(GuiGraphics graphics, CallbackInfo callback)
+    {
+        HudHelper.apply(graphics, HudElement.STAMINA);
+    }
+
+    /**
      * Shifts all heads-up display elements if the experience bar is hidden.
      */
     @Inject(
@@ -194,8 +210,7 @@ public abstract class GuiMixin
     )
     private void nt_fabric_old_hud$modifyAirElement(GuiGraphics graphics, CallbackInfo callback, @Local(ordinal = 0) int offsetHeight)
     {
-        if (CandyTweak.HIDE_HUNGER_BAR.get())
-            HudHelper.apply(graphics, HudElement.AIR);
+        HudHelper.apply(graphics, HudElement.AIR);
     }
 
     /**

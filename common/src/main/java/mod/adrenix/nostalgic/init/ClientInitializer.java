@@ -17,6 +17,7 @@ import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.helper.candy.level.fog.WaterFogRenderer;
 import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.listener.client.GuiListener;
 import mod.adrenix.nostalgic.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
@@ -76,6 +77,7 @@ abstract class ClientInitializer
         OverworldFogRenderer.reset();
         WaterFogRenderer.reset();
         VoidFogRenderer.reset();
+        StaminaHelper.reset();
     }
 
     /**

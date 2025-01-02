@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.listener.common;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
@@ -21,6 +22,7 @@ public abstract class PlayerListener
     public static void register()
     {
         PlayerEvent.PLAYER_JOIN.register(PlayerListener::onPlayerJoin);
+        PlayerEvent.PLAYER_QUIT.register(PlayerListener::onPlayerQuit);
         TickEvent.PLAYER_POST.register(PlayerListener::onTick);
     }
 
@@ -37,6 +39,17 @@ public abstract class PlayerListener
 
         if (GameplayTweak.DISABLE_SWIM.get() && player.isSwimming())
             player.setSwimming(false);
+
+        StaminaHelper.tick(player);
+
+        if (StaminaHelper.get(player).isExhausted())
+        {
+            if (player.isSprinting())
+                player.setSprinting(false);
+
+            if (player.isSwimming())
+                player.setSwimming(false);
+        }
     }
 
     /**
@@ -55,6 +68,16 @@ public abstract class PlayerListener
         NostalgicTweaks.NETWORK.sendToPlayer(player, new ClientboundHandshake(loader, version, protocol));
 
         setCreativeHotbar(player);
+    }
+
+    /**
+     * This method provides instructions for the mod to perform after a player disconnects from the server level.
+     *
+     * @param player A {@link ServerPlayer} instance.
+     */
+    private static void onPlayerQuit(ServerPlayer player)
+    {
+        StaminaHelper.remove(player);
     }
 
     /**

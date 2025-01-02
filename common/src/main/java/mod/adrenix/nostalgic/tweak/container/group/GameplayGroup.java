@@ -36,6 +36,10 @@ public interface GameplayGroup
     Container EXPERIENCE_ORB = Container.group(EXPERIENCE, "experience_orb").color(0xBBB71B).icon(Icons.EXPERIENCE).build();
     Container EXPERIENCE_BLOCK = Container.group(EXPERIENCE, "experience_block").color(0xA4EDDC).icon(Blocks.ENCHANTING_TABLE).build();
 
+    // Stamina
+
+    Container STAMINA = Container.group(Category.GAMEPLAY, "stamina").color(0xFFE47C).icon(Icons.LIGHTNING).build();
+
     // Hunger
 
     Container HUNGER = Container.group(Category.GAMEPLAY, "hunger").color(0xFF8C8C).icon(Items.PORKCHOP).build();

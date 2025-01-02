@@ -13,6 +13,11 @@ public interface ModSprite
     GuiSprite RECIPE_BUTTON_LARGE_HIGHLIGHTED = GuiSprite.stretch(SpriteAtlas.fromSprite("recipe_book/button_large_highlighted", 18, 18));
     GuiSprite ADVENTURE_CRAFT_OFFHAND_LEFT_SLOT = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/ac_offhand_left_slot", 29, 24));
     GuiSprite ADVENTURE_CRAFT_OFFHAND_RIGHT_SLOT = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/ac_offhand_right_slot", 29, 24));
+    GuiSprite STAMINA_LEVEL = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_level", 9, 9));
+    GuiSprite STAMINA_LEVEL_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_level_half", 9, 9));
+    GuiSprite STAMINA_RECHARGE = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_recharge", 9, 9));
+    GuiSprite STAMINA_RECHARGE_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_recharge_half", 9, 9));
+    GuiSprite STAMINA_EMPTY = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_empty", 9, 9));
 
     static ResourceLocation icon(String path)
     {

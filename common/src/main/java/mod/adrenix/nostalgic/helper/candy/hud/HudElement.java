@@ -6,5 +6,6 @@ public enum HudElement
     VEHICLE_HEALTH,
     FOOD,
     ARMOR,
-    AIR
+    AIR,
+    STAMINA
 }

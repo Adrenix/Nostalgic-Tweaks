@@ -81,6 +81,8 @@ public interface CandyTweak
 
     TweakFlag HIDE_EXPERIENCE_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_EXP_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_ORB_SPAWN::get).build();
     TweakFlag HIDE_HUNGER_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_HUNGER_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_HUNGER::get).build();
+    TweakFlag HIDE_STAMINA_BAR = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR).newForUpdate().orIf(GameplayTweak.DISABLE_SPRINT::get).build();
+    TweakFlag HIDE_STAMINA_BAR_INACTIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR).newForUpdate().build();
 
     // Offhand Slot
 
@@ -137,6 +139,16 @@ public interface CandyTweak
     TweakNumber<Integer> ALT_HUNGER_SATURATION_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
     TweakFlag ALT_HUNGER_SATURATION_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).newForUpdate().whenDisabled(true).build();
     TweakText ALT_HUNGER_SATURATION_TEXT = TweakText.client("Saturation: %v%", CandyGroup.INTERFACE_HUD_HUNGER_BAR_ALT_SATURATION).build();
+
+    // Alternative Stamina Text
+
+    TweakFlag SHOW_STAMINA_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
+    TweakFlag ALT_STAMINA_SHOW_ON_ACTIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
+    TweakEnum<Corner> ALT_STAMINA_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
+    TweakNumber<Integer> ALT_STAMINA_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
+    TweakNumber<Integer> ALT_STAMINA_OFFSET_Y = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();
+    TweakFlag ALT_STAMINA_SHADOW = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().whenDisabled(true).build();
+    TweakText ALT_STAMINA_TEXT = TweakText.client("Stamina: %v%", CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
 
     // Window Title
 

@@ -36,7 +36,8 @@ public enum TweakAlert
     VOID_CONFLICT(TweakAlert::isVoidConflict, Lang.Alert.VOID),
     FOOD_HEALTH_CONFLICT(TweakAlert::isCustomFoodHealthConflict, Lang.Alert.FOOD_HEALTH),
     FOOD_STACKING_CONFLICT(TweakAlert::isCustomFoodStackingConflict, Lang.Alert.FOOD_STACKING),
-    ARM_SWAY_CONFLICT(TweakAlert::isArmSwayConflict, Lang.Alert.ARM_SWAY);
+    ARM_SWAY_CONFLICT(TweakAlert::isArmSwayConflict, Lang.Alert.ARM_SWAY),
+    STAMINA_SPRINTING_CONFLICT(TweakAlert::isStaminaSprintingConflict, Lang.Alert.STAMINA_SPRINTING);
 
     /* Fields */
 
@@ -253,5 +254,13 @@ public enum TweakAlert
     private static boolean isArmSwayConflict()
     {
         return AnimationTweak.PREVENT_ARM_SWAY.fromCache();
+    }
+
+    /**
+     * Checks if the user has sprinting disabled. If so, the stamina sprint system is useless.
+     */
+    private static boolean isStaminaSprintingConflict()
+    {
+        return GameplayTweak.DISABLE_SPRINT.fromCache();
     }
 }

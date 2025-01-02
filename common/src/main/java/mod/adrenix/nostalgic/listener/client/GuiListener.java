@@ -14,6 +14,8 @@ import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicTitleScree
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select.NostalgicSelectWorldScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaData;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.Generic;
@@ -202,6 +204,39 @@ public abstract class GuiListener
     }
 
     /**
+     * Properly format the alternative stamina text based on player stamina data context.
+     *
+     * @param data The player's {@link StaminaData} instance.
+     * @return The properly formatted alternative stamina text.`
+     */
+    private static String getStaminaColor(StaminaData data)
+    {
+        int level = (int) Math.ceil(((double) data.getStaminaLevel() / StaminaData.MAX_STAMINA_LEVEL) * 100);
+
+        if (data.isExhausted())
+            return "§7" + level + "§r";
+        else
+        {
+            if (level <= 15)
+                return "§5" + level + "§r";
+            else if (level <= 25)
+                return "§d" + level + "§r";
+            else if (level <= 40)
+                return "§c" + level + "§r";
+            else if (level <= 55)
+                return "§4" + level + "§r";
+            else if (level <= 65)
+                return "§6" + level + "§r";
+            else if (level <= 80)
+                return "§e" + level + "§r";
+            else if (level <= 99)
+                return "§2" + level + "§r";
+
+            return "§a" + level + "§r";
+        }
+    }
+
+    /**
      * Renders text overlay to the HUD if such tweaks are enabled to do so.
      *
      * @param graphics    The {@link GuiGraphics} instance.
@@ -217,6 +252,7 @@ public abstract class GuiListener
 
         CornerManager corner = new CornerManager();
         boolean isCreative = PlayerUtil.isCreativeOrSpectator(player);
+        boolean isStaminaEnabled = GameplayTweak.STAMINA_SPRINT.get();
         boolean isHungerEnabled = !GameplayTweak.DISABLE_HUNGER.get();
         boolean isExperienceEnabled = !GameplayTweak.DISABLE_ORB_SPAWN.get();
         boolean isExperienceLevelCreative = isCreative && CandyTweak.SHOW_EXP_LEVEL_IN_CREATIVE.get();
@@ -274,6 +310,22 @@ public abstract class GuiListener
             int yOffset = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_Y.get();
 
             corner.drawText(graphics, text, CandyTweak.ALT_HUNGER_SATURATION_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_HUNGER_SATURATION_SHADOW.get());
+        }
+
+        if (CandyTweak.SHOW_STAMINA_TEXT.get() && isStaminaEnabled && !isCreative)
+        {
+            StaminaData data = StaminaHelper.get(player);
+            String text = CandyTweak.ALT_STAMINA_TEXT.parse(getStaminaColor(data));
+            int xOffset = CandyTweak.ALT_STAMINA_OFFSET_X.get();
+            int yOffset = CandyTweak.ALT_STAMINA_OFFSET_Y.get();
+
+            if (CandyTweak.ALT_STAMINA_SHOW_ON_ACTIVE.get())
+            {
+                if (StaminaHelper.isActiveFor(player))
+                    corner.drawText(graphics, text, CandyTweak.ALT_STAMINA_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_STAMINA_SHADOW.get());
+            }
+            else
+                corner.drawText(graphics, text, CandyTweak.ALT_STAMINA_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_STAMINA_SHADOW.get());
         }
 
         RenderUtil.endBatching();
