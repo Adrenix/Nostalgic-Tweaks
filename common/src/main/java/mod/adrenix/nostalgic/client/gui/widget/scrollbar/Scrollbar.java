@@ -51,6 +51,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     private double scrollTo = 0.0D;
     private double lastScrollTo = 0.0D;
     private boolean dragging = false;
+    private boolean smoothScroll = false;
     private final ScrollbarContent content;
 
     /* Constructor */
@@ -139,7 +140,7 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     {
         this.scrollAmount = Mth.clamp(amount, 0.0D, this.getMaxScrollAmount());
 
-        if (MathUtil.tolerance(this.scrollAmount, this.scrollTo, 0.9D))
+        if (MathUtil.tolerance(this.scrollAmount, this.scrollTo, 0.01D))
             this.scrollAmount = this.scrollTo;
 
         this.getBuilder().onScroll.accept(this);
@@ -345,7 +346,13 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
         double averageScrollAmount = Mth.clamp(this.getBuilder().averageScrollAmount.getAsDouble(), 6.8D, 12.0D);
 
         if (this.isSmoothScrolling())
+        {
             this.scrollTo = Mth.clamp(this.scrollTo - deltaY * averageScrollAmount, 0.0D, this.getMaxScrollAmount());
+            this.smoothScroll = true;
+
+            if (this.getBuilder().animation.isNotFinished())
+                this.getBuilder().animation.stop();
+        }
         else
         {
             this.setScrollAmount(this.scrollAmount - deltaY * averageScrollAmount);
@@ -381,6 +388,17 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
 
             this.getBuilder().animation.stop();
         }
+
+        if (this.smoothScroll)
+        {
+            this.setAnimationScrollAmount(Mth.lerp(partialTick, this.scrollAmount, this.scrollTo));
+
+            if (this.scrollAmount == this.scrollTo)
+                this.smoothScroll = false;
+        }
+
+        if (partialTick >= 1.0F)
+            this.setScrollAmount(this.scrollTo);
     }
 
     /**
