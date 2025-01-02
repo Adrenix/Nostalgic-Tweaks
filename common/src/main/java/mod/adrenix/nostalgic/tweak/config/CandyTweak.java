@@ -277,7 +277,7 @@ public interface CandyTweak
 
     // Title Screen Buttons
 
-    TweakEnum<TitleLayout> TITLE_BUTTON_LAYOUT = TweakEnum.client(TitleLayout.MODERN, CandyGroup.INTERFACE_TITLE_BUTTON).build();
+    TweakEnum<TitleLayout> TITLE_BUTTON_LAYOUT = TweakEnum.client(TitleLayout.MODERN, CandyGroup.INTERFACE_TITLE_BUTTON).conflictMods(ModTracker.CONTROLIFY).build();
     TweakFlag INCLUDE_MODS_ON_TITLE = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_TITLE_REALMS_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_TITLE_ACCESSIBILITY_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();

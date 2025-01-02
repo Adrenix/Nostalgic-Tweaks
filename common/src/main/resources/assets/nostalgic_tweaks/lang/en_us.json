@@ -1088,6 +1088,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.oldAlphaLogo.search": "Falling, Minecraft",
   "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout": "Button Layout",
   "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout.info": "Change the layout of the buttons on the title screen.",
+  "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout.conflict": "This tweak is§c disabled§r because§e Controlify§r is installed. Controlify will§c crash§r the game if specific vanilla title screen buttons do not exist.",
   "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout.enum.alpha": "The title screen button layout will have a vertical alignment of four buttons; singleplayer, multiplayer, play tutorial level §7(disabled)§r, and options.",
   "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout.enum.beta": "The title screen button layout will have a vertical alignment of four buttons; singleplayer, multiplayer, texture packs, and options.",
   "gui.nostalgic_tweaks.config.eyeCandy.titleButtonLayout.enum.release_texture_pack": "The title screen button layout will contain singleplayer, multiplayer, texture packs, language, options, and quit game.",

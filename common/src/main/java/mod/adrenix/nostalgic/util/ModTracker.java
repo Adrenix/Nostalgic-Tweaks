@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public enum ModTracker
 {
     DISTANT_HORIZONS("distanthorizons"),
+    CONTROLIFY("controlify"),
     APPLE_SKIN("appleskin"),
     SODIUM("sodium", "embeddium", "rubidium"),
     STARLIGHT("starlight"),
