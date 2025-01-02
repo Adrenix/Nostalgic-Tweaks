@@ -192,7 +192,7 @@ public abstract class HudHelper
         {
             case VEHICLE_HEALTH ->
             {
-                int armorValue = NullableResult.getOrElse(Minecraft.getInstance().player, 0, LocalPlayer::getArmorValue);
+                int armorValue = NullableResult.getOrElse(getPlayer(), 0, Player::getArmorValue);
 
                 if (isVehicleHealthShown() && armorValue > 0)
                     graphics.pose().translate(0.0F, -10.0F, 0.0F);
