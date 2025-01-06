@@ -69,6 +69,7 @@ public abstract class LightTextureHelper
      */
     public static float getLightmapBrightness(int i, boolean isSkyLight)
     {
+        double gammaSetting = Minecraft.getInstance().options.gamma().get();
         float light = 1.0F - (float) i / 15.0F;
         float brightness;
 
@@ -130,7 +131,25 @@ public abstract class LightTextureHelper
             }
         }
 
-        return ((1.0F - light) / (light * brightness + 1.0F)) * (1.0F - 0.05F) + 0.05F;
+        float lightmapBrightness = ((1.0F - light) / (light * brightness + 1.0F)) * (1.0F - 0.05F) + 0.05F;
+
+        if (gammaSetting > 0.0D && isSkyLight && i < 5 && CandyTweak.DYNAMIC_LIGHT_BRIGHTNESS.get())
+        {
+            float ofGamma = switch (i)
+            {
+                case 1 -> 0.09F;
+                case 2 -> 0.1F;
+                case 3 -> 0.11F;
+                case 4 -> 0.12F;
+                default -> 0.08F;
+            };
+
+            float maxBrightness = getLightmapBrightness(5, true) - 0.05F;
+            float shiftBrightness = lightmapBrightness + (float) (ofGamma * gammaSetting);
+            lightmapBrightness = Mth.clamp(shiftBrightness, lightmapBrightness, maxBrightness);
+        }
+
+        return lightmapBrightness;
     }
 
     /**
@@ -179,7 +198,8 @@ public abstract class LightTextureHelper
 
         boolean isCacheInitialized = CACHE_INITIALIZER.get();
         boolean isSmoothTransition = CandyTweak.SMOOTH_LIGHT_TRANSITION.get() && !CandyTweak.ROUND_ROBIN_RELIGHT.get();
-        boolean isGammaDisabled = CandyTweak.DISABLE_BRIGHTNESS.get();
+        boolean isGammaDisabled = CandyTweak.DISABLE_LIGHT_BRIGHTNESS.get();
+        boolean isDynamicGamma = CandyTweak.DYNAMIC_LIGHT_BRIGHTNESS.get();
         boolean isFlashPresent = level.getSkyFlashTime() > 0 && !minecraft.options.hideLightningFlash().get();
         boolean isWorldDarkening = darkenAmount > 0;
 
@@ -229,7 +249,7 @@ public abstract class LightTextureHelper
                     fromSkyLight = Mth.clamp(fromSkyLight, 0.025F, 1.0F);
                 }
 
-                double gamma = isGammaDisabled ? 0.0D : gammaSetting;
+                double gamma = isGammaDisabled || isDynamicGamma ? 0.0D : gammaSetting;
                 float skyLight = Mth.clamp(fromSkyLight * 255.0F * ((float) gamma + 1.0F), 6.375F, 255.0F);
                 float blockLight = Mth.clamp(fromBlockLight * 255.0F * ((float) gamma + 1.0F), 6.375F, 255.0F);
                 float rgba = fromBlockLight > fromSkyLight ? blockLight : skyLight;
@@ -238,6 +258,7 @@ public abstract class LightTextureHelper
                     rgba = LIGHTMAP_TIMERS[x][y].setAndGetTarget(rgba, LerpTimer::lerpFloat);
 
                 int light = Math.round(rgba);
+
                 lightPixels.setPixelRGBA(x, y, 255 << 24 | light << 16 | light << 8 | light);
             }
         }

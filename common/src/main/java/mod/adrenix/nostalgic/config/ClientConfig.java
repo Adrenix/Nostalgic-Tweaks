@@ -525,7 +525,8 @@ public class ClientConfig implements ConfigMeta
         // Lightmap Texture
 
         public boolean smoothLightTransition = CandyTweak.SMOOTH_LIGHT_TRANSITION.register("smoothLightTransition");
-        public boolean disableBrightness = CandyTweak.DISABLE_BRIGHTNESS.register("disableBrightness");
+        public boolean dynamicLightBrightness = CandyTweak.DYNAMIC_LIGHT_BRIGHTNESS.register("dynamicLightBrightness");
+        public boolean disableLightBrightness = CandyTweak.DISABLE_LIGHT_BRIGHTNESS.register("disableLightBrightness");
         public boolean oldLightColor = CandyTweak.OLD_LIGHT_COLOR.register("oldLightColor");
 
         // Shader Support

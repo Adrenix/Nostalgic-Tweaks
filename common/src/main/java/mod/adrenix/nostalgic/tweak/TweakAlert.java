@@ -133,9 +133,10 @@ public enum TweakAlert
     private static boolean isBrightnessConflict()
     {
         boolean isOldLightColor = CandyTweak.OLD_LIGHT_COLOR.fromCache();
-        boolean isDisabledBrightness = CandyTweak.DISABLE_BRIGHTNESS.fromCache();
+        boolean isDisabledBrightness = CandyTweak.DISABLE_LIGHT_BRIGHTNESS.fromCache();
+        boolean isDynamicBrightness = CandyTweak.DYNAMIC_LIGHT_BRIGHTNESS.fromCache();
 
-        return !isOldLightColor && isDisabledBrightness;
+        return !isOldLightColor && (isDisabledBrightness || isDynamicBrightness);
     }
 
     /**
