@@ -475,7 +475,7 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
 
         RenderUtil.beginBatching();
 
-        if (this.getBuilder().backgroundColor != null)
+        if (this.getBuilder().backgroundColor != null && this.getBuilder().backgroundIf.getAsBoolean())
             RenderUtil.fill(graphics, this.getX(), this.getY(), this.getEndX(), this.getEndY(), this.getBuilder().backgroundColor);
 
         this.renderText(graphics, mouseX, mouseY, partialTick, false);

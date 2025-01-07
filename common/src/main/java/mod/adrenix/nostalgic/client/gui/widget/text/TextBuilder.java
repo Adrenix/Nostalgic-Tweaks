@@ -42,6 +42,7 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     Color clickableColor = Color.WHITE;
     Color hoverColor = Color.WHITE;
     Color fontColor = Color.WHITE;
+    BooleanSupplier backgroundIf = BooleanSupplier.ALWAYS;
     BooleanSupplier highlightIf = BooleanSupplier.ALWAYS;
     BooleanSupplier italic = BooleanSupplier.NEVER;
     @Nullable Runnable onPress = null;
@@ -325,6 +326,19 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     public TextBuilder background(ChatFormatting formatting)
     {
         return this.color(Optional.ofNullable(formatting.getColor()).orElse(Color.WHITE.get()));
+    }
+
+    /**
+     * Only show the defined background color when the given boolean supplier yields {@code true}.
+     *
+     * @param when A {@link BooleanSupplier} instance.
+     */
+    @PublicAPI
+    public TextBuilder backgroundWhen(BooleanSupplier when)
+    {
+        this.backgroundIf = when;
+
+        return this;
     }
 
     /**
