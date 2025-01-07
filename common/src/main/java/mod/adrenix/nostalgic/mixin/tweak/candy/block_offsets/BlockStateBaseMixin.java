@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.candy.block_offsets;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.mixin.access.BlockBehaviourAccess;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -37,14 +38,14 @@ public abstract class BlockStateBaseMixin
     )
     private Vec3 nt_block_offsets$modifyOffset(Vec3 offset)
     {
-        if (NostalgicTweaks.isMixinEarly() || !this.hasOffsetFunction())
+        boolean hasCollision = ((BlockBehaviourAccess) this.getBlock()).nt$hasCollision();
+
+        if (NostalgicTweaks.isMixinEarly() || !this.hasOffsetFunction() || hasCollision)
             return offset;
 
         Block block = this.getBlock();
-        boolean isCustomOff = CandyTweak.DISABLE_BLOCK_OFFSETS.get().containsBlock(block);
-        boolean isAllOff = CandyTweak.DISABLE_ALL_OFFSET.get();
 
-        if (isCustomOff || isAllOff)
+        if (CandyTweak.DISABLE_ALL_OFFSET.get() || CandyTweak.DISABLE_BLOCK_OFFSETS.get().containsBlock(block))
             return Vec3.ZERO;
 
         return offset;
