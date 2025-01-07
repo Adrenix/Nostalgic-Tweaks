@@ -5,6 +5,7 @@
   "client": [
     "AbstractContainerScreenAccess",
     "AbstractWidgetAccess",
+    "BlockBehaviourAccess",
     "DebugScreenOverlayAccess",
     "FpsDebugChartAccess",
     "GuiAccess",
