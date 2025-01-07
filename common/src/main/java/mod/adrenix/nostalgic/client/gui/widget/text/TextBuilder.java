@@ -40,12 +40,14 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     IntSupplier separatorHeight = () -> 2;
     Color separatorColor = Color.WHITE;
     Color clickableColor = Color.WHITE;
+    Color hoverColor = Color.WHITE;
     Color fontColor = Color.WHITE;
     BooleanSupplier highlightIf = BooleanSupplier.ALWAYS;
     BooleanSupplier italic = BooleanSupplier.NEVER;
     @Nullable Runnable onPress = null;
     @Nullable Animation highlighter = null;
     @Nullable BlankWidget pressArea = null;
+    @Nullable DynamicWidget<?, ?> hoverSync = null;
 
     /* Constructor */
 
@@ -456,6 +458,21 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     public TextBuilder highlightIf(BooleanSupplier highlightIf)
     {
         this.highlightIf = highlightIf;
+
+        return this;
+    }
+
+    /**
+     * Show a specific color when the given widget is hovered or focused.
+     *
+     * @param syncTo The {@link DynamicWidget} to sync to.
+     * @param color  The {@link Color} to show when the given widget is hovered or focused.
+     */
+    @PublicAPI
+    public TextBuilder hoverOrFocusSync(DynamicWidget<?, ?> syncTo, Color color)
+    {
+        this.hoverSync = syncTo;
+        this.hoverColor = color;
 
         return this;
     }
