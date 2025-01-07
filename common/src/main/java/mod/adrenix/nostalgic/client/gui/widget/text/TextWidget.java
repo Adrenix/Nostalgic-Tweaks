@@ -252,6 +252,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
     {
         if (this.getBuilder().highlighter == null)
         {
+            if (this.getBuilder().hoverSync != null && this.getBuilder().hoverSync.isHoveredOrFocused())
+                return this.getBuilder().hoverColor;
+
             if (this.getBuilder().onPress != null && this.isHoveredOrFocused())
                 return this.getBuilder().clickableColor;
 
