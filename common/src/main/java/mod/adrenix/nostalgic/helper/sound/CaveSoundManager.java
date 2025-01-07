@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class CaveSoundManager
 {
@@ -69,30 +70,46 @@ public class CaveSoundManager
         if (this.tickCountdown != 0)
             return;
 
+        if (this.isCaveLike(blockPos))
+        {
+            if (!BlockPos.betweenClosedStream(new BoundingBox(blockPos).inflatedBy(1)).allMatch(this::isCaveLike))
+                return;
+
+            AmbientMoodSettings ambientMoodSettings = AmbientMoodSettings.LEGACY_CAVE_SETTINGS;
+
+            double blockX = (double) blockPos.getX() + 0.5D;
+            double blockY = (double) blockPos.getY() + 0.5D;
+            double blockZ = (double) blockPos.getZ() + 0.5D;
+            double dx = blockX - this.player.getX();
+            double dy = blockY - this.player.getEyeY();
+            double dz = blockZ - this.player.getZ();
+            double normal = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            double offset = normal + ambientMoodSettings.getSoundPositionOffset();
+            double x = this.player.getX() + dx / normal * offset;
+            double y = this.player.getEyeY() + dy / normal * offset;
+            double z = this.player.getZ() + dz / normal * offset;
+
+            this.soundManager.play(getSound(this.randomSource, x, y, z));
+            this.tickCountdown = this.randomSource.nextInt(12000) + 6000;
+        }
+    }
+
+    /**
+     * Check if at the given block position there exists an air block and no light from the sky or blocks.
+     *
+     * @param blockPos A {@link BlockPos} instance.
+     * @return Whether the environment at the given position seems cave like.
+     */
+    private boolean isCaveLike(BlockPos blockPos)
+    {
         if (this.level.getBlockState(blockPos).getBlock() instanceof AirBlock)
         {
             int blockLight = this.level.getBrightness(LightLayer.BLOCK, blockPos);
             int skyLight = this.level.getBrightness(LightLayer.SKY, blockPos);
 
-            if (blockLight <= this.randomSource.nextInt(8) && skyLight <= 0)
-            {
-                AmbientMoodSettings ambientMoodSettings = AmbientMoodSettings.LEGACY_CAVE_SETTINGS;
-
-                double blockX = (double) blockPos.getX() + 0.5D;
-                double blockY = (double) blockPos.getY() + 0.5D;
-                double blockZ = (double) blockPos.getZ() + 0.5D;
-                double dx = blockX - this.player.getX();
-                double dy = blockY - this.player.getEyeY();
-                double dz = blockZ - this.player.getZ();
-                double normal = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                double offset = normal + ambientMoodSettings.getSoundPositionOffset();
-                double x = this.player.getX() + dx / normal * offset;
-                double y = this.player.getEyeY() + dy / normal * offset;
-                double z = this.player.getZ() + dz / normal * offset;
-
-                this.soundManager.play(getSound(this.randomSource, x, y, z));
-                this.tickCountdown = this.randomSource.nextInt(12000) + 6000;
-            }
+            return blockLight <= 0 && skyLight <= 0;
         }
+
+        return false;
     }
 }
