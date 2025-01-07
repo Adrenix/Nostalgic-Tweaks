@@ -288,6 +288,14 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
      */
     private float getCenteredLine(MultiLineText.Line line, int index)
     {
+        if (this.getBuilder().isCenterVertical)
+        {
+            if (this.iconManager.isPresent())
+                return Math.round(this.getIconWidth() / this.getSquareScale());
+            else
+                return 0.0F;
+        }
+
         int lineWidth = line.getWidth();
 
         if (index == 0 && this.iconManager.isPresent())

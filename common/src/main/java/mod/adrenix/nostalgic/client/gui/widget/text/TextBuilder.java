@@ -28,6 +28,7 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     boolean useTextWidth = false;
     boolean useSeparator = false;
     boolean disableUnderline = false;
+    boolean isCenterVertical = false;
     boolean isCenterAligned = false;
     boolean useClickSound = true;
     boolean useEllipsis = false;
@@ -113,6 +114,18 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     public TextBuilder lineHeight(int height)
     {
         this.lineHeight = height;
+
+        return this;
+    }
+
+    /**
+     * Make the text centered only within its bounding height box.
+     */
+    @PublicAPI
+    public TextBuilder centerVertical()
+    {
+        this.isCenterVertical = true;
+        this.isCenterAligned = true;
 
         return this;
     }
