@@ -4,28 +4,35 @@ import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.overlay.types.state.SwitchGroup;
 import mod.adrenix.nostalgic.client.gui.screen.config.ConfigScreen;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.RowProvider;
+import mod.adrenix.nostalgic.client.gui.widget.blank.BlankWidget;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
+import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
 import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
 import mod.adrenix.nostalgic.client.gui.widget.group.Group;
 import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
+import mod.adrenix.nostalgic.tweak.container.Container;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
+import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.client.search.SearchTag;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
+import mod.adrenix.nostalgic.util.common.function.ForEachWithPrevious;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.text.TextUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -54,16 +61,77 @@ public class GroupToggleAll extends ManageGroup
 
         /* Filters */
 
-        record Filter(SearchTag tag, FlagHolder holder, SwitchGroup group)
+        record FilterTag(SearchTag tag, FlagHolder holder, SwitchGroup group)
         {
-            public static Filter create(WidgetHolder parent, SearchTag tag)
+            public static FilterTag create(WidgetHolder parent, SearchTag tag)
             {
                 FlagHolder holder = FlagHolder.off();
                 Translation title = Lang.literal(TextUtil.toTitleCase(tag.toString()));
                 Translation description = tag.getDescription();
                 SwitchGroup group = SwitchGroup.create(parent, title, description, holder::get, holder::set);
 
-                return new Filter(tag, holder, group);
+                return new FilterTag(tag, holder, group);
+            }
+
+            public boolean isActive()
+            {
+                return this.holder.get();
+            }
+        }
+
+        record FilterCategory(Container category, FlagHolder holder)
+        {
+            public static FilterCategory create(Container category)
+            {
+                if (!category.isCategory())
+                    throw new AssertionError("Given container is not a category!");
+
+                return new FilterCategory(category, FlagHolder.off());
+            }
+
+            public void checkbox(ManageOverlay overlay, Group group, @Nullable DynamicWidget<?, ?> below)
+            {
+                ButtonWidget checkbox = ButtonTemplate.checkbox(Lang.EMPTY, this.holder::get)
+                    .skipFocusOnClick()
+                    .extendWidthToEnd(group, group.getInsidePaddingX())
+                    .below(below, overlay.padding * 2)
+                    .onPress(this.holder::toggle)
+                    .build(group::addWidget);
+
+                BlankWidget guide = BlankWidget.create()
+                    .pos(checkbox::getX, checkbox::getY)
+                    .size(Icons.CHECKBOX::getWidth, Icons.CHECKBOX::getHeight)
+                    .build(group::addWidget);
+
+                BlankWidget.create()
+                    .alignVerticalTo(guide)
+                    .rightOf(guide, 3)
+                    .height(checkbox::getHeight)
+                    .extendWidthToEnd(group, group.getInsidePaddingX())
+                    .renderer((widget, graphics, mouseX, mouseY, partialTick) -> {
+                        if (checkbox.isHoveredOrFocused())
+                        {
+                            Color color = this.category.getColor().fromAlpha(0.2D);
+                            int x = widget.getX();
+                            int y = widget.getY();
+                            int endX = widget.getEndX();
+                            int endY = widget.getEndY();
+
+                            RenderUtil.fill(graphics, x, y, endX, endY, color);
+                        }
+                    })
+                    .build(group::addWidget);
+
+                TextWidget.create(this.category.toString())
+                    .icon(this.category.getIcon())
+                    .color(this.category.getColor())
+                    .centerVertical()
+                    .rightOf(guide, 4)
+                    .height(Icons.CHECKBOX::getHeight)
+                    .extendWidthToEnd(group, group.getInsidePaddingX())
+                    .hoverOrFocusSync(checkbox, this.category.getColor().brighten(0.35D))
+                    .centerInWidgetY(checkbox)
+                    .build(group::addWidget);
             }
 
             public boolean isActive()
@@ -81,13 +149,29 @@ public class GroupToggleAll extends ManageGroup
             .extendWidthToScreenEnd(0)
             .build(this::register);
 
-        FlagHolder isOverride = FlagHolder.off();
-        NullableHolder<TextWidget> below = NullableHolder.empty();
-        LinkedHashSet<Filter> filters = new LinkedHashSet<>();
+        NullableHolder<DynamicWidget<?, ?>> below = NullableHolder.empty();
+        LinkedHashSet<FilterTag> tagFilters = new LinkedHashSet<>();
+        LinkedHashSet<FilterCategory> categoryFilters = new LinkedHashSet<>();
+
+        for (Container category : Container.CATEGORIES)
+            categoryFilters.add(FilterCategory.create(category));
+
+        ForEachWithPrevious.create(categoryFilters)
+            .applyToFirst(category -> category.checkbox(manager, toggles, null))
+            .forEach((prev, next) -> next.checkbox(manager, toggles, toggles.getWidgets().getLast()))
+            .run();
+
+        SeparatorWidget separateToggles = SeparatorWidget.create(toggles.getColor())
+            .height(1)
+            .below(toggles.getWidgets().getLast(), manager.padding * 2)
+            .width(toggles::getInsideWidth)
+            .build(toggles::addWidget);
+
+        below.set(separateToggles);
 
         for (SearchTag tag : SearchTag.values())
         {
-            Filter filter = Filter.create(toggles, tag);
+            FilterTag filter = FilterTag.create(toggles, tag);
 
             TextWidget info = filter.group()
                 .getDescription()
@@ -95,12 +179,12 @@ public class GroupToggleAll extends ManageGroup
                 .below(below.get(), 4)
                 .build();
 
-            filter.group().getToggle().getBuilder().disableIf(isOverride::get).below(below.get(), 4);
+            filter.group().getToggle().getBuilder().below(below.get(), 4);
 
             toggles.addWidget(filter.group().getToggle());
             toggles.addWidget(info);
 
-            filters.add(filter);
+            tagFilters.add(filter);
             below.set(info);
         }
 
@@ -187,38 +271,35 @@ public class GroupToggleAll extends ManageGroup
             .width(apply::getInsideWidth)
             .build(apply::addWidget);
 
-        ButtonWidget override = ButtonTemplate.checkbox(Lang.Manage.TOGGLE_ALL_OVERRIDE, isOverride::get)
-            .skipFocusOnClick()
-            .tooltip(Lang.Button.OVERRIDE, 35, 500L, TimeUnit.MILLISECONDS)
-            .infoTooltip(Lang.Manage.TOGGLE_ALL_OVERRIDE_INFO, 35)
-            .extendWidthToEnd(apply, apply.getInsidePaddingX())
-            .below(sideSeparator, manager.padding * 2)
-            .onPress(isOverride::toggle)
-            .build(apply::addWidget);
-
         Grid grid = Grid.create(manager.overlay, 2)
             .columnSpacing(1)
             .extendWidthToEnd(apply, apply.getInsidePaddingX())
-            .below(override, manager.padding * 2)
+            .below(sideSeparator, manager.padding * 2)
             .build(apply::addWidget);
 
         BooleanSupplier isToggleEnabled = () -> {
             boolean isStatePicked = isEnabled.get() || isDisabled.get();
             boolean isCachePicked = isLocal.get() || isNetwork.get();
-            boolean isReady = isStatePicked && isCachePicked;
 
-            if (isOverride.get())
-                return isReady;
-
-            return filters.stream().map(Filter::holder).anyMatch(FlagHolder::get) && isReady;
+            return isStatePicked && isCachePicked;
         };
 
         Runnable onToggleAll = () -> {
-            List<Predicate<Tweak<?>>> predicates = filters.stream()
-                .filter(Filter::isActive)
-                .map(Filter::tag)
+            List<Predicate<Tweak<?>>> tagPredicates = tagFilters.stream()
+                .filter(FilterTag::isActive)
+                .map(FilterTag::tag)
                 .map(SearchTag::getPredicate)
                 .toList();
+
+            UniqueArrayList<Predicate<Tweak<?>>> predicates = new UniqueArrayList<>(tagPredicates);
+
+            if (categoryFilters.stream().anyMatch(FilterCategory::isActive))
+            {
+                predicates.add(tweak -> categoryFilters.stream()
+                    .filter(FilterCategory::isActive)
+                    .map(FilterCategory::category)
+                    .anyMatch(category -> category == tweak.getCategory()));
+            }
 
             BiConsumer<Tweak<Object>, Object> consumer = (tweak, value) -> {
                 TweakListing<?, ?> listing = ClassUtil.cast(tweak, TweakListing.class).orElse(null);
@@ -245,7 +326,10 @@ public class GroupToggleAll extends ManageGroup
 
         Consumer<ConfigScreen> onReviewAll = (config) -> {
             RowProvider.ALL.use();
+
+            config.getWidgetManager().setQuery("");
             config.getWidgetManager().setQuery(SearchTag.SAVE.query());
+            config.getWidgetManager().populateFromQuery();
 
             if (manager.overlay.getParentScreen() instanceof ConfigScreen screen)
                 screen.setFocused(config.getWidgetManager().getSearch());

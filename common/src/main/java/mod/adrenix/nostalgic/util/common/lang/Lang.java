@@ -377,7 +377,6 @@ public interface Lang
         Translation EDIT_LIST = from("edit_list");
         Translation VIEW_LIST = from("view_list");
         Translation FAVORITE = from("favorite");
-        Translation OVERRIDE = from("override");
         Translation NETWORK = from("network");
         Translation INSPECT = from("inspect");
         Translation REFRESH = from("refresh");
@@ -737,14 +736,12 @@ public interface Lang
         Translation TOGGLE_ALL_HEADER = from("toggle_all.header");
         Translation TOGGLE_ALL_ENABLE = from("toggle_all.enable");
         Translation TOGGLE_ALL_DISABLE = from("toggle_all.disable");
-        Translation TOGGLE_ALL_OVERRIDE = from("toggle_all.override");
         Translation TOGGLE_ALL_LOCAL = from("toggle_all.local");
         Translation TOGGLE_ALL_NETWORK = from("toggle_all.network");
         Translation TOGGLE_ALL_LOCAL_INFO = from("toggle_all.local.info");
         Translation TOGGLE_ALL_NETWORK_INFO = from("toggle_all.network.info");
         Translation TOGGLE_ALL_ENABLE_INFO = from("toggle_all.enable.info");
         Translation TOGGLE_ALL_DISABLE_INFO = from("toggle_all.disable.info");
-        Translation TOGGLE_ALL_OVERRIDE_INFO = from("toggle_all.override.info");
         Translation TOGGLE_ALL_APPLY_INFO = from("toggle_all.apply.info");
 
         private static Translation from(String name)
