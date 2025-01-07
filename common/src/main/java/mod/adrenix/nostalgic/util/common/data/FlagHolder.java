@@ -1,12 +1,10 @@
 package mod.adrenix.nostalgic.util.common.data;
 
-import mod.adrenix.nostalgic.util.common.CollectionUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
-import mod.adrenix.nostalgic.util.common.function.ForEachWithPrevious;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 public class FlagHolder extends Holder<Boolean>
 {
@@ -35,15 +33,25 @@ public class FlagHolder extends Holder<Boolean>
     /**
      * Link flags together to form a radio group.
      *
+     * @param flags A {@link Collection} of {@link FlagHolder} that will be linked together and will be considered part
+     *              of a radio group. Different logic will occur in {@link #toggle()} when a flag is part of a radio
+     *              group.
+     */
+    public static void radio(Collection<FlagHolder> flags)
+    {
+        for (FlagHolder holder : flags)
+            holder.radios.addAll(flags);
+    }
+
+    /**
+     * Link flags together to form a radio group.
+     *
      * @param flags A varargs of {@link FlagHolder} that will be linked together and will be considered part of a radio
      *              group. Different logic will occur in {@link #toggle()} when a flag is part of a radio group.
      */
     public static void radio(FlagHolder... flags)
     {
-        List<FlagHolder> radios = Arrays.asList(flags);
-
-        for (FlagHolder holder : flags)
-            holder.radios.addAll(radios);
+        radio(Arrays.asList(flags));
     }
 
     /* Fields */
@@ -79,29 +87,8 @@ public class FlagHolder extends Holder<Boolean>
         {
             boolean state = this.get();
 
-            if (this.radios.stream().filter(FlagHolder::get).count() > 1)
-                this.radios.forEach(FlagHolder::disable);
-            else
-                CollectionUtil.last(this.radios).ifPresent(FlagHolder::disable);
-
-            NullableHolder<FlagHolder> disable = NullableHolder.empty();
-            NullableHolder<FlagHolder> enable = NullableHolder.empty();
-
-            ForEachWithPrevious.create(this.radios).forEach((prev, next) -> {
-                if (prev.get() && !prev.equals(this))
-                {
-                    disable.set(prev);
-                    enable.set(next);
-                }
-            }).run();
-
-            if (disable.isEmpty() || enable.isEmpty())
-                this.set(!state);
-            else
-            {
-                disable.ifPresent(FlagHolder::disable);
-                enable.ifPresent(FlagHolder::enable);
-            }
+            this.radios.forEach(FlagHolder::disable);
+            this.set(!state);
         }
     }
 
