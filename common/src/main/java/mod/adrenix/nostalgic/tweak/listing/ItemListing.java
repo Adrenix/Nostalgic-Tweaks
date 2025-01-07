@@ -4,10 +4,12 @@ import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMaps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -226,9 +228,22 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      * @param block A {@link Block} instance to check.
      * @return Whether this list contains the given block.
      */
+    @PublicAPI
     public boolean containsBlock(Block block)
     {
         return this.blockCache.computeIfAbsent(block, this::lookupBlock);
+    }
+
+    /**
+     * Check if the given block state's resource key is within the listing or is a wildcard within the listing.
+     *
+     * @param blockState A {@link BlockState} instance to check.
+     * @return Whether this list contains the given block state.
+     */
+    @PublicAPI
+    public boolean containsBlock(BlockState blockState)
+    {
+        return this.containsBlock(blockState.getBlock());
     }
 
     /**
@@ -251,6 +266,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      * @param item An {@link Item} instance to check.
      * @return Whether this list contains the given item.
      */
+    @PublicAPI
     public boolean containsItem(Item item)
     {
         return this.itemCache.computeIfAbsent(item, this::lookupItem);
@@ -262,6 +278,7 @@ public abstract class ItemListing<V, L extends Listing<V, L>> implements Listing
      * @param itemStack An {@link ItemStack} instance to check.
      * @return Whether this list contains the given item stack.
      */
+    @PublicAPI
     public boolean containsItem(ItemStack itemStack)
     {
         return this.containsItem(itemStack.getItem());
