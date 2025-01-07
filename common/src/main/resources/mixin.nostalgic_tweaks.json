@@ -119,6 +119,7 @@
     "gameplay.mechanics_boat.LocalPlayerMixin",
     "gameplay.mechanics_minecart.EntityMixin",
     "gameplay.stamina_sprint.LocalPlayerMixin",
+    "sound.block_sound.BubbleColumnBlockMixin",
     "sound.cave_ambience.BiomeAmbientSoundsHandlerMixin",
     "sound.damage_sound.LivingEntityMixin",
     "sound.damage_sound.PlayerMixin",

@@ -147,6 +147,7 @@ public class ClientConfig implements ConfigMeta
 
         public boolean disableGrowth = SoundTweak.DISABLE_GROWTH.register("disableGrowth");
         public boolean disableDoorPlace = SoundTweak.DISABLE_DOOR_PLACE.register("disableDoorPlace");
+        public boolean disableBubbleColumn = SoundTweak.DISABLE_BUBBLE_COLUMN.register("disableBubbleColumn");
 
         // Damage
 
