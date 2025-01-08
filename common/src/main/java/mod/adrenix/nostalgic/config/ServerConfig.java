@@ -149,6 +149,13 @@ public class ServerConfig implements ConfigMeta
         public boolean disableAnvil = GameplayTweak.DISABLE_ANVIL.register("disableAnvil");
         public boolean disableEnchantTable = GameplayTweak.DISABLE_ENCHANT_TABLE.register("disableEnchantTable");
 
+        // Stamina Mechanics
+
+        public boolean staminaSprint = GameplayTweak.STAMINA_SPRINT.register("staminaSprint");
+        public boolean staminaInfinitePeaceful = GameplayTweak.STAMINA_INFINITE_PEACEFUL.register("staminaInfinitePeaceful");
+        public int staminaDuration = GameplayTweak.STAMINA_DURATION.register("staminaDuration");
+        public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
+
         // Player Mechanics
 
         public boolean oldNightmares = GameplayTweak.OLD_NIGHTMARES.register("oldNightmares");

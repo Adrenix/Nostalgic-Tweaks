@@ -11,6 +11,11 @@ public interface ModSprite
     ResourceLocation RECIPE_BUTTON_LARGE_HIGHLIGHTED = ModAsset.sprite("recipe_book/button_large_highlighted");
     ResourceLocation ADVENTURE_CRAFT_OFFHAND_LEFT_SLOT = ModAsset.sprite("hud/ac_offhand_left_slot");
     ResourceLocation ADVENTURE_CRAFT_OFFHAND_RIGHT_SLOT = ModAsset.sprite("hud/ac_offhand_right_slot");
+    ResourceLocation STAMINA_LEVEL = ModAsset.sprite("hud/stamina_level");
+    ResourceLocation STAMINA_LEVEL_HALF = ModAsset.sprite("hud/stamina_level_half");
+    ResourceLocation STAMINA_RECHARGE = ModAsset.sprite("hud/stamina_recharge");
+    ResourceLocation STAMINA_RECHARGE_HALF = ModAsset.sprite("hud/stamina_recharge_half");
+    ResourceLocation STAMINA_EMPTY = ModAsset.sprite("hud/stamina_empty");
 
     static ResourceLocation icon(String path)
     {

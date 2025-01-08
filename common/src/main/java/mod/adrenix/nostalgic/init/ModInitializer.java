@@ -6,6 +6,7 @@ import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.helper.gameplay.MobLootHelper;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.listener.common.InteractionListener;
 import mod.adrenix.nostalgic.listener.common.PlayerListener;
 import mod.adrenix.nostalgic.network.PacketRegistry;
@@ -31,5 +32,6 @@ public abstract class ModInitializer
         EnvExecutor.runInEnv(Env.CLIENT, () -> ClientInitializer::register);
 
         LifecycleEvent.SERVER_LEVEL_LOAD.register(MobLootHelper::init);
+        StaminaHelper.init();
     }
 }

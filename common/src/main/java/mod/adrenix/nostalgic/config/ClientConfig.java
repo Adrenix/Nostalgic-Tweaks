@@ -243,6 +243,8 @@ public class ClientConfig implements ConfigMeta
 
         public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
         public boolean hideHungerBar = CandyTweak.HIDE_HUNGER_BAR.register("hideHungerBar");
+        public boolean hideStaminaBar = CandyTweak.HIDE_STAMINA_BAR.register("hideStaminaBar");
+        public boolean hideStaminaBarInactive = CandyTweak.HIDE_STAMINA_BAR_INACTIVE.register("hideStaminaBarInactive");
 
         // Offhand Slot
 
@@ -290,6 +292,16 @@ public class ClientConfig implements ConfigMeta
         public int altHungerSaturationOffsetY = CandyTweak.ALT_HUNGER_SATURATION_OFFSET_Y.register("altHungerSaturationOffsetY");
         public boolean altHungerSaturationShadow = CandyTweak.ALT_HUNGER_SATURATION_SHADOW.register("altHungerSaturationShadow");
         public String altHungerSaturationText = CandyTweak.ALT_HUNGER_SATURATION_TEXT.register("altHungerSaturationText");
+
+        // Alternative Stamina Text
+
+        public boolean showStaminaText = CandyTweak.SHOW_STAMINA_TEXT.register("showStaminaText");
+        public boolean altStaminaShowOnActive = CandyTweak.ALT_STAMINA_SHOW_ON_ACTIVE.register("altStaminaShowOnActive");
+        public Corner altStaminaCorner = CandyTweak.ALT_STAMINA_CORNER.register("altStaminaCorner");
+        public int altStaminaOffsetX = CandyTweak.ALT_STAMINA_OFFSET_X.register("altStaminaOffsetX");
+        public int altStaminaOffsetY = CandyTweak.ALT_STAMINA_OFFSET_Y.register("altStaminaOffsetY");
+        public boolean altStaminaShadow = CandyTweak.ALT_STAMINA_SHADOW.register("altStaminaShadow");
+        public String altStaminaText = CandyTweak.ALT_STAMINA_TEXT.register("altStaminaText");
 
         // Game Version Overlay
 
@@ -736,6 +748,13 @@ public class ClientConfig implements ConfigMeta
 
         public boolean disableAnvil = GameplayTweak.DISABLE_ANVIL.register("disableAnvil");
         public boolean disableEnchantTable = GameplayTweak.DISABLE_ENCHANT_TABLE.register("disableEnchantTable");
+
+        // Stamina Mechanics
+
+        public boolean staminaSprint = GameplayTweak.STAMINA_SPRINT.register("staminaSprint");
+        public boolean staminaInfinitePeaceful = GameplayTweak.STAMINA_INFINITE_PEACEFUL.register("staminaInfinitePeaceful");
+        public int staminaDuration = GameplayTweak.STAMINA_DURATION.register("staminaDuration");
+        public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
 
         // Player Mechanics
 

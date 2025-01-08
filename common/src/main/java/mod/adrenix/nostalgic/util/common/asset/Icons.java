@@ -144,4 +144,6 @@ public interface Icons
     TextureIcon SMALL_PLAY_HOVER = TextureIcon.fromSprite("small_play_hover", 11);
     TextureIcon SMALL_PLAY_OFF = TextureIcon.fromSprite("small_play_off", 11);
     TextureIcon STEVE = TextureIcon.fromSprite("steve", 8);
+    TextureIcon HUD_STAMINA = TextureIcon.fromSprite(ModSprite.STAMINA_LEVEL, 9);
+    TextureIcon HUD_STAMINA_RECHARGE = TextureIcon.fromSprite(ModSprite.STAMINA_RECHARGE, 9);
 }

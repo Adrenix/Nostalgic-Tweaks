@@ -800,6 +800,7 @@ public interface Lang
         Translation FOOD_STACKING = from("food_stacking");
         Translation FOOD_HEALTH = from("food_health");
         Translation ARM_SWAY = from("arm_sway");
+        Translation STAMINA_SPRINTING = from("stamina_sprinting");
         Translation WINDOW_TITLE_DISABLED = from("window_title_disabled");
         Translation ROW_HIGHLIGHT_DISABLED = from("row_highlight_disabled");
         Translation CUSTOM_GUI_GRADIENT = from("custom_gui_gradient");

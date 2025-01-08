@@ -113,6 +113,13 @@ public interface GameplayTweak
     TweakFlag DISABLE_ANVIL = TweakFlag.server(false, GameplayGroup.EXPERIENCE_BLOCK).build();
     TweakFlag DISABLE_ENCHANT_TABLE = TweakFlag.server(false, GameplayGroup.EXPERIENCE_BLOCK).build();
 
+    // Stamina Mechanics
+
+    TweakFlag STAMINA_SPRINT = TweakFlag.dynamic(false, GameplayGroup.STAMINA).newForUpdate().noSSO().alert(TweakAlert.STAMINA_SPRINTING_CONFLICT).build();
+    TweakFlag STAMINA_INFINITE_PEACEFUL = TweakFlag.dynamic(false, GameplayGroup.STAMINA).newForUpdate().build();
+    TweakNumber<Integer> STAMINA_DURATION = TweakNumber.dynamic(5, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
+    TweakNumber<Integer> STAMINA_RECHARGE = TweakNumber.dynamic(7, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
+
     // Player Mechanics
 
     TweakFlag OLD_NIGHTMARES = TweakFlag.server(true, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
