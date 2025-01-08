@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.helper.candy.level.fog.OverworldFogRenderer;
 import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.helper.candy.level.fog.WaterFogRenderer;
+import mod.adrenix.nostalgic.helper.gameplay.InteractionHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
@@ -14,10 +15,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -146,5 +149,28 @@ public abstract class ClientEventHandler
 
         OverworldFogRenderer.setupColor(event.getCamera(), event::getRed, event::getGreen, event::getBlue, event::setRed, event::setGreen, event::setBlue);
         VoidFogRenderer.setupColor(event.getCamera(), event::getRed, event::getGreen, event::getBlue, event::setRed, event::setGreen, event::setBlue);
+    }
+
+    /**
+     * Prevents the use of specific items based on tweak context. On servers with the mod installed, the interaction
+     * listener will prevent connected players from using items where needed.
+     *
+     * @param event The {@link InputEvent.InteractionKeyMappingTriggered} event instance.
+     */
+    @SubscribeEvent
+    public static void onUseItem(InputEvent.InteractionKeyMappingTriggered event)
+    {
+        LocalPlayer player = Minecraft.getInstance().player;
+
+        if (player == null || !event.isUseItem())
+            return;
+
+        Item itemInHand = player.getItemInHand(event.getHand()).getItem();
+
+        if (InteractionHelper.shouldNotUseItem(itemInHand))
+        {
+            event.setCanceled(true);
+            event.setSwingHand(false);
+        }
     }
 }

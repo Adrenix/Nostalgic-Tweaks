@@ -687,6 +687,7 @@
   "gui.nostalgic_tweaks.container.gameplay.mechanics_farming": "Farming",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_swimming": "Swimming",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_items": "Items",
+  "gui.nostalgic_tweaks.container.gameplay.mechanics_tools": "Tools",
   "gui.nostalgic_tweaks.container.gameplay.hunger": "Hunger System",
   "gui.nostalgic_tweaks.container.gameplay.hunger_food": "Food",
 
@@ -1679,6 +1680,11 @@
   "gui.nostalgic_tweaks.config.gameplay.oldBoatWaterLift.search": "Elevator",
   "gui.nostalgic_tweaks.config.gameplay.oldBoatDrops": "Old Boat Drops",
   "gui.nostalgic_tweaks.config.gameplay.oldBoatDrops.info": "Bring back the old item drops for boats. This will§c not§r drop a boat item, but will instead drop wood planks and sticks.",
+
+  "gui.nostalgic_tweaks.config.gameplay.disableShovelPathing": "Disable Shovel Pathing",
+  "gui.nostalgic_tweaks.config.gameplay.disableShovelPathing.info": "Prevent converting dirt-like blocks into paths when using a shovel-like item on the block.",
+  "gui.nostalgic_tweaks.config.gameplay.disableAxeStripping": "Disable Axe Stripping",
+  "gui.nostalgic_tweaks.config.gameplay.disableAxeStripping.info": "Prevent converting wood-like blocks into their stripped counterparts when using an axe-like item on the block.",
 
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition": "Punch TNT Ignition",
   "gui.nostalgic_tweaks.config.gameplay.punchTntIgnition.info": "Ignite a TNT block by punching it. If the player is sneaking when punching, then the block will break instead of igniting.",

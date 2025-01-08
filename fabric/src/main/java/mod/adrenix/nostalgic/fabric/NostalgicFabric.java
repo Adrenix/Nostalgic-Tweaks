@@ -1,6 +1,9 @@
 package mod.adrenix.nostalgic.fabric;
 
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.fabric.event.ClientEventListener;
 import mod.adrenix.nostalgic.fabric.network.Networking;
 import mod.adrenix.nostalgic.util.ModTracker;
 import net.fabricmc.api.ModInitializer;
@@ -19,5 +22,8 @@ public class NostalgicFabric implements ModInitializer
 
         // Register networking
         Networking.register();
+
+        // Register events
+        EnvExecutor.runInEnv(Env.CLIENT, () -> ClientEventListener::register);
     }
 }
