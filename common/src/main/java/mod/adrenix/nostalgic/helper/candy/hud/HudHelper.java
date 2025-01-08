@@ -194,7 +194,9 @@ public abstract class HudHelper
         {
             case VEHICLE_HEALTH ->
             {
-                if (isVehicleHealthShown())
+                int armorValue = NullableResult.getOrElse(getPlayer(), 0, Player::getArmorValue);
+
+                if (isVehicleHealthShown() && armorValue > 0)
                     graphics.pose().translate(0.0F, -10.0F, 0.0F);
             }
             case EXPERIENCE_BAR ->
