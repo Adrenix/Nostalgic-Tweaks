@@ -7,7 +7,8 @@
     "AbstractContainerEventHandlerMixin",
     "ContainerEventHandlerMixin",
     "NativeImageMixin",
-    "ScreenMixin"
+    "ScreenMixin",
+    "TextureManagerMixin"
   ],
   "mixins": [],
   "injectors": {
