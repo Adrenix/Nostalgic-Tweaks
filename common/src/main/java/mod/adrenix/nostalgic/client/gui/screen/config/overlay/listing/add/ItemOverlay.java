@@ -46,6 +46,14 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
 {
     /* Fields */
 
+    final RowList rowList;
+    final IconWidget close;
+    final TextWidget title;
+    final GenericInput search;
+    final ButtonWidget abacus;
+    final SeparatorWidget top;
+    final SeparatorWidget bottom;
+    final IntegerHolder tabOrder;
     private final ItemListing<V, L> listing;
     private final HashSet<ItemRule> rules;
     private final Overlay overlay;
@@ -55,16 +63,6 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
     private final HashMap<Item, TextureIcon> icons;
     private final Consumer<ItemStack> onItemAdd;
     private final Runnable onEmptyAdd;
-
-    final RowList rowList;
-    final IconWidget close;
-    final TextWidget title;
-    final GenericInput search;
-    final ButtonWidget abacus;
-    final SeparatorWidget top;
-    final SeparatorWidget bottom;
-    final IntegerHolder tabOrder;
-
     private String lastQuery = "";
     private ItemStack selected = null;
     private List<ItemStack> found = new ArrayList<>();
@@ -297,6 +295,38 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
     }
 
     /**
+     * Builds all the {@link Square}s needed for the row list.
+     */
+    private void populateSquaresForList()
+    {
+        int squaresPerRow = Math.round(this.rowList.getRowWidth() / 22.0F);
+        int scrollbarSize = this.rowList.getScrollbar().getWidth();
+        int rowListWidth = 22 * squaresPerRow + scrollbarSize + 2;
+
+        this.rowList.clear();
+        this.rowList.setWidth(rowListWidth);
+        this.overlay.resizeForOverflow();
+
+        final AtomicReference<Row> row = new AtomicReference<>(Row.create(this.rowList).build());
+
+        for (int i = 0; i < this.items.size(); i++)
+        {
+            boolean isLastSquare = i == this.items.size() - 1;
+            Square square = new Square(i, builder -> builder.rightOf(row.get().getWidgets().getLast(), 2));
+
+            row.get().addWidget(square.getButton());
+
+            if (isLastSquare || squaresPerRow == row.get().getWidgets().size())
+            {
+                this.rowList.addBottomRow(row.get());
+
+                if (!isLastSquare)
+                    row.set(Row.create(this.rowList).build());
+            }
+        }
+    }
+
+    /**
      * This class acts as a placeholder for items in the heavily populated row list. Having squares with indexes that
      * point to an item in the item list (or found items list) is <i>a lot</i> faster than rebuilding the row list each
      * time a character is added or removed from the search query.
@@ -360,13 +390,20 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
          */
         private List<Component> getListTooltip()
         {
-            if (this.isInList())
+            try
             {
-                Component tooltip = Lang.Listing.ALREADY_ADDED.get(this.getItemStack().getHoverName().getString());
-                return TextWrap.tooltip(tooltip, 40);
-            }
+                if (this.isInList())
+                {
+                    Component tooltip = Lang.Listing.ALREADY_ADDED.get(this.getItemStack().getHoverName().getString());
+                    return TextWrap.tooltip(tooltip, 40);
+                }
 
-            return Screen.getTooltipFromItem(Minecraft.getInstance(), this.getItemStack());
+                return Screen.getTooltipFromItem(Minecraft.getInstance(), this.getItemStack());
+            }
+            catch (Throwable throwable)
+            {
+                return List.of(Component.literal(ItemUtil.getResourceKey(this.getItemStack())));
+            }
         }
 
         /**
@@ -427,38 +464,6 @@ public class ItemOverlay<V, L extends ItemListing<V, L>>
             this.extraSteps.accept(builder);
 
             return builder.build();
-        }
-    }
-
-    /**
-     * Builds all the {@link Square}s needed for the row list.
-     */
-    private void populateSquaresForList()
-    {
-        int squaresPerRow = Math.round(this.rowList.getRowWidth() / 22.0F);
-        int scrollbarSize = this.rowList.getScrollbar().getWidth();
-        int rowListWidth = 22 * squaresPerRow + scrollbarSize + 2;
-
-        this.rowList.clear();
-        this.rowList.setWidth(rowListWidth);
-        this.overlay.resizeForOverflow();
-
-        final AtomicReference<Row> row = new AtomicReference<>(Row.create(this.rowList).build());
-
-        for (int i = 0; i < this.items.size(); i++)
-        {
-            boolean isLastSquare = i == this.items.size() - 1;
-            Square square = new Square(i, builder -> builder.rightOf(row.get().getWidgets().getLast(), 2));
-
-            row.get().addWidget(square.getButton());
-
-            if (isLastSquare || squaresPerRow == row.get().getWidgets().size())
-            {
-                this.rowList.addBottomRow(row.get());
-
-                if (!isLastSquare)
-                    row.set(Row.create(this.rowList).build());
-            }
         }
     }
 }
