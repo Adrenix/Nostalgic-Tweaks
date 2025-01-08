@@ -238,8 +238,6 @@
   "gui.nostalgic_tweaks.tooltip.open_discord": "When clicked, a new screen will appear asking what you would like to do with the discord invite link.",
   "gui.nostalgic_tweaks.tooltip.create_preset": "When clicked, a new window from your operating system will be opened so a new preset file can be saved. The new file will be a copy of the client's current mod config.",
   "gui.nostalgic_tweaks.tooltip.review_changes": "When clicked, this overlay will§c close§r and the searchbar will be set to search for§7 #save§r.",
-  "gui.nostalgic_tweaks.tooltip.searching": "Searching",
-  "gui.nostalgic_tweaks.tooltip.everywhere": "Everywhere",
   "gui.nostalgic_tweaks.tooltip.keyboard_shortcut": "Keyboard Shortcut",
 
   "gui.nostalgic_tweaks.listing.add": "Add to List",
