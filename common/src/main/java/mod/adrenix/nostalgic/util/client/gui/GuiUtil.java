@@ -282,6 +282,9 @@ public abstract class GuiUtil
     @PublicAPI
     public static boolean isComponentEmpty(List<Component> components)
     {
+        if (components.isEmpty())
+            return true;
+
         if (components.size() > 1)
             return false;
 
