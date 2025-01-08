@@ -139,6 +139,7 @@
     "candy.item_merge.BlockMixin",
     "candy.item_merge.ItemEntityMixin",
     "candy.item_merge.LivingEntityMixin",
+    "candy.old_hud.PlayerAdvancementsMixin",
     "candy.square_border.ChunkTrackingViewMixin",
     "gameplay.animal_sheep.AnimalMixin",
     "gameplay.animal_sheep.EatBlockGoalMixin",
