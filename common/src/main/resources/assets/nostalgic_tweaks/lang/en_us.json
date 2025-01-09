@@ -1773,7 +1773,7 @@
   "gui.nostalgic_tweaks.config.gameplay.staminaInfinitePeaceful": "Infinite Stamina When Peaceful",
   "gui.nostalgic_tweaks.config.gameplay.staminaInfinitePeaceful.info": "Define whether the player should have infinite stamina while sprinting in peaceful difficulty mode.",
   "gui.nostalgic_tweaks.config.gameplay.staminaDuration": "Stamina Duration",
-  "gui.nostalgic_tweaks.config.gameplay.staminaDuration.info": "Define the maximum amount of time, in seconds, that a player is allowed to sprint. When the this time is reached, the player will be considered fully exhausted.",
+  "gui.nostalgic_tweaks.config.gameplay.staminaDuration.info": "Define the maximum amount of time, in seconds, that a player is allowed to sprint. When this time is reached, the player will be considered fully exhausted.",
   "gui.nostalgic_tweaks.config.gameplay.staminaRecharge": "Stamina Exhaustion Recharge",
   "gui.nostalgic_tweaks.config.gameplay.staminaRecharge.info": "Define the amount of time, in seconds, that it will take for a player's stamina bar to recharge when a player is fully exhausted.",
 
