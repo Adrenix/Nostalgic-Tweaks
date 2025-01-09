@@ -205,9 +205,9 @@ public class StaminaData
     }
 
     /**
-     * @return Get whether the player is "cooling off" before their stamina begins to increase.
+     * @return Get whether the player is cooling down before their stamina begins to increase.
      */
-    public boolean isCoolingOff()
+    public boolean isCooldown()
     {
         if (!GameplayTweak.STAMINA_SPRINT.get())
             return false;
