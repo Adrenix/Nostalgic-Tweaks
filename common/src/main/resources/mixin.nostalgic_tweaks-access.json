@@ -6,6 +6,7 @@
     "AbstractContainerScreenAccess",
     "AbstractWidgetAccess",
     "BlockBehaviourAccess",
+    "BodyRotationControlAccess",
     "DebugScreenOverlayAccess",
     "GuiAccess",
     "LevelRendererAccess",
