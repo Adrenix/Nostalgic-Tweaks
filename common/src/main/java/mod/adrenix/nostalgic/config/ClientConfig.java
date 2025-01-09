@@ -298,6 +298,7 @@ public class ClientConfig implements ConfigMeta
         // Alternative Stamina Text
 
         public boolean showStaminaText = CandyTweak.SHOW_STAMINA_TEXT.register("showStaminaText");
+        public boolean useDynamicStaminaColor = CandyTweak.USE_DYNAMIC_STAMINA_COLOR.register("useDynamicStaminaColor");
         public boolean altStaminaShowOnActive = CandyTweak.ALT_STAMINA_SHOW_ON_ACTIVE.register("altStaminaShowOnActive");
         public Corner altStaminaCorner = CandyTweak.ALT_STAMINA_CORNER.register("altStaminaCorner");
         public int altStaminaOffsetX = CandyTweak.ALT_STAMINA_OFFSET_X.register("altStaminaOffsetX");
