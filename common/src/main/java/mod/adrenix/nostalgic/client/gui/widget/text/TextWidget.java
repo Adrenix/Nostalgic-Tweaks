@@ -459,6 +459,9 @@ public class TextWidget extends DynamicWidget<TextBuilder, TextWidget>
                 return false;
         }
 
+        if (this.getBuilder().hoverSync != null && this.getBuilder().hoverSync.isHoveredOrFocused())
+            return true;
+
         return super.isHoveredOrFocused();
     }
 
