@@ -146,6 +146,7 @@ public interface CandyTweak
     // Alternative Stamina Text
 
     TweakFlag SHOW_STAMINA_TEXT = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
+    TweakFlag USE_DYNAMIC_STAMINA_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().whenDisabled(true).build();
     TweakFlag ALT_STAMINA_SHOW_ON_ACTIVE = TweakFlag.client(false, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
     TweakEnum<Corner> ALT_STAMINA_CORNER = TweakEnum.client(Corner.TOP_LEFT, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().build();
     TweakNumber<Integer> ALT_STAMINA_OFFSET_X = TweakNumber.client(0, CandyGroup.INTERFACE_HUD_STAMINA_BAR_ALT).newForUpdate().slider(Lang.Slider.OFFSET, -100, 100).build();

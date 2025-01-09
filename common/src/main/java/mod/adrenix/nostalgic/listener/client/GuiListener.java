@@ -212,7 +212,10 @@ public abstract class GuiListener
      */
     private static String getStaminaColor(StaminaData data)
     {
-        int level = (int) Math.ceil(((double) data.getStaminaLevel() / StaminaData.MAX_STAMINA_LEVEL) * 100);
+        int level = (int) Math.floor(((double) data.getStaminaLevel() / StaminaData.MAX_STAMINA_LEVEL) * 100);
+
+        if (!CandyTweak.USE_DYNAMIC_STAMINA_COLOR.get())
+            return String.valueOf(level);
 
         if (data.isExhausted())
             return "§7" + level + "§r";
