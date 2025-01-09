@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.helper.gameplay.InteractionHelper;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class ClientEventListener
 {
@@ -14,8 +15,9 @@ public abstract class ClientEventListener
     {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
             Item itemInHand = player.getItemInHand(hand).getItem();
+            BlockState blockState = level.getBlockState(hitResult.getBlockPos());
 
-            if (InteractionHelper.shouldNotUseItem(itemInHand))
+            if (InteractionHelper.shouldNotUseItem(itemInHand, blockState))
                 return InteractionResult.FAIL;
 
             return InteractionResult.PASS;

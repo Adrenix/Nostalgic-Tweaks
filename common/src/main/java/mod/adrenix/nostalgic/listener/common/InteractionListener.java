@@ -5,6 +5,8 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.helper.gameplay.combat.SwordBlockingHelper;
+import mod.adrenix.nostalgic.mixin.access.AxeItemAccess;
+import mod.adrenix.nostalgic.mixin.access.ShovelItemAccess;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.world.PlayerUtil;
 import net.minecraft.core.BlockPos;
@@ -113,10 +115,16 @@ public abstract class InteractionListener
         if (NostalgicTweaks.isServer())
         {
             if (GameplayTweak.DISABLE_SHOVEL_PATHING.get() && itemInHand instanceof ShovelItem)
-                return EventResult.interruptTrue();
+            {
+                if (ShovelItemAccess.NT$FLATTENABLES().containsKey(blockState.getBlock()))
+                    return EventResult.interruptTrue();
+            }
 
             if (GameplayTweak.DISABLE_AXE_STRIPPING.get() && itemInHand instanceof AxeItem)
-                return EventResult.interruptTrue();
+            {
+                if (AxeItemAccess.NT$STRIPPABLES().containsKey(blockState.getBlock()))
+                    return EventResult.interruptTrue();
+            }
         }
 
         return EventResult.pass();
