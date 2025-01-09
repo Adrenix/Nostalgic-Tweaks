@@ -19,7 +19,6 @@ import mod.adrenix.nostalgic.tweak.factory.TweakListing;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.network.NetUtil;
-import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.client.search.SearchTag;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
@@ -103,28 +102,10 @@ public class GroupToggleAll extends ManageGroup
                     .size(Icons.CHECKBOX::getWidth, Icons.CHECKBOX::getHeight)
                     .build(group::addWidget);
 
-                BlankWidget.create()
-                    .alignVerticalTo(guide)
-                    .rightOf(guide, 3)
-                    .height(checkbox::getHeight)
-                    .extendWidthToEnd(group, group.getInsidePaddingX())
-                    .renderer((widget, graphics, mouseX, mouseY, partialTick) -> {
-                        if (checkbox.isHoveredOrFocused())
-                        {
-                            Color color = this.category.getColor().fromAlpha(0.2D);
-                            int x = widget.getX();
-                            int y = widget.getY();
-                            int endX = widget.getEndX();
-                            int endY = widget.getEndY();
-
-                            RenderUtil.fill(graphics, x, y, endX, endY, color);
-                        }
-                    })
-                    .build(group::addWidget);
-
                 TextWidget.create(this.category.toString())
                     .icon(this.category.getIcon())
                     .color(this.category.getColor())
+                    .brightenIconOnHover(1.2F)
                     .centerVertical()
                     .rightOf(guide, 4)
                     .height(Icons.CHECKBOX::getHeight)
