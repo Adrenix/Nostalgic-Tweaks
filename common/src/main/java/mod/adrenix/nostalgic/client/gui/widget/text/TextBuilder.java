@@ -558,6 +558,33 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     }
 
     /**
+     * Brighten the icon by the given amount when this widget is focused or hovered.
+     *
+     * @param amount The amount to brighten the icon by. An amount less than {@code 1.0F} will darken the icon and an
+     *               amount greater than {@code 1.0F} will brighten the icon.
+     */
+    @PublicAPI
+    public TextBuilder brightenIconOnHover(float amount)
+    {
+        this.brightenOnHover = true;
+        this.brightenAmount = () -> amount;
+
+        return this;
+    }
+
+    /**
+     * Brighten the icon using the default icon brightness settings when this widget is focused or hovered. Use
+     * {@link #brightenIconOnHover(float)} to enable brightness and to define how much to brighten by.
+     */
+    @PublicAPI
+    public TextBuilder brightenIconOnHover()
+    {
+        this.brightenOnHover = true;
+
+        return this;
+    }
+
+    /**
      * @return Whether the text height is being controlled by a supplier.
      */
     protected boolean isHeightOverridden()
