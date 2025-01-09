@@ -1836,6 +1836,8 @@
   "gui.nostalgic_tweaks.config.animation.oldGhastCharging.info": "Bring back the old 'squishy' ghast charging animation.",
   "gui.nostalgic_tweaks.config.animation.oldMobDeathTopple": "Old Mob Death Topple",
   "gui.nostalgic_tweaks.config.animation.oldMobDeathTopple.info": "Bring back the old mob death topple animation where entities would continue to render their walk animation during the death animation.",
+  "gui.nostalgic_tweaks.config.animation.oldMobHeadBodyTurn": "Old Mob Head & Body Turning",
+  "gui.nostalgic_tweaks.config.animation.oldMobHeadBodyTurn.info": "Bring back the old mob head and body turning animations.",
 
   "gui.nostalgic_tweaks.config.animation.hideBoatRowing": "Hide Boat Paddles",
   "gui.nostalgic_tweaks.config.animation.hideBoatRowing.info": "Prevent boat paddles from rendering when rowing a boat. This will keep the player's hands visible and prevent paddle sounds from playing.",

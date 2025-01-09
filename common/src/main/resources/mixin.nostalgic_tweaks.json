@@ -10,6 +10,7 @@
     "animation.boat.BoatModelMixin",
     "animation.boat.ItemInHandRendererMixin",
     "animation.entity.LivingEntityRendererMixin",
+    "animation.entity.MobMixin",
     "animation.ghast_charge.GhastRendererMixin",
     "animation.held_item.ItemInHandRendererMixin",
     "animation.held_item.LivingEntityMixin",

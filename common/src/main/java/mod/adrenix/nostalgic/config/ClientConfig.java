@@ -850,6 +850,7 @@ public class ClientConfig implements ConfigMeta
         public boolean oldSkeletonArms = AnimationTweak.OLD_SKELETON_ARMS.register("oldSkeletonArms");
         public boolean oldGhastCharging = AnimationTweak.OLD_GHAST_CHARGING.register("oldGhastCharging");
         public boolean oldMobDeathTopple = AnimationTweak.OLD_MOB_DEATH_TOPPLE.register("oldMobDeathTopple");
+        public boolean oldMobHeadBodyTurn = AnimationTweak.OLD_MOB_HEAD_BODY_TURN.register("oldMobHeadBodyTurn");
 
         // Boat
 

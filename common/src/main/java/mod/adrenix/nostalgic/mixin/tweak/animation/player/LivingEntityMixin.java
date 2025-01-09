@@ -28,6 +28,6 @@ public abstract class LivingEntityMixin
     )
     private float nt_player_animation$modifyBackwardsRotation(float rotation)
     {
-        return AnimationTweak.OLD_BACKWARD_WALKING.get() ? 0.0F : rotation;
+        return (AnimationTweak.OLD_BACKWARD_WALKING.get() || AnimationTweak.OLD_MOB_HEAD_BODY_TURN.get()) ? 0.0F : rotation;
     }
 }
