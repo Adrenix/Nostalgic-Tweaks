@@ -62,8 +62,8 @@ public abstract class StaminaRenderer
         int left = width / 2 + 91;
         int top = height - rightHeight;
         int stamina = data.getStaminaLevel();
+        boolean isCooldown = data.isCooldown();
         boolean isExhausted = data.isExhausted();
-        boolean isCoolingOff = data.isCoolingOff();
         boolean cannotRegain = data.cannotRegain(player);
 
         for (int i = 0; i < 10; i++)
@@ -75,7 +75,7 @@ public abstract class StaminaRenderer
             if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
                 sprite = ModSprite.STAMINA_NEGATIVE;
 
-            if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
+            if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                 sprite = ModSprite.STAMINA_COOLING;
 
             RenderUtil.blitSprite(ModSprite.STAMINA_EMPTY, graphics, x, top, 9, 9);
@@ -89,7 +89,7 @@ public abstract class StaminaRenderer
                 if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
                     sprite = ModSprite.STAMINA_NEGATIVE_HALF;
 
-                if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
+                if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                     sprite = ModSprite.STAMINA_COOLING_HALF;
             }
 

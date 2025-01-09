@@ -220,7 +220,7 @@ public abstract class GuiListener
 
         if (data.isExhausted())
             return "§7" + level + "§r";
-        else if (data.isCoolingOff())
+        else if (data.isCooldown())
             return "§b" + level + "§r";
         else if (data.cannotRegain(player))
             return "§4" + level + "§r";
