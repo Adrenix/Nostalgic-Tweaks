@@ -63,6 +63,7 @@ public abstract class StaminaRenderer
         int top = height - rightHeight;
         int stamina = data.getStaminaLevel();
         boolean isExhausted = data.isExhausted();
+        boolean isCoolingOff = data.isCoolingOff();
 
         for (int i = 0; i < 10; i++)
         {
@@ -70,12 +71,20 @@ public abstract class StaminaRenderer
             int x = left - i * 8 - 9;
             int icon = i * 2 + 1;
 
+            if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
+                sprite = ModSprite.STAMINA_COOLING;
+
             RenderUtil.blitSprite(ModSprite.STAMINA_EMPTY, graphics, x, top);
 
             if (icon > stamina)
                 sprite = ModSprite.STAMINA_EMPTY;
             else if (icon == stamina && MathUtil.isOdd(stamina))
+            {
                 sprite = isExhausted ? ModSprite.STAMINA_RECHARGE_HALF : ModSprite.STAMINA_LEVEL_HALF;
+
+                if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
+                    sprite = ModSprite.STAMINA_COOLING_HALF;
+            }
 
             RenderUtil.blitSprite(sprite, graphics, x, top);
         }

@@ -215,6 +215,8 @@ public abstract class GuiListener
 
         if (data.isExhausted())
             return "§7" + level + "§r";
+        else if (data.isCoolingOff())
+            return "§b" + level + "§r";
         else
         {
             if (level <= 15)

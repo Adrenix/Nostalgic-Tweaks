@@ -17,6 +17,8 @@ public interface ModSprite
     GuiSprite STAMINA_LEVEL_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_level_half", 9, 9));
     GuiSprite STAMINA_RECHARGE = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_recharge", 9, 9));
     GuiSprite STAMINA_RECHARGE_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_recharge_half", 9, 9));
+    GuiSprite STAMINA_COOLING = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_cooling", 9, 9));
+    GuiSprite STAMINA_COOLING_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_cooling_half", 9, 9));
     GuiSprite STAMINA_EMPTY = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_empty", 9, 9));
 
     static ResourceLocation icon(String path)

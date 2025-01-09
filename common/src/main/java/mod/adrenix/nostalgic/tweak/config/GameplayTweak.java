@@ -119,6 +119,7 @@ public interface GameplayTweak
     TweakFlag STAMINA_INFINITE_PEACEFUL = TweakFlag.dynamic(false, GameplayGroup.STAMINA).newForUpdate().build();
     TweakNumber<Integer> STAMINA_DURATION = TweakNumber.dynamic(5, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
     TweakNumber<Integer> STAMINA_RECHARGE = TweakNumber.dynamic(7, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
+    TweakNumber<Integer> STAMINA_COOLDOWN = TweakNumber.dynamic(0, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 0, 60).build();
 
     // Player Mechanics
 
