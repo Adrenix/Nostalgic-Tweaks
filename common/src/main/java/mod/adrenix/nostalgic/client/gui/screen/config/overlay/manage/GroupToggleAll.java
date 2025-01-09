@@ -92,7 +92,6 @@ public class GroupToggleAll extends ManageGroup
             {
                 ButtonWidget checkbox = ButtonTemplate.checkbox(Lang.EMPTY, this.holder::get)
                     .skipFocusOnClick()
-                    .extendWidthToEnd(group, group.getInsidePaddingX())
                     .below(below, overlay.padding * 2)
                     .onPress(this.holder::toggle)
                     .build(group::addWidget);
@@ -102,17 +101,19 @@ public class GroupToggleAll extends ManageGroup
                     .size(Icons.CHECKBOX::getWidth, Icons.CHECKBOX::getHeight)
                     .build(group::addWidget);
 
-                TextWidget.create(this.category.toString())
+                TextWidget text = TextWidget.create(this.category.toString())
                     .icon(this.category.getIcon())
                     .color(this.category.getColor())
                     .brightenIconOnHover(1.2F)
+                    .useTextWidth()
                     .centerVertical()
                     .rightOf(guide, 4)
                     .height(Icons.CHECKBOX::getHeight)
-                    .extendWidthToEnd(group, group.getInsidePaddingX())
                     .hoverOrFocusSync(checkbox, this.category.getColor().brighten(0.35D))
                     .centerInWidgetY(checkbox)
                     .build(group::addWidget);
+
+                checkbox.getBuilder().extendWidthToEnd(text, -1);
             }
 
             public boolean isActive()
