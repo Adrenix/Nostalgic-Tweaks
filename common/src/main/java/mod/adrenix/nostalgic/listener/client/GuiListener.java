@@ -206,10 +206,11 @@ public abstract class GuiListener
     /**
      * Properly format the alternative stamina text based on player stamina data context.
      *
-     * @param data The player's {@link StaminaData} instance.
+     * @param data   The player's {@link StaminaData} instance.
+     * @param player The {@link Player} instance.
      * @return The properly formatted alternative stamina text.`
      */
-    private static String getStaminaColor(StaminaData data)
+    private static String getStaminaColor(StaminaData data, Player player)
     {
         int level = (int) Math.floor(((double) data.getStaminaLevel() / StaminaData.MAX_STAMINA_LEVEL) * 100);
 
@@ -220,6 +221,8 @@ public abstract class GuiListener
             return "§7" + level + "§r";
         else if (data.isCoolingOff())
             return "§b" + level + "§r";
+        else if (data.cannotRegain(player))
+            return "§4" + level + "§r";
         else
         {
             if (level <= 15)
@@ -320,7 +323,7 @@ public abstract class GuiListener
         if (CandyTweak.SHOW_STAMINA_TEXT.get() && isStaminaEnabled && !isCreative)
         {
             StaminaData data = StaminaHelper.get(player);
-            String text = CandyTweak.ALT_STAMINA_TEXT.parse(getStaminaColor(data));
+            String text = CandyTweak.ALT_STAMINA_TEXT.parse(getStaminaColor(data, player));
             int xOffset = CandyTweak.ALT_STAMINA_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_STAMINA_OFFSET_Y.get();
 

@@ -10,6 +10,7 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.tweak.enums.Hotbar;
+import mod.adrenix.nostalgic.tweak.enums.StaminaRegain;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
 
@@ -152,6 +153,7 @@ public class ServerConfig implements ConfigMeta
         // Stamina Mechanics
 
         public boolean staminaSprint = GameplayTweak.STAMINA_SPRINT.register("staminaSprint");
+        public StaminaRegain staminaRegainWhenMoving = GameplayTweak.STAMINA_REGAIN_WHEN_MOVING.register("staminaRegainWhenMoving");
         public boolean staminaInfinitePeaceful = GameplayTweak.STAMINA_INFINITE_PEACEFUL.register("staminaInfinitePeaceful");
         public int staminaDuration = GameplayTweak.STAMINA_DURATION.register("staminaDuration");
         public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
