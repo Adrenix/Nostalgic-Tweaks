@@ -19,10 +19,10 @@ public interface ModSprite
     GuiSprite STAMINA_RECHARGE_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_recharge_half", 9, 9));
     GuiSprite STAMINA_COOLING = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_cooling", 9, 9));
     GuiSprite STAMINA_COOLING_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_cooling_half", 9, 9));
-    GuiSprite STAMINA_MOVING = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_moving", 9, 9));
-    GuiSprite STAMINA_MOVING_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_moving_half", 9, 9));
     GuiSprite STAMINA_POSITIVE = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_positive", 9, 9));
     GuiSprite STAMINA_POSITIVE_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_positive_half", 9, 9));
+    GuiSprite STAMINA_NEGATIVE = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_negative", 9, 9));
+    GuiSprite STAMINA_NEGATIVE_HALF = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_negative_half", 9, 9));
     GuiSprite STAMINA_EMPTY = GuiSprite.stretch(SpriteAtlas.fromSprite("hud/stamina_empty", 9, 9));
 
     static ResourceLocation icon(String path)

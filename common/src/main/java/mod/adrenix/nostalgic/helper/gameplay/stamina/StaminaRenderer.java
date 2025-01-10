@@ -78,10 +78,10 @@ public abstract class StaminaRenderer
                 sprite = ModSprite.STAMINA_POSITIVE;
 
             if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
-                sprite = ModSprite.STAMINA_MOVING;
+                sprite = ModSprite.STAMINA_NEGATIVE;
 
             if (hasNegativeEffect)
-                sprite = ModSprite.STAMINA_MOVING;
+                sprite = ModSprite.STAMINA_NEGATIVE;
 
             if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                 sprite = ModSprite.STAMINA_COOLING;
@@ -98,10 +98,10 @@ public abstract class StaminaRenderer
                     sprite = ModSprite.STAMINA_POSITIVE_HALF;
 
                 if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
-                    sprite = ModSprite.STAMINA_MOVING_HALF;
+                    sprite = ModSprite.STAMINA_NEGATIVE_HALF;
 
                 if (hasNegativeEffect)
-                    sprite = ModSprite.STAMINA_MOVING_HALF;
+                    sprite = ModSprite.STAMINA_NEGATIVE_HALF;
 
                 if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                     sprite = ModSprite.STAMINA_COOLING_HALF;
