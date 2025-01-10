@@ -159,6 +159,11 @@ public class ServerConfig implements ConfigMeta
         public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
         public int staminaCooldown = GameplayTweak.STAMINA_COOLDOWN.register("staminaCooldown");
 
+        // Stamina Effects
+
+        public boolean staminaSaturationEffect = GameplayTweak.STAMINA_SATURATION_EFFECT.register("staminaSaturationEffect");
+        public boolean staminaHungerEffect = GameplayTweak.STAMINA_HUNGER_EFFECT.register("staminaHungerEffect");
+
         // Player Mechanics
 
         public boolean oldNightmares = GameplayTweak.OLD_NIGHTMARES.register("oldNightmares");

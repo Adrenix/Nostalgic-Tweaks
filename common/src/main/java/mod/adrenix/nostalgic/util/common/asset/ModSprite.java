@@ -17,6 +17,8 @@ public interface ModSprite
     ResourceLocation STAMINA_RECHARGE_HALF = ModAsset.sprite("hud/stamina_recharge_half");
     ResourceLocation STAMINA_COOLING = ModAsset.sprite("hud/stamina_cooling");
     ResourceLocation STAMINA_COOLING_HALF = ModAsset.sprite("hud/stamina_cooling_half");
+    ResourceLocation STAMINA_POSITIVE = ModAsset.sprite("hud/stamina_positive");
+    ResourceLocation STAMINA_POSITIVE_HALF = ModAsset.sprite("hud/stamina_positive_half");
     ResourceLocation STAMINA_NEGATIVE = ModAsset.sprite("hud/stamina_negative");
     ResourceLocation STAMINA_NEGATIVE_HALF = ModAsset.sprite("hud/stamina_negative_half");
     ResourceLocation STAMINA_EMPTY = ModAsset.sprite("hud/stamina_empty");

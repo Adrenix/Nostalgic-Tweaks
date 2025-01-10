@@ -64,6 +64,8 @@ public abstract class StaminaRenderer
         int stamina = data.getStaminaLevel();
         boolean isCooldown = data.isCooldown();
         boolean isExhausted = data.isExhausted();
+        boolean hasPositiveEffect = data.hasPositiveEffect(player);
+        boolean hasNegativeEffect = data.hasNegativeEffect(player);
         boolean cannotRegain = data.cannotRegain(player);
 
         for (int i = 0; i < 10; i++)
@@ -72,7 +74,13 @@ public abstract class StaminaRenderer
             int x = left - i * 8 - 9;
             int icon = i * 2 + 1;
 
+            if (hasPositiveEffect)
+                sprite = ModSprite.STAMINA_POSITIVE;
+
             if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
+                sprite = ModSprite.STAMINA_NEGATIVE;
+
+            if (hasNegativeEffect)
                 sprite = ModSprite.STAMINA_NEGATIVE;
 
             if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
@@ -86,7 +94,13 @@ public abstract class StaminaRenderer
             {
                 sprite = isExhausted ? ModSprite.STAMINA_RECHARGE_HALF : ModSprite.STAMINA_LEVEL_HALF;
 
+                if (hasPositiveEffect)
+                    sprite = ModSprite.STAMINA_POSITIVE_HALF;
+
                 if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
+                    sprite = ModSprite.STAMINA_NEGATIVE_HALF;
+
+                if (hasNegativeEffect)
                     sprite = ModSprite.STAMINA_NEGATIVE_HALF;
 
                 if (isCooldown && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())

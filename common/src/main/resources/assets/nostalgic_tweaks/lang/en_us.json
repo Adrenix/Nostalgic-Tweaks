@@ -694,6 +694,7 @@
   "gui.nostalgic_tweaks.container.gameplay.mechanics_items": "Items",
   "gui.nostalgic_tweaks.container.gameplay.mechanics_tools": "Tools",
   "gui.nostalgic_tweaks.container.gameplay.stamina": "Stamina System",
+  "gui.nostalgic_tweaks.container.gameplay.stamina_effects": "Stamina Effects",
   "gui.nostalgic_tweaks.container.gameplay.hunger": "Hunger System",
   "gui.nostalgic_tweaks.container.gameplay.hunger_food": "Food",
 
@@ -1797,6 +1798,10 @@
   "gui.nostalgic_tweaks.config.gameplay.staminaRecharge.info": "Define the amount of time, in seconds, that it will take for a player's stamina to recharge when a player is fully exhausted.",
   "gui.nostalgic_tweaks.config.gameplay.staminaCooldown": "Stamina Cooldown Period",
   "gui.nostalgic_tweaks.config.gameplay.staminaCooldown.info": "Define the amount of time, in seconds, that it will take before a player's stamina begins to increase after being used.",
+  "gui.nostalgic_tweaks.config.gameplay.staminaSaturationEffect": "Stamina Saturation Effect",
+  "gui.nostalgic_tweaks.config.gameplay.staminaSaturationEffect.info": "Double the rate at which stamina is regained and cooled down when a player has the saturation effect.",
+  "gui.nostalgic_tweaks.config.gameplay.staminaHungerEffect": "Stamina Hunger Effect",
+  "gui.nostalgic_tweaks.config.gameplay.staminaHungerEffect.info": "Cut the rate at which stamina is regained in half when a player has the hunger effect.",
 
   "gui.nostalgic_tweaks.config.gameplay.disableHunger": "Disable Hunger",
   "gui.nostalgic_tweaks.config.gameplay.disableHunger.info": "All consumed food will give§c hearts§r instead of§6 hunger§r. The§6 hunger bar§r will be§c hidden§r when this tweak's effects are§a active§r.\n\nTo change the amount of health restored by foods, edit the §7@decode{tweak=gameplay.customFoodHealth}§r list.",

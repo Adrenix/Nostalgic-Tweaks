@@ -222,8 +222,10 @@ public abstract class GuiListener
             return "§7" + level + "§r";
         else if (data.isCooldown())
             return "§b" + level + "§r";
-        else if (data.cannotRegain(player))
+        else if (data.cannotRegain(player) || data.hasNegativeEffect(player))
             return "§4" + level + "§r";
+        else if (data.hasPositiveEffect(player))
+            return "§2" + level + "§r";
         else
         {
             if (level <= 15)

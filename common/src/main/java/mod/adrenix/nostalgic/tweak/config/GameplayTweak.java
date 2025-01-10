@@ -120,6 +120,11 @@ public interface GameplayTweak
     TweakNumber<Integer> STAMINA_RECHARGE = TweakNumber.dynamic(7, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
     TweakNumber<Integer> STAMINA_COOLDOWN = TweakNumber.dynamic(0, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 0, 60).build();
 
+    // Stamina Effects
+
+    TweakFlag STAMINA_SATURATION_EFFECT = TweakFlag.dynamic(false, GameplayGroup.STAMINA_EFFECTS).newForUpdate().build();
+    TweakFlag STAMINA_HUNGER_EFFECT = TweakFlag.dynamic(false, GameplayGroup.STAMINA_EFFECTS).newForUpdate().build();
+
     // Player Mechanics
 
     TweakFlag OLD_NIGHTMARES = TweakFlag.server(true, GameplayGroup.MECHANICS_PLAYER).newForUpdate().build();
