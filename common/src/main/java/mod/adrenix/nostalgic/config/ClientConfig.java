@@ -426,6 +426,7 @@ public class ClientConfig implements ConfigMeta
         // World Select Screen
 
         public Generic oldWorldSelectScreen = CandyTweak.OLD_WORLD_SELECT_SCREEN.register("oldWorldSelectScreen");
+        public boolean levelSelectWhenEmpty = CandyTweak.LEVEL_SELECT_WHEN_EMPTY.register("levelSelectWhenEmpty");
         public boolean addWorldThumbnail = CandyTweak.ADD_WORLD_THUMBNAIL.register("addWorldThumbnail");
         public boolean addWorldMetadata = CandyTweak.ADD_WORLD_METADATA.register("addWorldMetadata");
         public boolean ignoreWorldSize = CandyTweak.IGNORE_WORLD_SIZE.register("ignoreWorldSize");
