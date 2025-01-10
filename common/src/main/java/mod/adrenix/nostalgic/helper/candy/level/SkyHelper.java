@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.joml.Matrix4f;
 
 import java.util.function.BiFunction;
@@ -185,11 +184,10 @@ public abstract class SkyHelper
     /**
      * Get an old sky color using current biome and tweak context.
      *
-     * @param specialEffects The {@link BiomeSpecialEffects} instance.
-     * @param color          The current modern sky color.
+     * @param color The current modern sky color.
      * @return An old sky color to apply to the sky.
      */
-    public static int getOldColor(BiomeSpecialEffects specialEffects, int color)
+    public static int getOldColor(int color)
     {
         if (GameUtil.isInOverworld())
         {
@@ -206,7 +204,7 @@ public abstract class SkyHelper
             {
                 return switch (skyColor)
                 {
-                    case DISABLED -> specialEffects.getSkyColor();
+                    case DISABLED -> color;
                     case CLASSIC -> 0x9CCDFF;
                     case INF_DEV -> 0xC6DEFF;
                     case ALPHA -> 0x8BBDFF;
