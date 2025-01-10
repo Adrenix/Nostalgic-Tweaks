@@ -191,6 +191,7 @@
     "gameplay.mob_ai.FleeSunGoalMixin",
     "gameplay.mob_ai.GroundPathNavigationMixin",
     "gameplay.mob_ai.PanicGoalMixin",
+    "gameplay.mob_ai.RangedBowAttackGoalMixin",
     "gameplay.mob_ai.SquidFleeGoalMixin",
     "gameplay.mob_ai.SquidMixin",
     "gameplay.mob_drops.LivingEntityMixin",
