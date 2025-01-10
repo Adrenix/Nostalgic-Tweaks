@@ -34,6 +34,8 @@ public abstract class AbstractInputMaker<Builder extends AbstractInputMaker<Buil
 
     protected int maxLength = 120;
     protected int iconPadding = 2;
+    protected long responseDelay = 100L;
+    protected boolean delayedResponse = false;
     protected boolean searchShortcut = false;
     protected boolean editable = true;
 
@@ -157,6 +159,32 @@ public abstract class AbstractInputMaker<Builder extends AbstractInputMaker<Buil
     public Builder onInput(Consumer<String> responder)
     {
         return this.onInput((widget, typed) -> responder.accept(typed));
+    }
+
+    /**
+     * Delay the response to user input by the given number of milliseconds. This is useful for logically expensive
+     * responses to input. The input won't be processed until the user is done typing in a query.
+     *
+     * @param delay The amount of time in milliseconds to wait until responding to the input.
+     */
+    @PublicAPI
+    public Builder delayedResponse(long delay)
+    {
+        this.responseDelay = delay;
+
+        return this.delayedResponse();
+    }
+
+    /**
+     * Delay the response to user input. This is useful for logically expensive responses to input. The input won't be
+     * processed until the user is done typing in a query.
+     */
+    @PublicAPI
+    public Builder delayedResponse()
+    {
+        this.delayedResponse = true;
+
+        return this.self();
     }
 
     /**

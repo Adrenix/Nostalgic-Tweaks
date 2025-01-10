@@ -12,12 +12,15 @@ import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.client.gui.DrawText;
 import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.client.timer.ClientTimer;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.array.UniqueArrayList;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
+import mod.adrenix.nostalgic.util.common.timer.TickTimer;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -47,6 +50,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     protected final Color borderColor;
     protected final Color backgroundColor;
     protected final RecursionAvoidance changingInput;
+    protected final NullableHolder<TickTimer> responseTimer;
     protected boolean dragging;
     protected boolean editable;
     protected long focusedTime;
@@ -63,6 +67,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
         super(builder);
 
         this.changingInput = RecursionAvoidance.create();
+        this.responseTimer = NullableHolder.empty();
         this.internal = new UniqueArrayList<>();
 
         this.icon = new IconManager<>(this.self());
@@ -293,16 +298,51 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
     }
 
     /**
-     * Sends changes on input to the builder's responder and listeners if either are defined.
+     * @return Whether the input widget is still processing the user's input.
+     */
+    @PublicAPI
+    public boolean isProcessingInput()
+    {
+        return this.responseTimer.isPresent();
+    }
+
+    /**
+     * Sends changes on input to the builder's responder and listeners if either is defined.
      *
      * @param text The new text of this input widget.
      */
-    protected void onInputChange(String text)
+    protected void respondToInput(String text)
     {
         if (this.getBuilder().responder != null)
             this.getBuilder().responder.accept(this.self(), text);
 
         this.getBuilder().listeners.forEach(listener -> listener.accept(text));
+    }
+
+    /**
+     * Sends changes on input to the builder's responder and listeners if either is defined. If the response is delayed,
+     * then the responder and listeners will receive the new input after the user is finished typing.
+     *
+     * @param text The new text of this input widget.
+     */
+    protected void onInputChange(String text)
+    {
+        if (this.getBuilder().delayedResponse)
+        {
+            long delay = this.getBuilder().responseDelay;
+
+            TickTimer timer = ClientTimer.getInstance().create(delay, TimeUnit.MILLISECONDS, () -> {
+                this.respondToInput(text);
+                this.responseTimer.clear();
+            });
+
+            ClientTimer.getInstance().run(timer);
+
+            this.responseTimer.ifPresent(ClientTimer.getInstance()::cancel);
+            this.responseTimer.set(timer);
+        }
+        else
+            this.respondToInput(text);
     }
 
     /**
