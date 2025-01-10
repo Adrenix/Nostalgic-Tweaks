@@ -471,6 +471,7 @@ public interface Lang
     interface Listing
     {
         Translation ADD = from("add");
+        Translation SEARCHING = from("searching");
         Translation DISABLED_TITLE = from("disabled_title");
         Translation DISABLED_MESSAGE = from("disabled_message");
         Translation DISABLED_WARNING = from("disabled_warning");

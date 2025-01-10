@@ -657,7 +657,12 @@ public class ConfigWidgets implements WidgetManager
         if (this.search != null)
         {
             if (this.search.isFocused())
-                message = Lang.Listing.NOTHING_FOUND.get();
+            {
+                if (this.search.isProcessingInput())
+                    message = Lang.Listing.SEARCHING.get();
+                else
+                    message = Lang.Listing.NOTHING_FOUND.get();
+            }
 
             if (SearchTag.isInvalid(this.search.getInput()))
                 message = Lang.Input.INVALID_TAG.get(this.search.getInput());
@@ -823,6 +828,7 @@ public class ConfigWidgets implements WidgetManager
             .whenEmpty(Lang.Input.SEARCH)
             .background(Color.OLIVE_BLACK, Color.OLIVE_BLACK)
             .border(Color.BLACK, Color.WHITE)
+            .delayedResponse(350L)
             .maxLength(100)
             .searchShortcut()
             .rightOf(this.all, 1)
