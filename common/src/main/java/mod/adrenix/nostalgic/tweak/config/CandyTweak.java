@@ -428,7 +428,7 @@ public interface CandyTweak
     TweakBinding FOG_BINDING = TweakBinding.client(-1, CandyGroup.WORLD_FOG, KeybindingId.FOG).build();
     TweakFlag OLD_SUNRISE_SUNSET_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
     TweakFlag OLD_DARK_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
-    TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).alert(TweakAlert.DYNAMIC_FOG).build();
+    TweakFlag OLD_DYNAMIC_FOG_COLOR = TweakFlag.client(true, CandyGroup.WORLD_FOG).alert(TweakAlert.DYNAMIC_FOG).modIssues(TweakIssue.POLYTONE).build();
     TweakEnum<FogColor> UNIVERSAL_FOG_COLOR = TweakEnum.client(FogColor.DISABLED, CandyGroup.WORLD_FOG).alert(TweakAlert.UNIVERSAL_FOG).build();
     TweakFlag OLD_NETHER_FOG = TweakFlag.client(true, CandyGroup.WORLD_FOG).build();
 
@@ -465,7 +465,7 @@ public interface CandyTweak
     TweakFlag OLD_SUNRISE_AT_NORTH = TweakFlag.client(true, CandyGroup.WORLD_SKY).build();
     TweakEnum<Generic> OLD_STARS = TweakEnum.client(Generic.ALPHA, CandyGroup.WORLD_SKY).whenDisabled(Generic.MODERN).build();
     TweakEnum<SkyColor> UNIVERSAL_SKY_COLOR = TweakEnum.client(SkyColor.DISABLED, CandyGroup.WORLD_SKY).alert(TweakAlert.UNIVERSAL_SKY).build();
-    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).alert(TweakAlert.DYNAMIC_SKY).build();
+    TweakFlag OLD_DYNAMIC_SKY_COLOR = TweakFlag.client(true, CandyGroup.WORLD_SKY).alert(TweakAlert.DYNAMIC_SKY).modIssues(TweakIssue.POLYTONE).build();
     TweakFlag OLD_NETHER_SKY = TweakFlag.client(true, CandyGroup.WORLD_SKY).build();
 
     // Custom Sky
