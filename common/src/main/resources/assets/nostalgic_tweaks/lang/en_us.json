@@ -240,6 +240,7 @@
   "gui.nostalgic_tweaks.tooltip.keyboard_shortcut": "Keyboard Shortcut",
 
   "gui.nostalgic_tweaks.listing.add": "Add to List",
+  "gui.nostalgic_tweaks.listing.searching": "Searching...",
   "gui.nostalgic_tweaks.listing.disabled_title": "Disable List",
   "gui.nostalgic_tweaks.listing.disabled_message": "Set this list as§c disabled§r. When disabled, this tweak list will behave as an§c empty§r list.",
   "gui.nostalgic_tweaks.listing.disabled_warning": "This tweak listing has been§c disabled§r. Use the§6 Manage§r button to change this.",
