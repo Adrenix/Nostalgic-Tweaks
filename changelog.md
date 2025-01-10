@@ -40,6 +40,7 @@ license. If you are interested in joining the mod's development team, then pleas
 - Added `Stamina Sprinting` tweak (dynamic) (no server-side-only)
 - Added `Disable Custom Hitbox Override` tweak
 - Added `2D Item Exception` list tweak
+- Added `Always Open Select World Screen` screen tweak
 - Added `Hide New Recipe Toasts` tweak
 - Added `Hide Tutorial Toasts` tweak
 - Added `Hide Advancement Toasts` tweak
@@ -55,7 +56,7 @@ license. If you are interested in joining the mod's development team, then pleas
 - Added `Old Fishing Luring` gameplay tweak (brings back old bobber)
 - Added `Old Fishing Casting` gameplay tweak (changes fishing rod sounds)
 - Added `Old Creeper Strafing` gameplay tweak (on by default)
-- Added `Disable Skeleton Strafing` gameplay tweak (off by default)
+- Added `Disable Skeleton Strafing` gameplay tweak (off by default) (not available for Forge 1.20.1)
 - Added `Disable Bubble Column Ambience` sound tweak
 
 ## 2.0.0-beta903
