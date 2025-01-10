@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.client.gui.widget.scrollbar;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
+import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.data.CacheValue;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
@@ -407,6 +408,8 @@ public class Scrollbar extends DynamicWidget<ScrollbarBuilder, Scrollbar>
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
+        partialTick = PartialTick.realtime();
+
         super.render(graphics, mouseX, mouseY, partialTick);
 
         if (this.isInvisible())
