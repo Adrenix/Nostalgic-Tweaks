@@ -1147,6 +1147,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.hideCauseOfDeath.info": "Hide the cause of death text.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWorldSelectScreen": "World Selection Screen",
   "gui.nostalgic_tweaks.config.eyeCandy.oldWorldSelectScreen.info": "Change the layout of the singleplayer world selection screen.",
+  "gui.nostalgic_tweaks.config.eyeCandy.levelSelectWhenEmpty": "Always Open Select World Screen",
+  "gui.nostalgic_tweaks.config.eyeCandy.levelSelectWhenEmpty.info": "Open the select world screen even if there are no worlds to choose from.",
   "gui.nostalgic_tweaks.config.eyeCandy.addWorldThumbnail": "Add World Thumbnail",
   "gui.nostalgic_tweaks.config.eyeCandy.addWorldThumbnail.info": "Add a world's§a thumbnail§r when using the§e beta§r layout.",
   "gui.nostalgic_tweaks.config.eyeCandy.addWorldMetadata": "Add World Metadata",

@@ -24,6 +24,6 @@ public abstract class WorldSelectionListMixin
     )
     private boolean nt_select_world_screen$onCreateWorldScreen(Minecraft minecraft, Screen lastScreen)
     {
-        return CandyTweak.OLD_WORLD_SELECT_SCREEN.get() == Generic.MODERN;
+        return CandyTweak.OLD_WORLD_SELECT_SCREEN.get() == Generic.MODERN && !CandyTweak.LEVEL_SELECT_WHEN_EMPTY.get();
     }
 }
