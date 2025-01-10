@@ -1,12 +1,12 @@
-package mod.adrenix.nostalgic.mixin.tweak.gameplay.mob_ai;
+package mod.adrenix.nostalgic.neoforge.mixin.tweak.gameplay.mob_ai;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(RangedBowAttackGoal.class)
-public abstract class RangedBowAttackGoalMixin<T extends Monster & RangedAttackMob>
+public abstract class RangedBowAttackGoalMixin<T extends Mob & RangedAttackMob>
 {
     /* Shadows */
 
@@ -32,7 +32,7 @@ public abstract class RangedBowAttackGoalMixin<T extends Monster & RangedAttackM
             target = "Lnet/minecraft/world/entity/ai/control/MoveControl;strafe(FF)V"
         )
     )
-    private boolean nt_mob_ai$onRangedBowAttackTick(MoveControl moveControl, float forward, float strafe)
+    private boolean nt_neoforge_mob_ai$onRangedBowAttackTick(MoveControl moveControl, float forward, float strafe)
     {
         LivingEntity target = this.mob.getTarget();
 
