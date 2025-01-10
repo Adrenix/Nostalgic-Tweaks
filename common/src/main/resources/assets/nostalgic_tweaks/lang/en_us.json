@@ -943,7 +943,7 @@
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaBar.info": "Removes the stamina bar from the heads-up display when stamina sprinting is§a enabled§r. The stamina bar will be§6 hidden§r automatically when sprinting is§c disabled§r.",
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaBar.search": "HUD, Lightning, Bolt",
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaMoving": "Hide Stamina Moving Icon",
-  "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaMoving.info": "Prevent the§4 moving zap§r icon from appearing the stamina bar when the player's stamina cannot be regained because they are moving.",
+  "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaMoving.info": "Prevent the§4 moving zap§r iconS from appearing on the stamina bar when the player's stamina cannot be regained because they are moving.",
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaMoving.search": "HUD, Lightning, Bolt",
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaCooldown": "Hide Stamina Cooldown Icon",
   "gui.nostalgic_tweaks.config.eyeCandy.hideStaminaCooldown.info": "Prevent the§b cooldown zap§r icons from appearing on the stamina bar when the player's stamina is in a cooldown period.",
