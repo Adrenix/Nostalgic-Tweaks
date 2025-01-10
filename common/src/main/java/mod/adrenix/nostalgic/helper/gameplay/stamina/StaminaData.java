@@ -16,6 +16,8 @@ public class StaminaData
     private boolean isExhausted = false;
     private int durationInTicks = 0;
     private int rechargeInTicks = 0;
+    private int cooldownInTicks = 0;
+    private int waitTimer = 0;
     private int tickTimer = 0;
     private int staminaLevel = MAX_STAMINA_LEVEL;
 
@@ -35,15 +37,20 @@ public class StaminaData
     {
         int durationFromTweak = GameplayTweak.STAMINA_DURATION.get() * 20;
         int rechargeFromTweak = GameplayTweak.STAMINA_RECHARGE.get() * 20;
+        int cooldownFromTweak = GameplayTweak.STAMINA_COOLDOWN.get() * 20;
 
         if (this.durationInTicks != durationFromTweak)
         {
             this.durationInTicks = durationFromTweak;
             this.tickTimer = durationFromTweak;
+            this.waitTimer = 0;
         }
 
         if (this.rechargeInTicks != rechargeFromTweak)
             this.rechargeInTicks = rechargeFromTweak;
+
+        if (this.cooldownInTicks != cooldownFromTweak)
+            this.cooldownInTicks = cooldownFromTweak;
     }
 
     /**
@@ -74,6 +81,7 @@ public class StaminaData
             {
                 this.isExhausted = false;
                 this.tickTimer = this.durationInTicks;
+                this.waitTimer = 0;
             }
 
             this.setStaminaLevel(this.isExhausted ? this.rechargeInTicks : this.durationInTicks);
@@ -82,6 +90,8 @@ public class StaminaData
         {
             if (canTick)
                 this.tickTimer--;
+
+            this.waitTimer = this.cooldownInTicks;
 
             if (this.tickTimer <= 0)
             {
@@ -94,7 +104,12 @@ public class StaminaData
         else
         {
             if (this.tickTimer < this.durationInTicks && canTick)
-                this.tickTimer++;
+            {
+                if (this.waitTimer <= 0)
+                    this.tickTimer++;
+                else
+                    this.waitTimer--;
+            }
 
             this.setStaminaLevel(this.durationInTicks);
         }
@@ -116,6 +131,17 @@ public class StaminaData
     public int getStaminaLevel()
     {
         return this.staminaLevel;
+    }
+
+    /**
+     * @return Get whether the player is "cooling off" before their stamina begins to increase.
+     */
+    public boolean isCoolingOff()
+    {
+        if (!GameplayTweak.STAMINA_SPRINT.get())
+            return false;
+
+        return this.waitTimer > 0 && this.waitTimer < this.cooldownInTicks;
     }
 
     /**

@@ -155,6 +155,7 @@ public class ServerConfig implements ConfigMeta
         public boolean staminaInfinitePeaceful = GameplayTweak.STAMINA_INFINITE_PEACEFUL.register("staminaInfinitePeaceful");
         public int staminaDuration = GameplayTweak.STAMINA_DURATION.register("staminaDuration");
         public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
+        public int staminaCooldown = GameplayTweak.STAMINA_COOLDOWN.register("staminaCooldown");
 
         // Player Mechanics
 

@@ -245,6 +245,7 @@ public class ClientConfig implements ConfigMeta
         public boolean hideExperienceBar = CandyTweak.HIDE_EXPERIENCE_BAR.register("hideExperienceBar");
         public boolean hideHungerBar = CandyTweak.HIDE_HUNGER_BAR.register("hideHungerBar");
         public boolean hideStaminaBar = CandyTweak.HIDE_STAMINA_BAR.register("hideStaminaBar");
+        public boolean hideStaminaCooldown = CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.register("hideStaminaCooldown");
         public boolean hideStaminaBarInactive = CandyTweak.HIDE_STAMINA_BAR_INACTIVE.register("hideStaminaBarInactive");
 
         // Offhand Slot
@@ -757,6 +758,7 @@ public class ClientConfig implements ConfigMeta
         public boolean staminaInfinitePeaceful = GameplayTweak.STAMINA_INFINITE_PEACEFUL.register("staminaInfinitePeaceful");
         public int staminaDuration = GameplayTweak.STAMINA_DURATION.register("staminaDuration");
         public int staminaRecharge = GameplayTweak.STAMINA_RECHARGE.register("staminaRecharge");
+        public int staminaCooldown = GameplayTweak.STAMINA_COOLDOWN.register("staminaCooldown");
 
         // Player Mechanics
 

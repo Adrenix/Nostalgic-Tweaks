@@ -15,6 +15,8 @@ public interface ModSprite
     ResourceLocation STAMINA_LEVEL_HALF = ModAsset.sprite("hud/stamina_level_half");
     ResourceLocation STAMINA_RECHARGE = ModAsset.sprite("hud/stamina_recharge");
     ResourceLocation STAMINA_RECHARGE_HALF = ModAsset.sprite("hud/stamina_recharge_half");
+    ResourceLocation STAMINA_COOLING = ModAsset.sprite("hud/stamina_cooling");
+    ResourceLocation STAMINA_COOLING_HALF = ModAsset.sprite("hud/stamina_cooling_half");
     ResourceLocation STAMINA_EMPTY = ModAsset.sprite("hud/stamina_empty");
 
     static ResourceLocation icon(String path)
