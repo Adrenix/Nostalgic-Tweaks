@@ -33,8 +33,8 @@ public interface TweakPacket extends ModPacket
 
         if (found.isEmpty())
         {
-            String message = "Server tried changing [tweak={jsonId:%s}] but it doesn't exist in the client config";
-            NostalgicTweaks.LOGGER.warn(message, poolId);
+            String message = "Server sent [tweak={jsonId:%s}] but it doesn't exist in the client config";
+            NostalgicTweaks.LOGGER.debug(message, poolId);
         }
 
         return found;
@@ -131,8 +131,8 @@ public interface TweakPacket extends ModPacket
 
         if (found.isEmpty())
         {
-            String message = "Operator (%s) tried changing [tweak={jsonId:%s}] but it doesn't exist in the server config";
-            NostalgicTweaks.LOGGER.warn(message, this.getPlayerName(context), poolId);
+            String message = "Player (%s) requested [tweak={jsonId:%s}] but it doesn't exist in the server config";
+            NostalgicTweaks.LOGGER.debug(message, this.getPlayerName(context), poolId);
         }
 
         return found;
