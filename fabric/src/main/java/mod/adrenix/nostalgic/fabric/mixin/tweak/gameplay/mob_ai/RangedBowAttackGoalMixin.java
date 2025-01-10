@@ -1,4 +1,4 @@
-package mod.adrenix.nostalgic.mixin.tweak.gameplay.mob_ai;
+package mod.adrenix.nostalgic.fabric.mixin.tweak.gameplay.mob_ai;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
@@ -32,7 +32,7 @@ public abstract class RangedBowAttackGoalMixin<T extends Monster & RangedAttackM
             target = "Lnet/minecraft/world/entity/ai/control/MoveControl;strafe(FF)V"
         )
     )
-    private boolean nt_mob_ai$onRangedBowAttackTick(MoveControl moveControl, float forward, float strafe)
+    private boolean nt_fabric_mob_ai$onRangedBowAttackTick(MoveControl moveControl, float forward, float strafe)
     {
         LivingEntity target = this.mob.getTarget();
 

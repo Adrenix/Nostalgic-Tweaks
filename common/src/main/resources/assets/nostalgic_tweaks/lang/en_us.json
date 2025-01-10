@@ -1590,7 +1590,7 @@
   "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun.info": "Prevent monsters from creating movement paths that avoid the sun.",
   "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun.search": "Burn, Sunlight, Damage",
   "gui.nostalgic_tweaks.config.gameplay.disableSkeletonStrafing": "Disable Skeleton Strafing",
-  "gui.nostalgic_tweaks.config.gameplay.disableSkeletonStrafing.info": "Prevent skeletons from strafing while attacking.",
+  "gui.nostalgic_tweaks.config.gameplay.disableSkeletonStrafing.info": "Prevent skeletons from strafing while attacking. This tweak is§c not§r available for§b Forge §r(§e1.20.1§r).",
   "gui.nostalgic_tweaks.config.gameplay.oldCreeperStrafeOnSwell": "Old Creeper Strafe on Swell",
   "gui.nostalgic_tweaks.config.gameplay.oldCreeperStrafeOnSwell.info": "Define whether creepers will strafe around their target when they begin to swell.",
 
