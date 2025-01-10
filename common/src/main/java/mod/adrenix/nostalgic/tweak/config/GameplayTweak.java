@@ -25,6 +25,7 @@ public interface GameplayTweak
     TweakFlag DISABLE_ANIMAL_PANIC = TweakFlag.server(true, GameplayGroup.MOB_AI).build();
     TweakFlag DISABLE_MONSTER_AVOID_SUN = TweakFlag.server(true, GameplayGroup.MOB_AI).build();
     TweakFlag DISABLE_SKELETON_STRAFING = TweakFlag.server(false, GameplayGroup.MOB_AI).newForUpdate().build();
+    TweakFlag OLD_CREEPER_STRAFE_ON_SWELL = TweakFlag.server(true, GameplayGroup.MOB_AI).newForUpdate().build();
 
     // Monsters
 

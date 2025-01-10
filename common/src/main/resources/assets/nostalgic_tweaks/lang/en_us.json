@@ -1591,6 +1591,8 @@
   "gui.nostalgic_tweaks.config.gameplay.disableMonsterAvoidSun.search": "Burn, Sunlight, Damage",
   "gui.nostalgic_tweaks.config.gameplay.disableSkeletonStrafing": "Disable Skeleton Strafing",
   "gui.nostalgic_tweaks.config.gameplay.disableSkeletonStrafing.info": "Prevent skeletons from strafing while attacking.",
+  "gui.nostalgic_tweaks.config.gameplay.oldCreeperStrafeOnSwell": "Old Creeper Strafe on Swell",
+  "gui.nostalgic_tweaks.config.gameplay.oldCreeperStrafeOnSwell.info": "Define whether creepers will strafe around their target when they begin to swell.",
 
   "gui.nostalgic_tweaks.config.gameplay.disableBabyZombieSpawn": "Disable Baby Zombie Spawns",
   "gui.nostalgic_tweaks.config.gameplay.disableBabyZombieSpawn.info": "Prevent the chance that a baby zombie will spawn.",

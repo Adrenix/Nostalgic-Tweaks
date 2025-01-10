@@ -188,6 +188,7 @@
     "gameplay.mechanics_player.ServerLevelMixin",
     "gameplay.mechanics_swim.LivingEntityMixin",
     "gameplay.mob_ai.AnimalPanicMixin",
+    "gameplay.mob_ai.CreeperMixin",
     "gameplay.mob_ai.FleeSunGoalMixin",
     "gameplay.mob_ai.GroundPathNavigationMixin",
     "gameplay.mob_ai.PanicGoalMixin",
