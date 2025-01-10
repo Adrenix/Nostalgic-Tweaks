@@ -15,29 +15,29 @@ public interface SoundTweak
 {
     // Disabled
 
-    TweakStringSet DISABLED_POSITIONED_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).newForUpdate().build();
-    TweakStringSet DISABLED_GLOBAL_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).newForUpdate().build();
+    TweakStringSet DISABLED_POSITIONED_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).build();
+    TweakStringSet DISABLED_GLOBAL_SOUNDS = TweakStringSet.client(new StringSet(ListingSuggestion.SOUND), SoundGroup.DISABLED).build();
 
     // Ambience
 
-    TweakFlag OLD_CAVE_SOUNDS = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
-    TweakFlag OLD_CAVE_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).newForUpdate().build();
+    TweakFlag OLD_CAVE_SOUNDS = TweakFlag.client(true, SoundGroup.AMBIENT).build();
+    TweakFlag OLD_CAVE_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).build();
     TweakFlag DISABLE_NETHER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).build();
     TweakFlag DISABLE_WATER_AMBIENCE = TweakFlag.client(true, SoundGroup.AMBIENT).build();
 
     // Music
 
-    TweakFlag PLAY_MUSIC_WHEN_PAUSED = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
-    TweakEnum<MusicType> MUSIC_FOR_MENU = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).newForUpdate().build();
-    TweakEnum<MusicType> MUSIC_FOR_CREATIVE = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).newForUpdate().build();
-    TweakFlag REPLACE_OVERWORLD_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
-    TweakFlag REPLACE_NETHER_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
-    TweakFlag REPLACE_GAMEPLAY_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).newForUpdate().build();
+    TweakFlag PLAY_MUSIC_WHEN_PAUSED = TweakFlag.client(true, SoundGroup.MUSIC).build();
+    TweakEnum<MusicType> MUSIC_FOR_MENU = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).build();
+    TweakEnum<MusicType> MUSIC_FOR_CREATIVE = TweakEnum.client(MusicType.ALPHA, SoundGroup.MUSIC).whenDisabled(MusicType.MODERN).build();
+    TweakFlag REPLACE_OVERWORLD_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).build();
+    TweakFlag REPLACE_NETHER_BIOME_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).build();
+    TweakFlag REPLACE_GAMEPLAY_MUSIC = TweakFlag.client(true, SoundGroup.MUSIC).build();
 
     // Music Controls
 
-    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.STOP_SONG).newForUpdate().build();
-    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.NEXT_SONG).newForUpdate().build();
+    TweakBinding STOP_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.STOP_SONG).build();
+    TweakBinding NEXT_SONG_BINDING = TweakBinding.client(-1, SoundGroup.MUSIC_CONTROLS, KeybindingId.NEXT_SONG).build();
 
     // Bed Block
 
@@ -63,7 +63,7 @@ public interface SoundTweak
 
     TweakFlag DISABLE_GROWTH = TweakFlag.client(true, SoundGroup.BLOCK).build();
     TweakFlag DISABLE_DOOR_PLACE = TweakFlag.client(true, SoundGroup.BLOCK).build();
-    TweakFlag DISABLE_BUBBLE_COLUMN = TweakFlag.client(true, SoundGroup.BLOCK).build();
+    TweakFlag DISABLE_BUBBLE_COLUMN = TweakFlag.client(true, SoundGroup.BLOCK).newForUpdate().build();
 
     // Damage
 
