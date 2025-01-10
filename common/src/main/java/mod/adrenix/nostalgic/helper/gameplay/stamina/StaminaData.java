@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.helper.gameplay.stamina;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.tweak.enums.StaminaRegain;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
 
@@ -17,6 +18,7 @@ public class StaminaData
     private int durationInTicks = 0;
     private int rechargeInTicks = 0;
     private int cooldownInTicks = 0;
+    private int halfRateInTicks = 0;
     private int waitTimer = 0;
     private int tickTimer = 0;
     private int staminaLevel = MAX_STAMINA_LEVEL;
@@ -44,6 +46,7 @@ public class StaminaData
             this.durationInTicks = durationFromTweak;
             this.tickTimer = durationFromTweak;
             this.waitTimer = 0;
+            this.halfRateInTicks = 0;
         }
 
         if (this.rechargeInTicks != rechargeFromTweak)
@@ -74,7 +77,7 @@ public class StaminaData
 
         if (this.isExhausted)
         {
-            if (canTick)
+            if (canTick && this.canRegain(player) && this.isNotHalfRate(player))
                 this.tickTimer++;
 
             if (this.tickTimer >= this.rechargeInTicks)
@@ -105,7 +108,7 @@ public class StaminaData
         {
             if (this.tickTimer < this.durationInTicks && canTick)
             {
-                if (this.waitTimer <= 0)
+                if (this.waitTimer <= 0 && this.canRegain(player) && this.isNotHalfRate(player))
                     this.tickTimer++;
                 else
                     this.waitTimer--;
@@ -123,6 +126,74 @@ public class StaminaData
     private void setStaminaLevel(int amountInTicks)
     {
         this.staminaLevel = (int) Math.ceil(((double) this.tickTimer / amountInTicks) * 20.0D);
+    }
+
+    /**
+     * Check if the given player is moving.
+     *
+     * @param player The {@link Player} instance to check.
+     * @return Whether the player is moving.
+     */
+    private boolean isMoving(Player player)
+    {
+        double dx = player.getX() - player.xo;
+        double dz = player.getZ() - player.zo;
+
+        return dx * dx + dz * dz > 2.5E-7F;
+    }
+
+    /**
+     * Check if the tick rate is not cut in half.
+     *
+     * @param player The {@link Player} instance.
+     * @return Whether the tick is not in half.
+     */
+    private boolean isNotHalfRate(Player player)
+    {
+        boolean isHalfRate = false;
+
+        if (GameplayTweak.STAMINA_REGAIN_WHEN_MOVING.get() == StaminaRegain.HALF && this.isMoving(player))
+            isHalfRate = !player.isSprinting() && this.staminaLevel < MAX_STAMINA_LEVEL;
+
+        if (isHalfRate)
+        {
+            if (this.halfRateInTicks >= 1)
+                this.halfRateInTicks = 0;
+            else
+            {
+                this.halfRateInTicks++;
+                return false;
+            }
+        }
+        else
+            this.halfRateInTicks = 0;
+
+        return true;
+    }
+
+    /**
+     * Check if the given player can regain their stamina.
+     *
+     * @param player The {@link Player} instance to check.
+     * @return Whether the player can regain stamina.
+     */
+    private boolean canRegain(Player player)
+    {
+        if (GameplayTweak.STAMINA_REGAIN_WHEN_MOVING.get() != StaminaRegain.NONE)
+            return true;
+
+        return !this.isMoving(player);
+    }
+
+    /**
+     * Check if the given player cannot regain their stamina.
+     *
+     * @param player The {@link Player} instance to check.
+     * @return Whether the player cannot regain stamina.
+     */
+    public boolean cannotRegain(Player player)
+    {
+        return !this.canRegain(player) && !player.isSprinting() && this.staminaLevel < MAX_STAMINA_LEVEL;
     }
 
     /**

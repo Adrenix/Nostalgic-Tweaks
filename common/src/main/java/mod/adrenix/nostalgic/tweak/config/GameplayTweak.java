@@ -2,10 +2,8 @@ package mod.adrenix.nostalgic.tweak.config;
 
 import mod.adrenix.nostalgic.tweak.TweakAlert;
 import mod.adrenix.nostalgic.tweak.container.group.GameplayGroup;
-import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
-import mod.adrenix.nostalgic.tweak.factory.TweakItemMap;
-import mod.adrenix.nostalgic.tweak.factory.TweakItemSet;
-import mod.adrenix.nostalgic.tweak.factory.TweakNumber;
+import mod.adrenix.nostalgic.tweak.enums.StaminaRegain;
+import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.tweak.gui.SliderType;
 import mod.adrenix.nostalgic.tweak.listing.DefaultListing;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
@@ -117,6 +115,7 @@ public interface GameplayTweak
 
     TweakFlag STAMINA_SPRINT = TweakFlag.dynamic(false, GameplayGroup.STAMINA).newForUpdate().noSSO().alert(TweakAlert.STAMINA_SPRINTING_CONFLICT).build();
     TweakFlag STAMINA_INFINITE_PEACEFUL = TweakFlag.dynamic(false, GameplayGroup.STAMINA).newForUpdate().build();
+    TweakEnum<StaminaRegain> STAMINA_REGAIN_WHEN_MOVING = TweakEnum.dynamic(StaminaRegain.NORMAL, GameplayGroup.STAMINA).newForUpdate().build();
     TweakNumber<Integer> STAMINA_DURATION = TweakNumber.dynamic(5, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
     TweakNumber<Integer> STAMINA_RECHARGE = TweakNumber.dynamic(7, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 1, 60).build();
     TweakNumber<Integer> STAMINA_COOLDOWN = TweakNumber.dynamic(0, GameplayGroup.STAMINA).newForUpdate().slider(Lang.Slider.SECONDS, 0, 60).build();

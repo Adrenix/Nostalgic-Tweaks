@@ -64,12 +64,16 @@ public abstract class StaminaRenderer
         int stamina = data.getStaminaLevel();
         boolean isExhausted = data.isExhausted();
         boolean isCoolingOff = data.isCoolingOff();
+        boolean cannotRegain = data.cannotRegain(player);
 
         for (int i = 0; i < 10; i++)
         {
             ResourceLocation sprite = isExhausted ? ModSprite.STAMINA_RECHARGE : ModSprite.STAMINA_LEVEL;
             int x = left - i * 8 - 9;
             int icon = i * 2 + 1;
+
+            if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
+                sprite = ModSprite.STAMINA_NEGATIVE;
 
             if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                 sprite = ModSprite.STAMINA_COOLING;
@@ -81,6 +85,9 @@ public abstract class StaminaRenderer
             else if (icon == stamina && MathUtil.isOdd(stamina))
             {
                 sprite = isExhausted ? ModSprite.STAMINA_RECHARGE_HALF : ModSprite.STAMINA_LEVEL_HALF;
+
+                if (cannotRegain && !CandyTweak.HIDE_STAMINA_BAR_MOVING.get())
+                    sprite = ModSprite.STAMINA_NEGATIVE_HALF;
 
                 if (isCoolingOff && !CandyTweak.HIDE_STAMINA_BAR_COOLDOWN.get())
                     sprite = ModSprite.STAMINA_COOLING_HALF;

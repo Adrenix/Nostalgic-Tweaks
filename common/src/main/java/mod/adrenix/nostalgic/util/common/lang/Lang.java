@@ -849,6 +849,9 @@ public interface Lang
         Translation SCREEN_CONFIG = from("menuOption.config");
         Translation SOLID_COLOR = from("colorType.solid");
         Translation GRADIENT_COLOR = from("colorType.gradient");
+        Translation STAMINA_REGAIN_NORMAL = from("staminaRegain.normal");
+        Translation STAMINA_REGAIN_HALF = from("staminaRegain.half");
+        Translation STAMINA_REGAIN_NONE = from("staminaRegain.none");
         Translation BACKGROUND_SOLID_BLACK = from("guiBackground.solid_black");
         Translation BACKGROUND_SOLID_BLUE = from("guiBackground.solid_blue");
         Translation BACKGROUND_GRADIENT_BLUE = from("guiBackground.gradient_blue");
