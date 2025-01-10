@@ -206,9 +206,9 @@ public interface CandyTweak
     // Generic Screen
 
     TweakFlag FIX_SAVING_INDICATOR_OFFSET = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
-    TweakFlag OLD_DIRT_SCREEN_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
+    TweakFlag OLD_DIRT_SCREEN_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
-    TweakFlag REMOVE_SCREEN_BLUR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
+    TweakFlag REMOVE_SCREEN_BLUR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
     TweakFlag APPLY_GUI_COLOR_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_GUI_COLOR).build();
     TweakEnum<GuiBackground> OLD_GUI_BACKGROUND = TweakEnum.client(GuiBackground.SOLID_BLACK, CandyGroup.INTERFACE_GUI_COLOR).build();
     TweakFlag CUSTOM_GUI_BACKGROUND = TweakFlag.client(false, CandyGroup.INTERFACE_GUI_COLOR).build();
@@ -293,7 +293,7 @@ public interface CandyTweak
     TweakFlag REMOVE_TITLE_ACCESSIBILITY_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_TITLE_LANGUAGE_BUTTON = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
     TweakFlag REMOVE_EXTRA_TITLE_BUTTONS = TweakFlag.client(false, CandyGroup.INTERFACE_TITLE_BUTTON).build();
-    TweakFlag ADD_QUIT_BUTTON = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).newForUpdate().whenDisabled(true).build();
+    TweakFlag ADD_QUIT_BUTTON = TweakFlag.client(true, CandyGroup.INTERFACE_TITLE_BUTTON).whenDisabled(true).build();
 
     // Title Screen Text
 
