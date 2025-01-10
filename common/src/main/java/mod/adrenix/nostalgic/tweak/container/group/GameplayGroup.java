@@ -39,6 +39,7 @@ public interface GameplayGroup
     // Stamina
 
     Container STAMINA = Container.group(Category.GAMEPLAY, "stamina").color(0xFFE47C).icon(Icons.LIGHTNING).build();
+    Container STAMINA_EFFECTS = Container.group(STAMINA, "stamina_effects").color(0x375DCA).icon(Items.POTION).build();
 
     // Hunger
 

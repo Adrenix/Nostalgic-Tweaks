@@ -4,6 +4,7 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.StaminaRegain;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 
 public class StaminaData
@@ -14,6 +15,7 @@ public class StaminaData
 
     /* Fields */
 
+    private boolean tickAgain = false;
     private boolean isExhausted = false;
     private int durationInTicks = 0;
     private int rechargeInTicks = 0;
@@ -116,6 +118,19 @@ public class StaminaData
 
             this.setStaminaLevel(this.durationInTicks);
         }
+
+        boolean shouldTickAgain = this.hasPositiveEffect(player);
+
+        if (this.hasNegativeEffect(player) && isSprinting)
+            shouldTickAgain = true;
+
+        if (shouldTickAgain && !this.tickAgain)
+        {
+            this.tickAgain = true;
+            this.tick(player);
+        }
+        else
+            this.tickAgain = false;
     }
 
     /**
@@ -151,11 +166,15 @@ public class StaminaData
     private boolean isNotHalfRate(Player player)
     {
         boolean isHalfRate = false;
+        boolean hasHunger = false;
 
         if (GameplayTweak.STAMINA_REGAIN_WHEN_MOVING.get() == StaminaRegain.HALF && this.isMoving(player))
             isHalfRate = !player.isSprinting() && this.staminaLevel < MAX_STAMINA_LEVEL;
 
-        if (isHalfRate)
+        if (GameplayTweak.STAMINA_HUNGER_EFFECT.get())
+            hasHunger = player.hasEffect(MobEffects.HUNGER);
+
+        if (isHalfRate || hasHunger)
         {
             if (this.halfRateInTicks >= 1)
                 this.halfRateInTicks = 0;
@@ -194,6 +213,34 @@ public class StaminaData
     public boolean cannotRegain(Player player)
     {
         return !this.canRegain(player) && !player.isSprinting() && this.staminaLevel < MAX_STAMINA_LEVEL;
+    }
+
+    /**
+     * Check if the given player has a positive effect that impacts their stamina.
+     *
+     * @param player The {@link Player} instance to check.
+     * @return Whether the player has a positive effect that affects their stamina.
+     */
+    public boolean hasPositiveEffect(Player player)
+    {
+        if (GameplayTweak.STAMINA_SATURATION_EFFECT.get() && StaminaHelper.isActiveFor(player))
+            return player.hasEffect(MobEffects.SATURATION) && !player.isSprinting();
+
+        return false;
+    }
+
+    /**
+     * Check if the given player has a negative effect that impacts their stamina.
+     *
+     * @param player The {@link Player} instance to check.
+     * @return Whether the player has a negative effect that affects their stamina.
+     */
+    public boolean hasNegativeEffect(Player player)
+    {
+        if (GameplayTweak.STAMINA_HUNGER_EFFECT.get() && StaminaHelper.isActiveFor(player))
+            return player.hasEffect(MobEffects.HUNGER);
+
+        return false;
     }
 
     /**
