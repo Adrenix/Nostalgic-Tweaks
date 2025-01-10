@@ -1164,6 +1164,8 @@
   "gui.nostalgic_tweaks.config.eyeCandy.removeScreenBlur.info": "Prevent the blurring effect applied to screens.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor": "Old Button Text Colors",
   "gui.nostalgic_tweaks.config.eyeCandy.oldButtonTextColor.info": "Bring back the old button text colors. Text on buttons will have a slight§7 gray§r color, and when hovered, the text turns§e yellow§r. To get the old§9 blue§r button background and§c removal§r of the white border around buttons, use the§e Programmer Art§r resource pack.",
+  "gui.nostalgic_tweaks.config.eyeCandy.fixSavingIndicatorOffset": "Fix Saving Indicator Offset",
+  "gui.nostalgic_tweaks.config.eyeCandy.fixSavingIndicatorOffset.info": "Bring back the old saving world indicator text position in the bottom right corner of the game window.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldDirtScreenBackground": "Old Dirt Screen Background",
   "gui.nostalgic_tweaks.config.eyeCandy.oldDirtScreenBackground.info": "Bring back the old dirt background on game screens. This will override the panorama backgrounds and bring back the old row list dirt screens.",
   "gui.nostalgic_tweaks.config.eyeCandy.oldCreativeHotbar": "Old Creative Hotbar",

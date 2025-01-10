@@ -205,6 +205,7 @@ public interface CandyTweak
 
     // Generic Screen
 
+    TweakFlag FIX_SAVING_INDICATOR_OFFSET = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
     TweakFlag OLD_DIRT_SCREEN_BACKGROUND = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();
     TweakFlag OLD_BUTTON_TEXT_COLOR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).build();
     TweakFlag REMOVE_SCREEN_BLUR = TweakFlag.client(true, CandyGroup.INTERFACE_GUI).newForUpdate().build();

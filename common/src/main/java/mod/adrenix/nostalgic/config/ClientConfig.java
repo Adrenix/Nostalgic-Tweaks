@@ -366,6 +366,7 @@ public class ClientConfig implements ConfigMeta
 
         // Generic Screen
 
+        public boolean fixSavingIndicatorOffset = CandyTweak.FIX_SAVING_INDICATOR_OFFSET.register("fixSavingIndicatorOffset");
         public boolean removeScreenBlur = CandyTweak.REMOVE_SCREEN_BLUR.register("removeScreenBlur");
         public boolean oldButtonTextColor = CandyTweak.OLD_BUTTON_TEXT_COLOR.register("oldButtonTextColor");
         public boolean oldDirtScreenBackground = CandyTweak.OLD_DIRT_SCREEN_BACKGROUND.register("oldDirtScreenBackground");
