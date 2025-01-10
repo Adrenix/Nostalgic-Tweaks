@@ -17,6 +17,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -182,16 +185,21 @@ public abstract class ClientEventHandler
     public static void onUseItem(InputEvent.InteractionKeyMappingTriggered event)
     {
         LocalPlayer player = Minecraft.getInstance().player;
+        HitResult hitResult = Minecraft.getInstance().hitResult;
 
-        if (player == null || !event.isUseItem())
+        if (player == null || hitResult == null || !event.isUseItem())
             return;
 
-        Item itemInHand = player.getItemInHand(event.getHand()).getItem();
-
-        if (InteractionHelper.shouldNotUseItem(itemInHand))
+        if (hitResult instanceof BlockHitResult blockHitResult)
         {
-            event.setCanceled(true);
-            event.setSwingHand(false);
+            Item itemInHand = player.getItemInHand(event.getHand()).getItem();
+            BlockState blockState = player.level().getBlockState(blockHitResult.getBlockPos());
+
+            if (InteractionHelper.shouldNotUseItem(itemInHand, blockState))
+            {
+                event.setCanceled(true);
+                event.setSwingHand(false);
+            }
         }
     }
 }

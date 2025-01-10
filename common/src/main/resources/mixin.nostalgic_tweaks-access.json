@@ -22,10 +22,12 @@
     "WorldSelectionListAccess"
   ],
   "mixins": [
+    "AxeItemAccess",
     "EntityAccess",
     "FireBlockAccess",
     "LivingEntityAccess",
     "PlayerAccess",
-    "SheepAccess"
+    "SheepAccess",
+    "ShovelItemAccess"
   ]
 }
