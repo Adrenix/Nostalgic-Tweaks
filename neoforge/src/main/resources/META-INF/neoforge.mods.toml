@@ -60,3 +60,10 @@ type = "required"
 versionRange = "[${architectury_version},)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.nostalgic_tweaks]]
+modId = "sodium"
+type = "optional"
+versionRange = "[0.6,0.7-alpha)"
+ordering = "NONE"
+side = "CLIENT"
