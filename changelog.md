@@ -2,9 +2,9 @@
 
 ## 2.0.0-beta910
 
-This update fixes reported issues, adds new tweaks, and includes general mod improvements. The most notable new tweak is
-the stamina based sprinting system. Starting with beta.905, Nostalgic Tweaks now uses the LGPLv3 license. If you are
-interested in joining the mod's development team, then please reach out to us at the mod's Discord.
+This update fixes reported issues, adds new tweaks, and includes general mod improvements. The most notable new tweaks
+are the stamina based sprinting system. Starting with all releases after beta.904, Nostalgic Tweaks now uses the LGPLv3
+license. If you are interested in joining the mod's development team, then please reach out to us at the mod's Discord.
 
 - Added home screen tutorial overlay to manually disable Sodium cloud rendering override
 - Added category filtering to the `Toggle All Tweaks` section in config management
@@ -18,6 +18,7 @@ interested in joining the mod's development team, then please reach out to us at
 - Fixed disable block offsets tweak applying to blocks with collision
 - Fixed game soft locking when downloading a resource pack for a server
 - Fixed crash when deleting more than one item in a tweak list
+- Fixed server console log spam when a connected player has a different mod version
 - Fixed held item model gap fix tweak not working on Forge
 - Fixed incorrect air bubble offset when player is without armor on Forge
 - Fixed incorrect air bubble offset on the HUD for Fabric
@@ -31,14 +32,12 @@ interested in joining the mod's development team, then please reach out to us at
 - Fixed favorite tweaks not appearing in the favorites list
 - Fixed infinite seed tilling bug
 - Fixed scrollbar in Nostalgic Tweaks menus scrolling irrationally on some occasions
+- Fixed sky color not taking over when the `Dynamic Sky Color` tweak is disabled
 - Added `Dynamic Light Brightness` lighting tweak
 - Added `Stamina System` subcategory to the `Gameplay` category
 - Added `Stamina Bar` subcategory to the `Heads-up Display` subcategory
 - Added `Alternative Stamina Text` subcategory to the `Stamina Bar` subcategory
-- Added `Hide Stamina Bar If Inactive` tweak
-- Added `Stamina Sprinting` tweak (dynamic) (not server-side-only)
-- Added `Stamina Duration` tweak (dynamic)
-- Added `Stamina Exhaustion Recharge` tweak (dynamic)
+- Added `Stamina Sprinting` tweak (dynamic) (no server-side-only)
 - Added `Disable Custom Hitbox Override` tweak
 - Added `2D Item Exception` list tweak
 - Added `Hide New Recipe Toasts` tweak
@@ -50,10 +49,13 @@ interested in joining the mod's development team, then please reach out to us at
 - Added `Disable Axe Stripping` tweak (dynamically controlled)
 - Added `Self Block Drops` tweak list (off by default) (includes vanilla ores)
 - Added `Old Mob Death Topple` animation tweak
+- Added `Old Mob Head & Body Turning` animation tweak
 - Added `Fishing Mechanics` gameplay mechanics category
 - Added `Old Fishing Loot` gameplay tweak (overrides fishing loot table)
 - Added `Old Fishing Luring` gameplay tweak (brings back old bobber)
 - Added `Old Fishing Casting` gameplay tweak (changes fishing rod sounds)
+- Added `Old Creeper Strafing` gameplay tweak (on by default)
+- Added `Disable Skeleton Strafing` gameplay tweak (off by default)
 - Added `Disable Bubble Column Ambience` sound tweak
 
 ## 2.0.0-beta903
