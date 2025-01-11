@@ -267,10 +267,8 @@ public class ConfigWidgets implements WidgetManager
      */
     private void populateFromFavorite()
     {
-        if (this.lastQuery.isEmpty())
-            this.populateFromPredicate(RowProvider.FAVORITE.useAndGetPredicate());
-        else
-            RowProvider.FAVORITE.useAndThen(this::updateSearchResults);
+        this.stopGivingSearchResults();
+        this.populateFromPredicate(RowProvider.FAVORITE.useAndGetPredicate());
     }
 
     /**
@@ -278,10 +276,8 @@ public class ConfigWidgets implements WidgetManager
      */
     private void populateFromAll()
     {
-        if (this.lastQuery.isEmpty())
-            this.populateFromPredicate(RowProvider.ALL.useAndGetPredicate());
-        else
-            RowProvider.ALL.useAndThen(this::updateSearchResults);
+        this.stopGivingSearchResults();
+        this.populateFromPredicate(RowProvider.ALL.useAndGetPredicate());
     }
 
     /**
@@ -383,7 +379,8 @@ public class ConfigWidgets implements WidgetManager
         if (SearchTag.isInvalid(query))
             return;
 
-        RowProvider.ALL.use();
+        if (RowProvider.get() != RowProvider.FAVORITE)
+            RowProvider.ALL.use();
 
         this.findAndPopulateList(query);
     }
