@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
+import java.util.function.ToIntFunction;
 
 public class OverlayBuilder
 {
@@ -62,8 +63,8 @@ public class OverlayBuilder
     boolean onlyAbove = false;
     boolean onlyBelow = false;
     @Nullable LayoutElement aboveOrBelow = null;
-    @Nullable IntSupplier supplierX = null;
-    @Nullable IntSupplier supplierY = null;
+    @Nullable ToIntFunction<Overlay> xFunction = null;
+    @Nullable ToIntFunction<Overlay> yFunction = null;
     @Nullable Consumer<Overlay> onResize = null;
     @Nullable Component infoMessage = null;
     @Nullable Runnable onClose = null;
@@ -114,6 +115,7 @@ public class OverlayBuilder
      *
      * @param x The overlay x-coordinate.
      * @param y The overlay y-coordinate.
+     * @see #pos(ToIntFunction, ToIntFunction)
      * @see #pos(IntSupplier, IntSupplier)
      */
     @PublicAPI
@@ -126,27 +128,44 @@ public class OverlayBuilder
     }
 
     /**
-     * Set the position of this overlay using suppliers. This will make the overlay not draggable by the user since its
-     * position will be set using the given suppliers.
+     * Set the position of this overlay using functions. This will make the overlay not draggable by the user since its
+     * position will be set using the given functions.
      *
-     * @param xSupplier An {@link IntSupplier} instance that provides the overlay's x-coordinate.
-     * @param ySupplier An {@link IntSupplier} instance that provides the overlay's y-coordinate.
+     * @param xFunction A {@link ToIntFunction} that accepts the {@link Overlay} instance and provides an x-coordinate.
+     * @param yFunction A {@link ToIntFunction} that accepts the {@link Overlay} instance and provides a y-coordinate.
+     * @see #pos(IntSupplier, IntSupplier)
      * @see #pos(int, int)
      */
     @PublicAPI
-    public OverlayBuilder pos(IntSupplier xSupplier, IntSupplier ySupplier)
+    public OverlayBuilder pos(ToIntFunction<Overlay> xFunction, ToIntFunction<Overlay> yFunction)
     {
-        this.supplierX = xSupplier;
-        this.supplierY = ySupplier;
+        this.xFunction = xFunction;
+        this.yFunction = yFunction;
         this.canDrag = false;
 
         return this;
     }
 
     /**
+     * Set the position of this overlay using suppliers. This will make the overlay not draggable by the user since its
+     * position will be set using the given suppliers.
+     *
+     * @param xSupplier An {@link IntSupplier} instance that provides the overlay's x-coordinate.
+     * @param ySupplier An {@link IntSupplier} instance that provides the overlay's y-coordinate.
+     * @see #pos(ToIntFunction, ToIntFunction)
+     * @see #pos(int, int)
+     */
+    @PublicAPI
+    public OverlayBuilder pos(IntSupplier xSupplier, IntSupplier ySupplier)
+    {
+        return this.pos((overlay) -> xSupplier.getAsInt(), (overlay) -> ySupplier.getAsInt());
+    }
+
+    /**
      * Set the x-coordinate of this overlay.
      *
      * @param x The overlay x-coordinate.
+     * @see #setX(ToIntFunction)
      * @see #setX(IntSupplier)
      */
     @PublicAPI
@@ -157,25 +176,41 @@ public class OverlayBuilder
     }
 
     /**
-     * Set the x-coordinate of this overlay using a supplier. This will make the overlay not draggable by the user since
-     * its x-coordinate will be set using the given supplier.
+     * Set the x-coordinate of this overlay using a function. This will make the overlay not draggable by the user since
+     * its x-coordinate will be set using the given function.
      *
-     * @param xSupplier An {@link IntSupplier} instance that provides the overlay's x-coordinate.
+     * @param xFunction A {@link ToIntFunction} that accepts the {@link Overlay} and provides an x-coordinate.
+     * @see #setX(IntSupplier)
      * @see #setX(int)
      */
     @PublicAPI
-    public OverlayBuilder setX(IntSupplier xSupplier)
+    public OverlayBuilder setX(ToIntFunction<Overlay> xFunction)
     {
-        this.supplierX = xSupplier;
+        this.xFunction = xFunction;
         this.canDrag = false;
 
         return this;
     }
 
     /**
+     * Set the x-coordinate of this overlay using a supplier. This will make the overlay not draggable by the user since
+     * its x-coordinate will be set using the given supplier.
+     *
+     * @param xSupplier An {@link IntSupplier} instance that provides the overlay's x-coordinate.
+     * @see #setX(ToIntFunction)
+     * @see #setX(int)
+     */
+    @PublicAPI
+    public OverlayBuilder setX(IntSupplier xSupplier)
+    {
+        return this.setX((overlay) -> xSupplier.getAsInt());
+    }
+
+    /**
      * Set the y-coordinate of this overlay.
      *
      * @param y The overlay y-coordinate.
+     * @see #setY(ToIntFunction)
      * @see #setY(IntSupplier)
      */
     @PublicAPI
@@ -186,19 +221,34 @@ public class OverlayBuilder
     }
 
     /**
+     * Set the y-coordinate of this overlay using a function. This will make the overlay not draggable by the user since
+     * its y-coordinate will be set using the given function.
+     *
+     * @param yFunction A {@link ToIntFunction} that accepts the {@link Overlay} and provides a y-coordinate.
+     * @see #setY(IntSupplier)
+     * @see #setY(int)
+     */
+    @PublicAPI
+    public OverlayBuilder setY(ToIntFunction<Overlay> yFunction)
+    {
+        this.yFunction = yFunction;
+        this.canDrag = false;
+
+        return this;
+    }
+
+    /**
      * Set the y-coordinate of this overlay using a supplier. This will make the overlay not draggable by the user since
      * its y-coordinate will be set using the given supplier.
      *
      * @param ySupplier A {@link IntSupplier} that provides an integer.
+     * @see #setY(ToIntFunction)
      * @see #setY(int)
      */
     @PublicAPI
     public OverlayBuilder setY(IntSupplier ySupplier)
     {
-        this.supplierY = ySupplier;
-        this.canDrag = false;
-
-        return this;
+        return this.setY((overlay) -> ySupplier.getAsInt());
     }
 
     /**
@@ -833,11 +883,11 @@ public class OverlayBuilder
     {
         Overlay overlay = new Overlay(this);
 
-        if (this.supplierX != null)
-            this.x = this.supplierX.getAsInt();
+        if (this.xFunction != null)
+            this.x = this.xFunction.applyAsInt(overlay);
 
-        if (this.supplierY != null)
-            this.y = this.supplierY.getAsInt();
+        if (this.yFunction != null)
+            this.y = this.yFunction.applyAsInt(overlay);
 
         if (this.x < 0)
             overlay.setX(MathUtil.center(this.width, GuiUtil.getScreenWidth()));
