@@ -8,6 +8,8 @@ import mod.adrenix.nostalgic.client.gui.screen.home.overlay.DebugOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SetupOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.SodiumOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.home.overlay.supporter.SupporterOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.warning.WarningBanner;
+import mod.adrenix.nostalgic.client.gui.screen.home.overlay.warning.WarningOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.packs.PacksListScreen;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
@@ -187,6 +189,9 @@ public class HomeWidgets implements WidgetManager
         if (ModTracker.SODIUM.isInstalled())
             tabOrder.getAndIncrement();
 
+        if (WarningOverlay.isActive())
+            tabOrder.getAndIncrement();
+
         ButtonWidget debug = ButtonWidget.create()
             .icon(Icons.BUG)
             .tooltip(Lang.Home.DEBUG, 35, 500L, TimeUnit.MILLISECONDS)
@@ -230,6 +235,20 @@ public class HomeWidgets implements WidgetManager
                 .onPress(SodiumOverlay::open)
                 .build(this.homeScreen::addWidget);
         }
+
+        if (WarningOverlay.isActive())
+        {
+            ButtonWidget.create()
+                .icon(Icons.WARNING)
+                .tooltip(Lang.Home.WARNING_OVERLAY, 35, 500L, TimeUnit.MILLISECONDS)
+                .infoTooltip(Lang.Tooltip.HOME_WARNING, 35)
+                .tabOrderGroup(tabOrder.getAndDecrement())
+                .onPress(WarningOverlay::open)
+                .leftOf(this.homeScreen.getWidgets().getLast(), 1)
+                .build(this.homeScreen::addWidget);
+        }
+
+        WarningBanner.setupIfNeeded(this.homeScreen);
 
         /* Mod Information */
 

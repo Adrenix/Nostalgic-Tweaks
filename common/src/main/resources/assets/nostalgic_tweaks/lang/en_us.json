@@ -21,6 +21,9 @@
   "gui.nostalgic_tweaks.screen.home.kofi_member": "This supporter is a member on Ko-fi!",
   "gui.nostalgic_tweaks.screen.home.mod_creator": "The creator of§e Nostalgic Tweaks§r!",
   "gui.nostalgic_tweaks.screen.home.init_config": "Initialize Config",
+  "gui.nostalgic_tweaks.screen.home.warning_overlay": "Mod Warnings",
+  "gui.nostalgic_tweaks.screen.home.warning_banner": "There are active§c conflicting§r mods installed!",
+  "gui.nostalgic_tweaks.screen.home.warning_banner_click": "Click here for more information.",
   "gui.nostalgic_tweaks.screen.home.setup": "Config Setup",
   "gui.nostalgic_tweaks.screen.home.setup_info": "Choose the initial setup method that will be applied to your mod config. Press the§c cancel§r button if you do not want to make any changes to the config file.",
   "gui.nostalgic_tweaks.screen.home.default": "Default Config",
@@ -197,6 +200,7 @@
   "gui.nostalgic_tweaks.tooltip.home_init": "Start the process of initializing the mod's config file.",
   "gui.nostalgic_tweaks.tooltip.home_debug": "Open a new screen to manage the mod's internal debugging settings",
   "gui.nostalgic_tweaks.tooltip.home_sodium": "Open a new screen for information on how to override Sodium's mixins.",
+  "gui.nostalgic_tweaks.tooltip.home_warning": "Open a new screen for information on active mod conflicts.",
   "gui.nostalgic_tweaks.tooltip.home_supporters": "Open a new screen to view the mod's amazing supporters.",
   "gui.nostalgic_tweaks.tooltip.sodium_properties": "Open a new window to edit Sodium's mixin config properties.",
   "gui.nostalgic_tweaks.tooltip.sodium_copy_property": "Copy the line of text needed to disable Sodium's cloud overrides.",
@@ -464,6 +468,9 @@
   "gui.nostalgic_tweaks.issue.optifine": "This tweak will§c not§r work when§6 Optifine§r is installed.",
   "gui.nostalgic_tweaks.issue.polytone": "This tweak will§c not§r work when§e Polytone§r is installed.",
   "gui.nostalgic_tweaks.issue.iris": "This tweak will§c not§r work when§9 Iris§r is installed.",
+
+  "gui.nostalgic_tweaks.warning.polytone": "When§3 Polytone§r is installed, numerous lighting tweaks will§c fail§r to operate properly when a§e resource pack§r using Polytone is§a active§r. It is recommended to§c not§r use the§3 Polytone§r mod if the only active resource pack is§e Golden Days§r.",
+  "gui.nostalgic_tweaks.warning.optifine": "When§6 Optifine§r is installed, numerous tweaks will fail to operate properly. Optifine is a§c closed source§r mod, which means providing support is very difficult. It is recommended to use the§a Sodium§r mod for better performance and compatibility.",
 
   "gui.nostalgic_tweaks.enum.generic.disabled": "§cDisabled",
   "gui.nostalgic_tweaks.enum.generic.classic": "§aClassic",
