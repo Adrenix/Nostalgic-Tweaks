@@ -18,13 +18,13 @@ import java.util.Locale;
  * Create a new tweak issue that will appear below a tweak's description body within the config user interface. Some
  * issues can have default descriptions if a tweak doesn't override it. An example translation would be:
  *
- * <p><br>
+ * <p>
  * {@code "gui.nostalgic_tweaks.config.issue.sodium": "This tweak does not work when Sodium is installed."}
- * <p><br>
+ * <p>
  * Any enumeration that doesn't define a default description requires all tweaks that use the issue to define an "issue"
  * message within the lang file. An example translation would be:
  *
- * <p><br>
+ * <p>
  * {@code "gui.nostalgic_tweaks.config.eyeCandy.oldLightRendering.issue.sodium": "This tweak may break shaders when
  * enabled."}
  */

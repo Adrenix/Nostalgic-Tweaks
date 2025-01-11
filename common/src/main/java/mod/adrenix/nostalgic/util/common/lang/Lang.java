@@ -125,6 +125,9 @@ public interface Lang
         Translation CYCLE_PANORAMA_INFO = from("cycle_panorama_info");
         Translation NEXT_PANORAMA = from("next_panorama");
         Translation NEXT_PANORAMA_INFO = from("next_panorama_info");
+        Translation WARNING_OVERLAY = from("warning_overlay");
+        Translation WARNING_BANNER = from("warning_banner");
+        Translation WARNING_BANNER_CLICK = from("warning_banner_click");
         Translation SODIUM_TITLE = from("sodium_title");
         Translation SODIUM_CLOUDS_TITLE = from("sodium_clouds_title");
         Translation SODIUM_CLOUDS_INFO = from("sodium_clouds_info");
@@ -418,6 +421,7 @@ public interface Lang
         Translation HOME_INIT = from("home_init");
         Translation HOME_DEBUG = from("home_debug");
         Translation HOME_SODIUM = from("home_sodium");
+        Translation HOME_WARNING = from("home_warning");
         Translation HOME_SUPPORTERS = from("home_supporters");
         Translation SODIUM_PROPERTIES = from("sodium_properties");
         Translation SODIUM_COPY_PROPERTY = from("sodium_copy_property");
@@ -822,6 +826,20 @@ public interface Lang
         private static Translation from(String name)
         {
             return new Translation("gui.nostalgic_tweaks.issue." + name);
+        }
+    }
+
+    /**
+     * Lang keys that are used by the home screen mod warning overlay.
+     */
+    interface Warning
+    {
+        Translation POLYTONE = from("polytone");
+        Translation OPTIFINE = from("optifine");
+
+        private static Translation from(String name)
+        {
+            return new Translation("gui.nostalgic_tweaks.warning." + name);
         }
     }
 
