@@ -1662,7 +1662,9 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
             .max()
             .orElse(this.getInsideX() + 20);
 
-        return Math.abs(maxX - minX);
+        int margin = Math.abs(this.relativeLeft.getX() - minX) * 2;
+
+        return Math.abs(maxX - minX) + margin;
     }
 
     /**
@@ -1680,7 +1682,9 @@ public class Overlay extends Screen implements RelativeLayout, WidgetHolder, Par
             .max()
             .orElse(this.getInsideY() + 20);
 
-        return Math.abs(maxY - minY);
+        int margin = Math.abs(this.relativeTop.getY() - minY) * 2;
+
+        return Math.abs(maxY - minY) + margin;
     }
 
     /**
