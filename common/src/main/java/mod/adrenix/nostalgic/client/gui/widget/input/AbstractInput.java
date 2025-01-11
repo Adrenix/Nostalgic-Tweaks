@@ -807,6 +807,7 @@ public abstract class AbstractInput<Builder extends AbstractInputMaker<Builder, 
 
         if (KeyboardUtil.isEsc(keyCode))
         {
+            this.module.getOverlay().close();
             this.setFocused(false);
 
             return true;
