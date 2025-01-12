@@ -10,6 +10,8 @@ to us at the mod's Discord.
 - Added Sodium 0.6 support
 - Removed Sodium cloud overrides
 - Added home screen tutorial overlay to manually disable Sodium cloud rendering override
+- Added warning banner and overlay to the home screen that indicates if significant conflict mods are installed
+- Added category filtering next to the search bar in the config menu screen
 - Added category filtering to the `Toggle All Tweaks` section in config management
 - Search results now search everywhere by default
 - Updated the mod's config home screen
