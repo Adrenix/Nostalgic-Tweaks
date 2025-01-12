@@ -36,11 +36,11 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     int iconMargin = 0;
     LinkedHashSet<DynamicWidget<?, ?>> intersections = new LinkedHashSet<>();
     @Nullable IntSupplier maxEndX = null;
+    @Nullable Color hoverColor = null;
     @Nullable Color backgroundColor = null;
     IntSupplier separatorHeight = () -> 2;
     Color separatorColor = Color.WHITE;
     Color clickableColor = Color.WHITE;
-    Color hoverColor = Color.WHITE;
     Color fontColor = Color.WHITE;
     BooleanSupplier backgroundIf = BooleanSupplier.ALWAYS;
     BooleanSupplier highlightIf = BooleanSupplier.ALWAYS;
@@ -48,7 +48,6 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     @Nullable Runnable onPress = null;
     @Nullable Animation highlighter = null;
     @Nullable BlankWidget pressArea = null;
-    @Nullable DynamicWidget<?, ?> hoverSync = null;
 
     /* Constructor */
 
@@ -477,15 +476,13 @@ public class TextBuilder extends DynamicBuilder<TextBuilder, TextWidget>
     }
 
     /**
-     * Show a specific color when the given widget is hovered or focused.
+     * Show a specific color when the widget is hovered or focused.
      *
-     * @param syncTo The {@link DynamicWidget} to sync to.
-     * @param color  The {@link Color} to show when the given widget is hovered or focused.
+     * @param color The {@link Color} to show when the given widget is hovered or focused.
      */
     @PublicAPI
-    public TextBuilder hoverOrFocusSync(DynamicWidget<?, ?> syncTo, Color color)
+    public TextBuilder hoverOrFocusColor(Color color)
     {
-        this.hoverSync = syncTo;
         this.hoverColor = color;
 
         return this;

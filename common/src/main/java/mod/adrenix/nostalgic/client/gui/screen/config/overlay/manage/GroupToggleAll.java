@@ -109,7 +109,8 @@ public class GroupToggleAll extends ManageGroup
                     .centerVertical()
                     .rightOf(guide, 4)
                     .height(Icons.CHECKBOX::getHeight)
-                    .hoverOrFocusSync(checkbox, this.category.getColor().brighten(0.35D))
+                    .hoverOrFocusColor(this.category.getColor().brighten(0.35D))
+                    .hoverOrFocusSync(checkbox)
                     .centerInWidgetY(checkbox)
                     .build(group::addWidget);
 
