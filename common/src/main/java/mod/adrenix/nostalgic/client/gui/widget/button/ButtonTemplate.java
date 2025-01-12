@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.function.BooleanConsumer;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import mod.adrenix.nostalgic.util.common.lang.Translation;
@@ -88,6 +89,27 @@ public abstract class ButtonTemplate
     public static ButtonBuilder checkbox(Translation lang, BooleanSupplier supplier)
     {
         return checkbox(lang.get(), supplier);
+    }
+
+    /**
+     * This button provides a template for a toggle switch button.
+     *
+     * @param getter The {@link BooleanSupplier} that determines the switch state.
+     * @param setter The {@link BooleanConsumer} that changes the switch state.
+     * @return A new {@link ButtonBuilder} instance.
+     */
+    @PublicAPI
+    public static ButtonBuilder toggle(BooleanSupplier getter, BooleanConsumer setter)
+    {
+        return ButtonWidget.create()
+            .onPress(() -> setter.accept(!getter.getAsBoolean()))
+            .icon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON : Icons.TOGGLE_OFF)
+            .hoverIcon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON_HOVER : Icons.TOGGLE_OFF_HOVER)
+            .disabledIcon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON_DISABLED : Icons.TOGGLE_OFF_DISABLED)
+            .backgroundRenderer(ButtonRenderer.EMPTY)
+            .iconCenterOffset(4)
+            .height(8)
+            .width(12);
     }
 
     /**

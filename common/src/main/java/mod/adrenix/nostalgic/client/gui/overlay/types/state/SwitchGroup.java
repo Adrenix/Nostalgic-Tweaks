@@ -1,6 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.overlay.types.state;
 
-import mod.adrenix.nostalgic.client.gui.widget.button.ButtonRenderer;
+import mod.adrenix.nostalgic.client.gui.widget.button.ButtonTemplate;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.WidgetHolder;
 import mod.adrenix.nostalgic.client.gui.widget.group.Group;
@@ -8,7 +8,6 @@ import mod.adrenix.nostalgic.client.gui.widget.separator.SeparatorWidget;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextBuilder;
 import mod.adrenix.nostalgic.client.gui.widget.text.TextWidget;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
-import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.function.BooleanConsumer;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
@@ -35,16 +34,7 @@ public class SwitchGroup
         this.parent = parent;
         this.description = description;
         this.header = header;
-        this.toggle = ButtonWidget.create()
-            .onPress(() -> setter.accept(!getter.getAsBoolean()))
-            .icon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON : Icons.TOGGLE_OFF)
-            .hoverIcon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON_HOVER : Icons.TOGGLE_OFF_HOVER)
-            .disabledIcon(() -> getter.getAsBoolean() ? Icons.TOGGLE_ON_DISABLED : Icons.TOGGLE_OFF_DISABLED)
-            .backgroundRenderer(ButtonRenderer.EMPTY)
-            .iconCenterOffset(4)
-            .height(8)
-            .width(12)
-            .build();
+        this.toggle = ButtonTemplate.toggle(getter, setter).build();
     }
 
     /* Static */
