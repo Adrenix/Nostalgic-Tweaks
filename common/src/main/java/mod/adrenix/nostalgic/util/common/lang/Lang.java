@@ -377,6 +377,8 @@ public interface Lang
         Translation DISABLE_ALL = from("disable_all");
         Translation DELETE_ALL = from("delete_all");
         Translation ENABLE_ALL = from("enable_all");
+        Translation FILTER_ALL = from("filter_all");
+        Translation SHOW_ALL = from("show_all");
         Translation EDIT_LIST = from("edit_list");
         Translation VIEW_LIST = from("view_list");
         Translation FAVORITE = from("favorite");
@@ -417,6 +419,8 @@ public interface Lang
         Translation QUICK = from("quick");
         Translation MANAGE = from("manage");
         Translation FILTER = from("filter");
+        Translation FILTER_SEARCH = from("filter_search");
+        Translation FILTER_SEARCH_INFO = from("filter_search_info");
         Translation MANAGE_LISTING = from("manage_listing");
         Translation HOME_INIT = from("home_init");
         Translation HOME_DEBUG = from("home_debug");
@@ -640,6 +644,7 @@ public interface Lang
         Translation CREATE_PRESET_MESSAGE = from("create_preset.message");
         Translation SENT_PRESET_TITLE = from("sent_preset.title");
         Translation SENT_PRESET_MESSAGE = from("sent_preset.message");
+        Translation FILTER_BY_CATEGORY = from("filter_by_category");
 
         private static Translation from(String name)
         {

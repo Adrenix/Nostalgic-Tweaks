@@ -2,8 +2,8 @@ package mod.adrenix.nostalgic.client.gui.screen.config.widget.list;
 
 import mod.adrenix.nostalgic.tweak.FavoriteTweak;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
-import mod.adrenix.nostalgic.util.common.lang.Translation;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
+import mod.adrenix.nostalgic.util.common.lang.Translation;
 import net.minecraft.network.chat.Component;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public enum RowProvider
 
     /* Fields */
 
-    private Predicate<Tweak<?>> predicate;
+    private final Predicate<Tweak<?>> predicate;
     private final Translation enabledKey;
     private final Translation disabledKey;
     private boolean providing;
@@ -83,16 +83,6 @@ public enum RowProvider
     {
         this.use();
         runnable.run();
-    }
-
-    /**
-     * Change the predicate this provider uses.
-     *
-     * @param predicate A {@link Predicate} that tests a {@link Tweak}.
-     */
-    public void setPredicate(Predicate<Tweak<?>> predicate)
-    {
-        this.predicate = predicate;
     }
 
     /**
