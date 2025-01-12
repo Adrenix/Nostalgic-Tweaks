@@ -133,6 +133,19 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     }
 
     /**
+     * Consider this widget as hovered or focused when any of the given widgets are also hovered or focused.
+     *
+     * @param syncTo A varargs list of {@link DynamicWidget} to sync to.
+     */
+    @PublicAPI
+    public Builder hoverOrFocusSync(DynamicWidget<?, ?>... syncTo)
+    {
+        this.hoverSync.addAll(List.of(syncTo));
+
+        return this.self();
+    }
+
+    /**
      * Change when this widget is rendered by defining its render pass level.
      *
      * @param pass A {@link RenderPass} enumeration value.
@@ -230,6 +243,7 @@ public abstract class DynamicBuilder<Builder extends DynamicBuilder<Builder, Wid
     @Nullable protected ToFloatFunction<Widget> scaleWidth = null;
     @Nullable protected ToFloatFunction<Widget> scaleHeight = null;
     @Nullable protected RelativeLayout relativeLayout = null;
+    protected final UniqueArrayList<DynamicWidget<?, ?>> hoverSync = new UniqueArrayList<>();
     protected final UniqueArrayList<DynamicWidget<?, ?>> followers = new UniqueArrayList<>();
     protected boolean forceRelativeX = false;
     protected boolean forceRelativeY = false;

@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.util.client.renderer.RenderPass;
 import mod.adrenix.nostalgic.util.client.renderer.RenderUtil;
 import mod.adrenix.nostalgic.util.common.annotation.PublicAPI;
 import mod.adrenix.nostalgic.util.common.color.Color;
+import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphics;
@@ -116,6 +117,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
     protected final RenderPass renderPass;
     @Nullable protected Screen screen;
     public final WidgetCache cache;
+    private final RecursionAvoidance hoverOrFocusSync;
 
     /* Constructor */
 
@@ -124,6 +126,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
         this.builder = builder;
         this.renderPass = builder.renderPass;
         this.tabOrderGroup = builder.tabOrderGroup;
+        this.hoverOrFocusSync = RecursionAvoidance.create();
         this.cache = WidgetCache.from(this);
     }
 
@@ -691,7 +694,15 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
         int mouseX = this.getMouseX();
         int mouseY = this.getMouseY();
 
-        return this.isFocused() || this.isMouseOver(mouseX, mouseY);
+        boolean isHoveredOrFocused = this.isFocused() || this.isMouseOver(mouseX, mouseY);
+
+        if (this.hoverOrFocusSync.isProcessing())
+            return isHoveredOrFocused;
+
+        boolean areAnySyncedHoveredOrFocused = Boolean.TRUE.equals(this.hoverOrFocusSync.process(() -> this.builder.hoverSync.stream()
+            .anyMatch(DynamicWidget::isHoveredOrFocused)));
+
+        return isHoveredOrFocused || areAnySyncedHoveredOrFocused;
     }
 
     /**
