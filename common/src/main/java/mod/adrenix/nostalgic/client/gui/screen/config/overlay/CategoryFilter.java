@@ -33,18 +33,18 @@ public class CategoryFilter
     /**
      * Create a new category filter overlay instance.
      *
-     * @param aboveOrBelow A {@link DynamicWidget} to set the filter overlay above/below.
-     * @param onPress      A {@link Runnable} to run when a checkbox changes state.
+     * @param above   The {@link DynamicWidget} to set the filter overlay above.
+     * @param onPress The {@link Runnable} to run when a toggle changes state.
      */
-    public CategoryFilter(DynamicWidget<?, ?> aboveOrBelow, Runnable onPress)
+    public CategoryFilter(DynamicWidget<?, ?> above, Runnable onPress)
     {
         this.onPress = onPress;
         this.overlay = Overlay.create()
             .setWidth(170)
             .setHeight(220)
             .padding(6)
-            .pos(() -> aboveOrBelow.getX() + 1, () -> aboveOrBelow.getY() - 2)
-            .aboveOrBelow(aboveOrBelow, 2)
+            .pos(() -> above.getX() + 1, () -> above.getY() - 2)
+            .aboveOrBelow(above, 2)
             .outlineColor(Color.WHITE)
             .gradientBackground(Gradient.vertical(Color.RICH_BLACK.fromAlpha(230), Color.DARK_BLUE.fromAlpha(230)))
             .shadowColor(Color.BLACK.fromAlpha(0.2D))
@@ -67,8 +67,8 @@ public class CategoryFilter
             .extendWidthToScreenEnd(0)
             .build(this.overlay::addWidget));
 
-        this.toggles.forEach((container, checkbox) -> {
-            ButtonWidget toggle = ButtonTemplate.toggle(checkbox::get, this.set(checkbox))
+        this.toggles.forEach((category, flag) -> {
+            ButtonWidget toggle = ButtonTemplate.toggle(flag::get, this.set(flag))
                 .skipFocusOnClick()
                 .below(previous.get(), 4)
                 .build(this.overlay::addWidget);
@@ -80,16 +80,16 @@ public class CategoryFilter
                 .onPress(toggle::onPress)
                 .build(this.overlay::addWidget);
 
-            TextWidget text = TextWidget.create(container.toString())
-                .icon(container.getIcon())
-                .color(container.getColor())
+            TextWidget text = TextWidget.create(category.toString())
+                .icon(category.getIcon())
+                .color(category.getColor())
                 .brightenIconOnHover(1.2F)
                 .skipFocusOnClick()
                 .cannotFocus()
                 .useTextWidth()
                 .rightOf(spacer, 0)
                 .hoverOrFocusSync(toggle, spacer)
-                .hoverOrFocusColor(container.getColor().brighten(0.35D))
+                .hoverOrFocusColor(category.getColor().brighten(0.35D))
                 .onPress(toggle::onPress)
                 .build(this.overlay::addWidget);
 
