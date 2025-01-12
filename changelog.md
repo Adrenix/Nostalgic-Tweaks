@@ -7,6 +7,8 @@ are the stamina based sprinting system. Starting with all releases after beta.90
 license. If you are interested in joining the mod's development team, then please reach out to us at the mod's Discord.
 
 - Added home screen tutorial overlay to manually disable Sodium cloud rendering override
+- Added warning banner and overlay to the home screen that indicates if significant conflict mods are installed
+- Added category filtering next to the search bar in the config menu screen
 - Added category filtering to the `Toggle All Tweaks` section in config management
 - Search results now search everywhere by default
 - Updated the mod's config home screen
