@@ -12,6 +12,8 @@ public class BlankBuilder extends DynamicBuilder<BlankBuilder, BlankWidget>
     /* Fields */
 
     BlankRenderer renderer = BlankRenderer.EMPTY;
+    Runnable onPress = null;
+    protected boolean useClickSound = true;
 
     /* Constructor */
 
@@ -39,6 +41,32 @@ public class BlankBuilder extends DynamicBuilder<BlankBuilder, BlankWidget>
     public BlankBuilder renderer(BlankRenderer renderer)
     {
         this.renderer = renderer;
+
+        return this.self();
+    }
+
+    /**
+     * Disable the clicking sound that plays when the on-press action is performed.
+     *
+     * @see #onPress(Runnable)
+     */
+    @PublicAPI
+    public BlankBuilder noClickSound()
+    {
+        this.useClickSound = false;
+
+        return this.self();
+    }
+
+    /**
+     * Run the given instructions when this widget is clicked.
+     *
+     * @param onPress The {@link Runnable} to run on click.
+     */
+    @PublicAPI
+    public BlankBuilder onPress(Runnable onPress)
+    {
+        this.onPress = onPress;
 
         return this.self();
     }

@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.client.gui.widget.blank;
 
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
+import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class BlankWidget extends DynamicWidget<BlankBuilder, BlankWidget>
@@ -27,6 +28,26 @@ public class BlankWidget extends DynamicWidget<BlankBuilder, BlankWidget>
     }
 
     /* Methods */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (this.isInactive() || this.isInvisible())
+            return false;
+
+        if (this.isValidClick(mouseX, mouseY, button) && this.getBuilder().onPress != null)
+        {
+            if (this.getBuilder().useClickSound)
+                GuiUtil.playClick();
+
+            this.getBuilder().onPress.run();
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
 
     /**
      * {@inheritDoc}
