@@ -51,7 +51,7 @@ public abstract class GenericMessageScreenMixin extends Screen
      */
     @Inject(
         method = "renderBackground",
-        at = @At("HEAD")
+        at = @At("RETURN")
     )
     private void nt_gui_background$renderCenteredGenericMessage(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
     {
