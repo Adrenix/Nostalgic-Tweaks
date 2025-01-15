@@ -1,0 +1,33 @@
+{
+  "package": "mod.adrenix.nostalgic.mixin.access",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "AbstractContainerScreenAccess",
+    "AbstractWidgetAccess",
+    "BlockBehaviourAccess",
+    "BodyRotationControlAccess",
+    "DebugScreenOverlayAccess",
+    "FpsDebugChartAccess",
+    "GuiAccess",
+    "LevelRendererAccess",
+    "MusicManagerAccess",
+    "PauseScreenAccess",
+    "ProgressScreenAccess",
+    "ScreenAccess",
+    "SelectWorldScreenAccess",
+    "TimerAccess",
+    "TitleScreenAccess",
+    "WorldListEntryAccess",
+    "WorldSelectionListAccess"
+  ],
+  "mixins": [
+    "AxeItemAccess",
+    "EntityAccess",
+    "FireBlockAccess",
+    "LivingEntityAccess",
+    "PlayerAccess",
+    "SheepAccess",
+    "ShovelItemAccess"
+  ]
+}

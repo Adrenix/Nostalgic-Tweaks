@@ -1,0 +1,151 @@
+package mod.adrenix.nostalgic.mixin.tweak.candy.block_hitbox;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import mod.adrenix.nostalgic.helper.candy.block.HitboxHelper;
+import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.tweak.enums.RenderOrder;
+import mod.adrenix.nostalgic.util.common.color.HexUtil;
+import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(LevelRenderer.class)
+public abstract class LevelRendererMixin
+{
+    /* Injected Fields */
+
+    @Shadow @Nullable private ClientLevel level;
+    @Unique @Nullable private Runnable nt$renderOverlay;
+
+    /* Injected Methods */
+
+    /**
+     * Applies changes to the voxel shape, hitbox color, and/or prepares an overlay buffer used by the hitbox outline
+     * renderer. If a block overlay is needed, then it is rendered here as well if the game is using the "fabulous"
+     * video setting.
+     */
+    @WrapOperation(
+        method = "renderHitOutline",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/LevelRenderer;renderShape(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/world/phys/shapes/VoxelShape;DDDFFFF)V"
+        )
+    )
+    private void nt_block_hitbox$wrapRenderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float red, float green, float blue, float alpha, Operation<Void> renderShape, PoseStack arg1, VertexConsumer arg2, Entity entity, double camX, double camY, double camZ, BlockPos blockPos, BlockState blockState)
+    {
+        boolean isHitboxOverrideOff = CandyTweak.DISABLE_HITBOX_OVERRIDE.get();
+
+        if (isHitboxOverrideOff || red > 0.0F || green > 0.0F || blue > 0.0F)
+        {
+            if (!isHitboxOverrideOff)
+                HitboxHelper.CUSTOM_HITBOX_OUTLINE.enable();
+
+            renderShape.call(poseStack, vertexConsumer, voxelShape, x, y, z, red, green, blue, alpha);
+
+            return;
+        }
+
+        VoxelShape hitbox = HitboxHelper.getShape(voxelShape, blockState.getBlock());
+        float[] rgba = HexUtil.parseFloatRGBA(CandyTweak.BLOCK_OUTLINE_COLOR.get());
+        float r = rgba[0];
+        float g = rgba[1];
+        float b = rgba[2];
+        float a = rgba[3];
+
+        if (CandyTweak.OLD_BLOCK_OVERLAY.get() && this.level != null)
+        {
+            Matrix4f matrix = new Matrix4f(poseStack.last().pose());
+            final double rx = (double) blockPos.getX() - camX;
+            final double ry = (double) blockPos.getY() - camY;
+            final double rz = (double) blockPos.getZ() - camZ;
+
+            if (Minecraft.useShaderTransparency())
+                HitboxHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
+            else
+                this.nt$renderOverlay = () -> HitboxHelper.renderOverlay(matrix, hitbox, rx, ry, rz);
+        }
+
+        HitboxHelper.CUSTOM_HITBOX_OUTLINE.enable();
+
+        if (Minecraft.useShaderTransparency())
+        {
+            VertexConsumer outline = Minecraft.getInstance()
+                .renderBuffers()
+                .bufferSource()
+                .getBuffer(RenderType.lines());
+
+            renderShape.call(poseStack, outline, hitbox, x, y, z, r, g, b, a);
+        }
+        else
+            renderShape.call(poseStack, vertexConsumer, hitbox, x, y, z, r, g, b, a);
+    }
+
+    /**
+     * Renders the hitbox overlay before translucency, clouds, particles, and weather effects. This will let the overlay
+     * be seen behind translucent blocks, but will not respect transparency depth correctly.
+     */
+    @Inject(
+        method = "renderLevel",
+        at = @At(
+            ordinal = 0,
+            shift = At.Shift.AFTER,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
+        )
+    )
+    private void nt_block_hitbox$renderHitboxFirst(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    {
+        if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.FIRST)
+            this.nt$renderOverlay.run();
+    }
+
+    /**
+     * Renders the hitbox overlay after translucency, clouds, particles, and weather effects. This will prevent the
+     * overlay from being seen behind translucent blocks, but the overlay will respect transparency depth correctly.
+     */
+    @Inject(
+        method = "renderLevel",
+        at = @At(
+            shift = At.Shift.BEFORE,
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/LevelRenderer;renderDebug(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;)V"
+        )
+    )
+    private void nt_block_hitbox$renderHitboxLast(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    {
+        if (this.nt$renderOverlay != null && CandyTweak.BLOCK_OVERLAY_RENDER_ORDER.get() == RenderOrder.LAST)
+            this.nt$renderOverlay.run();
+    }
+
+    /**
+     * Ensures the memory reserved for the render overlay buffer is cleared whenever the render level method returns.
+     */
+    @Inject(
+        method = "renderLevel",
+        at = @At("RETURN")
+    )
+    private void nt_block_hitbox$clearRenderedHitbox(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    {
+        this.nt$renderOverlay = null;
+    }
+}

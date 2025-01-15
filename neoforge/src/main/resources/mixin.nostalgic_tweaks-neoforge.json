@@ -1,0 +1,21 @@
+{
+  "required": false,
+  "package": "mod.adrenix.nostalgic.neoforge.mixin.tweak",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "priority": 1001,
+  "client": [
+    "candy.armor_damage.HumanoidArmorLayerMixin",
+    "candy.debug_screen.DebugScreenOverlayMixin",
+    "candy.item_display.GuiMixin",
+    "candy.old_hud.GuiMixin",
+    "candy.tooltip_background.TooltipRenderUtilMixin",
+    "candy.torch_block.BlockRenderDispatcherMixin"
+  ],
+  "mixins": [
+    "candy.item_merge.BlockMixin",
+    "gameplay.food_health.PlayerMixin",
+    "gameplay.mechanics_farming.BoneMealItemMixin",
+    "gameplay.mob_ai.RangedBowAttackGoalMixin"
+  ]
+}
