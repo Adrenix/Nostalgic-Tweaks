@@ -14,7 +14,7 @@ public abstract class AbstractZombieModelMixin
      */
     @ModifyArg(
         index = 2,
-        method = "setupAnim(Lnet/minecraft/world/entity/monster/Monster;FFFFF)V",
+        method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/ZombieRenderState;)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/AnimationUtils;animateZombieArms(Lnet/minecraft/client/model/geom/ModelPart;Lnet/minecraft/client/model/geom/ModelPart;ZFF)V"
@@ -33,7 +33,7 @@ public abstract class AbstractZombieModelMixin
      */
     @ModifyArg(
         index = 3,
-        method = "setupAnim(Lnet/minecraft/world/entity/monster/Monster;FFFFF)V",
+        method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/ZombieRenderState;)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/model/AnimationUtils;animateZombieArms(Lnet/minecraft/client/model/geom/ModelPart;Lnet/minecraft/client/model/geom/ModelPart;ZFF)V"
