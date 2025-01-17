@@ -13,7 +13,7 @@ public abstract class SquidMixin
      * Prevents a squid from spawning ink.
      */
     @WrapWithCondition(
-        method = "hurt",
+        method = "hurtServer",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/world/entity/animal/Squid;spawnInk()V"
