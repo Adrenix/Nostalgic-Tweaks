@@ -1,7 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.gameplay.food_health;
 
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,6 +16,8 @@ public abstract class FoodDataMixin
     /* Unique */
 
     @Unique private int nt$restoreHealthAmount = 0;
+
+    /* Shadows */
 
     @Shadow private int tickTimer;
     @Shadow private float exhaustionLevel;
@@ -44,7 +46,7 @@ public abstract class FoodDataMixin
         method = "tick",
         at = @At("HEAD")
     )
-    private void nt_food_health$onTick(Player player, CallbackInfo callback)
+    private void nt_food_health$onTick(ServerPlayer player, CallbackInfo callback)
     {
         if (this.nt$restoreHealthAmount > 0)
         {
