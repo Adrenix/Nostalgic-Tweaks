@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.helper.candy.flatten;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -78,12 +77,6 @@ public class FlatModel implements BakedModel
     }
 
     @Override
-    public boolean isCustomRenderer()
-    {
-        return this.model.isCustomRenderer();
-    }
-
-    @Override
     public TextureAtlasSprite getParticleIcon()
     {
         return this.model.getParticleIcon();
@@ -93,11 +86,5 @@ public class FlatModel implements BakedModel
     public ItemTransforms getTransforms()
     {
         return this.model.getTransforms();
-    }
-
-    @Override
-    public ItemOverrides getOverrides()
-    {
-        return this.model.getOverrides();
     }
 }
