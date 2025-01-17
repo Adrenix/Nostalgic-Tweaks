@@ -87,6 +87,6 @@ public abstract class BlockUtil
      */
     public static boolean isNearBedrock(BlockPos blockPos, Level level)
     {
-        return blockPos.getY() < level.getMinBuildHeight() + 5;
+        return blockPos.getY() < level.getMinY() + 5;
     }
 }
