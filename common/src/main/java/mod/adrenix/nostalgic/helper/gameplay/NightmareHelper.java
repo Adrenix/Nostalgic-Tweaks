@@ -6,8 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
@@ -36,7 +36,7 @@ public abstract class NightmareHelper
             player.stopSleepInBed(true, true);
 
             Monster monster = MathUtil.randomInt(0, 1) == 0 ? new Zombie(level) : new Skeleton(EntityType.SKELETON, level);
-            Entity entity = monster.getType().create(level, null, playerPos, MobSpawnType.TRIGGERED, true, false);
+            Entity entity = monster.getType().create(level, null, playerPos, EntitySpawnReason.COMMAND, true, false);
 
             if (entity != null)
                 level.addFreshEntity(entity);
