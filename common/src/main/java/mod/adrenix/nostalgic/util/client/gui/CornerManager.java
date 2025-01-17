@@ -6,7 +6,7 @@ import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import mod.adrenix.nostalgic.util.common.data.NumberHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
@@ -88,7 +88,7 @@ public class CornerManager
         {
             LocalPlayer player = Minecraft.getInstance().player;
             Collection<MobEffectInstance> effects = NullableResult.getOrElse(player, new HashSet<>(), LocalPlayer::getActiveEffects);
-            boolean areEffectsHidden = Minecraft.getInstance().screen instanceof EffectRenderingInventoryScreen<?> screen && screen.canSeeEffects();
+            boolean areEffectsHidden = GuiUtil.getScreen().stream().noneMatch(Screen::showsActiveEffects);
 
             if (!effects.isEmpty() && !areEffectsHidden)
             {
