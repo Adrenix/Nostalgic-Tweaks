@@ -188,14 +188,13 @@ class DebugInfoRenderer
     {
         int width = this.minecraft.getWindow().getGuiScaledWidth();
         int chunkUpdates = this.levelRenderer.getSectionRenderDispatcher().getToUpload();
-        int renderedEntities = ((LevelRendererAccess) this.levelRenderer).nt$getRenderedEntities();
-        int culledEntities = ((LevelRendererAccess) this.levelRenderer).nt$getCulledEntities();
+        int renderedEntities = ((LevelRendererAccess) this.levelRenderer).nt$getVisibleEntityCount();
 
         String overlay = CandyTweak.OLD_OVERLAY_TEXT.parse(GameUtil.getVersion());
         String title = overlay.isEmpty() ? "Minecraft " + GameUtil.getVersion() : overlay;
         String fps = String.format(" (%s fps, %s chunk updates)", this.minecraft.getFps(), chunkUpdates);
         String sections = String.format("C: %d/%d. F: 0, O: 0, E: 0", this.levelRenderer.countRenderedSections(), (long) this.levelRenderer.getTotalSections());
-        String entities = String.format("E: %s/%s. B: %s, I: 0", renderedEntities, this.level.getEntityCount(), culledEntities);
+        String entities = String.format("E: %s/%s. B: 0, I: 0", renderedEntities, this.level.getEntityCount());
         String particles = String.format("P: %s. T: All: %s", this.minecraft.particleEngine.countParticles(), this.level.getEntityCount());
         String overflow = String.format(" (%s fps)", this.minecraft.getFps());
 
@@ -274,7 +273,7 @@ class DebugInfoRenderer
 
         Entity targetEntity = this.minecraft.crosshairPickEntity;
         boolean isTargeted = CandyTweak.SHOW_DEBUG_TARGET_DATA.get();
-        boolean isValidHeight = this.playerPos.getY() >= this.level.getMinBuildHeight() && this.playerPos.getY() < this.level.getMaxBuildHeight();
+        boolean isValidHeight = this.playerPos.getY() >= this.level.getMinY() && this.playerPos.getY() < this.level.getMaxY();
 
         if (CandyTweak.SHOW_DEBUG_BIOME_DATA.get() && isValidHeight)
             this.left.add(String.format("Biome: %s", this.printBiome.apply(this.level.getBiome(this.playerPos))));

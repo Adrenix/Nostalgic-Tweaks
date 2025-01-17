@@ -7,9 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(LevelRenderer.class)
 public interface LevelRendererAccess
 {
-    @Accessor("renderedEntities")
-    int nt$getRenderedEntities();
-
-    @Accessor("culledEntities")
-    int nt$getCulledEntities();
+    @Accessor("visibleEntityCount")
+    int nt$getVisibleEntityCount();
 }
