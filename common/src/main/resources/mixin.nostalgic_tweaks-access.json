@@ -27,7 +27,6 @@
     "FireBlockAccess",
     "LivingEntityAccess",
     "PlayerAccess",
-    "SheepAccess",
     "ShovelItemAccess"
   ]
 }

@@ -1,18 +1,19 @@
 package mod.adrenix.nostalgic.helper.gameplay;
 
-import mod.adrenix.nostalgic.mixin.access.SheepAccess;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakFlag;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.loot.packs.LootData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -188,7 +189,7 @@ public abstract class MobLootHelper
             RegistryAccess registries = entity.level().registryAccess();
 
             if (sheep != null && !sheep.isSheared())
-                return WOOL_TABLE.apply(registries, SheepAccess.NT$ITEM_BY_DYE().get(sheep.getColor()));
+                return WOOL_TABLE.apply(registries, LootData.WOOL_ITEM_BY_DYE.getOrDefault(sheep.getColor(), Blocks.WHITE_WOOL));
             else
                 return LootTable.EMPTY;
         }

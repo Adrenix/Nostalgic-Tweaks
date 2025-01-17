@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.animal_sheep;
 import mod.adrenix.nostalgic.helper.gameplay.SheepHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -33,7 +34,7 @@ public abstract class AnimalMixin extends Mob
         method = "actuallyHurt",
         at = @At("HEAD")
     )
-    private void nt_animal_sheep$onHurt(DamageSource damageSource, float damageAmount, CallbackInfo callback)
+    private void nt_animal_sheep$onHurt(ServerLevel level, DamageSource damageSource, float amount, CallbackInfo callback)
     {
         if (!GameplayTweak.OLD_SHEEP_PUNCHING.get())
             return;
@@ -43,6 +44,6 @@ public abstract class AnimalMixin extends Mob
         if (sheep == null)
             return;
 
-        SheepHelper.punch(sheep, this.level(), damageSource, this.random);
+        SheepHelper.punch(sheep, level, damageSource, this.random);
     }
 }
