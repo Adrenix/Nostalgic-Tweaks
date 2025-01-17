@@ -1,40 +1,12 @@
-package mod.adrenix.nostalgic.listener.client;
+package mod.adrenix.nostalgic.helper.candy.screen;
 
-import dev.architectury.event.events.client.ClientTooltipEvent;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.ColorType;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import net.minecraft.client.gui.GuiGraphics;
 
-public abstract class TooltipListener
+public abstract class TooltipHelper
 {
-    /**
-     * Registers client tooltip events.
-     */
-    public static void register()
-    {
-        ClientTooltipEvent.RENDER_MODIFY_COLOR.register(TooltipListener::setTooltipColor);
-    }
-
-    /**
-     * Sets all tooltip colors invisible so the TooltipRenderUtil injection can render the black semi-transparent
-     * background with the correct dimensional size.
-     *
-     * @param graphics The {@link GuiGraphics} instance.
-     * @param x        The x-coordinate of the tooltip.
-     * @param y        The y-coordinate of the tooltip.
-     * @param context  The current {@link ClientTooltipEvent.ColorContext} context.
-     */
-    private static void setTooltipColor(GuiGraphics graphics, int x, int y, ClientTooltipEvent.ColorContext context)
-    {
-        if (!CandyTweak.OLD_TOOLTIP_BOXES.get())
-            return;
-
-        context.setBackgroundColor(0);
-        context.setOutlineGradientBottomColor(0);
-        context.setOutlineGradientTopColor(0);
-    }
-
     /**
      * Render an old tooltip box.
      *

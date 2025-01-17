@@ -94,6 +94,7 @@
     "candy.progress_screen.MinecraftMixin",
     "candy.progress_screen.ReceivingLevelScreenMixin",
     "candy.select_world_screen.WorldSelectionListMixin",
+    "candy.tooltip_background.TooltipRenderUtilMixin",
     "candy.uncap_title_fps.MinecraftMixin",
     "candy.uncap_title_fps.PanoramaRendererMixin",
     "candy.window_title.MinecraftMixin",

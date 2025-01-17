@@ -19,7 +19,6 @@ import mod.adrenix.nostalgic.helper.candy.light.LightTextureHelper;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.listener.client.GuiListener;
-import mod.adrenix.nostalgic.listener.client.TooltipListener;
 import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
 import mod.adrenix.nostalgic.tweak.factory.Tweak;
 import mod.adrenix.nostalgic.tweak.factory.TweakPool;
@@ -52,7 +51,6 @@ abstract class ClientInitializer
         ClientKeyMapping.register();
         ClientSound.register();
         GuiListener.register();
-        TooltipListener.register();
 
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, HomeSplash.getInstance());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, NostalgicLogoText.getInstance());
