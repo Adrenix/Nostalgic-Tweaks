@@ -61,7 +61,7 @@ public abstract class LevelRendererMixin
         if (CandyTweak.ROUND_ROBIN_RELIGHT.get() && LightingHelper.isRelightCheckEnqueued())
         {
             ChunkTracker.forEachChunk(ChunkTrackerHolder.get(this.level).getReadyChunks(), (x, z) -> {
-                for (int y = this.level.getMinSection(); y < this.level.getMaxSection(); y++)
+                for (int y = this.level.getMinSectionY(); y < this.level.getMaxSectionY(); y++)
                 {
                     if (renderer.isSectionReady(x, y, z))
                         renderer.scheduleRebuildForChunk(x, y, z, false);
