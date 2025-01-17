@@ -2,6 +2,7 @@ package mod.adrenix.nostalgic.mixin.tweak.gameplay.monster_rule;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -18,10 +19,10 @@ public abstract class MobMixin
         method = "aiStep",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/Mob;pickUpItem(Lnet/minecraft/world/entity/item/ItemEntity;)V"
+            target = "Lnet/minecraft/world/entity/Mob;pickUpItem(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/item/ItemEntity;)V"
         )
     )
-    private boolean nt_monster_rule$shouldPickupItem(Mob mob, ItemEntity itemEntity)
+    private boolean nt_monster_rule$shouldPickupItem(Mob mob, ServerLevel level, ItemEntity entity)
     {
         if (mob instanceof Monster)
             return !GameplayTweak.DISABLE_MONSTER_ITEM_PICKUP.get();
