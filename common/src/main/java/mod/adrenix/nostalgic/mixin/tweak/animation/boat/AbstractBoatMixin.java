@@ -3,12 +3,12 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.boat;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(Boat.class)
-public abstract class BoatMixin
+@Mixin(AbstractBoat.class)
+public abstract class AbstractBoatMixin
 {
     /**
      * Disables the sounds emitted by boat paddling.

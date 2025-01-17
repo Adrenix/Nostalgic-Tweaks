@@ -7,8 +7,13 @@ import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import mod.adrenix.nostalgic.helper.gameplay.BoatHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.util.common.text.TextUtil;
+import mod.adrenix.nostalgic.util.common.world.ItemUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,22 +26,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Boat.class)
-public abstract class BoatMixin extends VehicleEntity
+@Mixin(AbstractBoat.class)
+public abstract class AbstractBoatMixin extends VehicleEntity
 {
     /* Fake Constructor */
 
-    private BoatMixin(EntityType<?> entityType, Level level)
+    private AbstractBoatMixin(EntityType<?> entityType, Level level)
     {
         super(entityType, level);
     }
 
     /* Shadows */
 
-    @Shadow
-    public abstract Boat.Type getVariant();
-
-    @Shadow private Boat.Status status;
+    @Shadow private AbstractBoat.Status status;
     @Shadow private float invFriction;
 
     /* Injections */
@@ -48,10 +50,10 @@ public abstract class BoatMixin extends VehicleEntity
         method = "tick",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/vehicle/Boat;ejectPassengers()V"
+            target = "Lnet/minecraft/world/entity/vehicle/AbstractBoat;ejectPassengers()V"
         )
     )
-    private boolean nt_mechanics_boat$shouldEjectPassengersWhenOutOfControl(Boat boat)
+    private boolean nt_mechanics_boat$shouldEjectPassengersWhenOutOfControl(AbstractBoat boat)
     {
         return !GameplayTweak.OLD_BOAT_WATER_LIFT.get();
     }
@@ -62,10 +64,9 @@ public abstract class BoatMixin extends VehicleEntity
     @Inject(
         method = "floatBoat",
         at = @At(
-            shift = At.Shift.BEFORE,
             ordinal = 1,
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/vehicle/Boat;getDeltaMovement()Lnet/minecraft/world/phys/Vec3;"
+            target = "Lnet/minecraft/world/entity/vehicle/AbstractBoat;getDeltaMovement()Lnet/minecraft/world/phys/Vec3;"
         )
     )
     private void nt_mechanics_boat$setWaterLiftFriction(CallbackInfo callback)
@@ -83,12 +84,12 @@ public abstract class BoatMixin extends VehicleEntity
         at = @At(
             ordinal = 0,
             value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/vehicle/Boat;setDeltaMovement(DDD)V"
+            target = "Lnet/minecraft/world/entity/vehicle/AbstractBoat;setDeltaMovement(DDD)V"
         )
     )
     private double nt_mechanics_boat$modifyGravity(double y, @Share("deltaY") LocalDoubleRef deltaY)
     {
-        deltaY.set(GameplayTweak.OLD_BOAT_WATER_LIFT.get() ? BoatHelper.getGravityAmount((Boat) (Object) this, this.status) : y);
+        deltaY.set(GameplayTweak.OLD_BOAT_WATER_LIFT.get() ? BoatHelper.getGravityAmount((AbstractBoat) (Object) this, this.status) : y);
 
         return deltaY.get();
     }
@@ -122,7 +123,7 @@ public abstract class BoatMixin extends VehicleEntity
     private void nt_mechanics_boat$addSpeedParticles(CallbackInfo callback)
     {
         if (this.level().isClientSide() && CandyTweak.OLD_BOAT_MOVEMENT_PARTICLES.get())
-            BoatHelper.applyParticles((Boat) (Object) this);
+            BoatHelper.applyParticles((AbstractBoat) (Object) this);
     }
 
     /**
@@ -137,10 +138,21 @@ public abstract class BoatMixin extends VehicleEntity
         if (!GameplayTweak.OLD_BOAT_DROPS.get())
             return dropItem;
 
-        this.spawnAtLocation(new ItemStack(this.getVariant().getPlanks()));
-        this.spawnAtLocation(new ItemStack(this.getVariant().getPlanks()));
-        this.spawnAtLocation(new ItemStack(Items.STICK));
+        String itemKey = ItemUtil.getResourceKey(dropItem);
+        String itemLocation = TextUtil.extract(itemKey, "(.+):", 1);
+        String boatType = TextUtil.extract(itemKey, ":(.+)_", 1) + "_planks";
 
-        return ItemStack.EMPTY.getItem();
+        Item planks = BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(itemLocation, boatType));
+
+        if (this.level() instanceof ServerLevel level && planks != Items.AIR)
+        {
+            this.spawnAtLocation(level, new ItemStack(planks));
+            this.spawnAtLocation(level, new ItemStack(planks));
+            this.spawnAtLocation(level, new ItemStack(Items.STICK));
+
+            return ItemStack.EMPTY.getItem();
+        }
+
+        return dropItem;
     }
 }

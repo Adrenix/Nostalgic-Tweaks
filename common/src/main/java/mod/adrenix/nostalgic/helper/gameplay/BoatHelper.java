@@ -3,7 +3,7 @@ package mod.adrenix.nostalgic.helper.gameplay;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -14,22 +14,22 @@ public abstract class BoatHelper
     /**
      * Check if the given boat has a water lift status.
      *
-     * @param status The {@link Boat.Status} value.
+     * @param status The {@link AbstractBoat.Status} value.
      * @return Whether the boat is in a water lift.
      */
-    public static boolean isWaterLift(Boat.Status status)
+    public static boolean isWaterLift(AbstractBoat.Status status)
     {
-        return status == Boat.Status.UNDER_WATER || status == Boat.Status.UNDER_FLOWING_WATER;
+        return status == AbstractBoat.Status.UNDER_WATER || status == AbstractBoat.Status.UNDER_FLOWING_WATER;
     }
 
     /**
      * Get the amount of gravity applied to the boat.
      *
-     * @param boat   The {@link Boat} to check.
-     * @param status The {@link Boat.Status} value.
+     * @param boat   The {@link AbstractBoat} to check.
+     * @param status The {@link AbstractBoat.Status} value.
      * @return The amount of gravity to apply to the boat.
      */
-    public static double getGravityAmount(Boat boat, Boat.Status status)
+    public static double getGravityAmount(AbstractBoat boat, AbstractBoat.Status status)
     {
         return boat.getDeltaMovement().y + (boat.isNoGravity() || isWaterLift(status) ? 0.0D : -0.04D);
     }
@@ -48,9 +48,9 @@ public abstract class BoatHelper
     /**
      * Add splash particles under the boat if it is moving fast enough.
      *
-     * @param boat The {@link Boat} to apply particles to.
+     * @param boat The {@link AbstractBoat} to apply particles to.
      */
-    public static void applyParticles(Boat boat)
+    public static void applyParticles(AbstractBoat boat)
     {
         Vec3 movement = boat.getDeltaMovement();
         double motionX = movement.x;

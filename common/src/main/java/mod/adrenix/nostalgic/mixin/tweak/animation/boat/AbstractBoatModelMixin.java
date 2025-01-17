@@ -3,17 +3,16 @@ package mod.adrenix.nostalgic.mixin.tweak.animation.boat;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import mod.adrenix.nostalgic.tweak.config.AnimationTweak;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
-import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.AbstractBoatModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.world.entity.vehicle.Boat;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(BoatModel.class)
-public abstract class BoatModelMixin
+@Mixin(AbstractBoatModel.class)
+public abstract class AbstractBoatModelMixin
 {
     /* Shadows & Unique */
 
@@ -28,13 +27,13 @@ public abstract class BoatModelMixin
      * Prevents the boat rowing animation.
      */
     @WrapWithCondition(
-        method = "setupAnim(Lnet/minecraft/world/entity/vehicle/Boat;FFFFF)V",
+        method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/BoatRenderState;)V",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/model/BoatModel;animatePaddle(Lnet/minecraft/world/entity/vehicle/Boat;ILnet/minecraft/client/model/geom/ModelPart;F)V"
+            target = "Lnet/minecraft/client/model/AbstractBoatModel;animatePaddle(FILnet/minecraft/client/model/geom/ModelPart;)V"
         )
     )
-    private boolean nt_animation_boat$shouldShowPaddleAnimation(Boat boat, int side, ModelPart paddle, float limbSwing)
+    private boolean nt_animation_boat$shouldShowPaddleAnimation(float rowingTime, int side, ModelPart part)
     {
         if (AnimationTweak.HIDE_BOAT_ROWING.get())
         {
