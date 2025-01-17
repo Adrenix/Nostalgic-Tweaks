@@ -40,7 +40,7 @@ public abstract class ItemUtil
     @PublicAPI
     public static Item getItem(String resourceKey)
     {
-        return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(resourceKey));
+        return BuiltInRegistries.ITEM.getValue(ResourceLocation.tryParse(resourceKey));
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class ItemUtil
     @PublicAPI
     public static Block getBlock(String resourceKey)
     {
-        return BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(resourceKey));
+        return BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(resourceKey));
     }
 
     /**
