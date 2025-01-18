@@ -5,7 +5,6 @@
   "minVersion": "0.8",
   "priority": 1001,
   "client": [
-    "candy.armor_damage.HumanoidArmorLayerMixin",
     "candy.debug_screen.DebugScreenOverlayMixin",
     "candy.item_display.GuiMixin",
     "candy.old_hud.GuiMixin",

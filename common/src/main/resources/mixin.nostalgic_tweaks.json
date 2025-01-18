@@ -30,6 +30,8 @@
     "animation.swing.PlayerMixin",
     "candy.ambient_occlusion.BlockBehaviourMixin",
     "candy.anvil_screen.AnvilScreenMixin",
+    "candy.armor_damage.EquipmentLayerRendererMixin",
+    "candy.armor_damage.HumanoidArmorLayerMixin",
     "candy.block_bed.LivingEntityRendererMixin",
     "candy.block_hitbox.BlockStateBaseMixin",
     "candy.block_hitbox.LevelRendererMixin",
