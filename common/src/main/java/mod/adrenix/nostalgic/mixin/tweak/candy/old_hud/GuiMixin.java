@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Gui.class)
-public class GuiMixin
+public abstract class GuiMixin
 {
     /**
      * Changes the offhand left slot texture to the Adventure Craft style.
@@ -30,7 +30,7 @@ public class GuiMixin
         at = @At(
             ordinal = 0,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
     private ResourceLocation nt_old_hud$modifyLeftOffhandSprite(ResourceLocation sprite)
@@ -42,7 +42,7 @@ public class GuiMixin
      * Moves the left offhand horizontal position to the left by one if using the Adventure Craft style.
      */
     @ModifyArg(
-        index = 1,
+        index = 2,
         method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
@@ -57,7 +57,7 @@ public class GuiMixin
         at = @At(
             ordinal = 0,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
     private int nt_old_hud$modifyLeftOffhandHorizontal(int x)
@@ -86,7 +86,7 @@ public class GuiMixin
         at = @At(
             ordinal = 1,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
     private ResourceLocation nt_old_hud$modifyRightOffhandSprite(ResourceLocation sprite)
@@ -98,7 +98,7 @@ public class GuiMixin
      * Moves the right offhand horizontal position to the right by one if using the Adventure Craft style.
      */
     @ModifyArg(
-        index = 1,
+        index = 2,
         method = "renderItemHotbar",
         slice = @Slice(
             from = @At(
@@ -113,7 +113,7 @@ public class GuiMixin
         at = @At(
             ordinal = 1,
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
     private int nt_old_hud$modifyRightOffhandHorizontal(int x)
