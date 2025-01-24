@@ -4,20 +4,19 @@ import mod.adrenix.nostalgic.NostalgicTweaks;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(ModelBakery.class)
+@Mixin(targets = "net/minecraft/client/resources/model/ModelBakery$ModelBakerImpl")
 public abstract class ModelBakeryMixin
 {
     /**
      * Dynamically changes the block model location for the vanilla grass block.
      */
     @ModifyVariable(
-        method = "loadBlockModel",
+        method = "getModel",
         argsOnly = true,
         ordinal = 0,
         at = @At("HEAD")
