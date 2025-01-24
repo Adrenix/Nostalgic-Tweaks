@@ -19,7 +19,7 @@ public abstract class LivingEntityMixin
      */
     @ModifyArg(
         index = 2,
-        method = "dropFromLootTable",
+        method = "dropFromLootTable(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;JLjava/util/function/Consumer;)V"

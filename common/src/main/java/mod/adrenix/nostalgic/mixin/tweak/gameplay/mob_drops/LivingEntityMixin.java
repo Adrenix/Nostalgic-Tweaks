@@ -15,7 +15,7 @@ public abstract class LivingEntityMixin
      * Modifies the loot table to get items from for specific entities.
      */
     @ModifyExpressionValue(
-        method = "dropFromLootTable",
+        method = "dropFromLootTable(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"
