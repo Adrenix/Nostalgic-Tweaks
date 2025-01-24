@@ -5,11 +5,14 @@ import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+
+import java.util.function.Function;
 
 @Mixin(CreateWorldScreen.class)
 public abstract class CreateWorldScreenMixin extends Screen
@@ -30,10 +33,10 @@ public abstract class CreateWorldScreenMixin extends Screen
         method = "render",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"
         )
     )
-    private boolean nt_create_world_screen$shouldRenderFooter(GuiGraphics graphics, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
+    private boolean nt_create_world_screen$shouldRenderFooter(GuiGraphics graphics, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
     {
         return !CandyTweak.REMOVE_CREATE_WORLD_FOOTER.get();
     }
@@ -58,10 +61,10 @@ public abstract class CreateWorldScreenMixin extends Screen
         method = "renderMenuBackground",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"
         )
     )
-    private boolean nt_create_world_screen$shouldRenderNewDirtBackground(GuiGraphics graphics, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
+    private boolean nt_create_world_screen$shouldRenderNewDirtBackground(GuiGraphics graphics, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
     {
         return !CandyTweak.OLD_STYLE_CREATE_WORLD_TABS.get();
     }

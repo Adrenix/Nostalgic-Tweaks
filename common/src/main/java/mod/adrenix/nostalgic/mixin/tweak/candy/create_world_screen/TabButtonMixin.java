@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.TabButton;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Function;
 
 @Mixin(TabButton.class)
 public abstract class TabButtonMixin extends AbstractWidget
@@ -38,10 +41,10 @@ public abstract class TabButtonMixin extends AbstractWidget
         method = "renderWidget",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIII)V"
         )
     )
-    private boolean nt_create_world_screen$shouldRenderSprite(GuiGraphics graphics, ResourceLocation sprite, int x, int y, int width, int height)
+    private boolean nt_create_world_screen$shouldRenderSprite(GuiGraphics graphics, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation sprite, int x, int y, int width, int height)
     {
         return !WidgetHelper.isOldStyleTabs();
     }
