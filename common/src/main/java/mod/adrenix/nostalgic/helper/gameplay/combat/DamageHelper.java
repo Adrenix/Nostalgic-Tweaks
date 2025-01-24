@@ -20,32 +20,56 @@ public abstract class DamageHelper
     private static final Map<String, ItemAttributeModifiers> DAMAGE_MODIFIERS = new ConcurrentHashMap<>();
 
     /**
+     * Get the attack damage bonus amount for a tiered item.
+     *
+     * @param itemStack The {@link ItemStack} instance.
+     * @return The attack damage bonus amount.
+     */
+    private static float getDamageBonus(ItemStack itemStack)
+    {
+        if (itemStack.isValidRepairItem(Items.OAK_PLANKS.getDefaultInstance()))
+            return ToolMaterial.WOOD.attackDamageBonus();
+        else if (itemStack.isValidRepairItem(Items.COBBLESTONE.getDefaultInstance()))
+            return ToolMaterial.STONE.attackDamageBonus();
+        else if (itemStack.isValidRepairItem(Items.IRON_INGOT.getDefaultInstance()))
+            return ToolMaterial.IRON.attackDamageBonus();
+        else if (itemStack.isValidRepairItem(Items.GOLD_INGOT.getDefaultInstance()))
+            return ToolMaterial.GOLD.attackDamageBonus();
+        else if (itemStack.isValidRepairItem(Items.DIAMOND.getDefaultInstance()))
+            return ToolMaterial.DIAMOND.attackDamageBonus();
+        else if (itemStack.isValidRepairItem(Items.NETHERITE_INGOT.getDefaultInstance()))
+            return ToolMaterial.NETHERITE.attackDamageBonus();
+
+        return 0.0F;
+    }
+
+    /**
      * Get the attack damage amount for a tiered item.
      *
-     * @param tieredItem The {@link TieredItem} instance.
+     * @param itemStack The {@link ItemStack} instance.
      * @return The attack damage amount.
      */
-    private static float getAttackDamage(TieredItem tieredItem)
+    private static float getAttackDamage(ItemStack itemStack)
     {
-        return switch (tieredItem)
+        return switch (itemStack.getItem())
         {
-            case SwordItem sword -> sword.getTier().getAttackDamageBonus() + 4.0F;
-            case AxeItem axe -> axe.getTier().getAttackDamageBonus() + 3.0F;
-            case PickaxeItem pickaxe -> pickaxe.getTier().getAttackDamageBonus() + 2.0F;
-            case ShovelItem shovel -> shovel.getTier().getAttackDamageBonus() + 1.0F;
-            default -> tieredItem.getTier().getAttackDamageBonus();
+            case SwordItem ignored -> getDamageBonus(itemStack) + 4.0F;
+            case AxeItem ignored -> getDamageBonus(itemStack) + 3.0F;
+            case PickaxeItem ignored -> getDamageBonus(itemStack) + 2.0F;
+            case ShovelItem ignored -> getDamageBonus(itemStack) + 1.0F;
+            default -> 0.0F;
         };
     }
 
     /**
      * Check if the given tiered item has an old value.
      *
-     * @param tieredItem The {@link TieredItem} to check.
+     * @param item The {@link Item} instance to check.
      * @return Whether the given tiered item has an old damage value.
      */
-    public static boolean isApplicable(TieredItem tieredItem)
+    public static boolean isApplicable(Item item)
     {
-        return switch (tieredItem)
+        return switch (item)
         {
             case SwordItem ignored -> true;
             case AxeItem ignored -> true;
@@ -59,13 +83,15 @@ public abstract class DamageHelper
     /**
      * Get the old damage value based on the provided tiered item.
      *
-     * @param tieredItem The {@link TieredItem} instance.
+     * @param itemStack  The {@link Item} instance.
      * @param attributes The {@link ItemAttributeModifiers} instance.
      * @return An old damage value, if it is a valid item.
      */
-    public static ItemAttributeModifiers get(final TieredItem tieredItem, final ItemAttributeModifiers attributes)
+    public static ItemAttributeModifiers get(final ItemStack itemStack, final ItemAttributeModifiers attributes)
     {
-        return DAMAGE_MODIFIERS.computeIfAbsent(tieredItem.getDescriptionId(), itemClass -> {
+        Item item = itemStack.getItem();
+
+        return DAMAGE_MODIFIERS.computeIfAbsent(item.getDescriptionId(), itemClass -> {
             ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
 
             attributes.modifiers().forEach(entry -> {
@@ -73,8 +99,8 @@ public abstract class DamageHelper
                     builder.add(entry.attribute(), entry.modifier(), entry.slot());
                 else
                 {
-                    if (tieredItem instanceof DiggerItem || tieredItem instanceof SwordItem)
-                        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, getAttackDamage(tieredItem), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                    if (item instanceof DiggerItem || item instanceof SwordItem)
+                        builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, getAttackDamage(itemStack), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
                     else
                         builder.add(entry.attribute(), entry.modifier(), entry.slot());
                 }

@@ -4,14 +4,12 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import mod.adrenix.nostalgic.helper.gameplay.combat.DamageHelper;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
-import mod.adrenix.nostalgic.util.common.data.NullableResult;
-import mod.adrenix.nostalgic.util.common.world.ItemUtil;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Tool;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -35,10 +33,10 @@ public interface DataComponentHolderMixin
 
         if (value instanceof ItemAttributeModifiers modifiers && itemStack != null)
         {
-            TieredItem tieredItem = NullableResult.get(itemStack, result -> ItemUtil.cast(result, TieredItem.class));
+            Tool tieredItem = itemStack.get(DataComponents.TOOL);
 
-            if (tieredItem != null && DamageHelper.isApplicable(tieredItem))
-                return (T) DamageHelper.get(tieredItem, modifiers);
+            if (tieredItem != null && DamageHelper.isApplicable(itemStack.getItem()))
+                return (T) DamageHelper.get(itemStack, modifiers);
         }
 
         return value;
