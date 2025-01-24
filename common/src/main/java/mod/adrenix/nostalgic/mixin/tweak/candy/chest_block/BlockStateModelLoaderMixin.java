@@ -16,13 +16,13 @@ public abstract class BlockStateModelLoaderMixin
      * Dynamically changes the block state location for the vanilla chests.
      */
     @ModifyArg(
-        method = "loadBlockStateDefinitions",
+        method = "method_65720",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/resources/FileToIdConverter;idToFile(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"
+            target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/resources/ResourceLocation;"
         )
     )
-    private ResourceLocation nt_chest_block$modifyBlockStateLocation(ResourceLocation resourceLocation)
+    private static ResourceLocation nt_chest_block$modifyBlockStateLocation(ResourceLocation resourceLocation)
     {
         String minecraft = "minecraft";
         String namespace = resourceLocation.getNamespace();
