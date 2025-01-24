@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 /**
  * This utility class is used only by the client.
@@ -64,7 +64,7 @@ public abstract class LoadingOverlayHelper
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        graphics.blit(background, x, y, 0, 0, 128, 128, 128, 128);
+        graphics.blit(resourceLocation -> RenderType.mojangLogo(), background, x, y, 0, 0, 128, 128, 128, 128);
         graphics.pose().popPose();
     }
 
@@ -94,7 +94,7 @@ public abstract class LoadingOverlayHelper
     public static int getOutlineProgressBarColor()
     {
         if (Platform.isDevelopmentEnvironment())
-            return FastColor.ARGB32.color(255, 255, 255, 255);
+            return ARGB.color(255, 255, 255, 255);
 
         if (CandyTweak.CUSTOM_LOADING_PROGRESS_BAR.get())
             return HexUtil.parseInt(CandyTweak.PROGRESS_BAR_OUTLINE_COLOR.get());
@@ -105,18 +105,18 @@ public abstract class LoadingOverlayHelper
         {
             return switch (overlay)
             {
-                case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
-                case RELEASE_BLACK -> FastColor.ARGB32.color(255, 221, 31, 42);
-                case ALPHA, MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
+                case BETA, RELEASE_ORANGE -> ARGB.color(255, 221, 79, 59);
+                case RELEASE_BLACK -> ARGB.color(255, 221, 31, 42);
+                case ALPHA, MODERN -> ARGB.color(255, 255, 255, 255);
             };
         }
 
         return switch (overlay)
         {
-            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 221, 79, 59);
-            case RELEASE_BLACK -> FastColor.ARGB32.color(255, 4, 7, 7);
-            case ALPHA -> FastColor.ARGB32.color(255, 142, 132, 255);
-            case MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
+            case BETA, RELEASE_ORANGE -> ARGB.color(255, 221, 79, 59);
+            case RELEASE_BLACK -> ARGB.color(255, 4, 7, 7);
+            case ALPHA -> ARGB.color(255, 142, 132, 255);
+            case MODERN -> ARGB.color(255, 255, 255, 255);
         };
     }
 
@@ -126,16 +126,16 @@ public abstract class LoadingOverlayHelper
     public static int getInsideProgressBarColor()
     {
         if (Platform.isDevelopmentEnvironment())
-            return FastColor.ARGB32.color(255, 0, 255, 0);
+            return ARGB.color(255, 0, 255, 0);
 
         if (CandyTweak.CUSTOM_LOADING_PROGRESS_BAR.get())
             return HexUtil.parseInt(CandyTweak.PROGRESS_BAR_INSIDE_COLOR.get());
 
         return switch (CandyTweak.OLD_LOADING_OVERLAY.get())
         {
-            case ALPHA, MODERN -> FastColor.ARGB32.color(255, 255, 255, 255);
-            case BETA, RELEASE_ORANGE -> FastColor.ARGB32.color(255, 246, 136, 62);
-            case RELEASE_BLACK -> FastColor.ARGB32.color(255, 221, 31, 42);
+            case ALPHA, MODERN -> ARGB.color(255, 255, 255, 255);
+            case BETA, RELEASE_ORANGE -> ARGB.color(255, 246, 136, 62);
+            case RELEASE_BLACK -> ARGB.color(255, 221, 31, 42);
         };
     }
 }

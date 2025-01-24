@@ -23,7 +23,7 @@ public abstract class LoadingOverlayMixin
     /* Shadows */
 
     @Shadow private long fadeOutStart;
-    @Shadow @Final static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
+    @Shadow @Final public static ResourceLocation MOJANG_STUDIOS_LOGO_LOCATION;
 
     /* Injections */
 
@@ -52,9 +52,8 @@ public abstract class LoadingOverlayMixin
     @Inject(
         method = "render",
         at = @At(
-            shift = At.Shift.BEFORE,
             value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/systems/RenderSystem;defaultBlendFunc()V"
+            target = "Lnet/minecraft/server/packs/resources/ReloadInstance;getActualProgress()F"
         )
     )
     private void nt_loading_overlay$onRender(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo callback)
@@ -81,7 +80,6 @@ public abstract class LoadingOverlayMixin
                 target = "Lnet/minecraft/server/packs/resources/ReloadInstance;getActualProgress()F"
             ),
             to = @At(
-                shift = At.Shift.BEFORE,
                 value = "INVOKE",
                 target = "Lnet/minecraft/client/gui/screens/LoadingOverlay;drawProgressBar(Lnet/minecraft/client/gui/GuiGraphics;IIIIF)V"
             )
@@ -142,7 +140,7 @@ public abstract class LoadingOverlayMixin
         method = "drawProgressBar",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/util/FastColor$ARGB32;color(IIII)I"
+            target = "Lnet/minecraft/util/ARGB;color(IIII)I"
         )
     )
     private int nt_loading_overlay$setOutlineProgressBarColor(int color)
