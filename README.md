@@ -2,7 +2,8 @@
 
 ### NeoForge & Fabric
 
-This is the 1.21.4 development branch for Nostalgic Tweaks.
+This is the 1.21.4 development branch for Nostalgic Tweaks. Note that this branch is not buildable since there are still
+many unresolved errors that require tweak rewrites.
 
 ### Current In-Development Version
 
@@ -16,5 +17,5 @@ v2.0.0
 
 ## Nostalgic Tweaks API For Developers
 
-Mod API is not available for 1.21.4 (beta 9.1). If you have suggestions for what the mod API should look like, then please
-share your ideas!
+Mod API is not available for 1.21.4 (beta 9.1). If you have suggestions for what the mod API should look like, then
+please share your ideas!
