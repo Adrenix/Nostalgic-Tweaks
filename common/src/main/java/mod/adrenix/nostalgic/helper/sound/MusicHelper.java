@@ -42,7 +42,7 @@ public abstract class MusicHelper
     {
         ResourceLocation soundLocation = sound.getLocation();
 
-        if (soundLocation.equals(SoundEvents.MUSIC_MENU.value().getLocation()))
+        if (soundLocation.equals(SoundEvents.MUSIC_MENU.value().location()))
         {
             MusicType musicType = SoundTweak.MUSIC_FOR_MENU.get();
 
@@ -58,7 +58,7 @@ public abstract class MusicHelper
             });
         }
 
-        if (soundLocation.equals(SoundEvents.MUSIC_CREATIVE.value().getLocation()))
+        if (soundLocation.equals(SoundEvents.MUSIC_CREATIVE.value().location()))
         {
             MusicType musicType = SoundTweak.MUSIC_FOR_CREATIVE.get();
 
@@ -79,7 +79,7 @@ public abstract class MusicHelper
             if (soundLocation.getPath().contains("music.overworld"))
                 return setAndGet(ClientSound.MUSIC_ALPHA.get());
 
-            if (soundLocation.equals(SoundEvents.MUSIC_UNDER_WATER.value().getLocation()))
+            if (soundLocation.equals(SoundEvents.MUSIC_UNDER_WATER.value().location()))
                 return setAndGet(ClientSound.MUSIC_ALPHA.get());
         }
 
@@ -91,7 +91,7 @@ public abstract class MusicHelper
 
         if (SoundTweak.REPLACE_GAMEPLAY_MUSIC.get())
         {
-            if (soundLocation.equals(SoundEvents.MUSIC_GAME.value().getLocation()))
+            if (soundLocation.equals(SoundEvents.MUSIC_GAME.value().location()))
                 return setAndGet(ClientSound.MUSIC_ALPHA.get());
         }
 

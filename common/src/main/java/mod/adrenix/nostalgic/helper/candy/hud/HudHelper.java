@@ -13,7 +13,8 @@ import mod.adrenix.nostalgic.util.common.data.NullableResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -261,7 +262,7 @@ public abstract class HudHelper
         TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(GuiAccess.NT$ARMOR_HALF_SPRITE());
 
         RenderSystem.setShaderTexture(0, sprite.atlasLocation());
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX);
 
         Matrix4f matrix = graphics.pose().last().pose();
         Tesselator tesselator = Tesselator.getInstance();
@@ -296,9 +297,9 @@ public abstract class HudHelper
             if (i == armor)
                 renderInverseHalfArmor(graphics, left, top);
             else if (i < armor)
-                graphics.blitSprite(GuiAccess.NT$ARMOR_FULL_SPRITE(), left, top, 9, 9);
+                graphics.blitSprite(RenderType::guiTextured, GuiAccess.NT$ARMOR_FULL_SPRITE(), left, top, 9, 9);
             else
-                graphics.blitSprite(GuiAccess.NT$ARMOR_EMPTY_SPRITE(), left, top, 9, 9);
+                graphics.blitSprite(RenderType::guiTextured, GuiAccess.NT$ARMOR_EMPTY_SPRITE(), left, top, 9, 9);
         }
 
         RenderSystem.disableBlend();
@@ -322,7 +323,7 @@ public abstract class HudHelper
         RenderSystem.enableBlend();
 
         for (int i = 0; i < full + partial; ++i)
-            graphics.blitSprite(i < full ? GuiAccess.NT$AIR_SPRITE() : GuiAccess.NT$AIR_BURSTING_SPRITE(), left + i * 8 + 9, top, 9, 9);
+            graphics.blitSprite(RenderType::guiTextured, i < full ? GuiAccess.NT$AIR_SPRITE() : GuiAccess.NT$AIR_BURSTING_SPRITE(), left + i * 8 + 9, top, 9, 9);
 
         RenderSystem.disableBlend();
     }

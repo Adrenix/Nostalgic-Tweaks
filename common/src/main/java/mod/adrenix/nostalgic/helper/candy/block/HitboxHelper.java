@@ -16,7 +16,7 @@ import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
@@ -189,7 +189,7 @@ public abstract class HitboxHelper
         if (!Minecraft.useShaderTransparency())
             RenderSystem.depthMask(false);
 
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         RenderStateShard.VIEW_OFFSET_Z_LAYERING.setupRenderState();
 
         RenderUtil.endFill(builder);

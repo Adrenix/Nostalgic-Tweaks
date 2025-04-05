@@ -196,7 +196,7 @@ public class NostalgicProgressScreen extends ProgressScreen implements ProgressL
         else
         {
             this.renderPanorama(graphics, partialTick);
-            this.renderBlurredBackground(partialTick);
+            this.renderBlurredBackground();
             this.renderMenuBackground(graphics);
         }
 

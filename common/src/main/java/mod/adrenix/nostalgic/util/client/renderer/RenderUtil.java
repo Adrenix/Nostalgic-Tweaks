@@ -14,7 +14,7 @@ import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.math.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -408,7 +408,7 @@ public abstract class RenderUtil
     {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 
         return MOD_TESSELATOR.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     }
@@ -438,7 +438,7 @@ public abstract class RenderUtil
     {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
+        RenderSystem.setShader(CoreShaders.RENDERTYPE_LINES);
         RenderSystem.lineWidth(width);
 
         return MOD_TESSELATOR.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
@@ -468,7 +468,7 @@ public abstract class RenderUtil
     @PublicAPI
     public static BufferBuilder getAndBeginTexture(ResourceLocation location)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
         RenderSystem.setShaderTexture(0, location);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
@@ -615,7 +615,7 @@ public abstract class RenderUtil
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         BufferBuilder builder = MOD_TESSELATOR.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         while (!FILL_VERTICES.isEmpty())
@@ -636,7 +636,7 @@ public abstract class RenderUtil
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
+        RenderSystem.setShader(CoreShaders.RENDERTYPE_LINES);
 
         LINE_QUEUE.stream().map(LineBuffer::width).distinct().forEach(width -> {
             RenderSystem.lineWidth(width);
@@ -668,7 +668,7 @@ public abstract class RenderUtil
         if (TEXTURE_LAYERS.isEmpty())
             return;
 
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
         RenderSystem.enableBlend();
 
         TEXTURE_LAYERS.stream().sorted(Comparator.comparingInt(TextureLayer::getIndex)).forEach(layer -> {
@@ -1285,7 +1285,7 @@ public abstract class RenderUtil
         Matrix4f matrix = graphics.pose().last().pose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
@@ -1740,7 +1740,7 @@ public abstract class RenderUtil
         }
 
         RenderSystem.setShaderTexture(0, atlasLocation);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX);
         RenderSystem.enableBlend();
 
         float[] rgba = RenderSystem.getShaderColor();

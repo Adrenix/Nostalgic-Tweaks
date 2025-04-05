@@ -13,9 +13,7 @@ import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CubeMap;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.PanoramaRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -174,10 +172,10 @@ public enum Panorama implements PreparableReloadListener
     {
         this.panorama.render(graphics, 0, 0, 1.0F, partialTick);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX);
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.enableBlend();
 
-        graphics.blit(TextureLocation.PANORAMA_OVERLAY, 0, 0, GuiUtil.getScreenWidth(), GuiUtil.getScreenHeight(), 16, 128, 16, 128);
+        graphics.blit(RenderType::guiTextured, TextureLocation.PANORAMA_OVERLAY, 0, 0, GuiUtil.getScreenWidth(), GuiUtil.getScreenHeight(), 16, 128, 16, 128);
     }
 }

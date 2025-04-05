@@ -16,7 +16,7 @@ public abstract class PartialTick
     @PublicAPI
     public static float get()
     {
-        return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
     }
 
     /**
@@ -28,7 +28,7 @@ public abstract class PartialTick
     @PublicAPI
     public static float normal()
     {
-        return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
     }
 
     /**
@@ -39,7 +39,7 @@ public abstract class PartialTick
     @PublicAPI
     public static float legacy()
     {
-        return ((TimerAccess) Minecraft.getInstance().getTimer()).nt$getPartialTick();
+        return ((TimerAccess) Minecraft.getInstance().getDeltaTracker()).nt$getPartialTick();
     }
 
     /**
@@ -48,6 +48,6 @@ public abstract class PartialTick
     @PublicAPI
     public static float realtime()
     {
-        return Minecraft.getInstance().getTimer().getRealtimeDeltaTicks();
+        return Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks();
     }
 }

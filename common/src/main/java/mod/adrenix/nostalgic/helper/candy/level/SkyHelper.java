@@ -1,10 +1,7 @@
 package mod.adrenix.nostalgic.helper.candy.level;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.MeshData;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexBuffer;
+import com.mojang.blaze3d.vertex.*;
 import mod.adrenix.nostalgic.helper.candy.level.fog.VoidFogRenderer;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.enums.SkyColor;
@@ -13,15 +10,14 @@ import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.color.HexUtil;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
-import mod.adrenix.nostalgic.util.common.data.Holder;
 import mod.adrenix.nostalgic.util.common.data.NullableHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.util.Mth;
-import org.joml.Matrix4f;
 
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 
 /**
  * This utility class is used only by the client.
@@ -41,16 +37,6 @@ public abstract class SkyHelper
     public static final FlagHolder BLUE_RUNNABLE_SAVED = FlagHolder.off();
 
     /**
-     * Holds a copy of the sky's current model view matrix.
-     */
-    public static final Holder<Matrix4f> MODEL_VIEW_MATRIX = Holder.create(new Matrix4f());
-
-    /**
-     * Holds a copy of the sky's current projection matrix.
-     */
-    public static final Holder<Matrix4f> PROJECTION_MATRIX = Holder.create(new Matrix4f());
-
-    /**
      * Holds the sky's blue void buffer. This will be setup and torn down by the level renderer.
      */
     public static final NullableHolder<VertexBuffer> BLUE_VOID_BUFFER = NullableHolder.empty();
@@ -60,33 +46,23 @@ public abstract class SkyHelper
     /**
      * Create a new blue void buffer.
      *
-     * @param skyDiscBuilder A {@link BiFunction} that accepts a {@link BufferBuilder} and height and possibly returns
-     *                       {@link MeshData}.
+     * @param skyDiscBuilder A {@link BiConsumer} that accepts a {@link BufferBuilder} and height.
      */
-    public static void createBlueVoid(BiFunction<Tesselator, Float, MeshData> skyDiscBuilder)
+    public static void createBlueVoid(BiConsumer<VertexConsumer, Float> skyDiscBuilder)
     {
-        Tesselator tesselator = Tesselator.getInstance();
-
         float height = switch (CandyTweak.OLD_BLUE_VOID.get())
         {
             case ALPHA -> -32.0F;
             case BETA, MODERN -> -48.0F;
         };
 
-        final MeshData mesh = skyDiscBuilder.apply(tesselator, height);
-
-        if (mesh != null)
-        {
-            BLUE_VOID_BUFFER.ifPresent(VertexBuffer::close);
-            BLUE_VOID_BUFFER.set(new VertexBuffer(VertexBuffer.Usage.STATIC));
-
-            BLUE_VOID_BUFFER.ifPresent(vertexBuffer -> {
-                vertexBuffer.bind();
-                vertexBuffer.upload(mesh);
-
-                VertexBuffer.unbind();
-            });
-        }
+        BLUE_VOID_BUFFER.ifPresent(VertexBuffer::close);
+        VertexBuffer buffer = VertexBuffer.uploadStatic(
+                VertexFormat.Mode.TRIANGLE_FAN,
+                DefaultVertexFormat.POSITION,
+                vertexConsumer -> skyDiscBuilder.accept(vertexConsumer, height)
+        );
+        BLUE_VOID_BUFFER.set(buffer);
     }
 
     /**
@@ -168,7 +144,7 @@ public abstract class SkyHelper
             b = VOID_RGB[2];
         }
 
-        RenderSystem.setShader(GameRenderer::getPositionShader);
+        RenderSystem.setShader(CoreShaders.POSITION);
         RenderSystem.setShaderColor(r, g, b, 1.0F);
     }
 
@@ -195,7 +171,11 @@ public abstract class SkyHelper
         if (GameUtil.isInOverworld())
         {
             if (GameUtil.getRenderDistance() <= 4)
-                return HexUtil.parseInt(RenderSystem.getShaderFogColor());
+            {
+                FogParameters params = RenderSystem.getShaderFog();
+                float[] colors = new float[] { params.red(), params.green(), params.blue(), params.alpha() };
+                return HexUtil.parseInt(colors);
+            }
 
             SkyColor skyColor = CandyTweak.UNIVERSAL_SKY_COLOR.get();
 

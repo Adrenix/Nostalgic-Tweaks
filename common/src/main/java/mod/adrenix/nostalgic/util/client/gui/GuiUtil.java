@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -145,9 +146,7 @@ public abstract class GuiUtil
         int width = getScreenWidth();
         int height = getScreenHeight();
 
-        graphics.setColor(0.25F, 0.25F, 0.25F, 1.0F);
-        graphics.blit(TextureLocation.DIRT_BACKGROUND, 0, 0, 0, 0.0F, 0.0F, width, height, 32, 32);
-        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        graphics.blit(RenderType::guiTextured, TextureLocation.DIRT_BACKGROUND, 0, 0, 0.0F, 0.0F, width, height, 32, 32, 0xFF404040);
     }
 
     /* --- Window */

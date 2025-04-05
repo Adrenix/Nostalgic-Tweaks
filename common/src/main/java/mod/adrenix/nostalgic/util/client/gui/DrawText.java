@@ -303,13 +303,12 @@ public abstract class DrawText
             Font.DisplayMode mode = Font.DisplayMode.NORMAL;
             Matrix4f matrix = this.graphics.pose().last().pose();
             MultiBufferSource.BufferSource buffer = RenderUtil.fontBuffer();
-            boolean isBidirectional = GuiUtil.font().isBidirectional();
             int textWidth = 0;
 
             if (this.string != null)
             {
                 textWidth = GuiUtil.font()
-                    .drawInBatch(this.string, 0, 0, this.color, this.dropShadow, matrix, buffer, mode, 0, 0xF000F0, isBidirectional);
+                    .drawInBatch(this.string, 0, 0, this.color, this.dropShadow, matrix, buffer, mode, 0, 0xF000F0);
             }
             else if (this.component != null)
             {

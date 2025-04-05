@@ -14,6 +14,7 @@ import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
@@ -170,19 +171,19 @@ public abstract class InventoryScreenHelper
         {
             if (recipes.isVisible())
             {
-                graphics.blit(TextureLocation.INVENTORY, leftPos + 172, height / 2 + 51, 200, 33, 26, 32);
+                graphics.blit(RenderType::guiTextured, TextureLocation.INVENTORY, leftPos + 172, height / 2 + 51, 200, 33, 26, 32, 256, 256);
                 SlotTracker.OFF_HAND.move(offHand, 174, 142);
             }
             else
             {
-                graphics.blit(TextureLocation.INVENTORY, leftPos - 22, height / 2 + 51, 200, 0, 25, 32);
+                graphics.blit(RenderType::guiTextured, TextureLocation.INVENTORY, leftPos - 22, height / 2 + 51, 200, 0, 25, 32, 256, 256);
                 SlotTracker.OFF_HAND.move(offHand, -14, 142);
             }
         }
         else if (InventoryShield.MIDDLE_RIGHT == shield || isModernOverride)
-            graphics.blit(TextureLocation.INVENTORY, leftPos + 151, height / 2 - 22, 178, 56, 18, 18);
+            graphics.blit(RenderType::guiTextured, TextureLocation.INVENTORY, leftPos + 151, height / 2 - 22, 178, 56, 18, 18, 256, 256);
 
         if (!CandyTweak.OLD_INVENTORY.get() && InventoryShield.MODERN != shield)
-            graphics.blit(TextureLocation.INVENTORY, leftPos + 76, height / 2 - 22, 178, 74, 18, 18);
+            graphics.blit(RenderType::guiTextured, TextureLocation.INVENTORY, leftPos + 76, height / 2 - 22, 178, 74, 18, 18, 256, 256);
     }
 }

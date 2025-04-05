@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.ModTweak;
@@ -13,7 +14,6 @@ import net.minecraft.client.PrioritizeChunkUpdates;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.ViewArea;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.core.BlockPos;
@@ -51,7 +51,7 @@ public abstract class LevelRendererMixin
         method = "renderLevel",
         at = @At("HEAD")
     )
-    private void nt_world_lighting$onRenderLevel(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callback)
+    private void nt_world_lighting$onRenderLevel(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci)
     {
         if (!ModTweak.ENABLED.get() || this.level == null)
             return;
@@ -107,7 +107,7 @@ public abstract class LevelRendererMixin
 
         for (SectionRenderDispatcher.RenderSection renderSection : this.viewArea.sections)
         {
-            if (renderSection.getCompiled().hasNoRenderableLayers())
+            if (!renderSection.getCompiled().hasRenderableLayers())
                 continue;
 
             long packedPos = SectionPos.of(renderSection.getOrigin()).chunk().toLong();

@@ -12,6 +12,7 @@ import mod.adrenix.nostalgic.util.common.color.Color;
 import mod.adrenix.nostalgic.util.common.data.RecursionAvoidance;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import net.minecraft.client.gui.ComponentPath;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
@@ -255,6 +256,8 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
         if (isTimeInvalid || isInactive || isHidden)
             return;
 
+        Screen screen = this.getScreen();
+        Font font = screen != null ? screen.font : null;
         if (this.builder.tooltip != null)
         {
             Component tooltip = this.builder.tooltip.get();
@@ -262,7 +265,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
             if (GuiUtil.isComponentPresent(tooltip))
             {
                 Tooltip.setTooltip(tooltip);
-                Tooltip.setRelativeToIfFocused(this);
+                Tooltip.setRelativeToIfFocused(font, this);
 
                 this.setInfoTooltip();
             }
@@ -274,7 +277,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
             if (GuiUtil.isComponentPresent(components))
             {
                 Tooltip.setListTooltip(components);
-                Tooltip.setRelativeToIfFocused(this);
+                Tooltip.setRelativeToIfFocused(font, this);
 
                 this.setInfoTooltip();
             }
@@ -292,6 +295,8 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
         if (this.isActive() || isTimeInvalid || isHidden)
             return;
 
+        Screen screen = this.getScreen();
+        Font font = screen != null ? screen.font : null;
         if (this.builder.disabledTooltip != null)
         {
             Component tooltip = this.builder.disabledTooltip.get();
@@ -299,7 +304,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
             if (GuiUtil.isComponentPresent(tooltip))
             {
                 Tooltip.setTooltip(tooltip);
-                Tooltip.setRelativeToIfFocused(this);
+                Tooltip.setRelativeToIfFocused(font, this);
 
                 this.setInfoTooltip();
             }
@@ -311,7 +316,7 @@ public abstract class DynamicWidget<Builder extends DynamicBuilder<Builder, Widg
             if (GuiUtil.isComponentPresent(components))
             {
                 Tooltip.setListTooltip(components);
-                Tooltip.setRelativeToIfFocused(this);
+                Tooltip.setRelativeToIfFocused(font, this);
 
                 this.setInfoTooltip();
             }

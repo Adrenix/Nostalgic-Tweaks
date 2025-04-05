@@ -6,6 +6,7 @@ import mod.adrenix.nostalgic.util.client.gui.GuiUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.screens.Screen;
@@ -104,21 +105,21 @@ public abstract class Tooltip
      *
      * @param widget The {@link DynamicWidget} to set the tooltip relative to.
      */
-    public static void setRelativeToIfFocused(DynamicWidget<?, ?> widget)
+    public static void setRelativeToIfFocused(Font font, DynamicWidget<?, ?> widget)
     {
         Tooltip.focused = widget;
 
         if (widget.isFocused())
         {
             Tooltip.mouseX = widget.getX() - 9;
-            Tooltip.mouseY = widget.getY() - getHeight() - 1;
+            Tooltip.mouseY = widget.getY() - getHeight(font) - 1;
         }
     }
 
     /**
      * @return Get the height of the tooltip box that will be rendered.
      */
-    public static int getHeight()
+    public static int getHeight(Font font)
     {
         List<Component> tooltip = get();
 
@@ -128,7 +129,7 @@ public abstract class Tooltip
             .toList();
 
         return (tooltip.size() == 1 ? -2 : 0) - 8 + clientTooltips.stream()
-            .mapToInt(ClientTooltipComponent::getHeight)
+            .mapToInt(t -> t.getHeight(font))
             .sum();
     }
 

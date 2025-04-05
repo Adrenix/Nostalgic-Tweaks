@@ -4,7 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import mod.adrenix.nostalgic.util.common.LocateResource;
 import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class GearSpinner
         if (this.frame > 15)
             this.frame = 0;
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(CoreShaders.POSITION_TEX);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -70,7 +71,7 @@ public class GearSpinner
         graphics.pose().pushPose();
         graphics.pose().translate(x, y, 0.0D);
         graphics.pose().scale(scale, scale, scale);
-        graphics.blit(GEAR_IMAGES.get(this.frame), 0, 0, 0, 0, 512, 512, 512, 512);
+        graphics.blit(RenderType::guiTextured, GEAR_IMAGES.get(this.frame), 0, 0, 0, 0, 512, 512, 512, 512);
         graphics.pose().popPose();
 
         RenderSystem.disableBlend();

@@ -16,6 +16,7 @@ import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.FaviconTexture;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.LevelSummary;
 
@@ -169,7 +170,7 @@ class WorldRow extends AbstractRow<WorldRowMaker, WorldRow>
     private void renderIcon(BlankWidget widget, GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
         if (CandyTweak.ADD_WORLD_THUMBNAIL.get())
-            RenderUtil.deferredRenderer(() -> graphics.blit(this.favicon.textureLocation(), widget.getX(), widget.getY(), 0.0F, 0.0F, 32, 32, 32, 32));
+            RenderUtil.deferredRenderer(() -> graphics.blit(RenderType::guiTextured, this.favicon.textureLocation(), widget.getX(), widget.getY(), 0.0F, 0.0F, 32, 32, 32, 32));
     }
 
     /**

@@ -16,9 +16,10 @@ import mod.adrenix.nostalgic.util.common.timer.SimpleTimer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -165,7 +166,7 @@ public class ModToast implements Toast
     public void open()
     {
         this.setVisible(true);
-        Minecraft.getInstance().getToasts().addToast(this);
+        Minecraft.getInstance().getToastManager().addToast(this);
     }
 
     /**
@@ -238,16 +239,24 @@ public class ModToast implements Toast
         return 25 + (this.lines.size() * 12);
     }
 
+    @Override
+    public Visibility getWantedVisibility()
+    {
+        return this.isVisible ? Visibility.SHOW : Visibility.HIDE;
+    }
+
+    @Override
+    public void update(ToastManager toastManager, long visibilityTime) {}
+
     /**
      * Render the toast.
      *
      * @param graphics             A {@link GuiGraphics} reference.
-     * @param toast                A {@link ToastComponent} instance.
+     * @param font                 A {@link Font} instance.
      * @param timeSinceLastVisible The time in milliseconds.
-     * @return A visibility enumeration instance that indicates whether the toast is visible or not.
      */
     @Override
-    public Visibility render(GuiGraphics graphics, ToastComponent toast, long timeSinceLastVisible)
+    public void render(GuiGraphics graphics, Font font, long timeSinceLastVisible)
     {
         String splash = "N.T";
         float scale = 1.8F - Mth.abs(Mth.sin((float) (Util.getMillis() % 1000L) / 1000.0F * ((float) Math.PI * 2)) * 0.1F);
@@ -278,7 +287,5 @@ public class ModToast implements Toast
 
         if (this.timer != null && this.timer.hasElapsed())
             this.close();
-
-        return this.isVisible ? Visibility.SHOW : Visibility.HIDE;
     }
 }

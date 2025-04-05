@@ -93,7 +93,7 @@ public abstract class SoundHelper
      */
     private static boolean isDisabledHandled(PositionSoundHandler handler)
     {
-        if (SoundTweak.DISABLED_POSITIONED_SOUNDS.get().contains(handler.sound.getLocation().toString()))
+        if (SoundTweak.DISABLED_POSITIONED_SOUNDS.get().contains(handler.sound.location().toString()))
             return handler.mute();
 
         return false;
@@ -310,7 +310,7 @@ public abstract class SoundHelper
      */
     private static boolean isStepHandled(PositionSoundHandler handler)
     {
-        String path = handler.sound.getLocation().getPath();
+        String path = handler.sound.location().getPath();
         boolean isEntityStep = path.contains("entity.") && path.contains(".step");
         boolean isSingleplayer = Minecraft.getInstance().hasSingleplayerServer();
 

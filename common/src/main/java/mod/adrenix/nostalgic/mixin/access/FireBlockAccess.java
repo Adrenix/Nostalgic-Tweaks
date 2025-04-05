@@ -3,7 +3,6 @@ package mod.adrenix.nostalgic.mixin.access;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +19,7 @@ public interface FireBlockAccess
     int nt$getIgniteOdds(LevelReader level, BlockPos blockPos);
 
     @Invoker("getStateWithAge")
-    BlockState nt$getStateWithAge(LevelAccessor level, BlockPos blockPos, int age);
+    BlockState nt$getStateWithAge(LevelReader level, BlockPos blockPos, int age);
 
     @Invoker("isValidFireLocation")
     boolean nt$isValidFireLocation(BlockGetter level, BlockPos blockPos);

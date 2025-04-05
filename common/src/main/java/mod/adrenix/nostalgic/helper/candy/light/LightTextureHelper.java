@@ -53,9 +53,9 @@ public abstract class LightTextureHelper
             for (int blockLight = 0; blockLight < 16; blockLight++)
             {
                 if (skyLight >= 14 || blockLight >= 14)
-                    lightPixels.setPixelRGBA(blockLight, skyLight, 0xFFFFFFFF);
+                    lightPixels.setPixel(blockLight, skyLight, 0xFFFFFFFF);
                 else
-                    lightPixels.setPixelRGBA(blockLight, skyLight, 0xFF999999);
+                    lightPixels.setPixel(blockLight, skyLight, 0xFF999999);
             }
         }
     }
@@ -259,7 +259,7 @@ public abstract class LightTextureHelper
 
                 int light = Math.round(rgba);
 
-                lightPixels.setPixelRGBA(x, y, 255 << 24 | light << 16 | light << 8 | light);
+                lightPixels.setPixel(x, y, 255 << 24 | light << 16 | light << 8 | light);
             }
         }
 

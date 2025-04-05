@@ -273,7 +273,7 @@ public class ConfigScreen extends EnhancedScreen<ConfigScreen, ConfigWidgets>
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        this.renderBlurredBackground(partialTick);
+        this.renderBlurredBackground();
 
         if (this.minecraft.level != null && this.visible)
             graphics.fillGradient(0, 0, this.width, this.height, 0x32101010, 0x01000000);

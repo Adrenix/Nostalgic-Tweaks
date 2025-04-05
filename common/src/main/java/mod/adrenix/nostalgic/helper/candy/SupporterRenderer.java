@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.TriState;
 import org.joml.Matrix4f;
 
 import java.util.Arrays;
@@ -32,14 +33,14 @@ public abstract class SupporterRenderer
 
     private static final RenderType AUTHOR_VISIBLE_SHADER = RenderType.create("nt_author_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), TriState.FALSE, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .createCompositeState(false));
 
     private static final RenderType AUTHOR_SEE_THROUGH_SHADER = RenderType.create("nt_author_see_through_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SEE_THROUGH_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_LOGO_64.getLocation(), TriState.FALSE, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
@@ -48,14 +49,14 @@ public abstract class SupporterRenderer
 
     private static final RenderType SUPPORTER_VISIBLE_SHADER = RenderType.create("nt_supporter_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), TriState.FALSE, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .createCompositeState(false));
 
     private static final RenderType SUPPORTER_SEE_THROUGH_SHADER = RenderType.create("nt_supporter_see_through_shader", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 1536, false, true, RenderType.CompositeState.builder()
         .setShaderState(RenderStateShard.RENDERTYPE_TEXT_SEE_THROUGH_SHADER)
-        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), false, false))
+        .setTextureState(new RenderStateShard.TextureStateShard(TextureLocation.NT_SUPPORTER_64.getLocation(), TriState.FALSE, false))
         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
         .setLightmapState(RenderStateShard.LIGHTMAP)
         .setDepthTestState(RenderStateShard.NO_DEPTH_TEST)

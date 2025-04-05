@@ -1,5 +1,6 @@
 package mod.adrenix.nostalgic.client.gui.screen.vanilla.title;
 
+import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,7 +12,7 @@ import mod.adrenix.nostalgic.util.client.timer.PartialTick;
 import mod.adrenix.nostalgic.util.common.asset.TextureLocation;
 import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -89,7 +90,7 @@ class NostalgicLogoRenderer
         int scaleHeight = (int) (120 * window.getGuiScale());
 
         RenderSystem.backupProjectionMatrix();
-        RenderSystem.setProjectionMatrix(new Matrix4f().perspective(70.341F, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F), VertexSorting.DISTANCE_TO_ORIGIN);
+        RenderSystem.setProjectionMatrix(new Matrix4f().perspective(70.341F, window.getWidth() / (float) scaleHeight, 0.05F, 100.0F), ProjectionType.PERSPECTIVE);
         RenderSystem.viewport(0, window.getHeight() - scaleHeight, window.getWidth(), scaleHeight);
 
         PoseStack poseStack = new PoseStack();
@@ -102,7 +103,7 @@ class NostalgicLogoRenderer
 
         poseStack.mulPose(modelViewStack);
 
-        RenderSystem.applyModelViewMatrix();
+//        RenderSystem.applyModelViewMatrix();
         RenderSystem.enableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.depthMask(true);
@@ -115,7 +116,7 @@ class NostalgicLogoRenderer
 
             if (pass == 0)
             {
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.clear(256);
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
 
@@ -126,7 +127,7 @@ class NostalgicLogoRenderer
             if (pass == 1)
             {
                 RenderSystem.disableBlend();
-                RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.clear(256);
             }
 
             if (pass == 2)
@@ -142,12 +143,12 @@ class NostalgicLogoRenderer
 
             if (pass == 0)
             {
-                RenderSystem.setShader(GameRenderer::getRendertypeCutoutShader);
+                RenderSystem.setShader(CoreShaders.RENDERTYPE_CUTOUT);
                 RenderSystem.setShaderTexture(0, TextureLocation.BLOCK_SHADOW);
             }
             else
             {
-                RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
+                RenderSystem.setShader(CoreShaders.POSITION_COLOR_TEX_LIGHTMAP);
                 RenderStateShard.BLOCK_SHEET.setupRenderState();
             }
 
@@ -193,7 +194,7 @@ class NostalgicLogoRenderer
 
         modelViewStack.popMatrix();
 
-        RenderSystem.applyModelViewMatrix();
+//        RenderSystem.applyModelViewMatrix();
         RenderSystem.enableCull();
     }
 

@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,6 +29,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Function;
 
 @Mixin(InventoryScreen.class)
 public abstract class InventoryScreenMixin extends AbstractContainerScreen<InventoryMenu>
@@ -96,15 +99,15 @@ public abstract class InventoryScreenMixin extends AbstractContainerScreen<Inven
         method = "renderBg",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"
         )
     )
-    private void nt_inventory_screen$wrapBackgroundRenderer(GuiGraphics graphics, ResourceLocation atlas, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, Operation<Void> operation)
+    private void nt_inventory_screen$wrapBackgroundRenderer(GuiGraphics graphics, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation atlas, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight, Operation<Void> operation)
     {
         if (CandyTweak.OLD_INVENTORY.get())
-            graphics.blit(TextureLocation.INVENTORY, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+            graphics.blit(RenderType::guiTextured, TextureLocation.INVENTORY, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, textureWidth, textureHeight);
         else
-            operation.call(graphics, atlas, x, y, uOffset, vOffset, uWidth, vHeight);
+            operation.call(graphics, renderTypeGetter, atlas, x, y, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
     }
 
     /**

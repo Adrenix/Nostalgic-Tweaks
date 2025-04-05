@@ -28,6 +28,7 @@ import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -1022,9 +1023,9 @@ public class RowList extends DynamicWidget<RowListBuilder, RowList> implements C
 
                 RenderSystem.enableBlend();
 
-                graphics.blit(background, x0, y0, x1, y1 + scrollAmount, width, height, 32, 32);
-                graphics.blit(header, x0, y0 - 2, 0.0F, 0.0F, width, 2, 32, 2);
-                graphics.blit(footer, x0, y1, 0.0F, 0.0F, width, 2, 32, 2);
+                graphics.blit(RenderType::guiTextured, background, x0, y0, x1, y1 + scrollAmount, width, height, 32, 32);
+                graphics.blit(RenderType::guiTextured, header, x0, y0 - 2, 0.0F, 0.0F, width, 2, 32, 2);
+                graphics.blit(RenderType::guiTextured, footer, x0, y1, 0.0F, 0.0F, width, 2, 32, 2);
 
                 RenderSystem.disableBlend();
             }

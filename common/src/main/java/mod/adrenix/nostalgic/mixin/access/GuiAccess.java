@@ -32,7 +32,7 @@ public interface GuiAccess
         throw new AssertionError();
     }
 
-    @Accessor("AIR_BURSTING_SPRITE")
+    @Accessor("AIR_POPPING_SPRITE")
     static ResourceLocation NT$AIR_BURSTING_SPRITE()
     {
         throw new AssertionError();

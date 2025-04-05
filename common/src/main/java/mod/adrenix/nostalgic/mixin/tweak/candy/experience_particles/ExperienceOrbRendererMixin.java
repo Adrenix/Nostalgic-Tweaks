@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ExperienceOrbRenderer;
+import net.minecraft.client.renderer.entity.state.ExperienceOrbRenderState;
 import net.minecraft.world.entity.ExperienceOrb;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
     value = ExperienceOrbRenderer.class,
     priority = MixinPriority.APPLY_FIRST
 )
-public abstract class ExperienceOrbRendererMixin extends EntityRenderer<ExperienceOrb>
+public abstract class ExperienceOrbRendererMixin extends EntityRenderer<ExperienceOrb, ExperienceOrbRenderState>
 {
     /* Fake Constructor */
 
@@ -52,14 +53,14 @@ public abstract class ExperienceOrbRendererMixin extends EntityRenderer<Experien
      * Disables rendering of an experience orb.
      */
     @Inject(
-        method = "render(Lnet/minecraft/world/entity/ExperienceOrb;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+        method = "render(Lnet/minecraft/client/renderer/entity/state/ExperienceOrbRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
         at = @At(
             shift = At.Shift.AFTER,
             value = "INVOKE",
             target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"
         )
     )
-    private void nt_experience_particles$setOrbInvisible(ExperienceOrb orb, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
+    private void nt_experience_particles$setOrbInvisible(ExperienceOrbRenderState orb, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo callback)
     {
         if (GameplayTweak.DISABLE_ORB_RENDERING.get())
         {
