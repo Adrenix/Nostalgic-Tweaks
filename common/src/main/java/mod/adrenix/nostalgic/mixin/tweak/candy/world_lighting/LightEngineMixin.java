@@ -1,8 +1,7 @@
 package mod.adrenix.nostalgic.mixin.tweak.candy.world_lighting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import mod.adrenix.nostalgic.helper.candy.light.LightingHelper;
-import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import mod.adrenix.nostalgic.helper.candy.light.NostalgicDataLayer;
 import mod.adrenix.nostalgic.util.client.GameUtil;
 import mod.adrenix.nostalgic.util.common.ClassUtil;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -27,7 +26,7 @@ public abstract class LightEngineMixin
     /* Injections */
 
     /**
-     * Modifies returned light values from the light engines to help simulate old light rendering.
+     * Modifies returned light values from the client light engine to help simulate old light rendering.
      */
     @ModifyReturnValue(
         method = "getLightValue",
@@ -38,26 +37,10 @@ public abstract class LightEngineMixin
         if (GameUtil.isOnIntegratedSeverThread() || ClassUtil.isNotInstanceOf(this.chunkSource, ClientChunkCache.class))
             return lightValue;
 
-        boolean isSkyEngine = ClassUtil.isInstanceOf(this, SkyLightEngine.class);
+        LightLayer layer = ClassUtil.isInstanceOf(this, SkyLightEngine.class) ? LightLayer.SKY : LightLayer.BLOCK;
 
-        if (this.chunkSource.getLevel() instanceof ClientLevel level)
-        {
-            if (CandyTweak.OLD_CLASSIC_ENGINE.get())
-            {
-                if (!isSkyEngine)
-                    return 0;
-
-                return LightingHelper.getClassicLight(lightValue, level, blockPos);
-            }
-
-            if (CandyTweak.ROUND_ROBIN_RELIGHT.get())
-            {
-                if (!isSkyEngine)
-                    return lightValue;
-
-                return LightingHelper.getCombinedLight(lightValue, level.getBrightness(LightLayer.BLOCK, blockPos));
-            }
-        }
+        if (this.chunkSource.getLevel() instanceof ClientLevel)
+            return NostalgicDataLayer.getLightValue(layer, blockPos, lightValue);
 
         return lightValue;
     }

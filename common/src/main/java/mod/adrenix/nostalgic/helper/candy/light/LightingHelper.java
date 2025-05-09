@@ -4,16 +4,19 @@ import mod.adrenix.nostalgic.helper.candy.block.ChestHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.util.common.data.FlagHolder;
 import mod.adrenix.nostalgic.util.common.data.IntegerHolder;
+import mod.adrenix.nostalgic.util.common.data.NullableAction;
 import mod.adrenix.nostalgic.util.common.data.Pair;
 import mod.adrenix.nostalgic.util.common.math.MathUtil;
 import mod.adrenix.nostalgic.util.common.world.BlockUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -70,10 +74,23 @@ public abstract class LightingHelper
 
     /**
      * This is a queue of packed longs where the packed chunk pos is on the left, and the packed block pos is on the
-     * right to check after a chunk is relighted. This queue is slowly emptied at the start of level rendering. Only a
-     * certain number of queued objects are executed per render pass to prevent excessive lag.
+     * right to check after a chunk is relighted. This queue is slowly emptied during each tick. Only a certain number
+     * of queued objects are executed each tick to prevent excessive lag.
      */
     public static final ConcurrentLinkedDeque<Pair<Long, Long>> PACKED_CHUNK_BLOCK_QUEUE = new ConcurrentLinkedDeque<>();
+
+    /**
+     * This is a queue of packed section coordinates for relighting. The purpose of this queue is to slow down the rate
+     * of chunk relighting to improve performance and mod compatibility.
+     */
+    public static final ConcurrentLinkedDeque<Long> CHUNK_RELIGHT_QUEUE = new ConcurrentLinkedDeque<>();
+
+    /**
+     * This is a queue of non-built packed section coordinates that will later be scheduled for rebuilding in Sodium's
+     * render section manager. A queue is used to ensure all sections receive relighting during terrain rendering. Once
+     * Sodium's render section manager has finished terrain rendering, this queue is emptied.
+     */
+    public static final HashSet<Long> SODIUM_REBUILD_QUEUE = new HashSet<>();
 
     /**
      * This tracks whether the level renderer needs to relight all chunks loaded by the client player.
@@ -110,6 +127,8 @@ public abstract class LightingHelper
         TIME_SKYLIGHT.set(-1);
         WEATHER_SKYLIGHT.set(-1);
         ENQUEUE_RELIGHT.disable();
+        CHUNK_RELIGHT_QUEUE.clear();
+        SODIUM_REBUILD_QUEUE.clear();
         PACKED_RELIGHT_QUEUE.clear();
         PACKED_CHUNK_BLOCK_QUEUE.clear();
     }
@@ -131,7 +150,7 @@ public abstract class LightingHelper
     }
 
     /**
-     * Checks if world relighting is needed based on the time of day and weather.
+     * Checks if world relighting is necessary based on the time of day and weather.
      */
     public static void onTick()
     {
@@ -155,6 +174,57 @@ public abstract class LightingHelper
 
             if (TIME_SKYLIGHT.get() > 4)
                 ENQUEUE_RELIGHT.enable();
+        }
+    }
+
+    /**
+     * Checks the relighting queues and performs relighting on chunks that need it.
+     */
+    public static void checkRelightQueues()
+    {
+        ClientLevel level = Minecraft.getInstance().level;
+        LevelRenderer renderer = Minecraft.getInstance().levelRenderer;
+
+        if (level == null)
+            return;
+
+        if (!PACKED_RELIGHT_QUEUE.isEmpty())
+        {
+            Pair<Long, Byte> packedRelight = PACKED_RELIGHT_QUEUE.pop();
+            ChunkPos chunkPos = new ChunkPos(packedRelight.left());
+            LevelChunk chunk = level.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
+
+            if (chunk != null)
+                relightChunk(chunk, packedRelight.right());
+            else if (renderer.isChunkCompiled(chunkPos.getWorldPosition()))
+                PACKED_RELIGHT_QUEUE.add(packedRelight);
+        }
+
+        while (!CHUNK_RELIGHT_QUEUE.isEmpty())
+            level.getChunkSource().onLightUpdate(LightLayer.BLOCK, SectionPos.of(CHUNK_RELIGHT_QUEUE.pop()));
+
+        for (int i = 0; i < 4096; i++)
+        {
+            if (PACKED_CHUNK_BLOCK_QUEUE.isEmpty())
+                break;
+
+            Pair<Long, Long> packedQueue = PACKED_CHUNK_BLOCK_QUEUE.pop();
+            ChunkPos chunkPos = new ChunkPos(packedQueue.left());
+            LevelChunk chunk = level.getChunkSource().getChunk(chunkPos.x, chunkPos.z, false);
+
+            if (chunk != null)
+            {
+                BlockPos blockPos = BlockPos.of(packedQueue.right());
+                int x = blockPos.getX() & 15;
+                int y = blockPos.getY() & 15;
+                int z = blockPos.getZ() & 15;
+
+                NullableAction.attempt(chunk.getSkyLightSources(), skyLightSources -> skyLightSources.update(chunk, x, y, z));
+
+                chunk.getLevel().getLightEngine().checkBlock(blockPos);
+            }
+            else if (renderer.isChunkCompiled(chunkPos.getWorldPosition()))
+                PACKED_CHUNK_BLOCK_QUEUE.add(packedQueue);
         }
     }
 
@@ -312,9 +382,9 @@ public abstract class LightingHelper
 
         while (abovePos.getY() < level.getMaxBuildHeight())
         {
-            BlockState blockState = level.getBlockState(abovePos);
-            boolean isWater = blockState.is(Blocks.WATER);
-            boolean isSolid = level.getBlockState(abovePos).getLightBlock(level, abovePos) >= level.getMaxLightLevel();
+            BlockState aboveState = level.getBlockState(abovePos);
+            boolean isWater = aboveState.is(Blocks.WATER);
+            boolean isSolid = aboveState.getLightBlock(level, abovePos) >= level.getMaxLightLevel();
 
             if (isWater || isSolid)
                 return 0;

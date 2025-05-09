@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.forge.mixin;
 
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -37,7 +38,12 @@ public class MixinFlywheelPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return FMLLoader.getLoadingModList().getModFileById("flywheel") != null;
+        ModFileInfo flywheel = FMLLoader.getLoadingModList().getModFileById("flywheel");
+
+        if (flywheel == null)
+            return false;
+
+        return flywheel.versionString().startsWith("0.6");
     }
 
     /**

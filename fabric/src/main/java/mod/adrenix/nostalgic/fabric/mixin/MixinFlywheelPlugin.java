@@ -37,7 +37,10 @@ public class MixinFlywheelPlugin implements IMixinConfigPlugin
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName)
     {
-        return FabricLoader.getInstance().getModContainer("flywheel").isPresent();
+        return FabricLoader.getInstance()
+            .getModContainer("flywheel")
+            .map(flywheel -> flywheel.getMetadata().getVersion().getFriendlyString().startsWith("0.6"))
+            .orElse(false);
     }
 
     /**
