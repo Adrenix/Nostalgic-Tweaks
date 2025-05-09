@@ -50,8 +50,11 @@ dependencies {
     // Apple Skin Support
     modCompileOnly "maven.modrinth:appleskin:${rootProject.forge_appleskin_version}"
 
-    // Flywheel Support
-    modCompileOnly "com.jozufozu.flywheel:flywheel-forge-1.20.1:${rootProject.flywheel_forge_version}"
+    // v0.6.x Flywheel Support
+    modCompileOnly "com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.10-7"
+
+    // v1.0.x Flywheel Support
+    modCompileOnly "dev.engine-room.flywheel:flywheel-forge-api-1.20.1:1.0.1"
 
     // Embeddium Support
     modCompileOnly "maven.modrinth:embeddium:${rootProject.forge_embeddium_version}"
