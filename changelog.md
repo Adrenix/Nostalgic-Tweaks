@@ -1,5 +1,12 @@
 # Nostalgic Tweaks 1.20.1 (Fabric/Forge/NeoForge) Changelog
 
+## 2.0.0-beta911 (in-dev)
+
+This update fixes reported issues, adds new tweaks, and includes general mod improvements.
+
+- Fixed crash with Create 0.6+ and Flywheel 1.0+
+    - Create 0.5.x and Flywheel 0.6.x still work with this version of the mod.
+
 ## 2.0.0-beta910
 
 This update fixes reported issues, adds new tweaks, and includes general mod improvements. The most notable new tweaks
