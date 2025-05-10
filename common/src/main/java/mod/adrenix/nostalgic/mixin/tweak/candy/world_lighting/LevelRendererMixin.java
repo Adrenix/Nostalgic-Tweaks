@@ -58,7 +58,7 @@ public abstract class LevelRendererMixin
 
         for (ChunkRenderDispatcher.RenderChunk renderChunk : this.viewArea.chunks)
         {
-            if (renderChunk.getCompiledChunk().hasNoRenderableLayers())
+            if (renderChunk == null || renderChunk.getCompiledChunk().hasNoRenderableLayers())
                 continue;
 
             long packedPos = SectionPos.of(renderChunk.getOrigin()).chunk().toLong();
