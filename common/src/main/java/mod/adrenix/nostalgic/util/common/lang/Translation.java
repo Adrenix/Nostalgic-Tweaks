@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.util.common.lang;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -12,14 +13,17 @@ import net.minecraft.network.chat.MutableComponent;
 public record Translation(String langKey)
 {
     /**
-     * Get the translation component for this lang key.
+     * Get the translation component for this lang key. The fallback is the server-side language translation if a client
+     * does not have the mod installed.
      *
      * @param args Any additional arguments that need passed to the translatable language file definition.
-     * @return A {@link MutableComponent} translation.
+     * @return A {@link MutableComponent} translation with server-side default translation as the fallback.
      */
     public MutableComponent get(Object... args)
     {
-        return DecodeLang.findAndReplace(Component.translatable(this.langKey, args));
+        String fallback = Language.getInstance().getOrDefault(this.langKey);
+
+        return DecodeLang.findAndReplace(Component.translatableWithFallback(this.langKey, fallback, args));
     }
 
     /**
