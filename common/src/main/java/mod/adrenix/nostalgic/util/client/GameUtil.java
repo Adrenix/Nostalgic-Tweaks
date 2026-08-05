@@ -7,6 +7,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
@@ -127,18 +128,44 @@ public abstract class GameUtil
     }
 
     /**
+     * Get the client's integrated {@link ServerLevel} associated with the given dimension {@link ResourceKey<Level>}.
+     *
+     * @param dimension The dimension's {@link ResourceKey<Level>}.
+     * @return A {@link ServerLevel} associated with the given dimension {@link ResourceKey<Level>}, if available.
+     */
+    @Nullable
+    @PublicAPI
+    public static ServerLevel getLevel(ResourceKey<Level> dimension)
+    {
+        if (Minecraft.getInstance().getSingleplayerServer() == null)
+            return null;
+
+        return Minecraft.getInstance().getSingleplayerServer().getLevel(dimension);
+    }
+
+    /**
+     * Get the client's integrated {@link ServerLevel} associated with the given {@link Level}.
+     *
+     * @param level The {@link Level} to get dimension data from.
+     * @return The {@link ServerLevel} associated with the provided {@link Level}, if available.
+     */
+    @Nullable
+    @PublicAPI
+    public static ServerLevel getLevel(Level level)
+    {
+        return getLevel(level.dimension());
+    }
+
+    /**
      * Get the client's integrated server level instance.
      *
-     * @return The current {@link ServerLevel} instance for the overworld, if it exists.
+     * @return The current {@link ServerLevel} instance for the overworld, if available.
      */
     @Nullable
     @PublicAPI
     public static ServerLevel getOverworldLevel()
     {
-        if (Minecraft.getInstance().getSingleplayerServer() == null)
-            return null;
-
-        return Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD);
+        return getLevel(Level.OVERWORLD);
     }
 
     /**
