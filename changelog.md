@@ -8,7 +8,24 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
 - Added Sodium 0.8 support.
 - Added Raised 5.x mod support for old HUD tweaks.
     - Raised 4.x is still supported.
+- Added `Old Fence Connections` tweak in `Cross Connections` subcategory under block candy.
+    - This brings back the old fence arm connection logic from Minecraft beta. There are other tweaks in this
+      subcategory for walls, iron bars, and glass panes.
+- Added `Apply Full Hitbox Targeting` hitbox outline tweak so that a server can allow players to correctly target their
+  custom full block outlines.
+- Redid `Old Nightmares` tweak so that it better represents the logic used in Minecraft beta.
+    - Monsters that can spawn within a 32x16x32 area around the player's bed will check if they can path find directly
+      to the bed. If so, the player will wake up and the monster appears next to the bed.
+    - A message will now appear in chat notifying the player that a monster found them and that the player should build
+      a shelter to keep monsters out.
+- Added `Vertical Bobbing Intensity` slider tweak for player arm animation.
+    - The old vertical bobbing tweak was also adjusted for smoother animation.
 - Added `Old Style Bogged Skeleton Drops` modern mob drops tweak.
+- Added `Old Sponge Absorption` block gameplay tweak.
+    - Immediately absorbs water in a 5x5x5 area when placed and will not allow water to flow back in.
+    - Providing a block update, such as a redstone pulse, triggers the immediate absorption of water again.
+    - When destroyed, physic updates are sent to blocks around the air perimeter so water can flow back in.
+    - Water absorption only occurs during block updates and not every game tick.
 - Added `Play Music Continuously` sound music tweak.
 - Added `Continuous Delay` sound music tweak to define delay between continuous music.
 - Added `Ignored Old Damage Value Items` combat gameplay list tweak.
@@ -16,6 +33,8 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
     - This change increases sword damage and reduces damage for all other tools.
 - Fixed the 'Game menu' pause screen text being the incorrect height on some old layouts.
 - Fixed the stamina bar being below the armor bar on NeoForge.
+- Fixed the player gaining momentum while standing on a bed when the old bed bouncing tweak is enabled.
+- Fixed blocks in the `Full Block Collisions` tweak list not working as intended in singleplayer.
 - Potentially fixed rare issue where all game textures broke after the early loading screen.
 
 ## 2.0.0-beta922
