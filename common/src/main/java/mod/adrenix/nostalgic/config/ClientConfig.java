@@ -236,6 +236,13 @@ public class ClientConfig implements ConfigMeta
 
         public boolean hidePlayerInBed = CandyTweak.HIDE_PLAYER_IN_BED.register("hidePlayerInBed");
 
+        // Cross Connections
+
+        public boolean oldFenceConnections = CandyTweak.OLD_FENCE_CONNECTIONS.register("oldFenceConnections");
+        public boolean oldStyleWallConnections = CandyTweak.OLD_STYLE_WALL_CONNECTIONS.register("oldStyleWallConnections");
+        public boolean oldStyleIronBarsConnections = CandyTweak.OLD_STYLE_IRON_BARS_CONNECTIONS.register("oldStyleIronBarsConnections");
+        public boolean oldStyleGlassPanesConnections = CandyTweak.OLD_STYLE_GLASS_PANES_CONNECTIONS.register("oldStyleGlassPanesConnections");
+
         // Heads-up Toasts
 
         public boolean hideRecipeToasts = CandyTweak.HIDE_RECIPE_TOASTS.register("hideRecipeToasts");

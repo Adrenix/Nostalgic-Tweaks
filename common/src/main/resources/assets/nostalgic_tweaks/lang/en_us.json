@@ -738,6 +738,7 @@
   "gui.nostalgic_tweaks.container.eyeCandy.block_chest": "Chest Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.block_torch": "Torch Candy",
   "gui.nostalgic_tweaks.container.eyeCandy.block_bed": "Bed Candy",
+  "gui.nostalgic_tweaks.container.eyeCandy.block_cross": "Cross Control",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox": "Custom Hitbox",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox_outline": "Hitbox Outline",
   "gui.nostalgic_tweaks.container.eyeCandy.block_hitbox_outline_aesthetic": "Outline Aesthetic",
@@ -1085,6 +1086,15 @@
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed": "Hide Player When Sleeping",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.info": "Hide the player's model when the player is sleeping in a bed in first-person view.",
   "gui.nostalgic_tweaks.config.eyeCandy.hidePlayerInBed.search": "Bed",
+
+  "gui.nostalgic_tweaks.config.eyeCandy.oldFenceConnections": "Old Fence Connections",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldFenceConnections.info": "Prevent fences from connecting to other blocks that are not fences or fence gates. This will not impact the fence's hitbox. Mods that override block rendering may break this tweak.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleWallConnections": "Old Style Wall Connections",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleWallConnections.info": "Replicate beta-style fence connections for wall blocks. This will not impact the wall's hitbox. Mods that override block rendering may break this tweak.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleIronBarsConnections": "Old Style Iron Bars Connections",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleIronBarsConnections.info": "Replicate beta-style fence connections for iron bars blocks. This will not impact the iron bars' hitbox. Mods that override block rendering may break this tweak.",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleGlassPanesConnections": "Old Style Glass Panes Connections",
+  "gui.nostalgic_tweaks.config.eyeCandy.oldStyleGlassPanesConnections.info": "Replicate beta-style fence connections for glass pane blocks. This will not impact the glass pane's hitbox. Mods that override block rendering may break this tweak.",
 
   "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts": "Hide Recipe Toasts",
   "gui.nostalgic_tweaks.config.eyeCandy.hideRecipeToasts.info": "Prevent the pop-up toasts that appear when unlocking a new recipe.",

@@ -53,6 +53,13 @@ public interface CandyTweak
     TweakNumber<Float> MINIMUM_PULSATION_TRANSPARENCY = TweakNumber.client(0.1F, CandyGroup.BLOCK_HITBOX_OVERLAY_ANIMATION).slider(Lang.Slider.MINIMUM, 0.0F, 1.0F).interval(0.25F).build();
     TweakNumber<Float> MAXIMUM_PULSATION_TRANSPARENCY = TweakNumber.client(0.4F, CandyGroup.BLOCK_HITBOX_OVERLAY_ANIMATION).slider(Lang.Slider.MAXIMUM, 0.0F, 1.0F).interval(0.25F).build();
 
+    // Cross Connections
+
+    TweakFlag OLD_FENCE_CONNECTIONS = TweakFlag.client(false, CandyGroup.BLOCK_CROSS).reloadChunks().ignoreNetworkCheck().newForUpdate().build();
+    TweakFlag OLD_STYLE_WALL_CONNECTIONS = TweakFlag.client(false, CandyGroup.BLOCK_CROSS).reloadChunks().ignoreNetworkCheck().newForUpdate().build();
+    TweakFlag OLD_STYLE_IRON_BARS_CONNECTIONS = TweakFlag.client(false, CandyGroup.BLOCK_CROSS).reloadChunks().ignoreNetworkCheck().newForUpdate().build();
+    TweakFlag OLD_STYLE_GLASS_PANES_CONNECTIONS = TweakFlag.client(false, CandyGroup.BLOCK_CROSS).reloadChunks().ignoreNetworkCheck().newForUpdate().build();
+
     // Chests
 
     TweakFlag OLD_CHEST = TweakFlag.client(true, CandyGroup.BLOCK_CHEST).modIssues(TweakIssue.OPTIFINE).reloadResources().build();

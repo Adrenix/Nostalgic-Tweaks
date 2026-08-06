@@ -18,6 +18,7 @@ public interface CandyGroup
     Container BLOCK_HITBOX_OVERLAY = Container.group(BLOCK_HITBOX, "block_hitbox_overlay").color(0xFFFFFF).icon(Icons.HITBOX_OVERLAY).build();
     Container BLOCK_HITBOX_OVERLAY_COLOR = Container.group(BLOCK_HITBOX_OVERLAY, "block_hitbox_overlay_color").color(0xEEA930).icon(Icons.FILLED_COLOR_PICKER).build();
     Container BLOCK_HITBOX_OVERLAY_ANIMATION = Container.group(BLOCK_HITBOX_OVERLAY, "block_hitbox_overlay_animation").color(0x00AEDD).icon(Icons.PLAYER_CONTROLS).build();
+    Container BLOCK_CROSS = Container.group(BLOCK, "block_cross").color(0xC19D63).icon(Blocks.OAK_FENCE).build();
     Container BLOCK_CHEST = Container.group(BLOCK, "block_chest").color(0xFFB444).icon(Blocks.CHEST).build();
     Container BLOCK_TORCH = Container.group(BLOCK, "block_torch").color(0xFFD800).icon(Blocks.TORCH).build();
     Container BLOCK_BED = Container.group(BLOCK, "block_bed").color(0xFB4A4C).icon(Items.RED_BED).build();

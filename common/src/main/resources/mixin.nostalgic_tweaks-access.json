@@ -19,6 +19,7 @@
     "SelectWorldScreenAccess",
     "TimerAccess",
     "TitleScreenAccess",
+    "WallBlockAccess",
     "WorldListEntryAccess",
     "WorldSelectionListAccess"
   ],

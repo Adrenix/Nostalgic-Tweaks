@@ -1,7 +1,11 @@
 package mod.adrenix.nostalgic.neoforge.event;
 
 import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
+import mod.adrenix.nostalgic.helper.candy.block.cross.CrossBlock;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.embeddedt.embeddium.api.BlockRendererRegistry;
 import org.embeddedt.embeddium.api.render.chunk.RenderSectionDistanceFilter;
@@ -34,10 +38,16 @@ public abstract class EmbeddiumHandler
     public static void init()
     {
         BlockRendererRegistry.instance().registerRenderPopulator((resultList, context) -> {
-            if (TorchHelper.isNotLikeTorch(context.state()))
+            if (TorchHelper.isNotLikeTorch(context.state()) && !(context.state().getBlock() instanceof FenceBlock))
                 return;
 
             resultList.add((ctx, random, consumer) -> {
+                BlockPos origin = new BlockPos((int) ctx.origin().x(), (int) ctx.origin().y(), (int) ctx.origin().z());
+                BlockState crossState = CrossBlock.getState(ctx.localSlice(), ctx.state(), ctx.pos());
+
+                if (ctx.state() != crossState)
+                    ctx.update(ctx.pos(), origin, crossState, ctx.model(), ctx.seed(), ctx.modelData(), ctx.renderLayer());
+
                 if (TorchHelper.isLikeTorch(ctx.state()))
                 {
                     TorchHelper.writeVertices(ctx.stack(), ctx.world(), consumer, ctx.model(), ctx.state(), ctx.pos(), random);
