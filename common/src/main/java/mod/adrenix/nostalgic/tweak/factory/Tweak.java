@@ -32,6 +32,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
 
     protected final TweakBuilder<?> builder;
     protected final Set<Runnable> reflectionListeners;
+    protected final Set<Runnable> onSaveListeners;
     private final Supplier<Boolean> modConflict;
     private final FlagHolder networkSync;
     private final TweakResult<T> resultSupplier;
@@ -50,6 +51,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
         this.statusHolder = CacheHolder.from(builder.status, this::getCacheMode);
         this.resultSupplier = new TweakResult<>(this::result);
         this.reflectionListeners = new HashSet<>();
+        this.onSaveListeners = new HashSet<>();
 
         builder.container.addTweak(this);
     }
@@ -323,6 +325,7 @@ public abstract class Tweak<T> implements TweakMeta<T>
     public void applyReflection(T value)
     {
         this.runReflectionListeners();
+        this.runOnSaveListeners();
 
         if (NostalgicTweaks.isClient())
             ConfigReflect.setClientField(this, value);
@@ -331,8 +334,9 @@ public abstract class Tweak<T> implements TweakMeta<T>
     }
 
     /**
-     * Subscribe a listener that will run when this tweak's cache value is reflected onto the config. Reflection is done
-     * after a new value has been applied to a tweak and before the runtime config is saved to disk.
+     * Subscribe a listener that will run when this tweak's cached value is reflected onto the config, or a new value
+     * has been received from the server. Reflection is done after a new value has been applied to a tweak and before
+     * the runtime config is saved to disk. These listeners are run <b>before</b> on-save listeners.
      *
      * @param runnable A {@link Runnable} to run.
      */
@@ -342,13 +346,37 @@ public abstract class Tweak<T> implements TweakMeta<T>
     }
 
     /**
-     * Run all reflection listeners assigned to this tweak. Use this when a tweak's stored value has changed. This
-     * should <b color=red>not</b> be used when a tweak's cache value changes.
+     * Subscribe a listener that will run when this tweak's cached value is reflected onto the config. These listeners
+     * will <b color=red>not</b> run when a new value is received from the server. These listeners are run <b>after</b>
+     * the on-reflection listeners.
+     *
+     * @param runnable A {@link Runnable} to run.
+     */
+    public void whenSaved(Runnable runnable)
+    {
+        this.onSaveListeners.add(runnable);
+    }
+
+    /**
+     * Run all reflection listeners assigned to this tweak. Use this when a tweak's stored value has changed, or has
+     * received a new value from a server. This should <b color=red>not</b> be used when a tweak's cache value changes.
      */
     protected void runReflectionListeners()
     {
         this.reflectionListeners.forEach(listener -> {
             NostalgicTweaks.LOGGER.debug("[Reflection Listener] Running for (%s)", this.toString());
+            listener.run();
+        });
+    }
+
+    /**
+     * Run all on-save listeners assigned to this tweak. Use this when a tweak's disk value has changed. This must
+     * <b color=red>not</b> be used when a tweak's cache value changes.
+     */
+    protected void runOnSaveListeners()
+    {
+        this.onSaveListeners.forEach(listener -> {
+            NostalgicTweaks.LOGGER.debug("[On-save Listener] Running for (%s)", this.toString());
             listener.run();
         });
     }
