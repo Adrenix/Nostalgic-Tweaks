@@ -1,9 +1,15 @@
 package mod.adrenix.nostalgic.helper.gameplay.stamina;
 
+import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.network.packet.stamina.ClientboundStaminaSync;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
+import mod.adrenix.nostalgic.util.common.network.PacketUtil;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This utility is used by both the client and server.
@@ -11,72 +17,67 @@ import java.util.HashMap;
 public abstract class StaminaHelper
 {
     /**
-     * This map is used by the server to cache all players and their stamina data. When a player disconnects, their data
-     * is removed from the cache map. No stamina data is saved on disk since this system is very basic and does not
-     * require any data to be saved on disk.
+     * This map is used by the server to cache all players and their stamina. When a player disconnects, their data is
+     * removed from the cache map. Stamina is saved on disk using the player's NBT.
      */
-    private static final HashMap<String, StaminaData> PLAYER_DATA = new HashMap<>();
+    private static final HashMap<UUID, PlayerStamina> PLAYER_DATA = new HashMap<>();
 
     /**
      * Initialize the helper utility for when a stamina tweak changes its state.
      */
     public static void init()
     {
-        GameplayTweak.STAMINA_SPRINT.whenChanged(StaminaHelper::reset);
+        GameplayTweak.STAMINA_DURATION.whenSaved(StaminaHelper::reset);
+        GameplayTweak.STAMINA_RECHARGE.whenSaved(StaminaHelper::reset);
+        GameplayTweak.STAMINA_COOLDOWN.whenSaved(StaminaHelper::reset);
+    }
+
+    /**
+     * Reset all players' stamina data and send stamina synchronization packets to all connected players.
+     */
+    public static void reset()
+    {
+        MinecraftServer server = NostalgicTweaks.getIntegratedOrDedicatedServer();
+
+        if (server == null)
+            return;
+
+        PLAYER_DATA.values().forEach(PlayerStamina::reset);
+
+        server.getPlayerList()
+            .getPlayers()
+            .forEach(player -> PacketUtil.sendToPlayer(player, ClientboundStaminaSync.create(player)));
     }
 
     /**
      * Get the stamina data associated with the given player.
      *
      * @param player The {@link Player} instance.
-     * @return The {@link StaminaData} instance attached to the player.
+     * @return The {@link PlayerStamina} instance attached to the player.
      */
-    public static StaminaData get(Player player)
+    public static PlayerStamina get(Player player)
     {
-        if (!PLAYER_DATA.containsKey(player.getStringUUID()))
-            PLAYER_DATA.put(player.getStringUUID(), new StaminaData());
-
-        return PLAYER_DATA.get(player.getStringUUID());
+        return PLAYER_DATA.computeIfAbsent(player.getUUID(), uuid -> PlayerStamina.create(player));
     }
 
     /**
-     * Remove the stamina data associated with the given player.
+     * Find stamina data associated with the given UUID if it exists.
+     *
+     * @param uuid The {@link UUID} to find stamina data for.
+     * @return An {@link Optional} that maybe contains {@link PlayerStamina}.
+     */
+    public static Optional<PlayerStamina> find(UUID uuid)
+    {
+        return Optional.ofNullable(PLAYER_DATA.get(uuid));
+    }
+
+    /**
+     * Remove runtime stamina data associated with the given player.
      *
      * @param player The {@link Player} instance.
      */
     public static void remove(Player player)
     {
-        PLAYER_DATA.remove(player.getStringUUID());
-    }
-
-    /**
-     * Run on-tick instructions for the given player's stamina data.
-     *
-     * @param player The {@link Player} instance.
-     */
-    public static void tick(Player player)
-    {
-        get(player).tick(player);
-    }
-
-    /**
-     * Check if a player is actively using their stamina.
-     *
-     * @param player The {@link Player} instance to check.
-     * @return Whether the player is using stamina or is exhausted.
-     */
-    public static boolean isActiveFor(Player player)
-    {
-        StaminaData data = get(player);
-
-        return data.getStaminaLevel() < StaminaData.MAX_STAMINA_LEVEL || data.isExhausted() || player.isSprinting();
-    }
-
-    /**
-     * Clears the stamina data cache map. This should be invoked after a singleplayer world is closed.
-     */
-    public static void reset()
-    {
-        PLAYER_DATA.clear();
+        PLAYER_DATA.remove(player.getUUID());
     }
 }

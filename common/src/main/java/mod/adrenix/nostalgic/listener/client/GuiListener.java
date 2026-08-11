@@ -14,6 +14,7 @@ import mod.adrenix.nostalgic.client.gui.screen.vanilla.title.NostalgicTitleScree
 import mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select.NostalgicSelectWorldScreen;
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
+import mod.adrenix.nostalgic.helper.gameplay.stamina.PlayerStamina;
 import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaData;
 import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
@@ -212,24 +213,23 @@ public abstract class GuiListener
     /**
      * Properly format the alternative stamina text based on player stamina data context.
      *
-     * @param data   The player's {@link StaminaData} instance.
-     * @param player The {@link Player} instance.
+     * @param stamina The player's {@link PlayerStamina} instance.
      * @return The properly formatted alternative stamina text.`
      */
-    private static String getStaminaColor(StaminaData data, Player player)
+    private static String getStaminaColor(PlayerStamina stamina)
     {
-        int level = (int) Math.floor(((double) data.getStaminaLevel() / StaminaData.MAX_STAMINA_LEVEL) * 100);
+        int level = (int) Math.floor(((double) stamina.data.getStamina() / StaminaData.MAX_STAMINA_LEVEL) * 100);
 
         if (!CandyTweak.USE_DYNAMIC_STAMINA_COLOR.get())
             return String.valueOf(level);
 
-        if (data.isExhausted())
+        if (stamina.data.isExhausted())
             return "§7" + level + "§r";
-        else if (data.isCooldown())
+        else if (stamina.isCoolingDown())
             return "§b" + level + "§r";
-        else if (data.cannotRegain(player) || data.hasNegativeEffect(player))
+        else if (stamina.isNotRegainable() || stamina.hasNegativeEffect())
             return "§4" + level + "§r";
-        else if (data.hasPositiveEffect(player))
+        else if (stamina.hasPositiveEffect())
             return "§2" + level + "§r";
         else
         {
@@ -345,14 +345,13 @@ public abstract class GuiListener
 
         if (CandyTweak.SHOW_STAMINA_TEXT.get() && isStaminaEnabled && !isCreative)
         {
-            StaminaData data = StaminaHelper.get(player);
-            String text = CandyTweak.ALT_STAMINA_TEXT.parse(getStaminaColor(data, player));
+            String text = CandyTweak.ALT_STAMINA_TEXT.parse(getStaminaColor(StaminaHelper.get(player)));
             int xOffset = CandyTweak.ALT_STAMINA_OFFSET_X.get();
             int yOffset = CandyTweak.ALT_STAMINA_OFFSET_Y.get();
 
             if (CandyTweak.ALT_STAMINA_SHOW_ON_ACTIVE.get())
             {
-                if (StaminaHelper.isActiveFor(player))
+                if (StaminaHelper.get(player).isTiringOrExhausted())
                     corner.drawText(graphics, text, CandyTweak.ALT_STAMINA_CORNER.get(), xOffset, yOffset, CandyTweak.ALT_STAMINA_SHADOW.get());
             }
             else

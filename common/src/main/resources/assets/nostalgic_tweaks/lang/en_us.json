@@ -2034,7 +2034,7 @@
 
   "gui.nostalgic_tweaks.config.gameplay.staminaSprint": "Stamina Sprinting",
   "gui.nostalgic_tweaks.config.gameplay.staminaSprint.info": "A unique alternative to the vanilla sprinting mechanic. When§a enabled§r, players can only sprint for a specific amount of time and must wait for the stamina to§6 recharge§r before sprinting again.",
-  "gui.nostalgic_tweaks.config.gameplay.staminaRegainWhenMoving": "Regain Speed During Movement",
+  "gui.nostalgic_tweaks.config.gameplay.staminaRegainWhenMoving": "Regain Stamina Rate During Movement",
   "gui.nostalgic_tweaks.config.gameplay.staminaRegainWhenMoving.info": "Define the rate at which stamina is regained by a player while they are§e moving§r.",
   "gui.nostalgic_tweaks.config.gameplay.staminaInfinitePeaceful": "Infinite Stamina When Peaceful",
   "gui.nostalgic_tweaks.config.gameplay.staminaInfinitePeaceful.info": "Define whether the player should have infinite stamina while sprinting in peaceful difficulty mode.",

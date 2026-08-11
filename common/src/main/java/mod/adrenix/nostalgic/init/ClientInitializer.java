@@ -93,7 +93,9 @@ abstract class ClientInitializer
         OverworldFogRenderer.reset();
         WaterFogRenderer.reset();
         VoidFogRenderer.reset();
-        StaminaHelper.reset();
+
+        if (player != null)
+            StaminaHelper.remove(player);
     }
 
     /**

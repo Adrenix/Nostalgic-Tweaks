@@ -3,6 +3,7 @@ package mod.adrenix.nostalgic.network;
 import dev.architectury.networking.NetworkManager.Side;
 import mod.adrenix.nostalgic.network.packet.ModPacket;
 import mod.adrenix.nostalgic.network.packet.backup.*;
+import mod.adrenix.nostalgic.network.packet.stamina.ClientboundStaminaSync;
 import mod.adrenix.nostalgic.network.packet.sync.ClientboundHandshake;
 import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncAll;
 import mod.adrenix.nostalgic.network.packet.sync.ServerboundSyncTweak;
@@ -52,5 +53,9 @@ public abstract class PacketRegistry
         ModPacket.register(Side.C2S, ServerboundTweakNumber.TYPE, ServerboundTweakNumber::new);
         ModPacket.register(Side.C2S, ServerboundTweakStringSet.TYPE, ServerboundTweakStringSet::new);
         ModPacket.register(Side.C2S, ServerboundTweakText.TYPE, ServerboundTweakText::new);
+
+        // Player Stamina
+
+        ModPacket.register(Side.S2C, ClientboundStaminaSync.TYPE, ClientboundStaminaSync::new);
     }
 }
