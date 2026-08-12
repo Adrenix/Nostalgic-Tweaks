@@ -4,7 +4,6 @@ import mod.adrenix.nostalgic.helper.candy.block.TorchHelper;
 import mod.adrenix.nostalgic.helper.candy.block.cross.CrossBlock;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.embeddedt.embeddium.api.BlockRendererRegistry;
@@ -38,7 +37,19 @@ public abstract class EmbeddiumHandler
     public static void init()
     {
         BlockRendererRegistry.instance().registerRenderPopulator((resultList, context) -> {
-            if (TorchHelper.isNotLikeTorch(context.state()) && !(context.state().getBlock() instanceof FenceBlock))
+            boolean isTorchBlock = !TorchHelper.isNotLikeTorch(context.state());
+            boolean isCrossBlock = false;
+
+            for (CrossBlock block : CrossBlock.values())
+            {
+                if (block.canEdit(context.state()))
+                {
+                    isCrossBlock = true;
+                    break;
+                }
+            }
+
+            if (!isTorchBlock && !isCrossBlock)
                 return;
 
             resultList.add((ctx, random, consumer) -> {
