@@ -1956,6 +1956,9 @@
   "gui.nostalgic_tweaks.config.gameplay.disableEnchantTable.info": "Disable enchantment table block interactions.",
   "gui.nostalgic_tweaks.config.gameplay.disableEnchantTable.search": "Experience, XP",
 
+  "gui.nostalgic_tweaks.config.gameplay.oldItemFluidPhysics": "Old Item Entity Fluid Physics",
+  "gui.nostalgic_tweaks.config.gameplay.oldItemFluidPhysics.info": "Disable item entities from floating in fluids.",
+
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting": "Minecart Boosting",
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting.info": "Bring back the old minecart boosting mechanics. To perform this old mechanic, place§e two parallel rail tracks§r so that two minecarts can§6 touch each other§r. When the minecarts§a connect§r, this old mechanic will cause the minecarts to start moving together and boosting each other at a§b high rate of speed§r.",
   "gui.nostalgic_tweaks.config.gameplay.cartBoosting.search": "Cart, Track, Parallel",

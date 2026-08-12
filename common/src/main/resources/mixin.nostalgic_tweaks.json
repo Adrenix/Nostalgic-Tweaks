@@ -192,6 +192,7 @@
     "gameplay.mechanics_fire.FireBlockMixin",
     "gameplay.mechanics_fishing.FishingHookMixin",
     "gameplay.mechanics_fishing.FishingRodItemMixin",
+    "gameplay.mechanics_item.ItemEntityMixin",
     "gameplay.mechanics_minecart.AbstractMinecartMixin",
     "gameplay.mechanics_player.LivingEntityMixin",
     "gameplay.mechanics_player.ServerLevelMixin",

@@ -839,6 +839,10 @@ public class ClientConfig implements ConfigMeta
         public boolean instantAir = GameplayTweak.INSTANT_AIR.register("instantAir");
         public boolean disableSwim = GameplayTweak.DISABLE_SWIM.register("disableSwim");
 
+        // Item Mechanics
+
+        public boolean oldItemFluidPhysics = GameplayTweak.OLD_ITEM_FLUID_PHYSICS.register("oldItemFluidPhysics");
+
         // Minecart Mechanics
 
         public boolean cartBoosting = GameplayTweak.CART_BOOSTING.register("cartBoosting");

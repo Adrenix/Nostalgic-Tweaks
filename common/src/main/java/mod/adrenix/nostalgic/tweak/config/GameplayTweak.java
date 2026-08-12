@@ -183,6 +183,7 @@ public interface GameplayTweak
 
     // Item Mechanics
 
+    TweakFlag OLD_ITEM_FLUID_PHYSICS = TweakFlag.server(false, GameplayGroup.MECHANICS_ITEMS).ignoreNetworkCheck().newForUpdate().build();
     TweakItemMap<Integer> CUSTOM_ITEM_STACKING = TweakItemMap.server(new ItemMap<>(64), GameplayGroup.MECHANICS_ITEMS)
         .ignoreNetworkCheck()
         .warningTag()
