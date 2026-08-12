@@ -15,7 +15,6 @@ import mod.adrenix.nostalgic.client.gui.screen.vanilla.world.select.NostalgicSel
 import mod.adrenix.nostalgic.client.gui.toast.ModToast;
 import mod.adrenix.nostalgic.client.gui.tooltip.Tooltip;
 import mod.adrenix.nostalgic.helper.gameplay.stamina.PlayerStamina;
-import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaData;
 import mod.adrenix.nostalgic.helper.gameplay.stamina.StaminaHelper;
 import mod.adrenix.nostalgic.tweak.config.CandyTweak;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
@@ -218,7 +217,7 @@ public abstract class GuiListener
      */
     private static String getStaminaColor(PlayerStamina stamina)
     {
-        int level = (int) Math.floor(((double) stamina.data.getStamina() / StaminaData.MAX_STAMINA_LEVEL) * 100);
+        int level = (int) Math.floor(((double) stamina.data.getStamina() / stamina.data.getMaximum()) * 100);
 
         if (!CandyTweak.USE_DYNAMIC_STAMINA_COLOR.get())
             return String.valueOf(level);

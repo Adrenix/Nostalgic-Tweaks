@@ -16,7 +16,9 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 public enum NostalgicGuiLayer
 {
+    // @formatter:off
     AIR("air", VanillaGuiLayers.PLAYER_HEALTH, ((graphics, deltaTracker) -> {
+        // @formatter:on
         Minecraft minecraft = Minecraft.getInstance();
 
         if (!CandyTweak.HIDE_HUNGER_BAR.get() || minecraft.options.hideGui || (minecraft.gameMode != null && !minecraft.gameMode.canHurtPlayer()))
@@ -48,7 +50,9 @@ public enum NostalgicGuiLayer
 
         RenderSystem.disableBlend();
     })),
+    // @formatter:off
     ARMOR("armor", VanillaGuiLayers.EXPERIENCE_BAR, ((graphics, deltaTracker) -> {
+        // @formatter:on
         Minecraft minecraft = Minecraft.getInstance();
 
         if (!CandyTweak.HIDE_HUNGER_BAR.get() || minecraft.options.hideGui || (minecraft.gameMode != null && !minecraft.gameMode.canHurtPlayer()))
@@ -75,7 +79,9 @@ public enum NostalgicGuiLayer
 
         RenderSystem.disableBlend();
     })),
+    // @formatter:off
     STAMINA_ARMOR("stamina_armor", NostalgicGuiLayer.ARMOR.id(), ((graphics, deltaTracker) -> {
+        // @formatter:on
         if (!StaminaRenderer.isVisible() || !CandyTweak.HIDE_HUNGER_BAR.get())
             return;
 
@@ -95,16 +101,18 @@ public enum NostalgicGuiLayer
         if (HudHelper.isArmorEmpty())
             minecraft.gui.rightHeight -= 10;
 
-        StaminaRenderer.render(graphics, minecraft.gui.rightHeight, offsetLeft);
+        int offsetHeight = StaminaRenderer.render(graphics, minecraft.gui.rightHeight, offsetLeft);
 
         if (ModTracker.RAISED.isInstalled())
             minecraft.gui.rightHeight += RaisedHandler.getHotbarY();
 
-        minecraft.gui.rightHeight += 10;
+        minecraft.gui.rightHeight += offsetHeight;
 
         RenderSystem.disableBlend();
     })),
+    // @formatter:off
     STAMINA_FOOD("stamina_food", VanillaGuiLayers.FOOD_LEVEL, ((graphics, deltaTracker) -> {
+        // @formatter:on
         if (!StaminaRenderer.isVisible() || CandyTweak.HIDE_HUNGER_BAR.get())
             return;
 
@@ -121,12 +129,12 @@ public enum NostalgicGuiLayer
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableDepthTest();
 
-        StaminaRenderer.render(graphics, minecraft.gui.rightHeight, offsetLeft);
+        int offsetHeight = StaminaRenderer.render(graphics, minecraft.gui.rightHeight, offsetLeft);
 
         if (ModTracker.RAISED.isInstalled())
             minecraft.gui.rightHeight += RaisedHandler.getHotbarY();
 
-        minecraft.gui.rightHeight += 10;
+        minecraft.gui.rightHeight += offsetHeight;
 
         RenderSystem.disableBlend();
     }));

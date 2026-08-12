@@ -66,7 +66,7 @@ public abstract class StaminaRenderer
 
     /**
      * @param stamina The {@link PlayerStamina} instance.
-     * @param icon    The icon (1 through 10) that is to be rendered.
+     * @param icon    The icon that is to be rendered.
      * @return The {@link ResourceLocation} of the stamina sprite to use.
      */
     public static ResourceLocation getSprite(PlayerStamina stamina, int icon)
@@ -117,11 +117,12 @@ public abstract class StaminaRenderer
     {
         boolean shouldHighlight = false;
         int level = stamina.data.getStamina();
+        int maximum = stamina.data.getMaximum();
 
-        if (CandyTweak.HIGHLIGHT_STAMINA_BAR.get() && level != 20)
+        if (CandyTweak.HIGHLIGHT_STAMINA_BAR.get() && level != maximum)
             shouldHighlight = stamina.isAtFullSprint();
 
-        if (HAS_BEGUN_TO_DRAIN.get() && level == 20)
+        if (HAS_BEGUN_TO_DRAIN.get() && !stamina.data.isExhausted() && level == maximum)
             shouldHighlight = FULL_FLASH_TIMER.getFlag();
         else
             FULL_FLASH_TIMER.reset();
@@ -148,14 +149,15 @@ public abstract class StaminaRenderer
      * @param graphics    The {@link GuiGraphics} instance.
      * @param rightHeight The right side height offset of the heads-up display.
      * @param offsetLeft  The amount to offset the stamina icons from the left side of the screen.
+     * @return The y-offset to apply to the next HUD element row. Will be 10, 20, 30, etc.
      */
-    public static void render(GuiGraphics graphics, int rightHeight, int offsetLeft)
+    public static int render(GuiGraphics graphics, int rightHeight, int offsetLeft)
     {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
         if (player == null || !isVisible())
-            return;
+            return 10;
 
         RenderUtil.beginBatching();
 
@@ -165,28 +167,41 @@ public abstract class StaminaRenderer
         int left = width / 2 + 91 + offsetLeft;
         int top = height - rightHeight;
         int level = stamina.data.getStamina();
+        int maximum = stamina.data.getMaximum();
+        int rows = Math.max((int) Math.ceil(maximum / 20.0D), 1);
 
-        if (CandyTweak.FLASH_STAMINA_BAR_WHEN_FULL.get() && level < 20)
+        if (CandyTweak.FLASH_STAMINA_BAR_WHEN_FULL.get() && level < maximum)
             HAS_BEGUN_TO_DRAIN.enable();
 
-        for (int i = 0; i < 10; i++)
+        for (int j = 0; j < rows; j++)
         {
-            int x = left - i * 8 - 9;
-            int icon = i * 2 + 1;
-            ResourceLocation sprite = getSprite(stamina, icon);
+            int y = top - (10 * j);
 
-            RenderUtil.blitSprite(ModSprite.STAMINA_EMPTY, graphics, x, top, 9, 9);
-            RenderUtil.blitSprite(sprite, graphics, x, top, 9, 9);
-
-            if (shouldHighlight(stamina))
+            for (int i = 0; i < 10; i++)
             {
-                graphics.pose().pushPose();
-                graphics.pose().translate(0.0F, 0.0F, 1.0F);
-                RenderUtil.blitSprite(ModSprite.STAMINA_HIGHLIGHT, graphics, x, top, 9, 9);
-                graphics.pose().popPose();
+                int x = left - i * 8 - 9;
+                int icon = (i + (10 * j)) * 2 + 1;
+
+                if (icon > maximum)
+                    break;
+
+                ResourceLocation sprite = getSprite(stamina, icon);
+
+                RenderUtil.blitSprite(ModSprite.STAMINA_EMPTY, graphics, x, y, 9, 9);
+                RenderUtil.blitSprite(sprite, graphics, x, y, 9, 9);
+
+                if (shouldHighlight(stamina))
+                {
+                    graphics.pose().pushPose();
+                    graphics.pose().translate(0.0F, 0.0F, 1.0F);
+                    RenderUtil.blitSprite(ModSprite.STAMINA_HIGHLIGHT, graphics, x, y, 9, 9);
+                    graphics.pose().popPose();
+                }
             }
         }
 
         RenderUtil.endBatching();
+
+        return 10 * rows;
     }
 }

@@ -1,6 +1,7 @@
 package mod.adrenix.nostalgic.helper.gameplay.stamina;
 
 import mod.adrenix.nostalgic.NostalgicTweaks;
+import mod.adrenix.nostalgic.api.NostalgicAttributes;
 import mod.adrenix.nostalgic.network.packet.stamina.ClientboundStaminaSync;
 import mod.adrenix.nostalgic.tweak.config.GameplayTweak;
 import mod.adrenix.nostalgic.tweak.enums.StaminaRegain;
@@ -9,6 +10,7 @@ import mod.adrenix.nostalgic.util.common.network.PacketUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 
 public class PlayerStamina
@@ -30,6 +32,7 @@ public class PlayerStamina
     protected int cooldownInTicks;
     protected int rechargeInTicks;
     protected int halfRateInTicks;
+    protected int previousMaximum;
     protected boolean tickAgain = false;
 
     public final Player player;
@@ -40,10 +43,11 @@ public class PlayerStamina
         this.player = player;
         this.data = data;
 
-        this.durationInTicks = GameplayTweak.STAMINA_DURATION.get() * 20;
+        this.durationInTicks = this.getDurationInTicks();
         this.cooldownInTicks = GameplayTweak.STAMINA_COOLDOWN.get() * 20;
         this.rechargeInTicks = GameplayTweak.STAMINA_RECHARGE.get() * 20;
         this.halfRateInTicks = 0;
+        this.previousMaximum = data.getMaximum();
     }
 
     public Player getPlayer()
@@ -54,6 +58,14 @@ public class PlayerStamina
     public StaminaData getData()
     {
         return this.data;
+    }
+
+    /**
+     * @return The duration, in ticks, of how long the player can sprint.
+     */
+    public int getDurationInTicks()
+    {
+        return (int) ((GameplayTweak.STAMINA_DURATION.get() * 20) * (this.data.getMaximum() / (double) StaminaData.DEFAULT_MAXIMUM));
     }
 
     /**
@@ -72,7 +84,7 @@ public class PlayerStamina
      */
     public void reset()
     {
-        int duration = GameplayTweak.STAMINA_DURATION.get() * 20;
+        int duration = this.getDurationInTicks();
         int cooldown = GameplayTweak.STAMINA_COOLDOWN.get() * 20;
         int recharge = GameplayTweak.STAMINA_RECHARGE.get() * 20;
 
@@ -88,16 +100,43 @@ public class PlayerStamina
     }
 
     /**
+     * Synchronize the current server stamina data with the player's client.
+     */
+    public void sync()
+    {
+        if (this.player instanceof ServerPlayer serverPlayer)
+            PacketUtil.sendToPlayer(serverPlayer, ClientboundStaminaSync.create(serverPlayer));
+    }
+
+    /**
      * Update stamina data for this tick. May run twice per tick if player has positive effect. No server-to-client
      * synchronization occurs here.
      */
     public void tick()
     {
-        Difficulty difficulty = this.player.level().getDifficulty();
+        AttributeInstance attribute = this.player.getAttribute(NostalgicAttributes.MAX_STAMINA);
 
-        if (GameplayTweak.STAMINA_INFINITE_PEACEFUL.get() && Difficulty.PEACEFUL == difficulty)
+        if (attribute != null)
+            this.data.setMaximum((int) attribute.getValue());
+
+        if (this.previousMaximum != this.data.getMaximum())
         {
-            this.data.setStaminaRaw(StaminaData.MAX_STAMINA_LEVEL);
+            if (this.isLogical())
+            {
+                this.previousMaximum = this.data.getMaximum();
+                this.durationInTicks = this.getDurationInTicks();
+            }
+
+            if (NostalgicTweaks.isServer() || GameUtil.isOnIntegratedSeverThread())
+            {
+                this.data.remaining = Math.min(this.data.remaining, Math.min(this.durationInTicks, this.getDurationInTicks()));
+                this.sync();
+            }
+        }
+
+        if (GameplayTweak.STAMINA_INFINITE_PEACEFUL.get() && Difficulty.PEACEFUL == this.player.level().getDifficulty())
+        {
+            this.data.setStaminaRaw(this.data.getMaximum());
             return;
         }
 
@@ -129,9 +168,7 @@ public class PlayerStamina
                 if (NostalgicTweaks.isServer() || GameUtil.isOnIntegratedSeverThread())
                 {
                     this.data.setExhausted(true);
-
-                    if (this.player instanceof ServerPlayer serverPlayer)
-                        PacketUtil.sendToPlayer(serverPlayer, ClientboundStaminaSync.create(serverPlayer));
+                    this.sync();
                 }
             }
 

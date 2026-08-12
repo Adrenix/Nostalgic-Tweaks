@@ -6,17 +6,19 @@ import net.minecraft.util.Mth;
 
 public class StaminaData
 {
-    public static final int MAX_STAMINA_LEVEL = 20;
+    public static final int DEFAULT_MAXIMUM = 20;
     public static final Codec<StaminaData> CODEC = StaminaCodec.create();
 
     protected int stamina;
+    protected int maximum;
     protected int remaining;
     protected int cooldown;
     protected boolean exhausted;
 
-    public StaminaData(int stamina, int remaining, int cooldown, boolean exhausted)
+    public StaminaData(int stamina, int maximum, int remaining, int cooldown, boolean exhausted)
     {
         this.stamina = stamina;
+        this.maximum = maximum;
         this.remaining = remaining;
         this.cooldown = cooldown;
         this.exhausted = exhausted;
@@ -30,7 +32,7 @@ public class StaminaData
         int duration = GameplayTweak.STAMINA_DURATION.get() * 20;
         int cooldown = GameplayTweak.STAMINA_COOLDOWN.get() * 20;
 
-        return new StaminaData(MAX_STAMINA_LEVEL, duration, cooldown, false);
+        return new StaminaData(DEFAULT_MAXIMUM, DEFAULT_MAXIMUM, duration, cooldown, false);
     }
 
     /**
@@ -38,7 +40,7 @@ public class StaminaData
      */
     public boolean isTiring()
     {
-        return this.stamina < MAX_STAMINA_LEVEL;
+        return this.stamina < this.maximum;
     }
 
     /**
@@ -46,7 +48,7 @@ public class StaminaData
      */
     public int getStamina()
     {
-        return stamina;
+        return this.stamina;
     }
 
     /**
@@ -67,7 +69,23 @@ public class StaminaData
      */
     public void setStaminaUsingTicks(int ticks)
     {
-        this.stamina = Mth.clamp((int) Math.ceil(((double) this.remaining / ticks) * 20.0D), 0, MAX_STAMINA_LEVEL);
+        this.stamina = Mth.clamp((int) Math.ceil(((double) this.remaining / ticks) * this.maximum), 0, this.maximum);
+    }
+
+    /**
+     * @return The maximum stamina level possible.
+     */
+    public int getMaximum()
+    {
+        return this.maximum;
+    }
+
+    /**
+     * @param maximum The maximum stamina value possible. Will be maxed to zero if given value is negative.
+     */
+    public void setMaximum(int maximum)
+    {
+        this.maximum = Math.max(0, maximum);
     }
 
     /**
@@ -91,7 +109,7 @@ public class StaminaData
      */
     public int getCooldown()
     {
-        return cooldown;
+        return this.cooldown;
     }
 
     /**
@@ -107,7 +125,7 @@ public class StaminaData
      */
     public boolean isExhausted()
     {
-        return exhausted;
+        return this.exhausted;
     }
 
     /**

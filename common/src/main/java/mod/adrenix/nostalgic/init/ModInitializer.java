@@ -22,8 +22,8 @@ public abstract class ModInitializer
     public static void register()
     {
         PacketRegistry.register();
-        InteractionListener.register();
         PlayerListener.register();
+        InteractionListener.register();
 
         LifecycleEvent.SERVER_BEFORE_START.register(NostalgicTweaks::setServer);
         TickEvent.SERVER_PRE.register(server -> ServerTimer.getInstance().onTick());

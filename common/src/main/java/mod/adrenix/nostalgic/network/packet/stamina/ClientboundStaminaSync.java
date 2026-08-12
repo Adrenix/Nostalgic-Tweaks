@@ -8,7 +8,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
-public record ClientboundStaminaSync(int stamina, int remaining, int cooldown, boolean exhausted) implements ModPacket
+public record ClientboundStaminaSync(int stamina, int maximum, int remaining, int cooldown, boolean exhausted)
+    implements ModPacket
 {
     public static final Type<ClientboundStaminaSync> TYPE = ModPacket.createType(ClientboundStaminaSync.class);
 
@@ -23,11 +24,12 @@ public record ClientboundStaminaSync(int stamina, int remaining, int cooldown, b
         StaminaData data = StaminaHelper.get(player).getData();
 
         int stamina = data.getStamina();
+        int maximum = data.getMaximum();
         int remaining = data.getRemaining();
         int cooldown = data.getCooldown();
         boolean exhausted = data.isExhausted();
 
-        return new ClientboundStaminaSync(stamina, remaining, cooldown, exhausted);
+        return new ClientboundStaminaSync(stamina, maximum, remaining, cooldown, exhausted);
     }
 
     /**
@@ -37,13 +39,14 @@ public record ClientboundStaminaSync(int stamina, int remaining, int cooldown, b
      */
     public ClientboundStaminaSync(final FriendlyByteBuf buffer)
     {
-        this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readBoolean());
+        this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readBoolean());
     }
 
     @Override
     public void encoder(FriendlyByteBuf buffer)
     {
         buffer.writeInt(this.stamina);
+        buffer.writeInt(this.maximum);
         buffer.writeInt(this.remaining);
         buffer.writeInt(this.cooldown);
         buffer.writeBoolean(this.exhausted);

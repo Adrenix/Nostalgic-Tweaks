@@ -14,6 +14,7 @@ final class ExecuteOnClient
         StaminaData data = StaminaHelper.get(Minecraft.getInstance().player).getData();
 
         data.setStaminaRaw(packet.stamina());
+        data.setMaximum(packet.maximum());
         data.setRemaining(packet.remaining());
         data.setCooldown(packet.cooldown());
         data.setExhausted(packet.exhausted());

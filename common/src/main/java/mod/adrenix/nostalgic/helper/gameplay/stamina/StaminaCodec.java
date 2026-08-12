@@ -19,6 +19,7 @@ public final class StaminaCodec
     {
         return RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("stamina").forGetter(StaminaData::getStamina),
+            Codec.INT.fieldOf("maximum").forGetter(StaminaData::getMaximum),
             Codec.INT.fieldOf("remaining").forGetter(StaminaData::getRemaining),
             Codec.INT.fieldOf("cooldown").forGetter(StaminaData::getCooldown),
             Codec.BOOL.fieldOf("exhausted").forGetter(StaminaData::isExhausted)
