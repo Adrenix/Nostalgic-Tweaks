@@ -18,6 +18,10 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
       to the bed. If so, the player will wake up and the monster appears next to the bed.
     - A message will now appear in chat notifying the player that a monster found them and that the player should build
       a shelter to keep monsters out.
+- Redid `Stamina Sprinting` system so that player stamina data now persists on disk.
+    - Added `nostalgic_tweaks:player.max_stamina` player attribute for datapack makers.
+        - The attribute is also included in the mod's API located at `NostalgicAttributes.MAX_STAMINA`.
+    - Various other issues were fixed during refactoring.
 - Added `Vertical Bobbing Intensity` slider tweak for player arm animation.
     - The old vertical bobbing tweak was also adjusted for smoother animation.
 - Added `Old Style Bogged Skeleton Drops` modern mob drops tweak.
@@ -35,6 +39,7 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
 - Fixed the stamina bar being below the armor bar on NeoForge.
 - Fixed the player gaining momentum while standing on a bed when the old bed bouncing tweak is enabled.
 - Fixed blocks in the `Full Block Collisions` tweak list not working as intended in singleplayer.
+- Fixed AppleSkin HUD elements from rendering in some cases when the `Disable Hunger` tweak is enabled.
 - Potentially fixed rare issue where all game textures broke after the early loading screen.
 
 ## 2.0.0-beta922
