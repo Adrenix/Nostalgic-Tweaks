@@ -30,6 +30,7 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
     - Providing a block update, such as a redstone pulse, triggers the immediate absorption of water again.
     - When destroyed, physic updates are sent to blocks around the air perimeter so water can flow back in.
     - Water absorption only occurs during block updates and not every game tick.
+- Added `Old Item Entity Fluid Physics` gameplay item mechanics tweak that disables item entities from floating.
 - Added `Play Music Continuously` sound music tweak.
 - Added `Continuous Delay` sound music tweak to define delay between continuous music.
 - Added `Ignored Old Damage Value Items` combat gameplay list tweak.
