@@ -5,10 +5,10 @@ plugins {
 //    id("me.modmuss50.mod-publish-plugin")
 }
 
-val commonJava: Configuration by configurations.creating {
+val commonJava: Configuration = configurations.create("commonJava") {
     isCanBeResolved = true
 }
-val commonResources: Configuration by configurations.creating {
+val commonResources: Configuration = configurations.create("commonResources") {
     isCanBeResolved = true
 }
 

@@ -7,8 +7,8 @@ loom {
     accessWidenerPath = project(":").loom.accessWidenerPath
 
     runConfigs.all {
-        ideConfigGenerated(true)
-        runDir = "../run"
+        generateRunConfig = true
+        runDirectory.set(project.file("../run"))
     }
 }
 

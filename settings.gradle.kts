@@ -17,11 +17,11 @@ pluginManagement {
         gradlePluginPortal()
     }
 
-    val loom_version: String by extra
+    val loom = extra["loom_version"] as String
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id.startsWith("org.relativitymc.neo-loom")) {
-                useVersion(loom_version)
+                useVersion(loom)
             }
         }
     }

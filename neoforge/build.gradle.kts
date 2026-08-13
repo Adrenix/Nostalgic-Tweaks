@@ -7,14 +7,14 @@ loom {
     accessWidenerPath = project(":").loom.accessWidenerPath
 
     runConfigs.all {
-        ideConfigGenerated(true)
-        runDir = "../run"
+        generateRunConfig = true
+        runDirectory.set(project.file("../run"))
     }
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${rootProject.mod.mc}")
-    neoForge("net.neoforged:neoforge:${rootProject.mod.prop("neoforge_version")}")
+    forgeUserdev("net.neoforged:neoforge:${rootProject.mod.prop("neoforge_version")}:userdev")
 }
 
 loom.convertAw2At(tasks.jar, listOf("nostalgic_tweaks.classtweaker"))

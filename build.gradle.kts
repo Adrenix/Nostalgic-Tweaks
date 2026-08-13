@@ -17,7 +17,7 @@ loom {
     }
 
     runConfigs.all {
-        ideConfigGenerated(false)
+        generateRunConfig = false
     }
 }
 
@@ -27,12 +27,12 @@ dependencies {
     compileOnly("net.fabricmc:fabric-loader:${mod.propOrNull("fabric_loader_version")}")
 }
 
-val commonJava: Configuration by configurations.creating {
+val commonJava: Configuration = configurations.create("commonJava") {
     isCanBeResolved = false
     isCanBeConsumed = true
 }
 
-val commonResources: Configuration by configurations.creating {
+val commonResources: Configuration = configurations.create("commonResources") {
     isCanBeResolved = false
     isCanBeConsumed = true
 }
