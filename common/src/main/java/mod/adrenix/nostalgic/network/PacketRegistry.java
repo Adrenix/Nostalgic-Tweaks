@@ -44,6 +44,7 @@ public abstract class PacketRegistry
         ModPacket.register(Side.S2C, ClientboundTweakItemMap.TYPE, ClientboundTweakItemMap::new);
         ModPacket.register(Side.S2C, ClientboundTweakItemSet.TYPE, ClientboundTweakItemSet::new);
         ModPacket.register(Side.S2C, ClientboundTweakNumber.TYPE, ClientboundTweakNumber::new);
+        ModPacket.register(Side.S2C, ClientboundTweakMobMap.TYPE, ClientboundTweakMobMap::new);
         ModPacket.register(Side.S2C, ClientboundTweakStringSet.TYPE, ClientboundTweakStringSet::new);
         ModPacket.register(Side.S2C, ClientboundTweakText.TYPE, ClientboundTweakText::new);
         ModPacket.register(Side.C2S, ServerboundTweakEnum.TYPE, ServerboundTweakEnum::new);
@@ -51,6 +52,7 @@ public abstract class PacketRegistry
         ModPacket.register(Side.C2S, ServerboundTweakItemMap.TYPE, ServerboundTweakItemMap::new);
         ModPacket.register(Side.C2S, ServerboundTweakItemSet.TYPE, ServerboundTweakItemSet::new);
         ModPacket.register(Side.C2S, ServerboundTweakNumber.TYPE, ServerboundTweakNumber::new);
+        ModPacket.register(Side.C2S, ServerboundTweakMobMap.TYPE, ServerboundTweakMobMap::new);
         ModPacket.register(Side.C2S, ServerboundTweakStringSet.TYPE, ServerboundTweakStringSet::new);
         ModPacket.register(Side.C2S, ServerboundTweakText.TYPE, ServerboundTweakText::new);
 

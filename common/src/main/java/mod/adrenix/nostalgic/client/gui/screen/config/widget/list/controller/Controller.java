@@ -2,12 +2,14 @@ package mod.adrenix.nostalgic.client.gui.screen.config.widget.list.controller;
 
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.impl.ItemMapOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.impl.ItemSetOverlay;
+import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.impl.MobMapOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.overlay.listing.impl.StringSetOverlay;
 import mod.adrenix.nostalgic.client.gui.screen.config.widget.list.TweakRowLayout;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.dynamic.DynamicWidget;
 import mod.adrenix.nostalgic.tweak.factory.*;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
+import mod.adrenix.nostalgic.tweak.listing.MobMap;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.function.BooleanSupplier;
 import mod.adrenix.nostalgic.util.common.lang.Lang;
@@ -100,6 +102,10 @@ public class Controller
         // Item Set
         if (this.tweak instanceof TweakItemSet itemSet)
             return new ListingController(this, itemSet, ItemSetOverlay::new).getWidget();
+
+        // Mob Map
+        if (MobMap.cast(this.tweak).isPresent())
+            return new ListingController(this, MobMap.cast(this.tweak).get(), MobMapOverlay::new).getWidget();
 
         // Item Map
         if (ItemMap.cast(this.tweak).isPresent())

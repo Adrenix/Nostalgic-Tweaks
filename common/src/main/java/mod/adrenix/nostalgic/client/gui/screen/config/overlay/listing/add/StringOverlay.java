@@ -4,11 +4,8 @@ import mod.adrenix.nostalgic.client.gui.overlay.Overlay;
 import mod.adrenix.nostalgic.client.gui.widget.button.ButtonWidget;
 import mod.adrenix.nostalgic.client.gui.widget.grid.Grid;
 import mod.adrenix.nostalgic.client.gui.widget.input.GenericInput;
-import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.CreatureSuggester;
-import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.InputSuggester;
-import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.ParticleSuggester;
-import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.SoundSuggester;
-import mod.adrenix.nostalgic.tweak.listing.StringSet;
+import mod.adrenix.nostalgic.client.gui.widget.input.suggestion.*;
+import mod.adrenix.nostalgic.tweak.listing.ListingSuggestion;
 import mod.adrenix.nostalgic.util.client.KeyboardUtil;
 import mod.adrenix.nostalgic.util.common.asset.Icons;
 import mod.adrenix.nostalgic.util.common.color.Color;
@@ -19,12 +16,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class StringOverlay
 {
     /* Fields */
 
-    private final StringSet stringSet;
+    private final Predicate<String> containsKey;
     private final Consumer<String> onFinish;
     private final Runnable onEmpty;
     private final String startWith;
@@ -39,11 +38,11 @@ public class StringOverlay
     /**
      * Create a new {@link StringOverlay} with an input box that starts with the given input.
      */
-    public StringOverlay(StringSet stringSet, Runnable onEmpty, Consumer<String> onFinish, @Nullable String startWith)
+    public StringOverlay(Supplier<ListingSuggestion> suggestion, Predicate<String> containsKey, Runnable onEmpty, Consumer<String> onFinish, @Nullable String startWith)
     {
         int padding = 2;
 
-        this.stringSet = stringSet;
+        this.containsKey = containsKey;
         this.onEmpty = onEmpty;
         this.onFinish = onFinish;
         this.startWith = startWith;
@@ -56,11 +55,12 @@ public class StringOverlay
             .padding(padding)
             .build();
 
-        Function<GenericInput, ? extends InputSuggester<GenericInput>> suggester = switch (stringSet.getSuggestion())
+        Function<GenericInput, ? extends InputSuggester<GenericInput>> suggester = switch (suggestion.get())
         {
             case CREATURE -> CreatureSuggester::new;
             case PARTICLE -> ParticleSuggester::new;
             case SOUND -> SoundSuggester::new;
+            case MOB -> MobSuggester::new;
             case NONE -> null;
         };
 
@@ -113,9 +113,9 @@ public class StringOverlay
     /**
      * Create a new {@link StringOverlay} with an empty input box.
      */
-    public StringOverlay(StringSet stringSet, Runnable onEmpty, Consumer<String> onFinish)
+    public StringOverlay(Supplier<ListingSuggestion> suggestion, Predicate<String> containsKey, Runnable onEmpty, Consumer<String> onFinish)
     {
-        this(stringSet, onEmpty, onFinish, null);
+        this(suggestion, containsKey, onEmpty, onFinish, null);
     }
 
     /* Methods */
@@ -135,7 +135,7 @@ public class StringOverlay
     {
         String input = this.input.getInput();
 
-        if (this.isInputAdded() || input.isEmpty() || input.isBlank())
+        if (this.isInputAdded() || input.isBlank())
             this.onEmpty.run();
         else
             this.onFinish.accept(input);
@@ -150,7 +150,7 @@ public class StringOverlay
     {
         String input = this.input.getInput();
 
-        return !input.equals(this.startWith) && this.stringSet.containsKey(input);
+        return !input.equals(this.startWith) && this.containsKey.test(input);
     }
 
     /**

@@ -621,8 +621,10 @@ public interface Lang
         Translation WILDCARD_TITLE = from("wildcard_title");
         Translation WILDCARD_MESSAGE = from("wildcard_message");
         Translation WILDCARD_HELP = from("wildcard_help");
+        Translation WILDCARD_MOB = from("wildcard_mob");
         Translation INVALID_ITEM = from("invalid_item");
         Translation INVALID_TYPE = from("invalid_type");
+        Translation INVALID_MOB = from("invalid_mob");
         Translation INVALID_MESSAGE = from("invalid_message");
         Translation ALREADY_ADDED = from("already_added");
         Translation NOTHING_FOUND = from("nothing_found");

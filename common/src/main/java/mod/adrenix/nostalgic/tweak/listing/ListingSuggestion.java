@@ -8,5 +8,6 @@ public enum ListingSuggestion
     NONE,
     SOUND,
     PARTICLE,
-    CREATURE
+    CREATURE,
+    MOB
 }
