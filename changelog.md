@@ -1,6 +1,6 @@
 # Nostalgic Tweaks 1.21(.1) (NeoForge/Fabric) Changelog
 
-## 2.0.0-beta923
+## 2.0.0 Release
 
 **Note:** This is an in-dev build! More fixes will be coming for the next release.
 This update adds support for Sodium 0.8, fixes reported issues, and adds a few tweaks.
@@ -8,6 +8,7 @@ This update adds support for Sodium 0.8, fixes reported issues, and adds a few t
 - Added Sodium 0.8 support.
 - Added Raised 5.x mod support for old HUD tweaks.
     - Raised 4.x is still supported.
+- Added `Old Mob Movement Speed` list tweak in gameplay `Artifical Intelligence` category.
 - Added `Old Fence Connections` tweak in `Cross Connections` subcategory under block candy.
     - This brings back the old fence arm connection logic from Minecraft beta. There are other tweaks in this
       subcategory for walls, iron bars, and glass panes.
