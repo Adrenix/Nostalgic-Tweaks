@@ -60,6 +60,23 @@ public interface DefaultListing
 
     // Gameplay Listings
 
+    static MobMap<Double> oldMobSpeeds()
+    {
+        LinkedHashMap<String, Double> map = new LinkedHashMap<>();
+
+        MobListing.getWildcardKeys(EntityType.COW).forEach(key -> map.put(key, 0.25D));
+        MobListing.getWildcardKeys(EntityType.WOLF).forEach(key -> map.put(key, 0.25D));
+        MobListing.getWildcardKeys(EntityType.SHEEP).forEach(key -> map.put(key, 0.25D));
+        MobListing.getWildcardKeys(EntityType.GHAST).forEach(key -> map.put(key, 0.25D));
+        MobListing.getWildcardKeys(EntityType.OCELOT).forEach(key -> map.put(key, 0.25D));
+        MobListing.getWildcardKeys(EntityType.ENDERMAN).forEach(key -> map.put(key, 0.25D));
+
+        MobMap<Double> mobMap = new MobMap<>(0.25D).startWith(map);
+        mobMap.setDisabled(true);
+
+        return mobMap;
+    }
+
     static StringSet oldAnimalSpawns()
     {
         LinkedHashSet<String> set = new LinkedHashSet<>();

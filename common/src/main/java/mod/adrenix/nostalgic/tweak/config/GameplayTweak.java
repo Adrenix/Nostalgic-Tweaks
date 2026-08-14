@@ -28,6 +28,10 @@ public interface GameplayTweak
     TweakFlag DISABLE_MONSTER_AVOID_SUN = TweakFlag.server(true, GameplayGroup.MOB_AI).build();
     TweakFlag DISABLE_SKELETON_STRAFING = TweakFlag.server(false, GameplayGroup.MOB_AI).build();
     TweakFlag OLD_CREEPER_STRAFE_ON_SWELL = TweakFlag.server(true, GameplayGroup.MOB_AI).build();
+    TweakMobMap<Double> OLD_MOB_MOVEMENT_SPEED = TweakMobMap.server(DefaultListing.oldMobSpeeds(), GameplayGroup.MOB_AI)
+        .slider(Lang.Slider.SPEED, 0.0D, 2.0D)
+        .newForUpdate()
+        .build();
 
     // Monsters
 

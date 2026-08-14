@@ -9,6 +9,7 @@ import mod.adrenix.nostalgic.tweak.config.*;
 import mod.adrenix.nostalgic.tweak.enums.*;
 import mod.adrenix.nostalgic.tweak.listing.ItemMap;
 import mod.adrenix.nostalgic.tweak.listing.ItemSet;
+import mod.adrenix.nostalgic.tweak.listing.MobMap;
 import mod.adrenix.nostalgic.tweak.listing.StringSet;
 
 /**
@@ -708,6 +709,7 @@ public class ClientConfig implements ConfigMeta
         public boolean disableMonsterAvoidSun = GameplayTweak.DISABLE_MONSTER_AVOID_SUN.register("disableMonsterAvoidSun");
         public boolean disableSkeletonStrafing = GameplayTweak.DISABLE_SKELETON_STRAFING.register("disableSkeletonStrafing");
         public boolean oldCreeperStrafeOnSwell = GameplayTweak.OLD_CREEPER_STRAFE_ON_SWELL.register("oldCreeperStrafeOnSwell");
+        public MobMap<Double> oldMobMovementSpeed = GameplayTweak.OLD_MOB_MOVEMENT_SPEED.register("oldMobMovementSpeed");
 
         // Monsters
 
