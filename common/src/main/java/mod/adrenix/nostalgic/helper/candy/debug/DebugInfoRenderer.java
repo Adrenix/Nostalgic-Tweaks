@@ -191,7 +191,7 @@ class DebugInfoRenderer
         String title = overlay.isEmpty() ? "Minecraft " + GameUtil.getVersion() : overlay;
         String fps = String.format(" (%s fps, %s chunk updates)", this.minecraft.getFps(), chunkUpdates);
         String sections = String.format("C: %d/%d. F: 0, O: 0, E: 0", this.levelRenderer.countRenderedChunks(), (long) this.levelRenderer.getTotalChunks());
-        String entities = String.format("E: %s/%s. B: %s, I: 0", renderedEntities, this.level.getEntityCount(), culledEntities);
+        String entities = String.format("E: %s/%s. B: %s, I: %s", renderedEntities, this.level.getEntityCount(), culledEntities, this.level.getEntityCount() - renderedEntities - culledEntities);
         String particles = String.format("P: %s. T: All: %s", this.minecraft.particleEngine.countParticles(), this.level.getEntityCount());
         String overflow = String.format(" (%s fps)", this.minecraft.getFps());
 
@@ -225,14 +225,15 @@ class DebugInfoRenderer
 
         if (CandyTweak.OLD_DEBUG.get() == Generic.BETA)
         {
-            this.left.add(String.format("ChunkCache: %d", this.level.getChunkSource().getLoadedChunksCount()));
+            this.left.add(String.format("ServerChunkCache: %d Drop: 0", this.level.getChunkSource().getLoadedChunksCount()));
 
             if (!this.isReducedInfo)
             {
                 this.left.add("");
-                this.left.add(String.format("X: %f", this.player.getX()));
-                this.left.add(String.format("Y: %f", this.player.getY()));
-                this.left.add(String.format("Z: %f", this.player.getZ()));
+                this.left.add("x: " + this.player.getX());
+                this.left.add("y: " + this.player.getEyeY());
+                this.left.add("z: " + this.player.getZ());
+                this.left.add("f: " + this.player.getDirection().get2DDataValue());
             }
         }
     }
