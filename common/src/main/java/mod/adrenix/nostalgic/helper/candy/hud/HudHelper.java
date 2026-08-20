@@ -242,9 +242,19 @@ public abstract class HudHelper
                 if (AIR_LEVEL_PUSHED.ifEnabledThenDisable())
                     graphics.pose().popPose();
 
-                StaminaRenderer.render(graphics, getHeightOffsetForStamina());
+                StaminaRenderer.render(graphics, getHeightOffsetForStamina(), 0);
             }
         }
+    }
+
+    /**
+     * Check if the player has no armor value.
+     *
+     * @return Whether the player's armor value is less than or equal to zero.
+     */
+    public static boolean isArmorEmpty()
+    {
+        return NullableResult.getOrElse(getPlayer(), 0, Player::getArmorValue) <= 0;
     }
 
     /**

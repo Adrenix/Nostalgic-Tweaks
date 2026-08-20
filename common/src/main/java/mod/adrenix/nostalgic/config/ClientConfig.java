@@ -105,6 +105,8 @@ public class ClientConfig implements ConfigMeta
         // Music
 
         public boolean playMusicWhenPaused = SoundTweak.PLAY_MUSIC_WHEN_PAUSED.register("playMusicWhenPaused");
+        public boolean playMusicContinuously = SoundTweak.PLAY_MUSIC_CONTINUOUSLY.register("playMusicContinuously");
+        public int continuousDelay = SoundTweak.CONTINUOUS_DELAY.register("continuousDelay");
         public MusicType musicForMenu = SoundTweak.MUSIC_FOR_MENU.register("musicForMenu");
         public MusicType musicForCreative = SoundTweak.MUSIC_FOR_CREATIVE.register("musicForCreative");
         public boolean replaceOverworldBiomeMusic = SoundTweak.REPLACE_OVERWORLD_BIOME_MUSIC.register("replaceOverworldBiomeMusic");
@@ -758,6 +760,7 @@ public class ClientConfig implements ConfigMeta
 
         // Combat
 
+        public ItemSet ignoredOldDamageItems = GameplayTweak.IGNORED_OLD_DAMAGE_ITEMS.register("ignoredOldDamageItems");
         public boolean oldDamageValues = GameplayTweak.OLD_DAMAGE_VALUES.register("oldDamageValues");
         public boolean disableCooldown = GameplayTweak.DISABLE_COOLDOWN.register("disableCooldown");
         public boolean disableMissTimer = GameplayTweak.DISABLE_MISS_TIMER.register("disableMissTimer");
