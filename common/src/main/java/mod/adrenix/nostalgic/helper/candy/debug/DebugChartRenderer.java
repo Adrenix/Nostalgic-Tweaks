@@ -42,8 +42,8 @@ class DebugChartRenderer
         int numOfValues = this.logger.size() - maxSize;
 
         this.graphics.pose().pushPose();
-        this.graphics.pose().translate(0.0F, this.graphics.guiHeight() - (this.height / 2.0F), 0.0F);
-        this.graphics.pose().scale(0.5F, 0.5F, 0.5F);
+        this.graphics.pose().translate(0.0F, this.graphics.guiHeight() - this.height, 0.0F);
+        //this.graphics.pose().scale(0.5F, 0.5F, 0.5F);
         this.graphics.fill(RenderType.guiOverlay(), 0, 0, this.width, this.height, 0x90200000);
         this.graphics.fill(RenderType.guiOverlay(), 0, 36, this.width, this.height, 0x90000000);
 
